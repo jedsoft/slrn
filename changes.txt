@@ -6,10 +6,11 @@ Changes since 0.9.8.1
   * slrnpull gives permission 600 to debugging files (may contain passwords).
   * Some minor usability glitches (Alain Bench)
   * Fixed fd leaks on some error conditions (Sami Farin)
-
-Introduced quit_hook, which is executed when slrn quits.
-
-Symbolic key names <BackTab> and <F13> through <F20> added (Alain Bench).
+1. Ported to slang-2 (patch by John E. Davis). slrn still compiles with
+   slang-1 and I will keep this option until slang-2 is completely stable.
+   Please see the FAQ for the current status of slang-2 support.
+2. Introduced quit_hook, which is executed when slrn quits.
+3. Symbolic key names <BackTab> and <F13> through <F20> added (Alain Bench).
 
 Changes since 0.9.8.0
 

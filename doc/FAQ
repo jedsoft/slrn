@@ -2,7 +2,7 @@
   John E. Davis <davis@space.mit.edu>
   Matthias Friedrich <matt@mafr.de>
   Thomas Schultz <tststs@gmx.de>
-  Version 0.9.8.1
+  Version 0.9.8.1pl1
 
   Frequently asked questions about the slrn newsreader.
   ______________________________________________________________________
@@ -17,6 +17,7 @@
      1.3 Where is slrn's documentation?
      1.4 Are there any mailing lists and/or newsgroups about slrn?
      1.5 slrn appears quite stable. Why don't you call it version 1.0?
+     1.6 How well are slang-2 and Unicode supported right now?
 
   2. Configuration
      2.1 Is it possible to set my ``From'' header line for postings?
@@ -77,6 +78,7 @@
      6.1 slrn hangs infinitely when I press the delete key
      6.2 The bug I found is not listed here. What do I do now?
         6.2.1 Some additional notes for the advanced user
+
   7. About this document
      7.1 History
 
@@ -140,9 +142,11 @@
   documentation, please make use of the appropriate newsgroups or
   mailing list rather than writing to the maintainer directly:
 
+
   The appropriate newsgroup for questions about slrn is
   news.software.readers. There is also a German speaking equivalent
   (de.comm.software.newsreader).
+
   Slrn-user is a mailing list for discussion of the use, development and
   extension of slrn. You can subscribe to it through the web interface
   at <http://lists.sourceforge.net/lists/listinfo/slrn-user>.
@@ -164,6 +168,24 @@
   include this. So, you'll see slrn 1.0 as soon as the new version of
   the slang library is out, slrn is ported to it and running reasonably
   stable.
+
+
+  1.6.  How well are slang-2 and Unicode supported right now?
+
+  Since version 0.9.8.2, slrn compiles against slang-2. The option to
+  compile with slang-1 will be kept until slang-2 (as well as its
+  support in slrn) proved to be sufficiently stable.
+
+  The next item on our TODO list will be to implement proper charset
+  conversion. At the moment, slrn in a UTF-8 terminal will only display
+  articles in ASCII and UTF-8 correctly. Also, articles that you write
+  will simply be sent out as slrn finds them on disk, with the charset
+  declaration given in your config file (mime_charset).
+
+  A current drawback of slang-2 is that its regexp engine lacks UTF-8
+  support. When you run slrn in UTF-8 mode, you should have your score
+  file in UTF-8 as well. You may still encounter surprising results; in
+  particular, regexp matching has no error handling for invalid UTF-8.
 
 
   2.  Configuration
@@ -209,6 +231,8 @@
   your Message-IDs via the posting_host command. If you think you need
   this feature, please read the corresponding entry in the reference
   manual carefully.
+
+
   2.3.  How can I set the size of the article pager?
 
 
@@ -316,7 +340,6 @@
 
   set simulate_graphic_chars 1
 
-
   in your slrnrc file. It restricts slrn to plain ASCII characters for
   drawing the tree.
 
@@ -337,8 +360,6 @@
   vt100 or vt220. Then create a new termcap entry based on that terminal
   with additional color capabilities and save it to ~/.termcap.  It
   might look like this:
-
-
 
   myterm:\
           :Co#8:NC#3:pa#64:\
@@ -383,7 +404,6 @@
   post_editor_command in your slrnrc file. In the following example, the
   program fortune is called and its output gets written to ~/.signature.
   After that, the editor jed is called:
-
   set post_editor_command "fortune -s > ~/.signature; jed '%s' -g %d -tmp"
 
 
@@ -403,6 +423,8 @@
       signature_file = ".signature.german";
     set_string_variable ("signature", signature_file);
   }
+
+
 
   If you want more sophisticated per-group settings, I recommend the
   macro identity.sl from Emanuele Bassi's slrn page.
@@ -512,7 +534,6 @@
   second alternative can be much faster, but the first is more likely to
   find all articles even if some articles contain incomplete
   ``References''.
-
 
   3.2.4.  How can I retrieve other read articles?
 
@@ -644,7 +665,6 @@
   yEnc is still under development and still has some drawbacks which I'd
   like to see solved first. However, there already are two ways to
   decode such messages:
-
   Prior to 0.9.7.4, slrn would corrupt some yEnc-encoded postings (by
   removing backspace-letter combinations traditionally used for
   formatting text messages). As this code has now been removed, you can
@@ -774,6 +794,7 @@
   depending on your version of sort.
 
 
+
   4.  Scoring
 
   4.1.  What is scoring?
@@ -793,6 +814,9 @@
   In the end, threads with high-score articles appear at the top of your
   screen and can be read before other, possibly less interesting,
   articles.
+
+
+
   4.2.  How can I killfile with Slrn?
 
 
@@ -925,6 +949,7 @@
   Subject: ^test$
 
 
+
   Finally, a score entry that filters all test-postings to non-test
   groups:
 
@@ -963,8 +988,6 @@
   ``@who.knows.where''. An alternative would be to score on the Message-
   ID header field.
 
-
-
   4.12.  How do I score followups?
 
 
@@ -986,7 +1009,6 @@
 
   To score articles that have both a subject starting with ``Re:'' and a
   ``References'' header, use the single colon form:
-
 
 
   Score: -9999
@@ -1118,6 +1140,7 @@
   Subject: ^Re:
 
 
+
   Here the ``References'' line simply says that the article must not
   have a ``References'' header. The subject header uses a regular
   expression that says ``Re:'' must occur at the beginning of the
@@ -1160,6 +1183,7 @@
   satisfies the two conditions:
 
 
+
   1. It begins with "Re: " and the rest of the line does not contain a
      lowercase character.
 
@@ -1180,7 +1204,6 @@
   the 'From:' header to contain at least two spaces (one inside the name
   and one between the name and the address), separated by non-blank
   characters:
-
 
 
   [*]
@@ -1245,6 +1268,7 @@
 
 
   slrn --nntp -h YOUR.NEWS.SERVER -a -f groups.dat --create
+
 
 
   This will start slrn and download the groups and put them in the file
@@ -1312,6 +1336,7 @@
   <http://slrn.sourceforge.net/patches/>, so you should look at that
   page, too. If you find that the bug is still unreported, send me a bug
   report (tststs@gmx.de).
+
   Please give a detailed description of what you did, how you expected
   slrn to behave and what slrn did instead; also include the exact error
   messages (in case you got any) and information I might need to
@@ -1354,7 +1379,6 @@
   gdb slrn
 
 
-
   Then, at the prompt of gdb, type:
 
   run [command line arguments here]
@@ -1373,7 +1397,6 @@
 
   The latest version of this FAQ is available at slrn's homepage
   <http://slrn.sourceforge.net/manual/>.
-
 
 
   7.1.  History
