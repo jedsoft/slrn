@@ -7951,7 +7951,7 @@ static void write_spoiler (char *buf, int first_line) /*{{{*/
 
 static void draw_tree (Slrn_Header_Type *h) /*{{{*/
 {
-   unsigned char buf[2];
+   SLsmg_Char_Type buf[2];
 
 #if !defined(IBMPC_SYSTEM)
    if (Graphic_Chars_Mode == 0)
@@ -7973,7 +7973,7 @@ static void draw_tree (Slrn_Header_Type *h) /*{{{*/
 	buf[0] = Graphic_UTee_Char;
 	buf[1] = Graphic_HLine_Char;
 	SLsmg_forward (-1);
-	smg_write_char (Graphic_ULCorn_Char);
+	SLsmg_write_char (Graphic_ULCorn_Char);
      }
    else if ((h->sister == NULL) ||
 	    ((h->sister->flags & FAKE_PARENT) && ((h->flags & FAKE_PARENT) == 0)))
@@ -7986,7 +7986,8 @@ static void draw_tree (Slrn_Header_Type *h) /*{{{*/
 	buf[0] = Graphic_LTee_Char;
 	buf[1] = Graphic_HLine_Char;
      }
-   slrn_write_nchars ((char *) buf, 2);
+   SLsmg_write_char(buf[0]);
+   SLsmg_write_char(buf[1]);
 
 #if !defined(IBMPC_SYSTEM)
    if (Graphic_Chars_Mode == ALT_CHAR_SET_MODE) SLsmg_set_char_set (0);

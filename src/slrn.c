@@ -135,12 +135,13 @@ int Slrn_Default_Post_Obj = SLRN_DEFAULT_POST_OBJ;
 
 FILE *Slrn_Debug_Fp = NULL;
 
-int Graphic_LTee_Char = SLSMG_LTEE_CHAR;
-int Graphic_UTee_Char = SLSMG_UTEE_CHAR;
-int Graphic_LLCorn_Char = SLSMG_LLCORN_CHAR;
-int Graphic_HLine_Char = SLSMG_HLINE_CHAR;
-int Graphic_VLine_Char = SLSMG_VLINE_CHAR;
-int Graphic_ULCorn_Char = SLSMG_ULCORN_CHAR;
+/* You need to call slrn_init_graphic_chars before using these */
+SLsmg_Char_Type Graphic_LTee_Char;
+SLsmg_Char_Type Graphic_UTee_Char;
+SLsmg_Char_Type Graphic_LLCorn_Char;
+SLsmg_Char_Type Graphic_HLine_Char;
+SLsmg_Char_Type Graphic_VLine_Char;
+SLsmg_Char_Type Graphic_ULCorn_Char;
 
 int Graphic_Chars_Mode = ALT_CHAR_SET_MODE;
 

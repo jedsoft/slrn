@@ -90,12 +90,12 @@ extern FILE *Slrn_Debug_Fp;
 extern int slrn_sys_system (char *);
 
 extern void slrn_init_graphic_chars (void);
-extern int Graphic_LTee_Char;
-extern int Graphic_UTee_Char;
-extern int Graphic_LLCorn_Char;
-extern int Graphic_HLine_Char;
-extern int Graphic_VLine_Char;
-extern int Graphic_ULCorn_Char;
+extern SLsmg_Char_Type Graphic_LTee_Char;
+extern SLsmg_Char_Type Graphic_UTee_Char;
+extern SLsmg_Char_Type Graphic_LLCorn_Char;
+extern SLsmg_Char_Type Graphic_HLine_Char;
+extern SLsmg_Char_Type Graphic_VLine_Char;
+extern SLsmg_Char_Type Graphic_ULCorn_Char;
 extern int Graphic_Chars_Mode;
 #define ALT_CHAR_SET_MODE	1
 #define SIMULATED_CHAR_SET_MODE	2
