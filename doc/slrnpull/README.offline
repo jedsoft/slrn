@@ -9,35 +9,24 @@ article bodies you want to download. Support for this is new in slrn
 Support in slrnpull:
 --------------------
 
-slrnpull has two new command-line switches that are connected with true
-offline reading:
+The group entries in slrnpull.conf now may have a fourth field that
+indicates if you want to use true offline reading for that group. If you set
+it to 1, slrnpull will fetch only the headers of the new articles it would
+otherwise retrieve completely.
 
- --headers-only
-	This tells slrnpull to fetch only the headers of the new articles it
-	would otherwise retrieve completely.
-	
- --marked-bodies 
+slrnpull also has a new command-line switch connected with true offline
+reading:
+
+--marked-bodies 
 	Tells slrnpull to fetch only the article bodies that were marked for
-	download within slrn (see next section on how to do that).
-	
-If you run slrnpull without any command line switches, it gets both headers
-and bodies for new articles, plus the bodies that were requested for
-download.
+	download within slrn (see next section on how to do that). slrnpull
+	also does this when run without this switch; specifying
+	--marked-bodies simply keeps it from checking for new articles.
 
-You can specify both --headers-only and --marked-bodies at the same time. In
-this case, headers are fetched for new articles and the requested bodies are
-downloaded. You will probably use this operation mode as the default if you
-want to use true offline reading.
-
-Notes:
-
-These two command-line switches have no effect in --post-only or --expire
-mode.
-
-If you didn't fetch the body of an article and it is no longer available on
-the server, slrnpull expires it even if it has not reached the age specified
-in slrnpull.conf. This makes sense, because it's no longer possible to
-download this article's body anyway.
+Note: If you didn't fetch the body of an article and it is no longer
+available on the server, slrnpull expires it even if it has not reached the
+age specified in slrnpull.conf. This makes sense, because it's no longer
+possible to download this article's body anyway.
 
 Support in slrn:
 ----------------

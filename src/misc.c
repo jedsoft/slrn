@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -2602,7 +2602,7 @@ void slrn_get_user_info (void) /*{{{*/
    Slrn_User_Info.followupto_string = /* xgettext:no-c-format */
      slrn_safe_strmalloc (_("[\"Followup-To:\" header set to %n.]"));
 
-   Slrn_CC_Followup_Message =         /* xgettext:no-c-format */
+   Slrn_CC_Post_Message =         /* xgettext:no-c-format */
      slrn_safe_strmalloc (_("[This message has also been posted to %n.]"));
    
    /* Now get default values for rest. */

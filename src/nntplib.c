@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -564,7 +564,7 @@ char *nntp_get_server_name (void)
    if (NULL != (host = _nntp_getserverbyfile(NNTPSERVER_FILE)))
      return host;
 
-   slrn_stderr_strcat ("\n", _("You need to set the NNTPSERVER environment variable to your server name."), "\n", NULL);
+   slrn_stderr_strcat ("\n", _("You should set the NNTPSERVER environment variable to your server name."), "\n", NULL);
 #ifdef VMS
    slrn_stderr_strcat (_("Example: $ define/job NNTPSERVER my.news.server"), "\n", NULL);
 #else
@@ -575,7 +575,8 @@ char *nntp_get_server_name (void)
 		       _("Example (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER"), "\n", NULL);
 # endif
 #endif
-   return NULL;
+   slrn_stderr_strcat (_("For now, I'm going to try \"localhost\" as the default..."), "\n", NULL);
+   return "localhost";
 }
 
 

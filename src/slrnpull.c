@@ -170,6 +170,7 @@ typedef struct _Active_Group_Type /*{{{*/
    
    unsigned int max_to_get;	       /* if non-zero, get only this many */
    unsigned int expire_days;	       /* if zero, no expiration */
+   int headers_only;	/* If non-zero, fetch headers only (offline reading) */
 #define MAX_GROUP_NAME_LEN 80
    char name [MAX_GROUP_NAME_LEN + 1];
    char dirname [MAX_GROUP_NAME_LEN + 1];
@@ -585,7 +586,7 @@ static int read_active_groups (void) /*{{{*/
    FILE *fp;
    char buf[256];
    unsigned int num;
-   int default_max_to_get, default_expire_days;
+   int default_max_to_get, default_expire_days, default_headers_only;
    
    fp = fopen (Active_Groups_File, "r");
    if (fp == NULL)
@@ -603,6 +604,7 @@ static int read_active_groups (void) /*{{{*/
 
    default_max_to_get = 50;
    default_expire_days = 10;
+   default_headers_only = 0;
 
    num = 0;
    while (NULL != fgets (buf, sizeof(buf), fp))
@@ -614,6 +616,7 @@ static int read_active_groups (void) /*{{{*/
 	Active_Group_Type *g;
 	int max_to_get;
 	int expire_days;
+	int headers_only;
 	
 	num++;
 	
@@ -655,13 +658,15 @@ static int read_active_groups (void) /*{{{*/
 	
 	max_to_get = default_max_to_get;
 	expire_days = default_expire_days;
+	headers_only = default_headers_only;
 	
 	arg = argv[1];
 	
-	if (argc && (*arg != '*'))
+	if (argc)
 	  {
-	     if ((1 != sscanf (arg, "%d", &max_to_get))
-		 || (max_to_get < 0))
+	     if ((*arg != '*') &&
+		 ((1 != sscanf (arg, "%d", &max_to_get))
+		  || (max_to_get < 0)))
 	       {
 		  log_error (_("%s: line %u: expecting positive integer in second field."),
 			      Active_Groups_File, num);
@@ -672,13 +677,29 @@ static int read_active_groups (void) /*{{{*/
 	  }
 	
 	arg = argv[2];
-	if (argc && (*arg != '*'))
+	if (argc)
 	  {
-	     if ((1 != sscanf (arg, "%d", &expire_days))
-		 || (expire_days < 0))
+	     if ((*arg != '*') &&
+		 ((1 != sscanf (arg, "%d", &expire_days))
+		  || (expire_days < 0)))
 	       {
 		  log_error (_("%s: line %u: expecting positive integer in third field."),
 			      Active_Groups_File, num);
+		  fclose (fp);
+		  return -1;
+	       }
+	     argc--;
+	  }
+	
+	arg = argv[3];
+	if (argc)
+	  {
+	     if ((*arg != '*') &&
+		 ((1 != sscanf (arg, "%d", &headers_only))
+		  || ((headers_only != 0) && (headers_only != 1))))
+	       {
+		  log_error (_("%s: line %u: expecting 0 or 1 in fourth field."),
+			     Active_Groups_File, num);
 		  fclose (fp);
 		  return -1;
 	       }
@@ -689,6 +710,7 @@ static int read_active_groups (void) /*{{{*/
 	  {
 	     default_expire_days = expire_days;
 	     default_max_to_get = max_to_get;
+	     default_headers_only = headers_only;
 	     continue;
 	  }
 
@@ -710,6 +732,7 @@ static int read_active_groups (void) /*{{{*/
 	
 	g->max_to_get = (unsigned int) max_to_get;
 	g->expire_days = (unsigned int) expire_days;
+	g->headers_only = headers_only;
 
 	if (-1 == create_group_directory (g))
 	  {
@@ -885,7 +908,7 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
     * all the message-ids when the user specifies a limit to grab.
     */
    if ((max <= 1) && (g->max_to_get != 0)
-       && ((unsigned int) server_max > g->max_to_get))
+       && ((unsigned int) server_max-server_min+1 > g->max_to_get))
      {
 	max = (unsigned int) server_max - g->max_to_get + 1;
 	if (server_max >= server_min)
@@ -966,7 +989,9 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
 	num_numbers++;
      }
 
-   log_message (_("%s: Retrieving articles %d-%d."), g->name, min, max);
+   log_message (_("%s: Retrieving %s %d-%d."), g->name,
+		g->headers_only ? _("headers") : _("articles"),
+		min, max);
    if (num_numbers) g->server_max = max;
    /* Otherwise, there were no unique articles in that range. */
    
@@ -1420,14 +1445,25 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
    char *heads[SLRN_MAX_QUEUED];
    char *bodies[SLRN_MAX_QUEUED];
    int numbers[SLRN_MAX_QUEUED];
-   unsigned int i, num, total=0;
+   unsigned int i, num;
    int max, bmin, bmax;
    Slrn_Range_Type *r;
    
    if (NULL == (r = g->requests))
      return;
 
-   log_message (_("%s: getting requested article bodies..."), g->name);
+   Num_Articles_Received = 0;
+   Num_Killed = 0;
+   Num_Articles_To_Receive = 0;   
+   
+   while (r!=NULL)
+     {
+	Num_Articles_To_Receive += r->max - r->min + 1;
+	r = r->next;
+     }
+   r = g->requests;
+   
+   log_message (_("%s: Retrieving requested article bodies."), g->name);
    
    for (i = 0; i < SLRN_MAX_QUEUED; i++)
      {
@@ -1453,10 +1489,11 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
 	       }
 	  }
 	num = i;
-	total += num;
 	
 	if (-1 == get_bodies (s, numbers, heads, bodies, num))
 	  break;
+	
+	Num_Articles_Received += num;
 	
 	for (i=0; i < num; i++)
 	  {
@@ -1464,7 +1501,6 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
 		 (-1 == append_body (g, numbers[i], bodies[i])))
 	       {
 		  slrn_free(bodies[i]);
-		  total--;
 		  bodies[i] = NULL;
 	       }
 	  }
@@ -1494,12 +1530,11 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
 	for (i=0; i < num; i++)
 	  slrn_free(bodies[i]);
      }
-   log_message (_("%s: %d requested article bodies retrieved"), g->name, total);
+   print_time_stats (s, 1);
 }
 /*}}}*/
 
-static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsigned int num,
-			 int offline_mode) /*{{{*/
+static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsigned int num) /*{{{*/
 {
    unsigned int i;
 #ifndef SLRN_MAX_QUEUED
@@ -1516,7 +1551,7 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 
    ret = 0;
    
-   if ((offline_mode&1) ||
+   if ((g->headers_only) ||
        (-1 != get_bodies (s, numbers, heads, bodies, num)))
      {
 	fp = open_xover_file (g, "a");
@@ -1524,7 +1559,7 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 	for (i = 0; i < num; i++)
 	  {
 	     if (-1 == write_head_and_body (g, numbers[i], heads[i],
-					    (offline_mode&1) ? NULL : bodies[i],
+					    g->headers_only ? NULL : bodies[i],
 					    xovs + i, fp))
 	       {
 		  ret = -1;
@@ -1542,7 +1577,7 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 	  }
      }
 
-   if (offline_mode&1) /* "register" new articles without body */
+   if (g->headers_only) /* "register" new articles without body */
      {
 	int bmin, bmax;
 	unsigned int j=0;
@@ -1569,7 +1604,7 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
    
    for (i = 0; i < num; i++) 
      {
-	if (!(offline_mode&1))
+	if (!g->headers_only)
 	  slrn_free (bodies[i]);
 	slrn_free (heads[i]);
 	slrn_free (xovs[i].subject_malloced);
@@ -1582,26 +1617,23 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 /*}}}*/
 
 static int get_group_articles (NNTP_Type *s, Active_Group_Type *g, 
-			       int server_min, int server_max, int offline_mode) /*{{{*/
+			       int server_min, int server_max, int marked_bodies) /*{{{*/
 {
    unsigned int gmin, gmax;
    int *numbers;
    unsigned int num_numbers, i, imin;
    
+   /* Don't request bodies that are no longer there. */
+   if (server_min > 1)
+     g->requests = slrn_ranges_remove (g->requests, 1, server_min-1);
+   get_marked_bodies (s, g);
+   
+   if (marked_bodies)
+     return 0;
+
    Num_Articles_Received = 0;
    Num_Killed = 0;
    Num_Articles_To_Receive = 0;
-
-   if (!(offline_mode & 1) || (offline_mode & 2))
-     {
-	/* Don't request bodies that are no longer there. */
-	if (server_min > 1)
-	  g->requests = slrn_ranges_remove (g->requests, 1, server_min-1);
-	get_marked_bodies (s, g);
-     }
-   
-   if (offline_mode == 2)
-     return 0;
    
    gmin = g->min;
    gmax = g->max;
@@ -1664,7 +1696,7 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 	  }
 	
 	print_time_stats (s, 0);
-	(void) get_articles (s, g, ns, j, offline_mode);
+	(void) get_articles (s, g, ns, j);
 	
 	Num_Articles_Received += j;
      }
@@ -1679,7 +1711,7 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 
 /*}}}*/
 
-static int pull_news (NNTP_Type *s, int offline_mode) /*{{{*/
+static int pull_news (NNTP_Type *s, int marked_bodies) /*{{{*/
 {
    int status;
    Active_Group_Type *g;
@@ -1710,7 +1742,7 @@ static int pull_news (NNTP_Type *s, int offline_mode) /*{{{*/
 
 	Current_Newsgroup = g->name;
 	
-	(void) get_group_articles (s, g, min, max, offline_mode);
+	(void) get_group_articles (s, g, min, max, marked_bodies);
 	
 	print_time_stats (s, 1);
 
@@ -2067,7 +2099,6 @@ static void usage (char *pgm) /*{{{*/
   -h HOSTNAME          Hostname of NNTP server to connect to.\n\
   --debug FILE         Write dialogue with server to FILE.\n\
   --expire             Perform expiration, but do not pull news.\n\
-  --headers-only       For new messages, get headers only (no bodies).\n\
   --help               Print this usage information.\n\
   --kill-log FILE      Keep a log of all killed articles in FILE.\n\
   --kill-score SCORE   Kill articles with a score below SCORE.\n\
@@ -2123,7 +2154,7 @@ int main (int argc, char **argv) /*{{{*/
    char *pgm;
    int expire_mode;
    int post_mode; /* 0==don't post; 1==post only */
-   int offline_mode=0; /* 1==headers only; 2==marked bodies; 3==both*/
+   int marked_bodies=0; /* 1==get marked bodies only*/
    int check_new_groups = 0;
    char *dir;
    char *logfile;
@@ -2179,10 +2210,8 @@ int main (int argc, char **argv) /*{{{*/
 	  post_mode = 0;
 	else if (!strcmp (arg, "--new-groups"))
 	  check_new_groups = 1;
-	else if (!strcmp (arg, "--headers-only"))
-	  offline_mode |=1;
 	else if (!strcmp (arg, "--marked-bodies"))
-	  offline_mode |=2;
+	  marked_bodies = 1;
 	else if (!strcmp (arg, "--version"))
 	  show_version (pgm);
 	else if (!strcmp (arg, "--logfile") && (argc > 0))
@@ -2240,7 +2269,7 @@ int main (int argc, char **argv) /*{{{*/
    if (-1 == make_filenames ())
      slrn_exit_error (NULL);
 
-   if (offline_mode && (2 != slrn_file_exists (Requests_Dir)))
+   if (2 != slrn_file_exists (Requests_Dir))
      make_outgoing_dir (Requests_Dir);
    
    if (-1 == read_active_groups ())
@@ -2252,7 +2281,7 @@ int main (int argc, char **argv) /*{{{*/
    if (-1 == read_headers_files ())
      slrn_exit_error (NULL);
    
-   if ((post_mode != 1) && (offline_mode & 2))
+   if (post_mode != 1)
      read_requests_files ();
    
    if (expire_mode)
@@ -2290,7 +2319,7 @@ int main (int argc, char **argv) /*{{{*/
    if (post_mode != 1)
      {
 	init_signals ();
-	pull_news (Pull_Server, offline_mode);
+	pull_news (Pull_Server, marked_bodies);
 	if ((-1 == write_headers_files ()) | /* avoid short-circuit */
 	    (-1 == write_active ()))
 	  {

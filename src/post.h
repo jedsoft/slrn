@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -26,7 +26,6 @@ extern int slrn_post (char *, char *, char *);
 extern int slrn_post_file (char *, char *, int);
 extern void slrn_post_postponed (void);
 extern int slrn_save_file_to_mail_file (char *, char *);
-extern char *Slrn_CC_Followup_Message;
 extern char *Slrn_CC_Post_Message;
 extern char *Slrn_Save_Posts_File;
 extern char *Slrn_Save_Replies_File;

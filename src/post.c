@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -72,7 +72,6 @@
 #define MAX_LINE_BUFLEN	2048
 
 /*{{{ Public Global Variables */
-char *Slrn_CC_Followup_Message = NULL;
 char *Slrn_CC_Post_Message = NULL;
 char *Slrn_Failed_Post_Filename;
 char *Slrn_Post_Custom_Headers;
@@ -412,9 +411,9 @@ static int is_empty_header (char *line) /*{{{*/
 }
 /*}}}*/
 
-static void insert_cc_followup_message (char *newsgroups, FILE* ofile) /*{{{*/
+static void insert_cc_post_message (char *newsgroups, FILE* ofile) /*{{{*/
 {
-   char *percnt, *message = Slrn_CC_Followup_Message;
+   char *percnt, *message = Slrn_CC_Post_Message;
    if (newsgroups == NULL) return;
    
    do
@@ -566,7 +565,7 @@ static int cc_file (char *file, char *to) /*{{{*/
 
    fputs ("\n", pp);
 
-   insert_cc_followup_message (newsgroups, pp);
+   insert_cc_post_message (newsgroups, pp);
    slrn_free (newsgroups);
 
 # if SLRN_HAS_MIME
@@ -924,7 +923,10 @@ int slrn_save_file_to_mail_file (char *file, char *save_file) /*{{{*/
 	    && ((unsigned char)line[4] <= ' '))
 	  putc ('>', outfp);
 
-	fputs (line, outfp);
+	if (*line == '.') /* Leading dots got doubled for posting. */
+	  fputs (line+1, outfp);
+	else
+	  fputs (line, outfp);
      }
    if (line[strlen(line)-1] != '\n')
      putc ('\n', outfp); /* add newline in case last line did not end in one */
@@ -1022,6 +1024,48 @@ static char *gen_cancel_lock (char *msgid) /*{{{*/
 }
 /*}}}*/
 #endif /* SLRN_HAS_CANLOCK */
+
+/* Does not yet accept any percent escapes */
+static int insert_custom_header (char *fmt, FILE *fp) /*{{{*/
+{
+   char ch;
+   
+   if ((fmt == NULL) || (*fmt == 0))
+     return -1;
+   
+   while ((ch = *fmt) != 0)
+     {
+	char *s;
+	
+	if (ch != '%')
+	  {
+	     if (NULL == (s = strchr (fmt, '%')))
+	       return fputs (fmt, fp);
+	     else
+	       {
+		  if ((fwrite (fmt, 1, (unsigned int) (s - fmt), fp)) < s-fmt)
+		    return -1;
+		  fmt = s;
+		  continue;
+	       }
+	  }
+	
+	fmt++;
+	ch = *fmt++;
+	
+	switch (ch)
+	  {
+	   case '%':
+	   case '\n':
+	     if (EOF == fputc (ch, fp))
+	       return -1;
+	     break;
+	  }
+     }
+   
+   return 0;
+}
+/*}}}*/
 
 /* This function returns:
  * -1 => user does not want to post article
@@ -1537,7 +1581,8 @@ int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
 	    followupto);
    fprintf (fp, "Keywords: \nSummary: \n");
 
-   header_lines += slrn_add_custom_headers (fp, Slrn_Post_Custom_Headers, NULL);
+   header_lines += slrn_add_custom_headers (fp, Slrn_Post_Custom_Headers,
+					    insert_custom_header);
 
    fputs ("\n", fp);
 

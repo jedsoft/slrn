@@ -634,8 +634,8 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      {"followup_string", &Slrn_User_Info.followup_string},
      {"followupto_string", &Slrn_User_Info.followupto_string},
      {"reply_string", &Slrn_User_Info.reply_string},
-     {"cc_followup_string", &Slrn_CC_Followup_Message},
-     {"cc_post_string", NULL}, /* FIXME: obsolete */
+     {"cc_followup_string", NULL}, /* FIXME: obsolete */
+     {"cc_post_string", &Slrn_CC_Post_Message},
      {"followup_date_format", &Slrn_Followup_Date_Format},
      {"overview_date_format", &Slrn_Overview_Date_Format},
      {"editor_command", &Slrn_Editor},
@@ -785,10 +785,10 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 		       oldname = "followup";
 		       newname = "followup_string";
 		    }
-		  else if (!strcmp (name, "cc_post_string"))
+		  else if (!strcmp (name, "cc_followup_string"))
 		    {
-		       oldname = "cc_post_string";
-		       newname = "cc_followup_string";
+		       oldname = "cc_followup_string";
+		       newname = "cc_post_string";
 		    }
 		  
 		  if (oldname != NULL)
@@ -1287,7 +1287,7 @@ static User_Info_Variable_Type User_Info_Variables[] = /*{{{*/
      {"organization", &Slrn_User_Info.org, 0},
      {"followup", &Slrn_User_Info.followup_string, 0},
      {"signature", &Slrn_User_Info.signature, 0},
-     {"cc_followup_string", &Slrn_CC_Followup_Message, 0},
+     {"cc_followup_string", &Slrn_CC_Post_Message, 0},
 #if SLRN_HAS_DECODE
      {"decode_directory", &Slrn_Decode_Directory, 0},
 #endif

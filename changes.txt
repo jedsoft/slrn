@@ -42,6 +42,8 @@ Changes since 0.9.7.4
   * Warn at startup when setting a variable that doesn't have an effect.
   * The score value 0 no longer has a special meaning; if you want to assign
     the score 0 and stop scoring for this article, use =0.
+  * When no server name is given, slrn tries "localhost" as the default.
+  * You now need to escape (double) % signs in custom_headers.
 2. When used in combination with slrnpull, slrn now supports "true offline
    reading", i.e. you can tell slrnpull to download article headers only,
    mark interesting ones for download in slrn and fetch those article bodies
@@ -88,10 +90,10 @@ Changes since 0.9.7.4
 17. Support Turkish characters on Win32 - set charset to "ibm857" for this.
     With help from A. Alper ATICI
 18. Re-structured the manual and added a chapter about slang's
-    pre-processing facilities. (Matthias Friedrich)    
-19. The config variable cc_post_string is obsolete, as cc_followup_string
-    now works correctly in all cases. Currently, the only supported escape
-    sequence is "%n" for newsgroup name.
+    pre-processing facilities. (Matthias Friedrich)
+19. The config variable cc_followup_string is obsolete; cc_post_string now
+    covers all cases. Currently, the only supported escape sequence is "%n"
+    for newsgroup name.
 20. New translations:
    * be.po (Belarusian; Hleb Valoska)
    * fi.po (Finnish; Lauri Nurmi)
