@@ -11,6 +11,7 @@ Changes since 0.9.7.3
    
    More translations:
   * fr.po (French; slrn-fr project)
+  * ko.po (Korean; Im Eunjea)
    
 Changes since 0.9.7.2
 
