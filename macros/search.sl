@@ -17,6 +17,7 @@ define search_newsgroup ()
 
    Search_Last_Art_Search_Str = str;
    
+   open_log_file("search.log");
    uncollapse_threads ();
    call ("hide_article");
    
@@ -24,7 +25,9 @@ define search_newsgroup ()
      {
 	flags = get_header_flags ();
 	
-	call ("article_line_up");
+	if (1 == is_article_visible())
+	  call ("hide_article");
+	
 	if (re_search_article (str))
 	  {
 	     pop ();
@@ -37,6 +40,7 @@ define search_newsgroup ()
      }
    while (header_down (1));
    
+   close_log_file();
    error ("Not found.");
 }
 definekey ("search_newsgroup", "$", "article");

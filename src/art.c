@@ -3976,7 +3976,7 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
 	l = l->next;
      }
    
-   fputs ("\n\n", fp);
+   fputs ("\n", fp); /* one empty line as a separator */
    
 #if SLRN_HAS_MIME
    if ((reload == 0) && (0 == (Slrn_Use_Mime & MIME_SAVE)))

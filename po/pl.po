@@ -4,6 +4,7 @@
 # Jarek Baczynski <jarek@fanthom.irc.pl>, 2001.
 #
 # Zmiany:
+# 2002-11-03: Uaktualnienie; Tomasz Sienicki <tsca@edb.dk>
 # 2002-03-12: Uaktualnienie do wersji 0974,
 # 2001-11-11: Wiele poprawek zgloszonych przez:
 #   Tomasz Sienicki <tsca@mailserver.dk>,
@@ -13,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: slrn 0.9.7.4\n"
 "POT-Creation-Date: 2002-11-01 12:56+0100\n"
-"PO-Revision-Date: 2002-03-12 18:20+0100\n"
+"PO-Revision-Date: 2002-11-03 12:03+0100\n"
 "Last-Translator: Slrn-pl developers <slrn-pl-devel@yahoogroups.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1720,7 +1721,7 @@ msgstr "  .                  Powtórz ostatni± sekwencjê klawiszy."
 #: src/help.c:157
 msgid "  Ctrl-X ESC         Read line and interpret it as S-Lang."
 msgstr ""
-"  Ctrl-X ESC         Wczytaj wiersz i zinterpretuj jako makro w S-Langu."
+"  Ctrl-X ESC               Wpisz polecenie w S-Langu."
 
 #: src/help.c:159
 msgid "  0                  Rate article with GroupLens."
@@ -1817,7 +1818,7 @@ msgstr "  . (Kropka)              Powtórz ostatni± sekwencjê klawiszy."
 #: src/help.c:191
 msgid "  Ctrl-X ESC              Read line and interpret it as S-Lang."
 msgstr ""
-"  Ctrl-X ESC              Wczytaj wiersz i zinterpretuj jako makro w S-Langu."
+"  Ctrl-X ESC                    Wpisz polecenie w S-Lang."
 
 #: src/help.c:192
 msgid "  Ctrl-Z                  Suspend slrn."
@@ -1885,8 +1886,7 @@ msgstr "  ESC a                   W³±cz/Wy³±cz wy¶wietlanie opisów grup."
 msgid ""
 "  l                       Toggle display of groups without unread articles."
 msgstr ""
-"  l                       W³±cz/wy³±cz wy¶w. grup, w których nie ma nieprz. "
-"wiad."
+"  l                       Prze³±cz wy¶w. grup, w których nie ma nieprz. wiad."
 
 #: src/help.c:208
 msgid "  L                       Toggle listing of unsubscribed groups."
@@ -2032,7 +2032,7 @@ msgstr "Nie mo¿na otworzyæ pliku logowania %s"
 
 #: src/interp.c:1446
 msgid "Could not replace article with given string."
-msgstr ""
+msgstr "Nie mo¿na zast±piæ tre¶ci artyku³u podanym ci±giem"
 
 #: src/menu.c:64 src/menu.c:77
 msgid "Quit"
@@ -2316,7 +2316,7 @@ msgstr "Na grupie %n napisa³e(a)¶:"
 #: src/misc.c:2603
 #, no-c-format
 msgid "[\"Followup-To:\" header set to %n.]"
-msgstr ""
+msgstr "Zawarto¶æ nag³ówka [\"Followup-To:\" %n.]"
 
 #: src/misc.c:2606
 #, no-c-format
@@ -2461,7 +2461,7 @@ msgstr "Cze¶æ, nie mo¿esz wysy³aæ"
 
 #: src/nntplib.c:1135
 msgid "Slave status noted"
-msgstr ""
+msgstr "Status slave"
 
 #: src/nntplib.c:1137
 msgid "Closing connection"
@@ -2673,8 +2673,7 @@ msgstr "Rozwa¿ proszê czy wysy³anie tego na du¿± ilo¶æ grup jest konieczne."
 msgid ""
 "In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
 msgstr ""
-"W wiêkszo¶ci wypadków wpisanie do nag³ówka \"Followup-To:\" wielu grup to "
-"z³y pomys³."
+"Najczê¶ciej wpisanie do nag³ówka \"Followup-To:\" wielu grup to z³y pomys³."
 
 #: src/post.c:710
 msgid "Setting a \"Followup-To:\" is recommended when crossposting."
@@ -2821,11 +2820,11 @@ msgstr "Brak po³±czenia z serwerem."
 
 #: src/post.c:1277
 msgid "Message-ID generating error."
-msgstr ""
+msgstr "B³±d przy generowaniu nag³ówka Message-ID."
 
 #: src/post.c:1288
 msgid "\"From\" generating error."
-msgstr ""
+msgstr "B³±d przy generowaniu nag³ówka \"From\"."
 
 #: src/post.c:1424
 msgid "Posting...done."
@@ -3637,6 +3636,7 @@ msgstr ""
 "  --new-groups         Pobierz nowe grupy.\n"
 "  --no-post            Nie wysy³aj artyku³ów.\n"
 "  --post-only          Wy¶lij artyku³y i nie ¶ci±gaj nowych.\n"
+"  --rebuild            Jak --expire; dodatkowo przebudowuje bazy overview.\n"
 "  --version            Wy¶wietl numer wersji.\n"
 
 #: src/slrnpull.c:1830
@@ -3710,12 +3710,12 @@ msgstr "Nie mogê utworzyæ pliku %s."
 #: src/slrnpull.c:2383
 #, c-format
 msgid "Header %d not parseable for overview."
-msgstr ""
+msgstr "Nie mo¿na przetworzyæ nag³ówka %d!"
 
 #: src/slrnpull.c:2406
 #, c-format
 msgid "%s overview: article %u of %u in %s."
-msgstr ""
+msgstr "przegl±d %s: artyku³ %u z %u w %s"
 
 #: src/slrnpull.c:2407
 #, fuzzy
@@ -3724,7 +3724,7 @@ msgstr "Tworzenie %s."
 
 #: src/slrnpull.c:2407
 msgid "Updating"
-msgstr ""
+msgstr "Aktualizowanie"
 
 #: src/slrnpull.c:2421
 #, c-format
@@ -3907,7 +3907,7 @@ msgid ""
 "The new usage is:\n"
 "set %s\n"
 msgstr ""
-"Nowe u¿ycie:\n"
+"Nowa sk³adnia:\n"
 "set %s\n"
 
 #: src/startup.c:268 src/startup.c:323
@@ -3969,7 +3969,8 @@ msgstr ""
 msgid ""
 "%s: In this version of slrn, setting variable\n"
 "%s has no effect. Please refer to the manual for details."
-msgstr ""
+msgstr "W tej wersji slrn zmienna\n"
+"%s jest ignorowana. Po szczegó³y zajrzyj do dokumentacji."
 
 #: src/startup.c:828
 #, c-format
@@ -4109,7 +4110,7 @@ msgid ""
 " COMPILE TIME OPTIONS:"
 msgstr ""
 "\n"
-" Opcje kompilacji:"
+" OPCJE KOMPILACJI:"
 
 #: src/version.c:101
 msgid ""

@@ -916,6 +916,7 @@ int slrn_save_file_to_mail_file (char *file, char *save_file) /*{{{*/
    else
      fprintf (outfp, "From %s@%s %s", Slrn_User_Info.username, Slrn_User_Info.hostname, ctime(&now));
 
+   line[0] = '\n';
    while (NULL != fgets (line, sizeof(line) - 1, infp))
      {
 	if ((*line == 'F')
@@ -925,7 +926,9 @@ int slrn_save_file_to_mail_file (char *file, char *save_file) /*{{{*/
 
 	fputs (line, outfp);
      }
-   fputs ("\n\n", outfp);	       /* separator */
+   if (line[strlen(line)-1] != '\n')
+     putc ('\n', outfp); /* add newline in case last line did not end in one */
+   putc ('\n', outfp);	       /* separator */
    slrn_fclose (infp);
    return slrn_fclose (outfp);
 }

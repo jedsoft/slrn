@@ -18,6 +18,7 @@ Changes since 0.9.7.4
   * Follow convention to use "Message-ID" instead of "Message-Id".
   * Use "X-Posted-To" instead of "Posted-To" (did not make it into RFC2822)
   * Also attempt MIME-decoding if no "Mime-Version:" header line is found.
+  * Don't add an empty line at the end of saved articles (Alain Bench).
 1. Changes to the user interface:
   * view_scores uncollapses threads (suggested by Jurriaan W Kalkman) and
     can optionally be left by pressing 'q'.
