@@ -5312,6 +5312,8 @@ static int get_add_headers (int min, int max) /*{{{*/
 }
 
 /*}}}*/
+/* gets the headers of article number min-max, decrementing *totalp for each
+ * downloaded article */
 static int get_headers (int min, int max, int *totalp) /*{{{*/
 {
    Slrn_Header_Type *h;
@@ -7525,6 +7527,8 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 		  max = r->min - 1;
 		  r = r->prev;
 	       }
+	     if (r->prev == NULL)
+	       unread += max;
 	     
 	     if (unread >= all)
 	       {
@@ -7532,7 +7536,10 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 		   * the server.  If that is the case, smin will be to high
 		   * and we will fall short of the goal.
 		   */
-		  smin = r->max + (unread - all) + 1;
+		  if (r->prev != NULL)
+		    smin = r->max + (unread - all) + 1;
+		  else
+		    smin = unread - all + 1;
 	       }
 	     else smin = Slrn_Server_Min;
 	     smax = Slrn_Server_Max;
