@@ -89,6 +89,7 @@ Changes since 0.9.7.4
    * fi.po (Finnish; Lauri Nurmi)
    * tr.po (Turkish; A. Alper ATICI)
 20. Remove duplicates when browsing URLs (Ruediger Sonderfeld)
+21. IPv6 support (requires getaddrinfo; patch by J.H.M. Dassen (Ray))
 
 Changes since 0.9.7.3
 

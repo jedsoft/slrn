@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003  Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -28,6 +28,8 @@
 #include <string.h>
 
 #include <stdlib.h>
+
+#include <assert.h>
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
@@ -156,6 +158,8 @@ struct _SLTCP_Type
 int (*SLTCP_Interrupt_Hook) (void);
 int SLtcp_TimeOut_Secs = SLRN_SLTCP_TIMEOUT_SECS;
 
+/* Turn debugging messages on / off. Note: I don't think these messages need
+ * to get translated. */
 static int TCP_Verbose_Reporting = 0;
 
 static int sys_call_interrupted_hook (void) /*{{{*/
@@ -175,6 +179,102 @@ static int sys_call_interrupted_hook (void) /*{{{*/
  */
 static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 {
+#ifdef HAVE_GETADDRINFO
+   /* Be AF-independent, so IPv6 works as well */
+   int fd;
+   int connected = 0;
+   struct addrinfo *res, *ai;
+   int tries = 1;
+   int r;
+   char portstr[6]; /* To pass a port number as a string */
+   
+   /* We need to give a hint to getaddrinfo to get it to resolve a
+    * numerical port number */
+   struct addrinfo hint;
+   
+   hint.ai_flags = 0;
+   hint.ai_family = 0;
+   hint.ai_socktype = SOCK_STREAM;
+   hint.ai_protocol = IPPROTO_IP;
+   hint.ai_addrlen = 0;
+   hint.ai_addr = NULL;
+   hint.ai_next = NULL;
+   
+   do {
+      snprintf(portstr, 6, "%i", port);
+      if ((r = getaddrinfo(host, portstr, &hint, &res)) < 0) {
+	 if (TCP_Verbose_Reporting) {
+	    fprintf (stderr, "Error resolving %s (port %s): %s\n", host, portstr, gai_strerror(r));
+	 }
+	 if (r == EAI_AGAIN) {
+	    slrn_sleep (1);
+	 };
+      }
+   } while (!r && (tries++ <= 3));
+   
+   if (r) {
+      fprintf (stderr, _("Failed to resolve %s\n"), host);
+      return -1;
+   }
+   if (TCP_Verbose_Reporting) {
+      fprintf (stderr, "Successfully resolved %s\n", host);
+   }
+
+   ai = res;
+   do { /* Loop over all the list of struct addrinfo returned and try
+	 * to get a socket connection */
+      if (TCP_Verbose_Reporting) {
+	 struct sockaddr *a = ai->ai_addr;
+	 static char buf[NI_MAXHOST];
+	 int l;
+	 if (a->sa_family == AF_INET) {
+	    l = sizeof(struct sockaddr_in);
+	    fprintf (stderr, "Address family: AF_INET\n");
+	 } else {
+	    assert(a->sa_family == AF_INET6);
+	    l = sizeof(struct sockaddr_in6);
+	    fprintf (stderr, "Address family: AF_INET6\n");
+	 }
+# ifdef HAVE_GETNAMEINFO
+	 if (!getnameinfo(a, l, buf, NI_MAXHOST-1, NULL, 0, NI_NUMERICHOST)) {
+	    fprintf (stderr, "Will try with address %s", buf);
+	 } else {
+	    fprintf (stderr, "getnameinfo failed: %s\n", strerror(errno));
+	 }
+# endif /* HAVE_GETNAMEINFO */
+      }
+      
+      if ((fd = socket(ai->ai_family, SOCK_STREAM, 0)) < 0) {
+	 if (TCP_Verbose_Reporting) {
+	    fprintf (stderr, "Error creating socket: %s\n", strerror(errno));
+	 }
+      } else {
+	 if (TCP_Verbose_Reporting) {
+	    fprintf (stderr, "Created socket; descriptor is = %i\n", fd);
+	 }
+	 if ((r = connect(fd, ai->ai_addr, ai->ai_addrlen)) == 0) {
+	    if (TCP_Verbose_Reporting) {
+	       fprintf (stderr, "Successfully connected\n");
+	    }
+	    connected = 1;
+	 } else {
+	    if (TCP_Verbose_Reporting) {
+	       fprintf (stderr, "Error connecting: %i, %s\n", errno, strerror(errno));
+	    }
+	 }
+      }
+      ai = ai->ai_next;
+   } while ((!connected) && (ai != NULL));
+   
+   freeaddrinfo(res);
+   
+   if (!connected)
+     fprintf(stderr, _("Unable to make connection. Giving up.\n"));
+   
+   return connected ? fd : -1;
+#else
+   /* IPv4-only implementation */
+
    char **h_addr_list;
    /* h_addr_list is NULL terminated if h_addr is defined.  If h_addr
     * is not defined, h_addr is the only element in the list.  When
@@ -196,25 +296,25 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 	
 	while (NULL == (hp = gethostbyname (host)))
 	  {
-#ifdef TRY_AGAIN
+# ifdef TRY_AGAIN
 	     max_retries--;
 	     if (max_retries && (h_errno == TRY_AGAIN))
 	       {
 		  slrn_sleep (1);
 		  continue;
 	       }
-#endif
+# endif
 	     fprintf(stderr, _("%s: Unknown host.\n"), host);
 	     return -1;
 	  }
 	
-#ifdef h_addr
+# ifdef h_addr
 	h_addr_list = hp->h_addr_list;
-#else
+# else
 	h_addr_list = fake_h_addr_list;
 	h_addr_list [0] = hp->h_addr;
 	h_addr_list [1] = NULL;
-#endif
+# endif
 	h_length = hp->h_length;
 	h_addr_type = hp->h_addrtype;
      }
@@ -250,19 +350,19 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 
 	this_host = (char *) inet_ntoa (s_in.sin_addr);
 	
-	if (TCP_Verbose_Reporting) fprintf (stderr, _("trying %s\n"), this_host);
+	if (TCP_Verbose_Reporting) fprintf (stderr, "trying %s\n", this_host);
 	
 	not_connected = connect (s, (struct sockaddr *)&s_in, sizeof (s_in));
 	
 	if (not_connected == -1)
 	  {
-#ifdef EINTR
+# ifdef EINTR
 	     if (errno == EINTR) /* If interrupted, try again. */
 	       {
 		  if (0 == sys_call_interrupted_hook ())
 		    continue;
 	       }
-#endif
+# endif
 	     fprintf (stderr, _("connection to %s, port %d:"), 
 		      (char *) this_host, port);
 	     perror ("");
@@ -277,6 +377,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 	return -1;
      }
    return s;
+#endif /* ! HAVE_GETADDRINFO -> IPv4 only code*/
 }
 
 /*}}}*/

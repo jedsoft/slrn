@@ -309,6 +309,7 @@ uname \
 gettimeofday \
 setlocale \
 isalpha isspace isdigit isalnum ispunct \
+getaddrinfo getnameinfo \
 )
 
 AC_MSG_CHECKING(if sprintf has a bogus return type)
