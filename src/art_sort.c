@@ -323,16 +323,12 @@ void slrn_sort_headers (void) /*{{{*/
 	h = h->real_next;
      }
    if (nheaders < 2)
-     {
-	if (!Slrn_Uncollapse_Threads)
-	  slrn_collapse_threads (1);	
-	return;
-     }
+     goto cleanup_screen_and_return;
    
    if (NULL == (header_list = (Slrn_Header_Type **) SLCALLOC (sizeof (Slrn_Header_Type *), nheaders + 1)))
      {
 	slrn_error (_("slrn_sort_headers(): memory allocation failure."));
-	return;
+	goto cleanup_screen_and_return;
      }
    
    /* Now, fill the array and call qsort on it; use our header_cmp function
@@ -388,10 +384,11 @@ void slrn_sort_headers (void) /*{{{*/
 
    /* Finally, free the array and clean up the screen. */
    _art_Headers = header_list[0];
+   SLFREE (header_list);
+   
+   cleanup_screen_and_return:
    _art_find_header_line_num ();
    Slrn_Full_Screen_Update = 1;
-
-   SLFREE (header_list);
    
    if (!Slrn_Uncollapse_Threads)
      slrn_collapse_threads (1);

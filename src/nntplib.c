@@ -330,8 +330,11 @@ int nntp_server_cmd (NNTP_Type *s, char *cmd)
 		  tried_auth = 1;
 		  continue;
 	       }
-	     else if ((code == ERR_FAULT) && (max_tries == 3))
-	       /* might be a timeout we didn't recognize */
+	     else if (((code == ERR_FAULT) || (code == OK_GOODBYE))
+		       && (max_tries == 3))
+	       /* might be a timeout we didn't recognize;
+		* SN sends OK_GOODBYE in this case; as this function isn't
+		* used to send QUIT, we can assume a timeout. */
 	       {
 		  nntp_disconnect_server (s);
 		  (void) check_connect_lost_hook (s);
@@ -917,6 +920,7 @@ int nntp_refresh_groups (NNTP_Type *s, Slrn_Group_Range_Type *gr, int n)
 	     break;
 	     
 	   case ERR_FAULT:
+	   case OK_GOODBYE: /* SN */
 	     if (max_tries == 2) /* might be a timeout we didn't recognize */
 	       {
 		  nntp_disconnect_server (s);

@@ -16,6 +16,7 @@ Changes since 0.9.7.3
   * The --with-libdir config option was ignored.
   * Work around a problem with leafnode when getting articles from a different
     group by Message-Id.
+  * Recognize SN's timeout messages.
 1. New algorithm for article sorting (based on a patch by Felix Schueller).
    This adds a highly configurable custom sorting interface (which will
    completely replace the choice in sorting_method at some point). See

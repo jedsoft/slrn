@@ -6229,6 +6229,7 @@ static void art_xpunge (void) /*{{{*/
 	update_ranges ();
      }
    
+   /* If there are no unread headers, quit to group mode. */
    while (_art_Headers != NULL)
      {
 	if ((0 == (_art_Headers->flags & HEADER_READ)) ||
@@ -6243,7 +6244,8 @@ static void art_xpunge (void) /*{{{*/
 	art_quit ();
 	return;
      }
-   
+
+   /* Remove numerical tags from all read headers. */
    if ((Num_Tag_List.len != 0)
        && (Num_Tag_List.headers != NULL))
      {
@@ -6269,6 +6271,8 @@ static void art_xpunge (void) /*{{{*/
 	Num_Tag_List.len = j;
      }
    
+   /* Find an unread message for Slrn_Current_Header; we made sure that
+    * at least one unread message exists, so this can never fail. */
    next = Slrn_Current_Header;
    while (next != NULL)
      {
@@ -6290,10 +6294,11 @@ static void art_xpunge (void) /*{{{*/
 	  }
      }
    
-   Slrn_Current_Header = next;	       /* cannot be NULL */
+   Slrn_Current_Header = next; /* cannot be NULL (see above) */
    
-   h = Slrn_First_Header;
-   /* h cannot be NULL here*/
+   /* Free all headers up to the first unread one; set Slrn_First_Header
+    * to it. */
+   h = Slrn_First_Header; /* Slrn_First_Header != NULL */
    while (1)
      {
 	next = h->real_next;
@@ -6306,10 +6311,11 @@ static void art_xpunge (void) /*{{{*/
    Slrn_First_Header = h;
    h->real_prev = NULL;
    
+   /* Free the rest of the read headers, linking up the unread ones. */
    while (h != NULL)
-     {	
+     {
 	Slrn_Header_Type *next_next;
-
+	
 	next = h->real_next;
 	while (next != NULL)
 	  {
@@ -6326,6 +6332,7 @@ static void art_xpunge (void) /*{{{*/
 	h = next;
      }
    
+   /* Fix the prev / next linking */
    Last_Read_Header = NULL;
    h = _art_Headers = Slrn_First_Header;
    _art_Headers->prev = NULL;
@@ -6345,7 +6352,6 @@ static void art_xpunge (void) /*{{{*/
    
    Slrn_Full_Screen_Update = 1;
 }
-
 /*}}}*/
 
 
