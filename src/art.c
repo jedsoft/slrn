@@ -1221,6 +1221,7 @@ static void browse_url (void) /*{{{*/
 
    slrn_free_argc_argv_list (argc, argv);
 
+   slrn_redraw ();
    launch_url (url, want_edit);
 }
 
