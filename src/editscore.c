@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -40,6 +40,20 @@
 #include "score.h"
 #include "util.h"
 
+/* In pathological situations, "Subject" or "From" header fields may include
+ * (MIME-encoded) linebreaks that would lead to invalid scorefile entries, so
+ * simply replace them with blanks. */
+static void remove_linebreaks (char *line)
+{
+   char c;
+   if (line == NULL) return;
+   while ((c = *line) != 0)
+     {
+	if ((c == '\r') || (c == '\n'))
+	  *line = ' ';
+	line++;
+     }
+}
 
 /* Returns 0 if score file not modified, -1 if error, or 1 if scores modified. */
 int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
@@ -161,7 +175,7 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
    
    if (Slrn_Prefix_Arg_Ptr == NULL)
      {
-	char *subject;
+	char *line;
 	int comment;
 	linenum = 1;
 	while (EOF != (ich = getc (fp)))
@@ -177,10 +191,11 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	  fprintf (fp, "Expires: %u/%u/%u\n", mm, dd, yy);
 	else fprintf (fp, "%%Expires: \n");
 	
-	subject = slrn_safe_strmalloc (h->subject);
-	slrn_subject_strip_was (subject);
+	line = slrn_safe_strmalloc (h->subject);
+	slrn_subject_strip_was (line);
+	remove_linebreaks (line);
 	
-	if ((NULL == (q = SLregexp_quote_string (subject, qregexp, sizeof (qregexp)))) ||
+	if ((NULL == (q = SLregexp_quote_string (line, qregexp, sizeof (qregexp)))) ||
 	    (ch != 's') ||
 	    (0 != SLang_regexp_compile (&re)))
 	  {
@@ -190,10 +205,12 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	else
 	  comment = 0;
 	fprintf (fp, "%c\tSubject: %s\n",
-		 (comment ? '%' : ' '), (q ? q : subject));
-	slrn_free (subject);
-	
-	if ((NULL == (q = SLregexp_quote_string (h->from, qregexp, sizeof (qregexp)))) ||
+		 (comment ? '%' : ' '), (q ? q : line));
+	slrn_free (line);
+
+	line = slrn_safe_strmalloc (h->from);
+	remove_linebreaks (line);
+	if ((NULL == (q = SLregexp_quote_string (line, qregexp, sizeof (qregexp)))) ||
 	    (ch != 'f') ||
 	    (0 != SLang_regexp_compile (&re)))
 	  {
@@ -203,8 +220,9 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	else
 	  comment = 0;
 	fprintf (fp, "%c\tFrom: %s\n",
-		 (comment ? '%' : ' '), (q ? q : h->from));
-	
+		 (comment ? '%' : ' '), (q ? q : line));
+	slrn_free (line);
+
 	if ((NULL == (q = SLregexp_quote_string (h->msgid, qregexp, sizeof (qregexp)))) ||
 	    (ch != 'r') ||
 	    (0 != SLang_regexp_compile (&re)))
