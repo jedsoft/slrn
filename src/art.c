@@ -514,6 +514,10 @@ static void free_header (Slrn_Header_Type *h)
    Number_Total--;
    if (h->flags & HEADER_READ)
      Number_Read--;
+   if (h->flags & HEADER_HIGH_SCORE)
+     Number_High_Scored--;
+   if (h->flags & HEADER_LOW_SCORE)
+     Number_Low_Scored--;
    remove_from_hash_table (h);
    slrn_free (h->tree_ptr);
    slrn_free (h->subject);
@@ -5802,7 +5806,8 @@ void slrn_apply_scores (int apply_now) /*{{{*/
    if (-1 == slrn_open_score (Slrn_Current_Group_Name))
      return;
    
-   init_scoring ();
+   /* high / low scoring counters get updated in slrn_set_header_score */
+   Number_Score_Killed = 0;
    Slrn_Apply_Score = 1;	       /* force even if there are no scores */
    Perform_Scoring = 1;
    get_missing_headers ();
