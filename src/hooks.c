@@ -20,6 +20,7 @@
 */
 
 #include "config.h"
+#include <string.h>
 #include "slrnfeat.h"
 #include "slrn.h"
 #include "util.h"

@@ -1,9 +1,9 @@
 #!/bin/sh
 # borrowed from xmms CVS
 
-(gettextize --version) < /dev/null > /dev/null 2>&1 || {
+(autopoint --version) < /dev/null > /dev/null 2>&1 || {
 	echo;
-	echo "You must have gettext installed to compile slrn";
+	echo "You must have autopoint (part of gettext) installed to compile slrn";
 	echo;
 	exit;
 }
@@ -25,11 +25,10 @@
 echo "Generating configuration files for slrn, please wait...."
 echo;
 
-echo "Running gettextize, please ignore non-fatal messages...."
-echo n | gettextize --copy --force;
+autopoint -f;
 aclocal -I autoconf;
 autoheader;
-automake --add-missing;
+automake --foreign --add-missing;
 autoconf;
 
 ./configure $@

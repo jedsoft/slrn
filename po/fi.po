@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: slrn 0.9.8.0\n"
-"POT-Creation-Date: 2002-10-27 01:48+0300\n"
+"POT-Creation-Date: 2002-11-01 12:56+0100\n"
 "PO-Revision-Date: 2002-11-01 02:50+0200\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -16,8 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Note to translators:
-#. * Make sure your translation is shorter than 16 characters.
 #: src/art.c:304
 #, c-format
 msgid "Ctrl-%c"
@@ -213,22 +211,16 @@ msgstr "Haluatko varmasti vastata yksityisesti LÄHETTÄJÄLLE, kuten hän toivoo"
 msgid "Followup to %s as poster prefers"
 msgstr "Vastine ryhmään %s, kuten lähettäjä toivoo"
 
-#. Note to translators: Here, "fF" means "Followup-To", "aA" is for
-#. * "all groups", "tT" is "this group only" and "cC" means "cancel".
-#. * Do not change the length of the string! You cannot use any of the
-#. * default characters for other fields than they originally stood for.
-#.
 #: src/art.c:3049
 msgid "fFaAtTcC"
 msgstr "fFkKvVeE"
 
 #: src/art.c:3052
 msgid ""
-"Crossposting. Set \"Followup-To\", Post to all groups / this group only, "
-"Cancel?"
+"Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
+" Cancel?"
 msgstr ""
-"Ristiinlähetys. Aseta \"Followup-To\", Lähetä Kaikkiin / Vain tähän, "
-"pEruuta?"
+"Ristiinlähetys. Aseta \"Followup-To\", Lähetä Kaikkiin / Vain tähän, pEruuta?"
 
 #: src/art.c:3134
 msgid "Cc message as requested by poster"
@@ -340,7 +332,6 @@ msgstr "puretaan %10s (%3d/%3d) %s"
 msgid "Filename buffer not large enough."
 msgstr "Tiedostonimipuskuri ei ole riittävän suuri."
 
-#. safe
 #: src/art.c:4203
 msgid "Calling uudeview ..."
 msgstr "Kutsutaan uudeview-ohjelmaa..."
@@ -612,8 +603,7 @@ msgstr ""
 "Väli:Valitse Ctrl-D:SvYlös Ctrl-U:SvAlas d:Merk.luet. n:Seur p:Edell q:Lopeta"
 
 #: src/art.c:7835
-msgid ""
-"SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
+msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "Väli:SvAlas  B:SvYlös  u:Merk.lukem.  f:Vastine  n:Seur  p:Edell  q:Lopeta"
 
@@ -626,10 +616,6 @@ msgstr "Säikeen loppu. Seuraava: %s"
 msgid "End of Thread."
 msgstr "Säikeen loppu."
 
-#. The last test involving ^ is necessary because the two can be
-#. * sisters except that one can have a fake parent.  If this is the
-#. * case, we are at the end of a subthread.
-#.
 #: src/art.c:8059
 msgid "End of Sub-Thread"
 msgstr "Alisäikeen loppu"
@@ -663,8 +649,6 @@ msgstr "Säikeistetään viitteiden mukaan..."
 msgid "Article %d is part of reference loop!"
 msgstr "Artikkeli %d on osa viitesilmukkaa!"
 
-#. Now perform a re-arrangement such that those without parents but that
-#. * share the same reference are placed side-by-side as sisters.
 #: src/art_sort.c:931
 msgid "Linking \"lost relatives\" ..."
 msgstr "Linkitetään \"kadonneet sukulaiset\"..."
@@ -690,8 +674,8 @@ msgid ""
 "******\n"
 "slang.h does not match slang library version.  Did you install slang as\n"
 "as a shared library?  Did you run ldconfig?  You have an installation "
-"problem\nand you will need to check the SLANG variables in the Makefile and "
-"properly\n"
+"problem\n"
+"and you will need to check the SLANG variables in the Makefile and properly\n"
 "set them.  Also try: make clean; make\n"
 "******\n"
 "\n"
@@ -719,8 +703,8 @@ msgstr "Slang-versio on %s.\n"
 #: src/chkslang.c:94
 #, c-format
 msgid ""
-"To fully utilize this program, you should upgrade the slang library "
-"to\n  version %s\n"
+"To fully utilize this program, you should upgrade the slang library to\n"
+"  version %s\n"
 msgstr ""
 "Tämän ohjelman hyödyntämiseksi slang-kirjasto on syytä päivittää\n"
 "  versioon %s\n"
@@ -810,20 +794,10 @@ msgstr "Palaaminen hakemistoon %s ei onnistu.\n"
 msgid "Usage: uudecode [-64] [--stdout] [--guess] [filename ...]\n"
 msgstr "Käyttö: uudecode [-64] [--stdout] [--guess] [tiedostonimi ...]\n"
 
-#. Note to translators: The translated string needs to have 10 characters.
-#. * Each pair becomes a valid response for "Subject", "From", "References",
-#. * "Edit" and "Cancel" (in that order); you cannot use any of the default
-#. * characters for any other field than they originally stood for!
-#.
 #: src/editscore.c:66
 msgid "SsFfRrEeCc"
 msgstr "AaLlVvMmPp"
 
-#. Note to translators: The translated string needs to have 4 characters.
-#. * The two pairs become valid responses for "This group" and "All groups",
-#. * respectively. You cannot use any of the default characters for any other
-#. * field than they originally stood for!
-#.
 #: src/editscore.c:72
 msgid "TtAa"
 msgstr "TtKk"
@@ -834,8 +808,7 @@ msgstr "Pisteytystiedostoa ei ole määritetty."
 
 #: src/editscore.c:86
 msgid "Pick Score type: Subject, From, References, Edit, Cancel"
-msgstr ""
-"Valitse pisteytystyyppi: Aihe, Lähettäjä, Viitteet, Muokkaa, Peruuta"
+msgstr "Valitse pisteytystyyppi: Aihe, Lähettäjä, Viitteet, Muokkaa, Peruuta"
 
 #: src/editscore.c:103
 msgid "Which newsgroups: This group, All groups"
@@ -991,11 +964,6 @@ msgstr "Keskusteluryhmä: "
 msgid "Followup-To: "
 msgstr "Vastine: "
 
-#. Note to translators: Here, "fF" means "full", "sS" is "simple",
-#. * "nN" means "none" and "cC" is "cancel".
-#. * As always, don't change the length of the string; you cannot use
-#. * the default characters for different fields.
-#.
 #: src/group.c:1860
 msgid "fFsSnNcC"
 msgstr "tTyYeEpP"
@@ -1075,8 +1043,6 @@ msgstr ""
 "Palvelin ei palauttanut kelvollista vastausta komentoon NEWGROUPS:\n"
 "%s\n"
 
-#. Slrn_Groups_Dirty = 0;
-#. Huh?
 #: src/group.c:2490 src/group.c:2603
 msgid "Read from server failed"
 msgstr "Luku palvelimelta epäonnistui"
@@ -1171,8 +1137,8 @@ msgstr "Kirjoitus tiedostoon %s epäonnistui! Levy täynnä?"
 msgid ""
 "SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
 msgstr ""
-"Väli:Valitse p:Lähetä c:Merk.luet l:Listaa q:Lopeta ^R:Piirrä "
-"(u)s:(lop.)Tilaus"
+"Väli:Valitse p:Lähetä c:Merk.luet l:Listaa q:Lopeta ^R:Piirrä (u)s:(lop.)"
+"Tilaus"
 
 #: src/group.c:3195
 msgid "-%D-News Groups: %s %-20g -- %L (%P)"
@@ -1295,8 +1261,8 @@ msgstr " Lisää tietoa on slrn:n kotisivulla:   http://slrn.sourceforge.net/"
 #: src/help.c:43
 msgid "   http://slrn.sourceforge.net/"
 msgstr ""
-" Kommentit suomennoksesta listalle: "
-"<translation-team-fi@lists.sourceforge.net>"
+" Kommentit suomennoksesta listalle: <translation-team-fi@lists.sourceforge."
+"net>"
 
 #: src/help.c:44
 msgid " Questions not covered by the documentation can be posted to"
@@ -1321,7 +1287,6 @@ msgid ""
 msgstr ""
 " Tämän ohjelman alkuperäinen tekijä on John E. Davis <davis@space.mit.edu>"
 
-#. begin makehelp(article) - do *NOT* modify this line
 #: src/help.c:56 src/help.c:170
 msgid ""
 " Note: The keys are case sensitive!  That is, 's' and 'S' are not the same."
@@ -1585,8 +1550,7 @@ msgstr ""
 "  ESC U              Merkitse nykyistä edeltävät artikkelit lukemattomiksi."
 
 #: src/help.c:118
-msgid ""
-"  x                  Remove all non-tagged read articles from the list."
+msgid "  x                  Remove all non-tagged read articles from the list."
 msgstr ""
 "  x                  Poista kaikki valitsemattomat artikkelit listalta."
 
@@ -1936,8 +1900,7 @@ msgid " (continued)"
 msgstr " (jatkoa)"
 
 #: src/help.c:303
-msgid ""
-"As a translation would not be legally binding, it remains untranslated."
+msgid "As a translation would not be legally binding, it remains untranslated."
 msgstr "Koska suomennos ei olisi laillisesti sitova, ilmoitusta ei suomenneta."
 
 #: src/help.c:307
@@ -2110,62 +2073,50 @@ msgstr "Vastine"
 msgid "No sorting"
 msgstr "Ei lajittelua"
 
-#. 000
 #: src/menu.c:194
 msgid "Thread Headers"
 msgstr "Säikeistä otsakkeet"
 
-#. 001
 #: src/menu.c:195
 msgid "Sort by subject"
 msgstr "Lajittelu aiheen mukaan"
 
-#. 010
 #: src/menu.c:196
 msgid "Thread, then sort by subject."
 msgstr "Säikeet, sitten lajittelu aiheen mukaan."
 
-#. 011
 #: src/menu.c:197
 msgid "Sort by scores."
 msgstr "Lajittelu pisteytyksen mukaan."
 
-#. 100
 #: src/menu.c:198
 msgid "Thread, then sort by scores."
 msgstr "Säikeet, sitten lajittelu pisteytyksen mukaan."
 
-#. 101
 #: src/menu.c:199
 msgid "Sort by score and subject"
 msgstr "Lajittelu pisteytyksen ja aiheen mukaan"
 
-#. 110
 #: src/menu.c:200
 msgid "Thread, then sort by score and subject"
 msgstr "Säikeet, sitten lajittelu pisteytyksen ja aiheen mukaan"
 
-#. 111
 #: src/menu.c:201
 msgid "Sort by date (most recent first)"
 msgstr "Lajittelu päiväyksen mukaan (uusin ensin)"
 
-#. 1000
 #: src/menu.c:202
 msgid "Thread, then sort by date (most recent first)"
 msgstr "Säikeet, sitten lajittelu päiväyksen mukaan (uusin ensin)"
 
-#. 1001
 #: src/menu.c:203
 msgid "Sort by date (most recent last)"
 msgstr "Lajittelu päiväyksen mukaan (uusin viimeisenä)"
 
-#. 1010
 #: src/menu.c:204
 msgid "Thread, then Sort by date (most recent last)"
 msgstr "Säikeet, sitten lajittelu päiväyksen mukaan (uusin viimeisenä)"
 
-#. 1011
 #: src/menu.c:205
 msgid "Custom sorting (see manual)"
 msgstr "Mukautettu lajittelu (katso manuaali)"
@@ -2238,9 +2189,6 @@ msgstr "slrn %v ** '?' näyttää ohjeen, 'q' lopettaa. ** Palvelin: %s"
 msgid "This function is not available in batch mode."
 msgstr "Tämä toiminto ei ole käytettävissä eräajotilassa."
 
-#. Note to translators: "yY" is for "yes", "nN" for "no", "eE" for "edit".
-#. * Do not change the length of this string. You cannot use any of the
-#. * default characters for different fields.
 #: src/misc.c:1090
 msgid "yYnNeE"
 msgstr "kKiImM"
@@ -2322,11 +2270,6 @@ msgstr "Odotetaan löytyvän kokonaisluku."
 msgid "Invalid response! Try again."
 msgstr "Virheellinen vastaus! Yritä uudelleen."
 
-#. Note to translators:
-#. * The translated string needs to have exactly four characters.
-#. * The first two become valid keys for "yes", the last two for "no".
-#. * You *cannot* use "y" for "no" or "n" for "yes".
-#.
 #: src/misc.c:2352
 msgid "yYnN"
 msgstr "kKiI"
@@ -2339,12 +2282,6 @@ msgstr "? [K]yllä, eI"
 msgid "? Yes, [N]o"
 msgstr "? Kyllä, e[I]"
 
-#. Note to translators:
-#. * The translated string needs to have exactly six characters.
-#. * The first two become valid keys for "yes", the next two for "no",
-#. * the last ones for "cancel". You cannot use the default characters
-#. * for other fields than they originally stood for.
-#.
 #: src/misc.c:2400
 msgid "yYnNcC"
 msgstr "kKiIpP"
@@ -2357,9 +2294,6 @@ msgstr "? [K]yllä, eI, Peruuta"
 msgid "Invalid regular expression or expression too long."
 msgstr "Virheellinen tai liian pitkä säännöllinen ilmaus."
 
-#. Fill in what is assumed to be non-NULL by rest of program.
-#. no-c-format tells gettext that the following strings do not
-#. * need to be checked as if they were passed to printf.
 #: src/misc.c:2599
 #, no-c-format
 msgid "On %D, %r <%f> wrote:"
@@ -2388,7 +2322,6 @@ msgstr "[Tämä viesti on lähetetty myös yksityisesti.]"
 msgid "Cannot generate \"From:\" line without a valid username."
 msgstr "Ei voi luoda \"From:\"-kenttää ilman kelvollista käyttäjän nimeä."
 
-#. Note: we currently do not check whether hostname is valid
 #: src/misc.c:2843
 msgid "Cannot generate \"From:\" line without a hostname."
 msgstr "Ei voi luoda \"From:\"-kenttää ilman isäntänimeä."
@@ -2420,8 +2353,8 @@ msgstr "Artikkeli hylätty: %s"
 msgid ""
 "--nntp options:\n"
 "-h nntp-host    Host name to connect to.  This overrides NNTPSERVER "
-"variable.\n-p NNTP-PORT    Set the NNTP port to NNTP-PORT. The default value "
-"is 119.\n"
+"variable.\n"
+"-p NNTP-PORT    Set the NNTP port to NNTP-PORT. The default value is 119.\n"
 "                 Note: This option has no effect on some systems.\n"
 msgstr ""
 "--nntp-valitsimet:\n"
@@ -2497,233 +2430,186 @@ msgstr "Esimerkki (csh): setenv NNTPSERVER minun.palvelimeni"
 msgid "Example (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER"
 msgstr "Esimerkki (sh) : NNTPSERVER='minun.palvelimeni' && export NNTPSERVER"
 
-#. 100
 #: src/nntplib.c:1125
 msgid "Help text on way"
 msgstr "Ohjeteksti matkalla"
 
-#. 180
 #: src/nntplib.c:1127
 msgid "Authorization capabilities"
 msgstr "Valtuutustavat"
 
-#. 199
 #: src/nntplib.c:1129
 msgid "Debug output"
 msgstr "Vianetsintätuloste"
 
-#. 200
 #: src/nntplib.c:1131
 msgid "Hello; you can post"
 msgstr "Hei; voit lähettää viestejä"
 
-#. 201
 #: src/nntplib.c:1133
 msgid "Hello; you can't post"
 msgstr "Hei; et voi lähettää viestejä"
 
-#. 202
 #: src/nntplib.c:1135
 msgid "Slave status noted"
 msgstr "Orjatila huomioitu"
 
-#. 205
 #: src/nntplib.c:1137
 msgid "Closing connection"
 msgstr "Suljetaan yhteys"
 
-#. 211
 #: src/nntplib.c:1139
 msgid "Group selected"
 msgstr "Ryhmä valittu"
 
-#. 215
 #: src/nntplib.c:1141
 msgid "Newsgroups follow"
 msgstr "Seuraavaksi keskusteluryhmät"
 
-#. 220
 #: src/nntplib.c:1143
 msgid "Article (head & body) follows"
 msgstr "Seuraavaksi artikkeli (otsake & runko)"
 
-#. 221
 #: src/nntplib.c:1145
 msgid "Head follows"
 msgstr "Seuraavaksi otsake"
 
-#. 222
 #: src/nntplib.c:1147
 msgid "Body follows"
 msgstr "Seuraavaksi iestin runko"
 
-#. 223
 #: src/nntplib.c:1149
 msgid "No text sent -- stat, next, last"
 msgstr "Tekstiä ei lähetetty -- stat, next, last"
 
-#. 230
 #: src/nntplib.c:1151
 msgid "New articles by message-id follow"
 msgstr "Seuraavaksi uudet viesti-ID:n mukaiset artikkelit"
 
-#. 231
 #: src/nntplib.c:1153
 msgid "New newsgroups follow"
 msgstr "Seuraavaksi uudet keskusteluryhmät"
 
-#. 235
 #: src/nntplib.c:1155
 msgid "Article transferred successfully"
 msgstr "Artikkeli siirretty onnistuneesti"
 
-#. 240
 #: src/nntplib.c:1157
 msgid "Article posted successfully"
 msgstr "Artikkeli lähetetty onnistuneesti"
 
-#. 280
 #: src/nntplib.c:1159
 msgid "Authorization system ok"
 msgstr "Valtuutusjärjestelmä ok"
 
-#. 281
 #: src/nntplib.c:1161
 msgid "Authorization (user/pass) ok"
 msgstr "Valtuutus (tunnus/salasana) ok"
 
-#. 282
 #: src/nntplib.c:1163
 msgid "Ok, XGTITLE info follows"
 msgstr "Ok, seuraavaksi XGTITLE-tiedot"
 
-#. 224
 #: src/nntplib.c:1165
 msgid "ok -- overview data follows"
 msgstr "ok -- seuraavaksi yhteenvetodata"
 
-#. 335
 #: src/nntplib.c:1167
 msgid "Continue to send article"
 msgstr "Jatketaan artikkelin lähetystä (send)"
 
-#. 340
 #: src/nntplib.c:1169
 msgid "Continue to post article"
 msgstr "Jatketaan artikkelin lähetystä"
 
-#. 380
 #: src/nntplib.c:1171
 msgid "authorization is required"
 msgstr "valtuutus vaaditaan"
 
-#. 381
 #: src/nntplib.c:1173
 msgid "<type> authorization data required"
 msgstr "<tyyppi> valtuutustiedot vaaditaan"
 
-#. 400
 #: src/nntplib.c:1175
 msgid "Have to hang up for some reason"
 msgstr "Linja on katkaistava jostakin syystä"
 
-#. 411
 #: src/nntplib.c:1177
 msgid "No such newsgroup"
 msgstr "Keskusteluryhmää ei ole"
 
-#. 412
 #: src/nntplib.c:1179
 msgid "Not currently in newsgroup"
 msgstr "Tällä hetkellä ei olla keskusteluryhmässä"
 
-#. 420
 #: src/nntplib.c:1181
 msgid "No current article selected"
 msgstr "Artikkelia ei ole valittuna"
 
-#. 421
 #: src/nntplib.c:1183
 msgid "No next article in this group"
 msgstr "Tässä ryhmässä ei ole seuraavaa artikkelia"
 
-#. 422
 #: src/nntplib.c:1185
 msgid "No previous article in this group"
 msgstr "Tässä ryhmässä ei ole edellistä artikkelia"
 
-#. 423
 #: src/nntplib.c:1187
 msgid "No such article in this group"
 msgstr "Artikkelia ei ole tässä ryhmässä"
 
-#. 430
 #: src/nntplib.c:1189
 msgid "No such article at all"
 msgstr "Artikkelia ei ole olemassa"
 
-#. 435
 #: src/nntplib.c:1191
 msgid "Already got that article, don't send"
 msgstr "Tämä artikkeli saatiin jo, älä lähetä"
 
-#. 436
 #: src/nntplib.c:1193
 msgid "Transfer failed"
 msgstr "Siirto epäonnistui"
 
-#. 437
 #: src/nntplib.c:1195
 msgid "Article rejected, don't resend"
 msgstr "Artikkeli hylätty, älä lähetä uudelleen"
 
-#. 440
 #: src/nntplib.c:1197
 msgid "Posting not allowed"
 msgstr "Lähetystä ei ole sallittu"
 
-#. 441
 #: src/nntplib.c:1199
 msgid "Posting failed"
 msgstr "Lähetys epäonnistui"
 
-#. 480
 #: src/nntplib.c:1201
 msgid "authorization required for command"
 msgstr "valtuutus vaaditaan komennolle"
 
-#. 481
-#. ERR_XGTITLE has same code
 #: src/nntplib.c:1203
 msgid "Authorization system invalid"
 msgstr "Virheellinen valtuutusjärjestelmä"
 
-#. 482
 #: src/nntplib.c:1205
 msgid "Authorization data rejected"
 msgstr "Valtuutustiedot hylätty"
 
-#. 500
 #: src/nntplib.c:1207
 msgid "Command not recognized"
 msgstr "Komentoa ei tunnistettu"
 
-#. 501
 #: src/nntplib.c:1209
 msgid "Command syntax error"
 msgstr "Komennon syntaksivirhe"
 
-#. 502
 #: src/nntplib.c:1211
 msgid "Access to server denied"
 msgstr "Pääsy palvelimelle evätty"
 
-#. 503
 #: src/nntplib.c:1213
 msgid "Program fault, command not performed"
 msgstr "Ohjelmavirhe, komentoa ei suoritettu"
 
-#. 580
 #: src/nntplib.c:1215
 msgid "Authorization Failed"
 msgstr "Valtuutus epäonnistui"
@@ -2769,8 +2655,7 @@ msgid "Newsgroups header is required."
 msgstr "Newsgroups-otsake (keskusteluryhmät) vaaditaan."
 
 #: src/post.c:704
-msgid ""
-"Please re-consider if posting to a large number of groups is necessary."
+msgid "Please re-consider if posting to a large number of groups is necessary."
 msgstr "Harkitse, onko useaan ryhmään lähettäminen välttämätöntä."
 
 #: src/post.c:707
@@ -2791,8 +2676,7 @@ msgid "Your message does not appear to have any unquoted text."
 msgstr "Viestissäsi ei näytä olevan yhtään lainaamatonta tekstiä."
 
 #: src/post.c:783
-msgid ""
-"Please keep your signature short. 4 lines is a commonly accepted limit."
+msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
 msgstr "Pidä allekirjoitus lyhyenä. Neljä riviä on yleisesti hyväksytty raja."
 
 #: src/post.c:790
@@ -2855,14 +2739,6 @@ msgstr "***Varoitus: virhe kirjoitettaessa tiedostoon %s"
 msgid "%s Failed post saved in %s"
 msgstr "%s Epäonnistunut lähetys tallennettu tiedostoon %s"
 
-#. Note to translators:
-#. * In the following strings, "yY" will mean "yes", "nN" is for "no",
-#. * "eE" for "edit", "sS" for "postpone", "dD" for "delete" and "fF"
-#. * for "filter". Please use the same letter for the same field everywhere,
-#. * or your users will get unexpected results. As always, you can't use the
-#. * default letters for other fields than those they originally stood for.
-#. * Be careful not to change the length of these strings!
-#.
 #: src/post.c:1034 src/post.c:1067
 msgid "yYnNeEsSdDfF"
 msgstr "kKiImMlLpPuU"
@@ -2899,10 +2775,6 @@ msgstr "Lähetä viesti? Kyllä, eI, Muokkaa, Lykkää"
 msgid "Sure you want to delete it"
 msgstr "Haluatko varmasti poistaa sen"
 
-#. Note to translators:
-#. * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
-#. * "cC" is "cancel" and "fF" means "force". The usual rules apply.
-#.
 #: src/post.c:1109
 msgid "yYeEnNcC"
 msgstr "kKmMiIpP"
@@ -2948,9 +2820,6 @@ msgstr "\"From\"-kentän generointivirhe."
 msgid "Posting...done."
 msgstr "Lähetetään...valmis."
 
-#. Note to translators: Here, "rR" is "repost", "eE" is "edit" and
-#. * "cC" is "cancel". Don't change the length of the string; you
-#. * cannot re-use any of the default characters for different fields.
 #: src/post.c:1445
 msgid "rReEcC"
 msgstr "lLmMpP"
@@ -3175,8 +3044,8 @@ msgstr "Lähetyshakemistoa %s ei ole olemassa."
 #: src/slrn.c:186
 #, c-format
 msgid ""
-"slrn: pid %d is locking the newsrc file. If you're not running "
-"another\n      copy of slrn, delete the file %s"
+"slrn: pid %d is locking the newsrc file. If you're not running another\n"
+"      copy of slrn, delete the file %s"
 msgstr ""
 "slrn: prosessi %d on lukinnut newsrc-tiedoston. Jos toista slrn-kopiota ei\n"
 "      ole käynnissä, poista tiedosto %s"
@@ -3186,7 +3055,6 @@ msgstr ""
 msgid "slrn: pid %d is locking the newsrc file."
 msgstr "slrn: prosessi %d on lukinnut newsrc-tiedoston."
 
-#. delete the "normal" lock file
 #: src/slrn.c:262 src/slrn.c:269
 #, c-format
 msgid "Unable to create lock file %s."
@@ -3262,8 +3130,8 @@ msgstr ""
 "-n              Älä tarkista uusia ryhmiä. Tämä nopeuttaa yleensä\n"
 "                 käynnistystä.\n"
 "-w              Odota näppäimenpainallusta ennen kokoruututilaan "
-"siirtymistä.\n-w0             Odota näppäimenpainallusta, vain varoitusten / "
-"virheiden\n"
+"siirtymistä.\n"
+"-w0             Odota näppäimenpainallusta, vain varoitusten / virheiden\n"
 "                 jälkeen\n"
 "--create        Luo uusi newsrc-tiedosto hakemalla ryhmälistä palvelimelta.\n"
 "--debug TIED    Kirjoita vianetsintätiedot TIEDostoon\n"
@@ -3321,7 +3189,8 @@ msgid ""
 "! will not be supported by future versions of this program.\n"
 "! If you have Perl installed, you can use the script slrnrc-conv to change\n"
 "! your configuration accordingly.  It can be found in the source "
-"distribution\n! or retrieved from <URL:http://slrn.sourceforge.net/data/>.\n"
+"distribution\n"
+"! or retrieved from <URL:http://slrn.sourceforge.net/data/>.\n"
 msgstr ""
 "\n"
 "! Asetustiedosto sisältää vanhentuneita komentoja tai funktionimiä, joita\n"
@@ -3348,9 +3217,10 @@ msgstr ""
 "Isäntänimi on määritettävä tiedostossa %s.\n"
 
 #: src/slrn.c:1274
+#, fuzzy
 msgid ""
 "Unable to find your user name.  This means that a valid 'From' header line\n"
-"cannot be constructed. Try setting the USER environment variable.\n"
+"cannot be constructed.  Try setting the USER environment variable.\n"
 msgstr ""
 "Käyttäjänimeäsi ei löydy. Sen vuoksi ei voida luoda kelvollista\n"
 "\"From\"-kenttää. Kokeile asettaa USER-ympäristömuuttuja.\n"
@@ -3737,7 +3607,7 @@ msgid ""
 "  --rebuild            Like --expire; additionally rebuilds overview files.\n"
 "  --version            Show the version number.\n"
 msgstr ""
-"%skäyttö: %s [valitsimet]\n"
+"%s\rkäyttö: %s [valitsimet]\n"
 " Valitsimet:\n"
 "  -d JONOHAKEMISTO     Käytettävä jonohakemisto.\n"
 "  -h ISÄNTÄNIMI        Käytettävän NNTP-palvelimen isäntänimi.\n"
@@ -3966,7 +3836,6 @@ msgstr ""
 msgid "Memory Allocation Failure.\n"
 msgstr "Muistinvarausvirhe.\n"
 
-#. Yuk.  SSL_set_fd returns 0 upon failure
 #: src/sltcp.c:532
 msgid "SSL_set_fd failed\n"
 msgstr "SSL_set_fd epäonnistui\n"

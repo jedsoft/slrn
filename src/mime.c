@@ -1189,7 +1189,7 @@ static int encode_string (unsigned char *from, unsigned char *to, /*{{{*/
 	/* Start the encoded-word */
 	len = strlen (charset);
 	if (len > (int) max - 1) return -1;
-	strcpy (dest, charset); /* safe */
+	strcpy ((char *)dest, charset); /* safe */
 	dest += len; max -= len; total += len;
 	
 	/* Write the data */

@@ -317,6 +317,12 @@ AC_SUBST(SLANG_INCLUDE)dnl
 dnl Specify (OpenSSL and ssl) or (GNU TLS and gnutls) as a parameter.
 AC_DEFUN(CF_SSL,
 [
+  AH_VERBATIM([SLRN_HAS_SSL_SUPPORT],
+[/* define if you want SSL support using OpenSSL */
+#define SLRN_HAS_SSL_SUPPORT		0])
+  AH_VERBATIM([SLRN_HAS_GNUTLS_SUPPORT],
+[/* define if you want SSL support using GNU TLS */
+#define SLRN_HAS_GNUTLS_SUPPORT		0])
   if test "$1" = OpenSSL ; then
     SSLLIB=""
     SSLINC=""
@@ -506,6 +512,7 @@ script to the right directory with the --with-ssl-includes=DIR option.
 
 AC_DEFUN(CF_MTA,
 [
+  AH_TEMPLATE([SLRN_SENDMAIL_COMMAND],[sendmail command])
   AC_ARG_WITH(mta,
     [  --with-mta[=PATHNAME]   To use an alternate mail transport agent],
     [  ac_mta_path="$withval" ], [ ac_mta_path=no ])
@@ -514,8 +521,19 @@ AC_DEFUN(CF_MTA,
      test "x$ac_mta_path" = "x"; then
     dnl We need to find sendmail ourself
     
-    AC_PATH_PROG(SENDMAIL, sendmail, no,
-      $PATH:/usr/local/sbin:/usr/sbin:/usr/local/lib:/usr/lib)
+    AC_PATH_PROG([SENDMAIL], [sendmail], [no],
+      [$PATH:/usr/local/sbin:/usr/sbin:/usr/local/lib:/usr/lib])
+    if test "x$ac_cv_path_SENDMAIL" = xno && \
+       test -f /usr/sbin/sendmail; then
+       AC_MSG_WARN([
+I assume /usr/sbin/sendmail is a symlink pointing to a sendmail-compatible MTA
+If I'm wrong, please correct me (using --with-mta).])
+     dnl Explanation: Nowadays, many Linux distros use an "alternatives"
+     dnl system based on symlinking to the desired MTA
+     dnl I don't know a way to check for symbolic links portably :-/ 
+      ac_cv_path_SENDMAIL=/usr/sbin/sendmail
+    fi
+
     if test "x$ac_cv_path_SENDMAIL" != xno; then
       AC_DEFINE_UNQUOTED(SLRN_SENDMAIL_COMMAND, "$ac_cv_path_SENDMAIL -oi -t -oem -odb")
     else
@@ -734,12 +752,14 @@ AC_CACHE_VAL(slrn_cv_va_val_copy,[
 	slrn_cv_va_val_copy=no
 	,)
 ])
+AH_TEMPLATE([VA_COPY], [define if you have va_copy() in stdarg.h])
 if test "x$slrn_cv_va_copy" = "xyes"; then
   AC_DEFINE(VA_COPY, va_copy)
 else if test "x$slrn_cv___va_copy" = "xyes"; then
   AC_DEFINE(VA_COPY, __va_copy)
 fi
 fi
+AH_TEMPLATE([VA_COPY_AS_ARRAY], [define if va_lists can't be copied by value])
 if test "x$slrn_cv_va_val_copy" = "xno"; then
   AC_DEFINE(VA_COPY_AS_ARRAY)
 fi

@@ -1,10 +1,11 @@
 dnl -*- sh -*-
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(src/slrn.c)
+AC_INIT
+AC_CONFIG_SRCDIR([src/slrn.c])
 AC_CONFIG_AUX_DIR(autoconf)
 
 dnl remember to update src/VMSMAKE.COM and src/version.h !
-AM_INIT_AUTOMAKE(slrn, 0.9.7.4pl1)
+AM_INIT_AUTOMAKE(slrn, 0.9.7.4pl2)
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
@@ -24,6 +25,7 @@ AC_ARG_WITH(docdir,
 AC_SUBST(docdir)
 
 dnl directory where .mo (translation) files should be placed
+AH_TEMPLATE([LOCALEDIR], [Define the directory where your locales are])
 AC_ARG_WITH(localedir,
 [  --with-localedir=DIR    Where to put locale files])
 if test -z "$with_localedir" || test "x$with_localedir" = xyes || test "x$with_localedir" = xno; then
@@ -46,9 +48,8 @@ case `uname` in
   *)	LIBS="$LIBS -lm"; AC_MSG_RESULT(no);;
 esac
 
-dnl List of all translations.
-ALL_LINGUAS="da de es fi fr it ko nl pl ru tr"
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION(0.11.4)
 
 AC_CHECK_LIB(dl,dlopen,[LIBS="$LIBS -ldl"])
 CF_HARDCODE_LIBS
@@ -58,12 +59,19 @@ CF_PATH_SLANG_INC
 CF_SSL(OpenSSL,ssl)
 CF_SSL([GNU TLS],gnutls)
 CF_MTA
+AH_VERBATIM([SLRN_HAS_UUDEVIEW],
+[/* define if you want uudeview support */
+#define SLRN_HAS_UUDEVIEW		0])
 CF_WITH_OPT_LIB(uudeview, UULIB, UUINC, libuu.a, -luu, uudeview.h,
 [SLRN_HAS_UUDEVIEW], [  --with-uudeview[=DIR]   For uudeview library support])
+AH_VERBATIM([SLRN_HAS_CANLOCK],
+[/* define if you want cancel lock support using libcanlock */
+#define SLRN_HAS_CANLOCK  0])
 CF_WITH_OPT_LIB(canlock, LOCKLIB, LOCKINC, libcanlock.a, -lcanlock, canlock.h,
 [SLRN_HAS_CANLOCK],  [  --with-canlock[=DIR]    For cancel-lock library support])
 
 dnl SLRN_LIB_DIR: directory for the global newsgroups.dsc
+AH_TEMPLATE([SLRN_LIB_DIR],[directory for global slrn.rc and newsgroups.dsc])
 AC_ARG_WITH(libdir,
 [  --with-libdir=DIR       Place for global newsgroups.dsc])
 if test -z "$with_libdir" || test "x$with_libdir" = xyes || test "x$with_libdir" = xno; then
@@ -79,6 +87,7 @@ AC_SUBST(slrn_libdir)
 AC_DEFINE_UNQUOTED(SLRN_LIB_DIR, "$slrn_libdir")
 
 dnl default NNTP server to use
+AH_TEMPLATE([NNTPSERVER_NAME],[hostname of a default NNTP server to use])
 AC_ARG_WITH(server-name,
     [  --with-server-name=HOST Hostname of a default NNTP server],
     [if test "x$withval" != "xno"; then
@@ -86,6 +95,8 @@ AC_ARG_WITH(server-name,
     fi])dnl
 
 dnl file that contains the name of the default NNTP server
+AH_TEMPLATE([NNTPSERVER_FILE],
+[file that contains the hostname of a default NNTP server])
 AC_ARG_WITH(server-file,
     [  --with-server-file=FILE File containing the hostname of an NNTP server],
     [if test "x$withval" != "xno"; then
@@ -93,6 +104,9 @@ AC_ARG_WITH(server-file,
     fi])dnl
 
 dnl slrnpull compilation and support
+AH_VERBATIM([SLRN_HAS_PULL_SUPPORT],
+[/* define if you want slrnpull support */
+#define SLRN_HAS_PULL_SUPPORT		0])
 AC_ARG_WITH(slrnpull,
     [  --with-slrnpull         Build slrnpull and add support for it to slrn],
     [if test "x$withval" = "xyes" ; then
@@ -106,28 +120,43 @@ AC_SUBST(SLRNPULL)
 AC_SUBST(MAN_SLRNPULL)
 
 dnl the setgid patch
+AH_VERBATIM([SLRNPULL_USE_SETGID_POSTS],
+[/* Whether you want the "setgid" patch to work (docs/slrnpull/setgid.txt) */
+#define SLRNPULL_USE_SETGID_POSTS	0])
 CF_COMPILE_OPTION(setgid-code,
     [  --enable-setgid-code    Allow running slrnpull as an unpriviledged user],
-    [ SLRNPULL_USE_SETGID_POSTS ])
+    [SLRNPULL_USE_SETGID_POSTS])
 
 dnl NNTP support
+AH_VERBATIM([SLRN_HAS_NNTP_SUPPORT],
+[/* define if you want NNTP support */
+#define SLRN_HAS_NNTP_SUPPORT		1])
 CF_COMPILE_OPTION(nntp,
     [  --disable-nntp          Disable NNTP support],
-    [ SLRN_HAS_NNTP_SUPPORT ])
+    [SLRN_HAS_NNTP_SUPPORT])
 
 dnl news spool support
+AH_VERBATIM([SLRN_HAS_SPOOL_SUPPORT],
+[/* define if you want support for reading from a news spool */
+#define SLRN_HAS_SPOOL_SUPPORT		0])
 CF_COMPILE_OPTION(spool,
     [  --enable-spool          Enable support for reading directly from spool],
-    [ SLRN_HAS_SPOOL_SUPPORT ])
+    [SLRN_HAS_SPOOL_SUPPORT])
 
 dnl inews support
+AH_VERBATIM([SLRN_HAS_INEWS_SUPPORT],
+[/* define if you want support for posting via inews */
+#define SLRN_HAS_INEWS_SUPPORT		0])
 CF_COMPILE_OPTION(inews,
     [  --enable-inews          Enable inews posting support],
-    [ SLRN_HAS_INEWS_SUPPORT ])
+    [SLRN_HAS_INEWS_SUPPORT])
 
+AH_TEMPLATE([SLRN_INEWS_COMMAND],
+[the inews command slrn will use])
 if test "x$enable_inews" = xyes ; then
 
   dnl find inews
+  AH_TEMPLATE([SLRN_INEWS_COMMAND], [inews command])
   AC_PATH_PROG(INEWS, inews, no, $PATH:/usr/local/bin:/usr/bin)
   if test "x$ac_cv_path_INEWS" != xno; then
       AC_DEFINE_UNQUOTED(SLRN_INEWS_COMMAND, "$ac_cv_path_INEWS -S -h")
@@ -142,61 +171,94 @@ sure inews can be found in your \$PATH.
 fi
 
 dnl enforce the use of inews
+AH_VERBATIM([SLRN_FORCE_INEWS],
+[/* define if you want to force the use of inews */
+#define SLRN_FORCE_INEWS		0])
 CF_COMPILE_OPTION(force-inews,
     [  --enable-force-inews    Enforce the use of inews],
-    [ SLRN_FORCE_INEWS ])
+    [SLRN_FORCE_INEWS])
 
 dnl disallow custom From headers
+AH_VERBATIM([SLRN_HAS_STRICT_FROM],
+[/* define if you want to disallow custom From headers */
+#define SLRN_HAS_STRICT_FROM		0])
 CF_COMPILE_OPTION(strict-from,
     [  --enable-strict-from    Disallow custom From headers],
-    [ SLRN_HAS_STRICT_FROM ])
+    [SLRN_HAS_STRICT_FROM])
 
 dnl embed slang interpreter
+AH_VERBATIM([SLRN_HAS_SLANG],
+[/* define if you want slang interpreter support */
+#define SLRN_HAS_SLANG			1])
 CF_COMPILE_OPTION(slang,
     [  --disable-slang         Don't make the slang interpreter available],
-    [ SLRN_HAS_SLANG ])
+    [SLRN_HAS_SLANG])
 
 dnl disable MIME support
+AH_VERBATIM([SLRN_HAS_MIME],
+[/* define if you want MIME support */
+#define SLRN_HAS_MIME			1])
 CF_COMPILE_OPTION(mime,
     [  --disable-mime          Disable MIME support],
-    [ SLRN_HAS_MIME ])
+    [SLRN_HAS_MIME])
 
 dnl character set mapping
+AH_VERBATIM([SLRN_HAS_CHARACTER_MAP],
+[/* define if you want slrn to map between ISO-Latin and native charsets */
+#define SLRN_HAS_CHARACTER_MAP		1])
 CF_COMPILE_OPTION(charmap,
     [  --disable-charmap       Disable mapping ISO-Latin to native charsets],
-    [ SLRN_HAS_CHARACTER_MAP])
+    [SLRN_HAS_CHARACTER_MAP])
 
 dnl disable spoiler support
+AH_VERBATIM([SLRN_HAS_SPOILERS],
+[/* define if you want spoiler support */
+#define SLRN_HAS_SPOILERS		1])
 CF_COMPILE_OPTION(spoilers,
     [  --disable-spoilers      Disable spoiler support],
-    [ SLRN_HAS_SPOILERS])
+    [SLRN_HAS_SPOILERS])
 
 dnl disable emphasized text support
+AH_VERBATIM([SLRN_HAS_EMPHASIZED_TEXT],
+[/* define if you want emphasized text support */
+#define SLRN_HAS_EMPHASIZED_TEXT	1])
 CF_COMPILE_OPTION(emph-text,
     [  --disable-emph-text     Disable emphasized text support],
-    [ SLRN_HAS_EMPHASIZED_TEXT])
+    [SLRN_HAS_EMPHASIZED_TEXT])
 
 dnl disable the generation of Message-IDs
+AH_VERBATIM([SLRN_HAS_GEN_MSGID],
+[/* define if you want slrn to generate Message-IDs */
+#define SLRN_HAS_GEN_MSGID		1])
 CF_COMPILE_OPTION(gen-mid,
     [  --disable-gen-mid       Prevent slrn (and user) from generating Message-IDs],
-    [ SLRN_HAS_GEN_MSGID])
+    [SLRN_HAS_GEN_MSGID])
 
 dnl enable Message-ID caching to eliminate cross-posts
+AH_VERBATIM([SLRN_HAS_MSGID_CACHE],
+[/* define to make slrn cache Message-IDs to eliminate cross-posts */
+#define SLRN_HAS_MSGID_CACHE		0])
 CF_COMPILE_OPTION(mid-cache,
     [\
   --enable-mid-cache      Make slrn cache Message-IDs to eliminate cross-posts
                           (only needed when server has no xref headers)],
-    [ SLRN_HAS_MSGID_CACHE ])
+    [SLRN_HAS_MSGID_CACHE])
 
 dnl Use In-Reply-To if necessary
+AH_VERBATIM([SLRN_HAS_FAKE_REFS],
+[/* define if slrn should use In-Reply-To if no References are available */
+#define SLRN_HAS_FAKE_REFS		1])
 CF_COMPILE_OPTION(fake-refs,
     [  --disable-fake-refs     Don't use In-Reply-To if References isn't available],
-    [ SLRN_HAS_FAKE_REFS ])
+    [SLRN_HAS_FAKE_REFS])
 
 dnl enable grouplens support
+AH_VERBATIM([SLRN_HAS_GROUPLENS],
+[/* define if you want grouplens (R.I.P.) support */
+#define SLRN_HAS_GROUPLENS		0])
 CF_COMPILE_OPTION(grouplens,
     [  --enable-grouplens      Enable GroupLens support],
-    [ SLRN_HAS_GROUPLENS])
+    [SLRN_HAS_GROUPLENS])
 
 dnl -------------------------------------------------------------------------
 dnl  Check head files
@@ -249,18 +311,24 @@ isalpha isspace isdigit isalnum ispunct \
 )
 
 AC_MSG_CHECKING(if sprintf has a bogus return type)
+AH_TEMPLATE([HAVE_ANSI_SPRINTF],
+[define if your sprintf returns an int (as required by ANSI C)])
 AC_TRY_LINK([#include <stdio.h>],
 	[char buf[1]; int ret; ret = sprintf (buf, "") % 1],
 	[AC_DEFINE(HAVE_ANSI_SPRINTF) AC_MSG_RESULT(no)],
 	AC_MSG_RESULT(yes))
 
 AC_MSG_CHECKING(for timezone in time.h)
+AH_TEMPLATE([HAVE_TIMEZONE],
+[define if you have a "timezone" variable in time.h])
 AC_TRY_LINK([#include <time.h>],
 	[long int tz; tz = timezone % 1],
 	[AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes)],
 	AC_MSG_RESULT(no))
 
 AC_MSG_CHECKING(for tm_gmtoff in struct tm)
+AH_TEMPLATE([HAVE_TM_GMTOFF],
+[define if you have "tm_gmtoff" in struct tm])
 AC_TRY_LINK([#include <time.h>],
 	[struct tm t; t.tm_gmtoff = 0],
 	[AC_DEFINE(HAVE_TM_GMTOFF) AC_MSG_RESULT(yes)],
@@ -283,8 +351,67 @@ I'll enable that for you automatically ...])
 AC_DEFINE(SLRN_HAS_SPOOL_SUPPORT, 1)
 fi
 
+AH_BOTTOM(
+[/* misc settings copied from the original config.hin file */
+
+#if defined(HAVE_SIGADDSET) && defined(HAVE_SIGEMPTYSET)
+# if defined(HAVE_SIGACTION) && defined(HAVE_SIGPROCMASK)
+#  define SLRN_POSIX_SIGNALS
+# endif
+#endif
+
+#if defined(ultrix) && !defined(__GNUC__)
+# ifndef NO_PROTOTYPES
+#  define NO_PROTOTYPES
+# endif
+#endif
+
+#ifndef REAL_UNIX_SYSTEM
+# define REAL_UNIX_SYSTEM
+#endif
+
+#ifdef _AIX
+# ifndef _POSIX_SOURCE
+#  define _POSIX_SOURCE
+# endif
+# ifndef _ALL_SOURCE
+#  define _ALL_SOURCE
+# endif
+/* This may generate warnings but the fact is that without it, xlc will 
+ * INCORRECTLY inline many str* functions. */
+# undef __STR__
+#endif
+
+#ifndef __unix__
+# define __unix__ 1
+#endif
+
+/* SLTCP_HAS_SSL_SUPPORT gets turned on whenever we use SSL
+ * SLTCP_HAS_GNUTLS_SUPPORT gets turned on when we use GNU TLS for it. */
+#if SLRN_HAS_SSL_SUPPORT == 1
+ #define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_SSL_SUPPORT
+#else
+  #if SLRN_HAS_GNUTLS_SUPPORT == 1
+  #define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_GNUTLS_SUPPORT
+  #define SLTCP_HAS_GNUTLS_SUPPORT SLRN_HAS_GNUTLS_SUPPORT
+  #else
+  #define SLTCP_HAS_SSL_SUPPORT 0
+  #endif
+#endif
+
+#define SLRN_SERVER_ID_NNTP 1
+#define SLRN_SERVER_ID_SPOOL 2
+
+#define SLRN_POST_ID_NNTP 1
+#define SLRN_POST_ID_INEWS 2
+#define SLRN_POST_ID_PULL 3
+
+#define SLRN_PATH_SLASH_CHAR	'/' ])
+
+
 AM_CONFIG_HEADER(src/config.h)
-AC_OUTPUT(Makefile doc/Makefile doc/tm/Makefile src/Makefile intl/Makefile po/Makefile.in)
+AC_CONFIG_FILES([Makefile doc/Makefile doc/tm/Makefile src/Makefile po/Makefile.in autoconf/Makefile])
+AC_OUTPUT
 
 rm -f config.h
 ln src/config.h config.h

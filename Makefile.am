@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in -*- sh -*-
 ## Use aclocal -I autoconf/ && automake --foreign
 
-SUBDIRS = doc intl po src
+SUBDIRS = autoconf doc po src
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I autoconf
 
@@ -17,9 +17,10 @@ CONTRIB = contrib/cleanscore contrib/slrnrc-conv
 CONTRIBDOCS = contrib/README.cleanscore contrib/README.slrnrc-conv \
  contrib/NEWS.cleanscore
 
-EXTRA_DIST = $(doc_DATA) $(MACROS) acconfig.h autoconf/acinclude.m4 \
- autoconf/config.guess autoconf/config.sub autoconf/install-sh \
- autoconf/missing autoconf/mkinstalldirs $(CONTRIBDOCS) $(CONTRIB)
+#EXTRA_DIST = autoconf/config.rpath autoconf/mkinstalldirs autoconf/acinclude.m4 \
+# autoconf/config.guess autoconf/config.sub autoconf/install-sh \
+# autoconf/missing autoconf/mkinstalldirs 
+EXTRA_DIST = $(doc_DATA) $(MACROS) $(CONTRIBDOCS) $(CONTRIB)
 
 MOSTLYCLEANFILES = *~ config.h autoconf/*~ contrib/*~ macros/*~ po/*~
 
@@ -50,7 +51,7 @@ install-contrib:
 
 dist-hook:
 	-chmod -R a+r $(distdir)
-	$(TAR) choIf $(distdir).tar.bz2 $(distdir)
+	$(AMTAR) chojf $(distdir).tar.bz2 $(distdir)
 
 all-local:
 	@echo ""
