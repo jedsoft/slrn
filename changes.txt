@@ -4,6 +4,8 @@ Changes since 0.9.8.1
   * slrnpull fetches marked articles even if no new headers are available.
   * slrn would sometimes eat the last char of an article when posting.
 
+Symbolic key names <BackTab> and <F13> through <F20> added (Alain Bench).
+
 Changes since 0.9.8.0
 
 0. Bug fixes include:

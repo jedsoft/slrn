@@ -549,7 +549,7 @@ char *slrn_help_keyseq_from_function (char *f, SLKeyMap_List_Type *map) /*{{{*/
 
 /* In the following arrays, the same index corresponds to the same key */
 
-#define NUMBER_OF_KEYNAMES 28
+#define NUMBER_OF_KEYNAMES 37
 
 /* Symbolic names of keys as shown to the user */
 static char *KeyNames[NUMBER_OF_KEYNAMES] = /*{{{*/
@@ -568,6 +568,7 @@ static char *KeyNames[NUMBER_OF_KEYNAMES] = /*{{{*/
    N_( "<Enter>" ),
    N_( "<Return>" ),
    N_( "<Tab>" ),
+   N_( "<BackTab>" ),
    N_( "<Space>" ),
    N_( "<F1>" ),
    N_( "<F2>" ),
@@ -581,12 +582,20 @@ static char *KeyNames[NUMBER_OF_KEYNAMES] = /*{{{*/
    N_( "<F10>" ),
    N_( "<F11>" ),
    N_( "<F12>" ),
+   N_( "<F13>" ),
+   N_( "<F14>" ),
+   N_( "<F15>" ),
+   N_( "<F16>" ),
+   N_( "<F17>" ),
+   N_( "<F18>" ),
+   N_( "<F19>" ),
+   N_( "<F20>" ),
    N_( "<Esc>" )
 }; /*}}}*/
 
 /* Length information for the unlocalized versions */
 static unsigned char KeyNameLengths[NUMBER_OF_KEYNAMES] =
-{8,10,4,6,7,6,8,11,8,6,5,7,8,5,7,4,4,4,4,4,4,4,4,4,5,5,5,5};
+{8,10,4,6,7,6,8,11,8,6,5,7,8,5,9,7,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5};
 
 /* Symbolic names of keys in the termcap database */
 static char *TermcapNames[NUMBER_OF_KEYNAMES] = /*{{{*/
@@ -605,6 +614,7 @@ static char *TermcapNames[NUMBER_OF_KEYNAMES] = /*{{{*/
      "@8",
      "",
      "",
+     "kB",
      "",
      "k1",
      "k2",
@@ -618,6 +628,14 @@ static char *TermcapNames[NUMBER_OF_KEYNAMES] = /*{{{*/
      "k;",
      "F1",
      "F2",
+     "F3",
+     "F4",
+     "F5",
+     "F6",
+     "F7",
+     "F8",
+     "F9",
+     "FA",
      ""
 }; /*}}}*/
 
@@ -652,6 +670,7 @@ static char *DefaultSequences[NUMBER_OF_KEYNAMES] = /*{{{*/
      "\r",
      "\r",
      "\t",
+     "\033[Z",
      " ",
 #ifdef IBMPC_SYSTEM
      "^@;",
@@ -666,6 +685,14 @@ static char *DefaultSequences[NUMBER_OF_KEYNAMES] = /*{{{*/
      "^@D",
      "^@\x85",
      "^@\x86",
+     "^@T",
+     "^@U",
+     "^@V",
+     "^@W",
+     "^@X",
+     "^@Y",
+     "^@Z",
+     "^@[",
 #else /* NOT IBMPC_SYSTEM */
      "\033[11~",
      "\033[12~",
@@ -679,6 +706,14 @@ static char *DefaultSequences[NUMBER_OF_KEYNAMES] = /*{{{*/
      "\033[21~",
      "\033[23~",
      "\033[24~",
+     "\033[25~",
+     "\033[26~",
+     "\033[28~",
+     "\033[29~",
+     "\033[31~",
+     "\033[32~",
+     "\033[33~",
+     "\033[34~",
 #endif /* NOT IBMPC_SYSTEM */
      "\033"
 }; /*}}}*/
