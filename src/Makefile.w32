@@ -21,7 +21,7 @@ CC = wcl386
 # 2. On a few systems, additional libraries are required.
 #-----------------------------------------------------------------------------
 #MISCLIBS = -lsocket -ltermcap -lvideo# OS/2
-MISCLIBS = $(SLIBDIR)\wslang32.lib
+MISCLIBS = $(SLIBDIR)\wslang32.lib,winspool.lib
 
 #-----------------------------------------------------------------------------
 # 3. Directory where the slang library, slanglib.a, is located.
