@@ -1063,7 +1063,7 @@ static void launch_url (char *url, int want_edit) /*{{{*/
      {
 	url += 5;
 	if (!strncmp (url, "//", 2))
-	  url += 2; /* not RFC compliant, but accept it anyways */
+	  url += 2; /* not RFC compliant, but accept it anyway */
 	if (*url == '<')
 	  url++; /* not RFC compliant either */
 	if (NULL != strchr (url, '@'))
@@ -5661,16 +5661,17 @@ static void locate_header_by_msgid (void) /*{{{*/
    
    if (slrn_read_input (_("Enter Message-Id: "), NULL, msgid, 1, 0) <= 0) return;
    
-   if (!strncmp (msgid, "news:", 5))
-     {
-	msgid += 4;
-	*msgid = '<';
-     }
-   else if (*msgid != '<')
+   if (*msgid != '<')
      {
 	*buf = '<';
 	msgid = buf;
      }
+   if (!strncmp (msgid+1, "news:", 5))
+     {
+	msgid += 5;
+	*msgid = '<';
+     }
+   
    if (msgid [strlen(msgid) - 1] != '>')
      strcat (msgid, ">"); /* safe */
    
