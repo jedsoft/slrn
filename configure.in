@@ -71,14 +71,14 @@ e-mail.  Please make sure it can be found in your \$PATH.
 ])
 fi
 
-dnl SLRN_LIB_DIR: directory for the global slrn.rc and newsgroups.dsc
+dnl SLRN_LIB_DIR: directory for the global newsgroups.dsc
 AC_ARG_WITH(libdir,
-[  --with-libdir=DIR       Place for global slrn.rc and newsgroups.dsc])
+[  --with-libdir=DIR       Place for global newsgroups.dsc])
 if test -z "$with_libdir" || test "x$with_libdir" = xyes || test "x$with_libdir" = xno; then
 	if test "x$prefix" = xNONE; then
-		slrn_libdir="${ac_default_prefix}/etc/slrn"
+		slrn_libdir="${ac_default_prefix}/lib/slrn"
 	else
-		slrn_libdir="${prefix}/etc/slrn"
+		slrn_libdir="${prefix}/lib/slrn"
 	fi
 else
 	slrn_libdir="$with_libdir"

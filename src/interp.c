@@ -758,7 +758,8 @@ static int save_current_article (char *file) /*{{{*/
 
 /*}}}*/
 
-static int generic_search_article (char *str, int is_regexp) /*{{{*/
+static int generic_search_article (char *str, int is_regexp, /*{{{*/
+				   int find_first)
 {
    Slrn_Article_Line_Type *l;
    char *ptr;
@@ -766,7 +767,7 @@ static int generic_search_article (char *str, int is_regexp) /*{{{*/
    if (-1 == check_article_mode ())
      return 0;
    
-   l = slrn_search_article (str, &ptr, is_regexp, 1);
+   l = slrn_search_article (str, &ptr, is_regexp, 1, find_first);
    if (l == NULL)
      return 0;
    
@@ -778,16 +779,26 @@ static int generic_search_article (char *str, int is_regexp) /*{{{*/
 
 static int search_article (char *s) /*{{{*/
 {
-   return generic_search_article (s, 0);
+   return generic_search_article (s, 0, 0);
 }
+/*}}}*/
 
+static int search_article_first (char *s) /*{{{*/
+{
+   return generic_search_article (s, 0, 1);
+}
 /*}}}*/
 
 static int re_search_article (char *s) /*{{{*/
 {
-   return generic_search_article (s, 1);
+   return generic_search_article (s, 1, 0);
 }
+/*}}}*/
 
+static int re_search_article_first (char *s) /*{{{*/
+{
+   return generic_search_article (s, 1, 1);
+}
 /*}}}*/
 
 static char *extract_article_header (char *h) /*{{{*/
@@ -1410,6 +1421,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_S("re_fsearch_author", re_author_search_forward, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("re_fsearch_subject", re_subject_search_forward, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("re_search_article", re_search_article, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_S("re_search_article_first", re_search_article_first, SLANG_INT_TYPE),
    MAKE_INTRINSIC_SSS("read_mini", read_mini, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SSS("read_mini_no_echo", read_mini_no_echo, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SSS("read_mini_filename", read_mini_filename, SLANG_VOID_TYPE),
@@ -1419,6 +1431,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_I("reload_scorefile", reload_scorefile, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_S("save_current_article", save_current_article, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("search_article", search_article, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_S("search_article_first", search_article_first, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("select_group", select_group, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("select_list_box", select_list_box, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("server_name", get_server_name, SLANG_STRING_TYPE),

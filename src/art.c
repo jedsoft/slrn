@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -774,7 +774,8 @@ static int select_affected_article (int mime_mask) /*{{{*/
 Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
 					     char **ptrp,
 					     int is_regexp,
-					     int set_current_flag)
+					     int set_current_flag,
+					     int find_first)
 {
    SLsearch_Type st;
    Slrn_Article_Line_Type *l;
@@ -796,10 +797,14 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
    else SLsearch_init (string, 1, 0, &st);
 
    a = Slrn_Current_Article;
-   l = a->cline;
-   
-   if (ret == 1)
-     l = l->next;
+   if (find_first)
+     l = a->lines;
+   else
+     {
+	l = a->cline;
+	if (ret == 1)
+	  l = l->next;
+     }
    
    while (l != NULL)
      {
@@ -1187,7 +1192,7 @@ static void article_search (void) /*{{{*/
    
    if (slrn_read_input (_("Search: "), search_str, NULL, 0, 0) <= 0) return;
    
-   l = slrn_search_article (search_str, NULL, 0, 1);
+   l = slrn_search_article (search_str, NULL, 0, 1, 0);
    
    if (l == NULL) slrn_error (_("Not found."));
 }
@@ -5049,6 +5054,7 @@ static Slrn_Header_Type *process_xover (Slrn_XOver_Type *xov)
 #endif
 
    get_header_real_name (h);
+   slrn_chmap_fix_header (h);
    
 #if SLRN_HAS_GROUPLENS
    if (Slrn_Use_Group_Lens)
@@ -5618,7 +5624,6 @@ static void get_parent_header (void) /*{{{*/
    else (void) slrn_locate_header_by_msgid (buf, 0, 1); /* syncs the line */
    
    slrn_uncollapse_this_thread (Slrn_Current_Header, 1);
-   slrn_chmap_fix_headers ();  /* We didn't decode parent headers */
 }
 
 /*}}}*/
@@ -7295,8 +7300,6 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
    
    /* This must go here to fix up the next/prev pointers */
    _art_sort_by_server_number ();
-
-   slrn_chmap_fix_headers ();
 
    slrn_push_mode (&Art_Mode_Cap);
    

@@ -1,5 +1,6 @@
 # Makefile for slrn                               -*- sh -*-
-# Makefile for CYGWIN32 or MINGW32
+# Makefile for MINGW32
+# Since slang 1.4.5, you can use ./configure && make on Cygwin
 
 CC = gcc
 CCFLAGS = -O2 -fno-strength-reduce -W -Wall
@@ -21,10 +22,10 @@ OBJDIR = gw32objs#
 #-----------------------------------------------------------------------------
 #   Misc Programs
 #-----------------------------------------------------------------------------
-TOUCH = touch
-#CP = copy
-CP = cp
-RM = rm
+CP = copy
+#CP = cp
+RM = del
+#RM = rm
 
 #----------------------------------------------------------------------------
 #   Nothing below here should require changing.
@@ -199,6 +200,6 @@ $(OBJDIR)/chkslang.exe: $(OBJDIR)/chkslang.o
 $(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h
 	$(CC) -c -I$(SDIR) chkslang.c -o $(OBJDIR)/chkslang.o
 clean:
-	rm -rf *.o *~ $(OBJDIR) slrn.exe uudecode.exe *.log \
+	$(RM) -rf *.o *~ $(OBJDIR) slrn.exe uudecode.exe *.log \
 	core out out.* typescript files.pck* config.h
 

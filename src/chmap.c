@@ -78,22 +78,17 @@ static void chmap_map_string_to_iso (char *str)
 
 #endif
 
-/* We fix the rest of the header later from hide_art_headers() */
-void slrn_chmap_fix_headers (void)
+/* Fix a single header; the rest of the header lines are dealt with
+ * later in hide_art_headers() */
+void slrn_chmap_fix_header (Slrn_Header_Type *h)
 {
 #if SLRN_HAS_CHARACTER_MAP
-   Slrn_Header_Type *h = Slrn_First_Header;
-
-   while (h != NULL)
+   if ((h->flags & HEADER_CHMAP_PROCESSED) == 0)
      {
-	if ((h->flags & HEADER_CHMAP_PROCESSED) == 0)
-	  {
-	     chmap_map_string_from_iso (h->subject);
-	     chmap_map_string_from_iso (h->from);
-	     chmap_map_string_from_iso (h->realname);
-	     h->flags |= HEADER_CHMAP_PROCESSED;
-	  }
-        h = h->real_next;
+	chmap_map_string_from_iso (h->subject);
+	chmap_map_string_from_iso (h->from);
+	chmap_map_string_from_iso (h->realname);
+	h->flags |= HEADER_CHMAP_PROCESSED;
      }
 #endif
 }

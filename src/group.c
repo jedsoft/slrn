@@ -2264,16 +2264,16 @@ int slrn_read_group_descriptions (void) /*{{{*/
      {
 #ifdef VMS
 	slrn_snprintf (file, sizeof (file), "%snewsgroups.dsc",
-		       SHAREDIR);
+		       SLRN_LIB_DIR);
 	if (NULL == (fp = fopen (file, "r")))
 	  {
 	     slrn_snprintf (file, sizeof (file), "%snewsgroups-dsc",
-			    SHAREDIR);
+			    SLRN_LIB_DIR);
 	     fp = fopen (file, "r");
 	  }
 #else
 	slrn_snprintf (file, sizeof (file), "%s/newsgroups.dsc",
-		       SHAREDIR);
+		       SLRN_LIB_DIR);
 	fp = fopen (file, "r");
 #endif
 	if (fp == NULL) return -1;

@@ -50,7 +50,7 @@ INSTALL.unix            How to install slrn on Unix-like systems.
 
 INSTALL.vms             How to install slrn on VMS.
 
-INSTALL.w32             How to install slrn on Windows (including Cygwin).
+INSTALL.w32             How to install slrn on Windows.
 
 README.GroupLens        Read this if you want support for GroupLens.
 

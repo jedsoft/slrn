@@ -69,8 +69,7 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
     configure will automatically look for this as well.
 
 --with-libdir=LIBDIR
-    Directory where slrn will expect the global configuration file
-    and the newsgroups description file
+    Directory where slrn will expect the global newsgroups description file.
     Default: PREFIX/lib/slrn [/usr/local/lib/slrn]
 
 --with-ssl[=DIR]

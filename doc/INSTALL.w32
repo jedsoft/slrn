@@ -6,10 +6,10 @@ consult the rest of the documentation that comes with slrn.
 Installation (Windows)
 ======================
 
-The first thing you need to run slrn on Windows is (obviously) a working
-executable.  You can either download one from the net (just follow the links
-on <URL:http://slrn.sourceforge.net/>) or compile it yourself -- some notes
-on how to do this can be found at the end of this file.  When you have one,
+The first thing you need to run slrn on Windows is a working executable.
+You can either download one from the net (just follow the links on
+<URL:http://slrn.sourceforge.net/>) or compile it yourself -- some notes on
+how to do this can be found at the end of this file.  When you have one,
 follow these steps:
 
 1.  Copy slrn.exe to a directory in your path.
@@ -37,9 +37,14 @@ Compiling slrn for Windows
 ==========================
 
 The current version of slrn has been reported to compile with recent
-versions of MinGW and Cygwin.  If you needed to patch the sources to get it
-to work with your favourite compiler, please send me the diffs so they can
-go into the next official release.
+versions of MinGW and Watcom.  The Cygwin environment is now treated like a
+Unix system (see INSTALL.unix) - note that you need slang >= 1.4.5 for this.
+If you needed to patch the sources to get it to work with your favourite
+compiler, please send me the diffs so they can go into the next official
+release.
+
+As I never worked with Watcom myself, the following instructions apply to
+MinGW only.
 
 1. Compiling S-Lang:
 
@@ -49,27 +54,16 @@ directory called "slang".  In the "src" subdirectory, execute
 
 > .\mkfiles\mkmake WIN32 MINGW32 < mkfiles\makefile.all > makefile
 
-in a DOS box if you are using MinGW, or
-
-> mkfiles/mkmake WIN32 CYGWIN32 < mkfiles/makefile.all > Makefile
-
-from within Cygwin.  Then, simply type "make".
+in a DOS box.  Then, simply type "make".
 
 2. Compiling slrn:
 
 Unpack slrn into a directory at the same level as "slang" and go to the
 "src" subdirectory.  You can edit slrnconf.h to play with the compile time
-options if you want.  If you are not in a Cygwin environment, you need to
-copy this file manually to config.h.  Now you can run
+options if you want.  Now you can run
 
 > make -f makefile.g32
 
 If you want to compile slrnpull as well, do
 
 > make -f makefile.g32 slrnpull.exe
-
-Cygwin users might note that this will compile slrn as a native Windows
-application, although it would (theoretically) be possible to do a
-"configure build" by emulating a Unix environment.  Please don't do this as
-it won't work out of the box and slrn contains native Windows code (e.g. for
-printing) that would not be used in this case.

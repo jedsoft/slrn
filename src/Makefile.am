@@ -12,7 +12,8 @@ slrn_SOURCES = art.c chmap.c editscore.c group.c grplens.c hash.c help.c \
 slrnpull_SOURCES = nntplib.c slrndir.c slrnpull.c snprintf.c ttymsg.c util.c
 slrnpull_DEPENDENCIES = stamp2
 
-DEFS=-Dunix -DSHAREDIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\"
+DEFS=-Dunix -DSLRN_LIB_DIR=\"$(slrn_libdir)\" -DSHAREDIR=\"$(pkgdatadir)\" \
+ -DSYSCONFDIR=\"$(sysconfdir)\"
 INCLUDES=-I. -I$(top_srcdir)/intl @SLANG_INC@ @SSLINC@ @UUINC@
 LDADD=@INTLLIBS@ @SLANG_LIB@ -lslang @TERMCAP@ @SSLLIB@ @UULIB@ @LM@
 

@@ -111,13 +111,22 @@ mode and allow you to manipulate the article window.
 \done
 
 \function{re_search_article}
-\usage{Integer re_search_article (String pat)}
+\usage{Integer re_search_article (String_Type pat)}
 \description
    This function searches forward in the current article for a string
    matching the regular expression given by the parameter \var{pat}.  It
    returns 0 if no matching line is found.  Otherwise, it returns 1 and the
    matching line will be left on the stack as a string.
+\seealso{re_search_article_first}
 \seealso{search_article}
+\done
+
+\function{re_search_article_first}
+\usage{Integer re_search_article_first (String_Type pat)}
+\description
+   Works like re_search_article, but finds the first match in the article
+   (searching from the beginning instead of forward from the current point).
+\seealso{re_search_article}
 \done
 
 \function{replace_article}
@@ -155,6 +164,17 @@ mode and allow you to manipulate the article window.
    line is found.  Otherwise, it returns 1 and the matching line will be
    left on the stack as a string.
 \seealso{re_search_article}
+\seealso{search_article_first}
+\done
+
+\function{search_article_first}
+\usage{Integer search_article_first (String_Type pat)}
+\description
+   Works like search_article, but finds the first match in the article
+   (searching from the beginning instead of forward from the current point).
+   This means you can find all matches in the article by calling
+   search_article_first once and subsequently using search_article.
+\seealso{search_article}
 \done
 
 \function{set_article_window_size}

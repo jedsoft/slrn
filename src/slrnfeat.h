@@ -145,6 +145,9 @@
 #  ifndef SHAREDIR
 #    define SHAREDIR			"C:/slrn"
 #  endif
+#  ifndef SLRN_LIB_DIR
+#    define SLRN_LIB_DIR		"C:/slrn"
+#  endif
 # else
 #  ifdef __unix__
 /* 

@@ -12,6 +12,7 @@ Changes since 0.9.7.3
   * The high / low scoring article counters work correctly.
   * Don't remove _^H combinations in articles (corrupted yenc-encoded data).
   * Don't decode headers when writing them into the overview file (slrnpull).
+  * The --with-libdir config option was ignored.
 
    New algorithm for article sorting (based on a patch by Felix Schueller).
    This adds a highly configurable custom sorting interface (which will
@@ -30,9 +31,10 @@ Changes since 0.9.7.3
    
    In article mode, "expunge" now triggers the newsrc autosave copy feature.
    
-   Added intrinsic functions set_ignore_quotes, set_strip_re_regexp,
-   set_strip_sig_regexp and set_strip_was_regexp. Added a return value to
-   register_hook (hopefully, you'll find it backwards compatible).
+   Added intrinsic functions re_search_article_first, search_article_first,
+   set_ignore_quotes, set_strip_re_regexp, set_strip_sig_regexp and
+   set_strip_was_regexp. Added a return value to register_hook (hopefully,
+   you'll find it backwards compatible).
 
    More translations:
   * es.po (Spanish; Walter Echarri)

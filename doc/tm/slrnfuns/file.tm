@@ -21,10 +21,13 @@ one of those, please consult the file slangfun.txt which comes with \slang.
 \done
 
 \function{make_home_filename}
-\usage{String make_home_filename (name)}
+\usage{String_Type make_home_filename (String_Type name)}
 \description
-   This function returns the complete filename associated with a file
-   called \var{name} located in the user's home directory.
+   This function returns the complete filename associated with a file called
+   \var{name} located in the user's home directory. If \var{name} is already
+   an absolute filename or explicitly relative to the current directory
+   (i.e. starts with one or two dots, followed by a directory separator), it
+   remains unchanged.
 \seealso{read_mini}
 \done
 
