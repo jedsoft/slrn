@@ -18,7 +18,9 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
+
 /* post an article */
+
 #include "config.h"
 #include "slrnfeat.h"
 
@@ -68,7 +70,6 @@
 char *Slrn_CC_Followup_Message = NULL;
 char *Slrn_CC_Post_Message = NULL;
 char *Slrn_Failed_Post_Filename;
-char *Slrn_Last_Message_Id;
 char *Slrn_Post_Custom_Headers;
 char *Slrn_Postpone_Dir;
 char *Slrn_Save_Posts_File;
@@ -79,24 +80,40 @@ int Slrn_Generate_Date_Header = 0;
 int Slrn_Generate_Message_Id = 1;
 int Slrn_Netiquette_Warnings = 1;
 int Slrn_Reject_Long_Lines = 2;
+int Slrn_Use_Recom_Id = 0;
 /*}}}*/
 
 /*{{{ Forward Function Declarations */
 static int postpone_file (char *);
 /*}}}*/
 
-#if SLRN_HAS_GEN_MSGID
-static char *slrn_create_message_id (void)/*{{{*/
+/* This function needs to be called directly after po_start! */
+static char *create_message_id (int *error)/*{{{*/
 {
+   char *t, *msgid;
+#if SLRN_HAS_GEN_MSGID
    unsigned long pid, now;
-   static unsigned char baseid[64];
-   unsigned char *b, *t, tmp[32];
+   char baseid[64];
+   char *b, tmp[32];
    char *chars32 = "0123456789abcdefghijklmnopqrstuv";
    static unsigned long last_now;
+   size_t malloc_len;
+#endif
 
+   *error=0; /* default: create_message_id() has success*/
    if (Slrn_Generate_Message_Id == 0)
      return NULL;
 
+   if (Slrn_Use_Recom_Id) /* Try to find the Id the server recommends*/
+     {
+	msgid = Slrn_Post_Obj->po_get_recom_id ();
+	if (msgid != NULL)
+	  return msgid;
+     }
+
+#if ! SLRN_HAS_GEN_MSGID
+   return NULL;
+#else
    while (1)
      {
 	if ((Slrn_User_Info.posting_host == NULL)
@@ -137,7 +154,7 @@ static char *slrn_create_message_id (void)/*{{{*/
 	*b++ = *t;
      }
 
-   t = (unsigned char *) Slrn_User_Info.username;
+   t = Slrn_User_Info.username;
    if (t != NULL && *t != 0)
      {
 	unsigned char ch = 0;
@@ -155,9 +172,17 @@ static char *slrn_create_message_id (void)/*{{{*/
      }
    *b = 0;
 
-   return (char *) baseid;
-}
+   malloc_len=(strlen(baseid)+strlen(Slrn_User_Info.posting_host)+8);
+   if ((msgid=slrn_malloc (malloc_len,0,1)) == NULL)
+     {
+	*error=1;
+	return NULL;
+     }
+   slrn_snprintf(msgid, malloc_len,"<slrn%s@%s>", baseid, Slrn_User_Info.posting_host);
+
+   return msgid;
 #endif /*SLRN_HAS_GEN_MSGID*/
+}
 /*}}}*/
 
 /*{{{ slrn_add_*() */
@@ -274,6 +299,98 @@ int slrn_add_custom_headers (FILE *fp, char *headers, int (*write_fun)(char *, F
 }
 /*}}}*/
 
+int slrn_add_references_header (FILE *fp, char *line) /*{{{*/
+{
+#define GNKSA_LENGTH 986 /* 998 - strlen ("References: ") */
+   char buf[GNKSA_LENGTH + 2];
+   char *p, *l, *r, *nextid, *tmp;
+   unsigned int len = 0, extra_whitespaces=0;
+
+   /* Make sure line does not end in whitespace */
+   (void) slrn_trim_string (line);
+
+   if ((NULL == (l = slrn_strchr (line, '<'))) ||
+       (NULL == (r = slrn_strchr (l+1, '>'))))
+     return -1;
+   while ((NULL != (nextid = slrn_strchr (l+1, '<'))) &&
+	  (nextid < r))
+     l = nextid;
+
+   len = r - l + 1;
+   if (nextid != NULL) /* Skip enough IDs to fit into our limit */
+     {
+	tmp=nextid;
+	while (NULL != (tmp = slrn_strchr (tmp+1, '>')))
+	/* make sure that we have enough space for missing whitespaces
+	 * between Message-Ids */
+	  {
+	     if (*(tmp+1) != ' ') extra_whitespaces++;
+	  }
+        nextid--;
+	while (NULL != (nextid = slrn_strchr (nextid + 1, '<')))
+	  {
+	     if (strlen (nextid) + extra_whitespaces + len < GNKSA_LENGTH)
+	       break;
+	     else
+	       {
+		  tmp = slrn_strchr (nextid, '>');
+		  if (*(tmp+1) != ' ') extra_whitespaces--;
+	       }
+	  }
+     }
+
+   /* I'd rather violate GNKSA's limit than omitting the first or last ID */
+   if ((nextid == NULL) || (len >= GNKSA_LENGTH))
+     {
+	if (fp != NULL)
+	  {
+	     fputs ("References: ", fp);
+	     fputs (l, fp);
+	     fputs ("\n", fp);
+	  }
+	else
+	  {
+	     Slrn_Post_Obj->po_puts ("References: ");
+	     Slrn_Post_Obj->po_puts (l);
+	     Slrn_Post_Obj->po_puts ("\n");
+	  }
+	return 0;
+     }
+   strncpy (buf, l, len);
+   p = buf + len;
+   l = nextid;
+
+   /* Copy the rest, dropping chopped IDs */
+   while (l != NULL)
+     {
+	if (NULL == (r = slrn_strchr (l+1, '>')))
+	  break;
+	while ((NULL != (nextid = slrn_strchr (l+1, '<'))) &&
+	       (nextid < r))
+	  l = nextid;
+	len = r - l + 1;
+	*p = ' ';
+	strncpy (p+1, l, len);
+	p += len + 1;
+	l = nextid;
+     }
+
+   strcpy (p, "\n");
+
+   if (fp != NULL)
+     {
+	fputs ("References: ", fp);
+	fputs (buf, fp);
+     }
+   else
+     {
+	Slrn_Post_Obj->po_puts ("References: ");
+	Slrn_Post_Obj->po_puts (buf);
+     }
+   return 0;
+}
+/*}}}*/
+
 /*}}}*/
 
 static int is_empty_header (char *line) /*{{{*/
@@ -290,8 +407,7 @@ static int is_empty_header (char *line) /*{{{*/
 }
 /*}}}*/
 
-
-static int slrn_cc_file (char *file, char *to, char *msgid)  /*{{{*/
+static int cc_file (char *file, char *to) /*{{{*/
 {
 #if defined(VMS) || !SLRN_HAS_PIPING
    return -1;
@@ -378,11 +494,6 @@ static int slrn_cc_file (char *file, char *to, char *msgid)  /*{{{*/
 
    linenum = 0;
 
-   if (msgid != NULL)
-     fprintf (pp, "Message-ID: <slrn%s@%s>\n",
-	      msgid, Slrn_User_Info.posting_host);
-
-
    while ((NULL != fgets (line, sizeof (line) - 1, fp)) && (*line != '\n'))
      {
 	linenum++;
@@ -413,17 +524,12 @@ static int slrn_cc_file (char *file, char *to, char *msgid)  /*{{{*/
 	if (0 == slrn_case_strncmp ((unsigned char *)line,
 				    (unsigned char *) "Newsgroups: ", 12))
 	  {
-	     fputs ("Posted-To: ", pp);
+	     fputs ("X-Posted-To: ", pp);
 	     fputs (line + 12, pp);
 	  }
 	else
 	  fputs (line, pp);
      }
-
-   slrn_add_date_header (pp);
-# if SLRN_HAS_MIME
-   if (Slrn_Use_Mime & MIME_DISPLAY) slrn_mime_add_headers (pp);
-# endif
 
    fputs ("\n", pp);
 
@@ -752,15 +858,12 @@ static int check_file_for_posting (char *file, int *linenum) /*{{{*/
 }
 /*}}}*/
 
-
-int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid) /*{{{*/
+int slrn_save_file_to_mail_file (char *file, char *save_file) /*{{{*/
 {
    FILE *infp, *outfp;
    time_t now;
    char save_post_file[SLRN_MAX_PATH_LEN];
    char line [MAX_LINE_BUFLEN];
-   char *system_os_name;
-   int has_from = 0, has_messageid = 0, header = 1;
 
    if ((save_file == NULL) || (*save_file == 0))
      return 0;
@@ -770,11 +873,6 @@ int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid) /*{{{
 	slrn_error (_("File not found: %s--- message not posted."), file);
 	return -1;
      }
-
-#if SLRN_HAS_MIME
-   if (Slrn_Use_Mime & MIME_ARCHIVE)
-     slrn_mime_scan_file (infp);
-#endif
 
    if (NULL == (outfp = slrn_open_home_file (save_file, "a", save_post_file,
 					     sizeof (save_post_file), 1)))
@@ -794,46 +892,6 @@ int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid) /*{{{
 
    while (NULL != fgets (line, sizeof(line) - 1, infp))
      {
-	if (header)
-	  {
-	     if ((has_from == 0) &&
-		 !slrn_case_strncmp ((unsigned char*) "from:",
-				     (unsigned char*) line, 5))
-	       has_from = 1;
-	     if ((has_messageid == 0) &&
-		 !slrn_case_strncmp ((unsigned char*) "message-id:",
-				     (unsigned char*) line, 11))
-	       has_messageid = 1;
-
-	     if ((unsigned char)*line == '\n')
-	       {
-		  if (has_from == 0)
-		    {
-		       char *from = slrn_make_from_string ();
-		       if (from == NULL) from = "";
-		       fprintf (outfp, "From: %s\n", from);
-		    }
-		  slrn_add_date_header (outfp);
-		  if ((has_messageid == 0) && (msgid != NULL))
-		    fprintf (outfp, "Message-ID: <slrn%s@%s>\n", msgid,
-			     Slrn_User_Info.posting_host);
-#if SLRN_HAS_MIME
-		  if (Slrn_Use_Mime & MIME_ARCHIVE)
-		    slrn_mime_add_headers (outfp);
-#endif
-		  system_os_name = slrn_get_os_name ();
-		  fprintf (outfp, "User-Agent: slrn/%s (%s)\n", Slrn_Version,
-			   system_os_name);
-		  header = 0;
-	       }
-	     else if (is_empty_header (line))
-	       continue;
-#if SLRN_HAS_MIME
-	     else if (Slrn_Use_Mime & MIME_ARCHIVE)
-	       slrn_mime_header_encode (line, sizeof(line));
-#endif
-	  }
-
 	if ((*line == 'F')
 	    && !strncmp ("From", line, 4)
 	    && ((unsigned char)line[4] <= ' '))
@@ -844,81 +902,6 @@ int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid) /*{{{
    fputs ("\n\n", outfp);	       /* separator */
    slrn_fclose (infp);
    return slrn_fclose (outfp);
-}
-/*}}}*/
-
-static int post_references_header (char *line) /*{{{*/
-{
-#define GNKSA_LENGTH 986 /* 998 - strlen ("References: ") */
-   char buf[GNKSA_LENGTH + 2];
-   char *p, *l, *r, *nextid, *tmp;
-   unsigned int len = 0, extra_whitespaces=0;
-
-   /* Make sure line does not end in whitespace */
-   (void) slrn_trim_string (line);
-
-   if ((NULL == (l = slrn_strchr (line, '<'))) ||
-       (NULL == (r = slrn_strchr (l+1, '>'))))
-     return -1;
-   while ((NULL != (nextid = slrn_strchr (l+1, '<'))) &&
-	  (nextid < r))
-     l = nextid;
-
-   len = r - l + 1;
-   if (nextid != NULL) /* Skip enough IDs to fit into our limit */
-     {
-	tmp=nextid;
-	while (NULL != (tmp = slrn_strchr (tmp+1, '>')))
-	/* make sure that we have enough space for missing whitespaces
-	 * between Message-Ids */
-	  {
-	     if (*(tmp+1) != ' ') extra_whitespaces++;
-	  }
-        nextid--;
-	while (NULL != (nextid = slrn_strchr (nextid + 1, '<')))
-	  {
-	     if (strlen (nextid) + extra_whitespaces + len < GNKSA_LENGTH)
-	       break;
-	     else
-	       {
-		  tmp = slrn_strchr (nextid, '>');
-		  if (*(tmp+1) != ' ') extra_whitespaces--;
-	       }
-	  }
-     }
-
-   /* I'd rather violate GNKSA's limit than omitting the first or last ID */
-   if ((nextid == NULL) || (len >= GNKSA_LENGTH))
-     {
-	Slrn_Post_Obj->po_puts ("References: ");
-	Slrn_Post_Obj->po_puts (l);
-	Slrn_Post_Obj->po_puts ("\n");
-	return 0;
-     }
-   strncpy (buf, l, len);
-   p = buf + len;
-   l = nextid;
-
-   /* Copy the rest, dropping chopped IDs */
-   while (l != NULL)
-     {
-	if (NULL == (r = slrn_strchr (l+1, '>')))
-	  break;
-	while ((NULL != (nextid = slrn_strchr (l+1, '<'))) &&
-	       (nextid < r))
-	  l = nextid;
-	len = r - l + 1;
-	*p = ' ';
-	strncpy (p+1, l, len);
-	p += len + 1;
-	l = nextid;
-     }
-
-   strcpy (p, "\n");
-
-   Slrn_Post_Obj->po_puts ("References: ");
-   Slrn_Post_Obj->po_puts (buf);
-   return 0;
 }
 /*}}}*/
 
@@ -965,38 +948,18 @@ static int saved_failed_post (char *file, char *msg) /*{{{*/
 /*{{{ Post functions*/
 
 /* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
-int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
+static int post_user_confirm (char *file, int is_postponed) /*{{{*/
 {
-   char line[MAX_LINE_BUFLEN]; /* also used for MIME encoding of the realname */
-   char *linep;
-   int len, header;
-   FILE *fp;
    int rsp;
-   int perform_cc;
-   int status;
-   char *msgid = NULL;
-#if SLRN_HAS_GEN_MSGID
-   int has_messageid = 0;
-#endif
+   int once_more=1;
+   char *responses;
 #if SLRN_HAS_SLANG
    int filter_hook;
-#endif
-   int once_more;
-   char *system_os_name;
-   char *responses;
 
-#if SLRN_HAS_SLANG
-   filter_hook = slrn_is_hook_defined (HOOK_POST_FILTER);
+    filter_hook = slrn_is_hook_defined (HOOK_POST_FILTER);
 #endif
 
-   system_os_name = slrn_get_os_name ();
-
-   try_again:
-
-   perform_cc = 0;
-   once_more = 1;
-
-   if (Slrn_Batch == 0) while (once_more)
+   while (once_more)
      {
 	int linenum = 1;
 #if SLRN_HAS_SLANG
@@ -1135,19 +1098,62 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 #endif
 	  }
      }
+   return 0;
+}
+/*}}}*/
+
+static void post_printf(FILE *fcc_fp, char *fmt, ...) /*{{{*/
+{
+   va_list ap;
+
+   va_start(ap, fmt);
+   Slrn_Post_Obj->po_vprintf(fmt, ap);
+   vfprintf(fcc_fp, fmt, ap);
+   va_end(ap);
+}
+/*}}}*/
+
+static void post_puts(FILE *fcc_fp, char *buf) /*{{{*/
+{
+   Slrn_Post_Obj->po_puts(buf);
+   fputs(buf, fcc_fp);
+}
+/*}}}*/
+
+/* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
+int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
+{
+   char line[MAX_LINE_BUFLEN]; /* also used for MIME encoding of the realname */
+   char *linep;
+   int len, header;
+   FILE *fp;
+   FILE *fcc_fp;
+   char fcc_file[SLRN_MAX_PATH_LEN];
+   int rsp;
+   int perform_cc;
+   int status;
+   char *msgid = NULL;
+   int has_messageid = 0;
+   char *system_os_name;
+   char *responses;
+
+   system_os_name = slrn_get_os_name ();
+
+   try_again:
+
+   perform_cc = 0;
+
+   if (Slrn_Batch == 0)
+     {
+       if ((rsp=post_user_confirm(file, is_postponed)) != 0) return rsp;
+     }
 
    slrn_message_now (_("Posting ..."));
-
-#if SLRN_HAS_GEN_MSGID
-   msgid = slrn_create_message_id ();
-#endif
 
    if ((Slrn_Use_Mime & MIME_ARCHIVE) && /* else: do it later */
        !Slrn_Editor_Uses_Mime_Charset)
      slrn_chmap_fix_file (file, 0);
 
-   if (-1 == slrn_save_file_to_mail_file (file, Slrn_Save_Posts_File, msgid))
-     return -1;
 
    if (!(Slrn_Use_Mime & MIME_ARCHIVE) &&
        !Slrn_Editor_Uses_Mime_Charset)
@@ -1185,11 +1191,21 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
      }
 #endif
 
+   fcc_fp = slrn_open_tmpfile (fcc_file, sizeof (fcc_file));
+   
+   if (fcc_fp == NULL)
+     {
+	slrn_error (_("Couldn't open %s--- message not posted."), fcc_file);
+	slrn_fclose (fp);
+	return (-1);
+     }
+
    /* slrn_set_suspension (1); */
    status = Slrn_Post_Obj->po_start ();
    if (status != CONT_POST)
      {
 	fclose (fp);
+	fclose (fcc_fp);
 	if (!Slrn_Editor_Uses_Mime_Charset)
 	  slrn_chmap_fix_file (file, 1);
 	(void) saved_failed_post (file, (status != -1) ?
@@ -1198,26 +1214,38 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	return -1;
      }
 
-#if 0 /* We shouldn't have to set this one */
-   if (Slrn_User_Info.username != NULL)
-     Slrn_Post_Obj->po_printf ("Path: %s\n", Slrn_User_Info.username);
-#endif
+    msgid = create_message_id (&rsp);
+    if (rsp)
+      {
+	(void) saved_failed_post (file, _("Message-ID generating error."));
+	fclose (fp);
+	fclose (fcc_fp);
+	slrn_free(msgid);
+	return -1;
+      }
 
 #if SLRN_HAS_STRICT_FROM
    /* line is not used until now, so we can use it as a buffer */
-   if (NULL == (linep = slrn_make_from_string ())) return -1;
+   if (NULL == (linep = slrn_make_from_string ()))
+     {
+	(void) saved_failed_post (file, _("\"From\" generating error."));
+	fclose (fp);
+	fclose (fcc_fp);
+	slrn_free(msgid);
+	return -1;
+     }
    slrn_strncpy(line, linep, sizeof(line));
 
 # if SLRN_HAS_MIME
    if (Slrn_Use_Mime & MIME_DISPLAY)
-     slrn_mime_header_encode(line, sizeof(line));
+	slrn_mime_header_encode(line, sizeof(line));
 # endif
 
-   Slrn_Post_Obj->po_printf ("From: %s\n", line);
+   post_printf (fcc_fp, "From: %s\n", line);
 
 #endif /*SLRN_HAS_STRICT_FROM*/
    /* if (Slrn_User_Info.posting_host != NULL)
-     * Slrn_Post_Obj->po_printf ("X-Posting-Host: %s\n", Slrn_User_Info.posting_host); */
+     * post_printf (fcc_fp, "X-Posting-Host: %s\n", Slrn_User_Info.posting_host); */
 
    linep = line + 1;
    header = 1;
@@ -1242,7 +1270,8 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 					     (unsigned char *)white,
 					     12)))
 	       {
-		  (void) post_references_header (white);
+		  (void) slrn_add_references_header (NULL, white);
+		  (void) slrn_add_references_header (fcc_fp, white);
 		  continue;
 	       }
 
@@ -1251,21 +1280,23 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	     if (*white == '\n') /* Header ends, body begins */
 	       {
 		  slrn_add_date_header (NULL);
-#if SLRN_HAS_GEN_MSGID
+		  slrn_add_date_header (fcc_fp);
 		  if (has_messageid == 0)
 		    {
-		       Slrn_Last_Message_Id = msgid;
 		       if (msgid != NULL)
 			 {
-			    Slrn_Post_Obj->po_printf ("Message-ID: <slrn%s@%s>\n", msgid, Slrn_User_Info.posting_host);
+			    post_printf(fcc_fp, "Message-ID: %s\n", msgid);
+			    SLfree (msgid);
 			 }
 		    }
-#endif
 #if SLRN_HAS_MIME
 		  if (Slrn_Use_Mime & MIME_DISPLAY)
-		       slrn_mime_add_headers (0);   /* 0 --> Slrn_Post_Obj->po_puts */
+		    {
+		      slrn_mime_add_headers (0);   /* 0 --> Slrn_Post_Obj->po_puts */
+		      slrn_mime_add_headers (fcc_fp);
+		    }
 #endif
-		  Slrn_Post_Obj->po_printf ("User-Agent: slrn/%s (%s)\n\n",
+		  post_printf (fcc_fp, "User-Agent: slrn/%s (%s)\n\n",
 					    Slrn_Version, system_os_name);
 		  header = 0;
 #if SLRN_HAS_MIME
@@ -1281,6 +1312,9 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 		  b = (unsigned char *) linep + 4;
 		  b = (unsigned char *) slrn_skip_whitespace ((char *) b);
 		  if (*b && (*b != ',')) perform_cc = 1;
+		  fputs(linep, fcc_fp); /* The 'Cc:' header is only needed in the fcc-file.*/
+		  if (linep[len - 1] != '\n')
+		       fputs("\n", fcc_fp);
 		  continue;
 	       }
 
@@ -1315,12 +1349,13 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	     *linep = '.';
 	  }
 
-	Slrn_Post_Obj->po_puts (linep);
-	Slrn_Post_Obj->po_puts ("\n");
+	post_puts (fcc_fp, linep);
+	post_puts (fcc_fp, "\n");
 
 	linep = line + 1;
      } /*while (fgets (linep, sizeof(line) - 1, fp) != NULL) */
    slrn_fclose (fp);
+   slrn_fclose (fcc_fp);
 
    if (0 == Slrn_Post_Obj->po_end ())
      {
@@ -1362,10 +1397,15 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	goto try_again;
      } /* (0 == Slrn_Post_Obj->po_end ()) */
 
+   if (-1 == slrn_save_file_to_mail_file (fcc_file, Slrn_Save_Posts_File))
+	return -1;
+
    if (perform_cc)
      {
-	slrn_cc_file (file, to, msgid);
+	cc_file (fcc_file, to);
      }
+
+   (void) slrn_delete_file (fcc_file);
    return 0;
 }
 /*}}}*/

@@ -490,6 +490,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"netiquette_warnings", &Slrn_Netiquette_Warnings},
      {"generate_date_header", &Slrn_Generate_Date_Header},
      {"generate_message_id", &Slrn_Generate_Message_Id},
+     {"use_recommended_msg_id", &Slrn_Use_Recom_Id},
 #if SLRN_HAS_STRICT_FROM
      {"generate_email_from", NULL},
 #else

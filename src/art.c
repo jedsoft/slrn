@@ -3274,18 +3274,7 @@ static void followup (void) /*{{{*/
    
    if (slrn_edit_file (Slrn_Editor_Post, file, n, 1) >= 0)
      {
-	if (0 == slrn_post_file (file, cc_address, 0))
-	  {
-	     /* Success. */
-	     if (Slrn_Last_Message_Id != NULL)
-	       {
-		  /* Later I want to actually get the article from the server
-		   * and display it.  Of course I can only do it if I know
-		   * the message-id.  If Slrn_Last_Message_Id is non-null, 
-		   * then slrn generated the message-id and we can do it.
-		   */
-	       }
-	  }
+	slrn_post_file (file, cc_address, 0);
      }
    
    if (Slrn_Use_Tmpdir) (void) slrn_delete_file (file);

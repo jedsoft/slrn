@@ -27,7 +27,9 @@ typedef struct
    int (*po_start)(void);
    int (*po_end)(void);
    int (*po_printf)(char *, ...);
+   int (*po_vprintf)(const char *, va_list);
    int (*po_puts)(char *);
+   char * (*po_get_recom_id)(void);
    int po_can_post;
 } Slrn_Post_Obj_Type;
 

@@ -13,6 +13,7 @@ Changes since 0.9.7.4
   * Ignore "no data found" errors when using uudeview (Chris Hanson).
   * Don't segfault when toggling past the 10th header_display_format.
   * Follow convention to use "Message-ID" instead of "Message-Id".
+  * Use "X-Posted-To" instead of "Posted-To" (did not make it into RFC2822)
   * Also attempt MIME-decoding if no "Mime-Version:" header line is found.
 
    Changes to the user interface:
@@ -39,6 +40,10 @@ Changes since 0.9.7.4
    can now use colors and attributes at the same time. Just append them to
    the color lines in your config file, e.g.:
      color underlinetext	"default"	"default"	"underline"
+
+   Set use_recommended_msg_id to 1 in your config file if you want slrn to
+   make use of server-proposed Message-IDs; the IDs will get saved along
+   with the article to the save_posts folder. (patch by Felix Schueller)
 
    Added intrinsic functions has_parent, set_color_attr (see doc/slrnfuns.txt).
 

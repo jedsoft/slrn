@@ -298,22 +298,31 @@ static int _nntp_po_puts (char *buf)
    return nntp_fputs_server (NNTP_Server, buf);
 }
 
-static int _nntp_po_printf (char *fmt, ...)
+static int _nntp_po_vprintf (const char *fmt, va_list ap)
 {
-   va_list ap;
    char buf[NNTP_BUFFER_SIZE];
-   
-   va_start (ap, fmt);
+
    slrn_vsnprintf (buf, sizeof (buf), fmt, ap);
-   va_end (ap);
-   
+
    return _nntp_po_puts (buf);
 }
 
+static int _nntp_po_printf (char *fmt, ...)
+{
+   va_list ap;
+   int retval;
+
+   va_start(ap, fmt);
+   retval = _nntp_po_vprintf (fmt, ap);
+   va_end(ap);
+
+   return retval;
+}
+
 static int _nntp_xover_cmd (int min, int max)
-{   
+{
    int status;
-   
+
    if (OK_XOVER == (status = nntp_xover_cmd (NNTP_Server, min, max)))
      {
 	_NNTP_Abort_On_Disconnection = -1;
@@ -350,12 +359,40 @@ static unsigned int _nntp_get_bytes (int clear)
    return temp;
 }
 
+static char * _nntp_get_recom_id (void)
+{
+   unsigned char compiled_pattern_buf[256];
+   SLRegexp_Type re;
+   
+   re.pat = (unsigned char *) "<.*@.*\\..*>";
+   re.buf = compiled_pattern_buf;
+   re.buf_len = sizeof (compiled_pattern_buf);
+   
+   if ((*compiled_pattern_buf == 0) && ! SLang_regexp_compile (&re))
+     {
+	char *t, *msgid, *post_rsp;
+	post_rsp = NNTP_Server->rspbuf;
+	t=(char*)SLang_regexp_match((unsigned char*) post_rsp,
+				    strlen(post_rsp), &re);
+	if (t != NULL)
+	  {
+	     if ((msgid=slrn_strnmalloc(t, re.end_matches[0]+1,1)) == NULL)
+	       return NULL;
+	     msgid[re.end_matches[0]] ='\0';
+	     return msgid;
+	  }
+     }
+   return NULL;
+}
+
 static int nntp_init_objects (void)
 {
    NNTP_Post_Obj.po_start = _nntp_start_post;
    NNTP_Post_Obj.po_end = _nntp_end_post;
    NNTP_Post_Obj.po_printf = _nntp_po_printf;
+   NNTP_Post_Obj.po_vprintf = _nntp_po_vprintf;
    NNTP_Post_Obj.po_puts = _nntp_po_puts;
+   NNTP_Post_Obj.po_get_recom_id = _nntp_get_recom_id;
    NNTP_Post_Obj.po_can_post = 1;
    
    NNTP_Server_Obj.sv_select_group = _nntp_select_group;

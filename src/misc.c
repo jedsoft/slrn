@@ -1042,7 +1042,7 @@ FILE *slrn_open_home_file (char *name, char *mode, char *file, /*{{{*/
      }
 #else
    (void) create_flag;
-#endif	
+#endif
 
    if (2 == slrn_file_exists (file)) /* don't open directories */
      return NULL;
@@ -1071,6 +1071,7 @@ VFILE *slrn_open_home_vfile (char *name, char *file, size_t n)
 int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char *subject) /*{{{*/
 {
    char *buf;
+   char fcc_file[SLRN_MAX_PATH_LEN];
 #if defined(IBMPC_SYSTEM)
    char outfile [SLRN_MAX_PATH_LEN];
 #endif
@@ -1102,14 +1103,11 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
    if ((Slrn_Use_Mime & MIME_ARCHIVE) && /* else: do it later */
        !Slrn_Editor_Uses_Mime_Charset)
      slrn_chmap_fix_file (file, 0);
-   
-   if (-1 == slrn_save_file_to_mail_file (file, Slrn_Save_Replies_File, NULL))
-     return -1;
-   
+
    if (!(Slrn_Use_Mime & MIME_ARCHIVE) &&
        !Slrn_Editor_Uses_Mime_Charset)
      slrn_chmap_fix_file (file, 0);
-   
+
 #ifdef VMS
    buf = slrn_strdup_printf ("%s\"%s\"", MAIL_PROTOCOL, to);
    vms_send_mail (buf, subject, file);
@@ -1123,13 +1121,21 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 # if SLRN_HAS_MIME
    if (Slrn_Use_Mime & MIME_DISPLAY)
      {
-	FILE *fp, *pp;
+	FILE *fp, *pp, *fcc_fp;
 	int header = 1;
 	char line[1024];
-	
-	fp = fopen (file, "r");
-	if (fp == NULL) return (-1);
-	
+
+	if ((fp = fopen (file, "r")) == NULL)
+	     return (-1);
+
+	fcc_fp = slrn_open_tmpfile (fcc_file, sizeof (fcc_file));
+
+	if (fcc_fp == NULL)
+	  {
+	     slrn_fclose (fp);
+	     return (-1);
+	  }
+
 	slrn_mime_scan_file (fp);
 #  if defined(IBMPC_SYSTEM)
 	pp = slrn_open_tmpfile (outfile, sizeof (outfile));
@@ -1139,27 +1145,41 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	if (pp == NULL)
 	  {
 	     slrn_fclose (fp);
+	     slrn_fclose (fcc_fp);
 	     return (-1);
 	  }
-	
+
 	while (fgets (line, sizeof(line), fp) != NULL)
 	  {
 	     unsigned int len = strlen (line);
-	     
+
 	     if (len == 0) continue;
 	     len--;
-	     
+
 	     if (line [len] == '\n') line [len] = 0;
-	     
+
 	     if (header)
 	       {
+		  if ((( line[0] == 'R') || (line[0]== 'r'))
+		      && (0 == slrn_case_strncmp ((unsigned char *)"References: ",
+						  (unsigned char *)line,
+						  12)))
+		    {
+		       (void) slrn_add_references_header (pp, line);
+		       (void) slrn_add_references_header (fcc_fp, line);
+		       continue;
+		    }
+
 		  if (line[0] == 0)
 		    {
 		       header = 0;
-		       
+
 		       slrn_add_date_header (pp);
 		       slrn_mime_add_headers (pp);
 		       fp = slrn_mime_encode (fp);
+
+		       slrn_add_date_header (fcc_fp);
+		       slrn_mime_add_headers (fcc_fp);
 		    }
 		  slrn_mime_header_encode (line, sizeof(line));
 	       }
@@ -1170,9 +1190,12 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	       {
 		  fputs (line, pp);
 		  putc('\n', pp);
+		  fputs (line, fcc_fp);
+		  putc('\n', fcc_fp);
 	       }
 	  }
 	slrn_fclose (fp);
+	slrn_fclose (fcc_fp);
 #  if defined(IBMPC_SYSTEM)
 	slrn_fclose (pp);
 	buf = slrn_strdup_strcat (Slrn_SendMail_Command, " ", outfile, NULL);
@@ -1195,6 +1218,12 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
      }
 #endif /* NOT VMS */
    slrn_message (_("Sending...done"));
+
+   if (-1 == slrn_save_file_to_mail_file (fcc_file, Slrn_Save_Replies_File))
+     return -1;
+
+   (void) slrn_delete_file (fcc_file);
+
    return 0;
 }
 

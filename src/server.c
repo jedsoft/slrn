@@ -142,21 +142,32 @@ static int inews_puts (char *s)
    return 0;
 }
 
+static int inews_vprintf (const char *fmt, va_list ap)
+{
+   char *line;
+   int retval;
+
+   line = slrn_strdup_vprintf (fmt, ap);
+   retval = inews_puts (line);
+   slrn_free (line);
+
+   return retval;
+}
 static int inews_printf (char *fmt, ...)
 {
    va_list ap;
-   char *line;
    int retval;
-   
+
    va_start (ap, fmt);
-   line = slrn_strdup_vprintf (fmt, ap);
+   retval = inews_vprintf (fmt, ap);
    va_end (ap);
-   retval = inews_puts (line);
-   slrn_free (line);
-   
+
    return retval;
 }
-
+static char *inews_get_recom_id (void)
+{
+   return NULL;
+}
 
 static Slrn_Post_Obj_Type Inews_Post_Obj;
 
@@ -164,8 +175,10 @@ static int inews_init_objects (void)
 {
    Inews_Post_Obj.po_start = inews_start_post;
    Inews_Post_Obj.po_end = inews_end_post;
+   Inews_Post_Obj.po_vprintf = inews_vprintf;
    Inews_Post_Obj.po_printf = inews_printf;
    Inews_Post_Obj.po_puts = inews_puts;
+   Inews_Post_Obj.po_get_recom_id = inews_get_recom_id;
    Inews_Post_Obj.po_can_post = 1;
    Slrn_Inews_Pgm = slrn_safe_strmalloc (SLRN_INEWS_COMMAND);
    return 0;
@@ -609,32 +622,47 @@ static int pull_puts (char *s)
    return 0;
 }
 
-static int pull_printf (char *fmt, ...)
+static int pull_vprintf (const char *fmt, va_list ap)
 {
    int ret;
-   
-   va_list ap;
-   
-   va_start (ap, fmt);
+
    ret = vfprintf (Pull_Fp, fmt, ap);
-   va_end (ap);
-   
+
    if (EOF == ret)
      {
 	slrn_error (_("Write failed.  File system full?"));
 	return -1;
      }
-   
+
    return 0;
 }
 
+static int pull_printf (char *fmt, ...)
+{
+   int ret;
+
+   va_list ap;
+
+   va_start (ap, fmt);
+   ret = pull_vprintf (fmt, ap);
+   va_end (ap);
+
+   return ret;
+}
+
+static char *pull_get_recom_id (void)
+{
+   return NULL;
+}
 
 static int pull_init_objects (void)
 {
    Pull_Post_Obj.po_start = pull_start_post;
    Pull_Post_Obj.po_end = pull_end_post;
+   Pull_Post_Obj.po_vprintf = pull_vprintf;
    Pull_Post_Obj.po_printf = pull_printf;
    Pull_Post_Obj.po_puts = pull_puts;
+   Pull_Post_Obj.po_get_recom_id = pull_get_recom_id;
    Pull_Post_Obj.po_can_post = 1;
 
    return 0;
