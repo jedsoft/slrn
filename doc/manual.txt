@@ -1,7 +1,7 @@
   The slrn reference manual
   Matthias Friedrich <matt@mafr.de>
   Thomas Schultz <tststs@gmx.de>
-  version 0.9.7.2pl2
+  version 0.9.7.3
 
   Using and customizing the slrn newsreader
   ______________________________________________________________________
@@ -454,10 +454,12 @@
   1.3.1.  History
 
 
+     2001-11-05: Revision 2.2
+        Updated the manual for version 0.9.7.3.
+
      2001-08-20: Revision 2.1
         Updated the manual for slrn 0.9.7.2; added a section about the
         functions of the ``readline'' interface.
-
      2001-06-06: Revision 2
         Added a section that describes all interactive functions and
         updated the manual for slrn 0.9.7.1.
@@ -523,8 +525,11 @@
   copy of the annotated sample slrn.rc that is included in the slrn
   distribution and to tailor it to your needs.
 
+
   This manual contains a list of all ``configuration commands'' and
   ``variables''.
+
+
 
   3.  Command line switches and environment variables
 
@@ -592,6 +597,7 @@
         message when SSL support is not compiled in. Like -p, this
         option is only accepted after --nntp or when NNTP is the default
         mode.
+
      -i file
         Read file as the initialization (slrnrc) file.  The default is
         to use .slrnrc (or slrn.rc on VMS, OS/2 and Windows) in your
@@ -651,11 +657,9 @@
      --spool
         Read directly from spool.
 
+
      --version
         Print version and some compile time settings.
-
-
-
 
 
   3.2.  Environment variables
@@ -720,8 +724,6 @@
         hostname or by directly setting NNTPSERVER_NAME to the hostname.
         In case both are defined, slrn first tries to read the file and
         only uses NNTPSERVER_NAME as a fallback.
-
-
      ORGANIZATION
 
         If ``organization'' is unset, the value of this variable is
@@ -787,8 +789,6 @@
         the environment variable $SLRNPULL_ROOT. If an alternate root
         directory is given via the command line parameter -d, it
         overrides both.
-
-
 
      SLRN_EDITOR
 
@@ -2566,11 +2566,19 @@
   In large threads, the tree built by looking at the ``References:'' can
   become quite complex and sometimes confusing. Thus, some people prefer
   to see a separate thread tree whenever the ``Subject:'' header line
-  changes. Set this variable if you want this (more, but smaller trees).
+  changes. Set this variable to 1 if you want this (more, but smaller
+  trees).
+
+  By default, slrn puts articles with identical subjects into the same
+  thread, even if they are not linked by a ``References:'' header. If
+  you want slrn to thread based on references only, set this variable to
+  2 (also gives you more, but smaller trees). If you want to enable both
+  of these features, use 3 as the value.
 
   Note: Before comparing subjects, a leading ``Re: '' and a trailing
   ``(was: ...)'' is cut off. However, the regular expressions in
   ``strip_re_regexp'' and ``strip_was_regexp'' are not used.
+
 
   4.2.64.  no_autosave
 
@@ -2695,6 +2703,7 @@
   Type: string
   Default: (unset)
 
+
   This variable can be used to customize the ``print'' function. Its
   meaning and the default action depend on the operating system:
 
@@ -2704,6 +2713,7 @@
   processed by my_print_filter and then printed on ``my_printer''. If
   unset, the default action is to use lpr with the value of ``$PRINTER''
   as the -P option.
+
   On Windows, you can set this variable to the name of the print queue
   you want to use. Here, the default is to use the setting in
   ``win.ini''.
@@ -2770,6 +2780,7 @@
   the next newsgroup that contains unread articles. If this variable is
   set to 0, this will happen automatically; if it is 1, you will be
   asked to confirm that you want to select a new group.
+
   See also: ``query_next_article''
 
 
@@ -2824,6 +2835,7 @@
   Type: string
   Default: (unset)
 
+
   It is considered good netiquette to set this variable to your real
   name. It will be included in the ``From:'' header line. If you do not
   set it, slrn tries to get a value from ``$NAME''. On UNIX systems, it
@@ -2836,6 +2848,7 @@
 
   Type: integer
   Default: 2
+
   If set to 1, slrn will not allow you to post articles containing non-
   quoted lines which are longer than 80 characters. If you set it to 2,
   slrn will merely issue a warning that you can decide to ignore (e.g.
@@ -2886,6 +2899,9 @@
   See also: ``hostname'', ``username''
 
 
+
+
+
   4.2.88.  save_directory
 
   Type: string
@@ -2899,7 +2915,6 @@
   environment variables ``$SLRNHOME'' or ``$HOME''.
 
   See also:  ``decode_directory'', ``postpone_directory''
-
 
 
   4.2.89.  save_posts
@@ -2952,6 +2967,7 @@
   Type: string
   Default: (unset)
 
+
   If you want to score articles, you need to set this variable to the
   filename of your scorefile. It is interpreted as being relative to
   your home directory (unless it starts with a slash).
@@ -2964,8 +2980,6 @@
   and SCORE_FAQ that should have come with your slrn distribution. A
   future version of this manual might also include a separate section
   about the concept of ``scoring''.
-
-
 
 
   4.2.93.  scroll_by_page
@@ -3016,6 +3030,8 @@
 
   If non-zero, the first article is automatically displayed when
   entering a group.
+
+
 
 
   4.2.97.  show_descriptions
@@ -3084,7 +3100,6 @@
   of simple ASCII characters to represent the thread tree. slrn does
   this automatically if you use OS/2 or Windows and your system does not
   have line drawing characters.
-
   Note: It also might be possible to fix your terminal to support proper
   line drawing (which looks much better). Please see the slrn FAQ for
   details.
@@ -3099,6 +3114,7 @@
   ``quote_string'' and previously unquoted lines, leading to a result
   most people find better readable. If set to 2 or 3, blank lines are
   kept unquoted.
+
 
   4.2.103.  sorting_method
 
@@ -3150,10 +3166,10 @@
 
 
 
-       0    keep the display still, and reveal the current spoiler
-       1    start a new page, and reveal the current spoiler
-       2    keep the display still, and reveal all spoilers
-       3    start new page, and reveal all spoilers
+  0    keep the display still, and reveal the current spoiler
+  1    start a new page, and reveal the current spoiler
+  2    keep the display still, and reveal all spoilers
+  3    start new page, and reveal all spoilers
 
 
 
@@ -3216,7 +3232,6 @@
 
   The directory that contains the active, active.times and newsgroups
   files.
-
   The default of this variable is set at compile time in slrnfeat.h
   (#define SLRN_SPOOL_INNROOT).
 
@@ -3232,6 +3247,7 @@
   This variable provides the name of your news server's newsgroups file.
   The file contains a list of newsgroups with short descriptions
   (taglines).
+
   The notes that can be found in the entry for ``spool_active_file''
   also apply to this variable.
 
@@ -3280,6 +3296,8 @@
   See also: ``custom_headers'', ``reply_custom_headers''
 
 
+
+
   4.2.115.  top_status_line
 
   Type: string
@@ -3297,6 +3315,8 @@
            s   name of the current server
            t   current time
            v   version of slrn
+
+
 
   The special sequences `%g' and `%?' work as described in
   ``header_display_format''.
@@ -3344,7 +3364,6 @@
 
   Type: integer
   Default: (system dependent)
-
   Forces the use of colors (if set to 1) or the use of monochrom mode
   (if set to 0). When unset, color is automatically used if your
   terminal supports it according to its termcap entry.
@@ -3364,6 +3383,7 @@
 
   Type: integer
   Default: 0
+
   If non-zero, slrn will try to contact your ``grouplens server'' to
   exchange GroupLens scores.
 
@@ -3408,6 +3428,8 @@
   ``generate_date_header''. VMS and BeOS do not support using GMT.
 
 
+
+
   4.2.124.  use_metamail
 
   Type: integer
@@ -3428,12 +3450,10 @@
 
 
 
-
-
-  1    decode MIME in the article pager; encode outgoing messages
-  2    decode MIME when saving articles
-  4    MIME-encode the local copy of your own articles
-  8    decode MIME when piping an article
+       1    decode MIME in the article pager; encode outgoing messages
+       2    decode MIME when saving articles
+       4    MIME-encode the local copy of your own articles
+       8    decode MIME when piping an article
 
 
 
@@ -3473,6 +3493,7 @@
 
   If non-zero, tildes (``~'') are displayed at the end of an article
   like it is done in the vi editor.
+
 
 
   4.2.128.  use_tmpdir
@@ -3559,13 +3580,10 @@
 
 
 
-
-
-
-  4     wrap body only
-  5     wrap headers and body
-  6     wrap quoted material and body
-  7     wrap headers, quoted material and body
+       4     wrap body only
+       5     wrap headers and body
+       6     wrap quoted material and body
+       7     wrap headers, quoted material and body
 
 
 
@@ -3609,7 +3627,6 @@
   instead. The string may contain "%s" which will be replaced with the
   chosen URL. If no such substring is found, the URL is simply appended
   to the specified command.
-
 
   Example: set Xbrowser "netscape %s &"
 
@@ -3677,7 +3694,6 @@
   Marks the current group as read.
 
 
-
   5.1.4.  eob
 
   Default: "CTRL-K DOWN" "ESC >"
@@ -3692,6 +3708,7 @@
   Default: "CTRL-X ESC"
 
   Reads a line and interprets it as S-Lang.
+
 
 
   5.1.6.  group_search
@@ -3760,6 +3777,9 @@
   the current group is placed directly before the next visible group
   when moving it towards the top or directly after it when moving to the
   bottom, which may or may not be where you really wanted it to be.
+
+
+
   5.1.13.  page_down
 
   Default: "PAGEDN" "CTRL-D" "CTRL-V"
@@ -3803,6 +3823,9 @@
 
 
 
+
+
+
   5.1.18.  redraw
 
   Default: "CTRL-R" "CTRL-L"
@@ -3820,9 +3843,6 @@
   turned on with ``toggle_list_all'', groups without unread messages are
   hidden. This function also checks for new groups if
   ``check_new_groups'' is on.
-
-
-
 
 
 
@@ -3935,6 +3955,9 @@
   Toggles between slrn's scoring types:
 
 
+
+
+
       Full        Use ``expensive'' (full header) scoring which may be slow.
       Simple      Score based on XOVER data only (faster).
       None        Turn off scoring.
@@ -3952,9 +3975,6 @@
   the list. If there are hidden groups between them, they remain
   untouched. If you want to rearrange your group list, you'll probably
   find the ``move_group'' function more convenient.
-
-
-
 
 
 
@@ -4003,6 +4023,7 @@
 
   Default: "LEFT"
 
+
   Pans the article window back to the left (after using
   ``article_right'').
 
@@ -4020,7 +4041,6 @@
   Default: "ESC DOWN"
 
   Scrolls the article up one line.
-
 
 
 
@@ -4085,8 +4105,6 @@
 
   Searches the ``From:'' header lines in the current group for a given
   substring, starting at the cursor position.
-
-
 
 
 
@@ -4204,8 +4222,6 @@
   that, the mark is moved to the current article, so you can jump back
   to it by calling exchange_mark again.
 
-
-
   5.2.23.  expunge
 
   Default: "x"
@@ -4220,6 +4236,7 @@
   Default: "Q"
 
   Quit slrn immediately (without returning to group mode first).
+
 
 
   5.2.25.  followup
@@ -4269,6 +4286,7 @@
   selected posting). Using a prefix argument makes this function less
   ``thorough'', which means that it is faster, but more likely to miss
   some articles.
+
 
   For those who are interested in the technical details of this:
   get_children_headers queries the server for articles that have the
@@ -4335,6 +4353,7 @@
 
   Default: "ESC >"
 
+
   Goes to the last article in this group (``end of buffer'').
 
 
@@ -4352,6 +4371,7 @@
   Default: "UP" "CTRL-P"
 
   Goes to the previous visible article in this group.
+
 
 
   5.2.37.  header_page_down
@@ -4399,6 +4419,7 @@
 
   Default: ";"
 
+
   Marks the current article. This makes it possible to come back to it
   later using ``exchange_mark''.
 
@@ -4418,7 +4439,6 @@
   5.2.44.  next_high_score
 
   Default: "!"
-
 
   Goes to the next article with a ``high score''.
 
@@ -4466,7 +4486,6 @@
   Goes to the previous unread article, uncollapsing thread if necessary.
 
 
-
   5.2.50.  print
 
   Default: "y"
@@ -4485,6 +4504,8 @@
   Default: "q"
 
   Returns to group mode.
+
+
 
   5.2.52.  redraw
 
@@ -4552,6 +4573,7 @@
   ``ignore_quotes''.
 
 
+
   5.2.59.  skip_to_next_group
 
   Default: "N" "ESC RIGHT"
@@ -4596,9 +4618,6 @@
   version with it.  Like with ``cancel'', this is not honored by some
   servers due to abuse of this feature and only allowed by slrn if you
   are the author of the current article.
-
-
-
   5.2.64.  suspend
 
   Default: "CTRL-Z"
@@ -4663,6 +4682,8 @@
 
 
 
+
+
   5.2.70.  toggle_pgpsignature
 
   Default: "]"
@@ -4679,8 +4700,6 @@
   Toggles the display of quoted text as recognized using
   ``ignore_quotes''. When n is set as a prefix arguments, the first n
   quote levels remain untouched.
-
-
 
 
 
@@ -4726,6 +4745,8 @@
 
   Marks all articles from the top of the header window up to the current
   article as unread.
+
+
 
 
 
@@ -4790,6 +4811,9 @@
 
   Maximizes the article pager (or unmaximizes it, if it already takes up
   the whole screen).
+
+
+
 
 
   5.3.  readline functions
@@ -4882,6 +4906,8 @@
 
   Finishes the editing, returning the current content of the line to the
   program.
+
+
   5.3.11.  eol
 
   Default: "END" "CTRL-E"
@@ -4919,6 +4945,9 @@
   you want to ``unbind'' a key in readline mode.
 
 
+
+
+
   5.3.16.  trim
 
   Default: "ESC \"
@@ -4931,6 +4960,43 @@
   Default: "UP" "CTRL-P"
 
   Jumps to the previous (older) command line history entry.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.7.2pl2\n"
-"POT-Creation-Date: 2001-10-29 15:48+0100\n"
+"POT-Creation-Date: 2001-11-05 12:24+0100\n"
 "PO-Revision-Date: 2001-10-29 14:16+0200\n"
 "Last-Translator: Jens Wahnes <jewa@gmx.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,7 +84,7 @@ msgstr "Es wurden keine URLs im Artikel gefunden."
 msgid "Search: "
 msgstr "Suche: "
 
-#: src/art.c:1225 src/art.c:5526 src/group.c:1232
+#: src/art.c:1225 src/art.c:5529 src/group.c:1232
 msgid "Not found."
 msgstr "Nicht gefunden."
 
@@ -225,7 +225,7 @@ msgstr "%s scheint ungültig zu sein. Trotzdem eine E-Mail schicken"
 msgid "Are you sure you want to supersede"
 msgstr "Möchten Sie die Nachricht wirklich überschreiben (superseden)"
 
-#: src/art.c:3354 src/art.c:7256
+#: src/art.c:3354 src/art.c:7259
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "Fehler: Ihr Name ist '%s' und nicht '%s'."
@@ -408,41 +408,39 @@ msgstr "Der Artikel Nr. %d verursacht eine Verweis-Schleife! (reference loop)"
 msgid "Linking \"lost relatives\" ..."
 msgstr "\"Verlorene Söhne\" werden eingebunden ..."
 
-#. Now perform sort on subject to catch those that have fallen through the
-#. * cracks, i.e., no references
-#: src/art.c:5391
+#: src/art.c:5393
 msgid "Linking articles with identical subjects ..."
 msgstr "Artikel mit gleichem Betreff werden zusammengeführt."
 
-#: src/art.c:5458
+#: src/art.c:5461
 msgid "Mark set."
 msgstr "Markierung wurde gesetzt."
 
-#: src/art.c:5470
+#: src/art.c:5473
 msgid "Mark not set."
 msgstr "Markierung wurde nicht gesetzt."
 
-#: src/art.c:5491
+#: src/art.c:5494
 msgid "Subject"
 msgstr "Betreff (Subject)"
 
-#: src/art.c:5491
+#: src/art.c:5494
 msgid "Author"
 msgstr "Autoren"
 
-#: src/art.c:5492
+#: src/art.c:5495
 msgid " Search "
 msgstr "-Suche "
 
-#: src/art.c:5493 src/group.c:1223
+#: src/art.c:5496 src/group.c:1223
 msgid "Forward"
 msgstr "vorwärts"
 
-#: src/art.c:5493 src/group.c:1223
+#: src/art.c:5496 src/group.c:1223
 msgid "Backward"
 msgstr "rückwärts"
 
-#: src/art.c:5677
+#: src/art.c:5680
 #, c-format
 msgid ""
 "Score %d killed article %s\n"
@@ -457,161 +455,161 @@ msgstr ""
 "Subject: %s\n"
 "\n"
 
-#: src/art.c:5729
+#: src/art.c:5732
 msgid "Scoring articles ..."
 msgstr "Artikel werden bewertet ..."
 
-#: src/art.c:5742
+#: src/art.c:5745
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr ""
 "Artikelbewertung: Zu %2d%% fertig, %u aussortiert, %u wichtig, %u gelesen"
 
-#: src/art.c:5777
+#: src/art.c:5780
 msgid "Apply scorefile now"
 msgstr "Bewertungsdatei jetzt neu anwenden"
 
-#: src/art.c:5824
+#: src/art.c:5827
 msgid "This article is not matched by any scorefile entries."
 msgstr "Es gab keine Bewertungsregel, die auf diesen Artikel zutraf."
 
-#: src/art.c:5871
+#: src/art.c:5874
 msgid "This article is matched by the following scores"
 msgstr "Folgende Bewertungsregel(n) traf(en) auf diesen Artikel zu"
 
-#: src/art.c:5971
+#: src/art.c:5974
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: zusätzliche Header werden angefordert ... [%c]"
 
-#: src/art.c:6054
+#: src/art.c:6057
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: %2d/%d Header empfangen"
 
-#: src/art.c:6217
+#: src/art.c:6220
 #, c-format
 msgid "Finding %s from server..."
 msgstr "%s wird vom Server angefordert ..."
 
-#: src/art.c:6248
+#: src/art.c:6251
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "\"Kinder\"-Artikel werden vom Server angefordert ... [%c]"
 
-#: src/art.c:6256
+#: src/art.c:6259
 msgid "Your server does not provide support for this feature."
 msgstr "Ihr Newsserver unterstützt diese Funktion nicht."
 
-#: src/art.c:6422
+#: src/art.c:6425
 msgid "Header is part of a reference loop"
 msgstr "Der Header bildet eine Verweis-Schleife (reference loop)"
 
-#: src/art.c:6470
+#: src/art.c:6473
 msgid "Article has no parent reference."
 msgstr "Dieser Artikel hat keinen \"Vorgänger\"."
 
-#: src/art.c:6518
+#: src/art.c:6521
 #, c-format
 msgid "Article %s not available."
 msgstr "Der Artikel %s ist nicht verfügbar."
 
-#: src/art.c:6530
+#: src/art.c:6533
 msgid "Enter Message-Id: "
 msgstr "Geben Sie die Message-ID ein: "
 
-#: src/art.c:7233
+#: src/art.c:7236
 msgid "Are you sure that you want to cancel this article"
 msgstr "Möchten Sie diesen Artikel wirklich löschen (canceln)"
 
-#: src/art.c:7236
+#: src/art.c:7239
 msgid "Cancelling..."
 msgstr "Artikel wird gelöscht ..."
 
-#: src/art.c:7271
+#: src/art.c:7274
 msgid "No message id."
 msgstr "Message-ID fehlt."
 
-#: src/art.c:7292
+#: src/art.c:7295
 msgid "Done."
 msgstr "Fertig."
 
-#: src/art.c:7329
+#: src/art.c:7332
 msgid "Mark all articles as read"
 msgstr "Alle Artikel als gelesen markieren"
 
-#: src/art.c:7339
+#: src/art.c:7342
 msgid "Mark all articles as unread"
 msgstr "Alle Artikel als ungelesen markieren"
 
-#: src/art.c:7349
+#: src/art.c:7352
 msgid "Mark all articles up to here as read"
 msgstr "Alle Artikel bis zur aktuellen Position als gelesen markieren"
 
-#: src/art.c:7359
+#: src/art.c:7362
 msgid "Mark all articles up to here as unread"
 msgstr "Alle Artikel bis zur aktuellen Position als ungelesen markieren"
 
-#: src/art.c:7426
+#: src/art.c:7429
 msgid "Rate article (1-5):"
 msgstr "Bewerten Sie den Artikel (1-5):"
 
-#: src/art.c:7431
+#: src/art.c:7434
 msgid "Rating must be in range 1 to 5."
 msgstr "Ihre Bewertung muß im zwischen 1 und 5 liegen."
 
-#: src/art.c:7724
+#: src/art.c:7727
 msgid "Unable to create Article keymap!"
 msgstr ""
 "Die Tastenbelegungstabelle für den Artikel-Modus konnte nicht erstellt "
 "werden."
 
-#: src/art.c:8169
+#: src/art.c:8172
 msgid "Group transfer aborted."
 msgstr "Übertragung der Artikel abgebrochen."
 
-#: src/art.c:8171
+#: src/art.c:8174
 msgid "Server read failed."
 msgstr "Vom Server konnte nicht gelesen werden."
 
-#: src/art.c:8188
+#: src/art.c:8191
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Keine ungelesenen Artikel vorhanden. (%d aussortiert)"
 
-#: src/art.c:8190
+#: src/art.c:8193
 msgid "No unread articles found."
 msgstr "Keine ungelesenen Artikel vorhanden."
 
-#: src/art.c:8246
+#: src/art.c:8249
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr "%u aussortiert, %u wichtig, %u gelesen, %d mit GroupLens bewertet"
 
-#: src/art.c:8252
+#: src/art.c:8255
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "%u aussortiert, %u als wichtig markiert, %u als gelesen markiert"
 
-#: src/art.c:8453
+#: src/art.c:8456
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:Auswahl d:als gelesen markieren n:nächster p:vorheriger Strg-D:Seite vor "
 "Strg-U:Seite zurück q:Beenden"
 
-#: src/art.c:8458
+#: src/art.c:8461
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:Seite vor B:Seite zurück u:als ungelesen markieren f:Followup n:Nächster "
 "p:Vorheriger q:Beenden"
 
-#: src/art.c:8650
+#: src/art.c:8653
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Ende des Threads. Nächster: %s"
 
-#: src/art.c:8652
+#: src/art.c:8655
 msgid "End of Thread."
 msgstr "Ende des Threads."
 
@@ -619,15 +617,15 @@ msgstr "Ende des Threads."
 #. * sisters except that one can have a fake parent.  If this is the
 #. * case, we are at the end of a subthread.
 #.
-#: src/art.c:8664
+#: src/art.c:8667
 msgid "End of Sub-Thread"
 msgstr "Ende des Teilthreads."
 
-#: src/art.c:9221
+#: src/art.c:9224
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[Ungelesen: %u/%t] Gruppe: %n%-20g -- %L (%P)"
 
-#: src/art.c:9409
+#: src/art.c:9412
 msgid "Spoilers visible!"
 msgstr "Es sind Spoiler sichtbar."
 

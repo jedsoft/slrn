@@ -23,7 +23,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: slrn 0.9.7.2pl2\n"
-"POT-Creation-Date: 2001-10-29 15:48+0100\n"
+"POT-Creation-Date: 2001-11-05 12:24+0100\n"
 "PO-Revision-Date: 2001-11-04 14:47+01:00\n"
 "Last-Translator: Byrial Ole Jensen <byrial@image.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -103,7 +103,7 @@ msgstr "Ingen URL'er fundet."
 msgid "Search: "
 msgstr "Søg: "
 
-#: src/art.c:1225 src/art.c:5526 src/group.c:1232
+#: src/art.c:1225 src/art.c:5529 src/group.c:1232
 msgid "Not found."
 msgstr "Ikke fundet."
 
@@ -244,7 +244,7 @@ msgstr "%s synes ugyldig. Send kopi alligevel"
 msgid "Are you sure you want to supersede"
 msgstr "Er du sikker på at du vil erstatte"
 
-#: src/art.c:3354 src/art.c:7256
+#: src/art.c:3354 src/art.c:7259
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "Mislykket: Dit navn, '%s', er ikke '%s'"
@@ -426,44 +426,42 @@ msgstr "Indlæg %d er i en referenceløkke!"
 msgid "Linking \"lost relatives\" ..."
 msgstr "Tråder \"bortkomne slægtninge\" ..."
 
-#. Now perform sort on subject to catch those that have fallen through the
-#. * cracks, i.e., no references
-#: src/art.c:5391
+#: src/art.c:5393
 msgid "Linking articles with identical subjects ..."
 msgstr "Tråder indlæg med identiske emner ..."
 
-#: src/art.c:5458
+#: src/art.c:5461
 msgid "Mark set."
 msgstr "Mærke sat."
 
-#: src/art.c:5470
+#: src/art.c:5473
 msgid "Mark not set."
 msgstr "Mærke ikke sat."
 
 # Søgningstype
-#: src/art.c:5491
+#: src/art.c:5494
 msgid "Subject"
 msgstr "Emne"
 
 # Søgningstype
-#: src/art.c:5491
+#: src/art.c:5494
 msgid "Author"
 msgstr "Forfatter"
 
 # Sammensættes med søgningstype
-#: src/art.c:5492
+#: src/art.c:5495
 msgid " Search "
 msgstr "søgning "
 
-#: src/art.c:5493 src/group.c:1223
+#: src/art.c:5496 src/group.c:1223
 msgid "Forward"
 msgstr "fremad"
 
-#: src/art.c:5493 src/group.c:1223
+#: src/art.c:5496 src/group.c:1223
 msgid "Backward"
 msgstr "bagud"
 
-#: src/art.c:5677
+#: src/art.c:5680
 #, c-format
 msgid ""
 "Score %d killed article %s\n"
@@ -478,156 +476,156 @@ msgstr ""
 "Emne: %s\n"
 "\n"
 
-#: src/art.c:5729
+#: src/art.c:5732
 msgid "Scoring articles ..."
 msgstr "Bedømmer indlæg ..."
 
-#: src/art.c:5742
+#: src/art.c:5745
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr "Bedømmer indlæg: %2d%%, dumpede: %u, gode: %u, dårlige: %u"
 
-#: src/art.c:5777
+#: src/art.c:5780
 msgid "Apply scorefile now"
 msgstr "Anvend bedømmelsesfil nu"
 
-#: src/art.c:5824
+#: src/art.c:5827
 msgid "This article is not matched by any scorefile entries."
 msgstr "Dette indlæg passer ikke på nogen bedømmelsesregler."
 
-#: src/art.c:5871
+#: src/art.c:5874
 msgid "This article is matched by the following scores"
 msgstr "Dette indlæg passer på følgende bedømmelsesregler"
 
-#: src/art.c:5971
+#: src/art.c:5974
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: modtager yderligere hoveder ... [%c]"
 
-#: src/art.c:6054
+#: src/art.c:6057
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: hoveder modtaget: %2d/%d"
 
-#: src/art.c:6217
+#: src/art.c:6220
 #, c-format
 msgid "Finding %s from server..."
 msgstr "Finder %s på server ..."
 
-#: src/art.c:6248
+#: src/art.c:6251
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "Finder børn på server ... [%c]"
 
-#: src/art.c:6256
+#: src/art.c:6259
 msgid "Your server does not provide support for this feature."
 msgstr "Din server understøtter ikke denne funktion."
 
-#: src/art.c:6422
+#: src/art.c:6425
 msgid "Header is part of a reference loop"
 msgstr "Hoved er i en referenceløkke"
 
-#: src/art.c:6470
+#: src/art.c:6473
 msgid "Article has no parent reference."
 msgstr "Indlægget har ingen forældre-reference."
 
-#: src/art.c:6518
+#: src/art.c:6521
 #, c-format
 msgid "Article %s not available."
 msgstr "Indlæg %s er ikke tilgængelig."
 
-#: src/art.c:6530
+#: src/art.c:6533
 msgid "Enter Message-Id: "
 msgstr "Angiv id for indlæg (Message-Id): "
 
-#: src/art.c:7233
+#: src/art.c:7236
 msgid "Are you sure that you want to cancel this article"
 msgstr "Er du sikker på at du vil annullere dette indlæg"
 
-#: src/art.c:7236
+#: src/art.c:7239
 msgid "Cancelling..."
 msgstr "Annullerer ..."
 
-#: src/art.c:7271
+#: src/art.c:7274
 msgid "No message id."
 msgstr "Ingen indlægsidentifikation."
 
-#: src/art.c:7292
+#: src/art.c:7295
 msgid "Done."
 msgstr "Færdig."
 
-#: src/art.c:7329
+#: src/art.c:7332
 msgid "Mark all articles as read"
 msgstr "Markér alle indlæg læste"
 
-#: src/art.c:7339
+#: src/art.c:7342
 msgid "Mark all articles as unread"
 msgstr "Markér alle indlæg ulæste"
 
-#: src/art.c:7349
+#: src/art.c:7352
 msgid "Mark all articles up to here as read"
 msgstr "Markér alle indlæg op til her læste"
 
-#: src/art.c:7359
+#: src/art.c:7362
 msgid "Mark all articles up to here as unread"
 msgstr "Markér alle indlæg op til her ulæste"
 
-#: src/art.c:7426
+#: src/art.c:7429
 msgid "Rate article (1-5):"
 msgstr "Vurdér indlæg (1-5):"
 
-#: src/art.c:7431
+#: src/art.c:7434
 msgid "Rating must be in range 1 to 5."
 msgstr "Vurderingen skal være i området 1 til 5."
 
-#: src/art.c:7724
+#: src/art.c:7727
 msgid "Unable to create Article keymap!"
 msgstr "Kan ikke lave indlægs-tastetildeling!"
 
-#: src/art.c:8169
+#: src/art.c:8172
 msgid "Group transfer aborted."
 msgstr "Gruppeoverførsel afbrudt."
 
-#: src/art.c:8171
+#: src/art.c:8174
 msgid "Server read failed."
 msgstr "Serverlæsning mislykkedes."
 
-#: src/art.c:8188
+#: src/art.c:8191
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Ingen ulæste indlæg fundet (%d dumpede)."
 
-#: src/art.c:8190
+#: src/art.c:8193
 msgid "No unread articles found."
 msgstr "Ingen ulæste indlæg fundet."
 
-#: src/art.c:8246
+#: src/art.c:8249
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr "Antal dumpede: %u, gode: %u, dårlige: %u, GroupLens vurderede: %d"
 
-#: src/art.c:8252
+#: src/art.c:8255
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "Antal dumpede: %u, gode: %u, dårlige: %u"
 
-#: src/art.c:8453
+#: src/art.c:8456
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "ML.RUM:vælg Ctrl-d:ned Ctrl-u:op d:Markér-som-læst n:næste p:forrige q:afslut"
 
-#: src/art.c:8458
+#: src/art.c:8461
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "ML.RUM:ned  B:op  u:markér-som-ulæst  f:følg-op  n:næste  p:forrige  q:afslut"
 
-#: src/art.c:8650
+#: src/art.c:8653
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Tråden er slut. Næste: %s"
 
-#: src/art.c:8652
+#: src/art.c:8655
 msgid "End of Thread."
 msgstr "Tråden er slut."
 
@@ -635,16 +633,16 @@ msgstr "Tråden er slut."
 #. * sisters except that one can have a fake parent.  If this is the
 #. * case, we are at the end of a subthread.
 #.
-#: src/art.c:8664
+#: src/art.c:8667
 msgid "End of Sub-Thread"
 msgstr "Deltråden er slut."
 
 # Standard for header_status_line
-#: src/art.c:9221
+#: src/art.c:9224
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t ulæste] Gruppe: %n%-20g -- %L (%P)"
 
-#: src/art.c:9409
+#: src/art.c:9412
 msgid "Spoilers visible!"
 msgstr "Afsløringer synlige!"
 
@@ -2698,7 +2696,9 @@ msgstr "Der skal være mellemrum efter kolonet i et hoved."
 
 #: src/post.c:510
 msgid "This news reader will not accept user generated From lines."
-msgstr "Denne nyhedslæser accepterer ikke brugerens egne id'er for indlæg (Message-Id)."
+msgstr ""
+"Denne nyhedslæser accepterer ikke brugerens egne id'er for indlæg (Message-"
+"Id)."
 
 #: src/post.c:517
 msgid "This news reader will not accept user generated Message-Ids."
@@ -3227,7 +3227,7 @@ msgstr "Fejl ved klargøring af servertyper."
 #: src/slrn.c:1139
 #, c-format
 msgid "Could not read specified config file %s\n"
-msgstr ""
+msgstr "Kunne ikke læse den angivne konfigurationsfil %s\n"
 
 #: src/slrn.c:1145
 msgid ""

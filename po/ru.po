@@ -1,11 +1,11 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Andy Shevchenko <andy@smile.org.ua>, 2001.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.7.2pl1\n"
-"POT-Creation-Date: 2001-10-29 15:48+0100\n"
+"POT-Creation-Date: 2001-11-05 12:24+0100\n"
 "PO-Revision-Date: 2001-09-26 13:51+0900\n"
 "Last-Translator: Andy Shevchenko <andy@smile.org.ua>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -13,6 +13,8 @@ msgstr ""
 "Content-Type: text/plain; charset=koi8-r\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+# src/art.c:335
+# src/art.c:335
 #. Note to translators:
 #. * Make sure your translation is shorter than 16 characters.
 #: src/art.c:335
@@ -20,178 +22,261 @@ msgstr ""
 msgid "Ctrl-%c"
 msgstr ""
 
+# src/art.c:339
+# src/art.c:339
 #: src/art.c:339
 msgid "SPACE"
 msgstr ""
 
+# src/art.c:340
+# src/art.c:340
 #: src/art.c:340
 msgid "TAB"
 msgstr ""
 
+# src/art.c:341
+# src/art.c:341
 #: src/art.c:341
 msgid "RETURN"
 msgstr ""
 
+# src/art.c:342
+# src/art.c:342
 #: src/art.c:342
 msgid "ESCAPE"
 msgstr ""
 
+# src/art.c:343
+# src/art.c:343
 #: src/art.c:343
 msgid "DELETE"
 msgstr ""
 
+# src/art.c:344
+# src/art.c:344
 #: src/art.c:344
 msgid "BACKSPACE"
 msgstr ""
 
+# src/art.c:700
+# src/art.c:700
 #: src/art.c:700
 msgid "No next digest."
 msgstr "Отсутствует следующий дайджест."
 
+# src/art.c:1048
+# src/art.c:1049
 #: src/art.c:1049
 msgid "Invalid Browser definition."
 msgstr "Browser неверно определен."
 
+# src/art.c:1082
+# src/art.c:1083
 #: src/art.c:1083
 msgid "Browse (^G aborts): "
 msgstr "Просмотреть (^G прервать):"
 
+# src/art.c:1084 src/art.c:4020
+# src/art.c:1085 src/art.c:4021
 #: src/art.c:1085 src/art.c:4021
 msgid "Aborted."
 msgstr "Прервано."
 
+# src/art.c:1107
+# src/art.c:1108
 #: src/art.c:1108
 msgid "Show all available groups"
 msgstr "Показать все доступные группы"
 
+# src/art.c:1117
+# src/art.c:1118
 #: src/art.c:1118
 #, c-format
 msgid "Try switching to %s"
 msgstr "Попытайтесь переключиться на %s"
 
+# src/art.c:1123
+# src/art.c:1124
 #: src/art.c:1124
 msgid "Group contains no articles."
-msgstr "В группе нет статей."
+msgstr "Группа не содержит статей."
 
+# src/art.c:1138
+# src/art.c:1139
 #: src/art.c:1139
 msgid "No Web Browser has been defined."
 msgstr "Web Browser не был определен."
 
+# src/art.c:1189
+# src/art.c:1190
 #: src/art.c:1190
 msgid "No URLs found."
 msgstr "Не найдено ни одного URL."
 
+# src/art.c:1220
+# src/art.c:1221
 #: src/art.c:1221
 msgid "Search: "
 msgstr "Поиск: "
 
-#: src/art.c:1225 src/art.c:5526 src/group.c:1232
+# src/art.c:1224 src/art.c:5525 src/group.c:1232
+# src/art.c:1225 src/art.c:5529 src/group.c:1232
+#: src/art.c:1225 src/art.c:5529 src/group.c:1232
 msgid "Not found."
 msgstr "Не найдено."
 
+# src/art.c:1324
+# src/art.c:1325
 #: src/art.c:1325
 #, c-format
 msgid "At end of article, press %s for next group."
 msgstr "Конец статьи, нажмите %s для перехода к следующей группе."
 
+# src/art.c:1327
+# src/art.c:1328
 #: src/art.c:1328
 #, c-format
 msgid "At end of article, press %s for next unread article."
 msgstr ""
 "Конец статьи, нажмите %s для перехода к следующей непрочитанной статье."
 
+# src/art.c:2009
+# src/art.c:2010
 #: src/art.c:2010
 msgid "Goto article: "
 msgstr "Перейти к статье: "
 
+# src/art.c:2026
+# src/art.c:2027
 #: src/art.c:2027
 msgid "Article not found."
 msgstr "Статья не найдена."
 
+# src/art.c:2097
+# src/art.c:2098
 #: src/art.c:2098
 #, c-format
 msgid "#%2d/%-2d: Retrieving... %s"
 msgstr "#%2d/%-2d: Восстановление... %s"
 
+# src/art.c:2100
+# src/art.c:2101
 #: src/art.c:2101
 #, c-format
 msgid "[%d] Reading..."
 msgstr "[%d] Чтение..."
 
+# src/art.c:2107
+# src/art.c:2108
 #: src/art.c:2108
 msgid "Server failed to return article."
 msgstr "Ошибка сервера при возврате статьи."
 
+# src/art.c:2111
+# src/art.c:2112
 #: src/art.c:2112
 #, c-format
 msgid "Article %d unavailable."
 msgstr "Статья %d не доступна."
 
+# src/art.c:2150
+# src/art.c:2151
 #: src/art.c:2151
 msgid "Article transfer aborted or connection lost."
 msgstr "Прервана пересылка статьи или утеряно соединение."
 
+# src/art.c:2233
+# src/art.c:2234
 #: src/art.c:2234
-#, fuzzy
 msgid "Server sent empty article."
-msgstr "Ошибка сервера при возврате статьи."
+msgstr "Сервер передал пустую статью."
 
+# src/art.c:2499
+# src/art.c:2500
 #: src/art.c:2500
 msgid "%a, %d %b %Y at %H:%M GMT"
 msgstr "%a, %d %b %Y в %H:%M GMT"
 
+# src/art.c:2542
+# src/art.c:2543
 #: src/art.c:2543
 msgid "This operation requires an article"
 msgstr "Требуется статья для выполнения этого действия."
 
+# src/art.c:2650
+# src/art.c:2651
 #: src/art.c:2651
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
 msgstr "%s кажется неверным. Продолжить несмотря на это"
 
+# src/art.c:2651
+# src/art.c:2652
 #: src/art.c:2652
 msgid "Email address"
 msgstr "Email адрес"
 
+# src/art.c:2662 src/art.c:2837 src/art.c:3176 src/art.c:3374
+# src/slrnpull.c:395 src/slrnpull.c:1031
+# src/art.c:2663 src/art.c:2838 src/art.c:3177 src/art.c:3375
+# src/slrnpull.c:395 src/slrnpull.c:1031
 #: src/art.c:2663 src/art.c:2838 src/art.c:3177 src/art.c:3375
 #: src/slrnpull.c:395 src/slrnpull.c:1031
 #, c-format
 msgid "Unable to open %s for writing."
 msgstr "Невозможно открыть %s для записи."
 
+# src/art.c:2787
+# src/art.c:2788
 #: src/art.c:2788
 msgid "Are you sure you want to reply"
 msgstr "Вы уверены, что хотите ответить автору"
 
+# src/art.c:2814
+# src/art.c:2815
 #: src/art.c:2815
 msgid "Forward to (^G aborts): "
 msgstr "Переслать (^G прервать): "
 
+# src/art.c:2816
+# src/art.c:2817
 #: src/art.c:2817
 msgid "Aborted.  An email address is required."
 msgstr "Прервано. Требуется ввод email адреса."
 
+# src/art.c:2820
+# src/art.c:2821
 #: src/art.c:2821
 msgid "Edit the message before sending"
 msgstr "Редактировать сообщение перед отсылкой"
 
+# src/art.c:2924 src/art.c:3329
+# src/art.c:2925 src/art.c:3330
 #: src/art.c:2925 src/art.c:3330
 msgid "Posting not allowed by server"
 msgstr "Отправка не разрешена сервером."
 
+# src/art.c:2931
+# src/art.c:2932
 #: src/art.c:2932
 msgid "Are you sure you want to followup"
 msgstr "Вы уверены, что хотите ответить в группу"
 
+# src/art.c:2972
+# src/art.c:2973
 #: src/art.c:2973
 msgid "Do you want to reply to POSTER as poster prefers"
 msgstr "Вы хотите ответить АВТОРУ с его установками"
 
+# src/art.c:3010
+# src/art.c:3011
 #: src/art.c:3011
 #, c-format
 msgid "Followup to %s as poster prefers"
 msgstr "Ответ на %s с авторскими установками"
 
+# src/art.c:3052
+# src/art.c:3053
 #. Note to translators: Here, "fF" means "Followup-To", "pP" is for
 #. * "post", "iI" is "ignore" and "cC" means "cancel".
 #. * Do not change the length of the string! You cannot use any of the
@@ -201,6 +286,8 @@ msgstr "Ответ на %s с авторскими установками"
 msgid "fFpPiIcC"
 msgstr "сСтТиИоО"
 
+# src/art.c:3055
+# src/art.c:3056
 #: src/art.c:3056
 msgid ""
 "Crossposting. Followup-To this group, Post to this group only, Ignore,"
@@ -209,44 +296,64 @@ msgstr ""
 "Пересечение. Ответ сюда Согласно Followup-To, Только сюда, Игнорирование,"
 " Отмена?"
 
+# src/art.c:3137
+# src/art.c:3138
 #: src/art.c:3138
 msgid "Cc message as requested by poster"
 msgstr "Cc сообщение как запросил автор"
 
+# src/art.c:3143
+# src/art.c:3144
 #: src/art.c:3144
 msgid "Cc message to poster"
 msgstr "Cc сообщение к автору"
 
+# src/art.c:3156
+# src/art.c:3157
 #: src/art.c:3157
 #, c-format
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s кажется неверным. Продолжить несмотря на это"
 
+# src/art.c:3334
+# src/art.c:3335
 #: src/art.c:3335
 msgid "Are you sure you want to supersede"
 msgstr "Вы уверены, что хотите заменить оригинальный текст"
 
-#: src/art.c:3354 src/art.c:7256
+# src/art.c:3353 src/art.c:7250
+# src/art.c:3354 src/art.c:7259
+#: src/art.c:3354 src/art.c:7259
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "Ошибка: Ваше имя: '%s' не соответствует '%s'"
 
+# src/art.c:3456 src/art.c:3505
+# src/art.c:3457 src/art.c:3506
 #: src/art.c:3457 src/art.c:3506
 msgid "End of buffer."
 msgstr "Конец буфера."
 
+# src/art.c:3477 src/art.c:3495 src/group.c:1078
+# src/art.c:3478 src/art.c:3496 src/group.c:1078
 #: src/art.c:3478 src/art.c:3496 src/group.c:1078
 msgid "Top of buffer."
 msgstr "Начало буфера."
 
+# src/art.c:3540
+# src/art.c:3541
 #: src/art.c:3541
 msgid "No previous unread articles."
 msgstr "Отсутствуют предыдущие непрочитанные статьи."
 
+# src/art.c:3584
+# src/art.c:3585
 #: src/art.c:3585
 msgid "No following unread articles."
 msgstr "Отсутствуют последующие непрочитанные статьи."
 
+# src/art.c:3620
+# src/art.c:3621
 #: src/art.c:3621
 #, c-format
 msgid "No following unread articles.  Press %s for next group."
@@ -254,155 +361,223 @@ msgstr ""
 "Отсутствуют последующие непрочитанные статьи. Нажмите %s, для перехода к "
 "следующей группе."
 
+# src/art.c:3651
+# src/art.c:3652
 #: src/art.c:3652
 msgid "No more high scoring articles."
 msgstr "Больше нет статей с высоким score."
 
+# src/art.c:3705
+# src/art.c:3706
 #: src/art.c:3706
 msgid "No more articles on that subject."
 msgstr "Больше нет статей на эту тему."
 
+# src/art.c:3738
+# src/art.c:3739
 #: src/art.c:3739
 #, c-format
 msgid "Goto Header: %d"
 msgstr "Перейти к заголовку: %d"
 
+# src/art.c:3823 src/group.c:2633 src/post.c:262
+# src/art.c:3824 src/group.c:2633 src/post.c:262
 #: src/art.c:3824 src/group.c:2633 src/post.c:262
 #, c-format
 msgid "Unable to open %s."
 msgstr "Невозможно открыть %s."
 
+# src/art.c:3829 src/slrnpull.c:1039 src/slrnpull.c:1047
+# src/art.c:3830 src/slrnpull.c:1039 src/slrnpull.c:1047
 #: src/art.c:3830 src/slrnpull.c:1039 src/slrnpull.c:1047
 #, c-format
 msgid "Error writing to %s."
 msgstr "Ошибка записи в %s."
 
+# src/art.c:3961
+# src/art.c:3962
 #: src/art.c:3962
 msgid "Save tagged articles"
 msgstr "Записать помеченные статьи"
 
+# src/art.c:3969
+# src/art.c:3970
 #: src/art.c:3970
 msgid "Save this thread"
 msgstr "Записать эту нить"
 
+# src/art.c:4016
+# src/art.c:4017
 #: src/art.c:4017
 msgid "Temporary file (^G aborts): "
 msgstr "Временный файл (^G прервать): "
 
+# src/art.c:4017
+# src/art.c:4018
 #: src/art.c:4018
 msgid "Save to file (^G aborts): "
 msgstr "Записать в файл (^G прервать): "
 
+# src/art.c:4026 src/editscore.c:153 src/post.c:429
+# src/art.c:4027 src/editscore.c:153 src/post.c:429
 #: src/art.c:4027 src/editscore.c:153 src/post.c:429
 #, c-format
 msgid "Unable to open %s"
 msgstr "Невозможно открыть %s"
 
+# src/art.c:4117
+# src/art.c:4118
 #: src/art.c:4118
 #, c-format
 msgid "decoding %10s (%3d/%3d) %s"
 msgstr "Декодирование %10s (%3d/%3d) %s"
 
+# src/art.c:4133
+# src/art.c:4134
 #: src/art.c:4134
 msgid "Filename buffer not large enough."
 msgstr "Буфер для имени файла недостаточно большой."
 
+# src/art.c:4137
+# src/art.c:4138
 #. safe
 #: src/art.c:4138
 msgid "Calling uudeview ..."
 msgstr "Вызов uudeview ..."
 
+# src/art.c:4146
+# src/art.c:4147
 #: src/art.c:4147
 #, c-format
 msgid "could not load %s: errno = %d"
 msgstr "Невозможно загрузить %s: errno = %d"
 
+# src/art.c:4149
+# src/art.c:4150
 #: src/art.c:4150
 #, c-format
 msgid "could not load %s: %s"
 msgstr "Не возможно загрузить %s: %s"
 
+# src/art.c:4164
+# src/art.c:4165
 #: src/art.c:4165
 msgid "I/O error."
 msgstr "Ошибка ввода/вывода."
 
+# src/art.c:4167
+# src/art.c:4168
 #: src/art.c:4168
 #, c-format
 msgid "error decoding %s: %s"
 msgstr "Ошибка декодирования %s: %s"
 
+# src/art.c:4191
+# src/art.c:4192
 #: src/art.c:4192
-#, fuzzy, c-format
+#, c-format
 msgid "Decode %s"
 msgstr "Декодирование %s"
 
+# src/art.c:4202
+# src/art.c:4203
 #: src/art.c:4203
-#, fuzzy, c-format
+#, c-format
 msgid "Delete %s"
 msgstr "Удаление %s"
 
+# src/art.c:4205
+# src/art.c:4206
 #: src/art.c:4206
 #, c-format
 msgid "Unable to delete %s"
 msgstr "Невозможно удалить %s"
 
+# src/art.c:4237
+# src/art.c:4238
 #: src/art.c:4238
 #, c-format
 msgid "Unable to open pipe to %s"
 msgstr "Не возможно открыть поток к %s"
 
+# src/art.c:4254 src/art.c:4275 src/decode.c:65
+# src/art.c:4255 src/art.c:4276 src/decode.c:65
 #: src/art.c:4255 src/art.c:4276 src/decode.c:65
 msgid "Piping not implemented on this system."
 msgstr "Система не поддерживает работу с потоками."
 
+# src/art.c:4266
+# src/art.c:4267
 #: src/art.c:4267
 msgid "Pipe to command: "
 msgstr "Передать потоком к команде: "
 
+# src/art.c:4268
+# src/art.c:4269
 #: src/art.c:4269
 msgid "Aborted.  Command name is required."
 msgstr "Прервано. Требуется имя команды."
 
+# src/art.c:4273
+# src/art.c:4274
 #: src/art.c:4274
 #, c-format
 msgid "Error piping to %s."
 msgstr "Ошибка выдачи в поток к %s."
 
+# src/art.c:4289
+# src/art.c:4290
 #: src/art.c:4290
 msgid "Printing article..."
 msgstr "Печать статьи..."
 
+# src/art.c:4320
+# src/art.c:4321
 #: src/art.c:4321
 msgid "Printing article...done"
 msgstr "Печать статьи...завершена"
 
+# src/art.c:4336
+# src/art.c:4337
 #: src/art.c:4337
 msgid "Are you sure you want to print the article"
 msgstr "Вы уверены, что хотите напечатать статью"
 
+# src/art.c:4489
+# src/art.c:4490
 #: src/art.c:4490
 msgid "sort_headers(): memory allocation failure."
 msgstr "sort_headers(): ошибка распределения памяти."
 
+# src/art.c:5030
+# src/art.c:5031
 #: src/art.c:5031
 msgid "Internal Error."
 msgstr "Внутренняя ошибка."
 
+# src/art.c:5091
+# src/art.c:5092
 #: src/art.c:5092
 msgid "link_same_subjects: memory allocation failure."
 msgstr "link_same_subjects: ошибка распределения памяти."
 
+# src/art.c:5324
+# src/art.c:5325
 #. SLMEMSET ((char *) Lost_Ancestors, 0, sizeof (Lost_Ancestors));
 #: src/art.c:5325
 msgid "Threading by references ..."
 msgstr "Изготовление нитей по ссылкам ..."
 
+# src/art.c:5361
+# src/art.c:5362
 #. self referencing!!!
 #: src/art.c:5362
-#, fuzzy, c-format
+#, c-format
 msgid "Article %d is part of reference loop!"
-msgstr "Статья %d является частью петли ссылок!"
+msgstr "Статья %d входит в петлю ссылок!"
 
+# src/art.c:5385
+# src/art.c:5386
 #. No perform a re-arrangement such that those with the no parents but
 #. * share the same reference are placed side-by-side as sisters.
 #.
@@ -410,41 +585,57 @@ msgstr "Статья %d является частью петли ссылок!"
 msgid "Linking \"lost relatives\" ..."
 msgstr "Соединение \"потерянные связи\"..."
 
-#. Now perform sort on subject to catch those that have fallen through the
-#. * cracks, i.e., no references
-#: src/art.c:5391
+# src/art.c:5390
+# src/art.c:5393
+#: src/art.c:5393
 msgid "Linking articles with identical subjects ..."
 msgstr "Соединение статей с идентичной темой..."
 
-#: src/art.c:5458
+# src/art.c:5457
+# src/art.c:5461
+#: src/art.c:5461
 msgid "Mark set."
 msgstr "Метка установлена."
 
-#: src/art.c:5470
+# src/art.c:5469
+# src/art.c:5473
+#: src/art.c:5473
 msgid "Mark not set."
 msgstr "Метка не установлена."
 
-#: src/art.c:5491
+# src/art.c:5490
+# src/art.c:5494
+#: src/art.c:5494
 msgid "Subject"
 msgstr "Тема:"
 
-#: src/art.c:5491
+# src/art.c:5490
+# src/art.c:5494
+#: src/art.c:5494
 msgid "Author"
 msgstr "Автор:"
 
-#: src/art.c:5492
+# src/art.c:5491
+# src/art.c:5495
+#: src/art.c:5495
 msgid " Search "
 msgstr " поиск "
 
-#: src/art.c:5493 src/group.c:1223
+# src/art.c:5492 src/group.c:1223
+# src/art.c:5496 src/group.c:1223
+#: src/art.c:5496 src/group.c:1223
 msgid "Forward"
 msgstr "отсюда к концу"
 
-#: src/art.c:5493 src/group.c:1223
+# src/art.c:5492 src/group.c:1223
+# src/art.c:5496 src/group.c:1223
+#: src/art.c:5496 src/group.c:1223
 msgid "Backward"
 msgstr "отсюда к началу"
 
-#: src/art.c:5677
+# src/art.c:5671
+# src/art.c:5680
+#: src/art.c:5680
 #, c-format
 msgid ""
 "Score %d killed article %s\n"
@@ -459,192 +650,259 @@ msgstr ""
 "Тема: %s\n"
 "\n"
 
-#: src/art.c:5729
-#, fuzzy
+# src/art.c:5723
+# src/art.c:5732
+#: src/art.c:5732
 msgid "Scoring articles ..."
-msgstr "Установка score статьям ..."
+msgstr "Scoring статей ..."
 
-#: src/art.c:5742
-#, fuzzy, c-format
+# src/art.c:5736
+# src/art.c:5745
+#: src/art.c:5745
+#, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
-msgstr "Статьи со score: %2d%%, уничтоженные: %u, высокий: %u, низкий: %u"
+msgstr "Scoring статьи: %2d%%, уничтоженные: %u, высокий: %u, низкий: %u"
 
-#: src/art.c:5777
-#, fuzzy
+# src/art.c:5771
+# src/art.c:5780
+#: src/art.c:5780
 msgid "Apply scorefile now"
-msgstr "Приложить scorefile сейчас"
+msgstr "Применить scorefile сейчас"
 
-#: src/art.c:5824
+# src/art.c:5818
+# src/art.c:5827
+#: src/art.c:5827
 msgid "This article is not matched by any scorefile entries."
-msgstr ""
+msgstr "Эта статья не попадает ни под одно вхождение в scorefile."
 
-#: src/art.c:5871
+# src/art.c:5865
+# src/art.c:5874
+#: src/art.c:5874
 msgid "This article is matched by the following scores"
-msgstr ""
+msgstr "Эта статья удовлетворяет следующим score"
 
-#: src/art.c:5971
+# src/art.c:5965
+# src/art.c:5974
+#: src/art.c:5974
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: принимаются дополнительные заголовки...[%c]"
 
-#: src/art.c:6054
+# src/art.c:6048
+# src/art.c:6057
+#: src/art.c:6057
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: принято заголовков: %2d/%d"
 
-#: src/art.c:6217
+# src/art.c:6211
+# src/art.c:6220
+#: src/art.c:6220
 #, c-format
 msgid "Finding %s from server..."
 msgstr "Поиск %s на сервере..."
 
-#: src/art.c:6248
+# src/art.c:6242
+# src/art.c:6251
+#: src/art.c:6251
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "Поиск потомков на сервере...[%c]"
 
-#: src/art.c:6256
+# src/art.c:6250
+# src/art.c:6259
+#: src/art.c:6259
 msgid "Your server does not provide support for this feature."
 msgstr "Ваш сервер не обеспечивает поддержку этой особенности."
 
-#: src/art.c:6422
-#, fuzzy
+# src/art.c:6416
+# src/art.c:6425
+#: src/art.c:6425
 msgid "Header is part of a reference loop"
-msgstr "Заголовок является частью петли ссылок"
+msgstr "Заголовок входит в петлю ссылок"
 
-#: src/art.c:6470
+# src/art.c:6464
+# src/art.c:6473
+#: src/art.c:6473
 msgid "Article has no parent reference."
 msgstr "Статья не имеет родительских ссылок."
 
-#: src/art.c:6518
+# src/art.c:6512
+# src/art.c:6521
+#: src/art.c:6521
 #, c-format
 msgid "Article %s not available."
 msgstr "Статья %s не доступна."
 
-#: src/art.c:6530
+# src/art.c:6524
+# src/art.c:6533
+#: src/art.c:6533
 msgid "Enter Message-Id: "
 msgstr "Введите Message-Id: "
 
-#: src/art.c:7233
+# src/art.c:7227
+# src/art.c:7236
+#: src/art.c:7236
 msgid "Are you sure that you want to cancel this article"
 msgstr "Вы уверены, что хотите отменить статью"
 
-#: src/art.c:7236
+# src/art.c:7230
+# src/art.c:7239
+#: src/art.c:7239
 msgid "Cancelling..."
 msgstr "Отмена..."
 
-#: src/art.c:7271
+# src/art.c:7265
+# src/art.c:7274
+#: src/art.c:7274
 msgid "No message id."
 msgstr "Отсутствует Message-ID."
 
-#: src/art.c:7292
+# src/art.c:7286
+# src/art.c:7295
+#: src/art.c:7295
 msgid "Done."
 msgstr "Завершено."
 
-#: src/art.c:7329
-#, fuzzy
+# src/art.c:7323
+# src/art.c:7332
+#: src/art.c:7332
 msgid "Mark all articles as read"
-msgstr "Пометить %s как прочитанную"
+msgstr "Пометить все статьи как прочитанные"
 
-#: src/art.c:7339
-#, fuzzy
+# src/art.c:7333
+# src/art.c:7342
+#: src/art.c:7342
 msgid "Mark all articles as unread"
-msgstr "Пометить %s как непрочитанную"
+msgstr "Пометить все статьи как непрочитанные"
 
-#: src/art.c:7349
-#, fuzzy
+# src/art.c:7343
+# src/art.c:7352
+#: src/art.c:7352
 msgid "Mark all articles up to here as read"
-msgstr ""
-"  C                  Отметить все статьи выше текущей позиции как "
-"прочитанные."
+msgstr "Отметить все статьи выше текущей позиции как прочитанные."
 
-#: src/art.c:7359
-#, fuzzy
+# src/art.c:7353
+# src/art.c:7362
+#: src/art.c:7362
 msgid "Mark all articles up to here as unread"
-msgstr ""
-"  ESC U              Отметить все статьи выше текущей позиции как "
-"непрочитанные."
+msgstr "Отметить все статьи выше текущей позиции как непрочитанные."
 
-#: src/art.c:7426
+# src/art.c:7420
+# src/art.c:7429
+#: src/art.c:7429
 msgid "Rate article (1-5):"
 msgstr "Оценка статьи (1-5):"
 
-#: src/art.c:7431
+# src/art.c:7425
+# src/art.c:7434
+#: src/art.c:7434
 msgid "Rating must be in range 1 to 5."
 msgstr "Оценка должна лежать в диапазоне от 1 до 5."
 
-#: src/art.c:7724
+# src/art.c:7718
+# src/art.c:7727
+#: src/art.c:7727
 msgid "Unable to create Article keymap!"
 msgstr "Невозможно создать раскладку клавиатуры 'Article'!"
 
-#: src/art.c:8169
+# src/art.c:8163
+# src/art.c:8172
+#: src/art.c:8172
 msgid "Group transfer aborted."
 msgstr "Передача группы прервана."
 
-#: src/art.c:8171
+# src/art.c:8165
+# src/art.c:8174
+#: src/art.c:8174
 msgid "Server read failed."
 msgstr "Ошибка во время чтения с сервера."
 
-#: src/art.c:8188
+# src/art.c:8182
+# src/art.c:8191
+#: src/art.c:8191
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Непрочитанные статьи не найдены. (%d уничтоженых)"
 
-#: src/art.c:8190
+# src/art.c:8184
+# src/art.c:8193
+#: src/art.c:8193
 msgid "No unread articles found."
 msgstr "Непрочитанные статьи не найдены."
 
-#: src/art.c:8246
-#, fuzzy, c-format
+# src/art.c:8240
+# src/art.c:8249
+#: src/art.c:8249
+#, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr ""
-"Число уничтоженных: %u, с высоким: %u, с низким: %u, оцененных из GroupLens: "
-"%d"
+"Число удаленных: %u, с высоким: %u, с низким: %u, оцененных из GroupLens: %d"
 
-#: src/art.c:8252
-#, fuzzy, c-format
+# src/art.c:8246
+# src/art.c:8255
+#: src/art.c:8255
+#, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
-msgstr "Число уничтоженных: %u, с высоким: %u, с низким: %u"
+msgstr "Число удаленных: %u, с высоким: %u, с низким: %u"
 
-#: src/art.c:8453
+# src/art.c:8447
+# src/art.c:8456
+#: src/art.c:8456
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
-msgstr "SPC:Выбрать Ctrl-D:PgDn Ctrl-U:PgUp d:Прочит n:След p:Пред q:Выход"
+msgstr "SPC:Выбрать Ctrl-D:Вниз Ctrl-U:Вверх d:Прочит n:След p:Пред q:Выход"
 
-#: src/art.c:8458
+# src/art.c:8452
+# src/art.c:8461
+#: src/art.c:8461
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
-msgstr "SPC:PgDn  B:PgUp  u:Непрочит  f:Ответить  n:След  p:Пред  q:Выход"
+msgstr "SPC:Вниз  B:Вверх  u:Непрочит  f:Ответить  n:След  p:Пред  q:Выход"
 
-#: src/art.c:8650
+# src/art.c:8644
+# src/art.c:8653
+#: src/art.c:8653
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Конец нити. Следующая: %s"
 
-#: src/art.c:8652
+# src/art.c:8646
+# src/art.c:8655
+#: src/art.c:8655
 msgid "End of Thread."
 msgstr "Конец нити."
 
+# src/art.c:8658
+# src/art.c:8667
 #. The last test involving ^ is necessary because the two can be
 #. * sisters except that one can have a fake parent.  If this is the
 #. * case, we are at the end of a subthread.
 #.
-#: src/art.c:8664
+#: src/art.c:8667
 msgid "End of Sub-Thread"
 msgstr "Конец субнити."
 
-#: src/art.c:9221
+# src/art.c:9215
+# src/art.c:9224
+#: src/art.c:9224
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t непрочитанных] Группа: %n%-20g -- %L (%P)"
 
-#: src/art.c:9409
-#, fuzzy
+# src/art.c:9403
+# src/art.c:9412
+#: src/art.c:9412
 msgid "Spoilers visible!"
-msgstr "Spoilers сделан видимым!"
+msgstr "Spoilers видимый!"
 
+# src/chkslang.c:57
+# src/chkslang.c:58
 #: src/chkslang.c:58
 #, c-format
 msgid "Usage: %s <PGM> <SLANG-VERSION> <SUGG VERSION>\n"
 msgstr "Использование: %s <PGM> <ВЕРСИЯ-SLANG> <ВЕРСИЯ SUGG>\n"
 
+# src/chkslang.c:67
+# src/chkslang.c:68
 #: src/chkslang.c:68
 msgid ""
 "\n"
@@ -670,24 +928,33 @@ msgstr ""
 "******\n"
 "\n"
 
+# src/chkslang.c:85
+# src/chkslang.c:86
 #: src/chkslang.c:86
 #, c-format
 msgid "This version of %s requires slang version %s.\n"
 msgstr "Эта версия %s требует библиотеку slang версии %s.\n"
 
+# src/chkslang.c:92
+# src/chkslang.c:93
 #: src/chkslang.c:93
 #, c-format
 msgid "Your slang version is %s.\n"
 msgstr "Установленная версия библиотеки slang: %s.\n"
 
+# src/chkslang.c:93
+# src/chkslang.c:94
 #: src/chkslang.c:94
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "To fully utilize this program, you should upgrade the slang library to\n"
 "  version %s\n"
 msgstr ""
 "Для полноценного использования программы Вам необходимо обновить библиотеку\n"
+"slang до версии %s\n"
 
+# src/chkslang.c:95
+# src/chkslang.c:96
 #: src/chkslang.c:96
 msgid ""
 "This library is available via anonymous ftp from\n"
@@ -696,93 +963,130 @@ msgstr ""
 "Эта библиотека доступна на анонимном ftp сервере\n"
 "space.mit.edu в каталоге pub/davis/slang.\n"
 
+# src/chmap.c:152 src/chmap.c:159
+# src/chmap.c:152 src/chmap.c:159
 #: src/chmap.c:152 src/chmap.c:159
 #, c-format
 msgid "File error: %s --- message not posted."
 msgstr "Ошибка работы с файлом: %s --- сообщение не было отправлено."
 
+# src/chmap.c:171
+# src/chmap.c:171
 #: src/chmap.c:171
 msgid "Write Error. Disk Full? --- message not posted."
 msgstr "Ошибка записи. Диск переполнен? --- сообщение не было отправлено."
 
+# src/chmap.c:201
+# src/chmap.c:201
 #: src/chmap.c:201
 #, c-format
 msgid "  Default character set:     %s\n"
 msgstr "  Таблица символов по умолчанию:    %s\n"
 
+# src/chmap.c:203
+# src/chmap.c:203
 #: src/chmap.c:203
 msgid " SUPPORTED CHARACTER SETS:\n"
 msgstr " Поддерживаемые таблицы символов:\n"
 
+# src/chmap.c:244
+# src/chmap.c:244
 #: src/chmap.c:244
 #, c-format
 msgid "Unsupport character set: %s"
 msgstr "Неподдерживаемая таблица символов: %s"
 
+# src/decode.c:105
+# src/decode.c:105
 #: src/decode.c:105
 msgid "Error closing file.  File system full?"
 msgstr "Ошибка закрытия файла. Файловая система переполнена?"
 
+# src/decode.c:124
+# src/decode.c:124
 #: src/decode.c:124
 msgid "Unable to open /bin/sh\n"
 msgstr "Невозможно открыть /bin/sh\n"
 
+# src/decode.c:137
+# src/decode.c:137
 #: src/decode.c:137
 msgid "Error encountered while processing shell archive.\n"
 msgstr "Встречена ошибка во время работы над shell архивом.\n"
 
+# src/decode.c:166
+# src/decode.c:166
 #: src/decode.c:166
 #, c-format
 msgid "Unable to create %s\n"
 msgstr "Невозможно создать %s\n"
 
+# src/decode.c:170
+# src/decode.c:170
 #: src/decode.c:170
 #, c-format
 msgid "creating %s (%s)\n"
 msgstr "создание %s (%s)\n"
 
+# src/decode.c:799 src/decode.c:813
+# src/decode.c:799 src/decode.c:813
 #: src/decode.c:799 src/decode.c:813
 msgid "Unexpected end of file.\n"
 msgstr "Неожиданный конец файла.\n"
 
+# src/decode.c:876
+# src/decode.c:876
 #: src/decode.c:876
 #, c-format
 msgid "uuencode line appears corrupt: \"%s\""
 msgstr "Строка uuencode кажется испорченной: \"%s\""
 
+# src/decode.c:919
+# src/decode.c:919
 #: src/decode.c:919
 #, c-format
 msgid "write to file failed (%u/%u bytes)\n"
 msgstr "ошибка записи в файл (%u/%u байт)\n"
 
+# src/decode.c:1030
+# src/decode.c:1030
 #: src/decode.c:1030
 #, c-format
 msgid "Unable to open %s.\n"
 msgstr "Невозможно открыть %s.\n"
 
+# src/decode.c:1054
+# src/decode.c:1054
 #: src/decode.c:1054
 msgid "No more files found.\n"
 msgstr "Больше файлов не найдено.\n"
 
+# src/decode.c:1060
+# src/decode.c:1060
 #: src/decode.c:1060
 #, c-format
 msgid "Unable to chdir back to %s.\n"
 msgstr "Невозможно выполнить chdir обратно к %s.\n"
 
+# src/decode.c:1073
+# src/decode.c:1073
 #: src/decode.c:1073
 msgid "Usage: uudecode [-64] [--stdout] [--guess] [filename ...]\n"
 msgstr "Использование: uudecode [-64] [--stdout] [--guess] [filename ...]\n"
 
+# src/editscore.c:66
+# src/editscore.c:66
 #. Note to translators: The translated string needs to have 10 characters.
 #. * Each pair becomes a valid response for "Subject", "From", "References",
 #. * "Edit" and "Cancel" (in that order); you cannot use any of the default
 #. * characters for any other field than they originally stood for!
 #.
 #: src/editscore.c:66
-#, fuzzy
 msgid "SsFfRrEeCc"
-msgstr "SsFfRrРрПп"
+msgstr "ТтОоСсРрПп"
 
+# src/editscore.c:72
+# src/editscore.c:72
 #. Note to translators: The translated string needs to have 4 characters.
 #. * The two pairs become valid responses for "This group" and "All groups",
 #. * respectively. You cannot use any of the default characters for any other
@@ -792,206 +1096,287 @@ msgstr "SsFfRrРрПп"
 msgid "TtAa"
 msgstr "ДдВв"
 
+# src/editscore.c:76
+# src/editscore.c:76
 #: src/editscore.c:76
 msgid "A Score file has not been specified."
 msgstr "Файл score не был определен."
 
+# src/editscore.c:86
+# src/editscore.c:86
 #: src/editscore.c:86
-#, fuzzy
 msgid "Pick Score type: Subject, From, References, Edit, Cancel"
-msgstr "Выбор типа Score: Subject, From, References, Редактировать, Прервать"
+msgstr "Выбор Score: Тема, От, Ссылки, Редактировать, Прервать"
 
+# src/editscore.c:103
+# src/editscore.c:103
 #: src/editscore.c:103
 msgid "Which newsgroups: This group, All groups"
 msgstr "Выбор группы: Данная группа, Все групы"
 
+# src/editscore.c:111
+# src/editscore.c:111
 #: src/editscore.c:111
 msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
-msgstr ""
-"Истечение срока (ММ/ДД/ГГГГ, ДД-ММ-ГГГГ, +NN (дни) или оставьте пустым):"
+msgstr "Просрочка (ММ/ДД/ГГГГ, ДД-ММ-ГГГГ, +NN (дни) или оставьте пустым):"
 
+# src/group.c:374
+# src/group.c:374
 #: src/group.c:374
 #, c-format
 msgid "Selecting %s ..."
 msgstr "Выбирается %s ..."
 
+# src/group.c:386 src/group.c:524 src/group.c:1141
+# src/group.c:386 src/group.c:524 src/group.c:1141
 #: src/group.c:386 src/group.c:524 src/group.c:1141
 #, c-format
 msgid "Group %s is bogus%s."
 msgstr "Группа %s является фиктивной%s."
 
+# src/group.c:387 src/group.c:1142
+# src/group.c:387 src/group.c:1142
 #: src/group.c:387 src/group.c:1142
-#, fuzzy
 msgid " - dropping it"
-msgstr " - пропускается"
+msgstr " - опускается"
 
+# src/group.c:394
+# src/group.c:394
 #: src/group.c:394
 #, c-format
 msgid "Could not enter group %s."
 msgstr "Невозможно войти в группу %s."
 
+# src/group.c:525
+# src/group.c:525
 #: src/group.c:525
 msgid " - ignoring it"
 msgstr " - игнорируется"
 
+# src/group.c:619
+# src/group.c:619
 #: src/group.c:619
 #, c-format
 msgid "Group %s is bogus - ignoring it."
 msgstr "Группа %s является фиктивной - игнорируется."
 
+# src/group.c:927
+# src/group.c:927
 #: src/group.c:927
 msgid "No articles to read."
 msgstr "Отсутствуют статьи для чтения."
 
+# src/group.c:949
+# src/group.c:949
 #: src/group.c:949
 #, c-format
 msgid "%s: Read how many? "
 msgstr "%s: Какое количество читать? "
 
+# src/group.c:1034
+# src/group.c:1034
 #: src/group.c:1034
 msgid "Do you really want to quit"
 msgstr "Вы действительно хотите выйти"
 
+# src/group.c:1043
+# src/group.c:1043
 #: src/group.c:1043
 msgid "Write to newsrc file failed.  Quit anyway"
 msgstr "Ошибка записи в newsrc файл. Выйти несмотря на это"
 
+# src/group.c:1056 src/group.c:1293
+# src/group.c:1056 src/group.c:1293
 #: src/group.c:1056 src/group.c:1293
 msgid "End of Buffer."
 msgstr "Конец буфера."
 
+# src/group.c:1067
+# src/group.c:1067
 #: src/group.c:1067
 msgid "Top of Buffer."
 msgstr "Начало буфера."
 
+# src/group.c:1128
+# src/group.c:1128
 #: src/group.c:1128
 msgid "Server connection dropped."
-msgstr "Соединение с сервером сорвано."
+msgstr "Соединение с сервером прервано."
 
+# src/group.c:1169 src/group.c:2668
+# src/group.c:1169 src/group.c:2668
 #: src/group.c:1169 src/group.c:2668
 #, c-format
 msgid "Checking news%s ..."
 msgstr "Проверка новостей%s ..."
 
+# src/group.c:1170 src/group.c:2669
+# src/group.c:1170 src/group.c:2669
 #: src/group.c:1170 src/group.c:2669
 msgid " via active file"
 msgstr " через active файл"
 
+# src/group.c:1224
+# src/group.c:1224
 #: src/group.c:1224
 msgid " Search: "
 msgstr "Поиск: "
 
+# src/group.c:1238
+# src/group.c:1238
 #: src/group.c:1238
-#, fuzzy
 msgid "Search wrapped."
-msgstr "Поиск ... обернут."
+msgstr "Поиск свернут."
 
+# src/group.c:1267
+# src/group.c:1267
 #: src/group.c:1267
 #, c-format
 msgid "Group %s does not exist."
 msgstr "Группа %s не существует."
 
+# src/group.c:1283
+# src/group.c:1283
 #: src/group.c:1283
 msgid "Add group: "
 msgstr "Добавить группу: "
 
+# src/group.c:1354
+# src/group.c:1354
 #: src/group.c:1354
 #, c-format
 msgid "Moving %s. Press RETURN when finished."
-msgstr "Перемещение %s. Нажмите ENTER когда закончите."
+msgstr "Перемещение %s. Нажмите ENTER по окончании."
 
+# src/group.c:1437
+# src/group.c:1437
 #: src/group.c:1437
 msgid "Subscribe pattern: "
-msgstr "Подписаться по маске"
+msgstr "Подписаться по шаблону"
 
+# src/group.c:1466
+# src/group.c:1466
 #: src/group.c:1466
 #, c-format
 msgid "Mark %s as read"
 msgstr "Пометить %s как прочитанную"
 
+# src/group.c:1470
+# src/group.c:1470
 #: src/group.c:1470
 msgid "Group marked as read."
 msgstr "Группа помечена как прочитанная."
 
+# src/group.c:1481
+# src/group.c:1481
 #: src/group.c:1481
 #, c-format
 msgid "Mark %s as un-read"
 msgstr "Пометить %s как непрочитанную"
 
+# src/group.c:1485
+# src/group.c:1485
 #: src/group.c:1485
 msgid "Group marked as un-read."
 msgstr "Группа помечена как непрочитанная."
 
+# src/group.c:1508
+# src/group.c:1508
 #: src/group.c:1508
 msgid "Un-Subscribe pattern: "
-msgstr "Отписаться по маске: "
+msgstr "Отписаться по шаблону: "
 
+# src/group.c:1575
+# src/group.c:1575
 #: src/group.c:1575
 msgid "List Groups (e.g., comp*unix*): "
 msgstr "Вывести список групп (например, comp*unix*): "
 
+# src/group.c:1724
+# src/group.c:1724
 #: src/group.c:1724
 msgid "No unread articles."
 msgstr "Отсутствуют непрочитанные статьи."
 
+# src/group.c:1736 src/post.c:1114
+# src/group.c:1736 src/post.c:1114
 #: src/group.c:1736 src/post.c:1114
 msgid "Posting not allowed."
 msgstr "Отправка не разрешена."
 
+# src/group.c:1747
+# src/group.c:1747
 #: src/group.c:1747
 msgid "Are you sure that you want to post"
 msgstr "Вы уверены, что хотите отправить статью"
 
+# src/group.c:1757
+# src/group.c:1757
 #: src/group.c:1757
 msgid "Newsgroup: "
 msgstr "Группа: "
 
+# src/group.c:1761
+# src/group.c:1761
 #: src/group.c:1761
 msgid "Followup-To: "
-msgstr ""
+msgstr "Ответ-В:"
 
+# src/group.c:1766
+# src/group.c:1766
 #: src/group.c:1766
 msgid "Subject: "
 msgstr "Тема: "
 
+# src/group.c:1780
+# src/group.c:1780
 #. Note to translators: Here, "fF" means "full", "sS" is "simple",
 #. * "nN" means "none" and "cC" is "cancel".
 #. * As always, don't change the length of the string; you cannot use
 #. * the default characters for different fields.
 #.
 #: src/group.c:1780
-#, fuzzy
 msgid "fFsSnNcC"
 msgstr "лЛсСнНпП"
 
+# src/group.c:1787
+# src/group.c:1787
 #: src/group.c:1787
-#, fuzzy
 msgid "Select scoring mode: Full, Simple, None, Cancel"
 msgstr "Выберите scoring режим: ПоЛный, ПроСтой, Никакого, Прервать"
 
+# src/group.c:1795
+# src/group.c:1795
 #: src/group.c:1795
-#, fuzzy
 msgid "Full Header Scoring enabled."
-msgstr "Разрешен scoring с полными заголовками."
+msgstr "Включен scoring при полных заголовках."
 
+# src/group.c:1800
+# src/group.c:1800
 #: src/group.c:1800
-#, fuzzy
 msgid "Expensive Scoring disabled."
-msgstr "Дорогой scoring выключен."
+msgstr "Высокий scoring выключен."
 
+# src/group.c:1805
+# src/group.c:1805
 #: src/group.c:1805
-#, fuzzy
 msgid "Scoring disabled."
 msgstr "Scoring выключен."
 
+# src/group.c:1823
+# src/group.c:1823
 #: src/group.c:1823
 msgid "No changes need to be saved."
-msgstr "Отсутствуют изменения, нуждающиеся в сохранении."
+msgstr "Отсутствуют изменения для сохранения."
 
+# src/group.c:2014
+# src/group.c:2014
 #: src/group.c:2014
 msgid "Unable to create group keymap!"
 msgstr "Невозможно создать расскладку клавиатуры 'Group'!"
 
+# src/group.c:2172
+# src/group.c:2172
 #: src/group.c:2172
 #, c-format
 msgid ""
@@ -1001,6 +1386,8 @@ msgstr ""
 "Невозможно создать файл описаний групп:\n"
 "%s\n"
 
+# src/group.c:2176
+# src/group.c:2176
 #: src/group.c:2176
 #, c-format
 msgid ""
@@ -1010,6 +1397,8 @@ msgstr ""
 "\n"
 "Создание файла описаний %s.\n"
 
+# src/group.c:2177
+# src/group.c:2177
 #: src/group.c:2177
 msgid ""
 "Getting newsgroup descriptions from server.\n"
@@ -1018,42 +1407,58 @@ msgstr ""
 "Чтение описаний групп с сервера.\n"
 "Замечание: этот шаг может занять время, если у Вас медленное соединение!!!\n"
 
+# src/group.c:2184
+# src/group.c:2184
 #: src/group.c:2184
 msgid "Server failed on list newsgroups command."
 msgstr "Ошибка сервера во время выполнения команды list newsgroups."
 
+# src/group.c:2199
+# src/group.c:2199
 #: src/group.c:2199
 msgid "Error reading line from server"
 msgstr "Ошибка чтения строки с сервера."
 
+# src/group.c:2330
+# src/group.c:2330
 #: src/group.c:2330
 msgid "Checking for new groups ..."
 msgstr "Проверка на наличие новых групп ..."
 
+# src/group.c:2388 src/slrnpull.c:2092
+# src/group.c:2388 src/slrnpull.c:2092
 #: src/group.c:2388 src/slrnpull.c:2092
 msgid "Server does not implement NEWGROUPS command."
 msgstr "Сервер не поддерживает команду NEWGROUPS."
 
+# src/group.c:2392 src/slrnpull.c:2096
+# src/group.c:2392 src/slrnpull.c:2096
 #: src/group.c:2392 src/slrnpull.c:2096
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Server failed to return proper response to NEWGROUPS:\n"
 "%s\n"
 msgstr ""
-"Ошибка сервера ... NEWGROUPS:\n"
+"Ошибка сервера при возврате подходящего ответа на NEWGROUPS:\n"
 "%s\n"
 
+# src/group.c:2406 src/group.c:2519
+# src/group.c:2406 src/group.c:2519
 #: src/group.c:2406 src/group.c:2519
 msgid "Read from server failed"
 msgstr "Ошибка чтения с сервера"
 
+# src/group.c:2417
+# src/group.c:2417
 #: src/group.c:2417
 #, c-format
 msgid "%d new newsgroup(s) found."
 msgstr "Найдено новых групп: %d."
 
+# src/group.c:2425
+# src/group.c:2425
 #: src/group.c:2425
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s appears corrupt.\n"
 "I expected to see: NEWGROUPS yymmdd hhmmss GMT\n"
@@ -1063,20 +1468,27 @@ msgstr ""
 "Ожидается: NEWGROUPS ггммдд ччммсс GMT\n"
 "Файл будет исправлен для Вас.\n"
 
+# src/group.c:2437
+# src/group.c:2437
 #: src/group.c:2437
 #, c-format
 msgid "Unable to open %s to record date."
 msgstr "Невозможно открыть %s для записи даты."
 
+# src/group.c:2505
+# src/group.c:2505
 #: src/group.c:2505
 msgid "Server failed LIST ACTIVE - authorization missing."
-msgstr ""
-"Ошибка сервера во время выполнения LIST ACTIVE - отсутствие авторизации."
+msgstr "Ошибка сервера при выполнении LIST ACTIVE - отсутствие авторизации."
 
+# src/group.c:2506
+# src/group.c:2506
 #: src/group.c:2506
 msgid "Server failed LIST ACTIVE."
 msgstr "Ошибка сервера во время выполнения LIST ACTIVE."
 
+# src/group.c:2619
+# src/group.c:2619
 #: src/group.c:2619
 #, c-format
 msgid ""
@@ -1086,15 +1498,21 @@ msgstr ""
 "\n"
 "* Файл, сохраненный автоматически, новее самого файла.\n"
 
+# src/group.c:2621
+# src/group.c:2621
 #: src/group.c:2621
 msgid "Do you want to restore your newsrc from the autosave version"
 msgstr "Вы хотите восстановить Ваш newsrc из автоматически сохраненной версии"
 
+# src/group.c:2682 src/post.c:1298 src/slrnpull.c:1528
+# src/group.c:2682 src/post.c:1298 src/slrnpull.c:1528
 #: src/group.c:2682 src/post.c:1298 src/slrnpull.c:1528
 #, c-format
 msgid "Unable to create %s."
 msgstr "Невозможно создать %s."
 
+# src/group.c:2685
+# src/group.c:2685
 #: src/group.c:2685
 msgid ""
 "\n"
@@ -1105,203 +1523,281 @@ msgstr ""
 "--Следующий шаг может занять время, если NNTP соединение медленное.--\n"
 "\n"
 
+# src/group.c:2686
+# src/group.c:2686
 #: src/group.c:2686
 #, c-format
 msgid "Creating %s."
 msgstr "Создание %s."
 
+# src/group.c:2697
+# src/group.c:2697
 #: src/group.c:2697
 msgid "Unable to read newsrc file"
 msgstr "Невозможно прочитать newsrc файл"
 
+# src/group.c:2790
+# src/group.c:2790
 #: src/group.c:2790
 #, c-format
 msgid "Writing %s ..."
 msgstr "Записывается %s ..."
 
+# src/group.c:2812
+# src/group.c:2812
 #: src/group.c:2812
 #, c-format
 msgid "Unable to open file %s for writing."
 msgstr "Невозможно открыть файл %s для записи."
 
+# src/group.c:2916
+# src/group.c:2916
 #: src/group.c:2916
 #, c-format
 msgid "Writing %s ... done."
 msgstr "Запись %s ... завершена."
 
+# src/group.c:2924
+# src/group.c:2924
 #: src/group.c:2924
 #, c-format
 msgid "Write to %s failed! Disk Full?"
 msgstr "Ошибка записи в %s. Диск переполнен?"
 
+# src/group.c:2939
+# src/group.c:2939
 #: src/group.c:2939
 msgid ""
 "SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
 msgstr ""
-"SPC:Выбрать p:Отправить c:Захват l:Список q:Выйти ^R:Обновить (u)s:(От)"
+"SPC:Выбрать p:Отправить c:Захват l:Список q:Выход ^R:Обновить (u)s:(От)"
 "Подписать"
 
+# src/group.c:3111
+# src/group.c:3111
 #: src/group.c:3111
 msgid "-%D-News Groups: %s %-20g -- %L (%P)"
-msgstr "[-%D-] Группы от: %s %-20g -- %L (%P)"
+msgstr "[-%D-] Группы с: %s %-20g -- %L (%P)"
 
+# src/group.c:3143 src/group.c:3181 src/interp.c:360
+# src/group.c:3143 src/group.c:3181 src/interp.c:360
 #: src/group.c:3143 src/group.c:3181 src/interp.c:360
 msgid "To use this feature, please update s-lang and recompile slrn."
-msgstr ""
-"Для использования этой особенности, пожалуйста обновите s-lang и "
-"перекомпилируйте slrn."
+msgstr "Для работы этой особенности, обновите s-lang и перекомпилируйте slrn."
 
+# src/group.c:3189
+# src/group.c:3189
 #: src/group.c:3189
 msgid "Array of string expected."
 msgstr "Ожидается множество строк."
 
+# src/group.c:3195
+# src/group.c:3195
 #: src/group.c:3195
 msgid "One-dimensional array expected."
 msgstr "Ожидается одномерное множество."
 
+# src/grplens.c:194
+# src/grplens.c:194
 #: src/grplens.c:194
 msgid "User is Unregistered"
-msgstr "Пользователь является Незарегистрированным"
+msgstr "Пользователь незарегистрирован"
 
+# src/grplens.c:195
+# src/grplens.c:195
 #: src/grplens.c:195
 msgid "Service is Busy"
 msgstr "Сервис занят"
 
+# src/grplens.c:196
+# src/grplens.c:196
 #: src/grplens.c:196
 msgid "Service Unavailable"
 msgstr "Сервис недоступен"
 
+# src/grplens.c:197
+# src/grplens.c:197
 #: src/grplens.c:197
 msgid "Already logged in"
 msgstr "Регистрация в системе уже была"
 
+# src/grplens.c:198
+# src/grplens.c:198
 #: src/grplens.c:198
-#, fuzzy
 msgid "Server failed to return proper response"
-msgstr "Ошибка сервера..."
+msgstr "Ошибка сервера при возврате соответствующего ответа"
 
+# src/grplens.c:199
+# src/grplens.c:199
 #: src/grplens.c:199
 msgid "Not enough memory"
 msgstr "Недостаточно памяти"
 
+# src/grplens.c:200
+# src/grplens.c:200
 #: src/grplens.c:200
 msgid "Error writing to server"
 msgstr "Ошибка записи на сервер"
 
+# src/grplens.c:201
+# src/grplens.c:201
 #: src/grplens.c:201
 msgid "Error reading from server"
 msgstr "Ошибка чтения с сервера"
 
+# src/grplens.c:202
+# src/grplens.c:202
 #: src/grplens.c:202
-#, fuzzy
 msgid "Token is invalid"
 msgstr "Неверный токен"
 
+# src/grplens.c:203
+# src/grplens.c:203
 #: src/grplens.c:203
-#, fuzzy
 msgid "Newsgroup not supported"
-msgstr "GroupLens nie wspiera tej grupy dyskusyjnej"
+msgstr "Группа не поддерживается"
 
+# src/grplens.c:206
+# src/grplens.c:206
 #: src/grplens.c:206
 msgid "Unknown Error"
 msgstr "Неизвестная ошибка"
 
+# src/grplens.c:731
+# src/grplens.c:731
 #: src/grplens.c:731
 #, c-format
 msgid "Failed: %s"
 msgstr "Ошибка: %s"
 
+# src/grplens.c:888
+# src/grplens.c:888
 #: src/grplens.c:888
 #, c-format
 msgid "%s usage: %s [default] PSEUDONYM"
 msgstr "%s использование: %s [default] PSEUDONYM"
 
+# src/grplens.c:896 src/grplens.c:908
+# src/grplens.c:896 src/grplens.c:908
 #: src/grplens.c:896 src/grplens.c:908
 #, c-format
 msgid "%s: expecting a single argument"
 msgstr "%s: ожидается только один аргумент"
 
+# src/grplens.c:950
+# src/grplens.c:950
 #: src/grplens.c:950
 msgid "Too many arguments"
 msgstr "Слишком много аргументов"
 
+# src/grplens.c:986 src/slrnpull.c:535
+# src/grplens.c:986 src/slrnpull.c:535
 #: src/grplens.c:986 src/slrnpull.c:535
 #, c-format
 msgid "Reading %s"
 msgstr "Чтение %s"
 
+# src/grplens.c:1000 src/grplens.c:1026
+# src/grplens.c:1000 src/grplens.c:1026
 #: src/grplens.c:1000 src/grplens.c:1026
 #, c-format
 msgid "Error processing line %u of %s"
 msgstr "Ошибка при обработке строки %u в %s"
 
+# src/grplens.c:1050
+# src/grplens.c:1050
 #: src/grplens.c:1050
-#, fuzzy, c-format
+#, c-format
 msgid "Checking to see if server %s:%d is alive..."
-msgstr "Проверяется ... живучесть сервера %s:%d..."
+msgstr "Проверяется работоспособность сервера %s:%d..."
 
+# src/grplens.c:1057
+# src/grplens.c:1057
 #: src/grplens.c:1057
 msgid "GroupLens support initialized."
 msgstr "Поддержка GroupLens инициализирована."
 
+# src/grplens.c:1096
+# src/grplens.c:1096
 #: src/grplens.c:1096
-#, fuzzy
 msgid "Logging out of GroupLens servers ..."
-msgstr "Выход ... из сервера GroupLens ..."
+msgstr "Выход из серверов GroupLens ..."
 
+# src/grplens.c:1145
+# src/grplens.c:1145
 #: src/grplens.c:1145
-#, fuzzy, c-format
+#, c-format
 msgid "Getting GroupLens predictions from %s:%d..."
-msgstr "Чтение ... GroupLens из %s:%d..."
+msgstr "Чтение предсказаний GroupLens из %s:%d..."
 
+# src/grplens.c:1195
+# src/grplens.c:1195
 #: src/grplens.c:1195
-#, fuzzy, c-format
+#, c-format
 msgid "Sending GroupLens ratings to %s:%d..."
-msgstr "WysyЁam oceny GroupLens na %s:%d..."
+msgstr "Отправка оценок GroupLens на %s:%d..."
 
+# src/help.c:41
+# src/help.c:41
 #: src/help.c:41
 msgid " More information about slrn can be found on its home page:"
 msgstr " Дополнительную информацию об slrn можно найти на домашней странице:"
 
+# src/help.c:42
+# src/help.c:42
 #: src/help.c:42
 msgid "   http://slrn.sourceforge.net/"
 msgstr ""
 
+# src/help.c:43
+# src/help.c:43
 #: src/help.c:43
 msgid " Questions not covered by the documentation can be posted to"
 msgstr " Вопросы, нерасмотренные в документации, могут быть заданы в:"
 
+# src/help.c:44
+# src/help.c:44
 #: src/help.c:44
 msgid "   news.software.readers"
 msgstr ""
 
+# src/help.c:46
+# src/help.c:46
 #: src/help.c:46
 msgid ""
 " Please email bug reports, suggestions or comments to the current maintainer,"
-msgstr ""
-" Пожалуйста, отзывы, рекомендации и замечания направляйте текущему "
-"разработчику:"
+msgstr " Отзывы, рекомендации и замечания направляйте текущему разработчику:"
 
+# src/help.c:47
+# src/help.c:47
 #: src/help.c:47
 msgid "   Thomas Schultz <tststs@gmx.de>"
 msgstr ""
 
+# src/help.c:48
+# src/help.c:48
 #: src/help.c:48
 msgid ""
 " The original author of this program is John E. Davis <davis@space.mit.edu>"
 msgstr " Первый автор этой программы: John E. Davis <davis@space.mit.edu>"
 
+# src/help.c:55 src/help.c:171
+# src/help.c:55 src/help.c:171
 #. begin makehelp(article) - do *NOT* modify this line
 #: src/help.c:55 src/help.c:171
 msgid ""
 " Note: The keys are case sensitive!  That is, 's' and 'S' are not the same."
 msgstr ""
-" Замечание: Клавиши чувствительны к регистру! 'S' и 's' - не одно и то же."
+" Замечание: клавиши чувствительны к регистру! 'S' и 's' - не одно и то же."
 
+# src/help.c:56
+# src/help.c:56
 #: src/help.c:56
 msgid "General movement:"
 msgstr "Основные перемещения:"
 
+# src/help.c:57
+# src/help.c:57
 #: src/help.c:57
 msgid ""
 "  n                  Go to the next unread article (or next group, if at "
@@ -1309,130 +1805,184 @@ msgid ""
 msgstr ""
 "  n                  Перейти к следующей непрочитанной статье (или группе)."
 
+# src/help.c:58
+# src/help.c:58
 #: src/help.c:58
 msgid "  p                  Go to the previous unread article."
 msgstr "  p                  Перейти к предыдущей непрочитанной статье."
 
+# src/help.c:59
+# src/help.c:59
 #: src/help.c:59
 msgid "  N, ESC RIGHT       Skip to next group."
 msgstr "  N, ESC RIGHT       Перейти к следующей группе."
 
+# src/help.c:60
+# src/help.c:60
 #: src/help.c:60
 msgid "  ESC LEFT           Go to previous group."
 msgstr "  ESC LEFT           Перейти к предыдущей группе."
 
+# src/help.c:61
+# src/help.c:61
 #: src/help.c:61
 msgid "  !                  Go to the next article with a high score."
 msgstr "  !                  Перейти к следующей статье с высоким score."
 
+# src/help.c:62
+# src/help.c:62
 #: src/help.c:62
 msgid "  =                  Go to the next article with the same subject."
 msgstr "  =                  Перейти к следующей статье с такой же темой."
 
+# src/help.c:63
+# src/help.c:63
 #: src/help.c:63
 msgid "  L                  Go to the last read article and display it."
 msgstr ""
 "  L                  Перейти к последней прочитанной статье и вывести ее."
 
+# src/help.c:64 src/help.c:180
+# src/help.c:64 src/help.c:180
 #: src/help.c:64 src/help.c:180
 msgid "Actions:"
 msgstr "Действия:"
 
+# src/help.c:65
+# src/help.c:65
 #: src/help.c:65
 msgid "  P                  Post a new article (no followup)."
 msgstr "  P                  Отправить новую статью (не отвечать)."
 
+# src/help.c:66
+# src/help.c:66
 #: src/help.c:66
 msgid "  ESC P              Post or edit a postponed article."
 msgstr "  ESC P              Отправить или редактировать отложенную статью."
 
+# src/help.c:67
+# src/help.c:67
 #: src/help.c:67
 msgid "  f                  Post a followup to the current article."
 msgstr "  f                  Отправить ответ на текущую статью."
 
+# src/help.c:68
+# src/help.c:68
 #: src/help.c:68
 msgid "      ESC 1 f        Include all headers in the followup."
 msgstr "      ESC 1 f        Включить все заголовки в ответ."
 
+# src/help.c:69
+# src/help.c:69
 #: src/help.c:69
 msgid ""
 "      ESC 2 f        Followup without modifying (e.g. quoting) the article."
 msgstr ""
 "      ESC 2 f        Ответить без изменений (например, без цитирования)."
 
+# src/help.c:70
+# src/help.c:70
 #: src/help.c:70
 msgid "  r                  Reply to poster (via email)."
 msgstr "  r                  Ответить автору (по e-mail)."
 
+# src/help.c:71
+# src/help.c:71
 #: src/help.c:71
 msgid ""
 "  F                  Forward the current article to someone (via email)."
 msgstr "  F                  Переслать текущую статью кому-либо (по e-mail)."
 
+# src/help.c:72
+# src/help.c:72
 #: src/help.c:72
 msgid ""
 "      ESC 1 F        Forward the current article (including all headers)."
 msgstr "      ESC 1 F        Переслать текущую статью (включая все заголовки)."
 
+# src/help.c:73
+# src/help.c:73
 #: src/help.c:73
-#, fuzzy
 msgid "  ESC Ctrl-S         Supersede article (you have to be the author)."
 msgstr "  ESC Ctrl-S         Заменить статью (Вы должны быть автором)."
 
+# src/help.c:74
+# src/help.c:74
 #: src/help.c:74
-#, fuzzy
 msgid "  ESC Ctrl-C         Cancel article (you have to be the author)."
 msgstr "  ESC Ctrl-C         Отменить статью (Вы должны быть автором)."
 
+# src/help.c:75
+# src/help.c:75
 #: src/help.c:75
 msgid "  o                  Save article, tagged articles or thread to file."
 msgstr ""
 "  o                  Сохранить статью, отмеченные статьи или нить в файл."
 
+# src/help.c:76
+# src/help.c:76
 #: src/help.c:76
 msgid "  |                  Pipe article to an external program."
 msgstr "  |                  Направить статью в поток для внешней программы."
 
+# src/help.c:77
+# src/help.c:77
 #: src/help.c:77
 msgid "  y                  Print article (as displayed)."
 msgstr "  y                  Напечатать статью (как она выведена на экран)."
 
+# src/help.c:78
+# src/help.c:78
 #: src/help.c:78
-#, fuzzy
 msgid ""
 "      ESC 1 y        Print article (unwrapped and including hidden lines)."
 msgstr ""
-"      ESC 1 y        Напечатать статью (без ... обертки и включая скрытые "
-"строки)."
+"      ESC 1 y        Напечатать статью (развернуто и со скрытыми строками)."
 
+# src/help.c:80
+# src/help.c:80
 #: src/help.c:80
 msgid "  :                  Decode article, tagged articles or thread."
 msgstr "  :                  Декодировать статью, отмеченные статьи или нить."
 
+# src/help.c:82
+# src/help.c:82
 #: src/help.c:82
 msgid "  Ctrl-Z             Suspend slrn."
 msgstr "  Ctrl-Z             Приостановить slrn."
 
+# src/help.c:83
+# src/help.c:83
 #: src/help.c:83
 msgid "  q                  Return to group display."
 msgstr "  q                  Возвратиться к отображению групп."
 
+# src/help.c:84
+# src/help.c:84
 #: src/help.c:84
 msgid "  Q                  Quit slrn immediately."
 msgstr "  Q                  Срочный выход из slrn."
 
+# src/help.c:85
+# src/help.c:85
 #: src/help.c:85
 msgid "Moving in the article pager:"
 msgstr "Перемещения внутри окна статьи:"
 
+# src/help.c:86
+# src/help.c:86
 #: src/help.c:86
 msgid "  ESC DOWN           Scroll article down one line."
 msgstr "  ESC DOWN           Пролистать статью вниз на одну строку."
 
+# src/help.c:87
+# src/help.c:87
 #: src/help.c:87
 msgid "  ESC UP             Scroll article up one line."
 msgstr "  ESC UP             Пролистать статью на одну строку вверх."
 
+# src/help.c:88
+# src/help.c:88
 #: src/help.c:88
 msgid ""
 "  SPACE              Scroll article down one page (or select next, if at "
@@ -1441,109 +1991,160 @@ msgstr ""
 "  SPACE              Пролистать статью вниз на одну страницу / выбрать "
 "следующую."
 
+# src/help.c:89
+# src/help.c:89
 #: src/help.c:89
 msgid "  DELETE, b          Scroll article up one page."
 msgstr "  DELETE, b          Пролистать статью вверх на одну страницу."
 
+# src/help.c:90
+# src/help.c:90
 #: src/help.c:90
 msgid "  >                  Move to end of the article."
 msgstr "  >                  Переместиться в конец статьи."
 
+# src/help.c:91
+# src/help.c:91
 #: src/help.c:91
 msgid "  <                  Move to beginning of the article."
 msgstr "  <                  Переместиться в начало статьи."
 
+# src/help.c:92
+# src/help.c:92
 #: src/help.c:92
 msgid "  LEFT               Pan article to the left."
 msgstr "  LEFT               Переместить статью влево."
 
+# src/help.c:93
+# src/help.c:93
 #: src/help.c:93
 msgid "  RIGHT              Pan article to the right."
 msgstr "  RIGHT              Перемесить статью вправо."
 
+# src/help.c:94
+# src/help.c:94
 #: src/help.c:94
 msgid "  /                  Search forward in the article."
 msgstr "  /                  Поиск внутри статьи отсюда к концу."
 
+# src/help.c:95
+# src/help.c:95
 #: src/help.c:95
-#, fuzzy
 msgid "  TAB                Skip beyond quoted text."
 msgstr "  TAB                Перейти за цитируемый текст."
 
+# src/help.c:96
+# src/help.c:96
 #: src/help.c:96
 msgid "  g                  Skip to next digest."
 msgstr "  g                  Перейти к следующему дайджесту."
 
+# src/help.c:97
+# src/help.c:97
 #: src/help.c:97
 msgid "Moving in the header display:"
 msgstr "Перемещения внутри окна заголовков:"
 
+# src/help.c:98
+# src/help.c:98
 #: src/help.c:98
 msgid "  DOWN, Ctrl-N       Move to the next article."
 msgstr "  DOWN, Ctrl-N       Перейти к следующей статье."
 
+# src/help.c:99
+# src/help.c:99
 #: src/help.c:99
 msgid "  UP, Ctrl-P         Move to the previous article."
 msgstr "  UP, Ctrl-P         Перейти к предыдущей статье."
 
+# src/help.c:100
+# src/help.c:100
 #: src/help.c:100
 msgid "  Ctrl-D             Scroll down one page."
 msgstr "  Ctrl-D             Пролистать вниз на одну страницу."
 
+# src/help.c:101
+# src/help.c:101
 #: src/help.c:101
 msgid "  Ctrl-U             Scroll up one page."
 msgstr "  Ctrl-U             Пролистать вверх на одну страницу."
 
+# src/help.c:102
+# src/help.c:102
 #: src/help.c:102
 msgid "  ESC >              Go to the last article in group."
 msgstr "  ESC >              Перейти к последней статье в группе."
 
+# src/help.c:103
+# src/help.c:103
 #: src/help.c:103
 msgid "  ESC <              Go to the first article in group."
 msgstr "  ESC <              Перейти к первой статье в группе."
 
+# src/help.c:104
+# src/help.c:104
 #: src/help.c:104
 msgid "  j                  Jump to article (by server number)."
 msgstr "  j                  Перейти к статье (по номеру на сервере)."
 
+# src/help.c:105
+# src/help.c:105
 #: src/help.c:105
 msgid "  a                  Author search forward."
 msgstr "  a                  Поиск по автору отсюда к концу."
 
+# src/help.c:106
+# src/help.c:106
 #: src/help.c:106
 msgid "  A                  Author search backward."
 msgstr "  A                  Поиск по автору отсюда к началу."
 
+# src/help.c:107
+# src/help.c:107
 #: src/help.c:107
 msgid "  s                  Subject search forward."
 msgstr "  s                  Поиск по теме отсюда к концу."
 
+# src/help.c:108
+# src/help.c:108
 #: src/help.c:108
 msgid "  S                  Subject search backward."
 msgstr "  S                  Поиск по теме отсюда к началу."
 
+# src/help.c:109
+# src/help.c:109
 #: src/help.c:109
 msgid "Marking as read/unread:"
 msgstr "Установка меток, таких как прочитанная/непрочитанная:"
 
+# src/help.c:110
+# src/help.c:110
 #: src/help.c:110
 msgid "  d                  Mark article or collapsed thread as read."
 msgstr ""
 "  d                  Отметить статью или свернутую нить как прочитанную."
 
+# src/help.c:111
+# src/help.c:111
 #: src/help.c:111
 msgid "  u                  Mark article or collapsed thread as unread."
 msgstr ""
 "  u                  Отметить статью или свернутую нить как непрочитанную."
 
+# src/help.c:112
+# src/help.c:112
 #: src/help.c:112
 msgid "  ESC d              Mark entire (sub-)thread as read."
 msgstr "  ESC d              Отметить всю (суб)нить как прочитанную."
 
+# src/help.c:113
+# src/help.c:113
 #: src/help.c:113
 msgid "  c                  Catchup - mark all articles as read."
 msgstr "  c                  Захватить - пометить все статьи как прочитанные."
 
+# src/help.c:114
+# src/help.c:114
 #: src/help.c:114
 msgid ""
 "  C                  Mark all articles up to the current position as read."
@@ -1551,11 +2152,15 @@ msgstr ""
 "  C                  Отметить все статьи выше текущей позиции как "
 "прочитанные."
 
+# src/help.c:115
+# src/help.c:115
 #: src/help.c:115
 msgid "  ESC u              Un-Catchup - mark all articles as unread."
 msgstr ""
 "  ESC u              Снять захват - отметить все статьи как непрочитанные."
 
+# src/help.c:116
+# src/help.c:116
 #: src/help.c:116
 msgid ""
 "  ESC U              Mark all articles up to the current position as unread."
@@ -1563,658 +2168,930 @@ msgstr ""
 "  ESC U              Отметить все статьи выше текущей позиции как "
 "непрочитанные."
 
+# src/help.c:117
+# src/help.c:117
 #: src/help.c:117
 msgid "  x                  Remove all non-tagged read articles from the list."
 msgstr ""
 "  x                  Удалить все непомеченные прочитанные статьи из списка."
 
+# src/help.c:118
+# src/help.c:118
 #: src/help.c:118
 msgid "Article pager commands:"
 msgstr "Команды окна статей:"
 
+# src/help.c:119
+# src/help.c:119
 #: src/help.c:119
 msgid "  t                  Show full headers (on/off)."
 msgstr "  t                  Показать полные заголовки (включить/выключить)."
 
+# src/help.c:120
+# src/help.c:120
 #: src/help.c:120
 msgid "  ESC r              Decrypt ROT-13 (on/off)."
 msgstr "  ESC r              Дешифровать ROT13 (включить/выключить)."
 
+# src/help.c:121
+# src/help.c:121
 #: src/help.c:121
 msgid "  T                  Display quoted lines (on/off)."
 msgstr "  T                  Вывести строки цитирования (включить/выключить)."
 
+# src/help.c:122
+# src/help.c:122
 #: src/help.c:122
 msgid "  \\                  Show signature (on/off)."
 msgstr "  \\                  Показать подпись (включить/выключить)."
 
+# src/help.c:123
+# src/help.c:123
 #: src/help.c:123
-#, fuzzy
 msgid "  W                  Wrap long lines (on/off)."
-msgstr "  W                  Обернуть... длинные строки (включить/выключить)."
+msgstr "  W                  Свернуть длинные строки (включить/выключить)."
 
+# src/help.c:125
+# src/help.c:125
 #: src/help.c:125
-#, fuzzy
 msgid "  ESC ?              Reveal spoilers (on/off)."
-msgstr "  ESC ?              (включить/выключить)."
+msgstr "  ESC ?              Обнаружение spoilers (включить/выключить)."
 
+# src/help.c:127
+# src/help.c:127
 #: src/help.c:127
 msgid "  ]                  Show PGP signature (on/off)."
 msgstr "  ]                  Показать PGP подпись (включить/выключить)."
 
+# src/help.c:129
+# src/help.c:129
 #: src/help.c:129
-#, fuzzy
 msgid "  [                  Show verbatim marks (on/off)."
-msgstr "  [                  Показать ... метки (включить/выключить)."
+msgstr "  [                  Показать дословные метки (включить/выключить)."
 
+# src/help.c:131
+# src/help.c:131
 #: src/help.c:131
 msgid "  Ctrl-^             Enlarge the article window."
 msgstr "  Ctrl-^             Расширить окно статьи."
 
+# src/help.c:132
+# src/help.c:132
 #: src/help.c:132
 msgid "  ^                  Shrink the article window."
 msgstr "  ^                  Сузить окно статьи."
 
+# src/help.c:133
+# src/help.c:133
 #: src/help.c:133
 msgid "  z                  Maximize / Unmaximize the article window."
 msgstr "  z                  Максимизировать / восстановить окно статьи."
 
+# src/help.c:134
+# src/help.c:134
 #: src/help.c:134
 msgid "  h                  Hide / Show the article window."
 msgstr "  h                  Скрыть / показать окно статьи."
 
+# src/help.c:135
+# src/help.c:135
 #: src/help.c:135
 msgid "  U                  Search for URLs and follow them."
 msgstr "  U                  Поиск URL и следовать по нему."
 
+# src/help.c:136
+# src/help.c:136
 #: src/help.c:136
 msgid "Header window commands:"
 msgstr "Команды окна заголовков:"
 
+# src/help.c:137
+# src/help.c:137
 #: src/help.c:137
 msgid "  ESC t              Collapse / Uncollapse thread."
 msgstr "  ESC t              Свернуть / развернуть нить"
 
+# src/help.c:138
+# src/help.c:138
 #: src/help.c:138
 msgid "      ESC 1 ESC t    Collapse / Uncollapse all threads."
 msgstr "      ESC 1 ESC t    Свернуть / развернуть все нити."
 
+# src/help.c:139
+# src/help.c:139
 #: src/help.c:139
 msgid "  ESC a              Toggle between header display formats."
 msgstr "  ESC a              Переключиться между форматами вывода заголовков."
 
+# src/help.c:140
+# src/help.c:140
 #: src/help.c:140
 msgid "  ESC s              Select threading and sorting method."
 msgstr "  ESC s              Выбор метода сортировки и построения нитей."
 
+# src/help.c:141
+# src/help.c:141
 #: src/help.c:141
 msgid "Miscellaneous actions:"
 msgstr "Другие действия:"
 
+# src/help.c:142
+# src/help.c:142
 #: src/help.c:142
-#, fuzzy
 msgid "  K                  Create a scorefile entry interactively."
-msgstr "  K                  Создать интерактивно запись в scorefile."
+msgstr "  K                  Создать интерактивно вхождение в scorefile."
 
+# src/help.c:143
+# src/help.c:143
 #: src/help.c:143
-#, fuzzy
 msgid "      ESC 1 K        Edit scorefile."
 msgstr "      ESC 1 K        Редактировать scorefile."
 
+# src/help.c:144
+# src/help.c:144
 #: src/help.c:144
-#, fuzzy
 msgid ""
 "  v                  Show which scorefile rules matched the current article."
 msgstr "  v                  Показать правила из scorefile для текущей статьи."
 
+# src/help.c:145
+# src/help.c:145
 #: src/help.c:145
 msgid "  * The following five commands query the server if necessary:"
 msgstr "  * Следующие 5 команд обращаются к серверу, если это необходимо:"
 
+# src/help.c:146
+# src/help.c:146
 #: src/help.c:146
 msgid "  ESC l              Locate article by its Message-ID."
 msgstr "  ESC l              Найти статью по ее Message-Id."
 
+# src/help.c:147
+# src/help.c:147
 #: src/help.c:147
 msgid "  ESC Ctrl-P         Find all children of current article."
 msgstr "  ESC Ctrl-P         Найти всех потомков текущей статьи."
 
+# src/help.c:148
+# src/help.c:148
 #: src/help.c:148
 msgid "  ESC p              Find parent article."
 msgstr "  ESC p              Найти родительскую статью."
 
+# src/help.c:149
+# src/help.c:149
 #: src/help.c:149
 msgid ""
 "      ESC 1 ESC p    Reconstruct thread (slow when run on large threads)."
 msgstr ""
 "      ESC 1 ESC p    Реконструировать нить (медленно при больших нитях)."
 
+# src/help.c:150
+# src/help.c:150
 #: src/help.c:150
 msgid ""
 "      ESC 2 ESC p    Reconstruct thread (faster, may not find all articles)."
 msgstr ""
-"      ESC 2 ESC p    Реконструировать нить (быстро, но возможен пропуск "
-"статей)."
+"      ESC 2 ESC p    Реконструировать нить (быстро, возможен пропуск статей)."
 
+# src/help.c:151
+# src/help.c:151
 #: src/help.c:151
 msgid "  ;                  Set a mark at the current article."
 msgstr "  ;                  Установить метку на текущую статью."
 
+# src/help.c:152
+# src/help.c:152
 #: src/help.c:152
 msgid "  ,                  Return to previously marked article."
 msgstr "  ,                  Возвратиться к отмеченной перед этим статье."
 
+# src/help.c:153
+# src/help.c:153
 #: src/help.c:153
 msgid "  #                  Numerically tag article (for saving / decoding)."
 msgstr ""
-"  #                  Пометить статью числом (для сохранения / декодирвания)."
+"  #                  Пометить статью числом (для сохранения / декодирования)."
 
+# src/help.c:154
+# src/help.c:154
 #: src/help.c:154
 msgid "  ESC #              Remove all numerical tags."
 msgstr "  ESC #              Снять все числовые метки."
 
+# src/help.c:155
+# src/help.c:155
 #: src/help.c:155
 msgid "  *                  Protect article from catchup commands."
 msgstr "  *                  Предохранить статью от команды захвата."
 
+# src/help.c:156
+# src/help.c:156
 #: src/help.c:156
 msgid "      ESC 1 *        Remove all protection marks."
 msgstr "      ESC 1 *        Снять все защитные метки."
 
+# src/help.c:157
+# src/help.c:157
 #: src/help.c:157
 msgid "  .                  Repeat last key sequence."
 msgstr "  .                  Повторить последнюю последовательность клавиш."
 
+# src/help.c:158
+# src/help.c:158
 #: src/help.c:158
 msgid "  Ctrl-X ESC         Read line and interpret it as S-Lang."
 msgstr ""
 "  Ctrl-X ESC         Прочитать строку и интерпетировать как строку S-Lang."
 
+# src/help.c:160
+# src/help.c:160
 #: src/help.c:160
-#, fuzzy
 msgid "  0                  Rate article with GroupLens."
 msgstr "  0                  Оценить статью с помощью GroupLens."
 
+# src/help.c:162
+# src/help.c:162
 #: src/help.c:162
 msgid "  Ctrl-R, Ctrl-L     Redraw screen."
 msgstr "  Ctrl-R, Ctrl-L     Перерисовать экран."
 
+# src/help.c:163
+# src/help.c:163
 #: src/help.c:163
 msgid "  ?                  Display this help screen."
 msgstr "  ?                  Вывести экран помощи."
 
+# src/help.c:172
+# src/help.c:172
 #: src/help.c:172
 msgid "Cursor movement:"
 msgstr "Перемещения курсора:"
 
+# src/help.c:173
+# src/help.c:173
 #: src/help.c:173
 msgid "  DOWN                    Go to the next group."
 msgstr "  DOWN                    Перейти к следующей группе."
 
+# src/help.c:174
+# src/help.c:174
 #: src/help.c:174
 msgid "  UP                      Go to the previous group."
 msgstr "  UP                      Перейти к предыдущей группе."
 
+# src/help.c:175
+# src/help.c:175
 #: src/help.c:175
 msgid "  Ctrl-V, Ctrl-D          Scroll to the next page."
 msgstr "  Ctrl-V, Ctrl-D          Пролистать на следующую страницу."
 
+# src/help.c:176
+# src/help.c:176
 #: src/help.c:176
 msgid "  ESC V, Ctrl-U           Scroll to the previous page."
 msgstr "  ESC V, Ctrl-U           Пролистать на предыдущую страницу."
 
+# src/help.c:177
+# src/help.c:177
 #: src/help.c:177
 msgid "  ESC <                   Go to the bottom of the list."
-msgstr "  ESC <                   Перейти в низ списка."
+msgstr "  ESC <                   Перейти к концу списка."
 
+# src/help.c:178
+# src/help.c:178
 #: src/help.c:178
 msgid "  ESC >                   Go to the top of the list."
-msgstr "  ESC >                   Перейти в верх списка."
+msgstr "  ESC >                   Перейти к началу списка."
 
+# src/help.c:179
+# src/help.c:179
 #: src/help.c:179
-#, fuzzy
 msgid "  /                       Group keyword search."
-msgstr "  /                       Поиск в группе по ключевому слову."
+msgstr "  /                       Поиск группы по ключевому слову."
 
+# src/help.c:181
+# src/help.c:181
 #: src/help.c:181
 msgid "  SPACE, RETURN           Enter the current newsgroup."
 msgstr "  SPACE, RETURN           Вход в текущую группу."
 
+# src/help.c:182
+# src/help.c:182
 #: src/help.c:182
 msgid "  * The following variations also download previously read articles:"
 msgstr "  * Следующие команды загружают также прочитанные перед этим статьи:"
 
+# src/help.c:183
+# src/help.c:183
 #: src/help.c:183
 msgid "      ESC 1 SPACE         Enter group with article number query."
 msgstr ""
 "      ESC 1 SPACE         Вход в группу с вопросом о количестве статей."
 
+# src/help.c:184
+# src/help.c:184
 #: src/help.c:184
-#, fuzzy
 msgid "      ESC 2 SPACE         Enter group, but do not apply score."
-msgstr "      ESC 2 SPACE         Вход в группу, но без приложения score."
+msgstr "      ESC 2 SPACE         Вход в группу, но без применения score."
 
+# src/help.c:185
+# src/help.c:185
 #: src/help.c:185
-#, fuzzy
 msgid "      ESC 3 SPACE         Enter group with query, but without scoring."
 msgstr "      ESC 3 SPACE         Вход в группу с вопросом, но без scoring."
 
+# src/help.c:186
+# src/help.c:186
 #: src/help.c:186
 msgid "      ESC 4 SPACE         Enter the current newsgroup."
 msgstr "      ESC 4 SPACE         Вход в текущую группу."
 
+# src/help.c:187
+# src/help.c:187
 #: src/help.c:187
 msgid "  P                       Post an article to the current newsgroup."
 msgstr "  P                       Отправить статью в текущую группу."
 
+# src/help.c:188
+# src/help.c:188
 #: src/help.c:188
 msgid "  ESC P                   Post or edit a postponed article."
 msgstr ""
 "  ESC P                   Отправить или редактировать отложенную статью."
 
+# src/help.c:189
+# src/help.c:189
 #: src/help.c:189
 msgid "  G                       Get new news from server."
 msgstr "  G                       Получить новые статьи с сервера."
 
+# src/help.c:190
+# src/help.c:190
 #: src/help.c:190
-#, fuzzy
 msgid "  K                       Select scoring mode."
 msgstr "  K                       Выбор scoring режима."
 
+# src/help.c:191
+# src/help.c:191
 #: src/help.c:191
 msgid "  .                       Repeat last key sequence."
 msgstr ""
 "  .                       Повторить последнюю последовательность клавиш."
 
+# src/help.c:192
+# src/help.c:192
 #: src/help.c:192
 msgid "  Ctrl-X ESC              Read line and interpret it as S-Lang."
 msgstr ""
 "  Ctrl-X ESC              Прочитать строку и интерпретировать как строку S-"
 "Lang."
 
+# src/help.c:193
+# src/help.c:193
 #: src/help.c:193
 msgid "  Ctrl-Z                  Suspend slrn."
 msgstr "  Ctrl-Z                  Приостановка slrn."
 
+# src/help.c:194
+# src/help.c:194
 #: src/help.c:194
 msgid "  q                       Quit slrn."
 msgstr "  q                       Выход из slrn."
 
+# src/help.c:195
+# src/help.c:195
 #: src/help.c:195
 msgid "Group management (affects newsrc file):"
 msgstr "Управление группами (действует на newsrc файл):"
 
+# src/help.c:196
+# src/help.c:196
 #: src/help.c:196
 msgid "  c                       Catchup - Mark all articles as read."
 msgstr ""
 "  c                       Захватить - отметить все статьи как прочитанные."
 
+# src/help.c:197
+# src/help.c:197
 #: src/help.c:197
 msgid "  ESC u                   Un-Catchup - Mark all articles as unread."
 msgstr ""
 "  ESC u                   Снять захват - отметить все статьи как "
 "непрочитанные."
 
+# src/help.c:198
+# src/help.c:198
 #: src/help.c:198
 msgid "  a                       Add a new newsgroup."
 msgstr "  a                       Добавить новую группу."
 
+# src/help.c:199
+# src/help.c:199
 #: src/help.c:199
 msgid "  s                       Subscribe to the current newsgroup."
 msgstr "  s                       Подписаться на текущую группу."
 
+# src/help.c:200
+# src/help.c:200
 #: src/help.c:200
 msgid "      ESC 1 s             Subscribe to groups matching a pattern."
-msgstr "      ESC 1 s             Подписаться на группы по маске."
+msgstr "      ESC 1 s             Подписаться на группы по шаблону."
 
+# src/help.c:201
+# src/help.c:201
 #: src/help.c:201
 msgid "  u                       Unsubscribe from the current newsgroup."
 msgstr "  u                       Отписаться от текущей группы."
 
+# src/help.c:202
+# src/help.c:202
 #: src/help.c:202
 msgid "      ESC 1 u             Unsubscribe from groups matching a pattern."
-msgstr "      ESC 1 u             Отписаться от групп по маске."
+msgstr "      ESC 1 u             Отписаться от групп по шаблону."
 
+# src/help.c:203
+# src/help.c:203
 #: src/help.c:203
 msgid "  m                       Move newsgroup to a different location."
 msgstr "  m                       Переместить группу на другую позицию."
 
+# src/help.c:204
+# src/help.c:204
 #: src/help.c:204
 msgid "  Ctrl-X, Ctrl-T          Transpose position of groups."
 msgstr "  CTRL-X CTRL-T           Переставить позиции групп."
 
+# src/help.c:205
+# src/help.c:205
 #: src/help.c:205
 msgid "  X                       Force a save of the newsrc file."
 msgstr "  X                       Принудительное сохранение newsrc файла."
 
+# src/help.c:206
+# src/help.c:206
 #: src/help.c:206
 msgid "Display:"
 msgstr "Вывод:"
 
+# src/help.c:207
+# src/help.c:207
 #: src/help.c:207
 msgid "  ESC a                   Toggle between group display formats."
 msgstr "  ESC a                   Переключение между форматами вывода групп."
 
+# src/help.c:208
+# src/help.c:208
 #: src/help.c:208
 msgid ""
 "  l                       Toggle display of groups without unread articles."
 msgstr ""
 "  l                       Переключение вывода групп без непрочитанных статей."
 
+# src/help.c:209
+# src/help.c:209
 #: src/help.c:209
-#, fuzzy
 msgid "  L                       Toggle listing of unsubscribed groups."
-msgstr "  L                       Переключение вывода неподписанных групп."
+msgstr "  L                       Переключение вывода невыписанных групп."
 
+# src/help.c:210
+# src/help.c:210
 #: src/help.c:210
-#, fuzzy
 msgid "      ESC 1 L             Hide unsubscribed groups."
-msgstr "      ESC 1 L             Серыть неподписанные группы."
+msgstr "      ESC 1 L             Серыть невыписанные группы."
 
+# src/help.c:211
+# src/help.c:211
 #: src/help.c:211
-#, fuzzy
 msgid "      ESC 2 L             Show unsubscribed groups."
-msgstr "      ESC 2 L             Показать неподписанные группы."
+msgstr "      ESC 2 L             Показать невыписанные группы."
 
+# src/help.c:212
+# src/help.c:212
 #: src/help.c:212
 msgid "  Ctrl-L, Ctrl-R          Redraw the screen."
 msgstr "  Ctrl-L, Ctrl-R          Перерисовать экран."
 
+# src/help.c:213
+# src/help.c:213
 #: src/help.c:213
 msgid "  ?                       Display this help screen."
 msgstr "  ?                       Вывести экран помощи."
 
+# src/help.c:299
+# src/help.c:299
 #: src/help.c:299
 msgid " (continued)"
 msgstr " (продолжение)"
 
+# src/help.c:304
+# src/help.c:304
 #: src/help.c:304
 msgid "As a translation would not be legally binding, it remains untranslated."
-msgstr ""
+msgstr "Так как перевод не имеет легальной силы, это остается непереведенным."
 
+# src/help.c:308
+# src/help.c:308
 #: src/help.c:308
 msgid "The following copyright notice applies to the slrn newsreader:"
-msgstr ""
+msgstr "Следующее замечание о правах прилагается к slrn:"
 
+# src/help.c:365
+# src/help.c:365
 #: src/help.c:365
-#, fuzzy
 msgid "Press 'c' to start over, or any other key to return to news reader."
-msgstr "Нажмите '?' - начать заново, или любую другую клавишу для возврата."
+msgstr "Нажмите 'c' - начать заново, любая другая клавиша - возврат."
 
+# src/help.c:368
+# src/help.c:368
 #: src/help.c:368
-#, fuzzy
 msgid ""
 "Press 'c' for the copyright, '?' to start over, or any other key to quit "
 "help."
-msgstr "Нажмите 'q' - выход, '?' - начать заново, другие клавиши - продолжить."
+msgstr ""
+"Нажмите 'c' - права, '?' - начать заново, другие клавиши - выход из помощи."
 
+# src/help.c:374
+# src/help.c:374
 #: src/help.c:374
-#, fuzzy
 msgid ""
 "Press 'q' to quit help, 'c' to start over, or any other key to continue."
-msgstr "Нажмите 'q' - выход, '?' - начать заново, другие клавиши - продолжить."
+msgstr "Нажмите 'q' - выход, 'c' - начать заново, другие клавиши - продолжить."
 
+# src/help.c:377
+# src/help.c:377
 #: src/help.c:377
 msgid ""
 "Press 'q' to quit help, '?' to start over, or any other key to continue."
 msgstr "Нажмите 'q' - выход, '?' - начать заново, другие клавиши - продолжить."
 
+# src/interp.c:104
+# src/interp.c:104
 #: src/interp.c:104
 msgid "positive integer expected"
 msgstr "ожидается положительное целое"
 
+# src/interp.c:140
+# src/interp.c:140
 #: src/interp.c:140
 msgid "select box function not available in batch mode."
 msgstr "функция выбора ящика не доступна в пакетном режиме."
 
+# src/interp.c:274 src/interp.c:284
+# src/interp.c:274 src/interp.c:284
 #: src/interp.c:274 src/interp.c:284
 #, c-format
 msgid "loading %s"
 msgstr "загружается %s"
 
+# src/interp.c:301 src/interp.c:309 src/interp.c:322
+# src/interp.c:301 src/interp.c:309 src/interp.c:322
 #: src/interp.c:301 src/interp.c:309 src/interp.c:322
 #, c-format
 msgid "%s is not a valid variable name."
 msgstr "%s не является верным именем переменной."
 
+# src/interp.c:350
+# src/interp.c:350
 #: src/interp.c:350
 msgid "setlocale is not available on this system."
 msgstr "функция setlocale не доступна в этой системе."
 
+# src/interp.c:363
+# src/interp.c:363
 #: src/interp.c:363
 msgid "This version of slrn lacks MIME support."
 msgstr "Эта версия slrn не имеет поддержки MIME."
 
+# src/interp.c:370
+# src/interp.c:370
 #: src/interp.c:370
 msgid "Array of integer expected."
 msgstr "Ожидается множество целых."
 
+# src/interp.c:376
+# src/interp.c:376
 #: src/interp.c:376
 msgid "Two-dimensional array with two columns expected."
 msgstr "Ожидается двухмерное множество с двумя колонками."
 
+# src/interp.c:388
+# src/interp.c:388
 #: src/interp.c:388
 msgid "Could not get memory for conversion table."
 msgstr "Невозможно получить память для переходной таблицы."
 
+# src/interp.c:403
+# src/interp.c:403
 #: src/interp.c:403
 #, c-format
 msgid "Unicode value in row %d out of range."
 msgstr "Значение unicode в %d ряду выходит за пределы."
 
+# src/interp.c:412
+# src/interp.c:412
 #: src/interp.c:412
 #, c-format
 msgid "Local charset value in row %d out of range."
 msgstr "Значение local charset в %d ряду выходит за пределы."
 
+# src/interp.c:457
+# src/interp.c:457
 #: src/interp.c:457
-#, fuzzy
 msgid "definekey: no such keymap."
 msgstr "definekey: нет такой раскладки клавиатуры."
 
+# src/interp.c:484
+# src/interp.c:484
 #: src/interp.c:484
-#, fuzzy
 msgid "undefinekey: no such keymap."
 msgstr "undefinekey: нет такой раскладки клавиатуры."
 
+# src/interp.c:521 src/interp.c:559 src/slrn.c:1682
+# src/interp.c:521 src/interp.c:559 src/slrn.c:1686
 #: src/interp.c:521 src/interp.c:559 src/slrn.c:1686
 msgid "Quit!"
 msgstr "Выход!"
 
+# src/interp.c:594
+# src/interp.c:594
 #: src/interp.c:594
 msgid "Terminal not initialized."
 msgstr "Терминал не инициализирован."
 
+# src/interp.c:645
+# src/interp.c:645
 #: src/interp.c:645
 msgid "Not in article mode."
 msgstr "Не в режиме статей."
 
+# src/interp.c:755
+# src/interp.c:755
 #: src/interp.c:755
 msgid "No article selected"
 msgstr "Нет выбранных статей"
 
+# src/interp.c:1066
+# src/interp.c:1066
 #: src/interp.c:1066
 msgid "Not in group mode."
 msgstr "Не в режиме групп."
 
+# src/interp.c:1190
+# src/interp.c:1190
 #: src/interp.c:1190
 #, c-format
 msgid "Unable to open log file %s"
 msgstr "Невозможно открыть файл отчета %s"
 
+# src/menu.c:63 src/menu.c:76
+# src/menu.c:63 src/menu.c:76
 #: src/menu.c:63 src/menu.c:76
 msgid "Quit"
 msgstr "Выход"
 
+# src/menu.c:64
+# src/menu.c:64
 #: src/menu.c:64
 msgid "Refresh"
 msgstr "Обновить"
 
+# src/menu.c:65 src/menu.c:80 src/misc.c:221
+# src/menu.c:65 src/menu.c:80 src/misc.c:221
 #: src/menu.c:65 src/menu.c:80 src/misc.c:221
 msgid "Top"
 msgstr "Верх"
 
+# src/menu.c:66 src/menu.c:81 src/misc.c:223
+# src/menu.c:66 src/menu.c:81 src/misc.c:223
 #: src/menu.c:66 src/menu.c:81 src/misc.c:223
 msgid "Bot"
 msgstr "Низ"
 
+# src/menu.c:67 src/menu.c:82
+# src/menu.c:67 src/menu.c:82
 #: src/menu.c:67 src/menu.c:82
 msgid "Post"
 msgstr "Отпр"
 
+# src/menu.c:68 src/menu.c:85
+# src/menu.c:68 src/menu.c:85
 #: src/menu.c:68 src/menu.c:85
 msgid "Help"
 msgstr "Помощь"
 
+# src/menu.c:77
+# src/menu.c:77
 #: src/menu.c:77
 msgid "Catchup"
 msgstr "Захват"
 
+# src/menu.c:78
+# src/menu.c:78
 #: src/menu.c:78
 msgid "NextGrp"
 msgstr "СледГрп"
 
+# src/menu.c:79
+# src/menu.c:79
 #: src/menu.c:79
 msgid "NextArt"
 msgstr "СледСт"
 
+# src/menu.c:83
+# src/menu.c:83
 #: src/menu.c:83
 msgid "Reply"
 msgstr "ОтветАвт"
 
+# src/menu.c:84
+# src/menu.c:84
 #: src/menu.c:84
 msgid "Followup"
 msgstr "Ответ"
 
+# src/menu.c:192
+# src/menu.c:192
 #: src/menu.c:192
 msgid "No sorting"
 msgstr "Без сортировки"
 
+# src/menu.c:193
+# src/menu.c:193
 #. 000
 #: src/menu.c:193
-#, fuzzy
 msgid "Thread Headers"
 msgstr "Нить Заголовки"
 
+# src/menu.c:194
+# src/menu.c:194
 #. 001
 #: src/menu.c:194
 msgid "Sort by subject"
 msgstr "Сортировка по теме"
 
+# src/menu.c:195
+# src/menu.c:195
 #. 010
 #: src/menu.c:195
 msgid "Thread, then sort by subject."
 msgstr "Нити, затем сортировать по теме."
 
+# src/menu.c:196
+# src/menu.c:196
 #. 011
 #: src/menu.c:196
-#, fuzzy
 msgid "Sort by scores."
 msgstr "Сортировать по score."
 
+# src/menu.c:197
+# src/menu.c:197
 #. 100
 #: src/menu.c:197
-#, fuzzy
 msgid "Thread, then sort by scores."
 msgstr "Нити, затем сортировать по score."
 
+# src/menu.c:198
+# src/menu.c:198
 #. 101
 #: src/menu.c:198
-#, fuzzy
 msgid "Sort by score and subject"
 msgstr "Сортировать по score и теме"
 
+# src/menu.c:199
+# src/menu.c:199
 #. 110
 #: src/menu.c:199
-#, fuzzy
 msgid "Thread, then sort by score and subject"
 msgstr "Нити, затем сортировать по score и теме"
 
+# src/menu.c:200
+# src/menu.c:200
 #. 111
 #: src/menu.c:200
 msgid "Sort by date (most recent first)"
 msgstr "Сортировать по дате (более свежие вначале)"
 
+# src/menu.c:201
+# src/menu.c:201
 #. 1000
 #: src/menu.c:201
 msgid "Thread, then sort by date (most recent first)"
 msgstr "Нити, затем сортировать по дате (более свежие вначале)"
 
+# src/menu.c:202
+# src/menu.c:202
 #. 1001
 #: src/menu.c:202
 msgid "Sort by date (most recent last)"
 msgstr "Сортировать по дате (более свежие в конце)"
 
+# src/menu.c:203
+# src/menu.c:203
 #. 1010
 #: src/menu.c:203
 msgid "Thread, then Sort by date (most recent last)"
 msgstr "Нити, затем сортировать по дате (более свежие в конце)"
 
+# src/menu.c:211
+# src/menu.c:211
 #: src/menu.c:211
 msgid "Sorting Method"
 msgstr "Метод сортировки"
 
+# src/menu.c:295
+# src/menu.c:295
 #: src/menu.c:295
 msgid "(Select One)"
 msgstr "(Выбрать один)"
 
+# src/menu.c:355
+# src/menu.c:355
 #: src/menu.c:355
 msgid "Cancelled."
 msgstr "Отменено."
 
+# src/menu.c:432
+# src/menu.c:432
 #: src/menu.c:432
 msgid "[All]"
 msgstr "[Все]"
 
+# src/menu.c:432
+# src/menu.c:432
 #: src/menu.c:432
 msgid "[Top]"
 msgstr "[Верх]"
 
+# src/menu.c:436
+# src/menu.c:436
 #: src/menu.c:436
 msgid "[Bot]"
 msgstr "[Низ]"
 
+# src/menu.c:476
+# src/menu.c:476
 #: src/menu.c:476
 msgid "Press any key to close the window."
 msgstr "Нажмите любую клавишу чтобы закрыть окно."
 
+# src/menu.c:478
+# src/menu.c:478
 #: src/menu.c:478
 msgid "Use UP/DOWN to move, any other key to close the window."
 msgstr "Используйте UP/DOWN для перемещения, другие клавиши закрывают окно."
 
+# src/menu.c:482
+# src/menu.c:482
 #: src/menu.c:482
 msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
 msgstr ""
 "Используйте: UP/DOWN - переместить, RETURN - выбрать, Ctrl-G - прервать"
 
+# src/menu.c:991
+# src/menu.c:991
 #: src/menu.c:991
 msgid "Creating directory list..."
 msgstr "Создание списка каталогов..."
 
+# src/mime.c:943
+# src/mime.c:943
 #: src/mime.c:943
 msgid "Process this MIME article with metamail"
 msgstr "Обработать эту статьею с помощью metamail"
 
+# src/mime.c:957
+# src/mime.c:957
 #: src/mime.c:957
 msgid "Unable to open tmp file for metamail."
 msgstr "Невозможно открыть временный файл для metamail."
 
+# src/mime.c:985
+# src/mime.c:985
 #: src/mime.c:985
 msgid "Press return to continue ..."
 msgstr "Нажмите RETURN для продолжения..."
 
+# src/misc.c:221
+# src/misc.c:221
 #: src/misc.c:221
 msgid "All"
 msgstr "Все"
 
+# src/misc.c:277
+# src/misc.c:277
 #: src/misc.c:277
 msgid "slrn %v ** Press '?' for help, 'q' to quit. ** Server: %s"
-msgstr "slrn %v ** Нажмите '?' - помощь, 'q' - выйти ** Сервер: %s"
+msgstr "slrn %v ** Нажмите '?' - помощь, 'q' - выход ** Сервер: %s"
 
+# src/misc.c:691
+# src/misc.c:691
 #: src/misc.c:691
 msgid "This function is not available in batch mode."
 msgstr "Эта функция не доступна в пакетном режиме."
 
+# src/misc.c:1085
+# src/misc.c:1085
 #. Note to translators: "yY" is for "yes", "nN" for "no", "eE" for "edit".
 #. * Do not change the length of this string. You cannot use any of the
 #. * default characters for different fields.
@@ -2222,83 +3099,120 @@ msgstr "Эта функция не доступна в пакетном режиме."
 msgid "yYnNeE"
 msgstr "дДнНрР"
 
+# src/misc.c:1089
+# src/misc.c:1089
 #: src/misc.c:1089
 msgid "Mail the message? Yes, No, Edit"
 msgstr "Отослать сообщение по почте? Да, Нет, Редактировать"
 
+# src/misc.c:1096
+# src/misc.c:1096
 #: src/misc.c:1096
 msgid "Sending ..."
 msgstr "Отсылка..."
 
+# src/misc.c:1193
+# src/misc.c:1193
 #: src/misc.c:1193
 msgid "Sending...done"
 msgstr "Отсылка...завершена."
 
+# src/misc.c:1291
+# src/misc.c:1291
 #: src/misc.c:1291
 msgid "**UNKNOWN**"
 msgstr "**НЕИЗВЕСТНО**"
 
+# src/misc.c:1304
+# src/misc.c:1304
 #: src/misc.c:1304
 #, c-format
 msgid "Command %s returned exit status %d.  Press RETURN.\n"
 msgstr "Команда %s выдала код возврата %d. Нажмите RETURN.\n"
 
+# src/misc.c:1331
+# src/misc.c:1331
 #: src/misc.c:1331
 #, c-format
 msgid "Command %s failed to run.  Press RETURN.\n"
 msgstr "Ошибка запуска команды %s. Нажмите RETURN.\n"
 
+# src/misc.c:1372
+# src/misc.c:1372
 #: src/misc.c:1372
 msgid "Invalid Editor definition."
 msgstr "Неверное определение редактора."
 
+# src/misc.c:1450
+# src/misc.c:1450
 #: src/misc.c:1450
 msgid "No editor command defined."
 msgstr "Не определена команда вызова редактора."
 
+# src/misc.c:1472
+# src/misc.c:1472
 #: src/misc.c:1472
 msgid "The editor could not be found."
 msgstr "Невозможно найти редактор."
 
+# src/misc.c:1477
+# src/misc.c:1477
 #: src/misc.c:1477
 msgid "The editor was found, but could not be executed."
 msgstr "Редактор найден, но его запуск невозможен."
 
+# src/misc.c:1481
+# src/misc.c:1481
 #: src/misc.c:1481
 msgid "The editor returned a non-zero status."
 msgstr "Редактор вернул ненулевой код возврата."
 
+# src/misc.c:1495
+# src/misc.c:1495
 #: src/misc.c:1495
 msgid "File was not modified."
 msgstr "Файл не был изменен."
 
+# src/misc.c:1504
+# src/misc.c:1504
 #: src/misc.c:1504
 msgid "Please use double '\\\\' to separate directories in editor_command"
 msgstr ""
 "Используйте двойной знак '\\\\' для разделения каталогов в editor_command"
 
+# src/misc.c:1885
+# src/misc.c:1885
 #: src/misc.c:1885
-#, fuzzy
 msgid "Possible completions"
-msgstr "Возможные завершения"
+msgstr "Возможные исходы"
 
+# src/misc.c:2013
+# src/misc.c:2013
 #: src/misc.c:2013
 #, c-format
 msgid "(default: %s) "
 msgstr "(по умолчанию: %s) "
 
+# src/misc.c:2176
+# src/misc.c:2176
 #: src/misc.c:2176
 msgid "Abort!"
 msgstr "Прервано!"
 
+# src/misc.c:2182
+# src/misc.c:2182
 #: src/misc.c:2182
 msgid "Integer expected."
 msgstr "Ожидается целое число."
 
+# src/misc.c:2284
+# src/misc.c:2284
 #: src/misc.c:2284
 msgid "Invalid response! Try again."
 msgstr "Неверный отклик! Попытайтесь еще раз."
 
+# src/misc.c:2305
+# src/misc.c:2305
 #. Note to translators:
 #. * The translated string needs to have exactly four characters.
 #. * The first two become valid keys for "yes", the last two for "no".
@@ -2308,14 +3222,20 @@ msgstr "Неверный отклик! Попытайтесь еще раз."
 msgid "yYnN"
 msgstr "дДнН"
 
+# src/misc.c:2316
+# src/misc.c:2316
 #: src/misc.c:2316
 msgid "? [Y]es, No"
 msgstr "? [Д]а, Нет"
 
+# src/misc.c:2321
+# src/misc.c:2321
 #: src/misc.c:2321
 msgid "? Yes, [N]o"
 msgstr "? Да, [Н]ет"
 
+# src/misc.c:2349
+# src/misc.c:2349
 #. Note to translators:
 #. * The translated string needs to have exactly six characters.
 #. * The first two become valid keys for "yes", the next two for "no",
@@ -2326,66 +3246,93 @@ msgstr "? Да, [Н]ет"
 msgid "yYnNcC"
 msgstr "дДнНоО"
 
+# src/misc.c:2359
+# src/misc.c:2359
 #: src/misc.c:2359
 msgid "? [Y]es, No, Cancel"
 msgstr "? [Д]а, Нет, Отмена"
 
+# src/misc.c:2415 src/spool.c:1407
+# src/misc.c:2415 src/spool.c:1405
 #: src/misc.c:2415 src/spool.c:1405
 msgid "Invalid regular expression or expression too long."
 msgstr "Неверное или слишком длинное регулярное выражение."
 
+# src/misc.c:2543
+# src/misc.c:2543
 #. Fill in what is assumed to be non-NULL by rest of program.
 #: src/misc.c:2543
 msgid "In article %m, %r wrote:"
 msgstr "В статье %m %r написал(а):"
 
+# src/misc.c:2544
+# src/misc.c:2544
 #: src/misc.c:2544
 #, c-format
 msgid "In %n, you wrote:"
 msgstr "В группе %n Вы написали:"
 
+# src/misc.c:2547
+# src/misc.c:2547
 #: src/misc.c:2547
 #, c-format
 msgid "[This message has also been posted to %n.]"
-msgstr "[Это сообщение также было отправлено %n.]"
+msgstr "[Это сообщение также было отправлено в %n.]"
 
+# src/misc.c:2549
+# src/misc.c:2549
 #: src/misc.c:2549
-#, fuzzy
 msgid "[This message has also been posted.]"
-msgstr "[Это сообщение также было послано.]"
+msgstr "[Это сообщение также было отправлено.]"
 
+# src/misc.c:2777
+# src/misc.c:2777
 #: src/misc.c:2777
 msgid "Cannot generate \"From:\" line without a valid username."
 msgstr "Невозможно сформировать \"From:\" строку без правильного username."
 
+# src/misc.c:2781
+# src/misc.c:2781
 #. Note: we currently do not check whether hostname is valid
 #: src/misc.c:2781
 msgid "Cannot generate \"From:\" line without a hostname."
 msgstr "Невозможно сформировать \"From:\" без установленного hostname."
 
+# src/misc.c:2786
+# src/misc.c:2786
 #: src/misc.c:2786
 msgid "This client cannot handle addresses longer than 255 characters."
 msgstr "Этот клиент не может обращаться с адресами длиннее 255 символов."
 
+# src/nntp.c:67
+# src/nntp.c:67
 #: src/nntp.c:67
 #, c-format
 msgid "Server connection to %s lost.  Cannot recover."
 msgstr "Соединение с сервером %s утеряно.  Восстановление невозможно."
 
+# src/nntp.c:121
+# src/nntp.c:121
 #: src/nntp.c:121
 #, c-format
 msgid "Server %s does not implement the XOVER command."
 msgstr "Сервер %s не поддерживает команду XOVER."
 
+# src/nntp.c:259
+# src/nntp.c:259
 #: src/nntp.c:259
 msgid "Error writing to server."
 msgstr "Ошибка записи на сервер."
 
+# src/nntp.c:265
+# src/nntp.c:265
 #: src/nntp.c:265
 #, c-format
 msgid "Article rejected: %s"
 msgstr "Статья отвергнута: %s"
 
+# src/nntp.c:425
+# src/nntp.c:425
 #: src/nntp.c:425
 msgid ""
 "--nntp options:\n"
@@ -2401,436 +3348,601 @@ msgstr ""
 "119.\n"
 "                 Замечание: Эта опция работает не на всех системах.\n"
 
+# src/nntplib.c:196 src/post.c:620
+# src/nntplib.c:196 src/post.c:620
 #: src/nntplib.c:196 src/post.c:620
 #, c-format
 msgid "Reason: %s"
 msgstr "Причина: %s"
 
+# src/nntplib.c:266
+# src/nntplib.c:266
 #: src/nntplib.c:266
-#, fuzzy, c-format
+#, c-format
 msgid "Server %s dropped connection.  Reconnecting..."
-msgstr "Сервер %s ... соединение. Восстановление соединения..."
+msgstr "Сервер %s опустил соединение. Восстановление соединения..."
 
+# src/nntplib.c:412
+# src/nntplib.c:412
 #: src/nntplib.c:412
 msgid "Authorization needed, but could not determine username / password."
 msgstr ""
 "Необходима авторизация, но невозможно определить имя пользователя / пароль."
 
+# src/nntplib.c:416
+# src/nntplib.c:416
 #: src/nntplib.c:416
 #, c-format
 msgid "Authenticating %s ..."
 msgstr "Авторизация %s ..."
 
+# src/nntplib.c:446
+# src/nntplib.c:446
 #: src/nntplib.c:446
 msgid "Authorization failed."
 msgstr "Ошибка авторизации."
 
+# src/nntplib.c:457
+# src/nntplib.c:457
 #: src/nntplib.c:457
 #, c-format
 msgid "Connecting to host %s ..."
 msgstr "Соединение с сервером %s ..."
 
+# src/nntplib.c:493
+# src/nntplib.c:493
 #: src/nntplib.c:493
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to host.  %s"
-msgstr "Соединение с сервером. Отправка %sOk."
+msgstr "Соединение с сервером.  %s."
 
+# src/nntplib.c:494
+# src/nntplib.c:494
 #: src/nntplib.c:494
-#, fuzzy
 msgid "Posting ok."
-msgstr "Отправка ..."
+msgstr "Отправка ok."
 
+# src/nntplib.c:494
+# src/nntplib.c:494
 #: src/nntplib.c:494
-#, fuzzy
 msgid "Posting NOT ok."
-msgstr "Отправка ..."
+msgstr "Отправка НЕ ok."
 
+# src/nntplib.c:500
+# src/nntplib.c:500
 #: src/nntplib.c:500
 msgid "Failed to initialize server"
 msgstr "Ошибка инициализации сервера"
 
+# src/nntplib.c:564
+# src/nntplib.c:564
 #: src/nntplib.c:564
-#, fuzzy
 msgid ""
 "You need to set the NNTPSERVER environment variable to your server name."
 msgstr ""
-"Вы должны установить переменную окружения NNTPSERVER для Вашего сервера.\r\n"
+"Вы должны установить переменную окружения NNTPSERVER для Вашего сервера."
 
+# src/nntplib.c:566
+# src/nntplib.c:566
 #: src/nntplib.c:566
-#, fuzzy
 msgid "Example: $ define/job NNTPSERVER my.news.server"
-msgstr "Пример: $ define/job NNTPSERVER my.news.server\r\n"
+msgstr "Пример: $ define/job NNTPSERVER my.news.server"
 
+# src/nntplib.c:569
+# src/nntplib.c:569
 #: src/nntplib.c:569
-#, fuzzy
 msgid "Example: set NNTPSERVER=my.news.server"
-msgstr "Пример: set NNTPSERVER=my.news.server\r\n"
+msgstr "Пример: set NNTPSERVER=my.news.server"
 
+# src/nntplib.c:571
+# src/nntplib.c:571
 #: src/nntplib.c:571
-#, fuzzy
 msgid "Example (csh): setenv NNTPSERVER my.news.server"
-msgstr "Пример (csh): setenv NNTPSERVER my.news.server\r\n"
+msgstr "Пример (csh): setenv NNTPSERVER my.news.server"
 
+# src/nntplib.c:572
+# src/nntplib.c:572
 #: src/nntplib.c:572
-#, fuzzy
 msgid "Example (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER"
-msgstr "Пример (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER\r\n"
+msgstr "Пример (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER"
 
+# src/nntplib.c:1121
+# src/nntplib.c:1121
 #. 100
 #: src/nntplib.c:1121
 msgid "Help text on way"
 msgstr "Помощь в дороге"
 
+# src/nntplib.c:1123
+# src/nntplib.c:1123
 #. 180
 #: src/nntplib.c:1123
-#, fuzzy
 msgid "Authorization capabilities"
-msgstr "..."
+msgstr "Возможности авторизации"
 
+# src/nntplib.c:1125
+# src/nntplib.c:1125
 #. 199
 #: src/nntplib.c:1125
 msgid "Debug output"
 msgstr "Вывод отладочной информации"
 
+# src/nntplib.c:1127
+# src/nntplib.c:1127
 #. 200
 #: src/nntplib.c:1127
 msgid "Hello; you can post"
 msgstr "Здравствуйте; Вы можете отправлять"
 
+# src/nntplib.c:1129
+# src/nntplib.c:1129
 #. 201
 #: src/nntplib.c:1129
 msgid "Hello; you can't post"
-msgstr "Здравствуйте; Вы можете не отправлять"
+msgstr "Здравствуйте; Вы не можете отправлять"
 
+# src/nntplib.c:1131
+# src/nntplib.c:1131
 #. 202
 #: src/nntplib.c:1131
 msgid "Slave status noted"
-msgstr ""
+msgstr "замечен slave статус"
 
+# src/nntplib.c:1133
+# src/nntplib.c:1133
 #. 205
 #: src/nntplib.c:1133
 msgid "Closing connection"
 msgstr "Закрытие соединения"
 
+# src/nntplib.c:1135
+# src/nntplib.c:1135
 #. 211
 #: src/nntplib.c:1135
 msgid "Group selected"
 msgstr "Выбрана группа"
 
+# src/nntplib.c:1137
+# src/nntplib.c:1137
 #. 215
 #: src/nntplib.c:1137
 msgid "Newsgroups follow"
 msgstr ""
 
+# src/nntplib.c:1139
+# src/nntplib.c:1139
 #. 220
 #: src/nntplib.c:1139
 msgid "Article (head & body) follows"
 msgstr ""
 
+# src/nntplib.c:1141
+# src/nntplib.c:1141
 #. 221
 #: src/nntplib.c:1141
 msgid "Head follows"
 msgstr ""
 
+# src/nntplib.c:1143
+# src/nntplib.c:1143
 #. 222
 #: src/nntplib.c:1143
 msgid "Body follows"
 msgstr ""
 
+# src/nntplib.c:1145
+# src/nntplib.c:1145
 #. 223
 #: src/nntplib.c:1145
 msgid "No text sent -- stat, next, last"
 msgstr ""
 
+# src/nntplib.c:1147
+# src/nntplib.c:1147
 #. 230
 #: src/nntplib.c:1147
 msgid "New articles by message-id follow"
 msgstr ""
 
+# src/nntplib.c:1149
+# src/nntplib.c:1149
 #. 231
 #: src/nntplib.c:1149
 msgid "New newsgroups follow"
 msgstr ""
 
+# src/nntplib.c:1151
+# src/nntplib.c:1151
 #. 235
 #: src/nntplib.c:1151
 msgid "Article transferred successfully"
 msgstr "Статья переслана успешно"
 
+# src/nntplib.c:1153
+# src/nntplib.c:1153
 #. 240
 #: src/nntplib.c:1153
 msgid "Article posted successfully"
 msgstr "Статья отправлена успешно"
 
+# src/nntplib.c:1155
+# src/nntplib.c:1155
 #. 280
 #: src/nntplib.c:1155
 msgid "Authorization system ok"
 msgstr "Авторизация системы ok"
 
+# src/nntplib.c:1157
+# src/nntplib.c:1157
 #. 281
 #: src/nntplib.c:1157
 msgid "Authorization (user/pass) ok"
 msgstr "Авторизация (user/pass) ok"
 
+# src/nntplib.c:1159
+# src/nntplib.c:1159
 #. 282
 #: src/nntplib.c:1159
 msgid "Ok, XGTITLE info follows"
 msgstr ""
 
+# src/nntplib.c:1161
+# src/nntplib.c:1161
 #. 224
 #: src/nntplib.c:1161
 msgid "ok -- overview data follows"
 msgstr ""
 
+# src/nntplib.c:1163
+# src/nntplib.c:1163
 #. 335
 #: src/nntplib.c:1163
 msgid "Continue to send article"
 msgstr "Продолжить отсылку статьи"
 
+# src/nntplib.c:1165
+# src/nntplib.c:1165
 #. 340
 #: src/nntplib.c:1165
 msgid "Continue to post article"
 msgstr "Продолжить отправку статьи"
 
+# src/nntplib.c:1167
+# src/nntplib.c:1167
 #. 380
 #: src/nntplib.c:1167
 msgid "authorization is required"
 msgstr "требуется авторизация"
 
+# src/nntplib.c:1169
+# src/nntplib.c:1169
 #. 381
 #: src/nntplib.c:1169
-#, fuzzy
 msgid "<type> authorization data required"
-msgstr "<тип>"
+msgstr ""
 
+# src/nntplib.c:1171
+# src/nntplib.c:1171
 #. 400
 #: src/nntplib.c:1171
 msgid "Have to hang up for some reason"
-msgstr ""
+msgstr "Разрыв соединения по какой-то причине"
 
+# src/nntplib.c:1173
+# src/nntplib.c:1173
 #. 411
 #: src/nntplib.c:1173
 msgid "No such newsgroup"
 msgstr "Нет такой группы"
 
+# src/nntplib.c:1175
+# src/nntplib.c:1175
 #. 412
 #: src/nntplib.c:1175
 msgid "Not currently in newsgroup"
-msgstr ""
+msgstr "Сейчас не в группе"
 
+# src/nntplib.c:1177
+# src/nntplib.c:1177
 #. 420
 #: src/nntplib.c:1177
 msgid "No current article selected"
 msgstr "Не выбрана текущая статья"
 
+# src/nntplib.c:1179
+# src/nntplib.c:1179
 #. 421
 #: src/nntplib.c:1179
 msgid "No next article in this group"
 msgstr "Нет следующей статьи в этой группе"
 
+# src/nntplib.c:1181
+# src/nntplib.c:1181
 #. 422
 #: src/nntplib.c:1181
 msgid "No previous article in this group"
 msgstr "Нет предыдущей статьи в этой группе"
 
+# src/nntplib.c:1183
+# src/nntplib.c:1183
 #. 423
 #: src/nntplib.c:1183
 msgid "No such article in this group"
 msgstr "Нет такой статьи в этой группе"
 
+# src/nntplib.c:1185
+# src/nntplib.c:1185
 #. 430
 #: src/nntplib.c:1185
-#, fuzzy
 msgid "No such article at all"
-msgstr "Нет статей ... везде"
+msgstr "Нет такой статьи"
 
+# src/nntplib.c:1187
+# src/nntplib.c:1187
 #. 435
 #: src/nntplib.c:1187
 msgid "Already got that article, don't send"
-msgstr ""
+msgstr "Статья уже получена, не отсылать"
 
+# src/nntplib.c:1189
+# src/nntplib.c:1189
 #. 436
 #: src/nntplib.c:1189
 msgid "Transfer failed"
 msgstr "Ошибка пересылки"
 
+# src/nntplib.c:1191
+# src/nntplib.c:1191
 #. 437
 #: src/nntplib.c:1191
 msgid "Article rejected, don't resend"
 msgstr "Статья отвергнута, не перепосылайте"
 
+# src/nntplib.c:1193
+# src/nntplib.c:1193
 #. 440
 #: src/nntplib.c:1193
 msgid "Posting not allowed"
 msgstr "Отправка не допустима"
 
+# src/nntplib.c:1195
+# src/nntplib.c:1195
 #. 441
 #: src/nntplib.c:1195
 msgid "Posting failed"
 msgstr "Ошибка отправки"
 
+# src/nntplib.c:1197
+# src/nntplib.c:1197
 #. 480
 #: src/nntplib.c:1197
 msgid "authorization required for command"
 msgstr "требуется авторизация для команды"
 
+# src/nntplib.c:1199
+# src/nntplib.c:1199
 #. 481
 #. ERR_XGTITLE has same code
 #: src/nntplib.c:1199
 msgid "Authorization system invalid"
 msgstr "Неверная авторизация системы"
 
+# src/nntplib.c:1201
+# src/nntplib.c:1201
 #. 482
 #: src/nntplib.c:1201
 msgid "Authorization data rejected"
 msgstr "Данные авторизации отвергнуты"
 
+# src/nntplib.c:1203
+# src/nntplib.c:1203
 #. 500
 #: src/nntplib.c:1203
 msgid "Command not recognized"
 msgstr "Команда не распознана"
 
+# src/nntplib.c:1205
+# src/nntplib.c:1205
 #. 501
 #: src/nntplib.c:1205
 msgid "Command syntax error"
 msgstr "Ошибка синтаксиса команды"
 
+# src/nntplib.c:1207
+# src/nntplib.c:1207
 #. 502
 #: src/nntplib.c:1207
 msgid "Access to server denied"
 msgstr "Доступ к серверу запрещен"
 
+# src/nntplib.c:1209
+# src/nntplib.c:1209
 #. 503
 #: src/nntplib.c:1209
 msgid "Program fault, command not performed"
 msgstr "Ошибка программы, команда не испонена"
 
+# src/nntplib.c:1211
+# src/nntplib.c:1211
 #. 580
 #: src/nntplib.c:1211
 msgid "Authorization Failed"
 msgstr "Ошибка авторизации"
 
+# src/nntplib.c:1214
+# src/nntplib.c:1214
 #: src/nntplib.c:1214
 msgid "Unknown NNTP code"
 msgstr "Неизвестный NNTP код"
 
+# src/post.c:445
+# src/post.c:445
 #: src/post.c:445
 msgid "The first line must begin with a header."
 msgstr "Первая строка должна начинаться с заголовка."
 
+# src/post.c:455
+# src/post.c:455
 #: src/post.c:455
 msgid "Expecting a header.  This is not a header line."
 msgstr "Ожидается заголовок. Это не строка заголовка."
 
+# src/post.c:463
+# src/post.c:463
 #: src/post.c:463
 msgid "The subject header is not allowed be to empty."
 msgstr "Не допустим пустой заголовок subject."
 
+# src/post.c:475
+# src/post.c:475
 #: src/post.c:475
 msgid "The Newsgroups header is not allowed be to empty."
 msgstr "Не допустим пустой заголовок Newsgroups."
 
+# src/post.c:503
+# src/post.c:503
 #: src/post.c:503
-#, fuzzy
 msgid "A space must follow the ':' in a header"
-msgstr "... ':'"
+msgstr "После ':' в заголовке должен идти пробел"
 
+# src/post.c:510
+# src/post.c:510
 #: src/post.c:510
 msgid "This news reader will not accept user generated From lines."
-msgstr "Эта программа не позволяет пользователю создавать строку From."
+msgstr "Эта программа не примет созданную пользователем строку From."
 
+# src/post.c:517
+# src/post.c:517
 #: src/post.c:517
 msgid "This news reader will not accept user generated Message-Ids."
-msgstr "Эта программа не позволяет пользователю создавать Message-Id."
+msgstr "Эта программа не примет созданный пользователем Message-Id."
 
+# src/post.c:527
+# src/post.c:527
 #: src/post.c:527
 msgid "Subject header is required."
 msgstr "Требуется заголовок Subject."
 
+# src/post.c:532
+# src/post.c:532
 #: src/post.c:532
 msgid "Newsgroups header is required."
 msgstr "Требуется заголовок Newsgroups."
 
+# src/post.c:539
+# src/post.c:539
 #: src/post.c:539
 msgid "Please re-consider if posting to a large number of groups is necessary."
 msgstr ""
 "Посмотрите, действительно ли необходимо такое большое количество групп."
 
+# src/post.c:542
+# src/post.c:542
 #: src/post.c:542
 msgid ""
 "In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
 msgstr ""
 "Часто установка в \"Followup-To:\" нескольких групп является плохой идеей."
 
+# src/post.c:545
+# src/post.c:545
 #: src/post.c:545
 msgid "Setting a \"Followup-To:\" is recommended when crossposting."
 msgstr "Установка \"Followup-To:\" рекомендуется при пересечении групп."
 
+# src/post.c:561
+# src/post.c:561
 #: src/post.c:561
 msgid "Your message does not appear to have any unquoted text."
 msgstr "Ваше сообщение, кажется, не имеет никакого непроцитированного текста."
 
+# src/post.c:612
+# src/post.c:612
 #: src/post.c:612
 msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
 msgstr "Сохраняйте Вашу подпись короткой. Общепринятое ограничение - 4 строки."
 
+# src/post.c:619
+# src/post.c:619
 #: src/post.c:619
 msgid "Message is not acceptable."
 msgstr "Сообщение неприемлемое."
 
+# src/post.c:636
+# src/post.c:636
 #: src/post.c:636
 msgid "Your message is not acceptable for the following reason:"
 msgstr "Ваше сообщение неприемлемо по следующей причине:"
 
+# src/post.c:643
+# src/post.c:643
 #: src/post.c:643
 #, c-format
 msgid "This message was generated while looking at line %d:"
-msgstr "Это сообщение создалось во время просмотра строки %d:"
+msgstr "Это сообщение возникло во время просмотра строки %d:"
 
+# src/post.c:649
+# src/post.c:649
 #: src/post.c:649
 msgid ""
 "Perhaps this error was generated because you did not separate the header"
-msgstr "Возможно эта ошибка произошла из-за того, то Вы не разделили заголовки"
+msgstr "Возможно эта ошибка произошла из-за того, что Вы не отделили заголовок"
 
+# src/post.c:651
+# src/post.c:651
 #: src/post.c:651
 msgid "section from the body by a BLANK line."
 msgstr "секция из тела содержит пустую строку."
 
+# src/post.c:658
+# src/post.c:658
 #: src/post.c:658
-#, fuzzy
 msgid "Your message breaks the following netiquette guidelines:"
-msgstr "Ваше сообщение прервано по следующим ... директивам:"
+msgstr "Ваше сообщение прервано по следующим директивам:"
 
+# src/post.c:674
+# src/post.c:674
 #: src/post.c:674
-#, fuzzy
 msgid "Lines with more than 80 characters generally need to be wrapped."
-msgstr "Строки, содержащие более чем 80 символов, нуждаются в обертке."
+msgstr "Строки более 80 символов часто нуждаются в свертке."
 
+# src/post.c:677
+# src/post.c:677
 #: src/post.c:677
-#, fuzzy, c-format
+#, c-format
 msgid "This affects at least line %d:"
-msgstr "Это оказывает влияние минимум на строку %d:"
+msgstr "Это оказывает влияние как минимум на строку %d:"
 
+# src/post.c:704 src/post.c:1074 src/post.c:1098
+# src/post.c:704 src/post.c:1074 src/post.c:1098
 #: src/post.c:704 src/post.c:1074 src/post.c:1098
 #, c-format
 msgid "File not found: %s--- message not posted."
 msgstr "Файл не найден: %s --- сообщение не отправлено."
 
+# src/post.c:716
+# src/post.c:716
 #: src/post.c:716
 #, c-format
 msgid "***Warning: error saving to %s"
 msgstr "***Предупреждение: ошибка сохранения в %s"
 
+# src/post.c:863
+# src/post.c:863
 #: src/post.c:863
 #, c-format
 msgid "***Warning: error writing to %s"
 msgstr "***Предупреждение: ошибка записи в %s"
 
+# src/post.c:868
+# src/post.c:868
 #: src/post.c:868
 #, c-format
 msgid "Failed post saved in %s"
 msgstr "Ошибка оправки статьи из %s"
 
+# src/post.c:931 src/post.c:964
+# src/post.c:931 src/post.c:964
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
 #. * "eE" for "edit", "sS" for "postpone", "dD" for "delete" and "fF"
@@ -2843,38 +3955,56 @@ msgstr "Ошибка оправки статьи из %s"
 msgid "yYnNeEsSdDfF"
 msgstr "дДнНрРоОуУфФ"
 
+# src/post.c:934
+# src/post.c:934
 #: src/post.c:934
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
 msgstr "Отправить статью в группу? Да, Нет, Редакт, Отложить, Удалить, Фильтр"
 
+# src/post.c:938
+# src/post.c:938
 #: src/post.c:938
 msgid "yYnNeEsSfF"
 msgstr "дДнНрРоОфФ"
 
+# src/post.c:941
+# src/post.c:941
 #: src/post.c:941
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
 msgstr "Отправить статью в группу? Да, Нет, Редакт, Отложить, Фильтр"
 
+# src/post.c:949
+# src/post.c:949
 #: src/post.c:949
 msgid "yYnNeEsSdD"
 msgstr "дДнНрРоОуУ"
 
+# src/post.c:952
+# src/post.c:952
 #: src/post.c:952
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
 msgstr "Отправить статью в группу? Да, Нет, Редакт, Отложить, Удалить"
 
+# src/post.c:956
+# src/post.c:956
 #: src/post.c:956
 msgid "yYnNeEsS"
 msgstr "дДнНрРоО"
 
+# src/post.c:959
+# src/post.c:959
 #: src/post.c:959
 msgid "Post the message? Yes, No, Edit, poStpone"
 msgstr "Отправить статью в группу? Да, Нет, Редакт, Отложить"
 
+# src/post.c:982
+# src/post.c:982
 #: src/post.c:982
 msgid "Sure you want to delete it"
 msgstr "Вы уверены, что хотите удалить это"
 
+# src/post.c:1006
+# src/post.c:1006
 #. Note to translators:
 #. * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
 #. * "cC" is "cancel" and "fF" means "force". The usual rules apply.
@@ -2883,33 +4013,46 @@ msgstr "Вы уверены, что хотите удалить это"
 msgid "yYeEnNcC"
 msgstr "дДрРнНоО"
 
+# src/post.c:1009
+# src/post.c:1009
 #: src/post.c:1009
-#, fuzzy
 msgid "re-Edit,  or Cancel"
 msgstr "переРедактировать или Отменить"
 
+# src/post.c:1013 src/post.c:1019
+# src/post.c:1013 src/post.c:1019
 #: src/post.c:1013 src/post.c:1019
 msgid "yYeEnNcCfF"
 msgstr "дДрРнНоОпП"
 
+# src/post.c:1016
+# src/post.c:1016
 #: src/post.c:1016
 msgid "re-Edit, Cancel, or Force the posting (not recommended)"
 msgstr ""
 "переРедактировать, Отменить или Принудительно отправить (не рекомендуется)"
 
+# src/post.c:1055 src/post.c:1101
+# src/post.c:1055 src/post.c:1101
 #: src/post.c:1055 src/post.c:1101
 msgid "Posting ..."
 msgstr "Отправка ..."
 
+# src/post.c:1089
+# src/post.c:1089
 #: src/post.c:1089
 #, c-format
 msgid "post_file_hook returned error.  %s not posted."
 msgstr "post_file_hook возвратил ошибку. %s не отправлено."
 
+# src/post.c:1239
+# src/post.c:1239
 #: src/post.c:1239
 msgid "Posting...done."
-msgstr "Отправка...завершено."
+msgstr "Отправка...завершена."
 
+# src/post.c:1259
+# src/post.c:1259
 #. Note to translators: Here, "rR" is "repost", "eE" is "edit" and "cC" is
 #. * "cancel". Don't change the length of the string; you cannot re-use any
 #. * of the default characters for different fields.
@@ -2918,95 +4061,136 @@ msgstr "Отправка...завершено."
 msgid "rReEcC"
 msgstr "пПрРоО"
 
+# src/post.c:1262
+# src/post.c:1262
 #: src/post.c:1262
 msgid "Select one: Repost, Edit, Cancel"
 msgstr "Выбирайте: Переотправить, Редактировать, Отменить"
 
+# src/post.c:1390
+# src/post.c:1390
 #: src/post.c:1390
 msgid "postpone_directory not specified or does not exist"
 msgstr "Не определена или не существует переменная postpone_directory"
 
+# src/post.c:1401
+# src/post.c:1401
 #: src/post.c:1401
 msgid "Not implemented yet. Sorry"
-msgstr "Еще не сделано. Извините."
+msgstr "Еще не внедрено. Извините."
 
+# src/post.c:1417
+# src/post.c:1417
 #: src/post.c:1417
 msgid "Save to: "
 msgstr "Запись в: "
 
+# src/post.c:1423
+# src/post.c:1423
 #: src/post.c:1423
 msgid "File exists, overwrite"
 msgstr "Файл уже существует, перезаписать"
 
+# src/post.c:1435
+# src/post.c:1435
 #: src/post.c:1435
 msgid "You must specify a name"
 msgstr "Вы должны определить имя"
 
+# src/post.c:1437
+# src/post.c:1437
 #: src/post.c:1437
 msgid "Illegal filename. Try again"
 msgstr "Неверное имя файла. Попытайтесь снова"
 
+# src/post.c:1461
+# src/post.c:1461
 #: src/post.c:1461
 #, c-format
 msgid "%s: not a regular file"
 msgstr "%s: необычный файл"
 
+# src/print.c:152
+# src/print.c:152
 #: src/print.c:152
 #, c-format
 msgid "OpenPrinterA failed: %d"
 msgstr "Ошибка OpenPrinterA: %d"
 
+# src/print.c:160
+# src/print.c:160
 #: src/print.c:160
 #, c-format
 msgid "StartDocPrinterA failed: %d"
 msgstr "Ошибка StartDocPrinterA: %d"
 
+# src/print.c:180
+# src/print.c:180
 #: src/print.c:180
 #, c-format
 msgid "Write to printer failed: %d"
 msgstr "Ошибка записи в принтер: %d"
 
+# src/print.c:227
+# src/print.c:227
 #: src/print.c:227
 msgid "Failed to open tmp file"
 msgstr "Невозможно открыть временный файл"
 
+# src/print.c:243
+# src/print.c:243
 #: src/print.c:243
 msgid "Write to printer failed"
 msgstr "Ошибка записи в принтер"
 
+# src/print.c:273
+# src/print.c:273
 #: src/print.c:273
 #, c-format
 msgid "Printer process returned error code %d"
 msgstr "Процесс печати возвратил код ошибки %d"
 
+# src/print.c:299
+# src/print.c:299
 #: src/print.c:299
 #, c-format
 msgid "Failed to open process %s"
 msgstr "Невозможно окрыть процесс %s"
 
+# src/print.c:315
+# src/print.c:315
 #: src/print.c:315
 msgid "Error writing to print process"
 msgstr "Ошибка записи в процесс принтера"
 
+# src/print.c:333
+# src/print.c:333
 #: src/print.c:333
 msgid "Printer not supported"
 msgstr "Принтер не поддерживается"
 
+# src/print.c:405
+# src/print.c:405
 #: src/print.c:405
 #, c-format
 msgid "Unable to open %s for printing"
 msgstr "Невозможно открыть %s для печати"
 
+# src/score.c:587
+# src/score.c:587
 #: src/score.c:587
-#, fuzzy
 msgid "Reloading score file ..."
 msgstr "Перезагрузка score файла ..."
 
+# src/score.c:589 src/slrn.c:946
+# src/score.c:589 src/slrn.c:946
 #: src/score.c:589 src/slrn.c:946
-#, fuzzy, c-format
+#, c-format
 msgid "Error processing score file %s."
 msgstr "Ошибка обработки score файла %s."
 
+# src/score.c:838
+# src/score.c:838
 #: src/score.c:838
 #, c-format
 msgid ""
@@ -3020,110 +4204,156 @@ msgstr ""
 "%s\n"
 "%s\n"
 
+# src/score.c:1020
+# src/score.c:1020
 #: src/score.c:1020
-#, fuzzy
 msgid "Error handling INCLUDE line"
-msgstr "Ошибка обслуживания строки INCLUDE"
+msgstr "Ошибка обращения со строкой INCLUDE"
 
+# src/score.c:1048
+# src/score.c:1048
 #: src/score.c:1048
 msgid "Syntax Error."
 msgstr "Ошибка синтаксиса."
 
+# src/score.c:1105
+# src/score.c:1105
 #: src/score.c:1105
 msgid "Expecting 'Expires: MM/DD/YYYY' or 'Expires: DD-MM-YYYY'"
 msgstr "Ожидается 'Expires: ММ/ДД/ГГГГ' или 'Expires: ДД-ММ-ГГГГ'"
 
+# src/score.c:1112
+# src/score.c:1112
 #: src/score.c:1112
-#, fuzzy, c-format
+#, c-format
 msgid "%s has expired score on line %d"
 msgstr "%s имеет просроченный score в строке %d"
 
+# src/score.c:1125
+# src/score.c:1125
 #: src/score.c:1125
-#, fuzzy
 msgid "Bad group regular expression."
-msgstr "Плохое регулярное выражение."
+msgstr "Плохое регулярное выражение для группы."
 
+# src/score.c:1145
+# src/score.c:1145
 #: src/score.c:1145
 msgid "Expecting Score keyword."
 msgstr "Ожидается ключевое слово Score."
 
+# src/score.c:1201 src/score.c:1211
+# src/score.c:1201 src/score.c:1211
 #: src/score.c:1201 src/score.c:1211
 msgid "Missing COLON."
 msgstr "Отсутствует COLON."
 
+# src/score.c:1220
+# src/score.c:1220
 #: src/score.c:1220
 msgid "No regular expression given."
 msgstr "Не представлено ни одного регулярного выражения."
 
+# src/score.c:1255
+# src/score.c:1255
 #: src/score.c:1255
 msgid "Missing '}' for  subscore"
 msgstr "Отсутствует '}' для subscore"
 
+# src/score.c:1271
+# src/score.c:1271
 #: src/score.c:1271
-#, fuzzy, c-format
+#, c-format
 msgid "*** Warning * Read file %s before - skipping ..."
-msgstr "*** Предупреждение:  ... %s nie istnieje ..."
+msgstr "*** Предупреждение: Файл %s прочитан ранее - пропуск ..."
 
+# src/score.c:1285
+# src/score.c:1285
 #: src/score.c:1285
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open score file %s"
 msgstr "Невозможно окрыть score файл %s"
 
+# src/server.c:102
+# src/server.c:102
 #: src/server.c:102
 msgid "Couldn't open pipe to inews! -- Article not posted."
 msgstr "Невозможно открыть поток к inews! -- Статья не отправлена."
 
+# src/server.c:114
+# src/server.c:114
 #: src/server.c:114
 msgid "pclose() failed -- check if article was posted"
 msgstr "Ошибка выполнения pclose() -- проверьте, была ли статья отправлена"
 
+# src/server.c:171
+# src/server.c:171
 #: src/server.c:171
 #, c-format
 msgid "Unable to locate inews program \"%s\""
 msgstr "Невозможно определить местонахождение программы inews \"%s\""
 
+# src/server.c:220 src/slrn.c:1059
+# src/server.c:220 src/slrn.c:1059
 #: src/server.c:220 src/slrn.c:1059
 #, c-format
 msgid "Unable to add preprocessor name %s."
 msgstr "Невозможно добавить имя препроцессора %s."
 
+# src/server.c:243
+# src/server.c:243
 #: src/server.c:243
 msgid "inews cannot be used with an slrnpull spool."
 msgstr "Невозможно использование inews совместно с slrnpull spool."
 
+# src/server.c:267
+# src/server.c:267
 #: src/server.c:267
-#, fuzzy, c-format
+#, c-format
 msgid "%s is not a supported posting agent."
-msgstr "%s является неподдерживающим отправку агентом."
+msgstr "Неподдерживающий отправку агент %s."
 
+# src/server.c:307
+# src/server.c:307
 #: src/server.c:307
-#, fuzzy, c-format
+#, c-format
 msgid "%s is not a supported server object."
-msgstr " ... %s ."
+msgstr "Неподдерживаемый сервером объект %s ."
 
+# src/server.c:503
+# src/server.c:503
 #: src/server.c:503
 #, c-format
 msgid "Unable to open file in %s."
 msgstr "Невозможно открыть файл в %s"
 
+# src/server.c:573
+# src/server.c:573
 #: src/server.c:573
 #, c-format
 msgid "Unable to rename file. errno = %d."
 msgstr "Невозможно переименовать файл. errno = %d"
 
+# src/server.c:588
+# src/server.c:588
 #: src/server.c:588
 msgid "Write error.  File system full?"
 msgstr "Ошибка записи.  Файловая система переполнена?"
 
+# src/server.c:607
+# src/server.c:607
 #: src/server.c:607
 msgid "Write failed.  File system full?"
 msgstr "Запись не удалась.  Файловая система переполнена?"
 
+# src/server.c:634
+# src/server.c:634
 #: src/server.c:634
 #, c-format
 msgid "Posting directory %s does not exist."
 msgstr "Каталог для отправки %s не существует."
 
+# src/slrn.c:171
+# src/slrn.c:171
 #: src/slrn.c:171
 #, c-format
 msgid ""
@@ -3133,44 +4363,60 @@ msgstr ""
 "slrn: pid %d блокирует newsrc файл. Если Вы не запускали другую копию\n"
 "      slrn, то удалите файл %s"
 
+# src/slrn.c:176
+# src/slrn.c:176
 #: src/slrn.c:176
 #, c-format
 msgid "slrn: pid %d is locking the newsrc file."
 msgstr "slrn: pid %d блокирует newsrc файл."
 
+# src/slrn.c:247 src/slrn.c:254
+# src/slrn.c:247 src/slrn.c:254
 #. delete the "normal" lock file
 #: src/slrn.c:247 src/slrn.c:254
 #, c-format
 msgid "Unable to create lock file %s."
 msgstr "Невозможно создать файл блокировки %s."
 
+# src/slrn.c:361
+# src/slrn.c:361
 #: src/slrn.c:361
 msgid "pop_suspension: underflow!"
 msgstr "pop_suspension: недозаполнение!"
 
+# src/slrn.c:426
+# src/slrn.c:426
 #: src/slrn.c:426
 msgid "Not implemented."
-msgstr "Еще не сделано."
+msgstr "Еще не внедрено."
 
+# src/slrn.c:439 src/slrn.c:458
+# src/slrn.c:439 src/slrn.c:458
 #: src/slrn.c:439 src/slrn.c:458
-#, fuzzy
 msgid "Suspension not allowed by shell."
-msgstr "Shell ... nie zezwala na zawieszenie programu."
+msgstr "Приостановление программы не разрешено shell."
 
+# src/slrn.c:619
+# src/slrn.c:619
 #: src/slrn.c:619
 msgid "Unable to initialize the tty"
 msgstr "Невозможно инициализировать tty"
 
+# src/slrn.c:822
+# src/slrn.c:822
 #: src/slrn.c:822
 #, c-format
 msgid "slrn: quiting on signal %d.\n"
 msgstr "slrn: выход по сигналу %d.\n"
 
+# src/slrn.c:839
+# src/slrn.c:839
 #: src/slrn.c:839
-#, fuzzy
 msgid "slrn fatal error:"
-msgstr "slrn фатальная ошибка:\n"
+msgstr "slrn фатальная ошибка:"
 
+# src/slrn.c:867
+# src/slrn.c:867
 #: src/slrn.c:867
 #, c-format
 msgid ""
@@ -3229,47 +4475,66 @@ msgstr ""
 "Режим NNTP имеет дополнительные опции; используйте \"slrn --nntp --help\" "
 "для них.\n"
 
+# src/slrn.c:917
+# src/slrn.c:917
 #: src/slrn.c:917
 #, c-format
 msgid "%s is not a supported option."
-msgstr "%s не является поддерживаемой опцией."
+msgstr "Неподдерживаемая опция %s."
 
+# src/slrn.c:919
+# src/slrn.c:919
 #: src/slrn.c:919
 #, c-format
 msgid "%s is not supported."
 msgstr "%s не поддерживается."
 
+# src/slrn.c:940
+# src/slrn.c:940
 #: src/slrn.c:940
 #, c-format
 msgid "*** Warning: Score file %s does not exist"
 msgstr "*** Предупреждение: Score файл %s не существует"
 
+# src/slrn.c:1038
+# src/slrn.c:1038
 #: src/slrn.c:1038
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open %s for debugging."
-msgstr "Невозможно открыть %s для вноса отладочной информации."
+msgstr "Невозможно открыть %s для записи отладочной информации."
 
+# src/slrn.c:1084
+# src/slrn.c:1084
 #: src/slrn.c:1084
 msgid "The -d and --create flags must not be specified together."
 msgstr "Не допускается использование флагов -d и --create вместе."
 
+# src/slrn.c:1097
+# src/slrn.c:1097
 #: src/slrn.c:1097
 msgid "Error initializing SLtcp interface"
 msgstr "Ошибка инициализации SLtcp интерфейса"
 
+# src/slrn.c:1102
+# src/slrn.c:1102
 #: src/slrn.c:1102
 msgid "Error initializing S-Lang interpreter.\n"
 msgstr "Ошибка инициализации S-Lang интерпретатора.\n"
 
+# src/slrn.c:1113
+# src/slrn.c:1113
 #: src/slrn.c:1113
 msgid "Error configuring server objects."
 msgstr "Ошибка конфигурирования объектов сервера."
 
+# src/slrn.c:1139
 #: src/slrn.c:1139
 #, c-format
 msgid "Could not read specified config file %s\n"
 msgstr ""
 
+# src/slrn.c:1141
+# src/slrn.c:1145
 #: src/slrn.c:1145
 msgid ""
 "\n"
@@ -3289,399 +4554,553 @@ msgstr ""
 "пакете\n"
 "! исходников либо на сайте <URL:ftp://slrn.sourceforge.net/pub/slrn/>.\n"
 
+# src/slrn.c:1156
+# src/slrn.c:1160
 #: src/slrn.c:1160
 msgid "Failed to select character set."
 msgstr "Ошибка выбора таблицы символов."
 
+# src/slrn.c:1190
+# src/slrn.c:1194
 #: src/slrn.c:1194
 msgid "Unable to select server/post object."
 msgstr "Невозможно выбрать server/post объект."
 
+# src/slrn.c:1206
+# src/slrn.c:1210
 #: src/slrn.c:1210
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to find a valid hostname for constructing your e-mail address.\n"
 "You will have to specify a hostname in your %s file.\n"
 msgstr ""
-"Невозможно найти верный hostname для конструирования Вашего e-mail адреса."
-"\r\n"
-"Вы должны определить hostname в Вашем файле %s.\r\n"
+"Невозможно найти верный hostname для конструирования Вашего e-mail адреса.\n"
+"Вы должны определить hostname в Вашем файле %s.\n"
 
+# src/slrn.c:1215
+# src/slrn.c:1219
 #: src/slrn.c:1219
-#, fuzzy
 msgid ""
 "Unable to find your user name.  This means that a valid 'From' header line\n"
 "cannot be constructed.  Try setting the USER environment variable.\n"
 msgstr ""
-"Невозможно найти Ваше имя пользователя. Имеется ввиду, что правильный\r\n"
+"Невозможно найти Ваше имя пользователя. Имеется ввиду, что правильный\n"
 "заголовок 'From:' не может быть создан. Попытайтесь установить переменную "
-"USER.\r\n"
+"USER.\n"
 
+# src/slrn.c:1222
+# src/slrn.c:1226
 #: src/slrn.c:1226
-#, fuzzy
 msgid "***Warning: Unable to find a unique fully-qualified host name."
-msgstr "%s неверный полноценный hostname."
+msgstr "***Предупреждение: невозможно найти уникальный полноценный hostname."
 
+# src/slrn.c:1223
+# src/slrn.c:1227
 #: src/slrn.c:1227
-#, fuzzy
 msgid "            slrn will not generate any Message-IDs."
-msgstr "  ESC l              Найти статью по ее Message-Id."
+msgstr "            slrn не сможет создать ни одного Message-Id."
 
+# src/slrn.c:1224
+# src/slrn.c:1228
 #: src/slrn.c:1228
 msgid ""
 "            Please note that the \"hostname\" setting does not affect this;"
-msgstr ""
+msgstr "            Заметьте, что установка \"hostname\" здесь не действует;"
 
+# src/slrn.c:1225
+# src/slrn.c:1229
 #: src/slrn.c:1229
 msgid "            see the \"slrn reference manual\" for details."
-msgstr ""
+msgstr "            смотрите \"slrn reference manual\" для уточнения."
 
+# src/slrn.c:1254
+# src/slrn.c:1258
 #: src/slrn.c:1258
 #, c-format
 msgid "Using newsrc file %s for server %s."
 msgstr "Использование newsrc файла %s для сервера %s."
 
+# src/slrn.c:1266 src/slrnpull.c:1969
+# src/slrn.c:1270 src/slrnpull.c:1969
 #: src/slrn.c:1270 src/slrnpull.c:1969
 msgid "Unable to initialize server."
 msgstr "Невозможно инициализировать сервер."
 
+# src/slrn.c:1281
+# src/slrn.c:1285
 #: src/slrn.c:1285
 #, c-format
 msgid "Unable to open %s.  I will try .newsrc."
 msgstr "Невозможно открыть %s. Производится попытка открыть .newsrc."
 
+# src/slrn.c:1286
+# src/slrn.c:1290
 #: src/slrn.c:1290
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Unable to open %s.\n"
 "If you want to create %s, add command line options:\n"
 "   -f %s --create\n"
 msgstr ""
-"\r\n"
-"Невозможно открыть %s.\r\n"
-"Если Вы хотите создать %s, добавьте в командную строку следующие опции:\r\n"
-"   -f %s --create\r\n"
+"\n"
+"Невозможно открыть %s.\n"
+"Если Вы хотите создать %s, добавьте в командную строку следующие опции:\n"
+"   -f %s --create\n"
 
+# src/slrn.c:1303 src/slrnpull.c:1744 src/slrnpull.c:1756
+# src/slrn.c:1307 src/slrnpull.c:1744 src/slrnpull.c:1756
 #: src/slrn.c:1307 src/slrnpull.c:1744 src/slrnpull.c:1756
 #, c-format
 msgid "Unable to open %s for logging."
 msgstr "Невозможно открыть %s для отчета."
 
+# src/slrn.c:1319
+# src/slrn.c:1323
 #: src/slrn.c:1323
 msgid "Initializing GroupLens"
 msgstr "Инициализация GroupLens"
 
+# src/slrn.c:1322
+# src/slrn.c:1326
 #: src/slrn.c:1326
 msgid "GroupLens disabled.\n"
 msgstr "GroupLens выключен.\n"
 
+# src/slrn.c:1330
+# src/slrn.c:1334
 #: src/slrn.c:1334
 msgid "Failed to initialize server."
 msgstr "Ошибка инициализирования сервера."
 
+# src/slrn.c:1336
+# src/slrn.c:1340
 #: src/slrn.c:1340
 msgid "OVERVIEW.FMT not RFC 2980 compliant -- XOVER support disabled."
-msgstr ""
-"OVERVIEW.FMT не является совместимым с RFC 2980 -- поддержка XOVER выключена."
+msgstr "OVERVIEW.FMT не совместим с RFC 2980 -- поддержка XOVER выключена."
 
+# src/slrn.c:1349
+# src/slrn.c:1353
 #: src/slrn.c:1353
 msgid "* Press Ctrl-C to quit, any other key to continue.\n"
 msgstr "* Нажмите Ctrl-C для выхода, любую другую клавишу для продолжения.\n"
 
+# src/slrn.c:1352
+# src/slrn.c:1356
 #: src/slrn.c:1356
 msgid "Exit on user request."
 msgstr "Выход по запросу пользователя."
 
+# src/slrn.c:1379
+# src/slrn.c:1383
 #: src/slrn.c:1383
 msgid "Internal Error: Mode_Stack overflow"
 msgstr "Внутренняя ошибка: переполнение Mode_Stack"
 
+# src/slrn.c:1394
+# src/slrn.c:1398
 #: src/slrn.c:1398
 msgid "Internal Error: Mode_Stack underflow"
 msgstr "Внутренняя ошибка: недозаполнение Mode_Stack"
 
+# src/slrn.c:1491
+# src/slrn.c:1495
 #: src/slrn.c:1495
 #, c-format
 msgid "call: %s not in current keymap."
 msgstr "call: %s отсутствует в текущей раскладке клавиатуры."
 
+# src/slrndir.c:79
+# src/slrndir.c:79
 #: src/slrndir.c:79
 msgid "slrn_open_dir has not been ported to VMS"
 msgstr "Функция slrn_open_dir не перенесена на VMS"
 
+# src/slrndir.c:167 src/slrndir.c:178
+# src/slrndir.c:167 src/slrndir.c:178
 #: src/slrndir.c:167 src/slrndir.c:178
 msgid "Unable to getcwd"
 msgstr "Невозможно выполнить getcwd"
 
+# src/slrndir.c:231
+# src/slrndir.c:231
 #: src/slrndir.c:231
 #, c-format
 msgid "chdir %s failed.  Does the directory exist?"
 msgstr "Ошибка выполнения chdir %s. Каталог существует?"
 
+# src/slrnpull.c:318
+# src/slrnpull.c:318
 #: src/slrnpull.c:318
 #, c-format
 msgid "Created dir %s."
 msgstr "Создан каталог %s."
 
+# src/slrnpull.c:326
+# src/slrnpull.c:326
 #: src/slrnpull.c:326
 #, c-format
 msgid "Unable to create directory %s. (errno = %d)"
 msgstr "Невозможно создать каталог %s. (errno = %d)"
 
+# src/slrnpull.c:367
+# src/slrnpull.c:367
 #: src/slrnpull.c:367
 #, c-format
 msgid "Error reading %s."
 msgstr "Ошибка чтения %s."
 
+# src/slrnpull.c:375
+# src/slrnpull.c:375
 #: src/slrnpull.c:375
 #, c-format
 msgid "Error parsing %s."
 msgstr "Ошибка разбора %s."
 
+# src/slrnpull.c:400 src/slrnpull.c:2108
+# src/slrnpull.c:400 src/slrnpull.c:2108
 #: src/slrnpull.c:400 src/slrnpull.c:2108
 #, c-format
 msgid "Write to %s failed."
 msgstr "Ошибка записи в %s."
 
+# src/slrnpull.c:406
+# src/slrnpull.c:406
 #: src/slrnpull.c:406
 #, c-format
 msgid "Error closing %s."
 msgstr "Ошибка закрытия %s."
 
+# src/slrnpull.c:528
+# src/slrnpull.c:528
 #: src/slrnpull.c:528
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open active groups file %s"
-msgstr "Невозможно открыть active ... файл %s."
+msgstr "Невозможно открыть active файл %s."
 
+# src/slrnpull.c:564
+# src/slrnpull.c:564
 #: src/slrnpull.c:564
 #, c-format
 msgid "%s: line %u: group name too long."
 msgstr "%s: строка %u: Слишком длинное название группы."
 
+# src/slrnpull.c:581
+# src/slrnpull.c:581
 #: src/slrnpull.c:581
 #, c-format
 msgid "%s: line %u: Group name contains whitespace."
 msgstr "%s: строка %u: Название группы содержит символы пробела."
 
+# src/slrnpull.c:599
+# src/slrnpull.c:599
 #: src/slrnpull.c:599
 #, c-format
 msgid "%s: line %u: expecting positive integer in second field."
 msgstr "%s: строка %u: ожидается положительное целое число во втором поле."
 
+# src/slrnpull.c:613
+# src/slrnpull.c:613
 #: src/slrnpull.c:613
 #, c-format
 msgid "%s: line %u: expecting positive integer in third field."
 msgstr "%s: строка %u: ожидается положительное целое число в третьем поле."
 
+# src/slrnpull.c:630
+# src/slrnpull.c:630
 #: src/slrnpull.c:630
 #, c-format
 msgid "%s: line %u: group duplicated."
 msgstr "%s: строка %u: группа дублируется."
 
+# src/slrnpull.c:638
+# src/slrnpull.c:638
 #: src/slrnpull.c:638
 #, c-format
 msgid "%s: line %u: failed to add %s."
 msgstr "%s: строка %u: ошибка добавления %s."
 
+# src/slrnpull.c:672 src/slrnpull.c:712 src/util.c:376 src/util.c:529
+# src/util.c:548
+# src/slrnpull.c:672 src/slrnpull.c:712 src/util.c:377 src/util.c:530
+# src/util.c:549
 #: src/slrnpull.c:672 src/slrnpull.c:712 src/util.c:377 src/util.c:530
 #: src/util.c:549
 msgid "Out of memory."
 msgstr "Нет памяти."
 
+# src/slrnpull.c:739
+# src/slrnpull.c:739
 #: src/slrnpull.c:739
 msgid "Read failed."
 msgstr "Ошибка чтения."
 
+# src/slrnpull.c:740
+# src/slrnpull.c:740
 #: src/slrnpull.c:740
 #, c-format
 msgid "listgroup %s failed: %s"
 msgstr "listgroup %s, ошибка: %s"
 
+# src/slrnpull.c:812
+# src/slrnpull.c:812
 #: src/slrnpull.c:812
 #, c-format
 msgid "The server may contain as many as %d articles in this group"
 msgstr "Сервер возможно содержит больше, чем %d статей в этой групе"
 
+# src/slrnpull.c:814
+# src/slrnpull.c:814
 #: src/slrnpull.c:814
 #, c-format
 msgid "Only examining last %u articles since this is a new group"
 msgstr "Проверка только последних %u статей, так как это новая группа"
 
+# src/slrnpull.c:820
+# src/slrnpull.c:820
 #: src/slrnpull.c:820
 msgid ""
 "Server failed to return proper code for XHDR.  The connection may be lost"
 msgstr ""
-"Ошибка сервера: неверный код возврата для XHDR. Соединение может быть "
-"утеряно."
+"Ошибка сервера: неверный код возврата для XHDR. Соединение может быть утеряно"
 
+# src/slrnpull.c:826
+# src/slrnpull.c:826
 #: src/slrnpull.c:826
 #, c-format
 msgid "Server failed XHDR command: %s"
 msgstr "Ошибка сервера при выполении команды XHDR: %s"
 
+# src/slrnpull.c:884
+# src/slrnpull.c:884
 #: src/slrnpull.c:884
 #, c-format
 msgid "%s: Retrieving articles %d-%d."
 msgstr "%s: Доставка статей %d-%d."
 
+# src/slrnpull.c:907
+# src/slrnpull.c:907
 #: src/slrnpull.c:907
 #, c-format
 msgid "%s: No articles in specified range."
 msgstr "%s: Статьи в заданном диапазоне отсутствуют."
 
+# src/slrnpull.c:955
+# src/slrnpull.c:955
 #: src/slrnpull.c:955
-#, fuzzy, c-format
+#, c-format
 msgid "%u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu      "
-msgstr "%u/%u (%u уничтоженных), Время: %02u:%02u:%02u, BPS: %lu      \r"
+msgstr "%u/%u (%u удаленных), время: %02u:%02u:%02u, BPS: %lu      "
 
+# src/slrnpull.c:965
+# src/slrnpull.c:965
 #: src/slrnpull.c:965
 #, c-format
 msgid "%s: %u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu"
 msgstr "%s: %u/%u (%u уничтоженных), Время: %02u:%02u:%02u, BPS: %lu"
 
+# src/slrnpull.c:990
+# src/slrnpull.c:990
 #: src/slrnpull.c:990
 #, c-format
 msgid "Error writing to overview database: %s:%d."
 msgstr "Ошибка записи в overview базу: %s:%d."
 
+# src/slrnpull.c:1208
+# src/slrnpull.c:1208
 #: src/slrnpull.c:1208
 msgid "Internal error: Buffer in get_heads not large enough!"
 msgstr "Внутренняя ошибка: Буфер в get_heads недостаточно велик!"
 
+# src/slrnpull.c:1245
+# src/slrnpull.c:1245
 #: src/slrnpull.c:1245
 #, c-format
 msgid "Unable to open overview file %s.\n"
 msgstr "Невозможно открыть overview файл %s.\n"
 
+# src/slrnpull.c:1293
+# src/slrnpull.c:1293
 #: src/slrnpull.c:1293
 #, c-format
 msgid "Error closing overview file for %s."
 msgstr "Ошибка закрытия overview файла для %s."
 
+# src/slrnpull.c:1329
+# src/slrnpull.c:1329
 #: src/slrnpull.c:1329
 #, c-format
 msgid "%s: no new articles available."
 msgstr "%s: отсутствуют новые доступные статьи."
 
+# src/slrnpull.c:1336
+# src/slrnpull.c:1336
 #: src/slrnpull.c:1336
 #, c-format
 msgid "%u duplicates removed leaving %u/%u."
 msgstr "Удалено дубликатов: %u, осталось %u/%u."
 
+# src/slrnpull.c:1348
+# src/slrnpull.c:1348
 #: src/slrnpull.c:1348
 #, c-format
 msgid "%s: No new articles available."
 msgstr "%s: Отсутствуют новые доступные статьи."
 
+# src/slrnpull.c:1353
+# src/slrnpull.c:1353
 #: src/slrnpull.c:1353
 #, c-format
 msgid "%s: %u articles available."
 msgstr "%s: Доступно %u статей."
 
+# src/slrnpull.c:1360
+# src/slrnpull.c:1360
 #: src/slrnpull.c:1360
 #, c-format
 msgid "%s: Only retrieving last %u articles."
-msgstr "%s: Достать только последние %u статьей."
+msgstr "%s: загрузка только последних %u статьей."
 
+# src/slrnpull.c:1409
+# src/slrnpull.c:1409
 #: src/slrnpull.c:1409
 #, c-format
 msgid "Fetching articles for %s."
 msgstr "Вызвать статьи для %s."
 
+# src/slrnpull.c:1414
+# src/slrnpull.c:1414
 #: src/slrnpull.c:1414
 #, c-format
 msgid "Error selecting group %s.  Code = %d: %s"
-msgstr "Ошибка выбора группы %s. Код = %d: %s"
+msgstr "Ошибка выбора группы %s.  Код = %d: %s"
 
+# src/slrnpull.c:1447
+# src/slrnpull.c:1447
 #: src/slrnpull.c:1447
 #, c-format
 msgid "Attempting to post %s..."
 msgstr "Попытка отправить %s..."
 
+# src/slrnpull.c:1452
+# src/slrnpull.c:1452
 #: src/slrnpull.c:1452
 #, c-format
 msgid "Unable to open file %s for posting."
 msgstr "Невозможно открыть файл %s для отправки."
 
+# src/slrnpull.c:1459
+# src/slrnpull.c:1459
 #: src/slrnpull.c:1459
 #, c-format
 msgid "Server failed post cmd.  Code = %d: %s"
 msgstr "Ошибка выполнения команды post. Код ошибки = %d: %s"
 
+# src/slrnpull.c:1481 src/slrnpull.c:1492
+# src/slrnpull.c:1481 src/slrnpull.c:1492
 #: src/slrnpull.c:1481 src/slrnpull.c:1492
 #, c-format
 msgid "Write to server failed while posting %s."
 msgstr "Ошибка записи на сервер во время отправки %s."
 
+# src/slrnpull.c:1501
+# src/slrnpull.c:1501
 #: src/slrnpull.c:1501
 #, c-format
 msgid "Article %s rejected. status = %d: %s."
 msgstr "Статья %s отвергнута. Статус = %d: %s."
 
+# src/slrnpull.c:1508
+# src/slrnpull.c:1508
 #: src/slrnpull.c:1508
 #, c-format
 msgid "Saving article in %s..."
 msgstr "Сохранение статьи в %s..."
 
+# src/slrnpull.c:1510 src/slrnpull.c:1626
+# src/slrnpull.c:1510 src/slrnpull.c:1626
 #: src/slrnpull.c:1510 src/slrnpull.c:1626
 #, c-format
 msgid "Failed to rename %s to %s."
 msgstr "Ошибка смены имени %s на %s."
 
+# src/slrnpull.c:1516
+# src/slrnpull.c:1516
 #: src/slrnpull.c:1516
 #, c-format
 msgid "Unable to delete %s after posting."
 msgstr "Невозможно выполнить удаление %s после отправки."
 
+# src/slrnpull.c:1525
+# src/slrnpull.c:1525
 #: src/slrnpull.c:1525
 #, c-format
 msgid "%s directory does not exist.  Creating it..."
 msgstr "%s каталог отсутствует. Создание каталога..."
 
+# src/slrnpull.c:1533
+# src/slrnpull.c:1533
 #: src/slrnpull.c:1533
 #, c-format
 msgid "chmod 0%o failed on %s."
 msgstr "Ошибка выполнения chmod 0%o %s."
 
+# src/slrnpull.c:1557
+# src/slrnpull.c:1557
 #: src/slrnpull.c:1557
 msgid "Server does not permit posting at this time."
 msgstr "Сервер не разрешает отправку в это время."
 
+# src/slrnpull.c:1578
+# src/slrnpull.c:1578
 #: src/slrnpull.c:1578
 #, c-format
 msgid "Posting of %s failed."
 msgstr "Ошибка отправления %s."
 
+# src/slrnpull.c:1581
+# src/slrnpull.c:1581
 #: src/slrnpull.c:1581
 #, c-format
 msgid "%s posted."
 msgstr "%s отправлена."
 
+# src/slrnpull.c:1603
+# src/slrnpull.c:1603
 #: src/slrnpull.c:1603
 #, c-format
 msgid "Unable to create tmp active file (%s)."
 msgstr "Невозможно создать временный active файл (%s)."
 
+# src/slrnpull.c:1633
+# src/slrnpull.c:1633
 #: src/slrnpull.c:1633
 #, c-format
 msgid "Write failed to tmp active file (%s)."
 msgstr "Ошибка записи во временный active файл (%s)."
 
+# src/slrnpull.c:1645
+# src/slrnpull.c:1645
 #: src/slrnpull.c:1645
 #, c-format
 msgid "Connection to %s lost. Performing shutdown."
 msgstr "Соединение с %s утеряно. Завершение работы."
 
+# src/slrnpull.c:1657
+# src/slrnpull.c:1657
 #: src/slrnpull.c:1657
 msgid "Error opening sltcp interface.\n"
 msgstr "Ошибка открытия sltcp интерфейса.\n"
 
+# src/slrnpull.c:1698
+# src/slrnpull.c:1698
 #: src/slrnpull.c:1698
 #, c-format
 msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "Всего получено %lu байт, отправлено %lu байт втечение %ld секунд."
 
+# src/slrnpull.c:1780
+# src/slrnpull.c:1780
 #: src/slrnpull.c:1780
 #, c-format
 msgid ""
@@ -3715,152 +5134,215 @@ msgstr ""
 "  --post-only          Отправить статьи, но не загружать новые.\n"
 "  --version            Показать номер версии.\n"
 
+# src/slrnpull.c:1804
+# src/slrnpull.c:1804
 #: src/slrnpull.c:1804
 #, c-format
 msgid "%s version: %s\n"
 msgstr "%s версия: %s\n"
 
+# src/slrnpull.c:1910
+# src/slrnpull.c:1910
 #: src/slrnpull.c:1910
 #, c-format
 msgid "Unable to create debug file %s\n"
 msgstr "Невозможно создать отладочный файл %s\n"
 
+# src/slrnpull.c:1928
+# src/slrnpull.c:1928
 #: src/slrnpull.c:1928
 msgid "The slrnpull spool directory has not been defined."
 msgstr "Не определен spool каталог для slrnpull."
 
+# src/slrnpull.c:1935
+# src/slrnpull.c:1935
 #: src/slrnpull.c:1935
 msgid "slrnpull started in expire mode."
 msgstr "slrnpull стартует в режиме удаления просроченных статей."
 
+# src/slrnpull.c:1937
+# src/slrnpull.c:1937
 #: src/slrnpull.c:1937
 msgid "slrnpull started."
 msgstr "slrnpull стартовал."
 
+# src/slrnpull.c:2017
+# src/slrnpull.c:2017
 #: src/slrnpull.c:2017
 msgid "Checking for new groups."
 msgstr "Проверка на наличие новых групп."
 
+# src/slrnpull.c:2021
+# src/slrnpull.c:2021
 #: src/slrnpull.c:2021
 #, c-format
 msgid "Unable to open new groups file %s.\n"
 msgstr "Невозможно открыть файл новых групп %s.\n"
 
+# src/slrnpull.c:2118
+# src/slrnpull.c:2118
 #: src/slrnpull.c:2118
 #, c-format
 msgid "%d new groups found."
 msgstr "Найдено новых групп: %d."
 
+# src/slrnpull.c:2125
+# src/slrnpull.c:2125
 #: src/slrnpull.c:2125
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
 "patch the file up for you."
 msgstr ""
-"%s кажется испорченным, ожидается: NEWGROUPS ггммдд ччммсс GMT, файл будет  "
+"%s кажется испорченным, ожидается: NEWGROUPS ггммдд ччммсс GMT, файл будет "
 "исправлен для Вас."
 
+# src/slrnpull.c:2204
+# src/slrnpull.c:2204
 #: src/slrnpull.c:2204
 msgid "Performing shutdown."
 msgstr "Завершение работы."
 
+# src/slrnpull.c:2207
+# src/slrnpull.c:2207
 #: src/slrnpull.c:2207
-#, fuzzy
 msgid "Slrnpull exiting on signal."
 msgstr "Slrn вышел по сигналу."
 
+# src/slrnpull.c:2326
+# src/slrnpull.c:2326
 #: src/slrnpull.c:2326
 #, c-format
 msgid "Creating Overview file for %s..."
 msgstr "Создание файла overview для %s..."
 
+# src/slrnpull.c:2372 src/slrnpull.c:2502
+# src/slrnpull.c:2372 src/slrnpull.c:2502
 #: src/slrnpull.c:2372 src/slrnpull.c:2502
 #, c-format
 msgid "Unable to stat %s."
 msgstr "Невозможно выполнить stat %s."
 
+# src/slrnpull.c:2429
+# src/slrnpull.c:2429
 #: src/slrnpull.c:2429
 #, c-format
 msgid "opendir %s failed."
 msgstr "Ошибка выполнения opendir %s."
 
+# src/slrnpull.c:2456
+# src/slrnpull.c:2456
 #: src/slrnpull.c:2456
 #, c-format
 msgid "malloc error. Unable to expire group %s."
 msgstr "Ошибка выполнения malloc(). Невозможно выполнить expire для группы %s."
 
+# src/slrnpull.c:2519
+# src/slrnpull.c:2519
 #: src/slrnpull.c:2519
 #, c-format
 msgid "Unable to expire %s."
 msgstr "Невозможно выполнить expire для %s."
 
+# src/slrnpull.c:2524
+# src/slrnpull.c:2524
 #: src/slrnpull.c:2524
 #, c-format
 msgid "%u articles expired in %s."
 msgstr "Удалено %u просроченных статей в %s."
 
+# src/slrnpull.c:2547
+# src/slrnpull.c:2547
 #: src/slrnpull.c:2547
 msgid "Termination requested.  Shutting down."
 msgstr "Требуется ограничитель.  Завершение работы."
 
+# src/slrnpull.c:2595
+# src/slrnpull.c:2595
 #: src/slrnpull.c:2595
 #, c-format
 msgid "Error reading name and password from %s."
 msgstr "Ошибка чтения имени и пароля из %s."
 
+# src/slrnpull.c:2608
+# src/slrnpull.c:2608
 #: src/slrnpull.c:2608
 msgid "Empty user name.  Please check syntax of the authinfo file."
-msgstr "Пустое имя пользователя. Проверьие синтаксис authinfo файла."
+msgstr "Пустое имя пользователя. Проверьте синтаксис authinfo файла."
 
+# src/sltcp.c:202
+# src/sltcp.c:202
 #: src/sltcp.c:202
 #, c-format
 msgid "%s: Unknown host.\n"
 msgstr "%s: Неизвестный host.\n"
 
+# src/sltcp.c:248
+# src/sltcp.c:248
 #: src/sltcp.c:248
 #, c-format
 msgid "trying %s\n"
 msgstr "производится попытка %s\n"
 
+# src/sltcp.c:261
+# src/sltcp.c:261
 #: src/sltcp.c:261
 #, c-format
 msgid "connection to %s, port %d:"
 msgstr "соединение с %s, порт %d:"
 
+# src/sltcp.c:270
+# src/sltcp.c:270
 #: src/sltcp.c:270
 msgid "Unable to make connection. Giving up.\n"
 msgstr "Невозможно установить соединение. Производится отказ.\n"
 
+# src/sltcp.c:407
+# src/sltcp.c:407
 #: src/sltcp.c:407
 msgid "Unable to generate enough entropy\n"
-msgstr "Невозможно создать достаточной энтропии\n"
+msgstr "Невозможно создать достаточную энтропию\n"
 
+# src/sltcp.c:426
+# src/sltcp.c:426
 #: src/sltcp.c:426
 msgid "SSL_CTX_new failed.\n"
 msgstr "Ошибка функции SSL_CTX_new().\n"
 
+# src/sltcp.c:441
+# src/sltcp.c:441
 #: src/sltcp.c:441
 msgid "SSL_new failed\n"
 msgstr "Ошибка функции SSL_new().\n"
 
+# src/sltcp.c:458
+# src/sltcp.c:458
 #: src/sltcp.c:458
 msgid "Unexpected error: SSL connection closed\n"
 msgstr "Неожиданная ошибка: соединение SSL закрыто.\n"
 
+# src/sltcp.c:461
+# src/sltcp.c:461
 #: src/sltcp.c:461
 #, c-format
 msgid "System call failed: errno = %d\n"
 msgstr "Ошибка системного вызова: errno = %d.\n"
 
+# src/sltcp.c:464
+# src/sltcp.c:464
 #: src/sltcp.c:464
 msgid "Possible protocol error\n"
 msgstr "Возможная ошибка протокола.\n"
 
+# src/sltcp.c:468
+# src/sltcp.c:468
 #: src/sltcp.c:468
 #, c-format
 msgid "%s failed\n"
 msgstr "Ошибка в %s.\n"
 
+# src/sltcp.c:487
+# src/sltcp.c:487
 #: src/sltcp.c:487
 msgid ""
 "\n"
@@ -3871,33 +5353,47 @@ msgstr ""
 "\n"
 "*** Данная программа не поддерживает SSL\n"
 
+# src/sltcp.c:495
+# src/sltcp.c:495
 #: src/sltcp.c:495
 msgid "Memory Allocation Failure.\n"
 msgstr "Ошибка распределения памяти.\n"
 
+# src/sltcp.c:527
+# src/sltcp.c:527
 #. Yuk.  SSL_set_fd returns 0 upon failure
 #: src/sltcp.c:527
 msgid "SSL_set_fd failed\n"
 msgstr "Ошибка функции SSL_set_fd().\n"
 
+# src/sltcp.c:536
+# src/sltcp.c:536
 #: src/sltcp.c:536
 msgid "SSL_connect"
 msgstr ""
 
+# src/spool.c:795
+# src/spool.c:793
 #: src/spool.c:793
 #, c-format
 msgid "Unable to open directory %s"
 msgstr "Невозможно окрыть каталог %s"
 
+# src/spool.c:1024
+# src/spool.c:1022
 #: src/spool.c:1022
 #, c-format
 msgid "Local spool directory '%s' doesn't exist."
 msgstr "Локальный spool каталог '%s' отсутствует."
 
+# src/startup.c:164
+# src/startup.c:164
 #: src/startup.c:164
 msgid "Memory Allocation Failure"
 msgstr "Ошибка распределения памяти"
 
+# src/startup.c:166
+# src/startup.c:166
 #: src/startup.c:166
 #, c-format
 msgid ""
@@ -3907,6 +5403,8 @@ msgstr ""
 "%s: Строка %d\n"
 "%sОшибка распределения памяти"
 
+# src/startup.c:185
+# src/startup.c:185
 #: src/startup.c:185
 #, c-format
 msgid ""
@@ -3916,6 +5414,8 @@ msgstr ""
 "%s: Обнаружена ошибка при обработке строки %d\n"
 "%s"
 
+# src/startup.c:194
+# src/startup.c:194
 #: src/startup.c:194
 #, c-format
 msgid ""
@@ -3925,6 +5425,8 @@ msgstr ""
 "%s: Устаревшая команда в строке %d:\n"
 "%s"
 
+# src/startup.c:196
+# src/startup.c:196
 #: src/startup.c:196
 #, c-format
 msgid ""
@@ -3934,6 +5436,8 @@ msgstr ""
 "Новое использование такое:\n"
 "set %s\n"
 
+# src/startup.c:270 src/startup.c:325
+# src/startup.c:270 src/startup.c:325
 #: src/startup.c:270 src/startup.c:325
 #, c-format
 msgid ""
@@ -3943,6 +5447,8 @@ msgstr ""
 "%s: строка %d:\n"
 "%sНет такой раскладки клавиатуры: %s"
 
+# src/startup.c:285
+# src/startup.c:285
 #: src/startup.c:285
 #, c-format
 msgid ""
@@ -3952,6 +5458,8 @@ msgstr ""
 "%s: строка %d:\n"
 "%sОшибка определения клавиши."
 
+# src/startup.c:304
+# src/startup.c:304
 #: src/startup.c:304
 #, c-format
 msgid ""
@@ -3961,6 +5469,8 @@ msgstr ""
 "%s: Устаревшее имя функции в строке %d: %s\n"
 "Новое имя: %s"
 
+# src/startup.c:360
+# src/startup.c:360
 #: src/startup.c:360
 #, c-format
 msgid ""
@@ -3970,15 +5480,19 @@ msgstr ""
 "%s: строка %d:\n"
 "%sНеверное регулярное выражение."
 
+# src/startup.c:376
+# src/startup.c:376
 #: src/startup.c:376
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s: line %d:\n"
 "%sToo many expressions specified."
 msgstr ""
 "%s: строка %d:\n"
-"Слишком много определено выражений."
+"Слишком много выражений определено."
 
+# src/startup.c:765
+# src/startup.c:765
 #: src/startup.c:765
 #, c-format
 msgid ""
@@ -3988,6 +5502,8 @@ msgstr ""
 "%s: Устаревшая переменная в строке %d: followup\n"
 "Новое имя followup_string"
 
+# src/startup.c:803
+# src/startup.c:803
 #: src/startup.c:803
 #, c-format
 msgid ""
@@ -3997,6 +5513,8 @@ msgstr ""
 "%s: Устаревшая переменная в строке %d: %s\n"
 "Пожалуйста, используйте вместо нее команду header_display_format."
 
+# src/startup.c:811
+# src/startup.c:811
 #: src/startup.c:811
 #, c-format
 msgid ""
@@ -4006,6 +5524,8 @@ msgstr ""
 "%s: Устаревшая переменная в строке %d: %s\n"
 "Пожалуйста, используйте вместо нее переменную header_display_format."
 
+# src/startup.c:818
+# src/startup.c:818
 #: src/startup.c:818
 #, c-format
 msgid ""
@@ -4015,11 +5535,15 @@ msgstr ""
 "%s: Устаревшее написание в строке %d:\n"
 "Используйте \"process_verbatim_marks\" вместо \"process_verbatum_marks\"."
 
+# src/startup.c:827
+# src/startup.c:827
 #: src/startup.c:827
 #, c-format
 msgid "%s: Obsolete variable on line %d: %s"
 msgstr "%s: Устаревшая переменная в строке %d: %s"
 
+# src/startup.c:998
+# src/startup.c:998
 #: src/startup.c:998
 #, c-format
 msgid ""
@@ -4029,51 +5553,73 @@ msgstr ""
 "%s: Устаревшее написание в строке %d:\n"
 "Используйте \"verbatim\" вместо \"verbatum\""
 
+# src/startup.c:1038 src/startup.c:1068
+# src/startup.c:1038 src/startup.c:1068
 #: src/startup.c:1038 src/startup.c:1068
 #, c-format
 msgid "%s is not a color object"
 msgstr "%s не является цветовым объектом"
 
+# src/startup.c:1047
+# src/startup.c:1047
 #: src/startup.c:1047
 msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
-msgstr ""
+msgstr "Из-за ограничений в S-Lang эта особенность доступна только на Unix."
 
+# src/startup.c:1160
+# src/startup.c:1160
 #: src/startup.c:1160
 #, c-format
 msgid "%s is not a valid fully-qualified host name."
 msgstr "%s неверный полноценный hostname."
 
+# src/startup.c:1450
+# src/startup.c:1450
 #: src/startup.c:1450
 msgid "Username: "
 msgstr "Имя пользователя: "
 
+# src/startup.c:1465
+# src/startup.c:1465
 #: src/startup.c:1465
 msgid "Password: "
 msgstr "Пароль: "
 
+# src/startup.c:1557
+# src/startup.c:1557
 #: src/startup.c:1557
 msgid "Unable to initialize S-Lang readline library."
-msgstr "Невозможно инициализиолвать библиотеку S-Lang readline."
+msgstr "Невозможно инициализиолвать S-Lang readline библиотеку."
 
+# src/startup.c:1562
+# src/startup.c:1562
 #: src/startup.c:1562
 msgid "Error initializing S-Lang preprocessor."
 msgstr "Ошибка инициализации препроцессора S-Lang."
 
+# src/startup.c:1568
+# src/startup.c:1568
 #: src/startup.c:1568
 #, c-format
 msgid "Reading startup file %s."
 msgstr "Чтение конфигурационнного файла %s."
 
+# src/startup.c:1594
+# src/startup.c:1594
 #: src/startup.c:1594
 #, c-format
 msgid "Server object '%s' is not supported."
 msgstr "Объект сервера '%s' не поддерживается."
 
+# src/startup.c:1598
+# src/startup.c:1598
 #: src/startup.c:1598
 #, c-format
 msgid "Post object '%s' is not supported."
 msgstr "Объект отправки '%s' не поддерживается."
 
+# src/startup.c:1617
+# src/startup.c:1617
 #: src/startup.c:1617
 #, c-format
 msgid ""
@@ -4083,42 +5629,60 @@ msgstr ""
 "%s: строка %d:\n"
 "%sФайл не открыт: %s"
 
+# src/util.c:339
+# src/util.c:340
 #: src/util.c:340
 msgid "File name too long."
 msgstr "Слишком длинное имя файла."
 
+# src/util.c:369
+# src/util.c:370
 #: src/util.c:370
 msgid "Memory allocation failure."
 msgstr "Ошибка распределения памяти."
 
+# src/util.c:432
+# src/util.c:433
 #: src/util.c:433
 msgid "Out of memory"
 msgstr "Нет памяти."
 
+# src/util.c:471
+# src/util.c:472
 #: src/util.c:472
 msgid "Pattern too long for buffer"
 msgstr "Маска не вмещается в буфер"
 
+# src/util.c:555
+# src/util.c:556
 #: src/util.c:556
-#, fuzzy, c-format
+#, c-format
 msgid "Cygwin conversion of %s failed."
 msgstr "Ошибка cygwin преобразования %s."
 
+# src/util.c:577
+# src/util.c:578
 #: src/util.c:578
 #, c-format
 msgid "Error closing file.  File system full? (errno = %d)"
 msgstr "Ошибка закрытия файла. Файловая система переполнена? (errno: %d)"
 
+# src/util.c:670 src/util.c:677
+# src/util.c:671 src/util.c:678
 #: src/util.c:671 src/util.c:678
 #, c-format
 msgid "Error opening %s"
 msgstr "Ошибка открытия %s"
 
+# src/util.c:686
+# src/util.c:687
 #: src/util.c:687
 #, c-format
 msgid "Write Error: %s"
 msgstr "Ошибка записи: %s"
 
+# src/version.c:90
+# src/version.c:90
 #: src/version.c:90
 msgid ""
 "\n"
@@ -4127,15 +5691,18 @@ msgstr ""
 "\n"
 " Опции компиляции:"
 
+# src/version.c:101
+# src/version.c:101
 #: src/version.c:101
-#, fuzzy
 msgid ""
 "\n"
 "  Backends:"
 msgstr ""
 "\n"
-"  ...:"
+"  Оконечники:"
 
+# src/version.c:105
+# src/version.c:105
 #: src/version.c:105
 msgid ""
 "\n"
@@ -4144,6 +5711,8 @@ msgstr ""
 "\n"
 "  Внешние программы / библиотеки:"
 
+# src/version.c:109
+# src/version.c:109
 #: src/version.c:109
 msgid ""
 "\n"
@@ -4152,30 +5721,42 @@ msgstr ""
 "\n"
 "  Особенности:"
 
+# src/version.c:155
+# src/version.c:155
 #: src/version.c:155
 msgid "\t* Note: This version is a developer preview.\n"
 msgstr "\t* Замечание: Данная версия вышла для разработчиков.\n"
 
+# src/version.c:157
+# src/version.c:157
 #: src/version.c:157
 #, c-format
 msgid "S-Lang Library Version: %s\n"
 msgstr "Версия библиотеки S-Lang: %s\n"
 
+# src/version.c:160
+# src/version.c:160
 #: src/version.c:160
 #, c-format
 msgid "\t* Note: This program was compiled against version %s.\n"
 msgstr "\t* Замечание: Эта программа была перекомпилирована для версии %s.\n"
 
+# src/version.c:164
+# src/version.c:164
 #: src/version.c:164
 #, c-format
 msgid "Compiled at: %s %s\n"
 msgstr "Время компиляции: %s %s\n"
 
+# src/version.c:166
+# src/version.c:166
 #: src/version.c:166
 #, c-format
 msgid "Operating System: %s\n"
 msgstr "Операционная Система: %s\n"
 
+# src/version.c:170
+# src/version.c:170
 #: src/version.c:170
 #, c-format
 msgid ""
@@ -4185,97 +5766,21 @@ msgstr ""
 " Умолчания:\n"
 "  Сервер по умолчанию:       %s\n"
 
+# src/version.c:173
+# src/version.c:173
 #: src/version.c:173
 #, c-format
 msgid "  Default posting mechanism: %s\n"
 msgstr "  Механизм отправки по умолчанию:  %s\n"
 
+# src/xover.c:953
+# src/xover.c:953
 #: src/xover.c:953
 msgid "Server closed connection.  Cannot recover."
-msgstr "Сервер закрыл соединение. Возврат невозможен."
+msgstr "Сервер закрыл соединение. Восстановление невозможно."
 
+# src/xover.c:999
+# src/xover.c:999
 #: src/xover.c:999
 msgid "Server does not provide this capability."
 msgstr "Сервер не обеспечивает эту возможность."
-
-#, fuzzy
-#~ msgid "cannot be constructed.  Try setting the USER environment variable."
-#~ msgstr ""
-#~ "Невозможно найти Ваше имя пользователя. Имеется ввиду, что правильный\r\n"
-#~ "заголовок 'From:' не может быть создан. Попытайтесь установить переменную "
-#~ "USER.\r\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "***Warning: Unable to find a unique fully-qualified host name.\r\n"
-#~ "            slrn will not generate any Message-IDs.\r\n"
-#~ "            Please note that the \"hostname\" setting does not affect "
-#~ "this;\r\n"
-#~ "            see the \"slrn reference manual\" for details.\r\n"
-#~ msgstr ""
-#~ "***Предупреждение: Невозможно найти уникальный полноценный hostname.\r\n"
-#~ "          slrn не сможет создать ни одного Message-ID.\r\n"
-#~ "          Заметьте, что установка \"hostname\" не оказывает действия на "
-#~ "это;\r\n"
-#~ "          за подробностями обращайтесь к \"slrn reference manual\"\r\n"
-
-#~ msgid "  version %s\n"
-#~ msgstr " slang до версии %s\n"
-
-#~ msgid "%s Search %s: "
-#~ msgstr "Szukaj %s %s: "
-
-#~ msgid "%s Search: "
-#~ msgstr "Szukaj %s: "
-
-#~ msgid "tTaA"
-#~ msgstr "tTwW"
-
-#~ msgid "ftell returned -1; errno %d (%s)."
-#~ msgstr "ftell zwrСciЁ -1; kod bЁЙdu %d (%s)."
-
-#~ msgid "fseek returned -1; errno %d (%s)."
-#~ msgstr "fseek zwrСciЁ -1; kod bЁЙdu %d (%s)."
-
-#~ msgid "Nov entry %ld skipped!"
-#~ msgstr "Wpis %ld bazy NOV zostaЁ pominiЙty!"
-
-#~ msgid "spool_find_artnum_from_msgid() returns %d"
-#~ msgstr "Funkcja spool_find_artnum_from_msgid () zwrСciЁa %d"
-
-#~ msgid "spool_find_artnum_from_msgid() found no match"
-#~ msgstr "Funkcja spool_find_artnum_from_msgid() nie znalazЁa dopasowania"
-
-#~ msgid "NEXT found article %d"
-#~ msgstr "Polecenie NEXT zwrСciЁo artykuЁ %d"
-
-#~ msgid "No NEXT -- %d > %d"
-#~ msgstr "Nie wykonujЙ NEXT -- %d > %d"
-
-#~ msgid "threshold for spool_nntp_newsgrups is %d"
-#~ msgstr "warto╤ci╠ graniczn╠ dla spool_nntp_newsgrups jest %d"
-
-#~ msgid "Couldn't open active.times"
-#~ msgstr "Nie mo©na otworzyФ pliku active.times"
-
-#~ msgid "Hmmm, didn't know about that command ('%s')"
-#~ msgstr "Hmmm, nie znam tego polecenia ('%s')"
-
-#~ msgid "from active:%s %d %d"
-#~ msgstr "z pliku active:%s %d %d"
-
-#~ msgid "Hmmm, unable to understand overview file - no integer found?"
-#~ msgstr "Hmmm, nie mogЙ przetworzyФ pliku overview - nie znaleziono liczby?"
-
-#~ msgid "Group: %s %d - %d"
-#~ msgstr "Grupa %s %d - %d"
-
-#~ msgid "Overview file corrupt? Unable to find field %d in overview line %s."
-#~ msgstr ""
-#~ "Plik overview jest uszkodzony? Nie mo©na odnale╪Ф pola %d w liniii %s."
-
-#~ msgid "Unknown"
-#~ msgstr "Nieznany"
-
-#~ msgid "Invalid name or password."
-#~ msgstr "NieprawidЁowa nazwa u©ytkownika lub hasЁo."

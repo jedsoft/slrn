@@ -1,4 +1,4 @@
-$ SLRN_VERSION = "0.9.7.2"
+$ SLRN_VERSION = "0.9.7.3"
 $ SLANG_VERSION =  10003
 $! Modified VMSMAKE for SLRN - Andy Harper, Kings College London
 $!                             Martin Zinser, GSI Darmstadt
