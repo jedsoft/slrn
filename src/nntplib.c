@@ -736,7 +736,7 @@ int nntp_has_cmd (NNTP_Type *s, char *cmd)
 
 	ret = nntp_server_cmd (s, cmd);
 
-	if (ret == ERR_COMMAND)
+	if ((ret == ERR_COMMAND) || (ret == ERR_ACCESS))
 	  s->can_xhdr = 0;
 	else if ((ret == OK_HEAD) &&
 		 (1 == nntp_read_line (s, buf, sizeof (buf))))
