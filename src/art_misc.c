@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -377,8 +377,9 @@ void slrn_art_mark_signature (Slrn_Article_Type *a) /*{{{*/
    /* skip back until a line matches the signature RegExp */
    
    while ((l != NULL) && (0 == (l->flags & HEADER_LINE))
-	  && (NULL == is_matching_line ((unsigned char *) l->buf,
-					Slrn_Strip_Sig_Regexp)))
+	  && ((l->flags & VERBATIM_LINE) ||
+	      (NULL == is_matching_line ((unsigned char *) l->buf,
+					 Slrn_Strip_Sig_Regexp))))
      l = l->prev;
    
    if ((l == NULL) || (l->flags & HEADER_LINE)) return;

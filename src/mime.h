@@ -1,6 +1,8 @@
 #ifndef _SLRN_MIME_H
 #define _SLRN_MIME_H
 
+#include "vfile.h"
+
 extern int Slrn_Use_Mime;
 #define MIME_DISPLAY	1
 #define MIME_SAVE       2
@@ -11,7 +13,7 @@ extern int Slrn_Use_Mime;
 extern int slrn_set_compatible_charsets (char *);
 extern int slrn_rfc1522_decode_string (char *);
 
-extern FILE *slrn_mime_encode (FILE *);
+extern VFILE *slrn_mime_encode (VFILE *);
 extern void slrn_mime_header_encode (char *, unsigned int);
 extern void slrn_mime_process_article (Slrn_Article_Type *);
 extern void slrn_mime_add_headers (FILE *);

@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -446,8 +446,10 @@ static int cc_file (char *file, char *to) /*{{{*/
 #if defined(IBMPC_SYSTEM)
    char outfile [SLRN_MAX_PATH_LEN];
 #endif
-   FILE *pp, *fp;
-   char line[MAX_LINE_BUFLEN];
+   FILE *pp;
+   VFILE *vp;
+   char *vline;
+   unsigned int vlen;
    unsigned int cc_line = 0;
    unsigned int linenum;
    char buf [MAX_LINE_BUFLEN];
@@ -455,31 +457,32 @@ static int cc_file (char *file, char *to) /*{{{*/
    char *l, *ref, *newsgroups = NULL;
    int reflen = 0;
 
-   if (NULL == (fp = fopen (file, "r")))
+   if (NULL == (vp = vopen (file, 4096, 0)))
      {
-	slrn_error (_("Unable to open %s."));
+	slrn_error (_("Unable to open %s."), file);
 	return -1;
      }
 
    /* Look for CC line */
    linenum = 0;
-   while ((NULL != fgets (line, sizeof (line) - 1, fp)) && (*line != '\n'))
+   while ((NULL != (vline = vgets (vp, &vlen))) && (*vline != '\n'))
      {
+	vline[vlen-1] = 0;
 	linenum++;
-	if (0 == slrn_case_strncmp ((unsigned char *)line,
+	if (0 == slrn_case_strncmp ((unsigned char *)vline,
 				    (unsigned char *) "Cc: ", 4))
 	  {
-	     l = slrn_skip_whitespace (line + 4);
+	     l = slrn_skip_whitespace (vline + 4);
 	     if (*l && (*l != ',')) cc_line = linenum;
 	     break;
 	  }
      }
 
-   /* At this point, if all has gone well line contains the cc information */
+   /* At this point, if all has gone well vline contains the cc information */
 
    if (cc_line == 0)
      {
-	slrn_fclose (fp);
+	vclose (vp);
 	return -1;
      }
 
@@ -490,7 +493,7 @@ static int cc_file (char *file, char *to) /*{{{*/
 #endif
    if (pp == NULL)
      {
-	slrn_fclose (fp);
+	vclose (vp);
 	return -1;
      }
 
@@ -499,7 +502,7 @@ static int cc_file (char *file, char *to) /*{{{*/
    /* This line consists of a comma separated list of addresses.  In
     * particular, "poster" will be replaced by 'to'.
     */
-   l = line + 4;
+   l = vline + 4;
    nth = 0;
    while (0 == SLextract_list_element (l, nth, ',', buf, sizeof (buf)))
      {
@@ -521,26 +524,32 @@ static int cc_file (char *file, char *to) /*{{{*/
      }
 
    putc ('\n', pp);
-   rewind (fp);
-
+   /* Can we rewind a vfile more elegantly? */
+   vclose(vp);
+   if (NULL == (vp = vopen (file, 4096, 0)))
+     {
+	slrn_error (_("Unable to re-open %s."), file);
+	return -1;
+     }
    linenum = 0;
 
-   while ((NULL != fgets (line, sizeof (line) - 1, fp)) && (*line != '\n'))
+   while ((NULL != (vline = vgets (vp, &vlen))) && (*vline != '\n'))
      {
+	vline[vlen-1] = 0;
 	linenum++;
 	if (linenum == cc_line) continue;
-	if (is_empty_header (line)) continue;
-	if (0 == slrn_case_strncmp ((unsigned char *)line,
+	if (is_empty_header (vline)) continue;
+	if (0 == slrn_case_strncmp ((unsigned char *)vline,
 				    (unsigned char *) "To: ", 4))
 	  continue;
 	if ((Slrn_Generate_Email_From == 0) &&
-	    (0 == slrn_case_strncmp ((unsigned char *)line,
+	    (0 == slrn_case_strncmp ((unsigned char *)vline,
 				     (unsigned char *) "From: ", 6)))
 	  continue;
-	if (0 == slrn_case_strncmp ((unsigned char *)line,
+	if (0 == slrn_case_strncmp ((unsigned char *)vline,
 				    (unsigned char *) "References: ", 12))
 	  {
-	     if (NULL != (ref = strrchr (line, '<')))
+	     if (NULL != (ref = strrchr (vline, '<')))
 	       {
 		  reflen = strlen (ref);
 		  if ((ref[reflen - 1] == '\n') &&
@@ -552,16 +561,20 @@ static int cc_file (char *file, char *to) /*{{{*/
 	/* There is some discussion of this extension to mail headers.  For
 	 * now, assume that this extension will be adopted.
 	 */
-	if (0 == slrn_case_strncmp ((unsigned char *)line,
+	if (0 == slrn_case_strncmp ((unsigned char *)vline,
 				    (unsigned char *) "Newsgroups: ", 12))
 	  {
 	     fputs ("X-Posted-To: ", pp);
-	     fputs (line + 12, pp);
+	     fputs (vline + 12, pp);
+	     fputs ("\n", pp);
 	     if (newsgroups == NULL)
-	       newsgroups = slrn_strnmalloc (line + 12, strlen(line+12)-1, 1);
+	       newsgroups = slrn_strmalloc (vline + 12, 1);
 	  }
 	else
-	  fputs (line, pp);
+	  {
+	     fputs (vline, pp);
+	     fputs ("\n", pp);
+	  }	
      }
 
    fputs ("\n", pp);
@@ -570,14 +583,16 @@ static int cc_file (char *file, char *to) /*{{{*/
    slrn_free (newsgroups);
 
 # if SLRN_HAS_MIME
-   if (Slrn_Use_Mime & MIME_DISPLAY) fp = slrn_mime_encode (fp);
+   if (Slrn_Use_Mime & MIME_DISPLAY) vp = slrn_mime_encode (vp);
 # endif
 
-   while (NULL != fgets (line, sizeof (line) - 1, fp))
+   while (NULL != (vline = vgets (vp, &vlen)))
      {
-	fputs (line, pp);
+	vline[vlen-1] = 0;
+	fputs (vline, pp);
+	fputs ("\n", pp);
      }
-   slrn_fclose (fp);
+   vclose (vp);
 # if defined(IBMPC_SYSTEM)
    slrn_fclose (pp);
    slrn_snprintf (buf, sizeof (buf), "%s %s", Slrn_SendMail_Command, outfile);
@@ -1252,10 +1267,15 @@ static void post_puts(FILE *fcc_fp, char *buf) /*{{{*/
 /* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
 int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 {
-   char line[MAX_LINE_BUFLEN]; /* also used for MIME encoding of the realname */
+#if SLRN_HAS_STRICT_FROM
+   char line[MAX_LINE_BUFLEN]; /* only used for MIME encoding of the realname */
+#endif
    char *linep;
    int len, header;
    FILE *fp;
+   VFILE *vp;
+   char *vline;
+   unsigned int vlen;
    FILE *fcc_fp;
    char fcc_file[SLRN_MAX_PATH_LEN];
    int rsp;
@@ -1289,20 +1309,22 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
        !Slrn_Editor_Uses_Mime_Charset)
      slrn_chmap_fix_file (file, 0);
 
+#if SLRN_HAS_MIME
    if ((fp = fopen (file, "r")) == NULL)
      {
 	slrn_error (_("File not found: %s--- message not posted."), file);
 	return -1;
      }
-
-#if SLRN_HAS_MIME
+   
    if (Slrn_Use_Mime & MIME_DISPLAY)
      slrn_mime_scan_file (fp);
+   
+   fclose (fp);
 #endif
+   
 #if SLRN_HAS_SLANG
    if (1 == slrn_is_hook_defined (HOOK_POST_FILE))
      {
-	fclose (fp);
 	(void) slrn_run_hooks (HOOK_POST_FILE, 1, file);
 	if (SLang_Error)
 	  {
@@ -1312,21 +1334,22 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	     return -1;
 	  }
 
-	if ((fp = fopen (file, "r")) == NULL)
-	  {
-	     slrn_error (_("File not found: %s--- message not posted."), file);
-	     return -1;
-	  }
 	slrn_message_now (_("Posting ..."));
      }
 #endif
 
+   if ((vp = vopen (file, 4096, 0)) == NULL)
+     {
+	slrn_error (_("File not found: %s--- message not posted."), file);
+	return -1;
+     }
+   
    fcc_fp = slrn_open_tmpfile (fcc_file, sizeof (fcc_file));
    
    if (fcc_fp == NULL)
      {
 	slrn_error (_("Couldn't open %s--- message not posted."), fcc_file);
-	slrn_fclose (fp);
+	vclose (vp);
 	return (-1);
      }
 
@@ -1334,7 +1357,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
    status = Slrn_Post_Obj->po_start ();
    if (status != CONT_POST)
      {
-	fclose (fp);
+	vclose (vp);
 	fclose (fcc_fp);
 	if (!Slrn_Editor_Uses_Mime_Charset)
 	  slrn_chmap_fix_file (file, 1);
@@ -1348,7 +1371,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
     if (rsp)
       {
 	(void) saved_failed_post (file, _("Message-ID generating error."));
-	fclose (fp);
+	vclose (vp);
 	fclose (fcc_fp);
 	slrn_free(msgid);
 	return -1;
@@ -1359,7 +1382,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
    if (NULL == (linep = slrn_make_from_string ()))
      {
 	(void) saved_failed_post (file, _("\"From\" generating error."));
-	fclose (fp);
+	vclose (vp);
 	fclose (fcc_fp);
 	slrn_free(msgid);
 	return -1;
@@ -1377,13 +1400,15 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
    /* if (Slrn_User_Info.posting_host != NULL)
      * post_printf (fcc_fp, "X-Posting-Host: %s\n", Slrn_User_Info.posting_host); */
 
-   linep = line + 1;
    header = 1;
-   while (fgets (linep, sizeof(line) - 1, fp) != NULL)
+   while ((vline = vgets (vp, &vlen)) != NULL)
      {
-	len = strlen (linep);
-	if (len == 0) continue;
+	if (vlen == 0) continue;
 
+	linep = slrn_safe_malloc (vlen+512); /* add some for MIME overhead */
+	slrn_strncpy (linep, vline, vlen);
+	linep[vlen-1] = 0;	/* kill \n and NULL terminate */
+	
 	if (header)
 	  {
 	     unsigned char *b;
@@ -1402,6 +1427,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	       {
 		  (void) slrn_add_references_header (NULL, white);
 		  (void) slrn_add_references_header (fcc_fp, white);
+		  SLfree(linep);
 		  continue;
 	       }
 
@@ -1436,9 +1462,10 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 					    Slrn_Version, system_os_name);
 		  header = 0;
 #if SLRN_HAS_MIME
-		  if (Slrn_Use_Mime & MIME_DISPLAY) fp = slrn_mime_encode (fp);
+		  if (Slrn_Use_Mime & MIME_DISPLAY) vp = slrn_mime_encode (vp);
 #endif
 
+		  SLfree(linep);
 		  continue;
 	       } /* if (*white == '\n') */
 
@@ -1449,13 +1476,12 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 		  b = (unsigned char *) slrn_skip_whitespace ((char *) b);
 		  if (*b && (*b != ',')) perform_cc = 1;
 		  fputs(linep, fcc_fp); /* The 'Cc:' header is only needed in the fcc-file.*/
-		  if (linep[len - 1] != '\n')
-		       fputs("\n", fcc_fp);
+		  fputs("\n", fcc_fp);
+		  SLfree(linep);
 		  continue;
 	       }
 
 	     if (is_empty_header (linep)) continue;
-	     linep[len - 1] = 0;
 #if SLRN_HAS_GEN_MSGID
 	     if (!slrn_case_strncmp ((unsigned char *)"Message-ID: ",
 				     (unsigned char *)linep, 12))
@@ -1468,33 +1494,18 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 #if SLRN_HAS_MIME
 	     if (Slrn_Use_Mime & MIME_DISPLAY)
 	       {
-		  slrn_mime_header_encode (linep, sizeof (line) - 1);
+		  slrn_mime_header_encode (linep, vlen+512);
 		  len = strlen (linep);
 	       }
 #endif
 	  } /* if (header) */
 
-	/* Since the header may not have ended in a \n, make sure the
-	 * other lines do not either.  Later, the \n will be added.
-	 */
-	if (linep[len - 1] == '\n')
-	  {
-	     len--;
-	     linep[len] = 0;
-	  }
-
 	if (*linep == '.')
-	  {
-	     linep--;
-	     *linep = '.';
-	  }
-
+	  post_puts (fcc_fp, ".");
 	post_puts (fcc_fp, linep);
 	post_puts (fcc_fp, "\n");
-
-	linep = line + 1;
-     } /*while (fgets (linep, sizeof(line) - 1, fp) != NULL) */
-   slrn_fclose (fp);
+     } /*while vgets ... */
+   vclose (vp);
    slrn_fclose (fcc_fp);
 
    if (0 == Slrn_Post_Obj->po_end ())

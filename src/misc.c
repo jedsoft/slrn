@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -1122,9 +1122,12 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
    if (Slrn_Use_Mime & MIME_DISPLAY)
      {
 	FILE *fp, *pp, *fcc_fp;
+	VFILE *vp;
+	char *vline;
+	unsigned int vlen;
 	int header = 1;
-	char line[1024];
 
+	/* First, fopen() the file to do the MIME check */
 	if ((fp = fopen (file, "r")) == NULL)
 	     return (-1);
 
@@ -1137,6 +1140,12 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	  }
 
 	slrn_mime_scan_file (fp);
+	slrn_fclose(fp);
+	
+	/* Now, vopen() it for reading in long lines */
+	if ((vp = vopen (file, 4096, 0)) == NULL)
+	  return (-1);
+	
 #  if defined(IBMPC_SYSTEM)
 	pp = slrn_open_tmpfile (outfile, sizeof (outfile));
 #  else
@@ -1144,29 +1153,31 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 #  endif
 	if (pp == NULL)
 	  {
-	     slrn_fclose (fp);
+	     vclose (vp);
 	     slrn_fclose (fcc_fp);
 	     return (-1);
 	  }
 
-	while (fgets (line, sizeof(line), fp) != NULL)
+	while (NULL != (vline = vgets(vp, &vlen)))
 	  {
-	     unsigned int len = strlen (line);
-
-	     if (len == 0) continue;
-	     len--;
-
-	     if (line [len] == '\n') line [len] = 0;
+	     char *line;
+	     
+	     if (vlen == 0) continue;
+	     
+	     line = slrn_safe_malloc (vlen+512); /* add some for MIME overhead */
+	     slrn_strncpy (line, vline, vlen);
+	     line[vlen-1] = 0;		/* kill \n and NULL terminate */
 
 	     if (header)
 	       {
-		  if ((( line[0] == 'R') || (line[0]== 'r'))
+		  if (((line[0] == 'R') || (line[0]== 'r'))
 		      && (0 == slrn_case_strncmp ((unsigned char *)"References: ",
 						  (unsigned char *)line,
 						  12)))
 		    {
 		       (void) slrn_add_references_header (pp, line);
 		       (void) slrn_add_references_header (fcc_fp, line);
+		       SLfree(line);
 		       continue;
 		    }
 
@@ -1176,12 +1187,12 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 
 		       slrn_add_date_header (pp);
 		       slrn_mime_add_headers (pp);
-		       fp = slrn_mime_encode (fp);
+		       vp = slrn_mime_encode (vp);
 
 		       slrn_add_date_header (fcc_fp);
 		       slrn_mime_add_headers (fcc_fp);
 		    }
-		  slrn_mime_header_encode (line, sizeof(line));
+		  slrn_mime_header_encode (line, vlen+512);
 	       }
 	     if ((Slrn_Generate_Email_From) ||
 		 (header == 0) ||
@@ -1193,8 +1204,9 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 		  fputs (line, fcc_fp);
 		  putc('\n', fcc_fp);
 	       }
+	     SLfree(line);
 	  }
-	slrn_fclose (fp);
+	vclose (vp);
 	slrn_fclose (fcc_fp);
 #  if defined(IBMPC_SYSTEM)
 	slrn_fclose (pp);

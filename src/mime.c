@@ -1548,14 +1548,14 @@ Content-Transfer-Encoding: %s\n",
      }
 }
 
-FILE *slrn_mime_encode (FILE *fp)
+VFILE *slrn_mime_encode (VFILE *vp)
 {
    if ((Mime_Posting_Encoding == ENCODED_7BIT)
        || (Mime_Posting_Encoding == ENCODED_8BIT))
-     return fp;
+     return vp;
    
    /* Add encoding later. */
-   return fp;
+   return vp;
 }
 
 #endif /* NOT SLRNPULL_CODE */

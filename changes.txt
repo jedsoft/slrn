@@ -13,6 +13,8 @@ Changes since 0.9.8.0
   * slrnpull tries to write .headers files on interrupts.
   * The "Has-Body" scoring field sometimes did not work correctly.
   * When retrieving article children, headers without body were not marked.
+  * Ignore signature delimiters in verbatim text blocks.
+  * Do not choke on long header lines when replying by email.
 
    In the config file (and the corresponding intrinsic functions), the
    following names now denote special function keys: <PageUp> <PageDown>

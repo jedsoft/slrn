@@ -2058,14 +2058,16 @@ static int prepare_article (Slrn_Article_Type *a)
    slrn_art_mark_spoilers (a);
    Num_Spoilers_Visible = 1;
 #endif
+
+   /* We should ignore signature delimiters in verbatim parts, so
+    * order matters. */
+   if (Slrn_Process_Verbatim_Marks) 
+     slrn_art_mark_verbatim (a);
    
    /* mark_signature unmarks lines in the signature which look like
     * quotes, so do it after mark_quotes, but before hide_or_unhide_quotes */
    slrn_art_mark_signature (a);
    slrn_art_mark_pgp_signature (a);
-
-   if (Slrn_Process_Verbatim_Marks) 
-     slrn_art_mark_verbatim (a);
 
    /* The actual wrapping is done elsewhere. */
    if (Slrn_Wrap_Mode & 0x4)
