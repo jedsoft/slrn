@@ -12,6 +12,7 @@ AC_SUBST(VERSION)
 
 CF_ANSI_CC
 CF_GCC_OPTIONS
+AC_SYS_LARGEFILE
 
 dnl Unfortunately, autoconf lacks a --docdir option. This is a workaround:
 AC_ARG_WITH(docdir,

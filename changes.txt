@@ -20,6 +20,8 @@ Changes since 0.9.7.4
   * Use "X-Posted-To" instead of "Posted-To" (did not make it into RFC2822)
   * Also attempt MIME-decoding if no "Mime-Version:" header line is found.
   * Don't add an empty line at the end of saved articles (Alain Bench).
+  * Use a completely unmodified copy of the article when piping / saving.
+    This is important for some yenc-encoded and PGP-signed articles.
 1. Changes to the user interface:
   * view_scores uncollapses threads (suggested by Jurriaan W Kalkman) and
     can optionally be left by pressing 'q'.
@@ -51,37 +53,40 @@ Changes since 0.9.7.4
 5. Added intrinsic functions article_cline_as_string, article_cline_number,
    article_count_lines, article_goto_line, article_line_down, article_line_up,
    has_parent, header_cursor_pos, set_color_attr (see doc/slrnfuns.txt).
-6. locate_article ignores leading "news:" (Jarek Baczynski)
-7. When reading in spool mode with spool_check_up_on_nov set, slrn now finds
+6. Custom sorting now allows you to use different criteria for sorting
+   initial articles of threads and articles inside threads (see
+   custom_sort_order in manual.txt for details). (patch by Anatoly Vorobey)
+7. locate_article ignores leading "news:" (Jarek Baczynski)
+8. When reading in spool mode with spool_check_up_on_nov set, slrn now finds
    out the number of bytes of each article, even if it is not included in
    the news overview file (based on a patch by Jurriaan W Kalkman).
-8. Support Cancel-Locks using the canlock library (--with-canlock) that can
+9. Support Cancel-Locks using the canlock library (--with-canlock) that can
    be obtained from <http://cssri.meowing.net/>; you also need to set the
    new variable "cansecret_file" to a file containing your Cancel-Lock
    password to enable this (based on a patch by Andreas Barth).
-9. Support GNU TLS via its new OpenSSL compatibility layer (--with-gnutls).
-   Please note that GNU TLS still is under heavy development and that slrn's
-   support for it is still untested (based on a patch by Joey Hess.)
-10. New command-line option "-w0" that waits on startup, but only if a
+10. Support GNU TLS via its new OpenSSL compatibility layer (--with-gnutls).
+    Please note that GNU TLS still is under heavy development and that slrn's
+    support for it is still untested (based on a patch by Joey Hess.)
+11. New command-line option "-w0" that waits on startup, but only if a
     warning or error is displayed.
-11. Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
-12. Verbatim text can be hidden using toggle_verbatim_text (default binding
+12. Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
+13. Verbatim text can be hidden using toggle_verbatim_text (default binding
     '{') or hide_verbatim_text in the config file. (Arek Sochala)
-13. The "BEGIN PGP SIGNED ARTICLE" line is displayed using the "pgpsignature"
+14. The "BEGIN PGP SIGNED ARTICLE" line is displayed using the "pgpsignature"
     color and stripped on followups. (Emmanuele Bassi)
-14. If query_read_group_cutoff is set to -n, slrn will automatically
+15. If query_read_group_cutoff is set to -n, slrn will automatically
     (without prompting) download n articles when more than n are present.
-15. Support Turkish characters on Win32 - set charset to "ibm857" for this.
+16. Support Turkish characters on Win32 - set charset to "ibm857" for this.
     With help from A. Alper ATICI
-16. Re-structured the manual and added a chapter about slang's
+17. Re-structured the manual and added a chapter about slang's
     pre-processing facilities. (Matthias Friedrich)    
-17. The config variable cc_post_string is obsolete, as cc_followup_string
+18. The config variable cc_post_string is obsolete, as cc_followup_string
     now works correctly in all cases. Currently, the only supported escape
     sequence is "%n" for newsgroup name.
-18. New translations:
+19. New translations:
    * fi.po (Finnish; Lauri Nurmi)
    * tr.po (Turkish; A. Alper ATICI)
-19. Remove duplicates when browsing URLs (Rüdiger Sonderfeld)
+20. Remove duplicates when browsing URLs (Rüdiger Sonderfeld)
 
 Changes since 0.9.7.3
 
