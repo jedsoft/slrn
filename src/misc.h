@@ -76,6 +76,9 @@ typedef struct
    char *followupto_string;
    char *reply_string;
    char *signature;
+#if SLRN_HAS_CANLOCK
+   char *cancelsecret;
+#endif
    char *posting_host;		       /* FQDN or NULL */
    char *login_name;
 }

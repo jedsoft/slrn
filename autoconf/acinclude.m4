@@ -164,6 +164,7 @@ if test "x$enable_hardcode_libs" = "xyes" ; then
 fi
 ])
 
+
 AC_DEFUN(CF_PATH_SLANG_LIB,
 [
   AC_REQUIRE([CF_EVAL_VARS])
@@ -483,132 +484,135 @@ pathname and all needed command line arguments).
   fi
 ])
 
-AC_DEFUN(CF_UUDEVIEW,
+dnl CF_WITH_OPT_LIB(NAME, LIBVAR, INCVAR, LIBNAME, LIBVAL, INCNAME,
+dnl                 HASVAR, HELP-TEXT)
+AC_DEFUN(CF_WITH_OPT_LIB,
 [
-  UULIB=""
-  UUINC=""
+  eval "$2=\"\""
+  eval "$3=\"\""
   
-  AC_ARG_WITH(uudeview,
-    [  --with-uudeview[=DIR]   For uudeview library support],
-    [  ac_uu_home="$withval" ], [ ac_uu_home=no ])
+  AC_ARG_WITH($1, [$8],
+    [  ac_optlib_home="$withval" ], [ ac_optlib_home=no ])
 
-  if test "x$ac_uu_home" != xno ; then
+  if test "x$ac_optlib_home" != xno ; then
   
-    dnl We want uudeview support
+    dnl We want support for that optional library
   
-    AC_MSG_CHECKING(for the uudeview library)
+    AC_MSG_CHECKING(for the $1 library)
     
-    if test "x$ac_cv_lib_uu" != "x" ; then
-      ac_uu_library="$ac_cv_lib_uu"
+    if test "x${ac_cv_lib_$1}" != "x" ; then
+      ac_opt_library="${ac_cv_lib_$1}"
     else
-      ac_uu_library=no
+      ac_opt_library=no
     fi
 
-    AC_CACHE_VAL(ac_cv_lib_uu, [
+    AC_CACHE_VAL(ac_cv_lib_$1, [
     
       dnl If you need to add extra directories to check, add them here.
       
-      uu_library_dirs="\
+      opt_library_dirs="\
 	/usr/local/lib \
         /usr/lib \
 	/usr/pkg/lib"
   	
-      if test "x$ac_uu_home" != xno && test "x$ac_uu_home" != xyes ; then
-        uu_library_dirs="$ac_uu_home $ac_uu_home/lib $uu_library_dirs"
+      if test "x$ac_optlib_home" != xno && test "x$ac_optlib_home" != xyes ; then
+        opt_library_dirs="$ac_optlib_home $ac_optlib_home/lib $opt_library_dirs"
       fi
   
-      for uu_dir in $uu_library_dirs; do
-        if test -r "$uu_dir/libuu.a" ; then
-          ac_uu_library="$uu_dir"
+      for candidate in $opt_library_dirs; do
+        if test -r "$candidate/$4" ; then
+          ac_opt_library="$candidate"
           break
         fi
       done
 
-      if test "x$ac_uu_library" != xno; then
-        ac_cv_lib_uu="$ac_uu_library"
+      if test "x$ac_opt_library" != xno; then
+        eval "ac_cv_lib_$1=\"$ac_opt_library\""
       fi
     ])
     
-    AC_MSG_RESULT([$ac_uu_library])
+    AC_MSG_RESULT([$ac_opt_library])
     
-    if test "x$ac_uu_library" = xno ; then
+    if test "x$ac_opt_library" = xno ; then
     AC_MSG_ERROR([
 
-Please install the uudeview library.  If you already did so, point this script
-to the right directory with the --with-uudeview=DIR option.
+Please install the $1 library.  If you already did so, point this script
+to the right directory with the --with-$1=DIR option.
 ])
     fi
     
     # gcc under solaris is often not installed correctly.  Avoid specifying
     # -L/usr/lib.
-    if test "x$ac_uu_library" = "x/usr/lib" ; then
-        UULIB="-luu"
+    if test "x$ac_opt_library" = "x/usr/lib" ; then
+        OPTLIB="$5"
     else
         if test "x$enable_hardcode_libs" = "xyes" ; then
-            UULIB="-L$ac_uu_library $cf_rpath_option$ac_uu_library -luu"
+            OPTLIB="-L$ac_opt_library $cf_rpath_option$ac_opt_library $5"
         else
-            UULIB="-L$ac_uu_library -luu"
+            OPTLIB="-L$ac_opt_library $5"
         fi
     fi
+    eval "$2=\"$OPTLIB\""
     
-    AC_MSG_CHECKING(for the uudeview includes)
+    AC_MSG_CHECKING(for the $1 includes)
     
-    if test "x$ac_cv_header_uu" != "x" ; then
-      ac_uu_includes="$ac_cv_header_uu"
+    if test "x${ac_cv_header_$1}" != "x" ; then
+      ac_opt_includes="${ac_cv_header_$1}"
     else
-      ac_uu_includes=no
+      ac_opt_includes=no
     fi
 
-    AC_CACHE_VAL(ac_cv_header_uu, [
+    AC_CACHE_VAL(ac_cv_header_$1, [
 
       dnl If you need to add extra directories to check, add them here.
       
-      uu_include_dirs="\
+      opt_include_dirs="\
 	/usr/local/include \
         /usr/include \
 	/usr/pkg/include"
 	
-      if test "x$ac_uu_home" != xno && test "x$ac_uu_home" != xyes ; then
-        uu_include_dirs="$ac_uu_home $ac_uu_home/include $uu_include_dirs"
+      if test "x$ac_optlib_home" != xno && test "x$ac_optlib_home" != xyes ; then
+        opt_include_dirs="$ac_optlib_home $ac_optlib_home/include $opt_include_dirs"
       fi
       
-      for uu_dir in $uu_include_dirs; do
-        if test -r "$uu_dir/uudeview.h"; then
-          ac_uu_includes="$uu_dir"
+      for candidate in $opt_include_dirs; do
+        if test -r "$candidate/$6"; then
+          ac_opt_includes="$candidate"
           break
         fi
       done
 
-      if test "x$ac_uu_includes" != xno; then
-        ac_cv_header_uu="$ac_uu_includes"
+      if test "x$ac_opt_includes" != xno; then
+        eval "ac_cv_header_$1=\"$ac_opt_includes\""
       fi
     ])
     
-    AC_MSG_RESULT([$ac_uu_includes])
+    AC_MSG_RESULT([$ac_opt_includes])
 
-    if test "x$ac_uu_includes" = xno ; then
+    if test "x$ac_opt_includes" = xno ; then
     AC_MSG_ERROR([
 
-Please install the uudeview header files.  If you already did so, point this
-script to the right directory with the --with-uudeview=DIR option.
+Please install the $1 header files.  If you already did so, point this
+script to the right directory with the --with-$1=DIR option.
 ])
     fi
 
     # gcc under solaris is often not installed correctly.  Avoid specifying
     # -I/usr/include.
-    if test "x$ac_uu_includes" = "x/usr/include" ; then
-        UUINC=""
+    if test "x$ac_opt_includes" = "x/usr/include" ; then
+        OPTINC=""
     else
-        UUINC="-I$ac_uu_includes"
+        OPTINC="-I$ac_opt_includes"
     fi
+    eval "$3=\"$OPTINC\""
 
-    AC_DEFINE(SLRN_HAS_UUDEVIEW, 1)
+    AC_DEFINE([$7], 1)
   else
-    AC_DEFINE(SLRN_HAS_UUDEVIEW, 0)
+    AC_DEFINE([$7], 0)
   fi
   
-    AC_SUBST(UUINC)
-    AC_SUBST(UULIB)dnl
+    AC_SUBST([$2])
+    AC_SUBST([$3])dnl
 ])
 
 AC_DEFUN(CF_VA_COPY,

@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -60,10 +60,11 @@ static Compile_Option_Type Compile_Options [] =
      {"slrnpull",		SLRN_HAS_PULL_SUPPORT},
      {"spool",			SLRN_HAS_SPOOL_SUPPORT},
 #define EXTERNAL_PROG_OFFSET 3
+     {"canlock",		SLRN_HAS_CANLOCK},
      {"inews",			SLRN_HAS_INEWS_SUPPORT},
      {"ssl",			SLRN_HAS_SSL_SUPPORT},
      {"uudeview",    		SLRN_HAS_UUDEVIEW},
-#define FEATURES_OFFSET 6
+#define FEATURES_OFFSET 7
      {"charset_mapping",	SLRN_HAS_CHARACTER_MAP},
      {"decoding",		SLRN_HAS_DECODE},
      {"emphasized_text",	SLRN_HAS_EMPHASIZED_TEXT},

@@ -70,6 +70,10 @@
 #endif
 #include "decode.h"
 
+#if SLRN_HAS_CANLOCK
+# include <canlock.h>
+#endif
+
 #if SLRN_HAS_GROUPLENS
 # include "grplens.h"
 #endif
@@ -3288,6 +3292,55 @@ static void followup (void) /*{{{*/
 
 /*}}}*/
 
+#if SLRN_HAS_CANLOCK
+/* Generate a key needed for canceling and superseding messages when
+ * cancel-locking is used. Returns a malloced string or NULL on failure. */
+static char* gen_cancel_key (char* msgid) /*{{{*/
+{
+   FILE *cansecret;
+   unsigned char *buf, *cankey;
+   long filelen;
+   char canfile[SLRN_MAX_PATH_LEN];
+   
+   if (0 == *Slrn_User_Info.cancelsecret)
+     return NULL;
+   
+   if ((cansecret = slrn_open_home_file (Slrn_User_Info.cancelsecret, "r",
+					 canfile, SLRN_MAX_PATH_LEN, 0)) == NULL)
+     {
+	slrn_error (_("Cannot open file: %s"), Slrn_User_Info.cancelsecret);
+	return NULL;
+     }
+
+   fseek (cansecret, 0, SEEK_END);
+   if ((filelen = ftell(cansecret)) == 0)
+     {
+        slrn_error (_("Zero length file: %s"), Slrn_User_Info.cancelsecret);
+	fclose (cansecret);
+        return NULL;
+     }
+   
+   if (NULL == (buf = slrn_malloc (filelen, 0, 1)))
+     {
+	fclose (cansecret);
+	return NULL;
+     }
+   (void) fseek (cansecret, 0, SEEK_SET);
+   fread (buf, filelen, 1, cansecret);
+
+# if 0
+   cankey = md5_key (buf, filelen, msgid, strlen(msgid));
+# else /* by default we use SHA-1 */
+   cankey = sha_key (buf, filelen, msgid, strlen(msgid));
+# endif
+   
+   fclose (cansecret);
+   SLFREE (buf);
+   return cankey;
+}
+/*}}}*/
+#endif /* CANCEL_LOCKS */
+
 /* Copy a message, adding a "Supersedes: " header for the message it replaces.
  * Not all headers of original are preserved; notably Cc is discarded.
  */
@@ -3362,6 +3415,14 @@ static void supersede (void) /*{{{*/
 #endif
    fprintf (fp, "Subject: %s\nSupersedes: %s\nFollowup-To: %s\n",
 	    subject, msgid, followupto);
+#if SLRN_HAS_CANLOCK
+   /* Abuse me, we don't need me anymore ;-) */
+   if (NULL != (me = gen_cancel_key(msgid)))
+     {
+	fprintf (fp, "Cancel-Key: %s\n", me);
+	SLFREE (me);
+     }
+#endif
     
    if ((xref != NULL) && (*xref != 0))
      {
@@ -6548,6 +6609,15 @@ static void cancel_article (void) /*{{{*/
      {
 	Slrn_Post_Obj->po_printf ("Distribution: %s\n", dist);
      }
+   
+#if SLRN_HAS_CANLOCK
+   /* Abuse me_t, not needed anymore */
+   if (NULL != (me_t = gen_cancel_key(msgid)))
+     {
+	Slrn_Post_Obj->po_printf ("Cancel-Key: %s\n", me_t);
+	SLFREE (me_t);
+     }
+#endif
    
    Slrn_Post_Obj->po_printf("\nignore\nArticle cancelled by slrn %s\n", Slrn_Version);
    

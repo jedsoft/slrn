@@ -34,6 +34,9 @@
 /* define if you want uudeview support */
 #define SLRN_HAS_UUDEVIEW	0
 
+/* define if you want cancel lock support using libcanlock */
+#define SLRN_HAS_CANLOCK  0
+
 /* define if you want slang interpreter support */
 #define SLRN_HAS_SLANG			1
 

@@ -2721,6 +2721,9 @@ void slrn_get_user_info (void) /*{{{*/
    
    Slrn_User_Info.signature = slrn_safe_strmalloc (SLRN_SIGNATURE_FILE);
    
+#if SLRN_HAS_CANLOCK
+   Slrn_User_Info.cancelsecret = slrn_safe_strmalloc ("");
+#endif
 #ifdef SLRN_SENDMAIL_COMMAND
    Slrn_SendMail_Command = slrn_safe_strmalloc (SLRN_SENDMAIL_COMMAND);
 #endif

@@ -57,7 +57,10 @@ CF_PATH_SLANG_LIB
 CF_PATH_SLANG_INC
 CF_SSL
 CF_MTA
-CF_UUDEVIEW
+CF_WITH_OPT_LIB(uudeview, UULIB, UUINC, libuu.a, -luu, uudeview.h,
+[SLRN_HAS_UUDEVIEW], [  --with-uudeview[=DIR]   For uudeview library support])
+CF_WITH_OPT_LIB(canlock, LOCKLIB, LOCKINC, libcanlock.a, -lcanlock, canlock.h,
+[SLRN_HAS_CANLOCK],  [  --with-canlock[=DIR]    For cancel-lock library support])
 
 dnl SLRN_LIB_DIR: directory for the global newsgroups.dsc
 AC_ARG_WITH(libdir,

@@ -48,6 +48,10 @@
 # include <process.h>
 #endif
 
+#if SLRN_HAS_CANLOCK
+# include <canlock.h>
+#endif
+
 #include "slrn.h"
 #include "util.h"
 #include "server.h"
@@ -947,6 +951,53 @@ static int saved_failed_post (char *file, char *msg) /*{{{*/
 
 /*{{{ Post functions*/
 
+#if SLRN_HAS_CANLOCK
+/* This function returns a malloced string or NULL on failure. */
+static char *gen_cancel_lock (char *msgid) /*{{{*/
+{
+   FILE *cansecret;
+   unsigned char *buf, *canlock;
+   long filelen;
+   char canfile[SLRN_MAX_PATH_LEN];
+   
+   if (0 == *Slrn_User_Info.cancelsecret)
+     return NULL;
+   
+   if ((cansecret = slrn_open_home_file(Slrn_User_Info.cancelsecret,
+			"r", canfile, SLRN_MAX_PATH_LEN, 0)) == NULL)
+     {
+	slrn_error (_("Cannot open file: %s"), Slrn_User_Info.cancelsecret);
+	return NULL;
+     }
+   
+   fseek (cansecret, 0, SEEK_END);
+   if ((filelen = ftell(cansecret)) == 0)
+     {
+	slrn_error (_("Zero length file: %s"), Slrn_User_Info.cancelsecret);
+	fclose (cansecret);
+	return NULL;
+     }
+   if (NULL == (buf = slrn_malloc (filelen, 0, 1)))
+     {
+	fclose (cansecret);
+	return NULL;
+     }
+   
+   (void) fseek (cansecret, 0, SEEK_SET);
+   fread (buf, filelen, 1, cansecret);
+   
+# if 0
+   canlock = md5_lock(buf, filelen, msgid, strlen(msgid));
+# else /* by default we use SHA-1 */
+   canlock = sha_lock(buf, filelen, msgid, strlen(msgid));
+# endif
+   fclose(cansecret);
+   SLFREE(buf);
+   return canlock;
+}
+/*}}}*/
+#endif /* SLRN_HAS_CANLOCK */
+
 /* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
 static int post_user_confirm (char *file, int is_postponed) /*{{{*/
 {
@@ -1281,13 +1332,18 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	       {
 		  slrn_add_date_header (NULL);
 		  slrn_add_date_header (fcc_fp);
-		  if (has_messageid == 0)
+		  if ((has_messageid == 0) && (msgid != NULL))
 		    {
-		       if (msgid != NULL)
+#if SLRN_HAS_CANLOCK
+		       char *canlock;
+		       if (NULL != (canlock = gen_cancel_lock (msgid)))
 			 {
-			    post_printf(fcc_fp, "Message-ID: %s\n", msgid);
-			    SLfree (msgid);
+			    post_printf(fcc_fp, "Cancel-Lock: %s\n", canlock);
+			    SLFREE (canlock);
 			 }
+#endif /* SLRN_HAS_CANLOCK */
+		       post_printf(fcc_fp, "Message-ID: %s\n", msgid);
+		       SLFREE (msgid);
 		    }
 #if SLRN_HAS_MIME
 		  if (Slrn_Use_Mime & MIME_DISPLAY)

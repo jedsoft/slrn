@@ -53,6 +53,10 @@ Changes since 0.9.7.4
    out the number of bytes of each article, even if it is not included in
    the news overview file (based on a patch by Jurriaan W Kalkman).
 
+   Support Cancel-Locks using the canlock library (--with-canlock); you also
+   need to set the new variable "cansecret_file" to a file containing your
+   Cancel-Lock password to enable this (based on a patch by Andreas Barth).
+
    New command-line option "-w0" that waits on startup, but only if a
    warning or error is displayed.
 

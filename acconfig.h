@@ -52,6 +52,9 @@
 /* define if you want uudeview support */
 #define SLRN_HAS_UUDEVIEW		0
 
+/* define if you want cancel lock support using libcanlock */
+#define SLRN_HAS_CANLOCK  0
+
 /* inews command */
 #undef SLRN_INEWS_COMMAND
 

@@ -617,6 +617,11 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      {"realname", NULL},
      {"username", NULL},
 #endif
+#if SLRN_HAS_CANLOCK
+     {"cansecret_file", &Slrn_User_Info.cancelsecret},
+#else
+     {"cansecret_file", NULL},
+#endif
      {"art_help_line", &Slrn_Art_Help_Line},
      {"art_status_line", &Slrn_Art_Status_Line},
      {"header_help_line", &Slrn_Header_Help_Line},
