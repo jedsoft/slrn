@@ -120,6 +120,15 @@ VFILE *vstream(int fd, unsigned int size, unsigned int mode) /*{{{*/
 
 /*}}}*/
 
+/* Here is how vgets appears to work (disclaimer: it came without developer
+ * documentation and I did not analyse it completely):
+ * If you want to nul-terminate the returned string, check if position num-1
+ * contains the '\n' character. If so, overwrite it with nul; otherwise, write
+ * nul at position num.
+ * Do _not_ write at position num when there is a '\n' at num-1, or you will
+ * corrupt the line obtained by the next call to vgets! (Actually, you _can_
+ * write there, but make sure you save and restore the character.)
+ */
 /* I malloc one extra so that I can always add a null character to last line */
 char *vgets(VFILE *vp, unsigned int *num) /*{{{*/
 {
