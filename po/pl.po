@@ -3,11 +3,16 @@
 # Arkadiusz Sochala <jojoro@wp.pl>, 2001.
 # Jarek Baczynski <jarek@fanthom.irc.pl>, 2001.
 #
+# Zmiany:
+# 2001-11-11: Wiele poprawek zgloszonych przez:
+#   Tomasz Sienicki <tsca@mailserver.dk>,
+#   Jerzy Klejnowski <ksionrze@poczta.wp.pl>.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: slrn 0.9.7.2pl2\n"
+"Project-Id-Version: slrn 0.9.7.3\n"
 "POT-Creation-Date: 2001-11-05 12:24+0100\n"
-"PO-Revision-Date: 2001-09-20 17:07+0200\n"
+"PO-Revision-Date: 2001-11-15 17:20+0100\n"
 "Last-Translator: Slrn-pl developers <slrn-pl-devel@yahoogroups.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +28,7 @@ msgstr ""
 
 #: src/art.c:339
 msgid "SPACE"
-msgstr ""
+msgstr "SPACJA"
 
 #: src/art.c:340
 msgid "TAB"
@@ -31,7 +36,7 @@ msgstr ""
 
 #: src/art.c:341
 msgid "RETURN"
-msgstr ""
+msgstr "ENTER"
 
 #: src/art.c:342
 msgid "ESCAPE"
@@ -47,11 +52,11 @@ msgstr ""
 
 #: src/art.c:700
 msgid "No next digest."
-msgstr "Nie ma nic dalej."
+msgstr "Brak kolejnych punktów w artykule."
 
 #: src/art.c:1049
 msgid "Invalid Browser definition."
-msgstr "Nieprawid³owa definicja edytora."
+msgstr "Nieprawid³owa definicja przegl±darki."
 
 #: src/art.c:1083
 msgid "Browse (^G aborts): "
@@ -99,7 +104,7 @@ msgstr "Koniec artyku³u, naci¶nij %s, aby przej¶æ do nastêpnej grupy."
 #, c-format
 msgid "At end of article, press %s for next unread article."
 msgstr ""
-"Koniec artyku³u, naci¶nij %s, aby przej¶æ do nast. nieprzeczytanej wiadmo¶ci."
+"Koniec artyku³u, naci¶nij %s, aby przej¶æ do nast. nieprzeczytanej wiadomo¶ci."
 
 #: src/art.c:2010
 msgid "Goto article: "
@@ -121,7 +126,7 @@ msgstr "[%d] Czytam..."
 
 #: src/art.c:2108
 msgid "Server failed to return article."
-msgstr "B³±d serwera przy zwracaniu artyku³u."
+msgstr "Serwer nie zwróci³ artyku³u."
 
 #: src/art.c:2112
 #, c-format
@@ -130,11 +135,11 @@ msgstr "Artyku³ %d jest niedostêpny."
 
 #: src/art.c:2151
 msgid "Article transfer aborted or connection lost."
-msgstr "Przerwano przesy³anie artyku³u lub po³±czenie zosta³o zerwane"
+msgstr "Przerwano przesy³anie artyku³u lub po³±czenie zosta³o zerwane."
 
 #: src/art.c:2234
 msgid "Server sent empty article."
-msgstr "B³±d serwera przy zwracaniu artyku³u."
+msgstr "Serwer zwróci³ pusty artyku³."
 
 #: src/art.c:2500
 msgid "%a, %d %b %Y at %H:%M GMT"
@@ -147,7 +152,7 @@ msgstr "Ta operacja wymaga artyku³u."
 #: src/art.c:2651
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
-msgstr "%s wydaje siê byæ b³êdny. Kontynuowaæ mimo to"
+msgstr "%s wygl±da na nieprawid³owy. Kontynuowaæ mimo to"
 
 #: src/art.c:2652
 msgid "Email address"
@@ -177,7 +182,7 @@ msgstr "Edytuj wiadomo¶æ przed wys³aniem"
 
 #: src/art.c:2925 src/art.c:3330
 msgid "Posting not allowed by server"
-msgstr "Serwer nie umo¿liwia wysy³ania"
+msgstr "Serwer nie zezwala na wysy³anie"
 
 #: src/art.c:2932
 msgid "Are you sure you want to followup"
@@ -185,12 +190,12 @@ msgstr "Czy na pewno chcesz odpisaæ na grupê"
 
 #: src/art.c:2973
 msgid "Do you want to reply to POSTER as poster prefers"
-msgstr "Chcesz odpisaæ AUTOROWI tak, jak sobie tego ¿yczy"
+msgstr "Chcesz odpisaæ bezpo¶rednio do AUTORA zgodnie z jego ¿yczeniem"
 
 #: src/art.c:3011
 #, c-format
 msgid "Followup to %s as poster prefers"
-msgstr "Przekierowanie odpowiedzi na %s. Pod±¿aæ"
+msgstr "Wys³aæ na %s zgodnie z ¿yczeniem autora"
 
 #. Note to translators: Here, "fF" means "Followup-To", "pP" is for
 #. * "post", "iI" is "ignore" and "cC" means "cancel".
@@ -219,7 +224,7 @@ msgstr "Czy wys³aæ kopiê wiadomo¶ci do autora"
 #: src/art.c:3157
 #, c-format
 msgid "%s appears invalid.  CC anyway"
-msgstr "%s wydaje siê byæ b³êdny. Wys³aæ mimo to"
+msgstr "%s wygl±da na nieprawid³owy. Wys³aæ mimo to"
 
 #: src/art.c:3335
 msgid "Are you sure you want to supersede"
@@ -228,7 +233,7 @@ msgstr "Czy na pewno zast±piæ artyku³ przez edycjê oryginalnego tekstu"
 #: src/art.c:3354 src/art.c:7259
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
-msgstr "B³±d: Twoja nazwa: '%s' nie pasuje do '%s'"
+msgstr "B³±d: Twój adres: %s nie pasuje do %s"
 
 #: src/art.c:3457 src/art.c:3506
 msgid "End of buffer."
@@ -240,7 +245,7 @@ msgstr "Pocz±tek."
 
 #: src/art.c:3541
 msgid "No previous unread articles."
-msgstr "Nie ma wcze¶niej nieprzeczytanych artyku³ów."
+msgstr "Nie ma wcze¶niejszych nieprzeczytanych artyku³ów."
 
 #: src/art.c:3585
 msgid "No following unread articles."
@@ -313,7 +318,7 @@ msgstr "Wywo³ujê uudeview ..."
 #: src/art.c:4147
 #, c-format
 msgid "could not load %s: errno = %d"
-msgstr "nie mogê za³adowaæ %s: nr b³êdu = %d"
+msgstr "nie mogê za³adowaæ %s: errno = %d"
 
 #: src/art.c:4150
 #, c-format
@@ -351,11 +356,11 @@ msgstr "Nie mogê otworzyæ potoku do %s"
 
 #: src/art.c:4255 src/art.c:4276 src/decode.c:65
 msgid "Piping not implemented on this system."
-msgstr "Potoki nie s± dostêpne w tym systemie."
+msgstr "Potoki nie s± dostêpne na tym systemie."
 
 #: src/art.c:4267
 msgid "Pipe to command: "
-msgstr "Prze¶lij potokiem do polecenia"
+msgstr "Prze¶lij potokiem do polecenia: "
 
 #: src/art.c:4269
 msgid "Aborted.  Command name is required."
@@ -410,7 +415,7 @@ msgstr "£±czenie \"utraconych zale¿no¶ci\"..."
 
 #: src/art.c:5393
 msgid "Linking articles with identical subjects ..."
-msgstr "£±czenie artyku³ów o tych samych tematach..."
+msgstr "£±czenie artyku³ów o takich samych tematach..."
 
 #: src/art.c:5461
 msgid "Mark set."
@@ -451,13 +456,13 @@ msgid ""
 msgstr ""
 "Punktacja %d zabitego artyku³u %s\n"
 "Grupa: %s\n"
-"Od:  %s\n"
-"Temat:  %s\n"
+"Od: %s\n"
+"Temat: %s\n"
 "\n"
 
 #: src/art.c:5732
 msgid "Scoring articles ..."
-msgstr "Punktacja artyku³ów:"
+msgstr "Punktujê artyku³y ..."
 
 #: src/art.c:5745
 #, c-format
@@ -535,19 +540,19 @@ msgstr "Zrobione."
 
 #: src/art.c:7332
 msgid "Mark all articles as read"
-msgstr "Zaznacz wszystkie artyku³y jako przeczytane"
+msgstr "Zaznaczyæ wszystkie artyku³y jako przeczytane"
 
 #: src/art.c:7342
 msgid "Mark all articles as unread"
-msgstr "Zaznacz wszystkie artyku³y jako nieprzeczytane"
+msgstr "Zaznaczyæ wszystkie artyku³y jako nieprzeczytane"
 
 #: src/art.c:7352
 msgid "Mark all articles up to here as read"
-msgstr "Zaznacz artyku³y do aktualnej pozycji jako przeczytane"
+msgstr "Zaznaczyæ artyku³y do bie¿±cej pozycji jako przeczytane"
 
 #: src/art.c:7362
 msgid "Mark all articles up to here as unread"
-msgstr "Zaznacz artyku³y do aktualnej pozycji jako nieprzeczytane"
+msgstr "Zaznaczyæ artyku³y do bie¿±cej pozycji jako nieprzeczytane"
 
 #: src/art.c:7429
 msgid "Rate article (1-5):"
@@ -628,7 +633,7 @@ msgstr "Spoilery widoczne!"
 #: src/chkslang.c:58
 #, c-format
 msgid "Usage: %s <PGM> <SLANG-VERSION> <SUGG VERSION>\n"
-msgstr "U¿ycie: %s <PGM> <WERSJA-SLANG> <WERSJA SUGG>\n"
+msgstr "U¿ycie: %s <PGM> <WERSJA-SLANG> <WERSJA-SUGEROWANA>\n"
 
 #: src/chkslang.c:68
 msgid ""
@@ -646,11 +651,11 @@ msgstr ""
 "\n"
 "\n"
 "******\n"
-"slang.h nie jest zgodny z wersj± biblioteki slang.  Zainstalowa³e¶ slang "
+"slang.h nie jest zgodny z wersj± biblioteki slang. Zainstalowa³e¶ slang "
 "jako\n"
-"bibliotekê wspó³dzielon±?  Uruchomi³e¶ ldconfig?  Masz problem z "
+"bibliotekê wspó³dzielon±? Uruchomi³e¶ ldconfig? Masz problem z "
 "instalacj±,\n"
-"musisz sprawdziæ i odpowiednio ustawiæ zmienn± SLANG w pliku Makefile.\n"
+"musisz sprawdziæ i odpowiednio ustawiæ zmienne SLANG w pliku Makefile.\n"
 "Potem spróbuj: make clean; make\n"
 "******\n"
 "\n"
@@ -663,7 +668,7 @@ msgstr "Ta wersja %s wymaga biblioteki slang w wersji %s.\n"
 #: src/chkslang.c:93
 #, c-format
 msgid "Your slang version is %s.\n"
-msgstr "Twoja wersja biblioteki slang to %s.\n"
+msgstr "Wersja twojej biblioteki slang to %s.\n"
 
 #: src/chkslang.c:94
 #, c-format
@@ -694,7 +699,7 @@ msgstr "B³±d zapisu. Brak miejsca na dysku? --- wiadomo¶æ nie zosta³a wys³ana."
 #: src/chmap.c:201
 #, c-format
 msgid "  Default character set:     %s\n"
-msgstr "  Domy¶lny zestaw znaków:    %s\n"
+msgstr "  Domy¶lny zestaw znaków:        %s\n"
 
 #: src/chmap.c:203
 msgid " SUPPORTED CHARACTER SETS:\n"
@@ -715,7 +720,7 @@ msgstr "Nie mo¿na otworzyæ /bin/sh\n"
 
 #: src/decode.c:137
 msgid "Error encountered while processing shell archive.\n"
-msgstr "Wyst±pi³ b³±d podczas przetwarzania archiwum shelowego.\n"
+msgstr "Wyst±pi³ b³±d podczas przetwarzania archiwum shellowego.\n"
 
 #: src/decode.c:166
 #, c-format
@@ -805,7 +810,7 @@ msgstr "Grupa %s jest fa³szywa%s."
 
 #: src/group.c:387 src/group.c:1142
 msgid " - dropping it"
-msgstr " - porzucam j±."
+msgstr " - porzucam j±"
 
 #: src/group.c:394
 #, c-format
@@ -879,11 +884,11 @@ msgstr "Dodaj grupê: "
 #: src/group.c:1354
 #, c-format
 msgid "Moving %s. Press RETURN when finished."
-msgstr "Przenoszenie %s. Wci¶nij ENTER kiedy zakoñczysz."
+msgstr "Przenoszenie %s. Naci¶nij ENTER kiedy zakoñczysz."
 
 #: src/group.c:1437
 msgid "Subscribe pattern: "
-msgstr "Subskrybuj grupy u¿ywaj±c wzorca"
+msgstr "Subskrybuj grupy u¿ywaj±c wzorca: "
 
 #: src/group.c:1466
 #, c-format
@@ -905,7 +910,7 @@ msgstr "Grupa zaznaczona jako nieprzeczytana."
 
 #: src/group.c:1508
 msgid "Un-Subscribe pattern: "
-msgstr "Odwo³aj subskrybcjê grup u¿ywaj±c wzorca"
+msgstr "Odwo³aj subskrypcjê grup u¿ywaj±c wzorca: "
 
 #: src/group.c:1575
 msgid "List Groups (e.g., comp*unix*): "
@@ -950,7 +955,7 @@ msgstr "Wybierz rodzaj punktacji: Pe³na, ProSta, Brak, Anuluj"
 
 #: src/group.c:1795
 msgid "Full Header Scoring enabled."
-msgstr "Punktacja pe³nonag³ówkowa w³aczona."
+msgstr "Punktacja pe³nonag³ówkowa w³±czona."
 
 #: src/group.c:1800
 msgid "Expensive Scoring disabled."
@@ -984,7 +989,7 @@ msgid ""
 "Creating description file %s.\n"
 msgstr ""
 "\n"
-"Tworzenie pliku z opisami %s.\n"
+"Tworzê plik z opisami %s.\n"
 
 #: src/group.c:2177
 msgid ""
@@ -992,7 +997,7 @@ msgid ""
 "Note: This step may take some time if you have a slow connection!!!\n"
 msgstr ""
 "Pobieranie opisów grup z serwera.\n"
-"UWAGA: Mo¿e to d³ugo potrwaæ je¶li masz wolne po³±czenie!!!\n"
+"UWAGA: Mo¿e to d³ugo potrwaæ, je¶li masz wolne po³±czenie!!!\n"
 
 #: src/group.c:2184
 msgid "Server failed on list newsgroups command."
@@ -1000,7 +1005,7 @@ msgstr "Nie mo¿na pobraæ listy grup z serwera."
 
 #: src/group.c:2199
 msgid "Error reading line from server"
-msgstr "B³±d odczytu z serwera."
+msgstr "B³±d odczytu z serwera"
 
 #: src/group.c:2330
 msgid "Checking for new groups ..."
@@ -1026,7 +1031,7 @@ msgstr "B³±d odczytu z serwera"
 #: src/group.c:2417
 #, c-format
 msgid "%d new newsgroup(s) found."
-msgstr "Znaleziono %d nowe grupy."
+msgstr "Znaleziono nowe grupy (%d)."
 
 #: src/group.c:2425
 #, c-format
@@ -1077,7 +1082,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"--Je¶li masz wolne ³±cze, to mo¿e to potrwaæ do¶æ d³ugo.--\n"
+"--Je¶li masz wolne ³±cze, nastêpna operacja mo¿e trochê potrwaæ.--\n"
 "\n"
 
 #: src/group.c:2686
@@ -1102,12 +1107,12 @@ msgstr "Nie mo¿na otworzyæ pliku %s do zapisu."
 #: src/group.c:2916
 #, c-format
 msgid "Writing %s ... done."
-msgstr "Zapisywanie %s ... zakoñczone."
+msgstr "Zapisujê %s ... OK."
 
 #: src/group.c:2924
 #, c-format
 msgid "Write to %s failed! Disk Full?"
-msgstr "Zapisywanie %s nie powiod³o sie. Dysk jest pe³en?"
+msgstr "B³±d zapisu %s. Dysk jest pe³en?"
 
 #: src/group.c:2939
 msgid ""
@@ -1122,15 +1127,15 @@ msgstr "[-%D-] Grupy: %s %-20g -- %L (%P)"
 #: src/group.c:3143 src/group.c:3181 src/interp.c:360
 msgid "To use this feature, please update s-lang and recompile slrn."
 msgstr ""
-"Aby skorzystaæ z tej funkcji musisz uaktualniæ s-lang i przekompilowaæ slrn"
+"Aby skorzystaæ z tej funkcji musisz uaktualniæ s-lang i przekompilowaæ slrn."
 
 #: src/group.c:3189
 msgid "Array of string expected."
-msgstr "Oczekiwano tablicy ci±gów."
+msgstr "Oczekiwano tablicy napisów."
 
 #: src/group.c:3195
 msgid "One-dimensional array expected."
-msgstr "Oczekiwano jednokierunkowej tablicy."
+msgstr "Oczekiwano tablicy jednowymiarowej."
 
 #: src/grplens.c:194
 msgid "User is Unregistered"
@@ -1166,7 +1171,7 @@ msgstr "B³±d odczytu z serwera"
 
 #: src/grplens.c:202
 msgid "Token is invalid"
-msgstr "Nieprawid³owy ¿eton"
+msgstr "Nieprawid³owy token"
 
 #: src/grplens.c:203
 msgid "Newsgroup not supported"
@@ -1203,7 +1208,7 @@ msgstr "Czytam %s"
 #: src/grplens.c:1000 src/grplens.c:1026
 #, c-format
 msgid "Error processing line %u of %s"
-msgstr "B³±d przetwarzania linii %u pliku %s"
+msgstr "B³±d przetwarzania wiersza %u pliku %s"
 
 #: src/grplens.c:1050
 #, c-format
@@ -1239,16 +1244,16 @@ msgstr "   http://slrn.sourceforge.net/"
 #: src/help.c:43
 msgid " Questions not covered by the documentation can be posted to"
 msgstr ""
-" Pytania, na które nie ma odpowiedzi w dokumentacji mo¿na zadawaæ na grupie:"
+" Pytania, na które nie ma odpowiedzi w dokumentacji mo¿na zadawaæ na grupach:"
 
 #: src/help.c:44
 msgid "   news.software.readers"
-msgstr "   news.software.readers"
+msgstr "   news.software.readers, pl.news.czytniki"
 
 #: src/help.c:46
 msgid ""
 " Please email bug reports, suggestions or comments to the current maintainer,"
-msgstr " Informacje o b³êdach, suggestie lub komentarze proszê kierowaæ do"
+msgstr " Informacje o b³êdach, sugestie lub komentarze proszê kierowaæ do:"
 
 #: src/help.c:47
 msgid "   Thomas Schultz <tststs@gmx.de>"
@@ -1275,7 +1280,7 @@ msgstr "Klawisze podstawowe:"
 msgid ""
 "  n                  Go to the next unread article (or next group, if at "
 "end)."
-msgstr "  n                  Przejd¼ do nastêpnego nieprzeczytanego artyku³u"
+msgstr "  n                  Przejd¼ do nastêpnego nieprzeczytanego artyku³u."
 
 #: src/help.c:58
 msgid "  p                  Go to the previous unread article."
@@ -1292,15 +1297,15 @@ msgstr "  ESC LEWO           Przejd¼ do poprzedniej grupy."
 
 #: src/help.c:61
 msgid "  !                  Go to the next article with a high score."
-msgstr "  !                  Przejd¼ do nastêpnego wa¿nego artyku³u"
+msgstr "  !                  Przejd¼ do nastêpnego wa¿nego artyku³u."
 
 #: src/help.c:62
 msgid "  =                  Go to the next article with the same subject."
-msgstr "  =                  Nastêpny artyku³ o tym samym temacie co aktualny"
+msgstr "  =                  Nastêpny artyku³ o tym samym temacie."
 
 #: src/help.c:63
 msgid "  L                  Go to the last read article and display it."
-msgstr "  L                  Przejd¼ do artyku³u czytanego poprzednio"
+msgstr "  L                  Przejd¼ do artyku³u czytanego poprzednio."
 
 #: src/help.c:64 src/help.c:180
 msgid "Actions:"
@@ -1308,15 +1313,15 @@ msgstr "Podstawowe czynno¶ci:"
 
 #: src/help.c:65
 msgid "  P                  Post a new article (no followup)."
-msgstr "  P                  Wy¶lij nowy artyku³ (NIE odpowiadaj)"
+msgstr "  P                  Wy¶lij nowy artyku³ (NIE odpowied¼)."
 
 #: src/help.c:66
 msgid "  ESC P              Post or edit a postponed article."
-msgstr "  ESC P              Wy¶lij od³o¿ony artyku³."
+msgstr "  ESC P              Wy¶lij lub edytuj od³o¿ony artyku³."
 
 #: src/help.c:67
 msgid "  f                  Post a followup to the current article."
-msgstr "  f                  Odpowiedz na aktualny artyku³."
+msgstr "  f                  Odpowiedz na bie¿±cy artyku³."
 
 #: src/help.c:68
 msgid "      ESC 1 f        Include all headers in the followup."
@@ -1325,7 +1330,7 @@ msgstr "      ESC 1 f        Do³±cz wszystkie nag³ówki."
 #: src/help.c:69
 msgid ""
 "      ESC 2 f        Followup without modifying (e.g. quoting) the article."
-msgstr "      ESC 2 f        Nie cytuj wiadomo¶ci."
+msgstr "      ESC 2 f        Nie dodawaj znaków cytowania."
 
 #: src/help.c:70
 msgid "  r                  Reply to poster (via email)."
@@ -1344,7 +1349,7 @@ msgstr "      ESC 1 F        Prze¶lij artyku³ (w³±czaj±c wszystkie nag³ówki)."
 #: src/help.c:73
 msgid "  ESC Ctrl-S         Supersede article (you have to be the author)."
 msgstr ""
-"  ESC Ctrl-S         Zast±p artyku³ poprzez edycjê oryginalnego tekstu."
+"  ESC Ctrl-S         Zast±p artyku³ przez edycjê oryginalnego tekstu."
 
 #: src/help.c:74
 msgid "  ESC Ctrl-C         Cancel article (you have to be the author)."
@@ -1394,11 +1399,11 @@ msgstr "Poruszanie siê w oknie artyku³u:"
 
 #: src/help.c:86
 msgid "  ESC DOWN           Scroll article down one line."
-msgstr "  ESC DÓ£            Przewiñ artyku³ o liniê w dó³."
+msgstr "  ESC DÓ£            Przewiñ artyku³ o jeden wiersz w dó³."
 
 #: src/help.c:87
 msgid "  ESC UP             Scroll article up one line."
-msgstr "  ESC GÓRA           Przewiñ artyku³ o liniê w górê."
+msgstr "  ESC GÓRA           Przewiñ artyku³ o jeden wiersz w górê."
 
 #: src/help.c:88
 msgid ""
@@ -1437,7 +1442,7 @@ msgstr "  TAB                Przejd¼ poza cytowany tekst."
 
 #: src/help.c:96
 msgid "  g                  Skip to next digest."
-msgstr "  g                  Przejd¼ do nastêpnego punktu FAQ w artykule."
+msgstr "  g                  Przejd¼ do nastêpnego punktu w artykule."
 
 #: src/help.c:97
 msgid "Moving in the header display:"
@@ -1473,19 +1478,19 @@ msgstr "  j                  Przeskocz do artyku³u (podaj±c jego numer)."
 
 #: src/help.c:105
 msgid "  a                  Author search forward."
-msgstr "  a                  Szukaj w przód autora."
+msgstr "  a                  Szukaj autora w przód."
 
 #: src/help.c:106
 msgid "  A                  Author search backward."
-msgstr "  A                  Szukaj wstecz autora."
+msgstr "  A                  Szukaj autora w ty³."
 
 #: src/help.c:107
 msgid "  s                  Subject search forward."
-msgstr "  s                  Szukaj w przód tematu."
+msgstr "  s                  Szukaj tematu w przód."
 
 #: src/help.c:108
 msgid "  S                  Subject search backward."
-msgstr "  S                  Szukaj wstecz tematu."
+msgstr "  S                  Szukaj tematu w ty³."
 
 #: src/help.c:109
 msgid "Marking as read/unread:"
@@ -1507,32 +1512,32 @@ msgstr "  ESC d              Zaznacz ca³y (pod-)w±tek jako przeczytany."
 
 #: src/help.c:113
 msgid "  c                  Catchup - mark all articles as read."
-msgstr "  c                  Zaznacz artyku³y jako przeczytane."
+msgstr "  c                  Zaznacz wszystkie artyku³y jako przeczytane."
 
 #: src/help.c:114
 msgid ""
 "  C                  Mark all articles up to the current position as read."
 msgstr ""
-"  C                  Zaznacz artyku³y do aktualnej pozycji jako przeczytane."
+"  C                  Zaznacz artyku³y do bie¿±cej pozycji jako przeczytane."
 
 #: src/help.c:115
 msgid "  ESC u              Un-Catchup - mark all articles as unread."
-msgstr "  ESC u              Zaznacz artyku³y jako nieprzeczytane."
+msgstr "  ESC u              Zaznacz wszystkie artyku³y jako nieprzeczytane."
 
 #: src/help.c:116
 msgid ""
 "  ESC U              Mark all articles up to the current position as unread."
 msgstr ""
-"  ESC U              Zaznacz artyku³y do aktualnej pozycji jako "
+"  ESC U              Zaznacz artyku³y do bie¿±cej pozycji jako "
 "nieprzeczytane."
 
 #: src/help.c:117
 msgid "  x                  Remove all non-tagged read articles from the list."
-msgstr "  x                  Usuñ przeczytane artyku³y z listy nag³ówków"
+msgstr "  x                  Usuñ przeczytane artyku³y z listy nag³ówków."
 
 #: src/help.c:118
 msgid "Article pager commands:"
-msgstr "Polecenia odnosz±ce sie do okna artyku³u:"
+msgstr "Polecenia odnosz±ce siê do okna artyku³u:"
 
 #: src/help.c:119
 msgid "  t                  Show full headers (on/off)."
@@ -1544,7 +1549,7 @@ msgstr "  ESC r              W³±cz/wy³±cz szyfrowanie ROT13."
 
 #: src/help.c:121
 msgid "  T                  Display quoted lines (on/off)."
-msgstr "  T                  W³±cz/wy³acz wy¶wietlanie cytowanych linii."
+msgstr "  T                  W³±cz/wy³acz wy¶wietlanie cytowanych wierszy."
 
 #: src/help.c:122
 msgid "  \\                  Show signature (on/off)."
@@ -1552,7 +1557,7 @@ msgstr "  \\                  W³±cz/wy³acz wy¶wietlanie sygnaturki."
 
 #: src/help.c:123
 msgid "  W                  Wrap long lines (on/off)."
-msgstr "  W                  Zmieñ sposób zawijania artyku³u."
+msgstr "  W                  W³±cz/wy³±cz zawijanie wierszy."
 
 #: src/help.c:125
 msgid "  ESC ?              Reveal spoilers (on/off)."
@@ -1592,7 +1597,7 @@ msgstr "Polecenia odnosz±ce siê do okna nag³ówków:"
 
 #: src/help.c:137
 msgid "  ESC t              Collapse / Uncollapse thread."
-msgstr "  ESC t              Zwiñ/rozwiñ w±tek"
+msgstr "  ESC t              Zwiñ/rozwiñ w±tek."
 
 #: src/help.c:138
 msgid "      ESC 1 ESC t    Collapse / Uncollapse all threads."
@@ -1651,11 +1656,11 @@ msgid ""
 "      ESC 2 ESC p    Reconstruct thread (faster, may not find all articles)."
 msgstr ""
 "      ESC 2 ESC p    Odtwórz w±tek (szybsze, ale mo¿e nie odnale¼æ wszyst. "
-"atryk.)"
+"artyk.)"
 
 #: src/help.c:151
 msgid "  ;                  Set a mark at the current article."
-msgstr "  ;                  Ustaw znacznik na aktualnej pozycji."
+msgstr "  ;                  Ustaw znacznik na bie¿±cej pozycji."
 
 #: src/help.c:152
 msgid "  ,                  Return to previously marked article."
@@ -1667,8 +1672,7 @@ msgstr "  #                  Zaznacz numerycznie art. (do dekodowania)."
 
 #: src/help.c:154
 msgid "  ESC #              Remove all numerical tags."
-msgstr ""
-"  ESC #              Odznacz art. zaznaczone numerycznie (do dekodowania)."
+msgstr "  ESC #              Odznacz art. zaznaczone numerycznie."
 
 #: src/help.c:155
 msgid "  *                  Protect article from catchup commands."
@@ -1685,7 +1689,7 @@ msgstr "  .                  Powtórz ostatni± sekwencjê klawiszy."
 #: src/help.c:158
 msgid "  Ctrl-X ESC         Read line and interpret it as S-Lang."
 msgstr ""
-"  Ctrl-X ESC         Wczytaj liniê i zinterpretuj j± jako makro w S-Langu."
+"  Ctrl-X ESC         Wczytaj wiersz i zinterpretuj jako makro w S-Langu."
 
 #: src/help.c:160
 msgid "  0                  Rate article with GroupLens."
@@ -1733,7 +1737,7 @@ msgstr "  /                       Znajd¼ grupê."
 
 #: src/help.c:181
 msgid "  SPACE, RETURN           Enter the current newsgroup."
-msgstr "  SPACJA, RETURN          Wybierz aktualn± grupê."
+msgstr "  SPACJA, ENTER           Wybierz bie¿±c± grupê."
 
 #: src/help.c:182
 msgid "  * The following variations also download previously read articles:"
@@ -1757,11 +1761,11 @@ msgstr ""
 
 #: src/help.c:186
 msgid "      ESC 4 SPACE         Enter the current newsgroup."
-msgstr "      ESC 4 SPACJA        Wybierz aktualn± grupê"
+msgstr "      ESC 4 SPACJA        Wybierz bie¿±c± grupê."
 
 #: src/help.c:187
 msgid "  P                       Post an article to the current newsgroup."
-msgstr "  P                       Wy¶lij artyku³ do aktualnej grupy."
+msgstr "  P                       Wy¶lij artyku³ do bie¿±cej grupy."
 
 #: src/help.c:188
 msgid "  ESC P                   Post or edit a postponed article."
@@ -1782,7 +1786,7 @@ msgstr "  . (Kropka)              Powtórz ostatni± sekwencjê klawiszy."
 #: src/help.c:192
 msgid "  Ctrl-X ESC              Read line and interpret it as S-Lang."
 msgstr ""
-"  Ctrl-X ESC              Wczytaj liniê tekstu i zinterpretuj j± jako makro"
+"  Ctrl-X ESC              Wczytaj wiersz i zinterpretuj jako makro w S-Langu."
 
 #: src/help.c:193
 msgid "  Ctrl-Z                  Suspend slrn."
@@ -1811,7 +1815,7 @@ msgstr "  a                       Dodaj now± grupê."
 
 #: src/help.c:199
 msgid "  s                       Subscribe to the current newsgroup."
-msgstr "  s                       Subskrybuj aktualn± grupê."
+msgstr "  s                       Subskrybuj bie¿±c± grupê."
 
 #: src/help.c:200
 msgid "      ESC 1 s             Subscribe to groups matching a pattern."
@@ -1819,7 +1823,7 @@ msgstr "      ESC 1 s             Subskrybuj grupy wed³ug podanego wzorca."
 
 #: src/help.c:201
 msgid "  u                       Unsubscribe from the current newsgroup."
-msgstr "  u                       Odwo³aj subskrypcjê aktualnej grupy."
+msgstr "  u                       Odwo³aj subskrypcjê bie¿±cej grupy."
 
 #: src/help.c:202
 msgid "      ESC 1 u             Unsubscribe from groups matching a pattern."
@@ -1867,11 +1871,11 @@ msgstr "      ESC 2 L             Poka¿ niesubskrybowane grupy."
 
 #: src/help.c:212
 msgid "  Ctrl-L, Ctrl-R          Redraw the screen."
-msgstr "  Ctrl-L, Ctrl-R          Odswie¿ ekran."
+msgstr "  Ctrl-L, Ctrl-R          Od¶wie¿ ekran."
 
 #: src/help.c:213
 msgid "  ?                       Display this help screen."
-msgstr "  ?                       Poka¿ pomoc podrêczna."
+msgstr "  ?                       Poka¿ pomoc podrêczn±."
 
 #: src/help.c:299
 msgid " (continued)"
@@ -1879,7 +1883,7 @@ msgstr " (dokoñczenie)"
 
 #: src/help.c:304
 msgid "As a translation would not be legally binding, it remains untranslated."
-msgstr "Z powodu b³êdu t³umaczenia, nie bêdzie ono u¿yte."
+msgstr "T³umaczenie nie mia³oby mocy prawnej, nie bêdzie wiêc u¿yte."
 
 #: src/help.c:308
 msgid "The following copyright notice applies to the slrn newsreader:"
@@ -1907,7 +1911,7 @@ msgstr "'q' - wyj¶cie, '?' - od pocz±tku, inny klawisz - dalej."
 
 #: src/interp.c:104
 msgid "positive integer expected"
-msgstr "oczekiwano dodatniej liczby"
+msgstr "oczekiwano dodatniej liczby ca³kowitej"
 
 #: src/interp.c:140
 msgid "select box function not available in batch mode."
@@ -1933,7 +1937,7 @@ msgstr "Ta wersja slrn nie obs³uguje MIME."
 
 #: src/interp.c:370
 msgid "Array of integer expected."
-msgstr "Oczekiwano tablicy liczb."
+msgstr "Oczekiwano tablicy liczb ca³kowitych."
 
 #: src/interp.c:376
 msgid "Two-dimensional array with two columns expected."
@@ -2119,11 +2123,11 @@ msgstr "Naci¶nij dowolny klawisz, aby zamkn±æ okno."
 
 #: src/menu.c:478
 msgid "Use UP/DOWN to move, any other key to close the window."
-msgstr "U¿yj GÓRA/DÓ£ do poruszania siê. Pozosta³e klawisze - wyj¶cie"
+msgstr "U¿yj GÓRA/DÓ£ do poruszania siê. Pozosta³e klawisze - wyj¶cie."
 
 #: src/menu.c:482
 msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
-msgstr "U¿yj GÓRA/DÓ£ do poruszania siê, RETURN aby wybraæ, Ctrl-G anuluje"
+msgstr "U¿yj GÓRA/DÓ£ do poruszania siê, ENTER aby wybraæ, Ctrl-G anuluje"
 
 #: src/menu.c:991
 msgid "Creating directory list..."
@@ -2139,7 +2143,7 @@ msgstr "Nie mo¿na otworzyæ pliku tymczasowego dla metamail."
 
 #: src/mime.c:985
 msgid "Press return to continue ..."
-msgstr "Wci¶nij RETURN aby kontynuowaæ..."
+msgstr "Naci¶nij ENTER aby kontynuowaæ..."
 
 #: src/misc.c:221
 msgid "All"
@@ -2166,11 +2170,11 @@ msgstr "Wys³aæ wiadomo¶æ poczt±? Tak, Nie, Edytuj"
 
 #: src/misc.c:1096
 msgid "Sending ..."
-msgstr "Wysy³anie..."
+msgstr "Wysy³anie ..."
 
 #: src/misc.c:1193
 msgid "Sending...done"
-msgstr "Wysy³anie...zakoñczone."
+msgstr "Wysy³anie ... OK"
 
 #: src/misc.c:1291
 msgid "**UNKNOWN**"
@@ -2179,12 +2183,12 @@ msgstr "**NIEZNANY**"
 #: src/misc.c:1304
 #, c-format
 msgid "Command %s returned exit status %d.  Press RETURN.\n"
-msgstr "Polecenie %s zwróci³o kod wyj¶cia %d. Wci¶nij RETURN.\n"
+msgstr "Polecenie %s zwróci³o kod wyj¶cia %d. Naci¶nij ENTER.\n"
 
 #: src/misc.c:1331
 #, c-format
 msgid "Command %s failed to run.  Press RETURN.\n"
-msgstr "Polecenie %s zakoñczy³o siê b³êdem. Wci¶nij RETURN.\n"
+msgstr "Polecenie %s zakoñczy³o siê b³êdem. Naci¶nij ENTER.\n"
 
 #: src/misc.c:1372
 msgid "Invalid Editor definition."
@@ -2335,7 +2339,7 @@ msgstr ""
 "NNTPSERVER.\n"
 "-p NNTP-PORT    Ustaw port NNTP jako NNTP-PORT. Domy¶ln± warto¶ci± jest "
 "119.\n"
-"                 UWAGA: Ta opcja nie dzia³a na niektórych systemach.\n"
+"                UWAGA: Ta opcja nie dzia³a na niektórych systemach.\n"
 
 #: src/nntplib.c:196 src/post.c:620
 #, c-format
@@ -2349,16 +2353,16 @@ msgstr "Serwer %s zerwa³ po³±czenie. £±czê ponownie..."
 
 #: src/nntplib.c:412
 msgid "Authorization needed, but could not determine username / password."
-msgstr "Konieczna jest autoryzacja lecz nie mogê okre¶liæ u¿ytkownika/has³a."
+msgstr "Konieczna jest autoryzacja, lecz nie mogê okre¶liæ u¿ytkownika/has³a."
 
 #: src/nntplib.c:416
 #, c-format
 msgid "Authenticating %s ..."
-msgstr "Uwierzytelnianie %s ..."
+msgstr "Autoryzacja %s ..."
 
 #: src/nntplib.c:446
 msgid "Authorization failed."
-msgstr "Uwierzytelnianie nie powiod³o siê."
+msgstr "B³±d autoryzacji."
 
 #: src/nntplib.c:457
 #, c-format
@@ -2411,7 +2415,7 @@ msgstr "Pomoc w drodze"
 #. 180
 #: src/nntplib.c:1123
 msgid "Authorization capabilities"
-msgstr "Zale¿no¶ci uwierzytelniania"
+msgstr "Mo¿liwo¶ci autoryzacji"
 
 #. 199
 #: src/nntplib.c:1125
@@ -2451,7 +2455,7 @@ msgstr "Grupy news"
 #. 220
 #: src/nntplib.c:1139
 msgid "Article (head & body) follows"
-msgstr "Artyku³ (nag³ówek i cia³o)"
+msgstr "Artyku³ (nag³ówek i tre¶æ)"
 
 #. 221
 #: src/nntplib.c:1141
@@ -2461,7 +2465,7 @@ msgstr "Nag³ówek"
 #. 222
 #: src/nntplib.c:1143
 msgid "Body follows"
-msgstr "Cia³o"
+msgstr "Tre¶æ"
 
 #. 223
 #: src/nntplib.c:1145
@@ -2471,7 +2475,7 @@ msgstr "Nie wys³ano tekstu -- stat, next, last"
 #. 230
 #: src/nntplib.c:1147
 msgid "New articles by message-id follow"
-msgstr "Nowe artyku³y wg. message-id"
+msgstr "Nowe artyku³y wg Message-Id"
 
 #. 231
 #: src/nntplib.c:1149
@@ -2491,12 +2495,12 @@ msgstr "Artyku³ wys³any pomy¶lnie"
 #. 280
 #: src/nntplib.c:1155
 msgid "Authorization system ok"
-msgstr "System uwierzytelniania dzia³a prawid³owo"
+msgstr "System autoryzacji dzia³a prawid³owo"
 
 #. 281
 #: src/nntplib.c:1157
 msgid "Authorization (user/pass) ok"
-msgstr "Uwierzytelnianie (u¿ytkownik/has³o) ok"
+msgstr "Autoryzacja (u¿ytkownik/has³o) ok"
 
 #. 282
 #: src/nntplib.c:1159
@@ -2521,7 +2525,7 @@ msgstr "Kontynuuj wysy³anie (post)"
 #. 380
 #: src/nntplib.c:1167
 msgid "authorization is required"
-msgstr "uwierzytelnienie jest konieczne"
+msgstr "wymagana autoryzacja"
 
 #. 381
 #: src/nntplib.c:1169
@@ -2551,7 +2555,7 @@ msgstr "Nie wybrano artyku³u"
 #. 421
 #: src/nntplib.c:1179
 msgid "No next article in this group"
-msgstr "Nie ma wiecej artyku³ów"
+msgstr "Nie ma wiêcej artyku³ów"
 
 #. 422
 #: src/nntplib.c:1181
@@ -2566,7 +2570,7 @@ msgstr "Nie ma takiego artyku³u"
 #. 430
 #: src/nntplib.c:1185
 msgid "No such article at all"
-msgstr "Nie ma ju¿ w ogóle artyku³ów"
+msgstr "Taki artyku³ nie istnieje"
 
 #. 435
 #: src/nntplib.c:1187
@@ -2602,7 +2606,7 @@ msgstr "dla tego polecenia wymagana jest autoryzacja"
 #. ERR_XGTITLE has same code
 #: src/nntplib.c:1199
 msgid "Authorization system invalid"
-msgstr "System uwierzytelniania nie dzia³a"
+msgstr "System autoryzacji nie dzia³a"
 
 #. 482
 #: src/nntplib.c:1201
@@ -2632,7 +2636,7 @@ msgstr "B³±d programowy, polecenie nie zosta³o wykonane"
 #. 580
 #: src/nntplib.c:1211
 msgid "Authorization Failed"
-msgstr "Uwierzytelnianie nie powiod³o siê"
+msgstr "B³±d autoryzacji"
 
 #: src/nntplib.c:1214
 msgid "Unknown NNTP code"
@@ -2640,11 +2644,11 @@ msgstr "Nieznany kod NNTP"
 
 #: src/post.c:445
 msgid "The first line must begin with a header."
-msgstr "Pierwsza linia musi byæ nag³ówkiem."
+msgstr "Pierwszy wiersz musi byæ nag³ówkiem."
 
 #: src/post.c:455
 msgid "Expecting a header.  This is not a header line."
-msgstr "Oczekiwano nag³ówka. To nie jest linia nag³ówka."
+msgstr "Oczekiwano nag³ówka. To nie jest wiersz nag³ówka."
 
 #: src/post.c:463
 msgid "The subject header is not allowed be to empty."
@@ -2693,15 +2697,15 @@ msgstr ""
 
 #: src/post.c:561
 msgid "Your message does not appear to have any unquoted text."
-msgstr "Twoja wiadomo¶æ nie wygl±da, aby mia³a jaki¶ cytowany tekst."
+msgstr "Widzê tu same cytaty, chyba nic nie dopisa³e¶!"
 
 #: src/post.c:612
 msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
-msgstr "Skróæ swoj± sygnaturkê. 4 linie to ogólnie przyjêty standard."
+msgstr "Skróæ swoj± sygnaturkê. Ogólnie przyjêty limit, to cztery wiersze."
 
 #: src/post.c:619
 msgid "Message is not acceptable."
-msgstr "Wiadomo¶c jest nieprawid³owa."
+msgstr "Wiadomo¶æ jest nieprawid³owa."
 
 #: src/post.c:636
 msgid "Your message is not acceptable for the following reason:"
@@ -2710,12 +2714,12 @@ msgstr "Twoja wiadomo¶æ jest nieprawid³owa z powodu:"
 #: src/post.c:643
 #, c-format
 msgid "This message was generated while looking at line %d:"
-msgstr "B³±d zosta³ wykryty podczas przetwarzania linii %d:"
+msgstr "B³±d zosta³ wykryty podczas przetwarzania wiersza %d:"
 
 #: src/post.c:649
 msgid ""
 "Perhaps this error was generated because you did not separate the header"
-msgstr "Byæ mo¿e b³±d wyst±pi³ dlatego, ¿e nie oddzieli³e¶ pust± lini± sekcji"
+msgstr "Byæ mo¿e b³±d wyst±pi³ dlatego, ¿e nie oddzieli³e¶ pustym wierszem sekcji"
 
 #: src/post.c:651
 msgid "section from the body by a BLANK line."
@@ -2727,12 +2731,12 @@ msgstr "Twoja wiadomo¶æ ³amie zasady netykiety w nastêpuj±cy sposób:"
 
 #: src/post.c:674
 msgid "Lines with more than 80 characters generally need to be wrapped."
-msgstr "Linia zawiera ponad 80 znaków. Musisz j± zawin±æ."
+msgstr "Wiersze zawieraj±ce ponad 80 znaków powinny byæ zawijane."
 
 #: src/post.c:677
 #, c-format
 msgid "This affects at least line %d:"
-msgstr "To dotyczy przynajmniej linii %d:"
+msgstr "To dotyczy przynajmniej wiersza %d:"
 
 #: src/post.c:704 src/post.c:1074 src/post.c:1098
 #, c-format
@@ -2820,7 +2824,7 @@ msgstr "Edytuj ponownie, Anuluj lub Wy¶lij pomimo to (nie zalecane)"
 
 #: src/post.c:1055 src/post.c:1101
 msgid "Posting ..."
-msgstr "Wysy³anie..."
+msgstr "Wysy³anie ..."
 
 #: src/post.c:1089
 #, c-format
@@ -2829,7 +2833,7 @@ msgstr "post_file_hook zwróci³ b³±d. %s nie wys³ano."
 
 #: src/post.c:1239
 msgid "Posting...done."
-msgstr "Wysy³anie...zakoñczone."
+msgstr "Wysy³anie ... OK."
 
 #. Note to translators: Here, "rR" is "repost", "eE" is "edit" and "cC" is
 #. * "cancel". Don't change the length of the string; you cannot re-use any
@@ -2936,13 +2940,13 @@ msgid ""
 "%s\n"
 msgstr ""
 "B³±d przetwarzania %s\n"
-"Linia %u:\n"
+"Wiersz %u:\n"
 "%s\n"
 "%s\n"
 
 #: src/score.c:1020
 msgid "Error handling INCLUDE line"
-msgstr "B³±d obs³ugi linii INCLUDE"
+msgstr "B³±d obs³ugi dyrektywy INCLUDE"
 
 #: src/score.c:1048
 msgid "Syntax Error."
@@ -2950,12 +2954,12 @@ msgstr "B³±d sk³adni."
 
 #: src/score.c:1105
 msgid "Expecting 'Expires: MM/DD/YYYY' or 'Expires: DD-MM-YYYY'"
-msgstr "Spodziewano siê 'Expires: MM/DD/RRRR' lub 'Expires: DD-MM-RRRR'"
+msgstr "Oczekiwano 'Expires: MM/DD/RRRR' lub 'Expires: DD-MM-RRRR'"
 
 #: src/score.c:1112
 #, c-format
 msgid "%s has expired score on line %d"
-msgstr "%s zawiera przestarza³± punktacjê w lini %d"
+msgstr "%s zawiera przestarza³± punktacjê w wierszu %d"
 
 #: src/score.c:1125
 msgid "Bad group regular expression."
@@ -2963,7 +2967,7 @@ msgstr "Nieprawid³owa grupa lub wyra¿enie regularne."
 
 #: src/score.c:1145
 msgid "Expecting Score keyword."
-msgstr "Spodziewano siê s³owa Score."
+msgstr "Oczekiwano s³owa Score."
 
 #: src/score.c:1201 src/score.c:1211
 msgid "Missing COLON."
@@ -3022,20 +3026,20 @@ msgstr "Obiekt serwera %s nie jest obs³ugiwany."
 #: src/server.c:503
 #, c-format
 msgid "Unable to open file in %s."
-msgstr "Nie mo¿na otworzyæ pliku w %s"
+msgstr "Nie mo¿na otworzyæ pliku w %s."
 
 #: src/server.c:573
 #, c-format
 msgid "Unable to rename file. errno = %d."
-msgstr "Nie mogê zmieniæ nazwy pliku. kod b³êdu = %d"
+msgstr "Nie mogê zmieniæ nazwy pliku. errno = %d."
 
 #: src/server.c:588
 msgid "Write error.  File system full?"
-msgstr "B³±d zapisu.  Czy¿by dysk by³ pe³en?"
+msgstr "B³±d zapisu. Czy¿by dysk by³ pe³en?"
 
 #: src/server.c:607
 msgid "Write failed.  File system full?"
-msgstr "B³±d zapisu.  Czy¿by dysk by³ pe³en?"
+msgstr "B³±d zapisu. Czy¿by dysk by³ pe³en?"
 
 #: src/server.c:634
 #, c-format
@@ -3076,7 +3080,7 @@ msgstr "Shell nie zezwala na zawieszenie programu."
 
 #: src/slrn.c:619
 msgid "Unable to initialize the tty"
-msgstr "B³±d inicjalizacji tty"
+msgstr "B³±d inicjacji tty"
 
 #: src/slrn.c:822
 #, c-format
@@ -3119,12 +3123,12 @@ msgstr ""
 "-a              U¿yj pliku active do pobrania nowych artyku³ów.\n"
 "-f plik-newsrc  Nazwa pliku newsrc, który ma zastaæ u¿yty.\n"
 "-C[-]           [Nie] u¿ywaj kolorów.\n"
-"-Dnazwa         Dodaj 'nazwa' do listy predefiniowanych tokenów "
+"-Dnazwa         Dodaj 'nazwa' do listy predefiniowanych symboli "
 "preprocesora.\n"
 "-d              Pobierz nowe opisy grup z serwera.\n"
-"                UWAGA: Mo¿e to potrwaæ chwilê, a plik wynikowy\n"
+"                UWAGA: Mo¿e to chwilê potrwaæ, a plik wynikowy\n"
 "                       mo¿e mieæ rozmiar setek kilobajtów!\n"
-"-i plik-konf    Nazwa pliku konfiguracyjnego (domy¶lnie: %s)\n"
+"-i plik-konf    Nazwa pliku konfiguracyjnego (domy¶lnie: %s).\n"
 "-k              Nie przetwarzaj pliku punktacji.\n"
 "-k0             U¿ywaj punktacji, ale nie stosuj punktacji "
 "pe³nonag³ówkowej.\n"
@@ -3132,11 +3136,11 @@ msgstr ""
 "-n              Nie sprawdzaj, czy s± nowe grupy. Przewa¿nie powoduje to\n"
 "                szybsze uruchamianie.\n"
 "-w              Czekaj na wci¶niêcie klawisza przed przej¶ciem do trybu "
-"pe³noekranowego\n"
+"pe³noekranowego.\n"
 "--create        Tworzy plik newsrc przez pobranie listy grup z serwera.\n"
 "--debug PLIK    Zapisuje pomocnicze informacje do PLIKu\n"
 "--help          Poka¿ tê pomoc.\n"
-"--kill-log PLIK Odnotuj w pliku wszystkie zabite artyku³y.\n"
+"--kill-log PLIK Odnotuj w PLIKu wszystkie zabite artyku³y.\n"
 "--version       Poka¿ wersjê i obs³ugiwane funkcje.\n"
 "\n"
 "Tryb NNTP zawiera dodatkowe opcje; uruchom \"slrn --nntp --help\" aby je "
@@ -3164,7 +3168,7 @@ msgstr "Nie mo¿na otworzyæ %s dla debugowania."
 
 #: src/slrn.c:1084
 msgid "The -d and --create flags must not be specified together."
-msgstr "Nie mo¿na u¿ywaæ jednocze¶nie opcji -d i --create"
+msgstr "Nie mo¿na u¿ywaæ jednocze¶nie opcji -d i --create."
 
 #: src/slrn.c:1097
 msgid "Error initializing SLtcp interface"
@@ -3172,7 +3176,7 @@ msgstr "B³±d inicjalizacji interfejsu SLtcp"
 
 #: src/slrn.c:1102
 msgid "Error initializing S-Lang interpreter.\n"
-msgstr "B³±d inicjalizacji interpretera S-Lang.\n"
+msgstr "B³±d inicjowania interpretera S-Lang.\n"
 
 #: src/slrn.c:1113
 msgid "Error configuring server objects."
@@ -3181,7 +3185,7 @@ msgstr "B³±d konfiguracji struktur serwera."
 #: src/slrn.c:1139
 #, c-format
 msgid "Could not read specified config file %s\n"
-msgstr ""
+msgstr "B³±d odczytu podanego pliku konfiguracyjnego %s\n"
 
 #: src/slrn.c:1145
 msgid ""
@@ -3197,7 +3201,7 @@ msgstr ""
 "! Twój plik konfiguracyjny zawiera przestarza³e polecenia lub nazwy "
 "funkcji,\n"
 "! które nie bêd± obs³ugiwane przez nastêpne wersje tego programu.\n"
-"! Je¶li masz zainstalowanego Perl'a, mo¿esz u¿yæ skryptu slrnrc-conv, aby\n"
+"! Je¶li masz zainstalowanego Perla, mo¿esz u¿yæ skryptu slrnrc-conv, aby\n"
 "! poprawiæ swoj± konfiguracjê. Skrypt ten mo¿na znale¼æ w pakiecie "
 "¼ród³owym\n"
 "! lub pobraæ go z <URL:http://slrn.sourceforge.net/data/>.\n"
@@ -3235,7 +3239,7 @@ msgstr "*** Ostrze¿enie: Nie mo¿na odnale¼æ pe³nej nazwy hosta."
 
 #: src/slrn.c:1227
 msgid "            slrn will not generate any Message-IDs."
-msgstr "                 slrn nie bêdzie generowa³ nag³ówka Message-ID."
+msgstr "                 slrn nie bêdzie generowa³ nag³ówka Message-Id."
 
 #: src/slrn.c:1228
 msgid ""
@@ -3246,7 +3250,7 @@ msgstr ""
 #: src/slrn.c:1229
 msgid "            see the \"slrn reference manual\" for details."
 msgstr ""
-"                        zajrzyj do podrêcznika u¿ytkownika po szczegó³y."
+"                        szczegó³y znajdziesz w podrêczniku u¿ytkownika slrn."
 
 #: src/slrn.c:1258
 #, c-format
@@ -3260,7 +3264,7 @@ msgstr "Nie mo¿na zainicjowaæ serwera."
 #: src/slrn.c:1285
 #, c-format
 msgid "Unable to open %s.  I will try .newsrc."
-msgstr "Nie mogê otworzyæ %s. Próbujê u¿yæ .newsrc."
+msgstr "Nie mogê otworzyæ %s. Spróbujê u¿yæ .newsrc."
 
 #: src/slrn.c:1290
 #, c-format
@@ -3272,13 +3276,13 @@ msgid ""
 msgstr ""
 "\n"
 "Nie mo¿na otworzyæ %s.\n"
-"Je¶li chcesz utworzyc %s, dodaj w liniii poleceñ opcje:\n"
+"Je¶li chcesz utworzyc %s, dodaj w wierszu poleceñ opcje:\n"
 "   -f %s --create\n"
 
 #: src/slrn.c:1307 src/slrnpull.c:1744 src/slrnpull.c:1756
 #, c-format
 msgid "Unable to open %s for logging."
-msgstr "Nie mogê otworzyæ pliku log %s."
+msgstr "Nie mogê otworzyæ pliku logowania %s."
 
 #: src/slrn.c:1323
 msgid "Initializing GroupLens"
@@ -3298,11 +3302,11 @@ msgstr "OVERVIEW.FMT nie jest zgodny z RFC 2980 -- obs³uga XOVER wy³±czona."
 
 #: src/slrn.c:1353
 msgid "* Press Ctrl-C to quit, any other key to continue.\n"
-msgstr "* Ctrl-C - wyj¶cie, dowolny inny klawisz - kontynuacja\n"
+msgstr "* Ctrl-C - wyj¶cie, dowolny inny klawisz - kontynuacja.\n"
 
 #: src/slrn.c:1356
 msgid "Exit on user request."
-msgstr "Wyj¶cie na ¿±danie u¿ytkownika"
+msgstr "Wyj¶cie na ¿±danie u¿ytkownika."
 
 #: src/slrn.c:1383
 msgid "Internal Error: Mode_Stack overflow"
@@ -3315,7 +3319,7 @@ msgstr "B³±d wewnêtrzny: niedope³nienie Mode_Stack"
 #: src/slrn.c:1495
 #, c-format
 msgid "call: %s not in current keymap."
-msgstr "call: brak polecenia %s w aktualnej mapie klawiszy."
+msgstr "call: brak polecenia %s w bie¿±cej mapie klawiszy."
 
 #: src/slrndir.c:79
 msgid "slrn_open_dir has not been ported to VMS"
@@ -3348,7 +3352,7 @@ msgstr "B³±d odczytu pliku %s."
 #: src/slrnpull.c:375
 #, c-format
 msgid "Error parsing %s."
-msgstr "B³±d sk³adniowy pliku %s."
+msgstr "B³±d sk³adniowy w pliku %s."
 
 #: src/slrnpull.c:400 src/slrnpull.c:2108
 #, c-format
@@ -3368,32 +3372,32 @@ msgstr "B³±d zamkniêcia pliku active %s."
 #: src/slrnpull.c:564
 #, c-format
 msgid "%s: line %u: group name too long."
-msgstr "%s: linia %u: za d³uga nazwa grupy."
+msgstr "%s: wiersz %u: za d³uga nazwa grupy."
 
 #: src/slrnpull.c:581
 #, c-format
 msgid "%s: line %u: Group name contains whitespace."
-msgstr "%s: linia %u: nazwa grupy zawiera odstêpy."
+msgstr "%s: wiersz %u: nazwa grupy zawiera odstêpy."
 
 #: src/slrnpull.c:599
 #, c-format
 msgid "%s: line %u: expecting positive integer in second field."
-msgstr "%s: linia %u: w drugim polu oczekiwano dodatniej liczby ca³kowitej."
+msgstr "%s: wiersz %u: w drugim polu oczekiwano dodatniej liczby ca³kowitej."
 
 #: src/slrnpull.c:613
 #, c-format
 msgid "%s: line %u: expecting positive integer in third field."
-msgstr "%s: linia %u: w trzecim polu oczekiwano dodatniej liczby ca³kowitej."
+msgstr "%s: wiersz %u: w trzecim polu oczekiwano dodatniej liczby ca³kowitej."
 
 #: src/slrnpull.c:630
 #, c-format
 msgid "%s: line %u: group duplicated."
-msgstr "%s: linia %u: powtórzona grupa."
+msgstr "%s: wiersz %u: powtórzona grupa."
 
 #: src/slrnpull.c:638
 #, c-format
 msgid "%s: line %u: failed to add %s."
-msgstr "%s: linia %u: b³±d dodawania grupy %s."
+msgstr "%s: wiersz %u: b³±d przy dodawaniu grupy %s."
 
 #: src/slrnpull.c:672 src/slrnpull.c:712 src/util.c:377 src/util.c:530
 #: src/util.c:549
@@ -3613,18 +3617,18 @@ msgid ""
 msgstr ""
 "%s u¿ycie: %s [opcje]\n"
 " Opcje:\n"
-"  -d SPOOLDIR          Katalog spoola dla serwera\n"
-"  -h NAZWA_SERWERA     Nazwa serwera NNTP\n"
-"  --debug PLIK         Zapisz dialog z serwerem do pliku\n"
-"  --expire             Wykasuj przedawnione artyku³y i nie ¶ci±gaj nowych\n"
+"  -d SPOOLDIR          Katalog spoola dla serwera.\n"
+"  -h NAZWA_SERWERA     Nazwa serwera NNTP.\n"
+"  --debug PLIK         Zapisz dialog z serwerem do pliku.\n"
+"  --expire             Wykasuj przedawnione artyku³y i nie ¶ci±gaj nowych.\n"
 "  --help               Wy¶wietl pomoc.\n"
-"  --kill-log PLIK      Odnotuj w pliku wszystkie zabite artyku³y\n"
-"  --kill-score PUNKTY  Zabij artyku³y z punktacj± poni¿ej warto¶ci PUNKTY\n"
-"  --logfile PLIK       U¿yj pliku do logowania\n"
-"  --new-groups         Pobierz nowe grupy\n"
-"  --no-post            Nie wysy³aj artyku³ów\n"
-"  --post-only          Wy¶lij artyku³y i nie ¶ci±gaj nowych\n"
-"  --version            Wy¶wietl numer wersji\n"
+"  --kill-log PLIK      Odnotuj w PLIKu wszystkie zabite artyku³y.\n"
+"  --kill-score PUNKTY  Zabij artyku³y z punktacj± poni¿ej warto¶ci PUNKTY.\n"
+"  --logfile PLIK       U¿yj PLIKu do logowania.\n"
+"  --new-groups         Pobierz nowe grupy.\n"
+"  --no-post            Nie wysy³aj artyku³ów.\n"
+"  --post-only          Wy¶lij artyku³y i nie ¶ci±gaj nowych.\n"
+"  --version            Wy¶wietl numer wersji.\n"
 
 #: src/slrnpull.c:1804
 #, c-format
@@ -3668,7 +3672,7 @@ msgid ""
 "%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
 "patch the file up for you."
 msgstr ""
-"%s wygl±da na nieprawid³owy, spodziewano siê: NEWGROUPS rrmmdd ggmmss GMT, "
+"%s wygl±da na uszkodzony, oczekiwano: NEWGROUPS rrmmdd ggmmss GMT; "
 "plik zostanie naprawiony."
 
 #: src/slrnpull.c:2204
@@ -3711,7 +3715,7 @@ msgstr "Usuniêto %u artyku³ów z grupy %s."
 
 #: src/slrnpull.c:2547
 msgid "Termination requested.  Shutting down."
-msgstr "Wymuszone zakoñczenie.  Wychodzê."
+msgstr "Wymuszone zakoñczenie. Wychodzê."
 
 #: src/slrnpull.c:2595
 #, c-format
@@ -3720,7 +3724,7 @@ msgstr "B³±d odczytu nazwy u¿ytkownika i has³a z pliku %s."
 
 #: src/slrnpull.c:2608
 msgid "Empty user name.  Please check syntax of the authinfo file."
-msgstr "Pusta nazwa u¿ytkownika.  Sprawd¼ sk³adniê pliku authinfo."
+msgstr "Pusta nazwa u¿ytkownika. Sprawd¼ sk³adniê pliku authinfo."
 
 #: src/sltcp.c:202
 #, c-format
@@ -3760,7 +3764,7 @@ msgstr "Niespodziewany b³±d: po³±czenie SSL zamkniête.\n"
 #: src/sltcp.c:461
 #, c-format
 msgid "System call failed: errno = %d\n"
-msgstr "B³±d funkcji systemowej: errno = %d.\n"
+msgstr "B³±d funkcji systemowej: errno = %d\n"
 
 #: src/sltcp.c:464
 msgid "Possible protocol error\n"
@@ -3814,7 +3818,7 @@ msgid ""
 "%s: Line %d\n"
 "%sMemory Allocation Failure"
 msgstr ""
-"%s: Linia %d\n"
+"%s: wiersz %d\n"
 "%sB³±d alokacji pamiêci"
 
 #: src/startup.c:185
@@ -3823,7 +3827,7 @@ msgid ""
 "%s: Error encountered processing line %d\n"
 "%s"
 msgstr ""
-"%s: B³±d przy przetwarzaniu linii %d\n"
+"%s: B³±d przy przetwarzaniu wiersza %d\n"
 "%s"
 
 #: src/startup.c:194
@@ -3832,7 +3836,7 @@ msgid ""
 "%s: Command is obsolete on line %d:\n"
 "%s"
 msgstr ""
-"%s: Polecenie jest przestarza³e. Linia %d:\n"
+"%s: Przestarza³e polecenie w wierszu %d:\n"
 "%s"
 
 #: src/startup.c:196
@@ -3850,7 +3854,7 @@ msgid ""
 "%s: line %d:\n"
 "%sNo such keymap: %s"
 msgstr ""
-"%s: linia %d:\n"
+"%s: wiersz %d:\n"
 "%sNie ma takiej mapy klawiszy: %s"
 
 #: src/startup.c:285
@@ -3859,7 +3863,7 @@ msgid ""
 "%s: line %d:\n"
 "%serror defining key."
 msgstr ""
-"%s: linia %d:\n"
+"%s: wiersz %d:\n"
 "%sb³±d definiowania klawisza."
 
 #: src/startup.c:304
@@ -3868,7 +3872,7 @@ msgid ""
 "%s: Obsolete function name on line %d: %s\n"
 "The new name is: %s"
 msgstr ""
-"%s: Przestarza³a nazwa funkcji w linii %d: %s\n"
+"%s: Przestarza³a nazwa funkcji w wierszu %d: %s\n"
 "Nowa nazwa to: %s"
 
 #: src/startup.c:360
@@ -3877,7 +3881,7 @@ msgid ""
 "%s: line %d:\n"
 "%sInvalid regular expression."
 msgstr ""
-"%s: linia %d:\n"
+"%s: wiersz %d:\n"
 "%sNieprawid³owe wyra¿enie regularne."
 
 #: src/startup.c:376
@@ -3886,7 +3890,7 @@ msgid ""
 "%s: line %d:\n"
 "%sToo many expressions specified."
 msgstr ""
-"%s: linia %d:\n"
+"%s: wiersz %d:\n"
 "%sZbyt wiele wyra¿eñ."
 
 #: src/startup.c:765
@@ -3895,7 +3899,7 @@ msgid ""
 "%s: Obsolete variable name on line %d: followup\n"
 "The new name is followup_string"
 msgstr ""
-"%s: Przestarza³a nazwa zmiennej w linii %d: followup\n"
+"%s: Przestarza³a nazwa zmiennej w wierszu %d: followup\n"
 "Nowa nazwa to followup_string"
 
 #: src/startup.c:803
@@ -3904,8 +3908,8 @@ msgid ""
 "%s: Obsolete variable on line %d: %s\n"
 "Please make use of the header_display_format command instead."
 msgstr ""
-"%s: Przestarza³a zmienna w linii %d: %s\n"
-"U¿yj zamiast niej polecenia header_display_format."
+"%s: Przestarza³a zmienna w wierszu %d: %s\n"
+"Zamiast niej u¿yj polecenia header_display_format."
 
 #: src/startup.c:811
 #, c-format
@@ -3913,8 +3917,8 @@ msgid ""
 "%s: Obsolete variable on line %d: %s\n"
 "Please make use of the group_display_format variable instead."
 msgstr ""
-"%s: Przestarza³a zmienna w linii %d: %s\n"
-"U¿yj zamiast niej polecenia header_display_format."
+"%s: Przestarza³a zmienna w wierszu %d: %s\n"
+"Zamiast niej u¿yj polecenia header_display_format."
 
 #: src/startup.c:818
 #, c-format
@@ -3922,13 +3926,13 @@ msgid ""
 "%s: Obsolete spelling on line %d:\n"
 "Use \"process_verbatim_marks\" instead of \"process_verbatum_marks\"."
 msgstr ""
-"%s: Przestarza³a literówka w linii %d:\n"
+"%s: Przestarza³a literówka w wierszu %d:\n"
 "U¿yj \"process_verbatim_marks\" zamiast \"process_verbatum_marks\"."
 
 #: src/startup.c:827
 #, c-format
 msgid "%s: Obsolete variable on line %d: %s"
-msgstr "%s: Przestarza³a zmienna w linii %d: %s"
+msgstr "%s: Przestarza³a zmienna w wierszu %d: %s"
 
 #: src/startup.c:998
 #, c-format
@@ -3936,18 +3940,18 @@ msgid ""
 "%s: Obsolete spelling on line %d:\n"
 "Use \"verbatim\" instead of \"verbatum\""
 msgstr ""
-"%s: Przestarza³a literówka w linii %d:\n"
+"%s: Przestarza³a literówka w wierszu %d:\n"
 "U¿yj \"verbatim\" zamiast \"verbatum\""
 
 #: src/startup.c:1038 src/startup.c:1068
 #, c-format
 msgid "%s is not a color object"
-msgstr "%s nie jest kolorem obiektu"
+msgstr "%s nie jest obiektem kolorowalnym"
 
 #: src/startup.c:1047
 msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
 msgstr ""
-"Z powodu ograniczeñ S-Lang, ta funkcja jest dostêpna tylko pod Unix-ami."
+"Z powodu ograniczeñ S-Lang, ta funkcja jest dostêpna tylko pod Unixami."
 
 #: src/startup.c:1160
 #, c-format
@@ -3968,7 +3972,7 @@ msgstr "Nie mogê zainicjowaæ biblioteki S-Lang readline."
 
 #: src/startup.c:1562
 msgid "Error initializing S-Lang preprocessor."
-msgstr "B³±d inicjalizacji preprocesora S-Lang."
+msgstr "B³±d inicjacji preprocesora S-Lang."
 
 #: src/startup.c:1568
 #, c-format
@@ -3991,7 +3995,7 @@ msgid ""
 "%s: line %d:\n"
 "%sFile not opened: %s"
 msgstr ""
-"%s: linia %d:\n"
+"%s: wiersz %d:\n"
 "%sPlik nie zosta³ otwarty: %s"
 
 #: src/util.c:340
@@ -4018,7 +4022,7 @@ msgstr "Konwersja Cygwin dla %s nie powiod³a siê."
 #: src/util.c:578
 #, c-format
 msgid "Error closing file.  File system full? (errno = %d)"
-msgstr "B³±d zamykania pliku. Czy¿by dysk by³ pe³en? (b³±d: %d)"
+msgstr "B³±d zamykania pliku. Czy¿by dysk by³ pe³en? (errno = %d)"
 
 #: src/util.c:671 src/util.c:678
 #, c-format
@@ -4079,7 +4083,7 @@ msgstr "\t* Uwaga: Program zosta³ skompilowany dla wersji %s.\n"
 #: src/version.c:164
 #, c-format
 msgid "Compiled at: %s %s\n"
-msgstr "Czas kompilacji: %s %s\n"
+msgstr "Data kompilacji: %s %s\n"
 
 #: src/version.c:166
 #, c-format

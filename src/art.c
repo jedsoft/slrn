@@ -3676,7 +3676,7 @@ static void next_header_same_subject (void) /*{{{*/
        || (Slrn_Prefix_Arg_Ptr != NULL))
      {
 	Slrn_Prefix_Arg_Ptr = NULL;
-	if (slrn_read_input ("Subject: ", same_subject, NULL, 0, 0) <= 0) return;
+	if (slrn_read_input (_("Subject: "), same_subject, NULL, 0, 0) <= 0) return;
 	Same_Subject_Start_Header = Slrn_Current_Header;
      }
    SLsearch_init (same_subject, 1, 0, &st);
