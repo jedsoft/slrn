@@ -2750,7 +2750,8 @@ static void reply (char *from) /*{{{*/
 
    while (l != NULL)
      {
-	int smart_space = (Slrn_Smart_Quote & 0x01) && ! (l->flags & QUOTE_LINE);
+	int smart_space = (Slrn_Smart_Quote & 0x01) && ! (l->flags & QUOTE_LINE)
+	  && (*l->buf != 0);
 	if ((*l->buf == 0) && (Slrn_Smart_Quote & 0x02))
 	  fputc ('\n', fp);
 	else
@@ -3261,7 +3262,8 @@ static void followup (void) /*{{{*/
 
    while (l != NULL)
      {
-	int smart_space = (Slrn_Smart_Quote & 0x01) && ! (l->flags & QUOTE_LINE) && prefix_arg != 2;
+	int smart_space = (Slrn_Smart_Quote & 0x01) && ! (l->flags & QUOTE_LINE)
+	  && (prefix_arg != 2) && (*l->buf != 0);
 	
 	if (strip_sig
 	    && (l->flags & SIGNATURE_LINE))
