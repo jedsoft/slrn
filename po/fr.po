@@ -4,20 +4,21 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.9.7.2\n"
-"POT-Creation-Date: 2003-07-31 19:19+0200\n"
-"PO-Revision-Date: 2002-09-05 17:27+0200\n"
+"Project-Id-Version: 0.9.7.4\n"
+"POT-Creation-Date: 2003-08-02 17:58+0200\n"
+"PO-Revision-Date: 2003-08-16 15:20+0200\n"
 "Last-Translator: Nicolas Le Scouarnec <nlsn@free.fr> - Olivier Tharan "
 "<olive@oban.frmug.org> - Thierry Thomas <thierry@pompo.net>\n"
 "Language-Team: French - <slrnfr@ml.free.fr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/art.c:304
 #, c-format
 msgid "Ctrl-%c"
-msgstr ""
+msgstr "Ctrl-%c"
 
 #: src/art.c:308
 msgid "SPACE"
@@ -25,7 +26,7 @@ msgstr "ESPACE"
 
 #: src/art.c:309
 msgid "TAB"
-msgstr ""
+msgstr "TAB"
 
 #: src/art.c:310
 msgid "RETURN"
@@ -130,7 +131,7 @@ msgstr "Article %d non disponible."
 
 #: src/art.c:2169
 msgid "Article transfer aborted or connection lost."
-msgstr "Le transfert du message a été annulé ou la connexion perdue"
+msgstr "Le transfert de l'article a été annulé ou la connexion perdue."
 
 #: src/art.c:2187
 #, c-format
@@ -158,7 +159,7 @@ msgstr "Le serveur a renvoyé un article vide."
 
 #: src/art.c:2557
 msgid "%Y-%m-%d"
-msgstr ""
+msgstr "%d-%m-%Y"
 
 #: src/art.c:2600
 msgid "This operation requires an article"
@@ -168,7 +169,7 @@ msgstr "Cette opération nécessite un article"
 #: src/art.c:2711
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
-msgstr "%s semble invalide. On continue quand même "
+msgstr "%s semble invalide. On continue quand même "
 
 #: src/art.c:2712
 msgid "Email address"
@@ -195,7 +196,7 @@ msgstr "Arrêté. Une adresse électronique est nécessaire."
 
 #: src/art.c:2882
 msgid "Edit the message before sending"
-msgstr "Éditer le message avant de l'envoyer"
+msgstr "Éditer l'article avant de l'envoyer"
 
 #: src/art.c:2986 src/art.c:3441
 msgid "Posting not allowed by server"
@@ -224,15 +225,15 @@ msgid ""
 " Cancel?"
 msgstr ""
 "Publication croisée. Suivi à ce forum, Publier dans ce tous les groupes / ce "
-"forum seulement, Annuler?"
+"forum seulement, Annuler ?"
 
 #: src/art.c:3199
 msgid "Cc message as requested by poster"
-msgstr "Cc message à l'auteur comme il le souhaite"
+msgstr "Cc le message à l'auteur comme il le souhaite"
 
 #: src/art.c:3205
 msgid "Cc message to poster"
-msgstr "Cc message à l'auteur"
+msgstr "Cc le message à l'auteur"
 
 # OTH CC ?
 #: src/art.c:3218
@@ -243,22 +244,22 @@ msgstr "%s semble invalide. Cc quand même"
 #: src/art.c:3389 src/post.c:996
 #, c-format
 msgid "Cannot open file: %s"
-msgstr "Impossible d'ouvrir le fichier %s"
+msgstr "Impossible d'ouvrir le fichier : %s"
 
 #: src/art.c:3396 src/post.c:1003
 #, c-format
 msgid "Zero length file: %s"
-msgstr "Fichier vide: %s"
+msgstr "Fichier vide : %s"
 
 # OTH autre terme ?
 #: src/art.c:3446
 msgid "Are you sure you want to supersede"
-msgstr "Êtes-vous certain de vouloir remplacer"
+msgstr "Êtes-vous certain de vouloir remplacer "
 
 #: src/art.c:3465 src/art.c:6577
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
-msgstr "Échec : votre nom : '%s' n'est pas '%s'"
+msgstr "Échec : votre nom : « %s » n'est pas « %s »"
 
 #: src/art.c:3581 src/art.c:3630
 msgid "End of buffer."
@@ -283,7 +284,7 @@ msgstr "Pas d'articles suivants non lus. Pressez %s pour le forum suivant."
 
 #: src/art.c:3776
 msgid "No more high scoring articles."
-msgstr "Plus d'article de haut score."
+msgstr "Plus d'article avec un score élevé."
 
 #: src/art.c:3805 src/group.c:1730
 msgid "Subject: "
@@ -296,7 +297,7 @@ msgstr "Plus d'articles sur ce sujet."
 #: src/art.c:3863
 #, c-format
 msgid "Goto Header: %d"
-msgstr "Aller à l'en-tête : %d"
+msgstr "Aller à l'en-tête : %d"
 
 #: src/art.c:3945 src/group.c:2601 src/post.c:459
 #, c-format
@@ -318,19 +319,19 @@ msgid "Save this thread"
 msgstr "Sauver ce fil"
 
 #: src/art.c:4087 src/post.c:1622
-#, fuzzy, c-format
+#, c-format
 msgid "Do you want to create directory %s"
-msgstr "Sûr que vous désirez l'effacer"
+msgstr "Voulez-vous créer le répertoire %s "
 
 #: src/art.c:4090 src/post.c:1626
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create directory. (errno = %d)"
-msgstr "Incapable de créer le répertoire %s. (errno = %d)"
+msgstr "Impossible de créer le répertoire. (errno = %d)"
 
 #: src/art.c:4095
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: %s is a regular file."
-msgstr "%s : pas un fichier régulier"
+msgstr "Avertissement : %s est un fichier ordinaire."
 
 #: src/art.c:4149
 msgid "Temporary file (^G aborts): "
@@ -356,17 +357,17 @@ msgstr "Tampon du nom de fichier pas assez grand."
 
 #: src/art.c:4269
 msgid "Calling uudeview ..."
-msgstr "Appel d'uudeview ..."
+msgstr "Appel d'uudeview..."
 
 #: src/art.c:4278
 #, c-format
 msgid "could not load %s: errno = %d"
-msgstr "impossible de charger %s : errno = %d"
+msgstr "impossible de charger %s : errno = %d"
 
 #: src/art.c:4281
 #, c-format
 msgid "could not load %s: %s"
-msgstr "impossible de charger %s : %s"
+msgstr "impossible de charger %s : %s"
 
 #: src/art.c:4300
 msgid "I/O error."
@@ -375,7 +376,7 @@ msgstr "Erreur d'entrée/sortie."
 #: src/art.c:4303
 #, c-format
 msgid "error decoding %s: %s"
-msgstr "erreur de décodage de %s : %s"
+msgstr "erreur de décodage de %s : %s"
 
 #: src/art.c:4327
 #, c-format
@@ -399,6 +400,7 @@ msgid "Unable to open pipe to %s"
 msgstr "Ouverture d'un tube vers %s impossible"
 
 # OTH FIXME à changer !!
+# ThTh : OK pour tube, pas mieux...
 #: src/art.c:4390 src/art.c:4411 src/decode.c:65
 msgid "Piping not implemented on this system."
 msgstr "Ce système ne connaît pas les tubes."
@@ -412,10 +414,11 @@ msgid "Aborted.  Command name is required."
 msgstr "Annulé. Le nom d'une commande est nécessaire."
 
 # OTH pipe ?
+# ThTH : Erreur d'envoi -> Erreur de transmission ?
 #: src/art.c:4409
 #, c-format
 msgid "Error piping to %s."
-msgstr "Erreur d'envoi vers %s."
+msgstr "Erreur de transmission vers %s."
 
 #: src/art.c:4425
 msgid "Printing article..."
@@ -428,7 +431,7 @@ msgstr "Impression de l'article... effectué"
 # OTH FIXME espace en fin pour le point d'interrogation, cf misc.c slrn_get_yesno()
 #: src/art.c:4472
 msgid "Are you sure you want to print the article"
-msgstr "Êtes-vous certain de vouloir imprimer l'article "
+msgstr "Êtes-vous certain de vouloir imprimer l'article "
 
 #: src/art.c:4744
 msgid "Mark set."
@@ -463,12 +466,12 @@ msgstr "Le score %d a tué l'article %s\n"
 #: src/art.c:4968 src/slrnpull.c:1340
 #, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
-msgstr " Score %c%5i : %s (%s:%i)\n"
+msgstr " Score %c%5i : %s (%s:%i)\n"
 
 #: src/art.c:4972 src/slrnpull.c:1344
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
-msgstr " Score %c%5i : %s:%i\n"
+msgstr " Score %c%5i : %s:%i\n"
 
 # OTH faut-il traduire ? C'est destiné à du debug...
 #: src/art.c:4977 src/slrnpull.c:1349
@@ -481,27 +484,26 @@ msgid ""
 msgstr ""
 
 #: src/art.c:5047
-#, fuzzy
 msgid "Scoring articles ..."
-msgstr "Application de scores aux articles..."
+msgstr "Application des scores aux articles..."
 
 #: src/art.c:5060
-#, fuzzy, c-format
+#, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr ""
-"Applications des scores aux articles : %2d%%, tués : %u, haut : %u, bas : %u"
+"Applications des scores aux articles : %2d%%, tués : %u, haut : %u, bas : %u"
 
 #: src/art.c:5100
 msgid "Apply scorefile now"
-msgstr "Appliquer le fichier de score maintenant"
+msgstr "Appliquer le fichier des scores maintenant "
 
 #: src/art.c:5146
 msgid "No scorefile loaded."
-msgstr "Pas de fichier de score chargé"
+msgstr "Pas de fichier de scores chargé."
 
 #: src/art.c:5155
 msgid "This article is not matched by any scorefile entries."
-msgstr "Cet article ne correspond à aucune entrée du fichier de score."
+msgstr "Cet article ne correspond à aucune entrée du fichier des scores."
 
 # OTH FIXME espace fin de ligne
 #: src/art.c:5201
@@ -516,7 +518,7 @@ msgstr "%s : réception des en-têtes supplémentaires...[%c]"
 #: src/art.c:5388
 #, c-format
 msgid "%s: headers received: %2d/%d"
-msgstr "%s : en-têtes reçus : %2d/%d"
+msgstr "%s : en-têtes reçus : %2d/%d"
 
 #: src/art.c:5551
 #, c-format
@@ -551,7 +553,7 @@ msgstr "Entrez le Message-Id : "
 
 #: src/art.c:6285
 msgid "Warning: Could not save list of requested bodies."
-msgstr ""
+msgstr "Avertissement : sauvegarde de la liste des articles demandés impossible."
 
 #: src/art.c:6554
 msgid "Are you sure that you want to cancel this article"
@@ -571,7 +573,7 @@ msgstr "Terminé."
 
 #: src/art.c:6661
 msgid "Warning: Can only request article bodies from this group."
-msgstr ""
+msgstr "Avertissement : on ne peut demander que les articles complets pour ce groupe."
 
 #: src/art.c:6678
 msgid "Mark all articles as read"
@@ -591,16 +593,17 @@ msgstr "Marquer tous les articles jusqu'ici comme non-lus"
 
 #: src/art.c:6809
 msgid "Rate article (1-5):"
-msgstr "Noter l'article (de 1 à 5) :"
+msgstr "Noter l'article (de 1 à 5) :"
 
 #: src/art.c:6814
 msgid "Rating must be in range 1 to 5."
 msgstr "La note doit être entre 1 et 5."
 
 # OTH FIXME vérifier
+# ThTh : vu. OK ?
 #: src/art.c:7107
 msgid "Unable to create Article keymap!"
-msgstr "Incapable de créer un jeu de clavier pour l'article !"
+msgstr "Impossible d'affecter les touches du mode Article !"
 
 #: src/art.c:7545
 msgid "Group transfer aborted."
@@ -622,19 +625,20 @@ msgstr "Aucun article non lu trouvé."
 #: src/art.c:7620
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
-msgstr "Nb tués : %u, nb haut : %u, nb bas : %u, nb notés par GroupLens : %d"
+msgstr "Nb. tués : %u, nb haut : %u, nb bas : %u, nb notés par GroupLens : %d"
 
 #: src/art.c:7626
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
-msgstr "Nb tués : %u, nb haut : %u, nb bas : %u"
+msgstr "Nb. tués| : %u, nb. haut| : %u, nb. bas| : %u"
 
 # OTH argh pas assez de place ?
+# ThTh : abr. de Sélect & Suiv pour ajout de q:
 #: src/art.c:7827
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
-"Esp:Sélectionner Ctrl-D:PagSuiv  Ctrl-U:PagPré d:Marquer-lu  n:Suivant p:Pré"
+"Esp:Sél. Ctrl-D:PagSuiv  Ctrl-U:PagPré d:Marquer-lu  n:Suiv. p:Pré q:Quitter"
 
 # OTH idem -> limiter les espaces ? reformuler ?
 #: src/art.c:7832
@@ -646,7 +650,7 @@ msgstr ""
 #: src/art.c:8043
 #, c-format
 msgid "End of Thread.  Next: %s"
-msgstr "Fin du fil. Suite : %s"
+msgstr "Fin du fil. Suite : %s"
 
 #: src/art.c:8045
 msgid "End of Thread."
@@ -658,21 +662,22 @@ msgstr "Fin du sous-fil"
 
 #: src/art.c:8678
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
-msgstr "%p[%u/%t non-lus] Forum: %n%-20g -- %L (%P)"
+msgstr "%p[%u/%t non-lus] Forum : %n%-20g -- %L (%P)"
 
 # OTH revoir ceci, car "texte masqué visible !" c'est pas top :-)
 # 2002-07-18 remarque toujours d'actualité
+# ThTH : découvert ?
 #: src/art.c:8866
 msgid "Spoilers visible!"
-msgstr "Texte visible !"
+msgstr "Texte découvert !"
 
 #: src/art_sort.c:354
 msgid "slrn_sort_headers(): memory allocation failure."
-msgstr "slrn_sort_headers() : échec d'allocation de mémoire."
+msgstr "slrn_sort_headers() : échec d'allocation de mémoire."
 
 #: src/art_sort.c:612
 msgid "link_same_subjects: memory allocation failure."
-msgstr "link_same_subjects : échec d'allocation de mémoire."
+msgstr "link_same_subjects : échec d'allocation de mémoire."
 
 #: src/art_sort.c:823
 msgid "Internal Error in fixup_threads()."
@@ -689,7 +694,7 @@ msgstr "L'article %d fait partie d'une boucle de références !"
 
 #: src/art_sort.c:943
 msgid "Linking \"lost relatives\" ..."
-msgstr "Chaînage des « parents perdus » ..."
+msgstr "Chaînage des « parents perdus »..."
 
 #: src/art_sort.c:950
 msgid "Linking articles with identical subjects ..."
@@ -703,7 +708,7 @@ msgstr "Impossible de trier selon `%s'"
 #: src/chkslang.c:58
 #, c-format
 msgid "Usage: %s <PGM> <SLANG-VERSION> <SUGG VERSION>\n"
-msgstr "Utilisation : %s <PGM> <VERSION-SLANG> <VERSION SUGG>\n"
+msgstr "Utilisation : %s <PGM> <VERSION-SLANG> <VERSION SUGG>\n"
 
 #: src/chkslang.c:68
 msgid ""
@@ -723,11 +728,11 @@ msgstr ""
 "******\n"
 "slang.h ne correspond pas à la version de la bibliothèque slang. Avez-vous "
 "installé slang comme\n"
-"librairie partagée ?  Avez-vous lancé ldconfig ? Vous avez un problème "
+"librairie partagée ?  Avez-vous lancé ldconfig ? Vous avez un problème "
 "d'installation\n"
 "et vous devez vérifier les variables SLANG dans le Makefile et les affecter "
 "correctement.\n"
-"Essayez aussi : make clean; make\n"
+"Essayez aussi : make clean; make\n"
 "******\n"
 "\n"
 
@@ -762,29 +767,29 @@ msgstr ""
 #: src/chmap.c:147 src/chmap.c:154
 #, c-format
 msgid "File error: %s --- message not posted."
-msgstr "Erreur de fichier : %s --- message non publié."
+msgstr "Erreur de fichier : %s --- article non publié."
 
 #: src/chmap.c:166
 msgid "Write Error. Disk Full? --- message not posted."
-msgstr "Erreur d'écriture. Disque plein ? --- message non publié."
+msgstr "Erreur d'écriture. Disque plein ? --- article non publié."
 
 #: src/chmap.c:196
 #, c-format
 msgid "  Default character set:     %s\n"
-msgstr " Jeu de caractères par défaut : %s\n"
+msgstr "  Jeu de caractères par défaut : %s\n"
 
 #: src/chmap.c:198
 msgid " SUPPORTED CHARACTER SETS:\n"
-msgstr "JEUX DE CARACTÈRES RECONNUS :\n"
+msgstr " JEUX DE CARACTÈRES RECONNUS :\n"
 
 #: src/chmap.c:239
 #, c-format
 msgid "Unsupport character set: %s"
-msgstr "Jeu de caractères non reconnu : %s"
+msgstr "Jeu de caractères non reconnu : %s"
 
 #: src/decode.c:105
 msgid "Error closing file.  File system full?"
-msgstr "Erreur de fermeture du fichier. Système de fichiers plein ?"
+msgstr "Erreur de fermeture du fichier. Système de fichiers plein ?"
 
 #: src/decode.c:124
 msgid "Unable to open /bin/sh\n"
@@ -811,7 +816,7 @@ msgstr "Fin de fichier inattendue.\n"
 #: src/decode.c:876
 #, c-format
 msgid "uuencode line appears corrupt: \"%s\""
-msgstr "la ligne uuencodée semble corrompue : \"%s\""
+msgstr "la ligne uuencodée semble corrompue : \"%s\""
 
 #: src/decode.c:919
 #, c-format
@@ -825,7 +830,7 @@ msgstr "Impossible d'ouvrir %s.\n"
 
 #: src/decode.c:1054
 msgid "No more files found.\n"
-msgstr "Plus de fichiers trouvés.\n"
+msgstr "Plus d'autres fichiers.\n"
 
 #: src/decode.c:1060
 #, c-format
@@ -835,7 +840,7 @@ msgstr "Impossible de remonter dans le répertoire %s.\n"
 #: src/decode.c:1073
 msgid "Usage: uudecode [-64] [--stdout] [--guess] [filename ...]\n"
 msgstr ""
-"Utilisation : uudecode [-64] [--stdout] [--guess] [nom de fichier ...]\n"
+"Utilisation : uudecode [-64] [--stdout] [--guess] [nom de fichier ...]\n"
 
 #: src/editscore.c:80
 msgid "SsFfRrEeCc"
@@ -847,30 +852,31 @@ msgstr "CcLl"
 
 #: src/editscore.c:90
 msgid "A Score file has not been specified."
-msgstr "Aucun fichier de score n'a été indiqué."
+msgstr "Aucun fichier de scores n'a été indiqué."
 
 #: src/editscore.c:100
 msgid "Pick Score type: Subject, From, References, Edit, Cancel"
-msgstr "Choisissez le type de score : Subject, From, References, Edit, Cancel"
+msgstr "Choisissez le type de score : Subject, From, References, Edit, Cancel"
 
 #: src/editscore.c:117
 msgid "Which newsgroups: This group, All groups"
-msgstr "Quels forums : Ce forum, Tous les forums"
+msgstr "Quels forums : Ce forum, Tous les forums"
 
 # OTH les / se transforment en - ?
+# ThTH : pourquoi ?
 #: src/editscore.c:125
 msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
-msgstr "Expire (MM-JJ-AAAA, JJ-MM-AAAA, +NN (jours) ou laissez vierge) : "
+msgstr "Expire (MM/JJ/AAAA, JJ-MM-AAAA, +NN (jours) ou laissez vierge) : "
 
 #: src/group.c:339
 #, c-format
 msgid "Selecting %s ..."
-msgstr "Choix de %s ..."
+msgstr "Choix de %s..."
 
 #: src/group.c:351 src/group.c:484 src/group.c:1103
 #, c-format
 msgid "Group %s is bogus%s."
-msgstr "Le forum %s est faux%s."
+msgstr "Le forum %s est invalide%s."
 
 #: src/group.c:352 src/group.c:1104
 msgid " - dropping it"
@@ -888,7 +894,7 @@ msgstr ", je l'ignore"
 #: src/group.c:578
 #, c-format
 msgid "Group %s is bogus - ignoring it."
-msgstr "Le forum %s est faux, je l'ignore."
+msgstr "Le forum %s est invalide, je l'ignore."
 
 #: src/group.c:870
 msgid "No articles to read."
@@ -897,12 +903,12 @@ msgstr "Pas d'articles à lire."
 #: src/group.c:896
 #, c-format
 msgid "%s: Read how many? "
-msgstr "%s : en lire combien ? "
+msgstr "%s : en lire combien ? "
 
 #: src/group.c:908
 #, c-format
 msgid "Only downloading %d of %d articles."
-msgstr ""
+msgstr "Téléchargement de seulement %d des %d articles."
 
 #: src/group.c:988
 msgid "Do you really want to quit"
@@ -927,7 +933,7 @@ msgstr "Coupure de connexion au serveur."
 #: src/group.c:1133 src/group.c:2636
 #, c-format
 msgid "Checking news%s ..."
-msgstr "Vérification des news%s ..."
+msgstr "Vérification des news%s..."
 
 #: src/group.c:1134 src/group.c:2637
 msgid " via active file"
@@ -1011,22 +1017,22 @@ msgstr "Êtes-vous certain de vouloir publier "
 
 # OTH: dilemme: est-ce qu'on traduit comme chez Microsoft ou on laisse les noms des vrais champs ?
 # Je suis pour la 2ème solution
+# ThTh : je ne sais pas ce que fait MS, mais je suis pour traduire (le 15/08/03, on a un mélange !)
 #: src/group.c:1721
 msgid "Newsgroup: "
-msgstr ""
+msgstr "Newsgroup: "
 
 #: src/group.c:1725
 msgid "Followup-To: "
-msgstr ""
+msgstr "Suivi à: "
 
 #: src/group.c:1744
 msgid "fFsSnNcC"
 msgstr "oOsSuUaA"
 
 #: src/group.c:1751
-#, fuzzy
 msgid "Select scoring mode: Full, Simple, None, Cancel"
-msgstr "Choisissez le mode de score : Complet, Simple, Aucun, Annuler"
+msgstr "Choisissez le mode de score : Complet, Simple, Aucun, Annuler"
 
 # OTH ça veut dire quoi ?
 #: src/group.c:1759
@@ -1047,9 +1053,10 @@ msgid "No changes need to be saved."
 msgstr "Aucune modification à enregistrer."
 
 # OTH FIXME vérifier
+# ThTh : vu.
 #: src/group.c:1982
 msgid "Unable to create group keymap!"
-msgstr "Impossible de créer un jeu de clavier pour le forum !"
+msgstr "Impossible d'assigner les touches pour le mode Groupe !"
 
 #: src/group.c:2140
 #, c-format
@@ -1057,7 +1064,7 @@ msgid ""
 "Unable to create newsgroup description file:\n"
 "%s\n"
 msgstr ""
-"Impossible de créer le fichier de descriptions du forum :\n"
+"Impossible de créer le fichier de descriptions du forum :\n"
 "%s\n"
 
 #: src/group.c:2144
@@ -1075,7 +1082,7 @@ msgid ""
 "Note: This step may take some time if you have a slow connection!!!\n"
 msgstr ""
 "Récupération des descriptions de forums sur le serveur.\n"
-"Note : cette étape peut prendre du temps si votre connexion est lente !!!\n"
+"Note : cette étape peut prendre du temps si votre connexion est lente !\n"
 
 #: src/group.c:2152
 msgid "Server failed on list newsgroups command."
@@ -1099,7 +1106,7 @@ msgid ""
 "Server failed to return proper response to NEWGROUPS:\n"
 "%s\n"
 msgstr ""
-"Le serveur n'a pas réussi à renvoyer une réponse correcte à NEWGROUPS :\n"
+"Le serveur n'a pas réussi à renvoyer une réponse correcte à NEWGROUPS :\n"
 "%s\n"
 
 #: src/group.c:2374 src/group.c:2487
@@ -1119,7 +1126,7 @@ msgid ""
 "I will patch the file up for you.\n"
 msgstr ""
 "%s semble corrompu.\n"
-"Je pensais voir : NEWGROUPS yymmdd hhmmss GMT\n"
+"Je pensais voir : NEWGROUPS yymmdd hhmmss GMT\n"
 "Je vais modifier le fichier pour vous.\n"
 
 #: src/group.c:2405
@@ -1142,7 +1149,7 @@ msgid ""
 "* The autosave file of %s is newer than the file itself.\n"
 msgstr ""
 "\n"
-"* Le fichier de sauvegarde automatique %s est plus récent que le fichier lui-"
+"* Le fichier de sauvegarde automatique de %s est plus récent que le fichier lui-"
 "même.\n"
 
 # OTH FIXME trop long, non ?
@@ -1173,7 +1180,6 @@ msgstr ""
 msgid "Creating %s."
 msgstr "Création de %s."
 
-# OTH FIN 2002-07-18
 #: src/group.c:2665
 msgid "Unable to read newsrc file"
 msgstr "Lecture du fichier newsrc impossible"
@@ -1181,7 +1187,7 @@ msgstr "Lecture du fichier newsrc impossible"
 #: src/group.c:2758
 #, c-format
 msgid "Writing %s ..."
-msgstr "Écriture de %s ..."
+msgstr "Écriture de %s..."
 
 #: src/group.c:2780
 #, c-format
@@ -1191,12 +1197,12 @@ msgstr "Impossible d'ouvrir le fichier %s en écriture."
 #: src/group.c:2869
 #, c-format
 msgid "Writing %s ... done."
-msgstr "Écriture de %s ... terminé."
+msgstr "Écriture de %s... terminé."
 
 #: src/group.c:2877
 #, c-format
 msgid "Write to %s failed! Disk Full?"
-msgstr "Échec d'écriture vers %s !. Système de fichiers plein ?"
+msgstr "Échec d'écriture vers %s !. Système de fichiers plein ?"
 
 #: src/group.c:2892
 msgid ""
@@ -1211,16 +1217,16 @@ msgstr ""
 #: src/group.c:3096 src/group.c:3134 src/interp.c:360 src/interp.c:430
 msgid "To use this feature, please update s-lang and recompile slrn."
 msgstr ""
-"Pour utiliser cette fonction, veuillez mettre à jour s-lang et recompiler "
+"Pour utiliser cette fonction, veuillez mettre à jour S-Lang et recompiler "
 "slrn."
 
 #: src/group.c:3142 src/interp.c:438
 msgid "Array of string expected."
-msgstr "Tableau de chaînes de caractères attendu"
+msgstr "Tableau de chaînes de caractères attendu."
 
 #: src/group.c:3148 src/interp.c:444
 msgid "One-dimensional array expected."
-msgstr ""
+msgstr "Tableau à une dimension attendu."
 
 #: src/grplens.c:194
 msgid "User is Unregistered"
@@ -1270,18 +1276,18 @@ msgstr "Erreur inconnue"
 #: src/grplens.c:731
 #, c-format
 msgid "Failed: %s"
-msgstr "Échec : %s"
+msgstr "Échec : %s"
 
 # OTH à vérifier -- mais qui l'utilise ? :-)
 #: src/grplens.c:888
 #, c-format
 msgid "%s usage: %s [default] PSEUDONYM"
-msgstr "Utilisation de %s : %s [défaut] PSEUDONYME"
+msgstr "Utilisation de %s : %s [défaut] PSEUDONYME"
 
 #: src/grplens.c:896 src/grplens.c:908
 #, c-format
 msgid "%s: expecting a single argument"
-msgstr "%s : un seul paramètre attendu"
+msgstr "%s : un seul paramètre attendu"
 
 #: src/grplens.c:950
 msgid "Too many arguments"
@@ -1308,7 +1314,7 @@ msgstr "Support de GroupLens initialisé."
 
 #: src/grplens.c:1096
 msgid "Logging out of GroupLens servers ..."
-msgstr "Départ des serveurs GroupLens ..."
+msgstr "Départ des serveurs GroupLens..."
 
 # OTH prédicats ? bof
 #: src/grplens.c:1145
@@ -1321,680 +1327,9 @@ msgstr "Récupération des prédicats GroupLens depuis %s:%d..."
 msgid "Sending GroupLens ratings to %s:%d..."
 msgstr "Envoi des notes GroupLens à %s:%d..."
 
-# OTH voir les sources pour ajouter fr.usenet.logiciels
-#: src/help.c:42
-msgid " More information about slrn can be found on its home page:"
-msgstr " Pour plus d'informations sur slrn, voyez sa page Web :"
-
-#: src/help.c:43
-msgid "   http://slrn.sourceforge.net/"
-msgstr ""
-
-#: src/help.c:44
-msgid " Questions not covered by the documentation can be posted to"
-msgstr "Les questions non-couvertes par la documentation peuvent être postés à"
-
-#: src/help.c:45
-msgid "   news.software.readers"
-msgstr "   fr.usenet.logiciels"
-
-#: src/help.c:47
-msgid ""
-" Please email bug reports, suggestions or comments to the current maintainer,"
-msgstr ""
-" Envoyez les rapports de bogue, les suggestions et commentaires au "
-"responsable,"
-
-#: src/help.c:48
-msgid "   Thomas Schultz <tststs@gmx.de>"
-msgstr ""
-
-#: src/help.c:49
-msgid ""
-" The original author of this program is John E. Davis <davis@space.mit.edu>"
-msgstr ""
-" L'auteur originel de ce programme est John E. Davis <davis@space.mit.edu>"
-
-#: src/help.c:56 src/help.c:173
-msgid ""
-" Note: The keys are case sensitive!  That is, 's' and 'S' are not the same."
-msgstr ""
-" Note : les touches sont sensibles à la casse ! 's' et 'S' ne sont pas "
-"pareils."
-
-#: src/help.c:57
-msgid "General movement:"
-msgstr "Déplacement général :"
-
-#: src/help.c:58
-msgid ""
-"  n                  Go to the next unread article (or next group, if at "
-"end)."
-msgstr ""
-"  n               Aller à l'article non lu suivant (ou au forum suivant si à "
-"la fin)."
-
-#: src/help.c:59
-msgid "  p                  Go to the previous unread article."
-msgstr "  p               Aller à l'article non lu précédent."
-
-#: src/help.c:60
-msgid "  N, ESC RIGHT       Skip to next group."
-msgstr "  N, ESC DROITE   Passer au forum suivant."
-
-#: src/help.c:61
-msgid "  ESC LEFT           Go to previous group."
-msgstr "  ESC GAUCHE      Aller au forum précédent."
-
-#: src/help.c:62
-msgid "  !                  Go to the next article with a high score."
-msgstr "  !               Aller à l'article suivant ayant un score élevé."
-
-# OTH à revoir
-#: src/help.c:63
-msgid "  =                  Go to the next article with the same subject."
-msgstr "  =               Passer à l'article suivant de même sujet."
-
-#: src/help.c:64
-msgid "  L                  Go to the last read article and display it."
-msgstr "  L               Retourner au dernier article lu."
-
-#: src/help.c:65 src/help.c:182
-msgid "Actions:"
-msgstr ""
-
-#: src/help.c:66
-msgid "  P                  Post a new article (no followup)."
-msgstr "  P               Publier un nouvel article (PAS un suivi-à)."
-
-#: src/help.c:67
-msgid "  ESC P              Post or edit a postponed article."
-msgstr "  ESC P           Publier ou éditer un article mis en attente."
-
-#: src/help.c:68
-msgid "  f                  Post a followup to the current article."
-msgstr "  f               Publier une suite à l'article en cours."
-
-#: src/help.c:69
-msgid "      ESC 1 f        Include all headers in the followup."
-msgstr "      ESC 1 f     Inclure tous les en-têtes dans le suivi."
-
-#: src/help.c:70
-msgid ""
-"      ESC 2 f        Followup without modifying (e.g. quoting) the article."
-msgstr ""
-"      ESC 2 f     Faire suivre l'article sans modifier (ex. inclure) "
-"l'article.."
-
-#: src/help.c:71
-msgid "  r                  Reply to poster (via email)."
-msgstr "  r               Répondre à l'auteur (par messagerie)."
-
-#: src/help.c:72
-msgid ""
-"  F                  Forward the current article to someone (via email)."
-msgstr "  F               Renvoyer l'article à quelqu'un (par messagerie)."
-
-#: src/help.c:73
-msgid ""
-"      ESC 1 F        Forward the current article (including all headers)."
-msgstr ""
-"      ESC 1 F     Renvoyer l'article à quelqu'un (y compris tous les en-"
-"têtes)."
-
-#: src/help.c:74
-msgid "  ESC Ctrl-S         Supersede article (you have to be the author)."
-msgstr "  ESC Ctrl-S      Remplacer l'article (vous devez en être l'auteur)."
-
-#: src/help.c:75
-msgid "  ESC Ctrl-C         Cancel article (you have to be the author)."
-msgstr "  ESC Ctrl-C      Annuler l'article (vous devez en être l'auteur)."
-
-#: src/help.c:76
-msgid "  o                  Save article, tagged articles or thread to file."
-msgstr ""
-"  o               Sauvegarder l'article, les articles marqués, ou l'enfilade."
-
-#: src/help.c:77
-msgid "  |                  Pipe article to an external program."
-msgstr "  |               Envoyer (tube) l'article à une commande externe."
-
-#: src/help.c:78
-msgid "  y                  Print article (as displayed)."
-msgstr "  y               Imprimer l'article (tel qu'à l'affichage)."
-
-#: src/help.c:79
-msgid ""
-"      ESC 1 y        Print article (unwrapped and including hidden lines)."
-msgstr ""
-"      ESC 1 y     Imprimer article (sans pliage et avec les lignes cachées)."
-
-#: src/help.c:81
-msgid "  :                  Decode article, tagged articles or thread."
-msgstr ""
-"  :               Décoder l'article, les articles marqués, ou l'enfilade."
-
-#: src/help.c:83
-msgid "  Ctrl-Z             Suspend slrn."
-msgstr "  Ctrl-Z          Suspendre slrn."
-
-#: src/help.c:84
-msgid "  q                  Return to group display."
-msgstr "  q               Retourner à la liste de forums."
-
-#: src/help.c:85
-msgid "  Q                  Quit slrn immediately."
-msgstr "  Q               Quitter slrn immédiatement."
-
-#: src/help.c:86
-msgid "Moving in the article pager:"
-msgstr "Déplacements dans la fenêtre des articles :"
-
-#: src/help.c:87
-msgid "  ESC DOWN           Scroll article down one line."
-msgstr "  ESC BAS         Faire défiler l'article d'une ligne vers le bas"
-
-#: src/help.c:88
-msgid "  ESC UP             Scroll article up one line."
-msgstr "  ESC HAUT        Faire défiler l'article d'une ligne vers le haut"
-
-#: src/help.c:89
-msgid ""
-"  SPACE              Scroll article down one page (or select next, if at "
-"end)."
-msgstr ""
-"  ESPACE          Faire défiler l'article d'une page vers le bas (ou suivant "
-"si à la fin)."
-
-#: src/help.c:90
-msgid "  DELETE, b          Scroll article up one page."
-msgstr "  DEL, b          Remonter d'une page dans l'article."
-
-#: src/help.c:91
-msgid "  >                  Move to end of the article."
-msgstr "  >               Aller à la fin de l'article."
-
-#: src/help.c:92
-msgid "  <                  Move to beginning of the article."
-msgstr "  <               Aller au début de l'article."
-
-#: src/help.c:93
-msgid "  LEFT               Pan article to the left."
-msgstr "  GAUCHE          Décaler l'article vers la gauche."
-
-#: src/help.c:94
-msgid "  RIGHT              Pan article to the right."
-msgstr "  DROITE          Décaler l'article vers la droite."
-
-#: src/help.c:95
-msgid "  /                  Search forward in the article."
-msgstr "  /               Rechercher vers l'avant dans l'article."
-
-#: src/help.c:96
-msgid "  TAB                Skip beyond quoted text."
-msgstr "  TAB             Passer au-delà du texte cité."
-
-#: src/help.c:97
-msgid "  g                  Skip to next digest."
-msgstr "  g               Passer à l'article résumé suivant."
-
-#: src/help.c:98
-msgid "Moving in the header display:"
-msgstr "Déplacements dans la liste des en-têtes :"
-
-#: src/help.c:99
-msgid "  DOWN, Ctrl-N       Move to the next article."
-msgstr "  BAS, Ctrl-N     Aller à l'article suivant."
-
-#: src/help.c:100
-msgid "  UP, Ctrl-P         Move to the previous article."
-msgstr "  HAUT, Ctrl-P    Aller à l'article précédent."
-
-#: src/help.c:101
-msgid "  Ctrl-D             Scroll down one page."
-msgstr "  Ctrl-D          Défiler d'une page vers le bas."
-
-#: src/help.c:102
-msgid "  Ctrl-U             Scroll up one page."
-msgstr "  Ctrl-U          Défiler d'une page vers le haut."
-
-#: src/help.c:103
-msgid "  ESC >              Go to the last article in group."
-msgstr "  ESC >           Aller au dernier article du forum."
-
-#: src/help.c:104
-msgid "  ESC <              Go to the first article in group."
-msgstr "  ESC <           Aller au premier article du forum."
-
-#: src/help.c:105
-msgid "  j                  Jump to article (by server number)."
-msgstr "  j               Sauter à l'article (par numéro du serveur)."
-
-#: src/help.c:106
-msgid "  a                  Author search forward."
-msgstr "  a               Rechercher par auteur vers l'avant."
-
-#: src/help.c:107
-msgid "  A                  Author search backward."
-msgstr "  A               Rechercher par auteur en arrière."
-
-#: src/help.c:108
-msgid "  s                  Subject search forward."
-msgstr "  s               Rechercher par sujet vers l'avant."
-
-#: src/help.c:109
-msgid "  S                  Subject search backward."
-msgstr "  S               Rechercher par sujet en arrière."
-
-#: src/help.c:110
-msgid "Marking as read/unread:"
-msgstr "Marquer comme lu/non lu"
-
-#: src/help.c:111
-msgid "  d                  Mark article or collapsed thread as read."
-msgstr "  d               Marquer l'article ou l'enfilade repliée comme lu. "
-
-#: src/help.c:112
-msgid "  u                  Mark article or collapsed thread as unread."
-msgstr ""
-"  u               Marquer l'article ou l'enfilade repliée comme non-lu."
-
-#: src/help.c:113
-msgid "  ESC d              Mark entire (sub-)thread as read."
-msgstr "  ESC d           Marquer la (sous-)enfilade comme non lue."
-
-#: src/help.c:114
-msgid "  c                  Catchup - mark all articles as read."
-msgstr "  c               Marquer tous les articles comme lus."
-
-#: src/help.c:115
-msgid ""
-"  C                  Mark all articles up to the current position as read."
-msgstr ""
-"  C               Marquer les articles jusqu'à la position courante comme "
-"lus."
-
-#: src/help.c:116
-msgid "  ESC u              Un-Catchup - mark all articles as unread."
-msgstr "  ESC u           Marquer tous les articles comme non lus."
-
-#: src/help.c:117
-msgid ""
-"  ESC U              Mark all articles up to the current position as unread."
-msgstr ""
-"  ESC U           Marquer les articles jusqu'à la position courante comme "
-"non-lus."
-
-#: src/help.c:118
-msgid "  x                  Remove all non-tagged read articles from the list."
-msgstr ""
-"  x               Enlever tous les articles lus non-marqués de la liste."
-
-#: src/help.c:119
-msgid "Article pager commands:"
-msgstr "Commandes dans la fenêtre d'article :"
-
-#: src/help.c:120
-msgid "  t                  Show full headers (on/off)."
-msgstr "  t               Basculer l'affichage des en-têtes complets."
-
-#: src/help.c:121
-msgid "  ESC r              Decrypt ROT-13 (on/off)."
-msgstr "  ESC r           Basculer le déchiffrage ROT-13."
-
-#: src/help.c:122
-msgid "  T                  Display quoted lines (on/off)."
-msgstr "  T               Basculer l'affichage ou non des lignes citées."
-
-#: src/help.c:123
-msgid "  \\                  Show signature (on/off)."
-msgstr "  \\               Basculer l'affichage de la signature."
-
-#: src/help.c:124
-msgid "  W                  Wrap long lines (on/off)."
-msgstr "  W               Basculer le pliage des lignes."
-
-#: src/help.c:126
-msgid "  ESC ?              Reveal spoilers (on/off)."
-msgstr "  ESC ?           Basculer l'affichage ou non du texte caché."
-
-#: src/help.c:128
-msgid "  ]                  Show PGP signature (on/off)."
-msgstr "  ]               Basculer l'affichage de la signature PGP."
-
-#: src/help.c:129
-msgid "  [                  Show verbatim marks (on/off)."
-msgstr "  [               Basculer l'affichage des marques verbatim."
-
-#: src/help.c:130
-msgid "  Ctrl-^             Enlarge the article window."
-msgstr "  Ctrl-^          Élargir la fenêtre de l'article."
-
-#: src/help.c:131
-msgid "  ^                  Shrink the article window."
-msgstr "  ^               Réduire la fenêtre de l'article."
-
-#: src/help.c:132
-msgid "  z                  Maximize / Unmaximize the article window."
-msgstr "  z               Maximiser / Minimiser la fenêtre de l'article."
-
-#: src/help.c:133
-msgid "  h                  Hide / Show the article window."
-msgstr "  h               Basculer l'affichage de la fenêtre de l'article."
-
-#: src/help.c:134
-msgid "  U                  Search for URLs and follow them."
-msgstr "  U               Chercher les URL et les suivre."
-
-#: src/help.c:135
-msgid "Header window commands:"
-msgstr "Commandes dans la liste des en-têtes:"
-
-# OTH une traduc meilleure ?
-#: src/help.c:136
-msgid "  ESC t              Collapse / Uncollapse thread."
-msgstr "  ESC t           Basculer le repli des enfilades."
-
-# OTH une traduc meilleure ?
-#: src/help.c:137
-msgid "      ESC 1 ESC t    Collapse / Uncollapse all threads."
-msgstr "      ESC 1 ESC t Basculer le pliage de toutes les enfilades."
-
-#: src/help.c:138
-msgid "  ESC a              Toggle between header display formats."
-msgstr "  ESC a           Basculer les formats d'affichage des en-têtes."
-
-#: src/help.c:139
-msgid "  ESC s              Select threading and sorting method."
-msgstr "  ESC s           Choisir le mode de l'enfilade et du tri."
-
-#: src/help.c:140
-msgid "Miscellaneous actions:"
-msgstr "Commandes diverses :"
-
-#: src/help.c:141
-#, fuzzy
-msgid "  K                  Create a scorefile entry interactively."
-msgstr ""
-"  K               Créer une entrée de score basée sur l'en-tête en cours."
-
-#: src/help.c:142
-msgid "      ESC 1 K        Edit scorefile."
-msgstr "      ESC 1 K     Éditer le fichier de score."
-
-#: src/help.c:144
-#, fuzzy
-msgid "  m                  (Un-)mark article body for download by slrnpull."
-msgstr "  d               Marquer l'article ou l'enfilade repliée comme lu. "
-
-#: src/help.c:146
-msgid ""
-"  v                  Show which scorefile rules matched the current article."
-msgstr ""
-"  v               Montrer à quelle règle de score correspond l'article "
-"courant."
-
-#: src/help.c:147
-msgid "  * The following five commands query the server if necessary:"
-msgstr " * Les cinq commandes suivantes demandent au serveur, si nécessaire :"
-
-#: src/help.c:148
-msgid "  ESC l              Locate article by its Message-ID."
-msgstr "  ESC l           Trouver un article par Message-ID."
-
-#: src/help.c:149
-msgid "  ESC Ctrl-P         Find all children of current article."
-msgstr "  ESC Ctrl-P      Trouver tous les fils de l'article en cours."
-
-#: src/help.c:150
-msgid "  ESC p              Find parent article."
-msgstr "  ESC p           Trouver le père de l'article."
-
-#: src/help.c:151
-msgid ""
-"      ESC 1 ESC p    Reconstruct thread (slow when run on large threads)."
-msgstr ""
-"      ESC 1 ESC p Reconstruire l'enfilade (lent sur des grosses enfilades)."
-
-#: src/help.c:152
-msgid ""
-"      ESC 2 ESC p    Reconstruct thread (faster, may not find all articles)."
-msgstr ""
-"      ESC 2 ESC p Reconstruire l'enfilade (plus rapide, risque de manquer "
-"certains articles)."
-
-#: src/help.c:153
-msgid "  ;                  Set a mark at the current article."
-msgstr "  ;               Mettre une marque sur l'article courant."
-
-#: src/help.c:154
-msgid "  ,                  Return to previously marked article."
-msgstr "  ,               Retourner à l'article marqué précédent."
-
-#: src/help.c:155
-msgid "  #                  Numerically tag article (for saving / decoding)."
-msgstr "  #               Numéroter l'article pour le sauver / décoder."
-
-#: src/help.c:156
-msgid "  ESC #              Remove all numerical tags."
-msgstr "  ESC #           Enlever la numérotation des articles."
-
-#: src/help.c:157
-msgid "  *                  Protect article from catchup commands."
-msgstr ""
-"  *               Protéger l'article de la commande catchup (rattraper)."
-
-#: src/help.c:158
-msgid "      ESC 1 *        Remove all protection marks."
-msgstr "      ESC 1 *     Enlever toutes les marques de protection."
-
-#: src/help.c:159
-msgid "  .                  Repeat last key sequence."
-msgstr "  . (Point)       Répéter la dernière séquence de touche."
-
-#: src/help.c:160
-msgid "  Ctrl-X ESC         Read line and interpret it as S-Lang."
-msgstr "  Ctrl-X ESC      Lire la ligne et l'interpréter comme S-Lang."
-
-#: src/help.c:162
-msgid "  0                  Rate article with GroupLens."
-msgstr "  0               Donner une note GroupLens à l'article."
-
-#: src/help.c:164
-msgid "  Ctrl-R, Ctrl-L     Redraw screen."
-msgstr "  Ctrl-R, Ctrl-L  Redessiner l'écran."
-
-#: src/help.c:165
-msgid "  ?                  Display this help screen."
-msgstr "  ?               Afficher cet écran d'aide."
-
-#: src/help.c:174
-msgid "Cursor movement:"
-msgstr "Déplacements du curseur :"
-
-#: src/help.c:175
-msgid "  DOWN                    Go to the next group."
-msgstr "  BAS                  Aller au forum suivant."
-
-#: src/help.c:176
-msgid "  UP                      Go to the previous group."
-msgstr "  HAUT                 Aller au forum précédent."
-
-#: src/help.c:177
-msgid "  Ctrl-V, Ctrl-D          Scroll to the next page."
-msgstr "  Ctrl-V, Ctrl-D       Défiler à la page suivante."
-
-#: src/help.c:178
-msgid "  ESC V, Ctrl-U           Scroll to the previous page."
-msgstr "  ESC V, Ctrl-U        Défiler à la page précédente."
-
-#: src/help.c:179
-#, fuzzy
-msgid "  ESC >                   Go to the bottom of the list."
-msgstr "  ESC <                Aller à la fin de la liste."
-
-#: src/help.c:180
-#, fuzzy
-msgid "  ESC <                   Go to the top of the list."
-msgstr "  ESC >                Aller au début de la liste."
-
-#: src/help.c:181
-msgid "  /                       Group keyword search."
-msgstr "  /                    Rechercher dans le forum par mot-clé."
-
-#: src/help.c:183
-msgid "  SPACE, RETURN           Enter the current newsgroup."
-msgstr "  ESPACE, ENTRÉE       Choisir le forum en cours."
-
-#: src/help.c:184
-msgid "  * The following variations also download previously read articles:"
-msgstr "  * Les variantes suivantes permettent de voir des articles déjà lus :"
-
-#: src/help.c:185
-msgid "      ESC 1 SPACE         Enter group with article number query."
-msgstr ""
-"      ESC 1 ESPACE     Sélectionner un forum en demandant le nombre "
-"d'articles."
-
-#: src/help.c:186
-msgid "      ESC 2 SPACE         Enter group, but do not apply score."
-msgstr ""
-"      ESC 2 ESPACE     Choisir le forum mais ne pas appliquer la notation."
-
-#: src/help.c:187
-msgid "      ESC 3 SPACE         Enter group with query, but without scoring."
-msgstr ""
-"      ESC 3 ESPACE     Choisir le forum en recherche mais ne pas appliquer "
-"la notation."
-
-#: src/help.c:188
-msgid "      ESC 4 SPACE         Enter the current newsgroup."
-msgstr "      ESC 4 ESPACE     Choisir le forum en cours."
-
-#: src/help.c:189
-msgid "  P                       Post an article to the current newsgroup."
-msgstr "  P                    Publier un article dans le forum en cours."
-
-#: src/help.c:190
-msgid "  ESC P                   Post or edit a postponed article."
-msgstr "  ESC P                Publier ou éditer un article mis en attente."
-
-#: src/help.c:191
-msgid "  G                       Get new news from server."
-msgstr "  G                    Récupère les dernières nouvelles."
-
-#: src/help.c:192
-msgid "  K                       Select scoring mode."
-msgstr "  K                    Sélectionner le mode de notation."
-
-#: src/help.c:193
-msgid "  .                       Repeat last key sequence."
-msgstr "  . (Point)            Répéter la dernière séquence de touche."
-
-#: src/help.c:194
-msgid "  Ctrl-X ESC              Read line and interpret it as S-Lang."
-msgstr "  Ctrl-X ESC           Lire la ligne et l'interpréter comme S-Lang."
-
-#: src/help.c:195
-msgid "  Ctrl-Z                  Suspend slrn."
-msgstr "  Ctrl-Z               Suspendre slrn."
-
-#: src/help.c:196
-msgid "  q                       Quit slrn."
-msgstr "  q                    Quitter slrn."
-
-#: src/help.c:197
-msgid "Group management (affects newsrc file):"
-msgstr "Administration de forums (affecte le fichier newsrc) :"
-
-#: src/help.c:198
-msgid "  c                       Catchup - Mark all articles as read."
-msgstr "  c                    Catchup (marquer TOUS les articles comme lus)."
-
-#: src/help.c:199
-msgid "  ESC u                   Un-Catchup - Mark all articles as unread."
-msgstr ""
-"  ESC u                Défaire tout lu - marquer tous les articles comme non "
-"lus."
-
-#: src/help.c:200
-msgid "  a                       Add a new newsgroup."
-msgstr ""
-"  a                    Ajouter un nouveau forum (voir aussi l'aide sur 'L' !)"
-
-#: src/help.c:201
-msgid "  s                       Subscribe to the current newsgroup."
-msgstr "  s                    S'abonner au forum en cours."
-
-# OTH Vérifier 'pattern'
-#: src/help.c:202
-msgid "      ESC 1 s             Subscribe to groups matching a pattern."
-msgstr "  ESC 1 s              S'abonner aux forums qui contiennent un motif."
-
-#: src/help.c:203
-msgid "  u                       Unsubscribe from the current newsgroup."
-msgstr "  u                    Se désabonner du forum en cours."
-
-# OTH Vérifier 'pattern'
-#: src/help.c:204
-msgid "      ESC 1 u             Unsubscribe from groups matching a pattern."
-msgstr ""
-"  ESC 1 u              Se désabonner des forums qui contiennent un motif."
-
-#: src/help.c:205
-msgid "  m                       Move newsgroup to a different location."
-msgstr "  m                    Déplacer le forum à un autre endroit."
-
-#: src/help.c:206
-msgid "  Ctrl-X, Ctrl-T          Transpose position of groups."
-msgstr "  Ctrl-X, Ctrl-T       Transposer la position des forums."
-
-#: src/help.c:207
-msgid "  X                       Force a save of the newsrc file."
-msgstr "  X                    Forcer une sauvegarde du fichier newsrc."
-
-#: src/help.c:208
-msgid "Display:"
-msgstr "Affichage :"
-
-#: src/help.c:209
-msgid "  ESC a                   Toggle between group display formats."
-msgstr "  ESC-a                Basculer les formats d'affichage des forums."
-
-#: src/help.c:210
-msgid ""
-"  l                       Toggle display of groups without unread articles."
-msgstr ""
-"  l                    Basculer l'affichage des forums sans articles non lus."
-
-#: src/help.c:211
-msgid "  L                       Toggle listing of unsubscribed groups."
-msgstr "  L                    Basculer l'affichage des forums non souscrits."
-
-#: src/help.c:212
-msgid "      ESC 1 L             Hide unsubscribed groups."
-msgstr "      ESC 1 L              Cacher les forums non souscrits."
-
-#: src/help.c:213
-msgid "      ESC 2 L             Show unsubscribed groups."
-msgstr "      ESC 2 L              Cacher les forums non souscrits."
-
-#: src/help.c:214
-msgid "  Ctrl-L, Ctrl-R          Redraw the screen."
-msgstr "  Ctrl-L, Ctrl-R       Redessiner l'écran."
-
-#: src/help.c:215
-msgid "  ?                       Display this help screen."
-msgstr "  ?                    Afficher cet écran d'aide."
-
 #: src/help.c:301
 msgid " (continued)"
 msgstr " (suite)"
-
-#: src/help.c:306
-msgid "As a translation would not be legally binding, it remains untranslated."
-msgstr ""
-"Comme une traduction n'aurait pas de valeur légale, cela reste non-traduit"
 
 #: src/help.c:310
 msgid "The following copyright notice applies to the slrn newsreader:"
@@ -2064,23 +1399,23 @@ msgstr "Tableau de deux colonnes en deux dimensions attendu."
 
 #: src/interp.c:388
 msgid "Could not get memory for conversion table."
-msgstr "Ne peut allouer de la mémoire pour la table de conversion"
+msgstr "Impossible d'allouer de la mémoire pour la table de conversion."
 
 #: src/interp.c:403
 #, c-format
 msgid "Unicode value in row %d out of range."
-msgstr "Valeur unicode dans la ligne %d en dehors de l'intervalle."
+msgstr "Valeur Unicode à la ligne %d en dehors de l'intervalle."
 
 #: src/interp.c:412
 #, c-format
 msgid "Local charset value in row %d out of range."
 msgstr ""
-"Valeur du jeu de caractère local a la ligne %d en dehors de l'intervalle."
+"Valeur du jeu de caractère local à la ligne %d en dehors de l'intervalle."
 
 #: src/interp.c:452
 #, c-format
 msgid "Array must contain at least one, at most %d elements."
-msgstr "Le tableau doit contenir au moins un et au plus %d élements."
+msgstr "Le tableau doit contenir au moins un et au plus %d éléments."
 
 #: src/interp.c:460
 msgid "Failed to allocate memory."
@@ -2088,11 +1423,11 @@ msgstr "Échec durant l'allocation de mémoire."
 
 #: src/interp.c:527
 msgid "definekey: no such keymap."
-msgstr "definekey : pas de carte clavier à ce nom."
+msgstr "definekey : touche non assignée."
 
 #: src/interp.c:554
 msgid "undefinekey: no such keymap."
-msgstr "undefinekey : pas de carte clavier de ce nom."
+msgstr "undefinekey : touche non assignée."
 
 #: src/interp.c:591 src/interp.c:629 src/slrn.c:1752
 msgid "Quit!"
@@ -2121,107 +1456,7 @@ msgstr "Impossible d'ouvrir le fichier de trace %s"
 
 #: src/interp.c:1457
 msgid "Could not replace article with given string."
-msgstr "Ne peut pas remplacer l'article avec la chaîne de caractère donnée."
-
-#: src/menu.c:64 src/menu.c:77
-msgid "Quit"
-msgstr "Quit"
-
-#: src/menu.c:65
-msgid "Refresh"
-msgstr "Rafraîc"
-
-#: src/menu.c:66 src/menu.c:81 src/misc.c:221
-msgid "Top"
-msgstr "Haut"
-
-#: src/menu.c:67 src/menu.c:82 src/misc.c:223
-msgid "Bot"
-msgstr "Bas"
-
-#: src/menu.c:68 src/menu.c:83
-msgid "Post"
-msgstr "Post"
-
-#: src/menu.c:69 src/menu.c:86
-msgid "Help"
-msgstr "Aide"
-
-#: src/menu.c:78
-msgid "Catchup"
-msgstr "Vidange"
-
-#: src/menu.c:79
-msgid "NextGrp"
-msgstr "GrpSuiv"
-
-#: src/menu.c:80
-msgid "NextArt"
-msgstr "ArtSuiv"
-
-#: src/menu.c:84
-msgid "Reply"
-msgstr "Rép."
-
-#: src/menu.c:85
-msgid "Followup"
-msgstr "Suivi   "
-
-#: src/menu.c:193
-msgid "No sorting"
-msgstr "Pas de classement."
-
-#: src/menu.c:194
-msgid "Thread Headers"
-msgstr "Classement des en-têtes."
-
-#: src/menu.c:195
-msgid "Sort by subject"
-msgstr "Tri par sujet."
-
-#: src/menu.c:196
-msgid "Thread, then sort by subject."
-msgstr "Classement des en-têtes, puis tri par sujet."
-
-#: src/menu.c:197
-msgid "Sort by scores."
-msgstr "Tri par notation."
-
-#: src/menu.c:198
-msgid "Thread, then sort by scores."
-msgstr "Classement des en-têtes, puis tri par notation."
-
-#: src/menu.c:199
-msgid "Sort by score and subject"
-msgstr "Tri par notation puis sujet."
-
-#: src/menu.c:200
-msgid "Thread, then sort by score and subject"
-msgstr "Classement des en-têtes, puis tri par notation et sujet."
-
-#: src/menu.c:201
-msgid "Sort by date (most recent first)"
-msgstr "Tri par date (plus récent en premier)."
-
-#: src/menu.c:202
-msgid "Thread, then sort by date (most recent first)"
-msgstr "Enfilade, puis classer par date (plus récent en premier)."
-
-#: src/menu.c:203
-msgid "Sort by date (most recent last)"
-msgstr "Tri par date (plus récent en dernier)."
-
-#: src/menu.c:204
-msgid "Thread, then Sort by date (most recent last)"
-msgstr "Enfilade, puis tri par date (plus récent en dernier)."
-
-#: src/menu.c:205
-msgid "Custom sorting (see manual)"
-msgstr "Ordre personnalisé (cf manuel)"
-
-#: src/menu.c:213
-msgid "Sorting Method"
-msgstr "Méthode de tri"
+msgstr "Impossible de remplacer l'article avec la chaîne de caractère donnée."
 
 #: src/menu.c:297
 msgid "(Select One)"
@@ -2250,7 +1485,7 @@ msgstr "Appuyez sur une touche pour fermer la fenêtre."
 #: src/menu.c:481
 msgid "Use UP/DOWN to move, any other key to close the window."
 msgstr ""
-"Utilisez HAUT/BAS pour bouger, n'importe quelle autre clé pour fermer la "
+"Utilisez HAUT/BAS pour bouger, n'importe quelle autre touche pour fermer la "
 "fenêtre."
 
 #: src/menu.c:486
@@ -2274,19 +1509,27 @@ msgstr "Traiter cet article MIME avec metamail"
 
 #: src/mime.c:960
 msgid "Unable to open tmp file for metamail."
-msgstr "Incapable d'ouvrir le fichier temporaire pour metamail."
+msgstr "Impossible d'ouvrir le fichier temporaire pour metamail."
 
 #: src/mime.c:988
 msgid "Press return to continue ..."
-msgstr "Appuyez sur entrée pour continuer"
+msgstr "Appuyez sur entrée pour continuer..."
 
 #: src/misc.c:221
 msgid "All"
 msgstr "Tout"
 
+#: src/misc.c:221
+msgid "Top"
+msgstr "Haut"
+
+#: src/misc.c:223
+msgid "Bot"
+msgstr "Bas"
+
 #: src/misc.c:277
 msgid "slrn %v ** Press '?' for help, 'q' to quit. ** Server: %s"
-msgstr "slrn %v ** Pressez '?' pour l'aide, 'q' pour quitter. ** Serveur : %s"
+msgstr "slrn %v ** Pressez '?' pour l'aide, 'q' pour quitter. ** Serveur : %s"
 
 #: src/misc.c:693
 msgid "This function is not available in batch mode."
@@ -2298,11 +1541,11 @@ msgstr "oOnNeE"
 
 #: src/misc.c:1094
 msgid "Mail the message? Yes, No, Edit"
-msgstr "Envoyer le message par courrier ? Oui, Non, Éditer"
+msgstr "Envoyer le message par courrier ? Oui, Non, Éditer"
 
 #: src/misc.c:1101
 msgid "Sending ..."
-msgstr "Envoi ..."
+msgstr "Envoi..."
 
 #: src/misc.c:1220
 msgid "Sending...done"
@@ -2359,12 +1602,13 @@ msgstr "Achèvements possibles"
 #: src/misc.c:2046
 #, c-format
 msgid "(default: %s) "
-msgstr "(défaut : %s) "
+msgstr "(défaut : %s) "
 
 # OTH un autre terme ?
+# ThTh : terminer ?
 #: src/misc.c:2209
 msgid "Abort!"
-msgstr "Annule!"
+msgstr "Annule !"
 
 #: src/misc.c:2215
 msgid "Integer expected."
@@ -2372,7 +1616,7 @@ msgstr "Entier attendu."
 
 #: src/misc.c:2317
 msgid "Invalid response! Try again."
-msgstr "Réponse invalide ! Essayez à nouveau."
+msgstr "Réponse invalide ! Essayez à nouveau."
 
 #: src/misc.c:2352
 msgid "yYnN"
@@ -2401,30 +1645,30 @@ msgstr "Expression rationnelle invalide ou expression trop longue."
 #: src/misc.c:2599
 #, no-c-format
 msgid "On %D, %r <%f> wrote:"
-msgstr "Le %D, %r <%f> a écrit :"
+msgstr "Le %D, %r <%f> a écrit :"
 
 #: src/misc.c:2601
 #, no-c-format
 msgid "In %n, you wrote:"
-msgstr "Dans %n, vous avez écrit :"
+msgstr "Dans %n, vous avez écrit :"
 
 #: src/misc.c:2603
 #, no-c-format
 msgid "[\"Followup-To:\" header set to %n.]"
-msgstr "[Entête \"Followup-To:\" positionné à %n.]"
+msgstr "[En-tête \"Followup-To:\" positionné à %n.]"
 
 #: src/misc.c:2606
 #, no-c-format
 msgid "[This message has also been posted to %n.]"
-msgstr "[Ce message a aussi été posté sur %n.]"
+msgstr "[Ce message a aussi été publié sur %n.]"
 
 #: src/misc.c:2837
 msgid "Cannot generate \"From:\" line without a valid username."
-msgstr "Ne peut pas générer ligne \"From:\" sans un nom d'usager valide."
+msgstr "Ne peut pas générer de ligne \"From:\" sans un nom d'utilisateur valide."
 
 #: src/misc.c:2841
 msgid "Cannot generate \"From:\" line without a hostname."
-msgstr "Ne peut pas générer ligne \"From:\" sans un nom d'hôte valide."
+msgstr "Ne peut pas générer de ligne \"From:\" sans un nom d'hôte valide."
 
 #: src/misc.c:2846
 msgid "This client cannot handle addresses longer than 255 characters."
@@ -2448,7 +1692,7 @@ msgstr "Erreur d'écriture au serveur."
 #: src/nntp.c:272
 #, c-format
 msgid "Article rejected: %s"
-msgstr "Message rejeté: %s"
+msgstr "Article rejeté : %s"
 
 #: src/nntp.c:464
 msgid ""
@@ -2458,17 +1702,17 @@ msgid ""
 "-p NNTP-PORT    Set the NNTP port to NNTP-PORT. The default value is 119.\n"
 "                 Note: This option has no effect on some systems.\n"
 msgstr ""
-"options pour --nntp :\n"
+"options pour --nntp :\n"
 "-h hôte-nntp    Nom d'hôte sur lequel se connecter. Ceci surcharge la "
 "variable NNTPSERVER.\n"
 "-p port-nntp    Positionne le port NNTP à port-nntp. La valeur par défaut "
 "est 119.\n"
-"                 Note : cette option n'a pas d'effet sur certains systèmes.\n"
+"                 Note : cette option n'a pas d'effet sur certains systèmes.\n"
 
 #: src/nntplib.c:196 src/post.c:811
 #, c-format
 msgid "Reason: %s"
-msgstr "Raison : %s"
+msgstr "Raison : %s"
 
 #: src/nntplib.c:266
 #, c-format
@@ -2478,13 +1722,13 @@ msgstr "Le serveur %s a lâché la connexion. Reconnexion..."
 #: src/nntplib.c:415
 msgid "Authorization needed, but could not determine username / password."
 msgstr ""
-"Autorisation nécessaire, mais ne pouvait déterminer nom d'usager / mot de "
+"Autorisation nécessaire, mais impossible de déterminer le nom d'utilisateur / mot de "
 "passe."
 
 #: src/nntplib.c:419
 #, c-format
 msgid "Authenticating %s ..."
-msgstr "Authentification de %s ..."
+msgstr "Authentification de %s..."
 
 #: src/nntplib.c:449
 msgid "Authorization failed."
@@ -2493,7 +1737,7 @@ msgstr "Échec de l'autorisation."
 #: src/nntplib.c:460
 #, c-format
 msgid "Connecting to host %s ..."
-msgstr "Connexion au serveur %s ..."
+msgstr "Connexion au serveur %s..."
 
 # %s correspond à la chaine suivante
 #: src/nntplib.c:496
@@ -2503,42 +1747,39 @@ msgstr "Connecté à l'hôte. %s"
 
 #: src/nntplib.c:497
 msgid "Posting ok."
-msgstr "Vous avez le droit de poster."
+msgstr "Vous avez le droit de publier."
 
 #: src/nntplib.c:497
 msgid "Posting NOT ok."
-msgstr "Vous n'avez PAS le droit de poster."
+msgstr "Vous n'avez PAS le droit de publier."
 
 #: src/nntplib.c:503
 msgid "Failed to initialize server"
 msgstr "Échec de l'initialisation du serveur"
 
 #: src/nntplib.c:567
-#, fuzzy
 msgid "You should set the NNTPSERVER environment variable to your server name."
-msgstr ""
-"Vous devez positionner la variable d'environnement NNTPSERVER sur le nom de "
-"votre serveur."
+msgstr "Vous devez positionner la variable d'environnement NNTPSERVER sur le nom de votre serveur."
 
 #: src/nntplib.c:569
 msgid "Example: $ define/job NNTPSERVER my.news.server"
-msgstr "Exemple : $ define/job NNTPSERVER mon.serveur.news"
+msgstr "Exemple : $ define/job NNTPSERVER mon.serveur.news"
 
 #: src/nntplib.c:572
 msgid "Example: set NNTPSERVER=my.news.server"
-msgstr "Exemple : set NNTPSERVER=mon.serveur.news"
+msgstr "Exemple : set NNTPSERVER=mon.serveur.news"
 
 #: src/nntplib.c:574
 msgid "Example (csh): setenv NNTPSERVER my.news.server"
-msgstr "Exemple (csh) : setenv NNTPSERVER mon.serveur.news"
+msgstr "Exemple (csh) : setenv NNTPSERVER mon.serveur.news"
 
 #: src/nntplib.c:575
 msgid "Example (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER"
-msgstr "Exemple (sh) : NNTPSERVER='mon.serveur.news' && export NNTPSERVER"
+msgstr "Exemple (sh) : NNTPSERVER='mon.serveur.news' && export NNTPSERVER"
 
 #: src/nntplib.c:578
 msgid "For now, I'm going to try \"localhost\" as the default..."
-msgstr ""
+msgstr "Pour le moment, je vais essayer \"localhost\" comme valeur par défaut..."
 
 #: src/nntplib.c:1140
 msgid "Help text on way"
@@ -2554,11 +1795,11 @@ msgstr "Sortie de mise au point"
 
 #: src/nntplib.c:1146
 msgid "Hello; you can post"
-msgstr "Bonjour ; vous pouvez poster"
+msgstr "Bonjour ; vous pouvez publier"
 
 #: src/nntplib.c:1148
 msgid "Hello; you can't post"
-msgstr "Bonjour ; vous ne pouvez pas poster"
+msgstr "Bonjour ; vous ne pouvez pas publier"
 
 #: src/nntplib.c:1150
 msgid "Slave status noted"
@@ -2603,11 +1844,11 @@ msgstr "Les nouveaux forums suivent"
 
 #: src/nntplib.c:1170
 msgid "Article transferred successfully"
-msgstr "Message transféré avec succès"
+msgstr "Article transféré avec succès"
 
 #: src/nntplib.c:1172
 msgid "Article posted successfully"
-msgstr "Article posté avec succès"
+msgstr "Article publié avec succès"
 
 # OTH remplacer ok
 #: src/nntplib.c:1174
@@ -2632,7 +1873,7 @@ msgstr "Continuer à envoyer l'article"
 
 #: src/nntplib.c:1184
 msgid "Continue to post article"
-msgstr "Continuer à poster l'article"
+msgstr "Continuer à publier l'article"
 
 #: src/nntplib.c:1186
 msgid "authorization is required"
@@ -2649,7 +1890,7 @@ msgstr "Je dois raccrocher pour une certaine raison"
 
 #: src/nntplib.c:1192
 msgid "No such newsgroup"
-msgstr "Pas de tel forum"
+msgstr "Forum inconnu"
 
 # OTH bof
 #: src/nntplib.c:1194
@@ -2670,11 +1911,11 @@ msgstr "Pas d'article précédent dans ce forum"
 
 #: src/nntplib.c:1202
 msgid "No such article in this group"
-msgstr "Pas de tel article dans ce forum"
+msgstr "Article inconnu dans ce forum"
 
 #: src/nntplib.c:1204
 msgid "No such article at all"
-msgstr "Pas de tel article du tout"
+msgstr "Article totalement inconnu"
 
 #: src/nntplib.c:1206
 msgid "Already got that article, don't send"
@@ -2686,7 +1927,7 @@ msgstr "Échec du transfert"
 
 #: src/nntplib.c:1210
 msgid "Article rejected, don't resend"
-msgstr "Message rejeté, ne le renvoyez pas"
+msgstr "Article rejeté, ne le renvoyez pas"
 
 #: src/nntplib.c:1212
 msgid "Posting not allowed"
@@ -2755,13 +1996,13 @@ msgstr "Une espace doit suivre le ':' dans un en-tête"
 #: src/post.c:695
 msgid "This news reader will not accept user generated From lines."
 msgstr ""
-"Ce lecteur de nouvelles n'acceptera pas les lignes From générées par un "
+"Ce lecteur de nouvelles n'accepte pas les lignes From générées par un "
 "utilisateur."
 
 #: src/post.c:702
 msgid "This news reader will not accept user generated Message-IDs."
 msgstr ""
-"Ce lecteur de nouvelles n'acceptera pas les Message-IDs générés par "
+"Ce lecteur de nouvelles n'accepte pas les Message-IDs générés par "
 "l'utilisateur."
 
 #: src/post.c:712
@@ -2775,22 +2016,22 @@ msgstr "L'en-tête de forum est nécessaire."
 #: src/post.c:724
 msgid "Please re-consider if posting to a large number of groups is necessary."
 msgstr ""
-"Veuillez reconsidérer si poster à un grand nombre de forums est nécessaire."
+"Veuillez reconsidérer si publier dans un grand nombre de forums est nécessaire."
 
 #: src/post.c:727
 msgid ""
 "In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
 msgstr ""
-"En général, faire un \"Followup-To:\" plusieurs forums est une mauvaise idée."
+"En général, faire un \"Followup-To:\" vers plusieurs forums est une mauvaise idée."
 
 #: src/post.c:730
 msgid "Setting a \"Followup-To:\" is recommended when crossposting."
 msgstr ""
-"Faire un \"Followup-To:\" est recommandé lorsque postant à plusieurs forums."
+"Faire un \"Followup-To:\" est recommandé lors d'une publication sur plusieurs forums."
 
 #: src/post.c:744
 msgid "Your message does not appear to have any unquoted text."
-msgstr "Votre message ne semble pas avoir de texte non cité."
+msgstr "Votre article ne semble pas avoir de texte non cité."
 
 #: src/post.c:803
 msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
@@ -2800,16 +2041,16 @@ msgstr ""
 
 #: src/post.c:810
 msgid "Message is not acceptable."
-msgstr "Le message n'est pas acceptable."
+msgstr "L'article n'est pas acceptable."
 
 #: src/post.c:828
 msgid "Your message is not acceptable for the following reason:"
-msgstr "Votre message n'est pas acceptable pour la raison suivante :"
+msgstr "Votre article n'est pas acceptable pour la raison suivante :"
 
 #: src/post.c:835
 #, c-format
 msgid "This message was generated while looking at line %d:"
-msgstr "Ce message a été généré pendant l'examen de la ligne %d :"
+msgstr "Ce message a été généré pendant l'examen de la ligne %d :"
 
 #: src/post.c:841
 msgid ""
@@ -2823,7 +2064,7 @@ msgstr "section du corps par une ligne BLANCHE."
 
 #: src/post.c:850
 msgid "Your message breaks the following netiquette guidelines:"
-msgstr "Votre message brise les règles de nétiquette suivantes :"
+msgstr "Votre article ne respecte pas les règles de nétiquette suivantes :"
 
 #: src/post.c:866
 msgid "Lines with more than 80 characters generally need to be wrapped."
@@ -2833,27 +2074,27 @@ msgstr ""
 #: src/post.c:870
 #, c-format
 msgid "This affects at least line %d:"
-msgstr "Ceci affect au moins la ligne %d :"
+msgstr "Ceci affecte au moins la ligne %d :"
 
 #: src/post.c:872
 #, c-format
 msgid "This affects %d lines between line %d and %d. First one:"
-msgstr "Ceci affecte %d lignes entre les lignes %d et %d. La première est :"
+msgstr "Ceci affecte %d lignes entre les lignes %d et %d. La première est :"
 
 #: src/post.c:898 src/post.c:1290 src/post.c:1313
 #, c-format
 msgid "File not found: %s--- message not posted."
-msgstr "Fichier non trouvé : %s --- message non posté."
+msgstr "Fichier non trouvé : %s --- article non publié."
 
 #: src/post.c:905
 #, c-format
 msgid "***Warning: error saving to %s"
-msgstr "*** Attention : erreur de sauvegarde vers %s"
+msgstr "*** Attention : erreur de sauvegarde vers %s"
 
 #: src/post.c:957
 #, c-format
 msgid "***Warning: error writing to %s"
-msgstr "*** Attention : erreur d'écriture vers %s"
+msgstr "*** Attention : erreur d'écriture vers %s"
 
 #: src/post.c:962
 #, c-format
@@ -2866,7 +2107,7 @@ msgstr "oOnNeEsSaAfF"
 
 #: src/post.c:1106
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
-msgstr "Publier le message ? Oui, Non, Éditer, Suspendre, Effacer, Filtrer"
+msgstr "Publier l'article ? Oui, Non, Éditer, Suspendre, Effacer, Filtrer"
 
 #: src/post.c:1110
 msgid "yYnNeEsSfF"
@@ -2874,7 +2115,7 @@ msgstr "oOnNeEsSfF"
 
 #: src/post.c:1113
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
-msgstr "Publier le message ? Oui, Non, Éditer, Suspendre, Filtrer"
+msgstr "Publier l'article ? Oui, Non, Éditer, Suspendre, Filtrer"
 
 #: src/post.c:1121
 msgid "yYnNeEsSdD"
@@ -2882,7 +2123,7 @@ msgstr "oOnNeEsSaA"
 
 #: src/post.c:1124
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
-msgstr "Publier le message ? Oui, Non, Éditer, Suspendre, Effacer"
+msgstr "Publier l'article ? Oui, Non, Éditer, Suspendre, Effacer"
 
 #: src/post.c:1128
 msgid "yYnNeEsS"
@@ -2890,7 +2131,7 @@ msgstr "oOnNeEsS"
 
 #: src/post.c:1131
 msgid "Post the message? Yes, No, Edit, poStpone"
-msgstr "Publier le message ? Oui, Non, Éditer, Suspendre"
+msgstr "Publier l'article ? Oui, Non, Éditer, Suspendre"
 
 #: src/post.c:1154
 msgid "Sure you want to delete it"
@@ -2902,7 +2143,7 @@ msgstr "oOeEnNaA"
 
 #: src/post.c:1181
 msgid "re-Edit,  or Cancel"
-msgstr "re-Éditer, ou Annuler"
+msgstr "ré-Éditer, ou Annuler"
 
 #: src/post.c:1185 src/post.c:1191
 msgid "yYeEnNcCfF"
@@ -2910,11 +2151,11 @@ msgstr "oOeEnNaAfF"
 
 #: src/post.c:1188
 msgid "re-Edit, Cancel, or Force the posting (not recommended)"
-msgstr "re-Éditer, Annuler, ou Forcer l'envoi (non recommandé)"
+msgstr "ré-Éditer, Annuler, ou Forcer l'envoi (non recommandé)"
 
 #: src/post.c:1277 src/post.c:1316
 msgid "Posting ..."
-msgstr "Envoi ..."
+msgstr "Envoi..."
 
 #: src/post.c:1307
 msgid "post_file_hook returned error."
@@ -2923,7 +2164,7 @@ msgstr "post_file_hook a renvoyé une erreur."
 #: src/post.c:1324
 #, c-format
 msgid "Couldn't open %s--- message not posted."
-msgstr "Ouverture de %s impossible --- message non posté."
+msgstr "Ouverture de %s impossible --- article non publié."
 
 #: src/post.c:1339
 msgid "Could not reach server."
@@ -2947,17 +2188,15 @@ msgstr "rReEaA"
 
 #: src/post.c:1522
 msgid "Select one: Repost, Edit, Cancel"
-msgstr "Choisissez : Republier, Éditer, Annuler"
+msgstr "Choisissez : Republier, Éditer, Annuler"
 
 #: src/post.c:1633
-#, fuzzy
 msgid "Aborted on user request."
-msgstr "Sortie après demande de l'usager."
+msgstr "Annulation sur demande de l'utilisateur."
 
 #: src/post.c:1639
-#, fuzzy
 msgid "postpone_directory points to a regular file (not a directory)"
-msgstr "postpone_directory non spécifié ou n'existe pas"
+msgstr "postpone_directory pointe vers un fichier (et pas un répertoire)"
 
 #: src/post.c:1651
 msgid "Not implemented yet. Sorry"
@@ -2965,11 +2204,11 @@ msgstr "Pas encore implémenté. Désolé"
 
 #: src/post.c:1667
 msgid "Save to: "
-msgstr "Sauver à:"
+msgstr "Sauver à :"
 
 #: src/post.c:1673
 msgid "File exists, overwrite"
-msgstr "Le fichier existe, écrasement"
+msgstr "Le fichier existe, remplacement"
 
 #: src/post.c:1685
 msgid "You must specify a name"
@@ -2982,23 +2221,23 @@ msgstr "Nom de fichier illégal. Essayez à nouveau"
 #: src/post.c:1712
 #, c-format
 msgid "%s: not a regular file"
-msgstr "%s : pas un fichier régulier"
+msgstr "%s : pas un fichier ordinaire"
 
 #: src/print.c:152
 #, c-format
 msgid "OpenPrinterA failed: %d"
-msgstr "Échec de OpenPrinterA : %d"
+msgstr "Échec de OpenPrinterA : %d"
 
 # OTH kezako ??
 #: src/print.c:160
 #, c-format
 msgid "StartDocPrinterA failed: %d"
-msgstr "Échec de StartDocPrinterA : %d"
+msgstr "Échec de StartDocPrinterA : %d"
 
 #: src/print.c:180
 #, c-format
 msgid "Write to printer failed: %d"
-msgstr "Échec d'écriture vers l'imprimante : %d"
+msgstr "Échec d'écriture vers l'imprimante : %d"
 
 #: src/print.c:227
 msgid "Failed to open tmp file"
@@ -3033,12 +2272,12 @@ msgstr "Incapable d'ouvrir %s pour l'impression"
 
 #: src/score.c:603
 msgid "Reloading score file ..."
-msgstr "Rechargement du fichier de score ..."
+msgstr "Rechargement du fichier des scores..."
 
 #: src/score.c:605 src/slrn.c:996
 #, c-format
 msgid "Error processing score file %s."
-msgstr "Erreur de traitement du fichier de score %s."
+msgstr "Erreur de traitement du fichier des scores %s."
 
 #: src/score.c:854
 #, c-format
@@ -3049,7 +2288,7 @@ msgid ""
 "%s\n"
 msgstr ""
 "Erreur de traitement de %s\n"
-"ligne %u :\n"
+"ligne %u :\n"
 "%s\n"
 "%s\n"
 
@@ -3068,7 +2307,7 @@ msgstr "J'attends 'Expires: MM/JJ/AAAA' ou 'Expires: JJ-MM-AAAA'"
 #: src/score.c:1127
 #, c-format
 msgid "%s has expired score on line %d"
-msgstr "%s a expiré le score sur la ligne %d"
+msgstr "%s a un score expiré sur la ligne %d"
 
 #: src/score.c:1143
 msgid "Bad group regular expression."
@@ -3084,7 +2323,7 @@ msgstr "DEUX-POINTS manquant."
 
 #: src/score.c:1242
 msgid "No regular expression given."
-msgstr "Aucune expression régulière donnée."
+msgstr "Aucune expression rationnelle donnée."
 
 #: src/score.c:1277
 msgid "Missing '}' for  subscore"
@@ -3093,30 +2332,30 @@ msgstr "Il manque un '}' pour un sous-score"
 #: src/score.c:1293
 #, c-format
 msgid "*** Warning * Read file %s before - skipping ..."
-msgstr "*** Attention : lu fichier %s avant - Je saute..."
+msgstr "*** Attention : fichier %s lu avant - je passe..."
 
 #: src/score.c:1307
 #, c-format
 msgid "Unable to open score file %s"
-msgstr "Incapable d'ouvrir le fichier de score %s"
+msgstr "Impossible d'ouvrir le fichier des scores %s"
 
 #: src/server.c:112
 msgid "Couldn't open pipe to inews! -- Article not posted."
-msgstr "Impossible de passer à inews ! -- Article non posté."
+msgstr "Impossible de passer à inews ! -- Article non publié."
 
 #: src/server.c:130
 msgid "pclose() failed -- check if article was posted"
-msgstr "échec de pclose() -- vérifiez si l'article a été posté"
+msgstr "Échec de pclose() -- vérifiez si l'article a été publié"
 
 #: src/server.c:201
 #, c-format
 msgid "Unable to locate inews program \"%s\""
-msgstr "Incapable de trouver le programme inews \"%s\""
+msgstr "Impossible de trouver le programme inews \"%s\""
 
 #: src/server.c:250 src/slrn.c:1111
 #, c-format
 msgid "Unable to add preprocessor name %s."
-msgstr "Impossible de lire le nom du préprocesseur %s."
+msgstr "Impossible de lire le nom du pré-processeur %s."
 
 #: src/server.c:273
 msgid "inews cannot be used with an slrnpull spool."
@@ -3125,7 +2364,7 @@ msgstr "inews ne peut être utilisé avec un spool slrnpull."
 #: src/server.c:297
 #, c-format
 msgid "%s is not a supported posting agent."
-msgstr "%s n'est pas un agent de postage supporté."
+msgstr "%s n'est pas un agent de publication supporté."
 
 #: src/server.c:337
 #, c-format
@@ -3135,20 +2374,20 @@ msgstr "%s n'est pas une source de serveur supportée."
 #: src/server.c:533
 #, c-format
 msgid "Unable to open file in %s."
-msgstr "Incapable d'ouvrir le fichier dans %s."
+msgstr "Impossible d'ouvrir le fichier dans %s."
 
 #: src/server.c:603
 #, c-format
 msgid "Unable to rename file. errno = %d."
-msgstr "Incapable de renommer le fichier. errno = %d."
+msgstr "Impossible de renommer le fichier. errno = %d."
 
 #: src/server.c:618
 msgid "Write error.  File system full?"
-msgstr "Erreur d'écriture. Système de fichiers plein ?"
+msgstr "Erreur d'écriture. Système de fichiers plein ?"
 
 #: src/server.c:633
 msgid "Write failed.  File system full?"
-msgstr "Échec d'écriture. Système de fichiers plein ?"
+msgstr "Échec d'écriture. Système de fichiers plein ?"
 
 #: src/server.c:679
 #, c-format
@@ -3161,24 +2400,24 @@ msgid ""
 "slrn: pid %d is locking the newsrc file. If you're not running another\n"
 "      copy of slrn, delete the file %s"
 msgstr ""
-"slrn : le pid %d verrouille le fichier newsrc. Si aucune autre copie de "
+"slrn : le pid %d verrouille le fichier newsrc. Si aucune autre copie de "
 "slrn\n"
 "       ne fonctionne, effacez le fichier %s"
 
 #: src/slrn.c:192
 #, c-format
 msgid "slrn: pid %d is locking the newsrc file."
-msgstr "slrn : le pid %d verrouille le fichier newsrc."
+msgstr "slrn : le pid %d verrouille le fichier newsrc."
 
 #: src/slrn.c:263 src/slrn.c:270
 #, c-format
 msgid "Unable to create lock file %s."
-msgstr "Incapable de créer le fichier de verrou %s."
+msgstr "Impossible de créer le fichier de verrou %s."
 
 # OTH FIXME vérifier
 #: src/slrn.c:377
 msgid "pop_suspension: underflow!"
-msgstr "pop_suspension : sous-capacité !"
+msgstr "pop_suspension : sous-capacité !"
 
 #: src/slrn.c:442
 msgid "Not implemented."
@@ -3191,16 +2430,16 @@ msgstr "Le shell ne permet pas la suspension."
 # OTH FIXME tty
 #: src/slrn.c:635
 msgid "Unable to initialize the tty"
-msgstr "Incapable d'initialiser le tty"
+msgstr "Impossible d'initialiser le tty"
 
 #: src/slrn.c:870
 #, c-format
 msgid "slrn: quiting on signal %d.\n"
-msgstr "slrn : fin sur le signal %d.\n"
+msgstr "slrn : fin sur le signal %d.\n"
 
 #: src/slrn.c:887
 msgid "slrn fatal error:"
-msgstr "erreur fatale de slrn:"
+msgstr "erreur fatale de slrn :"
 
 #: src/slrn.c:915
 #, c-format
@@ -3231,28 +2470,28 @@ msgid ""
 "NNTP mode has additional options; use \"slrn --nntp --help\" to display "
 "them.\n"
 msgstr ""
-"Utilisation : slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
+"Utilisation : slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
 "-a              Utiliser le fichier active pour obtenir les nouveaux "
 "articles.\n"
 "-f fichier-newsrc  Nom du fichier newsrc à utiliser.\n"
 "-C[-]              [Ne pas] utiliser les couleurs.\n"
-"-Dnom           Ajouter 'nom' à la liste des marques de prétraitement "
+"-Dnom           Ajouter 'nom' à la liste des marques de pré-traitement "
 "prédéfinies.\n"
 "-d              Obtenir de nouvelles descriptions de chaque forum du "
 "serveur.\n"
-"                 Note : ceci peut prendre BEAUCOUP de temps pour récupérer "
+"                 Note : ceci peut prendre BEAUCOUP de temps pour récupérer "
 "cette \n"
 "information.\n"
 "                 Le fichier résultant peut faire plusieurs centaines de kilo-"
 "octets !\n"
 "-i fichier-init Nom du fichier d'initialisation à utiliser (%s par défaut)\n"
-"-k              Ne pas traiter le fichier de score.\n"
-"-k0             Traiter le fichier de score mais désactiver les scores "
-"chers.\n"
+"-k              Ne pas traiter le fichier des scores.\n"
+"-k0             Traiter le fichier des scores mais désactiver les scores "
+"coûteux.\n"
 "-m              Forcer le rapport de la souris XTerm.\n"
-"-n              Ne pas vérifier les nouveaux forums. Ceci résulte en "
+"-n              Ne pas vérifier les nouveaux forums. Ceci donne en "
 "général\n"
-"                 en un démarrage plus rapide.\n"
+"                 un démarrage plus rapide.\n"
 "-w              Attendre la pression d'une touche avant de passer en plein "
 "écran\n"
 "-w0             Attendre la pression d'une touche en cas d'avertissements ou "
@@ -3261,33 +2500,33 @@ msgstr ""
 "serveur.\n"
 "--debug FICHIER Écrit des informations pour la mise au point dans FICHIER\n"
 "--help          Affiche ce message.\n"
-"--kill-log FIC  Garder une trace des articles ignoré dans FIC\n"
+"--kill-log FIC  Garder une trace des articles ignorés dans FIC\n"
 "--version       Montre la version et les capacités supportées.\n"
 "\n"
-"Le mode NNTP a des options supplémentaires; utilisés \"slrn --nntp --help\" "
+"Le mode NNTP a des options supplémentaires ; utilisez \"slrn --nntp --help\" "
 "pour\n"
 "les afficher.\n"
 
 #: src/slrn.c:966
 #, c-format
 msgid "%s is not a supported option."
-msgstr "%s n'est pas une option supportée."
+msgstr "%s n'est pas une option reconnue."
 
 # OTH accord masculin/féminin ?
 #: src/slrn.c:968
 #, c-format
 msgid "%s is not supported."
-msgstr "%s n'est pas supporté."
+msgstr "%s n'est pas pris en compte."
 
 #: src/slrn.c:989
 #, c-format
 msgid "*** Warning: Score file %s does not exist"
-msgstr "*** Attention : le fichier de score %s n'existe pas"
+msgstr "*** Attention : le fichier des scores %s n'existe pas"
 
 #: src/slrn.c:1088
 #, c-format
 msgid "Unable to open %s for debugging."
-msgstr "Incapable d'ouvrir %s pour la mise au point."
+msgstr "Impossible d'ouvrir %s pour la mise au point."
 
 #: src/slrn.c:1136
 msgid "The -d and --create flags must not be specified together."
@@ -3308,7 +2547,7 @@ msgstr "Erreur de configuration des sources de serveur."
 #: src/slrn.c:1193
 #, c-format
 msgid "Could not read specified config file %s\n"
-msgstr "Ne pouvais pas lire le fichier de configuration %s\n"
+msgstr "Impossible de lire le fichier de configuration %s\n"
 
 #: src/slrn.c:1199
 msgid ""
@@ -3323,7 +2562,7 @@ msgstr ""
 "\n"
 "! Votre configuration contient des commandes désuètes ou des fonctions \n"
 "! qui ne seront pas supportées par de futures versions de ce programme. \n"
-"! Vous pouvez les mettre a jour en utilisant le script slrn-conv (qui\n"
+"! Vous pouvez les mettre à jour en utilisant le script slrn-conv (qui\n"
 "! nécessite PERL)\n"
 "! Il peut être trouvé dans la distribution officielle des sources\n"
 "!  ou récupéré à partir de <URL:http://slrn.sourceforge.net/data/>.\n"
@@ -3334,7 +2573,7 @@ msgstr "Échec de sélection du jeu de caractères."
 
 #: src/slrn.c:1252
 msgid "Unable to select server/post object."
-msgstr "Incapable de sélectionner l'objet de serveur / envoi."
+msgstr "Impossible de sélectionner l'objet de serveur / envoi."
 
 #: src/slrn.c:1268
 #, c-format
@@ -3342,21 +2581,21 @@ msgid ""
 "Unable to find a valid hostname for constructing your e-mail address.\n"
 "You will have to specify a hostname in your %s file.\n"
 msgstr ""
-"Incapable de trouver un nom de machine pleinement qualifié. Vous devrez\r\n"
-"spécifier un nom de machine dans votre fichier %s.\n"
+"Impossible de trouver un nom de machine valide pour construire votre courriel.\n"
+"Vous devrez spécifier un nom de machine dans votre fichier %s.\n"
 
 #: src/slrn.c:1277
 msgid ""
 "Unable to find your user name.  This means that a valid 'From' header line\n"
 "cannot be constructed.  Try setting the USER environment variable.\n"
 msgstr ""
-"Incapable de trouver votre nom d'utilisateur. Ceci veut dire que je ne peux\n"
+"Impossible de trouver votre nom d'utilisateur. Ceci veut dire que je ne peux\n"
 "pas construire une ligne d'en-tête 'From' valide. Essayez de positionner\n"
 "la variable d'environnement USER.\n"
 
 #: src/slrn.c:1285
 msgid "***Warning: Unable to find a unique fully-qualified host name."
-msgstr "***Attention: Incapable de trouver un nom d'hôte acceptable."
+msgstr "***Attention: impossible de trouver un nom d'hôte acceptable."
 
 #: src/slrn.c:1286
 msgid "            slrn will not generate any Message-IDs."
@@ -3366,7 +2605,7 @@ msgstr "            slrn ne générera pas de Message-IDs."
 msgid ""
 "            Please note that the \"hostname\" setting does not affect this;"
 msgstr ""
-"            Veuillez noter que la variable \"hostname\" n'affectera pas ceci;"
+"            Veuillez noter que la variable \"hostname\" n'affectera pas ceci ;"
 
 #: src/slrn.c:1288
 msgid "            see the \"slrn reference manual\" for details."
@@ -3379,12 +2618,12 @@ msgstr "Utilisation du fichier newsrc %s pour le serveur %s."
 
 #: src/slrn.c:1331 src/slrnpull.c:2309
 msgid "Unable to initialize server."
-msgstr "Incapable d'initialiser le serveur."
+msgstr "Impossible d'initialiser le serveur."
 
 #: src/slrn.c:1346
 #, c-format
 msgid "Unable to open %s.  I will try .newsrc."
-msgstr "Incapable d'ouvrir %s. Je vais essayer .newsrc."
+msgstr "Impossible d'ouvrir %s. Je vais essayer .newsrc."
 
 #: src/slrn.c:1351
 #, c-format
@@ -3396,13 +2635,13 @@ msgid ""
 msgstr ""
 "\n"
 "Impossible d'ouvrir %s.\n"
-"Si vous voulez créer %s, ajoutez ces options sur la ligne de commande:\n"
+"Si vous voulez créer %s, ajoutez ces options sur la ligne de commande :\n"
 "   -f %s -create\n"
 
 #: src/slrn.c:1368 src/slrnpull.c:2060 src/slrnpull.c:2072
 #, c-format
 msgid "Unable to open %s for logging."
-msgstr "Incapable d'ouvrir %s pour la trace."
+msgstr "Impossible d'ouvrir %s pour la trace."
 
 #: src/slrn.c:1384
 msgid "Initializing GroupLens"
@@ -3427,21 +2666,22 @@ msgstr ""
 
 #: src/slrn.c:1418
 msgid "Exit on user request."
-msgstr "Sortie après demande de l'usager."
+msgstr "Sortie à la demande de l'utilisateur."
 
 #: src/slrn.c:1445
 msgid "Internal Error: Mode_Stack overflow"
-msgstr "Erreur interne : dépassement de Mode_Stack"
+msgstr "Erreur interne : dépassement de Mode_Stack"
 
 # OTH !! argh !! à traduire...
+# ThTh : pour une erreur interne, ça ira...
 #: src/slrn.c:1460
 msgid "Internal Error: Mode_Stack underflow"
-msgstr "Erreur interne : Mode_Stack underflow"
+msgstr "Erreur interne : Mode_Stack underflow"
 
 #: src/slrn.c:1561
 #, c-format
 msgid "call: %s not in current keymap."
-msgstr "appel : %s pas dans la carte clavier en cours."
+msgstr "appel : %s pas dans l'affectation des touches courantes."
 
 #: src/slrndir.c:79
 msgid "slrn_open_dir has not been ported to VMS"
@@ -3449,22 +2689,22 @@ msgstr "slrn_open_dir n'a pas été porté sur VMS"
 
 #: src/slrndir.c:167 src/slrndir.c:178
 msgid "Unable to getcwd"
-msgstr "Incapable de getcwd"
+msgstr "getcwd impossible"
 
 #: src/slrndir.c:231
 #, c-format
 msgid "chdir %s failed.  Does the directory exist?"
-msgstr "échec de chdir %s. Le répertoire existe-t-il ?"
+msgstr "Échec de chdir %s. Le répertoire existe-t-il ?"
 
 #: src/slrnpull.c:319
 #, c-format
 msgid "Created dir %s."
-msgstr "Créé %s."
+msgstr "Répertoire %s créé."
 
 #: src/slrnpull.c:327
 #, c-format
 msgid "Unable to create directory %s. (errno = %d)"
-msgstr "Incapable de créer le répertoire %s. (errno = %d)"
+msgstr "Impossible de créer le répertoire %s. (errno = %d)"
 
 #: src/slrnpull.c:362 src/slrnpull.c:435
 #, c-format
@@ -3489,42 +2729,42 @@ msgstr "Erreur de fermeture de %s."
 #: src/slrnpull.c:596
 #, c-format
 msgid "Unable to open active groups file %s"
-msgstr "Incapable d'ouvrir le fichier de forums actifs %s"
+msgstr "Impossible d'ouvrir le fichier des forums actifs %s"
 
 #: src/slrnpull.c:634
 #, c-format
 msgid "%s: line %u: group name too long."
-msgstr "%s : ligne %u : nom de forum trop long."
+msgstr "%s : ligne %u : nom de forum trop long."
 
 #: src/slrnpull.c:651
 #, c-format
 msgid "%s: line %u: Group name contains whitespace."
-msgstr "%s : ligne %u : le nom du forum contient des blancs."
+msgstr "%s : ligne %u : le nom du forum contient des espaces."
 
 #: src/slrnpull.c:671
 #, c-format
 msgid "%s: line %u: expecting positive integer in second field."
-msgstr "%s : ligne %u : entier positif attendu dans le deuxième champ."
+msgstr "%s : ligne %u : entier positif attendu dans le deuxième champ."
 
 #: src/slrnpull.c:686
 #, c-format
 msgid "%s: line %u: expecting positive integer in third field."
-msgstr "%s : ligne %u : entier positif attendu dans le troisième champ."
+msgstr "%s : ligne %u : entier positif attendu dans le troisième champ."
 
 #: src/slrnpull.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "%s: line %u: expecting 0 or 1 in fourth field."
-msgstr "%s : ligne %u : entier positif attendu dans le troisième champ."
+msgstr "%s : ligne %u : 0 ou 1 attendu dans le quatrième champ."
 
 #: src/slrnpull.c:719
 #, c-format
 msgid "%s: line %u: group duplicated."
-msgstr "%s : ligne %u : forum en double."
+msgstr "%s : ligne %u : forum en double."
 
 #: src/slrnpull.c:727
 #, c-format
 msgid "%s: line %u: failed to add %s."
-msgstr "%s : ligne %u : échec de l'ajout de %s."
+msgstr "%s : ligne %u : échec de l'ajout de %s."
 
 #: src/slrnpull.c:762 src/slrnpull.c:804 src/util.c:378 src/util.c:531
 #: src/util.c:550
@@ -3538,7 +2778,7 @@ msgstr "Échec de la lecture."
 #: src/slrnpull.c:834
 #, c-format
 msgid "listgroup %s failed: %s"
-msgstr "échec de listgroup %s : %s"
+msgstr "échec de listgroup %s : %s"
 
 #: src/slrnpull.c:915
 #, c-format
@@ -3548,7 +2788,7 @@ msgstr "Le serveur peut contenir jusqu'à %d articles dans ce forum"
 #: src/slrnpull.c:917
 #, c-format
 msgid "Only examining last %u articles since this is a new group"
-msgstr "N'examine que les %u derniers articles puisque c'est un forum nouveau"
+msgstr "N'examine que les %u derniers articles puisque c'est un nouveau forum"
 
 #: src/slrnpull.c:923
 msgid ""
@@ -3560,66 +2800,64 @@ msgstr ""
 #: src/slrnpull.c:934
 #, c-format
 msgid "Server failed XHDR command: %s"
-msgstr "Le serveur n'a pas réussi la commande XHDR : %s"
+msgstr "Le serveur n'a pas réussi la commande XHDR : %s"
 
 #: src/slrnpull.c:992
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving %s %d-%d."
-msgstr "%s : récupération des articles %d-%d."
+msgstr "%s : récupération %s %d-%d."
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "headers"
-msgstr "Classement des en-têtes."
+msgstr "en-têtes"
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "articles"
-msgstr "Aller à l'article : "
+msgstr "articles"
 
 #: src/slrnpull.c:1017
 #, c-format
 msgid "%s: No articles in specified range."
-msgstr "%s : pas d'articles dans la tranche spécifiée."
+msgstr "%s : pas d'articles dans l'intervalle spécifié."
 
 #: src/slrnpull.c:1065
 #, c-format
 msgid "%u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu      "
-msgstr "%u/%u (%u tués), temps : %02u:%02u:%02u, BPS : %lu     "
+msgstr "%u/%u (%u tués), Temps : %02u:%02u:%02u, BPS : %lu     "
 
 #: src/slrnpull.c:1075
 #, c-format
 msgid "%s: %u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu"
-msgstr "%s : %u/%u (%u tués), Temps : %02u:%02u:%02u, BPS : %lu"
+msgstr "%s : %u/%u (%u tués), Temps : %02u:%02u:%02u, BPS : %lu"
 
 #: src/slrnpull.c:1100
 #, c-format
 msgid "Error writing to overview database: %s:%d."
-msgstr "Erreur d'écriture dans la base de vues d'ensemble : %s:%d."
+msgstr "Erreur d'écriture dans la base des vues d'ensemble : %s:%d."
 
 #: src/slrnpull.c:1393
 msgid "Internal error: Buffer in get_heads not large enough!"
-msgstr "Erreur interne: Buffer dans get_heads pas assez large!"
+msgstr "Erreur interne : tampon dans get_heads pas assez grand !"
 
 #: src/slrnpull.c:1430
 #, c-format
 msgid "Unable to open overview file %s.\n"
-msgstr "Incapable d'ouvrir le fichier de vue d'ensemble %s.\n"
+msgstr "Impossible d'ouvrir le fichier des vues d'ensemble %s.\n"
 
 #: src/slrnpull.c:1466
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving requested article bodies."
-msgstr "%s : récupération des articles %d-%d."
+msgstr "%s : récupération du corps des articles."
 
 #: src/slrnpull.c:1574
 #, c-format
 msgid "Error closing overview file for %s."
-msgstr "Erreur de fermeture du fichier de vue d'ensemble pour %s."
+msgstr "Erreur de fermeture du fichier des vues d'ensemble pour %s."
 
 #: src/slrnpull.c:1644
 #, c-format
 msgid "%s: no new articles available."
-msgstr "%s : pas de nouveaux articles disponibles."
+msgstr "%s : pas de nouveaux articles disponibles."
 
 #: src/slrnpull.c:1651
 #, c-format
@@ -3629,17 +2867,17 @@ msgstr "%u doublons enlevés laissant %u/%u."
 #: src/slrnpull.c:1663
 #, c-format
 msgid "%s: No new articles available."
-msgstr "%s : pas de nouveaux articles disponibles."
+msgstr "%s : pas de nouveaux articles disponibles."
 
 #: src/slrnpull.c:1668
 #, c-format
 msgid "%s: %u articles available."
-msgstr "%s: %u articles disponibles."
+msgstr "%s : %u articles disponibles."
 
 #: src/slrnpull.c:1675
 #, c-format
 msgid "%s: Only retrieving last %u articles."
-msgstr "%s : récupération des %u derniers articles uniquement."
+msgstr "%s : récupération des %u derniers articles uniquement."
 
 #: src/slrnpull.c:1724
 #, c-format
@@ -3649,23 +2887,22 @@ msgstr "Récupération des articles pour %s."
 #: src/slrnpull.c:1729
 #, c-format
 msgid "Error selecting group %s.  Code = %d: %s"
-msgstr "Erreur de choix du forum %s. Code = %d : %s"
+msgstr "Erreur de choix du forum %s. Code = %d : %s"
 
-# FIXME
 #: src/slrnpull.c:1763
 #, c-format
 msgid "Attempting to post %s..."
-msgstr "Tentative de poster %s..."
+msgstr "Tentative de publication %s..."
 
 #: src/slrnpull.c:1768
 #, c-format
 msgid "Unable to open file %s for posting."
-msgstr "Incapable d'ouvrir le fichier %s pour envoi."
+msgstr "Impossible d'ouvrir le fichier %s pour envoi."
 
 #: src/slrnpull.c:1775
 #, c-format
 msgid "Server failed post cmd.  Code = %d: %s"
-msgstr "Le serveur a échoué la commande d'envoi. Code = %d : %s"
+msgstr "Le serveur a échoué sur la commande d'envoi. Code = %d : %s"
 
 #: src/slrnpull.c:1797 src/slrnpull.c:1808
 #, c-format
@@ -3675,7 +2912,7 @@ msgstr "Échec d'écriture vers le serveur pendant l'envoi de %s."
 #: src/slrnpull.c:1817
 #, c-format
 msgid "Article %s rejected. status = %d: %s."
-msgstr "Article %s rejeté. état = %d : %s."
+msgstr "Article %s rejeté. état = %d : %s."
 
 #: src/slrnpull.c:1824
 #, c-format
@@ -3690,7 +2927,7 @@ msgstr "Échec du renommage de %s en %s."
 #: src/slrnpull.c:1832
 #, c-format
 msgid "Unable to delete %s after posting."
-msgstr "Incapable d'effacer %s après l'envoi."
+msgstr "Impossible d'effacer %s après l'envoi."
 
 #: src/slrnpull.c:1841
 #, c-format
@@ -3700,27 +2937,26 @@ msgstr "Le répertoire %s n'existe pas. En cours de création..."
 #: src/slrnpull.c:1849
 #, c-format
 msgid "chmod 0%o failed on %s."
-msgstr "échec de chmod 0%o sur %s."
+msgstr "Échec de chmod 0%o sur %s."
 
 #: src/slrnpull.c:1873
 msgid "Server does not permit posting at this time."
-msgstr "Le serveur ne permet pas de poster en ce moment."
+msgstr "Le serveur ne permet pas de publier en ce moment."
 
 #: src/slrnpull.c:1894
 #, c-format
 msgid "Posting of %s failed."
-msgstr "L'envoie de %s a échoué."
+msgstr "La publication de %s a échoué."
 
 #: src/slrnpull.c:1897
 #, c-format
 msgid "%s posted."
-msgstr "%s posté."
+msgstr "%s publié."
 
-# OTH à revoir
 #: src/slrnpull.c:1919
 #, c-format
 msgid "Unable to create tmp active file (%s)."
-msgstr "Incapable de créer un fichier temporaire d'active (%s)."
+msgstr "Impossible de créer un fichier d'active temporaire (%s)."
 
 #: src/slrnpull.c:1949
 #, c-format
@@ -3742,7 +2978,7 @@ msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "Un total de %lu octets reçus, %lu octets envoyés en %ld secondes."
 
 #: src/slrnpull.c:2096
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s usage: %s [options]\n"
 " Options:\n"
@@ -3763,24 +2999,25 @@ msgid ""
 msgstr ""
 "%s usage: %s [options]\n"
 " Options:\n"
-"  -d SPOOLDIR          Répertoire de Spool à utiliser.\n"
+"  -d SPOOLDIR          Répertoire de spool à utiliser.\n"
 "  -h HOSTNAME          Nom d'hôte du serveur NNTP auquel se connecter.\n"
-"  --debug FICHIER         Écrire dialogue avec serveur à FICHIER.\n"
-"  --expire             Expirer, mais ne pas chercher de messages.\n"
-"  --help               Ce message d'information.\n"
-"  --kill-log FICHIER      Garder un journal des messages tués dans FICHIER.\n"
-"  --kill-score SCORE   Tuer articles avec un score inférieur à SCORE.\n"
-"  --logfile FICHIER       Utiliser FICHIER comme fichier de trace.\n"
+"  --debug FICHIER      Écrire le dialogue avec le serveur sur FICHIER.\n"
+"  --expire             Expirer, mais ne pas chercher d'articles.\n"
+"  --help               Afficher ce message d'informations.\n"
+"  --kill-log FICHIER   Garder un journal des articles tués dans FICHIER.\n"
+"  --kill-score SCORE   Tuer les articles avec un score inférieur à SCORE.\n"
+"  --logfile FICHIER    Utiliser FICHIER comme fichier de trace.\n"
+"  --marked-bodies      Récupérer uniquement les corps des articles marqués.\n"
 "  --new-groups         Obtenir une liste de nouveaux forums.\n"
-"  --no-post            Ne pas poster de messages.\n"
-"  --post-only          Publier des messages, mais ne pas chercher de "
-"nouveaux messages.\n"
-"  --version            Montrer la version.\n"
+"  --no-post            Ne pas publier d'articles.\n"
+"  --post-only          Publier des articles, mais ne pas en chercher de nouveaux.\n"
+"  --rebuild            Comme --expire ; reconstruit les fichiers d'overview.\n"
+"  --version            Afficher la version.\n"
 
 #: src/slrnpull.c:2122
 #, c-format
 msgid "%s version: %s\n"
-msgstr "%s version: %s\n"
+msgstr "%s version : %s\n"
 
 #: src/slrnpull.c:2236
 #, c-format
@@ -3808,7 +3045,7 @@ msgstr "Vérification des nouveaux forums."
 #: src/slrnpull.c:2362
 #, c-format
 msgid "Unable to open new groups file %s.\n"
-msgstr "Incapable d'ouvrir le fichier de nouveaux forums %s.\n"
+msgstr "Impossible d'ouvrir le fichier de nouveaux forums %s.\n"
 
 #: src/slrnpull.c:2459
 #, c-format
@@ -3821,7 +3058,7 @@ msgid ""
 "%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
 "patch the file up for you."
 msgstr ""
-"%s semble corrompu, je pensais voir : NEWGROUPS yymmdd hhmmss GMT, je vais "
+"%s semble corrompu, je pensais voir : NEWGROUPS yymmdd hhmmss GMT, je vais "
 "modifier le fichier pour vous."
 
 #: src/slrnpull.c:2545
@@ -3830,10 +3067,10 @@ msgstr "En cours d'arrêt."
 
 #: src/slrnpull.c:2548
 msgid "Slrnpull exiting on signal."
-msgstr "Slrn quitte sur un signal."
+msgstr "Slrnpull quitte sur un signal."
 
 #: src/slrnpull.c:2674
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating filename in %s."
 msgstr "Erreur lors de la création d'un fichier dans %s."
 
@@ -3841,22 +3078,22 @@ msgstr "Erreur lors de la création d'un fichier dans %s."
 #: src/slrnpull.c:2680 src/slrnpull.c:3009
 #, c-format
 msgid "Unable to stat %s."
-msgstr "Incapable d'avoir des informations sur %s."
+msgstr "Impossible d'avoir des informations sur %s."
 
 #: src/slrnpull.c:2690
 #, c-format
 msgid "Unable to read header %d in %s."
-msgstr "Impossible de lire l'entête %d dans %s."
+msgstr "Impossible de lire l'en-tête %d dans %s."
 
 #: src/slrnpull.c:2696
 #, c-format
 msgid "Header %d not parseable for overview."
-msgstr "Entete %d non utilisable pour l'overview."
+msgstr "En-tête %d non utilisable pour l'overview."
 
 #: src/slrnpull.c:2719
 #, c-format
 msgid "%s overview: article %u of %u in %s."
-msgstr ""
+msgstr "Vue d'ensemble %s : %u de %u en %s."
 
 #: src/slrnpull.c:2720
 msgid "Creating"
@@ -3873,12 +3110,12 @@ msgstr "Création du fichier de vue d'ensemble pour %s..."
 
 #: src/slrnpull.c:2801
 msgid "Unable to create filename for overview file.\n"
-msgstr "Incapable de créer le fichier de vue d'ensemble.\n"
+msgstr "Impossible de créer le fichier de vue d'ensemble.\n"
 
 #: src/slrnpull.c:2811
 #, c-format
 msgid "Unable to open new overview file %s.\n"
-msgstr "Incapable d'ouvrir le nouveau fichier de vue d'ensemble %s.\n"
+msgstr "Impossible d'ouvrir le nouveau fichier de vue d'ensemble %s.\n"
 
 #: src/slrnpull.c:2889
 #, c-format
@@ -3898,17 +3135,17 @@ msgstr "Échec du renommage de %s en %s."
 #: src/slrnpull.c:2934
 #, c-format
 msgid "opendir %s failed."
-msgstr "échec d'opendir %s."
+msgstr "Échec d'opendir %s."
 
 #: src/slrnpull.c:2961
 #, c-format
 msgid "malloc error. Unable to expire group %s."
-msgstr "erreur de malloc. Incapable d'expirer le forum %s."
+msgstr "Erreur de malloc. Impossible d'expirer le forum %s."
 
 #: src/slrnpull.c:3087
 #, c-format
 msgid "Unable to expire %s."
-msgstr "Incapable d'expirer %s."
+msgstr "Impossible d'expirer %s."
 
 # OTH vérifier
 #: src/slrnpull.c:3094
@@ -3927,54 +3164,54 @@ msgstr "Erreur de lecture du nom et du mot de passe depuis %s."
 
 #: src/slrnpull.c:3183
 msgid "Empty user name.  Please check syntax of the authinfo file."
-msgstr "Nom d'usager vide.  Veuillez vérifier la syntaxe du fichier authinfo."
+msgstr "Nom d'utilisateur vide.  Veuillez vérifier la syntaxe du fichier authinfo."
 
 #: src/slrnpull.c:3211
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read headers file for group %s.\n"
-msgstr "Impossible de lire l'entête %d dans %s."
+msgstr "Impossible de lire le fichier d'en-têtes pour le groupe %s.\n"
 
 #: src/slrnpull.c:3220
-#, fuzzy, c-format
+#, c-format
 msgid "File %s exists, but could not be read."
-msgstr "L'éditeur a été trouvé, mais ne pouvait pas être exécuté."
+msgstr "Le fichier %s existe, mais il n'a pas pu être lu."
 
 #: src/slrnpull.c:3252 src/slrnpull.c:3279
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write headers file for group %s.\n"
-msgstr "Impossible de créer le fichier de mise au point %s\n"
+msgstr "Impossible d'écrire le fichier d'en-têtes pour le groupe %s.\n"
 
 #: src/slrnpull.c:3287
-#, fuzzy, c-format
+#, c-format
 msgid "Error while writing headers file for group %s.\n"
-msgstr "Erreur de fermeture du fichier de vue d'ensemble pour %s."
+msgstr "Erreur lors de l'écriture du fichier d'en-têtes pour le groupe %s.\n"
 
 #: src/sltcp.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to resolve %s\n"
-msgstr "Échec du renommage de %s en %s."
+msgstr "Échec de la résolution de %s\n"
 
 #: src/sltcp.c:272 src/sltcp.c:375
 msgid "Unable to make connection. Giving up.\n"
-msgstr "Incapable d'établir la connexion.  J'abandonne.\n"
+msgstr "Impossible d'établir la connexion.  J'abandonne.\n"
 
 #: src/sltcp.c:307
 #, c-format
 msgid "%s: Unknown host.\n"
-msgstr "%s : hôte inconnu.\n"
+msgstr "%s : hôte inconnu.\n"
 
 #: src/sltcp.c:366
 #, c-format
 msgid "connection to %s, port %d:"
-msgstr "connexion à %s, port %d: "
+msgstr "connexion à %s, port %d : "
 
 #: src/sltcp.c:513
 msgid "Unable to generate enough entropy\n"
-msgstr "Incapable de générer suffisamment de données aléatoires\n"
+msgstr "Impossible de générer suffisamment de données aléatoires\n"
 
 #: src/sltcp.c:532
 msgid "SSL_CTX_new failed.\n"
-msgstr ""
+msgstr "Échec de SSL_CTX_new.\n"
 
 #: src/sltcp.c:547
 msgid "SSL_new failed\n"
@@ -3982,12 +3219,12 @@ msgstr "Échec de SSL_new\n"
 
 #: src/sltcp.c:564
 msgid "Unexpected error: SSL connection closed\n"
-msgstr "Erreur inattendue.  Connexion SSL fermée\n"
+msgstr "Erreur inattendue : Connexion SSL fermée\n"
 
 #: src/sltcp.c:567
 #, c-format
 msgid "System call failed: errno = %d\n"
-msgstr ""
+msgstr "Échec d'un appel système : errno = %d\n"
 
 #: src/sltcp.c:570
 msgid "Possible protocol error\n"
@@ -4006,7 +3243,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"*** Ce programme ne support pas SSL\n"
+"*** Ce programme ne supporte pas SSL\n"
 
 #: src/sltcp.c:601
 msgid "Memory Allocation Failure.\n"
@@ -4018,12 +3255,12 @@ msgstr "Échec de SSL_set_fd\n"
 
 #: src/sltcp.c:642
 msgid "SSL_connect"
-msgstr ""
+msgstr "SSL_connect"
 
 #: src/spool.c:817
 #, c-format
 msgid "Unable to open directory %s"
-msgstr "Incapable d'ouvrir le répertoire %s"
+msgstr "Impossible d'ouvrir le répertoire %s"
 
 #: src/spool.c:1046
 #, c-format
@@ -4040,7 +3277,7 @@ msgid ""
 "%s: Line %d\n"
 "%sMemory Allocation Failure"
 msgstr ""
-"%s : ligne %d\n"
+"%s : ligne %d\n"
 "%séchec d'allocation mémoire"
 
 #: src/startup.c:183
@@ -4049,7 +3286,7 @@ msgid ""
 "%s: Error encountered processing line %d\n"
 "%s"
 msgstr ""
-"%s : erreur rencontrée lors du traitement de la ligne %d\n"
+"%s : erreur rencontrée lors du traitement de la ligne %d\n"
 "%s"
 
 #: src/startup.c:192
@@ -4058,7 +3295,7 @@ msgid ""
 "%s: Command is obsolete on line %d:\n"
 "%s"
 msgstr ""
-"%s : la commande est obsolète à la ligne %d :\n"
+"%s : la commande est obsolète à la ligne %d :\n"
 "%s"
 
 #: src/startup.c:194
@@ -4067,7 +3304,7 @@ msgid ""
 "The new usage is:\n"
 "set %s\n"
 msgstr ""
-"La nouvelle utilisation est :\n"
+"La nouvelle utilisation est :\n"
 "set %s\n"
 
 #: src/startup.c:268 src/startup.c:323
@@ -4076,8 +3313,8 @@ msgid ""
 "%s: line %d:\n"
 "%sNo such keymap: %s"
 msgstr ""
-"%s : ligne %d :\n"
-"%spas de carte clavier : %s"
+"%s : ligne %d :\n"
+"%spas d'affectation de touches : %s"
 
 #: src/startup.c:283
 #, c-format
@@ -4085,7 +3322,7 @@ msgid ""
 "%s: line %d:\n"
 "%serror defining key."
 msgstr ""
-"%s : ligne %d :\n"
+"%s : ligne %d :\n"
 "%serreur de définition de touche."
 
 #: src/startup.c:302
@@ -4094,8 +3331,8 @@ msgid ""
 "%s: Obsolete function name on line %d: %s\n"
 "The new name is: %s"
 msgstr ""
-"%s: Fonction désuète à la ligne %d: %s\n"
-"Le nouveau nom est: %s"
+"%s : fonction désuète à la ligne %d : %s\n"
+"Le nouveau nom est : %s"
 
 #: src/startup.c:358
 #, c-format
@@ -4103,7 +3340,7 @@ msgid ""
 "%s: line %d:\n"
 "%sInvalid regular expression."
 msgstr ""
-"%s : ligne %d :\n"
+"%s : ligne %d :\n"
 "%sexpression rationnelle invalide."
 
 #: src/startup.c:374
@@ -4112,17 +3349,17 @@ msgid ""
 "%s: line %d:\n"
 "%sToo many expressions specified."
 msgstr ""
-"%s : ligne %d :\n"
+"%s : ligne %d :\n"
 "%strop d'expressions spécifiées."
 
 #: src/startup.c:796
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s: Obsolete variable name on line %d: %s\n"
 "The new name is %s"
 msgstr ""
-"%s: Fonction désuète à la ligne %d: %s\n"
-"Le nouveau nom est: %s"
+"%s : fonction désuète à la ligne %d : %s\n"
+"Le nouveau nom est : %s"
 
 #: src/startup.c:806 src/startup.c:875
 #, c-format
@@ -4130,6 +3367,8 @@ msgid ""
 "%s: In this version of slrn, setting variable\n"
 "%s has no effect. Please refer to the manual for details."
 msgstr ""
+"%s : dans cette version de slrn, il est inutile d'affecter\n"
+"la variable %s. Veuillez consulter le manuel pour les détails."
 
 #: src/startup.c:843
 #, c-format
@@ -4137,7 +3376,7 @@ msgid ""
 "%s: Obsolete variable on line %d: %s\n"
 "Please make use of the header_display_format command instead."
 msgstr ""
-"%s: Variable désuète à la ligne %d: %s\n"
+"%s : variable désuète à la ligne %d : %s\n"
 "Veuillez utiliser la commande header_display_format à la place."
 
 #: src/startup.c:851
@@ -4146,7 +3385,7 @@ msgid ""
 "%s: Obsolete variable on line %d: %s\n"
 "Please make use of the group_display_format variable instead."
 msgstr ""
-"%s: Variable désuète à al ligne %d: %s\n"
+"%s : variable désuète à la ligne %d : %s\n"
 "Veuillez utiliser la variable group_display_format à la place."
 
 #: src/startup.c:858
@@ -4155,13 +3394,13 @@ msgid ""
 "%s: Obsolete spelling on line %d:\n"
 "Use \"process_verbatim_marks\" instead of \"process_verbatum_marks\"."
 msgstr ""
-"%s: Épellation désuète à la ligne %d:\n"
+"%s : syntaxe désuète à la ligne %d :\n"
 "Utilisez \"process_verbatim_marks\" à la place de \"process_verbatum_marks\"."
 
 #: src/startup.c:867
 #, c-format
 msgid "%s: Obsolete variable on line %d: %s"
-msgstr "%s: La commande est obsolète à la ligne %d: %s"
+msgstr "%s : la commande est obsolète à la ligne %d : %s"
 
 #: src/startup.c:1047
 #, c-format
@@ -4169,7 +3408,7 @@ msgid ""
 "%s: Obsolete spelling on line %d:\n"
 "Use \"verbatim\" instead of \"verbatum\""
 msgstr ""
-"%s: Épellation désuète à la ligne %d:\n"
+"%s : syntaxe désuète à la ligne %d :\n"
 "Utilisez \"verbatim\" à la place de \"verbatum\""
 
 #: src/startup.c:1100 src/startup.c:1147
@@ -4180,7 +3419,7 @@ msgstr "%s n'est pas un objet couleur"
 #: src/startup.c:1123
 msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
 msgstr ""
-"Due à une limite de S-Lang, cette fonction n'est disponible que sous Unix."
+"Suite à une limite de S-Lang, cette fonction n'est disponible que sous Unix."
 
 #: src/startup.c:1249
 #, c-format
@@ -4189,19 +3428,19 @@ msgstr "%s n'est pas un nom d'hôte valide."
 
 #: src/startup.c:1539
 msgid "Username: "
-msgstr "Nom d'utilisateur:"
+msgstr "Nom d'utilisateur :"
 
 #: src/startup.c:1554
 msgid "Password: "
-msgstr "Mot de passe:"
+msgstr "Mot de passe :"
 
 #: src/startup.c:1652
 msgid "Unable to initialize S-Lang readline library."
-msgstr "Incapable d'initialiser la bibliothèque readline S-Lang."
+msgstr "Impossible d'initialiser la bibliothèque readline de S-Lang."
 
 #: src/startup.c:1657
 msgid "Error initializing S-Lang preprocessor."
-msgstr "Erreur d'initialisation du préprocesseur S-Lang."
+msgstr "Erreur d'initialisation du pré-processeur S-Lang."
 
 #: src/startup.c:1663
 #, c-format
@@ -4225,8 +3464,8 @@ msgid ""
 "%s: line %d:\n"
 "%sFile not opened: %s"
 msgstr ""
-"%s : ligne %d:\n"
-"%sfichier non ouvert : %s"
+"%s : ligne %d :\n"
+"%sfichier non ouvert : %s"
 
 #: src/util.c:341
 msgid "File name too long."
@@ -4234,7 +3473,7 @@ msgstr "Nom de fichier trop long."
 
 #: src/util.c:371
 msgid "Memory allocation failure."
-msgstr "Échec d'allocation mémoire."
+msgstr "Échec d'allocation de mémoire."
 
 #: src/util.c:434
 msgid "Out of memory"
@@ -4253,7 +3492,7 @@ msgstr "La conversion Cygwin de %s a échoué."
 #, c-format
 msgid "Error closing file.  File system full? (errno = %d)"
 msgstr ""
-"Erreur de fermeture du fichier. Système de fichiers plein ? (errno = %d)"
+"Erreur de fermeture du fichier. Système de fichiers plein ? (errno = %d)"
 
 #: src/util.c:698 src/util.c:705
 #, c-format
@@ -4263,7 +3502,7 @@ msgstr "Erreur d'ouverture de %s"
 #: src/util.c:714
 #, c-format
 msgid "Write Error: %s"
-msgstr "Erreur d'écriture : %s"
+msgstr "Erreur d'écriture : %s"
 
 #: src/version.c:90
 msgid ""
@@ -4271,13 +3510,16 @@ msgid ""
 " COMPILE TIME OPTIONS:"
 msgstr ""
 "\n"
-"OPTIONS DE COMPILATION:"
+" OPTIONS DE COMPILATION :"
 
+# FIXME:
 #: src/version.c:101
 msgid ""
 "\n"
 "  Backends:"
 msgstr ""
+"\n"
+"  Alimentation :"
 
 #: src/version.c:105
 msgid ""
@@ -4285,7 +3527,7 @@ msgid ""
 "  External programs / libs:"
 msgstr ""
 "\n"
-"  Programmes externes / libs:"
+"  Programmes externes / bibliothèques :"
 
 #: src/version.c:109
 msgid ""
@@ -4293,32 +3535,32 @@ msgid ""
 "  Features:"
 msgstr ""
 "\n"
-"  Fonctions:"
+"  Fonctions :"
 
 #: src/version.c:155
 msgid "\t* Note: This version is a developer preview.\n"
-msgstr ""
+msgstr "\t* Note : cette version est un aperçu pour les développeurs.\n"
 
 #: src/version.c:157
 #, c-format
 msgid "S-Lang Library Version: %s\n"
-msgstr "Version de la bibliothèque S-Lang : %s\n"
+msgstr "Version de la bibliothèque S-Lang : %s\n"
 
 # FIXME
 #: src/version.c:160
 #, c-format
 msgid "\t* Note: This program was compiled against version %s.\n"
-msgstr "\t* Note: Ce programme à été compilé avec la version %s.\n"
+msgstr "\t* Note : ce programme à été compilé avec la version %s.\n"
 
 #: src/version.c:164
 #, c-format
 msgid "Compiled at: %s %s\n"
-msgstr "Compilé à: %s %s\n"
+msgstr "Compilé à : %s %s\n"
 
 #: src/version.c:166
 #, c-format
 msgid "Operating System: %s\n"
-msgstr "Système d'exploitation: %s\n"
+msgstr "Système d'exploitation : %s\n"
 
 #: src/version.c:170
 #, c-format
@@ -4326,13 +3568,13 @@ msgid ""
 " DEFAULTS:\n"
 "  Default server object:     %s\n"
 msgstr ""
-" DEFAUTS:\n"
-"Source par défaut du serveur : %s\n"
+" VALEURS PAR DÉFAUT :\n"
+"  Source du serveur :     %s\n"
 
 #: src/version.c:173
 #, c-format
 msgid "  Default posting mechanism: %s\n"
-msgstr "  Mécanisme de postage par défaut : %s\n"
+msgstr "  Mécanisme de publication par défaut : %s\n"
 
 #: src/xover.c:970
 msgid "Server closed connection.  Cannot recover."
@@ -4341,6 +3583,615 @@ msgstr "Le serveur a fermé la connexion. Impossible de récupérer."
 #: src/xover.c:1016
 msgid "Server does not provide this capability."
 msgstr "Le serveur ne fournit pas cette capacité."
+
+# OTH voir les sources pour ajouter fr.usenet.logiciels
+#~ msgid " More information about slrn can be found on its home page:"
+#~ msgstr " Pour plus d'informations sur slrn, voyez sa page Web :"
+
+#~ msgid " Questions not covered by the documentation can be posted to"
+#~ msgstr ""
+#~ "Les questions non-couvertes par la documentation peuvent être postés à"
+
+#~ msgid "   news.software.readers"
+#~ msgstr "   fr.usenet.logiciels"
+
+#~ msgid ""
+#~ " Please email bug reports, suggestions or comments to the current "
+#~ "maintainer,"
+#~ msgstr ""
+#~ " Envoyez les rapports de bogue, les suggestions et commentaires au "
+#~ "responsable,"
+
+#~ msgid ""
+#~ " The original author of this program is John E. Davis <davis@space.mit."
+#~ "edu>"
+#~ msgstr ""
+#~ " L'auteur originel de ce programme est John E. Davis <davis@space.mit.edu>"
+
+#~ msgid ""
+#~ " Note: The keys are case sensitive!  That is, 's' and 'S' are not the "
+#~ "same."
+#~ msgstr ""
+#~ " Note : les touches sont sensibles à la casse ! 's' et 'S' ne sont pas "
+#~ "pareils."
+
+#~ msgid "General movement:"
+#~ msgstr "Déplacement général :"
+
+#~ msgid ""
+#~ "  n                  Go to the next unread article (or next group, if at "
+#~ "end)."
+#~ msgstr ""
+#~ "  n               Aller à l'article non lu suivant (ou au forum suivant "
+#~ "si à la fin)."
+
+#~ msgid "  p                  Go to the previous unread article."
+#~ msgstr "  p               Aller à l'article non lu précédent."
+
+#~ msgid "  N, ESC RIGHT       Skip to next group."
+#~ msgstr "  N, ESC DROITE   Passer au forum suivant."
+
+#~ msgid "  ESC LEFT           Go to previous group."
+#~ msgstr "  ESC GAUCHE      Aller au forum précédent."
+
+#~ msgid "  !                  Go to the next article with a high score."
+#~ msgstr "  !               Aller à l'article suivant ayant un score élevé."
+
+# OTH à revoir
+#~ msgid "  =                  Go to the next article with the same subject."
+#~ msgstr "  =               Passer à l'article suivant de même sujet."
+
+#~ msgid "  L                  Go to the last read article and display it."
+#~ msgstr "  L               Retourner au dernier article lu."
+
+#~ msgid "  P                  Post a new article (no followup)."
+#~ msgstr "  P               Publier un nouvel article (PAS un suivi-à)."
+
+#~ msgid "  ESC P              Post or edit a postponed article."
+#~ msgstr "  ESC P           Publier ou éditer un article mis en attente."
+
+#~ msgid "  f                  Post a followup to the current article."
+#~ msgstr "  f               Publier une suite à l'article en cours."
+
+#~ msgid "      ESC 1 f        Include all headers in the followup."
+#~ msgstr "      ESC 1 f     Inclure tous les en-têtes dans le suivi."
+
+#~ msgid ""
+#~ "      ESC 2 f        Followup without modifying (e.g. quoting) the "
+#~ "article."
+#~ msgstr ""
+#~ "      ESC 2 f     Faire suivre l'article sans modifier (ex. inclure) "
+#~ "l'article.."
+
+#~ msgid "  r                  Reply to poster (via email)."
+#~ msgstr "  r               Répondre à l'auteur (par messagerie)."
+
+#~ msgid ""
+#~ "  F                  Forward the current article to someone (via email)."
+#~ msgstr "  F               Renvoyer l'article à quelqu'un (par messagerie)."
+
+#~ msgid ""
+#~ "      ESC 1 F        Forward the current article (including all headers)."
+#~ msgstr ""
+#~ "      ESC 1 F     Renvoyer l'article à quelqu'un (y compris tous les en-"
+#~ "têtes)."
+
+#~ msgid "  ESC Ctrl-S         Supersede article (you have to be the author)."
+#~ msgstr ""
+#~ "  ESC Ctrl-S      Remplacer l'article (vous devez en être l'auteur)."
+
+#~ msgid "  ESC Ctrl-C         Cancel article (you have to be the author)."
+#~ msgstr "  ESC Ctrl-C      Annuler l'article (vous devez en être l'auteur)."
+
+#~ msgid ""
+#~ "  o                  Save article, tagged articles or thread to file."
+#~ msgstr ""
+#~ "  o               Sauvegarder l'article, les articles marqués, ou "
+#~ "l'enfilade."
+
+#~ msgid "  |                  Pipe article to an external program."
+#~ msgstr "  |               Envoyer (tube) l'article à une commande externe."
+
+#~ msgid "  y                  Print article (as displayed)."
+#~ msgstr "  y               Imprimer l'article (tel qu'à l'affichage)."
+
+#~ msgid ""
+#~ "      ESC 1 y        Print article (unwrapped and including hidden lines)."
+#~ msgstr ""
+#~ "      ESC 1 y     Imprimer article (sans pliage et avec les lignes "
+#~ "cachées)."
+
+#~ msgid "  :                  Decode article, tagged articles or thread."
+#~ msgstr ""
+#~ "  :               Décoder l'article, les articles marqués, ou l'enfilade."
+
+#~ msgid "  Ctrl-Z             Suspend slrn."
+#~ msgstr "  Ctrl-Z          Suspendre slrn."
+
+#~ msgid "  q                  Return to group display."
+#~ msgstr "  q               Retourner à la liste de forums."
+
+#~ msgid "  Q                  Quit slrn immediately."
+#~ msgstr "  Q               Quitter slrn immédiatement."
+
+#~ msgid "Moving in the article pager:"
+#~ msgstr "Déplacements dans la fenêtre des articles :"
+
+#~ msgid "  ESC DOWN           Scroll article down one line."
+#~ msgstr "  ESC BAS         Faire défiler l'article d'une ligne vers le bas"
+
+#~ msgid "  ESC UP             Scroll article up one line."
+#~ msgstr "  ESC HAUT        Faire défiler l'article d'une ligne vers le haut"
+
+#~ msgid ""
+#~ "  SPACE              Scroll article down one page (or select next, if at "
+#~ "end)."
+#~ msgstr ""
+#~ "  ESPACE          Faire défiler l'article d'une page vers le bas (ou "
+#~ "suivant si à la fin)."
+
+#~ msgid "  DELETE, b          Scroll article up one page."
+#~ msgstr "  DEL, b          Remonter d'une page dans l'article."
+
+#~ msgid "  >                  Move to end of the article."
+#~ msgstr "  >               Aller à la fin de l'article."
+
+#~ msgid "  <                  Move to beginning of the article."
+#~ msgstr "  <               Aller au début de l'article."
+
+#~ msgid "  LEFT               Pan article to the left."
+#~ msgstr "  GAUCHE          Décaler l'article vers la gauche."
+
+#~ msgid "  RIGHT              Pan article to the right."
+#~ msgstr "  DROITE          Décaler l'article vers la droite."
+
+#~ msgid "  /                  Search forward in the article."
+#~ msgstr "  /               Rechercher vers l'avant dans l'article."
+
+#~ msgid "  TAB                Skip beyond quoted text."
+#~ msgstr "  TAB             Passer au-delà du texte cité."
+
+#~ msgid "  g                  Skip to next digest."
+#~ msgstr "  g               Passer à l'article résumé suivant."
+
+#~ msgid "Moving in the header display:"
+#~ msgstr "Déplacements dans la liste des en-têtes :"
+
+#~ msgid "  DOWN, Ctrl-N       Move to the next article."
+#~ msgstr "  BAS, Ctrl-N     Aller à l'article suivant."
+
+#~ msgid "  UP, Ctrl-P         Move to the previous article."
+#~ msgstr "  HAUT, Ctrl-P    Aller à l'article précédent."
+
+#~ msgid "  Ctrl-D             Scroll down one page."
+#~ msgstr "  Ctrl-D          Défiler d'une page vers le bas."
+
+#~ msgid "  Ctrl-U             Scroll up one page."
+#~ msgstr "  Ctrl-U          Défiler d'une page vers le haut."
+
+#~ msgid "  ESC >              Go to the last article in group."
+#~ msgstr "  ESC >           Aller au dernier article du forum."
+
+#~ msgid "  ESC <              Go to the first article in group."
+#~ msgstr "  ESC <           Aller au premier article du forum."
+
+#~ msgid "  j                  Jump to article (by server number)."
+#~ msgstr "  j               Sauter à l'article (par numéro du serveur)."
+
+#~ msgid "  a                  Author search forward."
+#~ msgstr "  a               Rechercher par auteur vers l'avant."
+
+#~ msgid "  A                  Author search backward."
+#~ msgstr "  A               Rechercher par auteur en arrière."
+
+#~ msgid "  s                  Subject search forward."
+#~ msgstr "  s               Rechercher par sujet vers l'avant."
+
+#~ msgid "  S                  Subject search backward."
+#~ msgstr "  S               Rechercher par sujet en arrière."
+
+#~ msgid "Marking as read/unread:"
+#~ msgstr "Marquer comme lu/non lu"
+
+#~ msgid "  d                  Mark article or collapsed thread as read."
+#~ msgstr ""
+#~ "  d               Marquer l'article ou l'enfilade repliée comme lu. "
+
+#~ msgid "  u                  Mark article or collapsed thread as unread."
+#~ msgstr ""
+#~ "  u               Marquer l'article ou l'enfilade repliée comme non-lu."
+
+#~ msgid "  ESC d              Mark entire (sub-)thread as read."
+#~ msgstr "  ESC d           Marquer la (sous-)enfilade comme non lue."
+
+#~ msgid "  c                  Catchup - mark all articles as read."
+#~ msgstr "  c               Marquer tous les articles comme lus."
+
+#~ msgid ""
+#~ "  C                  Mark all articles up to the current position as read."
+#~ msgstr ""
+#~ "  C               Marquer les articles jusqu'à la position courante comme "
+#~ "lus."
+
+#~ msgid "  ESC u              Un-Catchup - mark all articles as unread."
+#~ msgstr "  ESC u           Marquer tous les articles comme non lus."
+
+#~ msgid ""
+#~ "  ESC U              Mark all articles up to the current position as "
+#~ "unread."
+#~ msgstr ""
+#~ "  ESC U           Marquer les articles jusqu'à la position courante comme "
+#~ "non-lus."
+
+#~ msgid ""
+#~ "  x                  Remove all non-tagged read articles from the list."
+#~ msgstr ""
+#~ "  x               Enlever tous les articles lus non-marqués de la liste."
+
+#~ msgid "Article pager commands:"
+#~ msgstr "Commandes dans la fenêtre d'article :"
+
+#~ msgid "  t                  Show full headers (on/off)."
+#~ msgstr "  t               Basculer l'affichage des en-têtes complets."
+
+#~ msgid "  ESC r              Decrypt ROT-13 (on/off)."
+#~ msgstr "  ESC r           Basculer le déchiffrage ROT-13."
+
+#~ msgid "  T                  Display quoted lines (on/off)."
+#~ msgstr "  T               Basculer l'affichage ou non des lignes citées."
+
+#~ msgid "  \\                  Show signature (on/off)."
+#~ msgstr "  \\               Basculer l'affichage de la signature."
+
+#~ msgid "  W                  Wrap long lines (on/off)."
+#~ msgstr "  W               Basculer le pliage des lignes."
+
+#~ msgid "  ESC ?              Reveal spoilers (on/off)."
+#~ msgstr "  ESC ?           Basculer l'affichage ou non du texte caché."
+
+#~ msgid "  ]                  Show PGP signature (on/off)."
+#~ msgstr "  ]               Basculer l'affichage de la signature PGP."
+
+#~ msgid "  [                  Show verbatim marks (on/off)."
+#~ msgstr "  [               Basculer l'affichage des marques verbatim."
+
+#~ msgid "  Ctrl-^             Enlarge the article window."
+#~ msgstr "  Ctrl-^          Élargir la fenêtre de l'article."
+
+#~ msgid "  ^                  Shrink the article window."
+#~ msgstr "  ^               Réduire la fenêtre de l'article."
+
+#~ msgid "  z                  Maximize / Unmaximize the article window."
+#~ msgstr "  z               Maximiser / Minimiser la fenêtre de l'article."
+
+#~ msgid "  h                  Hide / Show the article window."
+#~ msgstr "  h               Basculer l'affichage de la fenêtre de l'article."
+
+#~ msgid "  U                  Search for URLs and follow them."
+#~ msgstr "  U               Chercher les URL et les suivre."
+
+#~ msgid "Header window commands:"
+#~ msgstr "Commandes dans la liste des en-têtes:"
+
+# OTH une traduc meilleure ?
+#~ msgid "  ESC t              Collapse / Uncollapse thread."
+#~ msgstr "  ESC t           Basculer le repli des enfilades."
+
+# OTH une traduc meilleure ?
+#~ msgid "      ESC 1 ESC t    Collapse / Uncollapse all threads."
+#~ msgstr "      ESC 1 ESC t Basculer le pliage de toutes les enfilades."
+
+#~ msgid "  ESC a              Toggle between header display formats."
+#~ msgstr "  ESC a           Basculer les formats d'affichage des en-têtes."
+
+#~ msgid "  ESC s              Select threading and sorting method."
+#~ msgstr "  ESC s           Choisir le mode de l'enfilade et du tri."
+
+#~ msgid "Miscellaneous actions:"
+#~ msgstr "Commandes diverses :"
+
+#, fuzzy
+#~ msgid "  K                  Create a scorefile entry interactively."
+#~ msgstr ""
+#~ "  K               Créer une entrée de score basée sur l'en-tête en cours."
+
+#~ msgid "      ESC 1 K        Edit scorefile."
+#~ msgstr "      ESC 1 K     Éditer le fichier de score."
+
+#, fuzzy
+#~ msgid ""
+#~ "  m                  (Un-)mark article body for download by slrnpull."
+#~ msgstr ""
+#~ "  d               Marquer l'article ou l'enfilade repliée comme lu. "
+
+#~ msgid ""
+#~ "  v                  Show which scorefile rules matched the current "
+#~ "article."
+#~ msgstr ""
+#~ "  v               Montrer à quelle règle de score correspond l'article "
+#~ "courant."
+
+#~ msgid "  * The following five commands query the server if necessary:"
+#~ msgstr ""
+#~ " * Les cinq commandes suivantes demandent au serveur, si nécessaire :"
+
+#~ msgid "  ESC l              Locate article by its Message-ID."
+#~ msgstr "  ESC l           Trouver un article par Message-ID."
+
+#~ msgid "  ESC Ctrl-P         Find all children of current article."
+#~ msgstr "  ESC Ctrl-P      Trouver tous les fils de l'article en cours."
+
+#~ msgid "  ESC p              Find parent article."
+#~ msgstr "  ESC p           Trouver le père de l'article."
+
+#~ msgid ""
+#~ "      ESC 1 ESC p    Reconstruct thread (slow when run on large threads)."
+#~ msgstr ""
+#~ "      ESC 1 ESC p Reconstruire l'enfilade (lent sur des grosses "
+#~ "enfilades)."
+
+#~ msgid ""
+#~ "      ESC 2 ESC p    Reconstruct thread (faster, may not find all "
+#~ "articles)."
+#~ msgstr ""
+#~ "      ESC 2 ESC p Reconstruire l'enfilade (plus rapide, risque de manquer "
+#~ "certains articles)."
+
+#~ msgid "  ;                  Set a mark at the current article."
+#~ msgstr "  ;               Mettre une marque sur l'article courant."
+
+#~ msgid "  ,                  Return to previously marked article."
+#~ msgstr "  ,               Retourner à l'article marqué précédent."
+
+#~ msgid ""
+#~ "  #                  Numerically tag article (for saving / decoding)."
+#~ msgstr "  #               Numéroter l'article pour le sauver / décoder."
+
+#~ msgid "  ESC #              Remove all numerical tags."
+#~ msgstr "  ESC #           Enlever la numérotation des articles."
+
+#~ msgid "  *                  Protect article from catchup commands."
+#~ msgstr ""
+#~ "  *               Protéger l'article de la commande catchup (rattraper)."
+
+#~ msgid "      ESC 1 *        Remove all protection marks."
+#~ msgstr "      ESC 1 *     Enlever toutes les marques de protection."
+
+#~ msgid "  .                  Repeat last key sequence."
+#~ msgstr "  . (Point)       Répéter la dernière séquence de touche."
+
+#~ msgid "  Ctrl-X ESC         Read line and interpret it as S-Lang."
+#~ msgstr "  Ctrl-X ESC      Lire la ligne et l'interpréter comme S-Lang."
+
+#~ msgid "  0                  Rate article with GroupLens."
+#~ msgstr "  0               Donner une note GroupLens à l'article."
+
+#~ msgid "  Ctrl-R, Ctrl-L     Redraw screen."
+#~ msgstr "  Ctrl-R, Ctrl-L  Redessiner l'écran."
+
+#~ msgid "  ?                  Display this help screen."
+#~ msgstr "  ?               Afficher cet écran d'aide."
+
+#~ msgid "Cursor movement:"
+#~ msgstr "Déplacements du curseur :"
+
+#~ msgid "  DOWN                    Go to the next group."
+#~ msgstr "  BAS                  Aller au forum suivant."
+
+#~ msgid "  UP                      Go to the previous group."
+#~ msgstr "  HAUT                 Aller au forum précédent."
+
+#~ msgid "  Ctrl-V, Ctrl-D          Scroll to the next page."
+#~ msgstr "  Ctrl-V, Ctrl-D       Défiler à la page suivante."
+
+#~ msgid "  ESC V, Ctrl-U           Scroll to the previous page."
+#~ msgstr "  ESC V, Ctrl-U        Défiler à la page précédente."
+
+#, fuzzy
+#~ msgid "  ESC >                   Go to the bottom of the list."
+#~ msgstr "  ESC <                Aller à la fin de la liste."
+
+#, fuzzy
+#~ msgid "  ESC <                   Go to the top of the list."
+#~ msgstr "  ESC >                Aller au début de la liste."
+
+#~ msgid "  /                       Group keyword search."
+#~ msgstr "  /                    Rechercher dans le forum par mot-clé."
+
+#~ msgid "  SPACE, RETURN           Enter the current newsgroup."
+#~ msgstr "  ESPACE, ENTRÉE       Choisir le forum en cours."
+
+#~ msgid "  * The following variations also download previously read articles:"
+#~ msgstr ""
+#~ "  * Les variantes suivantes permettent de voir des articles déjà lus :"
+
+#~ msgid "      ESC 1 SPACE         Enter group with article number query."
+#~ msgstr ""
+#~ "      ESC 1 ESPACE     Sélectionner un forum en demandant le nombre "
+#~ "d'articles."
+
+#~ msgid "      ESC 2 SPACE         Enter group, but do not apply score."
+#~ msgstr ""
+#~ "      ESC 2 ESPACE     Choisir le forum mais ne pas appliquer la notation."
+
+#~ msgid ""
+#~ "      ESC 3 SPACE         Enter group with query, but without scoring."
+#~ msgstr ""
+#~ "      ESC 3 ESPACE     Choisir le forum en recherche mais ne pas "
+#~ "appliquer la notation."
+
+#~ msgid "      ESC 4 SPACE         Enter the current newsgroup."
+#~ msgstr "      ESC 4 ESPACE     Choisir le forum en cours."
+
+#~ msgid "  P                       Post an article to the current newsgroup."
+#~ msgstr "  P                    Publier un article dans le forum en cours."
+
+#~ msgid "  ESC P                   Post or edit a postponed article."
+#~ msgstr "  ESC P                Publier ou éditer un article mis en attente."
+
+#~ msgid "  G                       Get new news from server."
+#~ msgstr "  G                    Récupère les dernières nouvelles."
+
+#~ msgid "  K                       Select scoring mode."
+#~ msgstr "  K                    Sélectionner le mode de notation."
+
+#~ msgid "  .                       Repeat last key sequence."
+#~ msgstr "  . (Point)            Répéter la dernière séquence de touche."
+
+#~ msgid "  Ctrl-X ESC              Read line and interpret it as S-Lang."
+#~ msgstr "  Ctrl-X ESC           Lire la ligne et l'interpréter comme S-Lang."
+
+#~ msgid "  Ctrl-Z                  Suspend slrn."
+#~ msgstr "  Ctrl-Z               Suspendre slrn."
+
+#~ msgid "  q                       Quit slrn."
+#~ msgstr "  q                    Quitter slrn."
+
+#~ msgid "Group management (affects newsrc file):"
+#~ msgstr "Administration de forums (affecte le fichier newsrc) :"
+
+#~ msgid "  c                       Catchup - Mark all articles as read."
+#~ msgstr ""
+#~ "  c                    Catchup (marquer TOUS les articles comme lus)."
+
+#~ msgid "  ESC u                   Un-Catchup - Mark all articles as unread."
+#~ msgstr ""
+#~ "  ESC u                Défaire tout lu - marquer tous les articles comme "
+#~ "non lus."
+
+#~ msgid "  a                       Add a new newsgroup."
+#~ msgstr ""
+#~ "  a                    Ajouter un nouveau forum (voir aussi l'aide sur "
+#~ "'L' !)"
+
+#~ msgid "  s                       Subscribe to the current newsgroup."
+#~ msgstr "  s                    S'abonner au forum en cours."
+
+# OTH Vérifier 'pattern'
+#~ msgid "      ESC 1 s             Subscribe to groups matching a pattern."
+#~ msgstr ""
+#~ "  ESC 1 s              S'abonner aux forums qui contiennent un motif."
+
+#~ msgid "  u                       Unsubscribe from the current newsgroup."
+#~ msgstr "  u                    Se désabonner du forum en cours."
+
+# OTH Vérifier 'pattern'
+#~ msgid ""
+#~ "      ESC 1 u             Unsubscribe from groups matching a pattern."
+#~ msgstr ""
+#~ "  ESC 1 u              Se désabonner des forums qui contiennent un motif."
+
+#~ msgid "  m                       Move newsgroup to a different location."
+#~ msgstr "  m                    Déplacer le forum à un autre endroit."
+
+#~ msgid "  Ctrl-X, Ctrl-T          Transpose position of groups."
+#~ msgstr "  Ctrl-X, Ctrl-T       Transposer la position des forums."
+
+#~ msgid "  X                       Force a save of the newsrc file."
+#~ msgstr "  X                    Forcer une sauvegarde du fichier newsrc."
+
+#~ msgid "Display:"
+#~ msgstr "Affichage :"
+
+#~ msgid "  ESC a                   Toggle between group display formats."
+#~ msgstr "  ESC-a                Basculer les formats d'affichage des forums."
+
+#~ msgid ""
+#~ "  l                       Toggle display of groups without unread "
+#~ "articles."
+#~ msgstr ""
+#~ "  l                    Basculer l'affichage des forums sans articles non "
+#~ "lus."
+
+#~ msgid "  L                       Toggle listing of unsubscribed groups."
+#~ msgstr ""
+#~ "  L                    Basculer l'affichage des forums non souscrits."
+
+#~ msgid "      ESC 1 L             Hide unsubscribed groups."
+#~ msgstr "      ESC 1 L              Cacher les forums non souscrits."
+
+#~ msgid "      ESC 2 L             Show unsubscribed groups."
+#~ msgstr "      ESC 2 L              Cacher les forums non souscrits."
+
+#~ msgid "  Ctrl-L, Ctrl-R          Redraw the screen."
+#~ msgstr "  Ctrl-L, Ctrl-R       Redessiner l'écran."
+
+#~ msgid "  ?                       Display this help screen."
+#~ msgstr "  ?                    Afficher cet écran d'aide."
+
+#~ msgid ""
+#~ "As a translation would not be legally binding, it remains untranslated."
+#~ msgstr ""
+#~ "Comme une traduction n'aurait pas de valeur légale, cela reste non-traduit"
+
+#~ msgid "Quit"
+#~ msgstr "Quit"
+
+#~ msgid "Refresh"
+#~ msgstr "Rafraîc"
+
+#~ msgid "Post"
+#~ msgstr "Post"
+
+#~ msgid "Help"
+#~ msgstr "Aide"
+
+#~ msgid "Catchup"
+#~ msgstr "Vidange"
+
+#~ msgid "NextGrp"
+#~ msgstr "GrpSuiv"
+
+#~ msgid "NextArt"
+#~ msgstr "ArtSuiv"
+
+#~ msgid "Reply"
+#~ msgstr "Rép."
+
+#~ msgid "Followup"
+#~ msgstr "Suivi   "
+
+#~ msgid "No sorting"
+#~ msgstr "Pas de classement."
+
+#~ msgid "Thread Headers"
+#~ msgstr "Classement des en-têtes."
+
+#~ msgid "Sort by subject"
+#~ msgstr "Tri par sujet."
+
+#~ msgid "Thread, then sort by subject."
+#~ msgstr "Classement des en-têtes, puis tri par sujet."
+
+#~ msgid "Sort by scores."
+#~ msgstr "Tri par notation."
+
+#~ msgid "Thread, then sort by scores."
+#~ msgstr "Classement des en-têtes, puis tri par notation."
+
+#~ msgid "Sort by score and subject"
+#~ msgstr "Tri par notation puis sujet."
+
+#~ msgid "Thread, then sort by score and subject"
+#~ msgstr "Classement des en-têtes, puis tri par notation et sujet."
+
+#~ msgid "Sort by date (most recent first)"
+#~ msgstr "Tri par date (plus récent en premier)."
+
+#~ msgid "Thread, then sort by date (most recent first)"
+#~ msgstr "Enfilade, puis classer par date (plus récent en premier)."
+
+#~ msgid "Sort by date (most recent last)"
+#~ msgstr "Tri par date (plus récent en dernier)."
+
+#~ msgid "Thread, then Sort by date (most recent last)"
+#~ msgstr "Enfilade, puis tri par date (plus récent en dernier)."
+
+#~ msgid "Custom sorting (see manual)"
+#~ msgstr "Ordre personnalisé (cf manuel)"
+
+#~ msgid "Sorting Method"
+#~ msgstr "Méthode de tri"
 
 #~ msgid "trying %s\n"
 #~ msgstr "essai de %s\n"

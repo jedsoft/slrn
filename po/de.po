@@ -3,9 +3,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.9.7.4pl2\n"
+"Project-Id-Version: 0.9.7.4pl3\n"
 "POT-Creation-Date: 2003-07-31 19:19+0200\n"
-"PO-Revision-Date: 2003-02-28 00:45+0100\n"
+"PO-Revision-Date: 2003-08-08 23:45+0100\n"
 "Last-Translator: Jens Wahnes <jewa@gmx.net>\n"
 "Language-Team: German - Jens Wahnes <jewa@gmx.net>\n"
 "MIME-Version: 1.0\n"
@@ -324,9 +324,9 @@ msgid "Unable to create directory. (errno = %d)"
 msgstr "Das Verzeichnis konnte nicht angelegt werden. (Fehlercode: %d)"
 
 #: src/art.c:4095
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: %s is a regular file."
-msgstr "%s ist keine normale Datei"
+msgstr "Achtung: %s ist keine normale Datei"
 
 #: src/art.c:4149
 msgid "Temporary file (^G aborts): "
@@ -543,7 +543,7 @@ msgstr "Geben Sie die Message-ID ein: "
 
 #: src/art.c:6285
 msgid "Warning: Could not save list of requested bodies."
-msgstr ""
+msgstr "Achtung: Die Liste der angeforderten Bodies konnte nicht gespeichert werden."
 
 #: src/art.c:6554
 msgid "Are you sure that you want to cancel this article"
@@ -1702,11 +1702,8 @@ msgid "      ESC 1 K        Edit scorefile."
 msgstr "   ESC 1 K        Bewertungsdatei (scorefile) im Editor bearbeiten"
 
 #: src/help.c:144
-#, fuzzy
 msgid "  m                  (Un-)mark article body for download by slrnpull."
-msgstr ""
-"  d               Artikel (oder zusammengeklappten Thread) als gelesen "
-"markieren"
+msgstr "  m               Artikel zum vollständigen Download markieren oder Markierung aufheben"
 
 #: src/help.c:146
 msgid ""
@@ -1817,14 +1814,12 @@ msgid "  ESC V, Ctrl-U           Scroll to the previous page."
 msgstr "  ESC V, Strg-U   Zur vorherigen Seite blättern (scrollen)"
 
 #: src/help.c:179
-#, fuzzy
 msgid "  ESC >                   Go to the bottom of the list."
-msgstr "  ESC <           Zum Ende der Liste springen"
+msgstr "  ESC >           Zum Ende der Liste springen"
 
 #: src/help.c:180
-#, fuzzy
 msgid "  ESC <                   Go to the top of the list."
-msgstr "  ESC >           Zum Anfang der Liste springen"
+msgstr "  ESC <           Zum Anfang der Liste springen"
 
 #: src/help.c:181
 msgid "  /                       Group keyword search."
@@ -2497,10 +2492,8 @@ msgid "Failed to initialize server"
 msgstr "Es konnte keine Verbindung zum Server hergestellt werden"
 
 #: src/nntplib.c:567
-#, fuzzy
 msgid "You should set the NNTPSERVER environment variable to your server name."
-msgstr ""
-"Sie müssen den Namen des Servers in der Umgebungsvariable NNTPSERVER angeben."
+msgstr "Sie sollten den Namen des Servers in der Umgebungsvariable NNTPSERVER angeben."
 
 #: src/nntplib.c:569
 msgid "Example: $ define/job NNTPSERVER my.news.server"
@@ -2520,7 +2513,7 @@ msgstr "Beispiel (sh): NNTPSERVER='mein.news.server' && export NNTPSERVER"
 
 #: src/nntplib.c:578
 msgid "For now, I'm going to try \"localhost\" as the default..."
-msgstr ""
+msgstr "Die Voreinstellung \"localhost\" wird verwendet ..."
 
 #: src/nntplib.c:1140
 msgid "Help text on way"
@@ -3489,9 +3482,9 @@ msgid "%s: line %u: expecting positive integer in third field."
 msgstr "%s: Zeile %u: Im dritten Feld wurde eine positive Ganzzahl erwartet."
 
 #: src/slrnpull.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "%s: line %u: expecting 0 or 1 in fourth field."
-msgstr "%s: Zeile %u: Im dritten Feld wurde eine positive Ganzzahl erwartet."
+msgstr "%s: Zeile %u: Im vierten Feld wurde 0 oder 1 erwartet."
 
 #: src/slrnpull.c:719
 #, c-format
@@ -3541,19 +3534,17 @@ msgid "Server failed XHDR command: %s"
 msgstr "Der Server konnte XHDR nicht ausführen: %s"
 
 #: src/slrnpull.c:992
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving %s %d-%d."
-msgstr "%s: Artikel %d-%d werden abgefragt."
+msgstr "%s: %s %d-%d werden abgefragt."
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "headers"
-msgstr "Threaden"
+msgstr "Header"
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "articles"
-msgstr "Springe zu Artikel Nr.: "
+msgstr "Artikel"
 
 #: src/slrnpull.c:1017
 #, c-format
@@ -3585,9 +3576,9 @@ msgid "Unable to open overview file %s.\n"
 msgstr "Die Overview-Datei %s konnte nicht geöffnet werden.\n"
 
 #: src/slrnpull.c:1466
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving requested article bodies."
-msgstr "%s: Artikel %d-%d werden abgefragt."
+msgstr "%s: Angeforderte Artikel werden abgefragt."
 
 #: src/slrnpull.c:1574
 #, c-format
@@ -3718,7 +3709,7 @@ msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "Insgesamt %lu Byte empfangen und %lu Byte verschickt in %ld Sekunden."
 
 #: src/slrnpull.c:2096
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s usage: %s [options]\n"
 " Options:\n"
@@ -3748,11 +3739,12 @@ msgstr ""
 "  --kill-log DATEI     Liste der aussortierten Artikel in DATEI schreiben.\n"
 "  --kill-score SCORE   Bewertungsgrenze, ab der Artikel aussortiert werden.\n"
 "  --logfile DATEI      DATEI als Log-Datei verwenden.\n"
+"  --marked-bodies      Nur zum Download markierte Nachrichten-Bodies\n"
+"                       herunterladen\n"
 "  --new-groups         Liste neuer Gruppen vom Server holen.\n"
 "  --no-post            Keine Artikel posten.\n"
 "  --post-only          Nur Artikel posten, aber keine holen.\n"
-"  --rebuild            Wie --expire; zusätzlich Overview-Dateien neu "
-"anlegen.\n"
+"  --rebuild            Wie --expire; zusätzlich Overview-Dateien neu anlegen.\n"
 "  --version            Versionsnummer ausgeben.\n"
 
 #: src/slrnpull.c:2122
@@ -3905,31 +3897,29 @@ msgstr ""
 "Sie haben keinen Usernamen angegeben. Überprüfen Sie die authinfo-Datei."
 
 #: src/slrnpull.c:3211
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read headers file for group %s.\n"
-msgstr "Fehler beim Lesen des Headers %d in %s."
+msgstr "Fehler beim Lesen der Header-Datei der Gruppe %s.\n"
 
 #: src/slrnpull.c:3220
-#, fuzzy, c-format
+#, c-format
 msgid "File %s exists, but could not be read."
-msgstr ""
-"Der eingestellte Editor ist zwar vorhanden, konnte aber nicht aufgerufen "
-"werden."
+msgstr "Die Datei %s ist zwar vorhanden, kann aber nicht gelesen werden."
 
 #: src/slrnpull.c:3252 src/slrnpull.c:3279
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write headers file for group %s.\n"
-msgstr "Die Debug-Datei %s konnte nicht angelegt werden\n"
+msgstr "Die Header-Datei der Gruppe %s konnte nicht geschrieben werden\n"
 
 #: src/slrnpull.c:3287
-#, fuzzy, c-format
+#, c-format
 msgid "Error while writing headers file for group %s.\n"
-msgstr "Fehler beim Schließen der Overview-Datei für %s."
+msgstr "Fehler beim Schreiben der Header-Datei der Gruppe %s.\n"
 
 #: src/sltcp.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to resolve %s\n"
-msgstr "%s konnte nicht in %s umbenannt werden."
+msgstr "Der Name %s konnte nicht aufgelöst werden.\n"
 
 #: src/sltcp.c:272 src/sltcp.c:375
 msgid "Unable to make connection. Giving up.\n"

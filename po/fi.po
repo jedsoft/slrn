@@ -2,13 +2,15 @@
 # Copyright © 2002-2003 Lauri Nurmi <lanurmi@iki.fi>.
 # Lauri Nurmi <lanurmi@iki.fi>, 2002-2003.
 #
-# thanks to Jukka Aho <znark at iki.fi> for many suggestions
+# Thanks to Jukka Aho <znark at iki.fi> for many suggestions.
 #
+# Osaako kukaan kertoa, onko pisteytys vai pisteitys oikea muoto? 
+# Vai molemmat?
 msgid ""
 msgstr ""
-"Project-Id-Version: slrn 0.9.8.0\n"
+"Project-Id-Version: slrn\n"
 "POT-Creation-Date: 2003-07-31 19:19+0200\n"
-"PO-Revision-Date: 2003-02-16 12:22+0200\n"
+"PO-Revision-Date: 2003-08-08 20:48+0300\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -322,9 +324,9 @@ msgid "Unable to create directory. (errno = %d)"
 msgstr "Hakemistoa ei voida luoda. (errno = %d)"
 
 #: src/art.c:4095
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: %s is a regular file."
-msgstr "%s: ei ole tavallinen tiedosto"
+msgstr "Varoitus: %s on tavallinen tiedosto"
 
 #: src/art.c:4149
 msgid "Temporary file (^G aborts): "
@@ -539,7 +541,7 @@ msgstr "Syˆt‰ viesti-ID: "
 
 #: src/art.c:6285
 msgid "Warning: Could not save list of requested bodies."
-msgstr ""
+msgstr "Varoitus: Pyydettyjen runkojen listaa ei voitu tallentaa."
 
 #: src/art.c:6554
 msgid "Are you sure that you want to cancel this article"
@@ -1298,7 +1300,7 @@ msgstr "   (englanniksi) ryhm‰‰n news.software.readers"
 #: src/help.c:47
 msgid ""
 " Please email bug reports, suggestions or comments to the current maintainer,"
-msgstr " Ohjelmistovirheraportteja, ehdotuksia tai kommentteja voi l‰hett‰‰ "
+msgstr " Ohjelmistovikaraportteja, ehdotuksia tai kommentteja voi l‰hett‰‰ "
 
 #: src/help.c:48
 msgid "   Thomas Schultz <tststs@gmx.de>"
@@ -1667,9 +1669,9 @@ msgid "      ESC 1 K        Edit scorefile."
 msgstr "      ESC 1 K        Muokkaa pisteytystiedostoa."
 
 #: src/help.c:144
-#, fuzzy
 msgid "  m                  (Un-)mark article body for download by slrnpull."
-msgstr "  d                  Merkitse artikkeli tai kutistettu s‰ie luetuksi."
+msgstr ""
+"  d                  Merkitse artikkelin runko ladattavaksi slrnpull:illa."
 
 #: src/help.c:146
 msgid ""
@@ -1772,14 +1774,12 @@ msgid "  ESC V, Ctrl-U           Scroll to the previous page."
 msgstr "  ESC V, Ctrl-U           Vierit‰ edelliselle sivulle."
 
 #: src/help.c:179
-#, fuzzy
 msgid "  ESC >                   Go to the bottom of the list."
-msgstr "  ESC <                   Siirry listan loppuun."
+msgstr "  ESC >                   Siirry listan loppuun."
 
 #: src/help.c:180
-#, fuzzy
 msgid "  ESC <                   Go to the top of the list."
-msgstr "  ESC >                   Siirry listan alkuun."
+msgstr "  ESC <                   Siirry listan alkuun."
 
 #: src/help.c:181
 msgid "  /                       Group keyword search."
@@ -2294,7 +2294,7 @@ msgstr "Keskeytys!"
 
 #: src/misc.c:2215
 msgid "Integer expected."
-msgstr "Odotetaan lˆytyv‰n kokonaisluku."
+msgstr "Odotettiin kokonaislukua."
 
 #: src/misc.c:2317
 msgid "Invalid response! Try again."
@@ -2436,7 +2436,6 @@ msgid "Failed to initialize server"
 msgstr "Yhdist‰minen palvelimeen ep‰onnistui"
 
 #: src/nntplib.c:567
-#, fuzzy
 msgid "You should set the NNTPSERVER environment variable to your server name."
 msgstr "Palvelimen nimi tulee asettaa NNTPSERVER-ymp‰ristˆmuuttujaan."
 
@@ -2458,7 +2457,7 @@ msgstr "Esimerkki (sh) : NNTPSERVER='minun.palvelimeni' && export NNTPSERVER"
 
 #: src/nntplib.c:578
 msgid "For now, I'm going to try \"localhost\" as the default..."
-msgstr ""
+msgstr "K‰ytet‰‰n oletuksena is‰nt‰‰‰ \"localhost\"..."
 
 #: src/nntplib.c:1140
 msgid "Help text on way"
@@ -3399,9 +3398,9 @@ msgid "%s: line %u: expecting positive integer in third field."
 msgstr "%s: rivi %u: kolmanteen kentt‰‰n odotetaan positiivista kokonaislukua"
 
 #: src/slrnpull.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "%s: line %u: expecting 0 or 1 in fourth field."
-msgstr "%s: rivi %u: kolmanteen kentt‰‰n odotetaan positiivista kokonaislukua"
+msgstr "%s: rivi %u: nelj‰nteen kentt‰‰n odotetaan arvoa 0 tai 1."
 
 #: src/slrnpull.c:719
 #, c-format
@@ -3450,19 +3449,17 @@ msgid "Server failed XHDR command: %s"
 msgstr "Komento XHDR ep‰onnistui palvelimella: %s"
 
 #: src/slrnpull.c:992
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving %s %d-%d."
-msgstr "%s: Haetaan artikkelit %d-%d."
+msgstr "%s: Haetaan %s %d-%d."
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "headers"
-msgstr "S‰ikeist‰ otsakkeet"
+msgstr "otsakkeet"
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "articles"
-msgstr "Siirry artikkeliin: "
+msgstr "artikkelit"
 
 #: src/slrnpull.c:1017
 #, c-format
@@ -3494,9 +3491,9 @@ msgid "Unable to open overview file %s.\n"
 msgstr "Yhteenvetotiedostoa %s ei voida avata.\n"
 
 #: src/slrnpull.c:1466
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving requested article bodies."
-msgstr "%s: Haetaan artikkelit %d-%d."
+msgstr "%s: Haetaan pyydettyjen artikkelien rungot."
 
 #: src/slrnpull.c:1574
 #, c-format
@@ -3628,7 +3625,7 @@ msgstr ""
 "Yhteens‰ %lu tavua vastaanotettu ja %lu tavua l‰hetetty %ld sekunnissa."
 
 #: src/slrnpull.c:2096
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s usage: %s [options]\n"
 " Options:\n"
@@ -3659,6 +3656,8 @@ msgstr ""
 "  --kill-score PIST    Tapa artikkelit, joiden pisteytys on pienempi kuin "
 "PIST.\n"
 "  --logfile TIEDOSTO   K‰yt‰ TIEDOSTOa lokitiedostona.\n"
+"  --marked-bodies      Hae vain ladattaviksi merkityt artikkelirungot.\n"
+"  --new-groups         Hae lista uusista ryhmist‰.\n"
 "  --no-post            ƒl‰ l‰het‰ artikkeleita.\n"
 "  --post-only          L‰het‰ artikkelit, mutta ‰l‰ hae uusia.\n"
 "  --rebuild            Kuten --expire; luo myˆs yhteenvetotiedostot "
@@ -3814,29 +3813,29 @@ msgid "Empty user name.  Please check syntax of the authinfo file."
 msgstr "Tyhj‰ k‰ytt‰j‰nimi. Tarkista tiedoston authinfo syntaksi."
 
 #: src/slrnpull.c:3211
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read headers file for group %s.\n"
-msgstr "Otsaketta %d tiedostossa %s ei voida lukea."
+msgstr "Ryhm‰n %s otsaketiedostoa ei voida lukea.\n"
 
 #: src/slrnpull.c:3220
-#, fuzzy, c-format
+#, c-format
 msgid "File %s exists, but could not be read."
-msgstr "Editori lˆytyi, mutta sit‰ ei voitu k‰ynnist‰‰."
+msgstr "Tiedosto %s on olemassa, mutta sit‰ ei voida lukea."
 
 #: src/slrnpull.c:3252 src/slrnpull.c:3279
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write headers file for group %s.\n"
-msgstr "Vianetsint‰tiedostoa %s ei voida luoda\n"
+msgstr "Ryhm‰n %s otsaketiedostoa ei voida kirjoittaa.\n"
 
 #: src/slrnpull.c:3287
-#, fuzzy, c-format
+#, c-format
 msgid "Error while writing headers file for group %s.\n"
-msgstr "Virhe suljettaessa ryhm‰n %s yhteenvetotiedostoa."
+msgstr "Virhe kirjoitettaessa ryhm‰n %s otsaketiedostoa.\n"
 
 #: src/sltcp.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to resolve %s\n"
-msgstr "Uudelleennime‰minen %s -> %s ep‰onnistui."
+msgstr "Is‰nt‰nimen %s selvitys ep‰onnistui\n"
 
 #: src/sltcp.c:272 src/sltcp.c:375
 msgid "Unable to make connection. Giving up.\n"
