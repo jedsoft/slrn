@@ -1,7 +1,7 @@
   Slrn Intrinsic Function Reference Manual
   John E. Davis, davis@space.mit.edu
   Thomas Schultz, tststs@gmx.de
-  Sat Jan 11 15:38:53 2003
+  Thu Jul 31 19:09:09 2003
   ____________________________________________________________
 
   Table of Contents
@@ -59,15 +59,16 @@
      2.13 is_article_visible
      2.14 is_article_window_zoomed
      2.15 pipe_article
-     2.16 re_bsearch_article
-     2.17 re_search_article
-     2.18 re_search_article_first
-     2.19 replace_article
-     2.20 request_body
-     2.21 save_current_article
-     2.22 search_article
-     2.23 search_article_first
-     2.24 set_article_window_size
+     2.16 raw_article_as_string
+     2.17 re_bsearch_article
+     2.18 re_search_article
+     2.19 re_search_article_first
+     2.20 replace_article
+     2.21 request_body
+     2.22 save_current_article
+     2.23 search_article
+     2.24 search_article_first
+     2.25 set_article_window_size
 
   3. Group Functions
      3.1 current_newsgroup
@@ -833,7 +834,7 @@
         the one associated with the currently selected header.
 
       See Also
-        replace_article, is_article_visible
+        raw_article_as_string, replace_article, is_article_visible
 
 
 
@@ -1086,7 +1087,26 @@
 
 
 
-  2.16.  re_bsearch_article
+  2.16.  raw_article_as_string
+
+
+      Usage
+        String_Type raw_article_as_string ()
+
+      Description
+        This function works exactly like article_as_string, except that
+        it returns the article as it was sent by the server, not as it
+        has been prepared for display (e.g. before MIME decoding and
+        character recoding).
+
+      Notes
+        The raw article is no longer available after you called
+        replace_article. In this case, the output is the same as the one
+        of article_as_string.
+
+
+
+  2.17.  re_bsearch_article
 
 
       Usage
@@ -1098,7 +1118,10 @@
 
       See Also
         re_search_article
-  2.17.  re_search_article
+
+
+
+  2.18.  re_search_article
 
 
       Usage
@@ -1119,7 +1142,7 @@
 
 
 
-  2.18.  re_search_article_first
+  2.19.  re_search_article_first
 
 
       Usage
@@ -1135,11 +1158,12 @@
 
 
 
-  2.19.  replace_article
+  2.20.  replace_article
 
 
       Usage
         replace_article (String_Type string)
+
 
       Description
         The replace_article may be used to replace the text of the
@@ -1159,8 +1183,7 @@
 
 
 
-  2.20.  request_body
-
+  2.21.  request_body
 
 
       Usage
@@ -1176,7 +1199,7 @@
 
 
 
-  2.21.  save_current_article
+  2.22.  save_current_article
 
 
       Usage
@@ -1197,7 +1220,7 @@
 
 
 
-  2.22.  search_article
+  2.23.  search_article
 
 
       Usage
@@ -1218,7 +1241,7 @@
 
 
 
-  2.23.  search_article_first
+  2.24.  search_article_first
 
 
       Usage
@@ -1236,7 +1259,7 @@
 
 
 
-  2.24.  set_article_window_size
+  2.25.  set_article_window_size
 
 
       Usage
@@ -1291,6 +1314,7 @@
 
       See Also
         get_header_flags, set_group_flags, current_newsgroup
+
 
 
   3.3.  get_group_order
@@ -1358,6 +1382,8 @@
 
       See Also
         select_group, current_newsgroup, is_group_mode
+
+
 
   3.7.  group_up_n
 
@@ -1463,7 +1489,6 @@
 
       Usage
         Void set_group_order (Array_Type names)
-
       Description
         When names is a one-dimensional array of strings (group names),
         slrn will sort the group list into the implied order.  Strings
@@ -1486,6 +1511,7 @@
 
      An example for a simple group sort based on this function can be
      found in the file gsort.sl that comes with slrn.
+
       Notes
         This function is only available if slrn was compiled with S-Lang
         1.4.x.
@@ -1527,9 +1553,6 @@
 
       See Also
         get_yes_no_cancel, set_color, get_select_box_response
-
-
-
   4.2.  get_select_box_response
 
 
@@ -1549,6 +1572,7 @@
                                    "one", "two", "three", "four",
                                    4);
                  message (sprintf ("You chose %d", rsp));
+
 
 
       See Also
@@ -1616,6 +1640,8 @@
       See Also
         select_list_box
 
+
+
   4.6.  read_mini
 
 
@@ -1655,6 +1681,7 @@
 
       Usage
         Integer read_mini_integer (String p, Integer dflt)
+
 
       Description
         This function will prompt the user for an integer value using
@@ -1719,7 +1746,6 @@
 
       See Also
         get_select_box_response, get_response
-
 
 
   4.12.  set_input_chars
@@ -1851,7 +1877,6 @@
       Description
         Read a character from the terminal and returns its value.  Note:
         Function and arrow keys usually return more than one character.
-
       See Also
         ungetkey, input_pending, read_mini
 
@@ -1917,8 +1942,6 @@
 
       See Also
         definekey
-
-
 
   5.9.  ungetkey
 
@@ -2050,8 +2073,6 @@
       See Also
         _slrn_version_string
 
-
-
   7.2.  _.ds h slrn_version_string Miscellaneous Functions
 
 
@@ -2065,6 +2086,7 @@
 
       See Also
         _slrn_version
+
 
 
   7.3.  datestring_to_unixtime
@@ -2117,7 +2139,6 @@
         Due to a limitation in S-Lang, this function only works on Unix.
 
 
-
   7.6.  get_variable_value
 
 
@@ -2132,6 +2153,8 @@
 
       See Also
         set_integer_variable, set_string_variable
+
+
 
   7.7.  quit
 
@@ -2181,9 +2204,6 @@
 
       See Also
         unregister_hook
-
-
-
   7.9.  reload_scorefile
 
 
@@ -2198,6 +2218,9 @@
 
       Notes
         Outside article mode, apply_now has no effect.
+
+
+
   7.10.  server_name
 
 
@@ -2247,7 +2270,6 @@
              ATTR_ULINE     underlined text
 
 
-
   7.13.  set_ignore_quotes
 
 
@@ -2259,7 +2281,6 @@
         ignore_quotes configuration command. regexps has to be a (one-
         dimensional) array of 1-5 strings that are interpreted as
         regular expressions to detect quoted lines.
-
 
       Example
         set_ignore_quotes (["^>", "^|"]);
@@ -2453,9 +2474,8 @@
         to a hook using register_hook. Its return values are:
 
 
-
-        0: Hook does not exist or function is not assigned to it.
-        1: Function successfully unregistered.
+             0: Hook does not exist or function is not assigned to it.
+             1: Function successfully unregistered.
 
 
 
@@ -2510,24 +2530,23 @@
         comp.*:
 
 
+             define make_group_specific_settings ()
+             {
+               variable sorting_method = 7;
+               variable signature_file = ".signature";
 
-        define make_group_specific_settings ()
-        {
-          variable sorting_method = 7;
-          variable signature_file = ".signature";
+               if (is_substr (current_newsgroup (), "binaries")
+                   or is_substr (current_newsgroup (), "pictures"))
+                sorting_method = 3;
 
-          if (is_substr (current_newsgroup (), "binaries")
-              or is_substr (current_newsgroup (), "pictures"))
-           sorting_method = 3;
+               if (0 == strncmp (current_newsgroup (), "comp.", 5))
+                 signature_file = ".nerd-signature";
 
-          if (0 == strncmp (current_newsgroup (), "comp.", 5))
-            signature_file = ".nerd-signature";
-
-          set_integer_variable ("sorting_method", sorting_method);
-          set_string_variable ("signature", signature_file);
-        }
-        () = register_hook ("article_mode_hook",
-                            "make_group_specific_settings");
+               set_integer_variable ("sorting_method", sorting_method);
+               set_string_variable ("signature", signature_file);
+             }
+             () = register_hook ("article_mode_hook",
+                                 "make_group_specific_settings");
 
 
 
@@ -2572,6 +2591,7 @@
       Notes
         As this hook returns a value, you cannot bind multiple macros to
         it.
+
 
 
   8.5.  followup_hook
@@ -2691,6 +2711,7 @@
 
 
   8.12.  post_file_hook
+
 
 
       Usage
@@ -2819,6 +2840,7 @@
 
       Usage
         Integer subject_compare_hook (String subject1, String subject2)
+
 
       Description
         slrn puts postings with identical subjects into the same thread.

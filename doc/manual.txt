@@ -1,7 +1,7 @@
   The slrn reference manual
   Matthias Friedrich <matt@mafr.de>
   Thomas Schultz <tststs@gmx.de>
-  version 0.9.7.4pl2
+  version 0.9.7.4pl3
 
   Using and customizing the slrn newsreader
   ______________________________________________________________________
@@ -290,35 +290,36 @@
         7.2.52 redraw
         7.2.53 repeat_last_key
         7.2.54 reply
-        7.2.55 save
-        7.2.56 show_spoilers
-        7.2.57 shrink_article_window
-        7.2.58 skip_quotes
-        7.2.59 skip_to_next_group
-        7.2.60 skip_to_previous_group
-        7.2.61 subject_search_backward
-        7.2.62 subject_search_forward
-        7.2.63 supersede
-        7.2.64 suspend
-        7.2.65 tag_header
-        7.2.66 toggle_collapse_threads
-        7.2.67 toggle_header_formats
-        7.2.68 toggle_header_tag
-        7.2.69 toggle_headers
-        7.2.70 toggle_pgpsignature
-        7.2.71 toggle_quotes
-        7.2.72 toggle_rot13
-        7.2.73 toggle_signature
-        7.2.74 toggle_sort
-        7.2.75 toggle_verbatim_marks
-        7.2.76 toggle_verbatim_text
-        7.2.77 uncatchup
-        7.2.78 uncatchup_all
-        7.2.79 undelete
-        7.2.80 untag_headers
-        7.2.81 view_scores
-        7.2.82 wrap_article
-        7.2.83 zoom_article_window
+        7.2.55 request
+        7.2.56 save
+        7.2.57 show_spoilers
+        7.2.58 shrink_article_window
+        7.2.59 skip_quotes
+        7.2.60 skip_to_next_group
+        7.2.61 skip_to_previous_group
+        7.2.62 subject_search_backward
+        7.2.63 subject_search_forward
+        7.2.64 supersede
+        7.2.65 suspend
+        7.2.66 tag_header
+        7.2.67 toggle_collapse_threads
+        7.2.68 toggle_header_formats
+        7.2.69 toggle_header_tag
+        7.2.70 toggle_headers
+        7.2.71 toggle_pgpsignature
+        7.2.72 toggle_quotes
+        7.2.73 toggle_rot13
+        7.2.74 toggle_signature
+        7.2.75 toggle_sort
+        7.2.76 toggle_verbatim_marks
+        7.2.77 toggle_verbatim_text
+        7.2.78 uncatchup
+        7.2.79 uncatchup_all
+        7.2.80 undelete
+        7.2.81 untag_headers
+        7.2.82 view_scores
+        7.2.83 wrap_article
+        7.2.84 zoom_article_window
      7.3 readline functions
         7.3.1 bdel
         7.3.2 bol
@@ -337,7 +338,6 @@
         7.3.15 self_insert
         7.3.16 trim
         7.3.17 up
-
 
 
   ______________________________________________________________________
@@ -1234,11 +1234,11 @@
 
   Here are slrn's default settings:
 
-          header_display_format 0 "%F%-5S%G%-5l:[%12r]%t%s"
-          header_display_format 1 "%F%G%-5l:[%12r]%t%s"
-          header_display_format 2 "%F%-5l:%t%s"
-          header_display_format 3 "%F%-5S%-5l:%t%50s %r"
-          header_display_format 4 "%F%-5S [%10r]:%t%49s %-19g[%17d]"
+          header_display_format 0 "%F%B%-5S%G%-5l:[%12r]%t%s"
+          header_display_format 1 "%F%B%G%-5l:[%12r]%t%s"
+          header_display_format 2 "%F%B%-5l:%t%s"
+          header_display_format 3 "%F%B%-5S%-5l:%t%50s %r"
+          header_display_format 4 "%F%B%-5S [%10r]:%t%49s %-19g[%17d]"
 
 
 
@@ -1750,12 +1750,19 @@
   6.10.  cc_followup_string
 
   Type: string
+  Default: (unset)
+
+  This variable is obsolete, as ``cc_post_string'' now covers all cases.
+
+
+  6.11.  cc_post_string
+
+  Type: string
   Default: "[This message has also been posted to %n.]" (localized)
 
   This string will be included in the mail copies of any article you
   send. However, it won't be displayed in the editor and will not be
   included in the posting sent to the newsgroup.
-
   The variable may contain the sequence %n, which will be replaced by
   the newsgroup(s) the article was posted to. If you need a ``verbatim''
   % character, use %%.
@@ -1766,15 +1773,6 @@
   please report it as a feature request.
 
   See Also: ``cc_followup''
-
-
-  6.11.  cc_post_string
-
-  Type: string
-  Default: (unset)
-
-  This variable is obsolete, as ``cc_followup_string'' now works
-  correctly in all cases.
 
 
   6.12.  charset
@@ -1827,6 +1825,7 @@
   If you do not want to check for new groups on startup and when doing a
   ``group refresh'' (by default bound to `G'), you can set this variable
   to 0. This has the same effect as using the command-line parameter -n.
+
 
 
   6.14.  color_by_score
@@ -1887,13 +1886,20 @@
   with ``supersedes_custom_headers''. The header lines you add this way
   will also show up in your editor so you can modify them.
 
+  Although this variable currently does not support any % escapes, you
+  need to double any % signs you may want to use inside it. This is
+  because all other *_custom_headers variables do support % escapes and
+  people who used the same values (mostly X-Faces) in all cases
+  frequently were surprised at the different results.
+
   Note: It is generally not possible to override existing headers using
   custom_headers. An exception to this rule is the ``Message-ID:''
   header line which can optionally be set by using this variable.
   However, there is usually no need to do this as slrn has an excellent
   algorithm for creating Message-IDs itself. Let me repeat this: Only
   override the ``Message-ID:'' header if you know exactly what you are
-  doing.
+  doing. When doing this, it's essential that you know (and, of course,
+  follow) the RFCs and the rules of your ISP.
 
 
   Example: set custom_headers "X-URL: http://foo.com\nX-No-Archive: yes"
@@ -2023,6 +2029,7 @@
   they become available again. If your server is affected, you can set
   this variable to zero.
 
+
   6.24.  editor_command
 
   Type: string
@@ -2079,7 +2086,6 @@
   Windows editor (e.g. Notepad) with slrn on Win32.
 
   See also: ``charset'', ``editor_command'', ``mime_charset''
-
 
   6.26.  emphasized_text_mask
 
@@ -2148,7 +2154,6 @@
   servers seem to choke on folded header lines, so you might have to set
   this to zero if you get an error message when trying to post long
   header lines.
-
 
 
   6.30.  followup
@@ -2277,7 +2282,6 @@
 
 
   See also: ``nnrpaccess''
-
 
 
   6.37.  generate_date_header
@@ -3187,6 +3191,9 @@
   it is interpreted as being relative to your home directory (see
   ``$SLRNHOME'').
 
+  Hint: If you get error messages when using this variable, you possibly
+  pointed it to a directory instead of a file.
+
   See also:  ``save_replies''
 
 
@@ -3198,7 +3205,6 @@
   Specifies a file to which every reply you send by email should be
   appended (in standard mailbox format). The same rules apply as for
   ``save_posts''.
-
   Note: If you send a Cc (carbon copy) of one of your articles by email,
   the posting will only be appended to the folder in save_posts, not to
   save_replies.
@@ -3265,8 +3271,6 @@
   The default is set at compile time. On Unix, the configure script
   tries to find the sendmail binary; otherwise, you can set
   SLRN_SENDMAIL_COMMAND in slrnfeat.h.
-
-
   6.102.  server_object
 
   Type: string
@@ -4817,7 +4821,21 @@
   Reply to the selected article via email.
 
 
-  7.2.55.  save
+  7.2.55.  request
+
+  Default: "m"
+
+  If only the header of an article has been fetched, this command will
+  mark its body for download the next time slrnpull is run; if the body
+  was already marked for download, it gets unrequested.
+
+  When you use this function on a collapsed thread, it will work on all
+  postings inside it that do not yet have a body. If some of them are
+  already marked for download, but some others are not, it does not
+  toggle the state of each individual article, but requests all bodies.
+
+
+  7.2.56.  save
 
   Default: "o"
 
@@ -4831,7 +4849,7 @@
 
 
 
-  7.2.56.  show_spoilers
+  7.2.57.  show_spoilers
 
   Default: "ESC ?"
 
@@ -4842,7 +4860,7 @@
 
 
 
-  7.2.57.  shrink_article_window
+  7.2.58.  shrink_article_window
 
   Default: "CTRL-^"
 
@@ -4851,7 +4869,7 @@
   See also: ``enlarge_article_window''
 
 
-  7.2.58.  skip_quotes
+  7.2.59.  skip_quotes
 
   Default: "TAB"
 
@@ -4860,7 +4878,7 @@
 
 
 
-  7.2.59.  skip_to_next_group
+  7.2.60.  skip_to_next_group
 
   Default: "N" "ESC RIGHT"
 
@@ -4869,7 +4887,7 @@
 
 
 
-  7.2.60.  skip_to_previous_group
+  7.2.61.  skip_to_previous_group
 
   Default: "ESC LEFT"
 
@@ -4878,16 +4896,15 @@
 
 
 
-  7.2.61.  subject_search_backward
+  7.2.62.  subject_search_backward
 
   Default: "S"
-
 
   Like ``subject_search_backward'', but searching backwards.
 
 
 
-  7.2.62.  subject_search_forward
+  7.2.63.  subject_search_forward
 
   Default: "s"
 
@@ -4896,7 +4913,7 @@
 
 
 
-  7.2.63.  supersede
+  7.2.64.  supersede
 
   Default: "ESC CTRL-S"
 
@@ -4908,7 +4925,7 @@
 
 
 
-  7.2.64.  suspend
+  7.2.65.  suspend
 
   Default: "CTRL-Z"
 
@@ -4916,7 +4933,7 @@
 
 
 
-  7.2.65.  tag_header
+  7.2.66.  tag_header
 
   Default: "#"
 
@@ -4927,7 +4944,7 @@
   ``decode'' multiple messages.
 
 
-  7.2.66.  toggle_collapse_threads
+  7.2.67.  toggle_collapse_threads
 
   Default: "ESC t"
 
@@ -4936,7 +4953,7 @@
 
 
 
-  7.2.67.  toggle_header_formats
+  7.2.68.  toggle_header_formats
 
   Default: "ESC a"
 
@@ -4947,7 +4964,7 @@
 
 
 
-  7.2.68.  toggle_header_tag
+  7.2.69.  toggle_header_tag
 
   Default: "*"
 
@@ -4963,7 +4980,7 @@
 
 
 
-  7.2.69.  toggle_headers
+  7.2.70.  toggle_headers
 
   Default: "t"
 
@@ -4972,7 +4989,7 @@
 
 
 
-  7.2.70.  toggle_pgpsignature
+  7.2.71.  toggle_pgpsignature
 
   Default: "]"
 
@@ -4981,7 +4998,7 @@
 
 
 
-  7.2.71.  toggle_quotes
+  7.2.72.  toggle_quotes
 
   Default: "T"
 
@@ -4996,16 +5013,13 @@
   prefix argument (or, if you never did this, to 1).
 
 
-  7.2.72.  toggle_rot13
+  7.2.73.  toggle_rot13
 
   Default: "ESC R"
 
   ROT13-decode article. Calling this function a second time undoes the
   effect.
-
-
-
-  7.2.73.  toggle_signature
+  7.2.74.  toggle_signature
 
   Default: "\"
 
@@ -5013,7 +5027,8 @@
   signatures.
 
 
-  7.2.74.  toggle_sort
+
+  7.2.75.  toggle_sort
 
   Default: "ESC S"
 
@@ -5022,7 +5037,7 @@
 
 
 
-  7.2.75.  toggle_verbatim_marks
+  7.2.76.  toggle_verbatim_marks
 
   Default: "["
 
@@ -5030,7 +5045,7 @@
   display of ``verbatim marks''.
 
 
-  7.2.76.  toggle_verbatim_text
+  7.2.77.  toggle_verbatim_text
 
   Default: "{"
 
@@ -5038,7 +5053,7 @@
   display of text marked as ``verbatim''.
 
 
-  7.2.77.  uncatchup
+  7.2.78.  uncatchup
 
   Default: "ESC U"
 
@@ -5047,7 +5062,7 @@
 
 
 
-  7.2.78.  uncatchup_all
+  7.2.79.  uncatchup_all
 
   Default: "ESC u"
 
@@ -5058,7 +5073,7 @@
 
 
 
-  7.2.79.  undelete
+  7.2.80.  undelete
 
   Default: "u"
 
@@ -5067,7 +5082,7 @@
 
 
 
-  7.2.80.  untag_headers
+  7.2.81.  untag_headers
 
   Default: "ESC #"
 
@@ -5076,7 +5091,7 @@
 
 
 
-  7.2.81.  view_scores
+  7.2.82.  view_scores
 
   Default: "v"
 
@@ -5095,7 +5110,7 @@
   See also: ``create_score''
 
 
-  7.2.82.  wrap_article
+  7.2.83.  wrap_article
 
   Default: "W"
 
@@ -5105,7 +5120,7 @@
 
 
 
-  7.2.83.  zoom_article_window
+  7.2.84.  zoom_article_window
 
   Default: "z"
 
@@ -5197,13 +5212,13 @@
   Jumps to the next (later) command line history entry.
 
 
+
   7.3.10.  enter
 
   Default: "RETURN"
 
   Finishes the editing, returning the current content of the line to the
   program.
-
 
 
   7.3.11.  eol

@@ -1043,7 +1043,8 @@ static int insert_custom_header (char *fmt, FILE *fp) /*{{{*/
 	       return fputs (fmt, fp);
 	     else
 	       {
-		  if ((fwrite (fmt, 1, (unsigned int) (s - fmt), fp)) < s-fmt)
+		  if (fwrite (fmt, 1, (unsigned int) (s - fmt), fp) <
+		      (unsigned int) (s-fmt))
 		    return -1;
 		  fmt = s;
 		  continue;

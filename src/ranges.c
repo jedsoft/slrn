@@ -260,7 +260,7 @@ Slrn_Range_Type *slrn_ranges_merge (Slrn_Range_Type *a, Slrn_Range_Type *b) /*{{
  */
 Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *a, Slrn_Range_Type *b) /*{{{*/
 {
-   Slrn_Range_Type *retval=NULL, *r, *n;
+   Slrn_Range_Type *retval=NULL, *r=NULL, *n;
    do
      {
 	/* skip ranges that don't intersect at all */
