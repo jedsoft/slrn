@@ -2450,7 +2450,7 @@ msgid "Authorization needed, but could not determine username / password."
 msgstr "Autorisatie vereist, maar kan geen gebruikersnaam / wachtwoord vinden."
 
 #: src/nntplib.c:419
-#, c-format
+#, c-format, fuzzy
 msgid "Authenticating %s ..."
 msgstr "Autoriseren ..."
 
@@ -3902,7 +3902,7 @@ msgid "SSL_connect"
 msgstr "SSL_connect"
 
 #: src/spool.c:793
-#, c-format
+#, c-format, fuzzy
 msgid "Unable to open directory %s"
 msgstr "Kan geen directory openen"
 

@@ -1549,7 +1549,7 @@ msgstr "Ошибка сервера во время выполнения LIST ACTIVE."
 # src/group.c:2619
 # src/group.c:2619
 #: src/group.c:2630
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "\n"
 "* The autosave file of %s is newer than the file itself.\n"
@@ -5566,7 +5566,7 @@ msgstr ""
 # src/startup.c:376
 # src/startup.c:376
 #: src/startup.c:374
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "%s: line %d:\n"
 "%sToo many expressions specified."

@@ -1234,7 +1234,7 @@ msgid "Reading %s"
 msgstr "읽는중 %s"
 
 #: src/grplens.c:1000 src/grplens.c:1026
-#, c-format
+#, c-format, fuzzy
 msgid "Error processing line %u of %s"
 msgstr "%s의 %u번째줄을 처리중 오류"
 
@@ -2968,7 +2968,7 @@ msgid "Expecting 'Expires: MM/DD/YYYY' or 'Expires: DD-MM-YYYY'"
 msgstr "'Expires: MM/DD/YYYY' 또는 'Expires: DD-MM-YYYY' 형식"
 
 #: src/score.c:1109
-#, c-format
+#, c-format, fuzzy
 msgid "%s has expired score on line %d"
 msgstr "%d째 줄의 %s는 만기됨"
 
@@ -3553,7 +3553,7 @@ msgid "%s directory does not exist.  Creating it..."
 msgstr "%s 디렉토리가 없음. 생성중..."
 
 #: src/slrnpull.c:1564
-#, c-format
+#, c-format, fuzzy
 msgid "chmod 0%o failed on %s."
 msgstr "%s의 chmod 0%o 실패"
 
