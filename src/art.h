@@ -169,7 +169,6 @@ typedef struct Slrn_Article_Line_Type
 #define QUOTES_LEVEL_MASK	0x1000
    /* The last few bits are devoted to quote levels. */
 #define QUOTE_LEVEL_SHIFT 12	       /* do NOT change this */
-#define MAX_QUOTE_LEVELS   8
 #define QUOTE_LEVEL(flags) ((flags) >> QUOTE_LEVEL_SHIFT)
 
    char *buf;

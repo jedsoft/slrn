@@ -86,6 +86,9 @@ extern FILE *Slrn_Debug_Fp;
 
 extern int slrn_sys_system (char *);
 
+/* used for ignore_quotes and strip_*_regexp */
+#define SLRN_MAX_REGEXP 5
+
 #define HEADER_COLOR		1
 #define GROUP_COLOR		2
 #define AUTHOR_COLOR		3
@@ -128,5 +131,7 @@ extern int slrn_sys_system (char *);
 #define ITALICS_COLOR		32
 #define URL_COLOR		33
 #define QUOTE_COLOR	50
+
+#define MAX_QUOTE_LEVELS   8
 
 #endif				       /* _SLRN_SLRN_H_ */

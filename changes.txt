@@ -5,6 +5,8 @@ Changes since 0.9.7.3
   * Sometimes headers were cut off during MIME encoding (Andreas Ferber)
   * Mouse support did not work correctly when using a translation.
   * Fixed rare segfault caused by broken "References:" lines. (Felix Schueller)
+  * get_(fg|bg)_color() mapped color names incorrectly and did not allow
+    quotes[0-7] as an argument.
   * Use color object "message" for all prompts.
   * The high / low scoring article counters work correctly.
 
@@ -15,6 +17,9 @@ Changes since 0.9.7.3
    startup, as some servers do not seem to like it. (Craig B. Agricola)
    
    In article mode, "expunge" now triggers the newsrc autosave copy feature.
+   
+   Added intrinsic functions set_ignore_quotes, set_strip_re_regexp,
+   set_strip_sig_regexp and set_strip_was_regexp.
 
    More translations:
   * fr.po (French; slrn-fr project)

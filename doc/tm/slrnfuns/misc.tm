@@ -121,6 +121,21 @@ any of the others. They are available in all modes.
    colors, respectively.
 \done
 
+\function{set_ignore_quotes}
+\usage{Void set_ignore_quotes (Array_Type regexps)}
+\description
+   This function allows you to change the setting of the ignore_quotes
+   configuration command. \var{regexps} has to be a (one-dimensional) array
+   of 1-5 strings that are interpreted as regular expressions to detect
+   quoted lines.
+\example
+   set_ignore_quotes (["^>", "^|"]);
+\notes
+   This function is only available if slrn was compiled with S-Lang 1.4.x.
+   The effect of this command becomes visible with the next article you
+   download. If one is currently displayed, it remains unaffected.
+\done
+
 \function{set_integer_variable}
 \usage{Void set_integer_variable (String name, Integer v)}
 \description
@@ -137,6 +152,38 @@ any of the others. They are available in all modes.
    variable specified by \var{name} to value \var{v}.  \var{name} must be a string
    variable name allowed in .slrnrc \var{set} commands.
 \seealso{set_integer_variable, get_variable_value}
+\done
+
+\function{set_strip_re_regexp}
+\usage{Void set_strip_re_regexp (Array_Type regexps)}
+\description
+   This function allows you to change the setting of the strip_re_regexp
+   configuration command. It works like set_ignore_quotes.
+\notes
+   This function is only available if slrn was compiled with S-Lang 1.4.x.
+\seealso{set_ignore_quotes, set_strip_sig_regexp, set_strip_was_regexp}
+\done
+
+\function{set_strip_sig_regexp}
+\usage{Void set_strip_sig_regexp (Array_Type regexps)}
+\description
+   This function allows you to change the setting of the strip_sig_regexp
+   configuration command. It works like set_ignore_quotes.
+\notes
+   This function is only available if slrn was compiled with S-Lang 1.4.x.
+   The effect of this command becomes visible with the next article you
+   download. If one is currently displayed, it remains unaffected.
+\seealso{set_ignore_quotes, set_strip_re_regexp, set_strip_was_regexp}
+\done
+
+\function{set_strip_was_regexp}
+\usage{Void set_strip_was_regexp (Array_Type regexps)}
+\description
+   This function allows you to change the setting of the strip_was_regexp
+   configuration command. It works like set_ignore_quotes.
+\notes
+   This function is only available if slrn was compiled with S-Lang 1.4.x.
+\seealso{set_ignore_quotes, set_strip_re_regexp, set_strip_sig_regexp}
 \done
 
 \function{set_utf8_conversion_table}

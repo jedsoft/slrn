@@ -106,8 +106,6 @@ static SLcmd_Cmd_Type Slrn_Startup_File_Cmds[] = /*{{{*/
      {mono_fun, "mono", "SSsss"},
      {set_variable_fun, "set", "SG"},
      {nnrp_fun, "nnrpaccess", "SSS" },
-#define SLRN_MAX_REGEXP 5
-   /* used for ignore_quotes and strip_*_regexp */
      {ignore_quote_fun, "ignore_quotes", "Sssss"},
      {strip_re_fun, "strip_re_regexp", "Sssss"},
      {strip_sig_fun, "strip_sig_regexp", "Sssss"},
@@ -365,8 +363,8 @@ static SLRegexp_Type *compile_quote_regexp (char *str) /*{{{*/
 }
 
 /*}}}*/
-static void generic_regexp_fun (int argc, SLcmd_Cmd_Table_Type *cmd_table,
-				SLRegexp_Type **regexp_table) /*{{{*/
+void slrn_generic_regexp_fun (int argc, SLcmd_Cmd_Table_Type *cmd_table,
+				     SLRegexp_Type **regexp_table) /*{{{*/
 {
    unsigned int i;
    SLRegexp_Type *r;
@@ -398,25 +396,25 @@ static void generic_regexp_fun (int argc, SLcmd_Cmd_Table_Type *cmd_table,
 
 static int ignore_quote_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
-   generic_regexp_fun (argc, table, Slrn_Ignore_Quote_Regexp);
+   slrn_generic_regexp_fun (argc, table, Slrn_Ignore_Quote_Regexp);
    return 0;
 }
 
 static int strip_re_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
-   generic_regexp_fun (argc, table, Slrn_Strip_Re_Regexp);
+   slrn_generic_regexp_fun (argc, table, Slrn_Strip_Re_Regexp);
    return 0;
 }
 
 static int strip_sig_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
-   generic_regexp_fun (argc, table, Slrn_Strip_Sig_Regexp);
+   slrn_generic_regexp_fun (argc, table, Slrn_Strip_Sig_Regexp);
    return 0;
 }
 
 static int strip_was_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
-   generic_regexp_fun (argc, table, Slrn_Strip_Was_Regexp);
+   slrn_generic_regexp_fun (argc, table, Slrn_Strip_Was_Regexp);
    return 0;
 }
 
@@ -977,10 +975,10 @@ static Color_Handle_Type Auto_Color_Handles[] = /*{{{*/
 
 static char *Color_Names [16] =
 {
-   "black", "blue", "green", "cyan",
-     "red", "magenta", "brown", "lightgray",
-     "gray", "brightblue", "brightgreen", "brightcyan",
-     "brightred", "brightmagenta", "yellow", "white"
+   "black", "red", "green", "brown",
+     "blue", "magenta", "cyan", "lightgray",
+     "gray", "brightred", "brightgreen", "yellow",
+     "brightblue", "brightmagenta", "brightcyan", "white"
 };
 /*}}}*/
 
@@ -1030,16 +1028,32 @@ int slrn_set_object_color (char *name, char *fg, char *bg) /*{{{*/
 	ct++;
      }
 
-   if (0 == strncmp (name, "quotes", 6))
+   if (!strncmp (name, "quotes", 6))
      {
-	SLtt_set_color (QUOTE_COLOR + atoi (name+6), name, fg, bg);
-	return 0;
+	int level = atoi (name+6);
+	if ((0<=level) && (level<MAX_QUOTE_LEVELS))
+	  {
+	     SLtt_set_color (QUOTE_COLOR + level, name, fg, bg);
+	     return 0;
+	  }
      }
 
    slrn_error (_("%s is not a color object"), name);
    return -1;
 }
 /*}}}*/
+
+static char *get_name_for_color (SLtt_Char_Type color, int want_bg) /*{{{*/
+{
+   /* 0xFF is the internal representation of "default" in S-Lang */
+   if (((color >> (want_bg ? 16 : 8)) & 0xFF) == 0xFF)
+     return "default";
+   if (color & SLTT_BOLD_MASK)
+     color |= 0x8 << 8;
+   if (color & SLTT_BLINK_MASK)
+     color |= 0x8 << 16;
+   return Color_Names[(color >> (want_bg ? 16 : 8)) & 0xF];
+}/*}}}*/
 
 char *slrn_get_object_color (char *name, int want_bg) /*{{{*/
 {
@@ -1053,19 +1067,22 @@ char *slrn_get_object_color (char *name, int want_bg) /*{{{*/
      {
 	if (!strcmp (ct->name, name))
 	  {
-	     SLtt_Char_Type color;
-	     color = SLtt_get_color_object (ct->value);
-	     /* 0xFF is the internal representation of "default" in S-Lang */
-	     if (((color >> (want_bg ? 16 : 8)) & 0xFF) == 0xFF)
-	       return "default";
-	     if (color & SLTT_BOLD_MASK)
-	       color |= 0x8 << 8;
-	     if (color & SLTT_BLINK_MASK)
-	       color |= 0x8 << 16;
-	     return Color_Names[(color >> (want_bg ? 16 : 8)) & 0xF];
+	     SLtt_Char_Type color = SLtt_get_color_object (ct->value);
+	     return get_name_for_color (color, want_bg);
 	  }
 	ct++;
      }
+
+   if (!strncmp (name, "quotes", 6))
+     {
+	int level = atoi (name+6);
+	if ((0<=level) && (level<MAX_QUOTE_LEVELS))
+	  {
+	     SLtt_Char_Type color = SLtt_get_color_object (QUOTE_COLOR + level);
+	     return get_name_for_color (color, want_bg);
+	  }
+     }
+   
    slrn_error (_("%s is not a color object"), name);
 #endif
    return NULL;

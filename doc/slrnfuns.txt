@@ -1,7 +1,7 @@
   Slrn Intrinsic Function Reference Manual
   John E. Davis, davis@space.mit.edu
   Thomas Schultz, tststs@gmx.de
-  Sun Oct 28 01:01:45 2001
+  Thu Jan 24 23:30:18 2002
   ____________________________________________________________
 
   Table of Contents
@@ -177,13 +177,17 @@
      7.9 reload_scorefile
      7.10 server_name
      7.11 set_color
-     7.12 set_integer_variable
-     7.13 set_string_variable
-     7.14 set_utf8_conversion_table
-     7.15 setlocale
-     7.16 tt_send
-     7.17 unregister_hook
-     7.18 update
+     7.12 set_ignore_quotes
+     7.13 set_integer_variable
+     7.14 set_string_variable
+     7.15 set_strip_re_regexp
+     7.16 set_strip_sig_regexp
+     7.17 set_strip_was_regexp
+     7.18 set_utf8_conversion_table
+     7.19 setlocale
+     7.20 tt_send
+     7.21 unregister_hook
+     7.22 update
 
   8. Hooks
 
@@ -258,9 +262,7 @@
         currently selected header may correspond to the currently
         displayed article.  To get a header of the currently displayed
         article, use the extract_displayed_article_header function.
-
         If the header does not exist, it returns the empty string.
-
 
       Notes
         This function will not query the server.  If you are looking for
@@ -300,9 +302,6 @@
         If the header has no grouplens score, or if grouplens support
         has not been enabled, 0 will be returned.
 
-      See Also
-
-
 
 
   1.6.  get_header_flags
@@ -327,6 +326,7 @@
 
       See Also
         set_header_flags
+
 
   1.7.  get_header_number
 
@@ -364,9 +364,6 @@
         with the current header.  If the header has no numerical tag,
         zero is returned.
 
-      See Also
-
-
 
 
   1.10.  get_visible_headers
@@ -393,12 +390,10 @@
       Usage
         Integer goto_num_tagged_header (Integer n)
 
-
       Description
         This function causes the header with numerical tag n to become
         the current header.  It returns 1 upon success or 0 upon
         failure.
-
       See Also
         header_down, get_header_flags, call
 
@@ -460,9 +455,9 @@
         headers will be hidden when an article is displayed.  It returns
         0 is all headers will be displayed, or a non-zero value if some
         may be hidden.
+
       See Also
         set_visible_headers, get_visible_headers, is_article_visible
-
 
 
   1.16.  is_thread_collapsed
@@ -506,7 +501,7 @@
                     .
                     .
                  % Return to previous position.
-                 () = locate_header_by_msgid (msgid);
+                 () = locate_header_by_msgid (msgid, 0);
 
 
 
@@ -527,6 +522,7 @@
       See Also
         prev_tagged_header, goto_num_tagged_header, header_up,
         header_down
+
 
 
 
@@ -592,10 +588,9 @@
         expression regexp. If successful, it returns 1 and the current
         header is set to the matching header.  It returns 0 upon
         failure.
+
       See Also
         re_bsearch_author, re_fsearch_subject
-
-
 
   1.23.  re_fsearch_subject
 
@@ -724,6 +719,9 @@
 
                set_visible_headers ("X-,From:");
 
+
+
+
       See Also
         get_visible_headers, headers_hidden_mode, is_article_visible,
         set_header_display_format
@@ -762,9 +760,6 @@
         This function returns the number of articles in the current
         thread or subthread.
 
-      See Also
-
-
 
 
   1.30.  uncollapse_thread
@@ -794,9 +789,6 @@
 
       See Also
         collapse_threads
-
-
-
 
   2.  Article Functions
 
@@ -853,9 +845,6 @@
 
 
 
-
-
-
   2.2.  article_as_string
 
 
@@ -867,7 +856,6 @@
         article as a string.  If no article has been dowloaded, the
         empty string will be returned.  The current article may not be
         the one associated with the currently selected header.
-
       See Also
         replace_article, is_article_visible
 
@@ -922,10 +910,11 @@
         article associated with the current header is visible in a
         window.  Specifically, it returns:
 
-           0  : if the article window is hidden
-           1  : if the article window is showing but the current header
-                  does not refer to the article
-           3  : if the article window contains the current header article
+
+                0  : if the article window is hidden
+                1  : if the article window is showing but the current header
+                       does not refer to the article
+                3  : if the article window contains the current header article
 
 
 
@@ -987,7 +976,6 @@
   2.8.  re_search_article
 
 
-
       Usage
         Integer re_search_article (String pat)
 
@@ -1000,9 +988,6 @@
 
       See Also
         search_article
-
-
-
   2.9.  replace_article
 
 
@@ -1053,7 +1038,6 @@
   2.11.  search_article
 
 
-
       Usage
         Integer search_article (String str)
 
@@ -1066,6 +1050,7 @@
 
       See Also
         re_search_article
+
 
 
 
@@ -1120,6 +1105,9 @@
                GROUP_UNSUBSCRIBED   : set if the group is unsubscribed
                GROUP_NEW_GROUP_FLAG : set if the group is new
 
+
+
+
       See Also
         get_header_flags, set_group_flags, current_newsgroup
 
@@ -1130,6 +1118,7 @@
 
       Usage
         Array_Type get_group_order ()
+
 
       Description
         This function returns an array of strings that contains the
@@ -1196,6 +1185,7 @@
   3.7.  group_up_n
 
 
+
       Usage
         Integer group_up_n (Integer n)
 
@@ -1248,7 +1238,6 @@
 
       See Also
         current_newsgroup
-
 
 
 
@@ -1318,6 +1307,8 @@
                 set_group_order ("news.software.readers");
 
 
+
+
      Moving a group to the end of the list can be done by removing it
      from the list returned by get_group_order and calling
      set_group_order on the result.
@@ -1384,11 +1375,11 @@
       Example
 
 
-            variable rsp = get_select_box_response (
-                              "Pick a number:",
-                              "one", "two", "three", "four",
-                              4);
-            message (sprintf ("You chose %d", rsp));
+                 variable rsp = get_select_box_response (
+                                   "Pick a number:",
+                                   "one", "two", "three", "four",
+                                   4);
+                 message (sprintf ("You chose %d", rsp));
 
 
 
@@ -1457,6 +1448,8 @@
 
 
 
+
+
   4.6.  read_mini
 
 
@@ -1521,6 +1514,8 @@
 
 
 
+
+
   4.10.  read_mini_variable
 
 
@@ -1579,12 +1574,10 @@
       Example
 
 
+                 set_input_chars ("y");
+                 if ('y' == get_yes_no_cancel ("Really Quit"))
+                   quit (0);
 
-
-
-            set_input_chars ("y");
-            if ('y' == get_yes_no_cancel ("Really Quit"))
-              quit (0);
 
 
 
@@ -1646,6 +1639,7 @@
 
       See Also
         definekey, undefinekey, set_prefix_argument
+
 
 
   5.2.  definekey
@@ -1714,6 +1708,7 @@
         This function checks for keyboard input.  Its argument specifies
         the number of tenths of a second to wait.  It returns 0 if no
         input is available or a non-sero value if input is available.
+
       See Also
         getkey, ungetkey
 
@@ -1779,6 +1774,11 @@
 
       See Also
         getkey
+
+
+
+
+
 
   6.  File I/O Functions
 
@@ -2072,7 +2072,30 @@
 
 
 
-  7.12.  set_integer_variable
+  7.12.  set_ignore_quotes
+
+
+      Usage
+        Void set_ignore_quotes (Array_Type regexps)
+
+      Description
+        This function allows you to change the setting of the
+        ignore_quotes configuration command. regexps has to be a (one-
+        dimensional) array of 1-5 strings that are interpreted as
+        regular expressions to detect quoted lines.
+
+      Example
+        set_ignore_quotes (["^>", "^|"]);
+
+      Notes
+        This function is only available if slrn was compiled with S-Lang
+        1.4.x.  The effect of this command becomes visible with the next
+        article you download. If one is currently displayed, it remains
+        unaffected.
+
+
+
+  7.13.  set_integer_variable
 
 
       Usage
@@ -2087,8 +2110,7 @@
         set_string_variable, get_variable_value
 
 
-
-  7.13.  set_string_variable
+  7.14.  set_string_variable
 
 
       Usage
@@ -2104,7 +2126,69 @@
 
 
 
-  7.14.  set_utf8_conversion_table
+  7.15.  set_strip_re_regexp
+
+
+      Usage
+        Void set_strip_re_regexp (Array_Type regexps)
+
+      Description
+        This function allows you to change the setting of the
+        strip_re_regexp configuration command. It works like
+        set_ignore_quotes.
+
+      Notes
+        This function is only available if slrn was compiled with S-Lang
+        1.4.x.
+
+      See Also
+        set_ignore_quotes, set_strip_sig_regexp, set_strip_was_regexp
+
+
+
+  7.16.  set_strip_sig_regexp
+
+
+      Usage
+        Void set_strip_sig_regexp (Array_Type regexps)
+
+      Description
+        This function allows you to change the setting of the
+        strip_sig_regexp configuration command. It works like
+        set_ignore_quotes.
+
+      Notes
+        This function is only available if slrn was compiled with S-Lang
+        1.4.x.  The effect of this command becomes visible with the next
+        article you download. If one is currently displayed, it remains
+        unaffected.
+
+      See Also
+        set_ignore_quotes, set_strip_re_regexp, set_strip_was_regexp
+
+
+
+  7.17.  set_strip_was_regexp
+
+
+      Usage
+        Void set_strip_was_regexp (Array_Type regexps)
+
+      Description
+        This function allows you to change the setting of the
+        strip_was_regexp configuration command. It works like
+        set_ignore_quotes.
+
+      Notes
+        This function is only available if slrn was compiled with S-Lang
+        1.4.x.
+
+      See Also
+        set_ignore_quotes, set_strip_re_regexp, set_strip_sig_regexp
+
+
+
+  7.18.  set_utf8_conversion_table
 
 
       Usage
@@ -2135,7 +2219,7 @@
 
 
 
-  7.15.  setlocale
+  7.19.  setlocale
 
 
       Usage
@@ -2167,7 +2251,7 @@
 
 
 
-  7.16.  tt_send
+  7.20.  tt_send
 
 
       Usage
@@ -2176,12 +2260,13 @@
       Description
         This function may be used to send a string directly to the
         display without any involvement of the screen management layer.
+
       See Also
         message, update
 
 
 
-  7.17.  unregister_hook
+  7.21.  unregister_hook
 
 
       Usage
@@ -2203,7 +2288,7 @@
 
 
 
-  7.18.  update
+  7.22.  update
 
 
       Usage
@@ -2223,7 +2308,6 @@
   This chapter is special. Rather than describing intrinsic functions,
   it gives you a list of hooks that can be used to execute arbitrary S-
   lang code on certain events (e.g. whenever entering article mode).
-
   You can define code for a hook by putting it into a function that has
   exactly the same name as the hook. However, the preferred way to add
   code to a hook is now using the register_hook () intrinsic function on
@@ -2242,6 +2326,7 @@
         This hook is called during article mode after headers have been
         retrieved but before sorting them.  You can use this hook to set
         variables based on the group name.
+
       Example
         The following macro can be used to change the sorting_method to
         something more appropriate for newsgroups which contain encoded
@@ -2286,6 +2371,7 @@
 
 
   8.3.  article_mode_startup_hook
+
 
 
       Usage
@@ -2351,6 +2437,9 @@
 
 
 
+
+
+
   8.8.  group_mode_startup_hook
 
 
@@ -2373,6 +2462,8 @@
       Description
         If defined, this function will be called after selecting a
         header via a header number.
+
+
 
   8.10.  make_from_string_hook
 
@@ -2440,6 +2531,7 @@
      is about to post.
 
 
+
   8.13.  post_hook
 
 
@@ -2480,7 +2572,6 @@
 
       Usage
         Void reply_hook ()
-
       Description
         Function called when replying to poster.
 
@@ -2545,6 +2636,8 @@
 
 
 
+
+
   8.20.  supersede_hook
 
 
@@ -2553,6 +2646,45 @@
 
       Description
         Function called when superseding an article.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -424,6 +424,76 @@ static void set_utf8_conversion_table (void) /*{{{*/
 }
 /*}}}*/
 
+static void generic_set_regexp (SLRegexp_Type **regexp_table) /*{{{*/
+{
+#if SLANG_VERSION < 10400
+   slrn_error (_("To use this feature, please update s-lang and recompile slrn."));
+#else
+   SLang_Array_Type *at;
+   SLcmd_Cmd_Table_Type cmd_table;
+   int argc, i;
+   
+   if (-1 == SLang_pop_array_of_type (&at, SLANG_STRING_TYPE))
+     {
+	slrn_error (_("Array of string expected."));
+	return;
+     }
+   
+   if (at->num_dims != 1)
+     {
+	slrn_error (_("One-dimensional array expected."));
+	goto free_and_return;
+     }
+   
+   argc = at->dims[0];
+   
+   if ((argc<1) || (argc > SLRN_MAX_REGEXP))
+     {
+	slrn_error (_("Array must contain at least one, at most %d elements."),
+		    SLRN_MAX_REGEXP);
+	goto free_and_return;
+     }
+   
+   if (NULL == (cmd_table.string_args = (char**) slrn_malloc
+		((argc+1)*sizeof(char*), 0, 0)))
+     {
+	slrn_error (_("Failed to allocate memory."));
+	goto free_and_return;
+     }
+   
+   for (i = 0; i < argc; i++)
+     {
+	(void) SLang_get_array_element (at, &i, &(cmd_table.string_args[i+1]));
+     }
+   
+   slrn_generic_regexp_fun (argc+1, &cmd_table, regexp_table);
+   
+   slrn_free ((char*)cmd_table.string_args);
+   
+   free_and_return:
+   SLang_free_array (at);
+#endif   
+}/*}}}*/
+
+static void set_ignore_quotes (void) /*{{{*/
+{
+   generic_set_regexp (Slrn_Ignore_Quote_Regexp);
+}/*}}}*/
+
+static void set_strip_re_regexp (void) /*{{{*/
+{
+   generic_set_regexp (Slrn_Strip_Re_Regexp);
+}/*}}}*/
+
+static void set_strip_sig_regexp (void) /*{{{*/
+{
+   generic_set_regexp (Slrn_Strip_Sig_Regexp);
+}/*}}}*/
+
+static void set_strip_was_regexp (void) /*{{{*/
+{
+   generic_set_regexp (Slrn_Strip_Was_Regexp);
+}/*}}}*/
 /*}}}*/
 
 static char *get_server_name (void) /*{{{*/
@@ -1359,11 +1429,15 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("hide_current_group", hide_current_group, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_I("set_header_flags", set_header_flags, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_I("set_header_score", set_header_score, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_0("set_ignore_quotes", set_ignore_quotes, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("set_input_chars", set_input_chars, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("set_input_string", set_input_string, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SI("set_integer_variable", set_integer_variable, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_I("set_prefix_argument", set_prefix_arg, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SS("set_string_variable", set_string_variable, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_0("set_strip_re_regexp", set_strip_re_regexp, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_0("set_strip_sig_regexp", set_strip_sig_regexp, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_0("set_strip_was_regexp", set_strip_was_regexp, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("set_utf8_conversion_table", set_utf8_conversion_table, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("get_group_order", slrn_intr_get_group_order, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("set_group_order", slrn_intr_set_group_order, SLANG_VOID_TYPE),

@@ -48,9 +48,7 @@ static unsigned int printf_string_upper_bound (const char*, va_list);
  * config.h may have already defined VA_COPY as va_copy or __va_copy.
  */
 #ifndef VA_COPY
-# if defined (__WATCOMC__)
-#  define VA_COPY(ap1, ap2)       (*(ap1) = *(ap2))
-# if defined (__GNUC__) && defined (__PPC__) && (defined (_CALL_SYSV) || defined (__WIN32__))
+# if (defined (__GNUC__) && defined (__PPC__) && (defined (_CALL_SYSV) || defined (__WIN32__))) || defined (__WATCOMC__)
 #  define VA_COPY(ap1, ap2)	  (*(ap1) = *(ap2))
 # elif defined (VA_COPY_AS_ARRAY)
 #  define VA_COPY(ap1, ap2)	  memmove ((ap1), (ap2), sizeof (va_list))
