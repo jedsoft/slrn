@@ -65,6 +65,9 @@ interact with the user.
   This function creates a popup window which contains the given \var{text}
   and uses \var{title} as its title. It returns the key that was used to
   exit the window.
+\notes
+  Since slrn 0.9.7.4, this function expands TABs in the \var{text}
+  correctly. TABs in \var{title} are not expanded and should be avoided.
 \seealso{select_list_box}
 \done
 

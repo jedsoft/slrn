@@ -486,13 +486,15 @@ static void draw_select_list (void)
    slrn_pop_suspension ();
 }
 
-static void free_select_list (Select_List_Type *l)
+static void free_select_list (Select_List_Type *l, int free_data)
 {
    Select_List_Type *next;
    
    while (l != NULL)
      {
 	next = l->next;
+	if (free_data)
+	  slrn_free (l->data);
 	slrn_free ((char *)l);
 	l = next;
      }
@@ -803,7 +805,7 @@ int slrn_select_list_mode (char *title,
 
 	if (NULL == (curr = (Select_List_Type *) slrn_malloc (sizeof (Select_List_Type), 1, 1)))
 	  {
-	     free_select_list (root);
+	     free_select_list (root, 0);
 	     return -1;
 	  }
 
@@ -843,7 +845,7 @@ int slrn_select_list_mode (char *title,
 	slrn_do_keymap_key (Select_List_Keymap);
      }
    active_num = Select_Window->line_num - 1;
-   free_select_list (root);
+   free_select_list (root, 0);
    slrn_pop_mode ();
    
    slrn_message ("");
@@ -879,12 +881,12 @@ int slrn_popup_win_mode (char *title, char *text)
    
    do
      {
-	unsigned int len;
-	char *newline;
+	unsigned int len, pos;
+	char *newline, *tab;
 	
 	if (NULL == (curr = (Select_List_Type *) slrn_malloc (sizeof (Select_List_Type), 1, 1)))
 	  {
-	     free_select_list (root);
+	     free_select_list (root, 1);
 	     return -1;
 	  }
 	
@@ -897,7 +899,6 @@ int slrn_popup_win_mode (char *title, char *text)
 	  }
 	last = curr;
 	
-	curr->data = text;
 	if (NULL != (newline = strchr (text, '\n')))
 	  {
 	     *newline++ = 0;
@@ -905,6 +906,38 @@ int slrn_popup_win_mode (char *title, char *text)
 	       newline = NULL;
 	  }
 	len = strlen (text);
+	
+	/* Here, we handle TABs (expand to spaces): */
+	tab = text;
+	while (NULL != (tab = strchr (tab, '\t')))
+	  {
+	     tab++;
+	     len += 8;
+	  }
+	if (NULL == (curr->data = slrn_malloc (len, 1, 1)))
+	  {
+	     free_select_list (root, 1);
+	     return -1;
+	  }
+	tab = curr->data;
+	pos = 0;
+	while (*text)
+	  {
+	     if (*text == '\t')
+	       do
+	       {
+		  *tab++ = ' ';
+		  pos++;
+	       } while (pos % 8);
+	     else
+	       {
+		  *tab++ = *text;
+		  pos++;
+	       }
+	     text++;
+	  }
+	
+	len = strlen (curr->data);
 	if (len > Select_List_Window_Ncols)
 	  Select_List_Window_Ncols = len;
 	text = newline;
@@ -933,7 +966,7 @@ int slrn_popup_win_mode (char *title, char *text)
 	else
 	  key->f.f ();
      }
-   free_select_list (root);
+   free_select_list (root, 1);
    slrn_pop_mode ();
    
    slrn_message ("");

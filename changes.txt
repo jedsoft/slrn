@@ -17,6 +17,7 @@ Changes since 0.9.7.3
   * Work around a problem with leafnode when getting articles from a different
     group by Message-Id.
   * Recognize SN's timeout messages.
+  * TABs in the text of popup_window()s are now expanded correctly.
 1. New algorithm for article sorting (based on a patch by Felix Schueller).
    This adds a highly configurable custom sorting interface (which will
    completely replace the choice in sorting_method at some point). See
@@ -44,6 +45,8 @@ Changes since 0.9.7.3
    * fr.po (French; slrn-fr project)
    * ko.po (Korean; Im Eunjea)
 11. New config variable "hide_quotes" (see manual for details).
+12. When using inews on OS/2 or Windows, the article is now written to a
+    temporary file instead of piped into the program.
 
 Changes since 0.9.7.2
 

@@ -88,8 +88,17 @@ int Slrn_Use_Pull_Post;
 static FILE *Fp_Inews;
 char *Slrn_Inews_Pgm;
 
+#if defined(IBMPC_SYSTEM)
+static char Inews_Outfile [SLRN_MAX_PATH_LEN];
+#define MAX_LINE_BUFLEN	2048
+#endif
+
 static int inews_start_post (void)
 {
+#if defined(IBMPC_SYSTEM)
+   if (NULL == (Fp_Inews = slrn_open_tmpfile (Inews_Outfile,
+					      sizeof (Inews_Outfile))))
+#else
    /* pipe a message to inews. Its done this way because inews expects the
     * article on stdin. Inews errors WILL mess up the screen.
     */
@@ -98,6 +107,7 @@ static int inews_start_post (void)
     * very appropriate
     */
    if (NULL == (Fp_Inews = popen (Slrn_Inews_Pgm, "w")))
+#endif
      {
 	slrn_error (_("Couldn't open pipe to inews! -- Article not posted."));
 	return -1;
@@ -109,11 +119,18 @@ static int inews_end_post (void)
 {
    int res = 0;
    
+#if defined(IBMPC_SYSTEM)
+   char buf [MAX_LINE_BUFLEN];
+   slrn_fclose (Fp_Inews);
+   slrn_snprintf (buf, sizeof (buf), "%s %s", Slrn_Inews_Pgm, Inews_Outfile);
+   slrn_posix_system (buf, 0);
+#else
    if (-1 == pclose (Fp_Inews))
      {
 	slrn_error (_("pclose() failed -- check if article was posted")); /* !HACK! can we do better? */
 	res = -1;
      }
+#endif
    Fp_Inews=NULL;
    
    return res;
