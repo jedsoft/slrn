@@ -876,12 +876,17 @@ static char *find_url (char *l_buf, unsigned int *p_len) /*{{{*/
 	
 	if (is_news)
 	  {
+	     int saw_opening_bracket = 0;
+	     
 	     ptr+=5;
 	     if (*ptr == '<')
-	       ptr++;
+	       {
+		  ptr++;
+		  saw_opening_bracket = 1;
+	       }
 	     while ((ch = *ptr) && (NULL == slrn_strchr (" \t\n<>", ch)))
 	       ptr++;
-	     if (*ptr == '>')
+	     if ((*ptr == '>') && saw_opening_bracket)
 	       ptr++;
 	  }
 	else
