@@ -2404,6 +2404,19 @@ static int write_overview_entry(FILE *xov_fp, int id, char *dir)
    return 0;
 }
 
+/* 
+ * this functions shows the progress during the updating of the overview file
+ */
+static void progress_update_overview(int i, int n_nums, Active_Group_Type *g, int creation)
+{
+   fprintf (stdout, _("%s overview: article %u of %u in %s."),
+	    (creation ? _("Creating") : _("Updating")), i+1, n_nums, g->name);
+   fputc ('\r', stdout);
+   if (i+1 == n_nums)
+     fputc ('\n', stdout);
+   fflush (stdout);
+}
+
 static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, unsigned int n_nums)
 {
    char dir [SLRN_MAX_PATH_LEN + 1];
@@ -2447,6 +2460,8 @@ static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
              fclose(xov_fp);
              return -1;
           }
+	if ((Stdout_Is_TTY) && (((i % 100) == 0) || (i+1 == n_nums)))
+	  progress_update_overview(i, n_nums, g, 1);
      }
    
    return slrn_fclose (xov_fp);
@@ -2530,6 +2545,9 @@ static int update_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 		    {
 		       if (-1 == write_overview_entry (new_xov_fp, (int) nums [i], dir))
 			 break;
+		       
+		       if ((Stdout_Is_TTY) && (((i % 100) == 0) || (i+1 == n_nums)))
+			 progress_update_overview(i, n_nums, g, 0);
 		       i++;
 		    }
 		  goto end_of_loop; /* break 2 */
@@ -2541,6 +2559,8 @@ static int update_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 	     /* we are in sync */
 	     if (EOF == fputs (buf, new_xov_fp))
 	       break;
+	     if ((Stdout_Is_TTY) && (((i % 100) == 0) || (i+1 == n_nums)))
+	       progress_update_overview(i, n_nums, g, 0);
 	     i++;
 	     continue;
 	  }
@@ -2550,6 +2570,8 @@ static int update_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 	  {
 	     if (-1 == write_overview_entry (new_xov_fp, (int) nums [i], dir))
 	       goto end_of_loop; /* break 2 */
+	     if ((Stdout_Is_TTY) && (((i % 100) == 0) || (i+1 == n_nums)))
+	       progress_update_overview(i, n_nums, g, 0);
 	     i++;
 	     continue;
 	  }
