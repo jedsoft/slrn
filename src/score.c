@@ -201,7 +201,7 @@ static Slrn_Score_Debug_Info_Type *append_score_debug_info
 }
 
 static Group_Score_Type *Group_Score_Root;
-static Group_Score_Type *Group_Score_Next;
+static Group_Score_Type *Group_Score_Tail;
 static Score_Type *Score_Root, *Score_Tail;
 
 int Slrn_Apply_Score = 1;
@@ -789,36 +789,22 @@ static PScore_Type *create_new_score
    
    if (new_group_flag)
      {
-	Group_Score_Type *gst, *tail;
-	
-	tail = Group_Score_Next = Group_Score_Root;
-	while (Group_Score_Next != NULL)
-	  {
-	     if ((Group_Score_Next->gsnt.next == NULL)
-		 && (Group_Score_Next->gst_not_flag == gst_not_flag)
-		 && !strcmp ((char *) group, Group_Score_Next->gsnt.name))
-	       break;
-	     tail = Group_Score_Next;
-	     Group_Score_Next = Group_Score_Next->next;
-	  }
-	
-	if (Group_Score_Next == NULL)
-	  {
-	     gst = (Group_Score_Type *) slrn_safe_malloc (sizeof (Group_Score_Type));
-	     
-	     if (-1 == compile_group_names ((char *)group, gst))
-	       return NULL;
-	     
-	     gst->gst_not_flag = gst_not_flag;
+	Group_Score_Type *gst;
 
-	     if (Group_Score_Root == NULL)
-	       {
-		  Group_Score_Root = gst;
-	       }
-	     else tail->next = gst;
-	     
-	     Group_Score_Next = gst;
+	gst = (Group_Score_Type *) slrn_safe_malloc (sizeof (Group_Score_Type));
+	
+	if (-1 == compile_group_names ((char *)group, gst))
+	  return NULL;
+	
+	gst->gst_not_flag = gst_not_flag;
+	
+	if (Group_Score_Root == NULL)
+	  {
+	     Group_Score_Root = gst;
 	  }
+	else
+	  Group_Score_Tail->next = gst;
+	Group_Score_Tail = gst;
      }
    
    /* Now create the PseudoScore type and add it. */
@@ -835,13 +821,13 @@ static PScore_Type *create_new_score
    else
      pst->description = slrn_safe_strmalloc ((char *)"");
 
-   if (Group_Score_Next->pst == NULL)
+   if (Group_Score_Tail->pst == NULL)
      {
-	Group_Score_Next->pst = pst;
+	Group_Score_Tail->pst = pst;
      }
    else
      {
-	PScore_Type *last = Group_Score_Next->pst;
+	PScore_Type *last = Group_Score_Tail->pst;
 	while (last->next != NULL) last = last->next;
 	last->next = pst;
      }
