@@ -178,6 +178,15 @@ comes in handy if you want to use pre-written macro sets.
    before any headers for the group have been retrieved.
 \done
 
+\function{quit_hook}
+\usage{Void quit_hook ()}
+\description
+   Function called when slrn exits. Note that slrn already disconnected from
+   the server at the time this hook is run. In this hook, it is safe to
+   assume that startup_hook was run before (i.e., if slrn exits before
+   startup_hook had a chance to execute, quit_hook is omitted).
+\done
+
 \function{read_article_hook}
 \usage{Void read_article_hook ()}
 \description

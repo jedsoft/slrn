@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
  Copyright (c) 2001 Robin Sommer <rsommer@uni-paderborn.de>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2005 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -34,14 +34,15 @@
 #define HOOK_POST_FILTER           12
 #define HOOK_POST                  13
 #define HOOK_PRE_ARTICLE_MODE      14
-#define HOOK_RESIZE_SCREEN         15
-#define HOOK_READ_ARTICLE          16
-#define HOOK_REPLY		   17
-#define HOOK_STARTUP               18
-#define HOOK_SUBJECT_COMPARE       19
-#define HOOK_SUPERSEDE             20
+#define HOOK_QUIT		   15
+#define HOOK_RESIZE_SCREEN         16
+#define HOOK_READ_ARTICLE          17
+#define HOOK_REPLY		   18
+#define HOOK_STARTUP               19
+#define HOOK_SUBJECT_COMPARE       20
+#define HOOK_SUPERSEDE             21
 /* Number of different hooks */
-#define HOOK_NUMBER                21
+#define HOOK_NUMBER                22
 
 extern int slrn_run_hooks( unsigned int hook, unsigned int num_args, ... );
 extern int slrn_is_hook_defined( unsigned int hook );

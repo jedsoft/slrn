@@ -6,6 +6,8 @@ Changes since 0.9.8.1
   * slrnpull gives permission 600 to debugging files (may contain passwords).
   * Some minor usability glitches (Alain Bench)
 
+Introduced quit_hook, which is executed when slrn quits.
+
 Symbolic key names <BackTab> and <F13> through <F20> added (Alain Bench).
 
 Changes since 0.9.8.0

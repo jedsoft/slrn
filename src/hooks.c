@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
  Copyright (c) 2001 Robin Sommer <rsommer@uni-paderborn.de>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2005 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -58,6 +58,7 @@ static Slrn_Hook_Table_Type Hooks = {
    { "post_filter_hook", 1, NULL },
    { "post_hook", 1, NULL },
    { "pre_article_mode_hook", 1, NULL },
+   { "quit_hook", 1, NULL },
    { "resize_screen_hook", 1, NULL },
    { "read_article_hook", 1, NULL },
    { "reply_hook", 1, NULL },

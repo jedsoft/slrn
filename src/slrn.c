@@ -157,6 +157,7 @@ static volatile int Want_Suspension;
 static volatile int Want_Window_Size_Change;
 static void perform_suspend (int);
 static int Current_Mouse_Mode;
+static int Ran_Startup_Hook;
 
 /*}}}*/
 /*{{{ Static Function Declarations */
@@ -859,6 +860,8 @@ static void perform_cleanup (void)
 #endif
 
 #if SLRN_HAS_SLANG
+   if (Ran_Startup_Hook)
+     (void) slrn_run_hooks (HOOK_QUIT, 0);
    (void) slrn_reset_slang ();
 #endif
 
@@ -1389,6 +1392,7 @@ If you want to create %s, add command line options:\n\
 
 #if SLRN_HAS_SLANG
    (void) slrn_run_hooks (HOOK_STARTUP, 0);
+   Ran_Startup_Hook = 1;
 #endif
    
    
