@@ -461,8 +461,8 @@ AC_DEFUN(CF_MTA,
     [  --with-mta[=PATHNAME]   To use an alternate mail transport agent],
     [  ac_mta_path="$withval" ], [ ac_mta_path=no ])
   
-  if test "x$ac_mta_path" == xno || test "x$ac_mta_path" == xyes || \
-     test "x$ac_mta_path" == "x"; then
+  if test "x$ac_mta_path" = xno || test "x$ac_mta_path" = xyes || \
+     test "x$ac_mta_path" = "x"; then
     dnl We need to find sendmail ourself
     
     AC_PATH_PROG(SENDMAIL, sendmail, no,
