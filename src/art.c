@@ -866,7 +866,12 @@ static char *find_url (char *l_buf, unsigned int *p_len) /*{{{*/
 	
 	if (is_news)
 	  {
-	     while ((ch = *ptr) && (NULL == slrn_strchr (" \t\n>", ch)))
+	     ptr+=5;
+	     if (*ptr == '<')
+	       ptr++;
+	     while ((ch = *ptr) && (NULL == slrn_strchr (" \t\n<>", ch)))
+	       ptr++;
+	     if (*ptr == '>')
 	       ptr++;
 	  }
 	else
@@ -1065,6 +1070,9 @@ static void launch_url (char *url, int want_edit) /*{{{*/
    
    if (!strncmp (url, "news:", 5)) /* we can handle this ourself */
      {
+	char bracket = '>';
+	if (url[strlen(url)-1] == '>')
+	  bracket = 0;
 	url += 5;
 	if (!strncmp (url, "//", 2))
 	  url += 2; /* not RFC compliant, but accept it anyway */
@@ -1072,7 +1080,7 @@ static void launch_url (char *url, int want_edit) /*{{{*/
 	  url++; /* not RFC compliant either */
 	if (NULL != strchr (url, '@'))
 	  {
-	     char *msgid = slrn_strdup_printf ("<%s>", url);
+	     char *msgid = slrn_strdup_printf ("<%s%c", url, bracket);
 	     if (NULL == msgid)
 	       return;
 	     slrn_locate_header_by_msgid (msgid, 0, 1);
