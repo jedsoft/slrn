@@ -220,6 +220,11 @@ extern Slrn_Article_Line_Type *slrn_search_article (char *, char **, int, int, i
 extern unsigned int slrn_header_down_n (unsigned int, int);
 extern unsigned int slrn_header_up_n (unsigned int, int);
 
+extern unsigned int slrn_art_linedn_n (unsigned int);
+extern unsigned int slrn_art_lineup_n (unsigned int);
+extern unsigned int slrn_art_count_lines (void);
+extern unsigned int slrn_art_cline_num (void);
+
 extern void slrn_collapse_this_thread (Slrn_Header_Type *, int);
 extern void slrn_collapse_threads (int);
 extern void slrn_uncollapse_threads (int);

@@ -42,6 +42,65 @@ mode and allow you to manipulate the article window.
 \seealso{replace_article, is_article_visible}
 \done
 
+\function{article_cline_as_string}
+\usage{String_Type article_cline_as_string ()}
+\description
+   Returns the current line of the article (i.e. the first one that is
+   displayed in the article pager) as a string.  If no article has been
+   downloaded, the empty string will be returned.
+\seealso{article_as_string, article_cline_number}
+\done
+
+\function{article_cline_number}
+\usage{Integer article_cline_number ()}
+\description
+   Returns the number of the line that is currently displayed at the top of
+   the article pager.  Counting starts at 1 and ignores hidden lines.
+\seealso{article_cline_as_string, article_count_lines, article_goto_line}
+\done
+
+\function{article_count_lines}
+\usage{Integer article_count_lines ()}
+\description
+   This function returns the total number of visible lines in the article
+   pager.  For example, you could use it with \var{article_goto_line} to
+   jump to the last line in the pager:
+#v+
+     define article_bob ()
+     { 
+         () = article_goto_line (article_count_lines ());
+     }
+#v-
+\done
+
+\function{article_goto_line}
+\usage{Integer article_goto_line (Integer linenum)}
+\description
+   Makes the article pager jump to line number \var{linenum} (i.e., puts
+   this line at the top of the pager).  As in \var{article_cline_number},
+   counting starts at 1 and ignores hidden lines.  If you specify 0 or a
+   negative number as the argument, no action is taken and the function
+   returns zero.  Otherwise, the new line number is returned. If the article
+   has less than \var{linenum} lines, the function goes to the last line.
+\seealso{article_line_down, article_line_up}
+\done
+
+\function{article_line_down}
+\usage{Integer article_line_down (Integer num)}
+\description
+   Scrolls the article down \var{num} lines.  Returns the number of lines
+   that were actually scrolled.
+\seealso{article_goto_line, article_line_up}
+\done
+
+\function{article_line_up}
+\usage{Integer article_line_up (Integer num)}
+\description
+   Scrolls the article up \var{num} lines and returns the number of lines
+   that were actually scrolled.
+\seealso{article_goto_line, article_line_down}
+\done
+
 \function{bsearch_article}
 \usage{Integer bsearch_article (String_Type pat)}
 \description

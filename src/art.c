@@ -437,6 +437,16 @@ int slrn_get_article_window_size (void)
    return Article_Window_Nrows;
 }
 
+unsigned int slrn_art_count_lines (void)
+{
+   return Slrn_Article_Window.num_lines;
+}
+
+unsigned int slrn_art_cline_num (void)
+{
+   return Slrn_Article_Window.line_num;
+}
+
 /*}}}*/
 /*{{{ header hash functions */
 static void delete_hash_table (void) /*{{{*/
@@ -1220,7 +1230,7 @@ static void article_search (void) /*{{{*/
 /*{{{ current article movement functions */
 
 
-static unsigned int art_lineup_n (unsigned int n) /*{{{*/
+unsigned int slrn_art_lineup_n (unsigned int n) /*{{{*/
 {
    if (select_article (0) <= 0) return 0;
 
@@ -1241,7 +1251,7 @@ static void art_pageup (void) /*{{{*/
    /* Since we always require the current line to be at the top of the
     * window, SLscroll_pageup cannot be used.  Instead, do it this way:
     */
-   (void) art_lineup_n (Slrn_Article_Window.nrows - 1);
+   (void) slrn_art_lineup_n (Slrn_Article_Window.nrows - 1);
 }
 
 /*}}}*/
@@ -1339,20 +1349,20 @@ static void art_pagedn (void) /*{{{*/
 
 static void art_lineup (void) /*{{{*/
 {
-   art_lineup_n (1);
+   slrn_art_lineup_n (1);
 }
 
 /*}}}*/
 
 static void art_bob (void) /*{{{*/
 {
-   while (0xFFFF == art_lineup_n (0xFFFF));
+   while (0xFFFF == slrn_art_lineup_n (0xFFFF));
 }
 
 /*}}}*/
 
 
-static unsigned int art_linedn_n (unsigned int n) /*{{{*/
+unsigned int slrn_art_linedn_n (unsigned int n) /*{{{*/
 {
    switch (select_article (0))
      {
@@ -1377,16 +1387,16 @@ static unsigned int art_linedn_n (unsigned int n) /*{{{*/
 
 static void art_linedn (void) /*{{{*/
 {
-   (void) art_linedn_n (1);
+   (void) slrn_art_linedn_n (1);
 }
 
 /*}}}*/
 
 static void art_eob (void) /*{{{*/
 {
-   while (art_linedn_n (0xFFFF) > 0)
+   while (slrn_art_linedn_n (0xFFFF) > 0)
      ;
-   (void) art_lineup_n (Slrn_Article_Window.nrows - 1);
+   (void) slrn_art_lineup_n (Slrn_Article_Window.nrows - 1);
 }
 
 /*}}}*/

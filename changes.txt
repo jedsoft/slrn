@@ -39,14 +39,17 @@ Changes since 0.9.7.4
 4. Set use_recommended_msg_id to 1 in your config file if you want slrn to
    make use of server-proposed Message-IDs; the IDs will get saved along
    with the article to the save_posts folder. (patch by Felix Schueller)
-5. Added intrinsic functions has_parent, set_color_attr (see doc/slrnfuns.txt).
+5. Added intrinsic functions article_cline_as_string, article_cline_number,
+   article_count_lines, article_goto_line, article_line_down, article_line_up,
+   has_parent, set_color_attr (see doc/slrnfuns.txt).
 6. locate_article ignores leading "news:" (Jarek Baczynski)
 7. When reading in spool mode with spool_check_up_on_nov set, slrn now finds
    out the number of bytes of each article, even if it is not included in
    the news overview file (based on a patch by Jurriaan W Kalkman).
-8. Support Cancel-Locks using the canlock library (--with-canlock); you also
-   need to set the new variable "cansecret_file" to a file containing your
-   Cancel-Lock password to enable this (based on a patch by Andreas Barth).
+8. Support Cancel-Locks using the canlock library (--with-canlock) that can
+   be obtained from <http://cssri.meowing.net/>; you also need to set the
+   new variable "cansecret_file" to a file containing your Cancel-Lock
+   password to enable this (based on a patch by Andreas Barth).
 9. Support GNU TLS via its new OpenSSL compatibility layer (--with-gnutls).
    Please note that GNU TLS still is under heavy development and that slrn's
    support for it is still untested (based on a patch by Joey Hess.)

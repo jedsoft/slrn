@@ -102,6 +102,10 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
 --with-canlock[=DIR]
     Tells slrn to make use of the canlock library (needed to use
     "Cancel-Locks" when posting, see <http://cssri.meowing.net/>).
+    USE WITH CARE: libcanlock does not seem to be fully mature yet; also, 
+    the library does not have an installation routine. When installing it by
+    hand, be careful to copy only canlock.h (and none of the other header
+    files that come with it) into your system include directory.
 
 --with-slrnpull
     Build slrnpull and enable support for it in slrn.

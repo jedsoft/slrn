@@ -930,6 +930,64 @@ static void sort_articles (void) /*{{{*/
 
 /*}}}*/
 
+static char *article_cline_as_string (void) /*{{{*/
+{
+   if (-1 == check_article_mode () ||
+       (Slrn_Current_Article == NULL))
+     return "";
+   return Slrn_Current_Article->cline->buf;
+}
+/*}}}*/
+
+static int article_cline_number (void) /*{{{*/
+{
+   if (-1 == check_article_mode ()) return 0;
+   return (int)slrn_art_cline_num();
+}
+/*}}}*/
+
+static int article_count_lines (void) /*{{{*/
+{
+   if (-1 == check_article_mode ()) return 0;
+   return (int)slrn_art_count_lines();
+}
+/*}}}*/
+
+static int article_goto_line (int *num) /*{{{*/
+{
+   int offset;
+   if ((-1 == check_article_mode ())
+       || (*num <= 0))
+     return 0;
+   if (0 != (offset = *num - slrn_art_cline_num()))
+     {
+	if (offset > 0) slrn_art_linedn_n ((unsigned int)offset);
+	else slrn_art_lineup_n ((unsigned int)-offset);
+     }
+   return (int)slrn_art_cline_num();
+}
+/*}}}*/
+
+static int article_line_up (int *num) /*{{{*/
+{
+   if ((-1 == check_article_mode ())
+       || (*num <= 0))
+     return 0;
+   
+   return slrn_art_lineup_n ((unsigned int)*num);
+}
+/*}}}*/
+
+static int article_line_down (int *num) /*{{{*/
+{
+   if ((-1 == check_article_mode ())
+       || (*num <= 0))
+     return 0;
+   
+   return slrn_art_linedn_n ((unsigned int)*num);
+}
+/*}}}*/
+
 /*}}}*/
 
 /*{{{ Article Mode Header Functions */
@@ -1425,6 +1483,12 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("reset_prefix_arg", reset_prefix_arg, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SI("locate_header_by_msgid", locate_header_by_msgid, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("article_as_string", article_as_string, SLANG_STRING_TYPE),
+   MAKE_INTRINSIC_0("article_cline_as_string", article_cline_as_string, SLANG_STRING_TYPE),
+   MAKE_INTRINSIC_0("article_cline_number", article_cline_number, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_0("article_count_lines", article_count_lines, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_I("article_goto_line", article_goto_line, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_I("article_line_down", article_line_down, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_I("article_line_up", article_line_up, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("bsearch_article", bsearch_article, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("call", slrn_call_command, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("collapse_thread", collapse_thread, SLANG_VOID_TYPE),

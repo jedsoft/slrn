@@ -1546,6 +1546,10 @@ void slrn_call_command (char *cmd) /*{{{*/
 	if (0 == strcmp (cmd, list->name))
 	  {
 	     (void) (*list->f) ();
+	     /* sync the line number to avoid surprises in subsequent calls
+	      * that might change the article window (not the article itself) */
+	     if (Slrn_Current_Mode->mode == SLRN_ARTICLE_MODE)
+	       slrn_art_sync_article (Slrn_Current_Article);
 	     return;
 	  }
 	list++;
