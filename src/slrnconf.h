@@ -64,6 +64,12 @@
 /* define if slrn should use In-Reply-To if no References are available */
 #define SLRN_HAS_FAKE_REFS		1
 
+/* hostname of a default NNTP server to use */
+/* #define NNTPSERVER_NAME	"my.server.name" */
+
+/* file that contains the hostname of a default NNTP server */
+/* #define NNTPSERVER_FILE	"/usr/local/lib/news/nntp_server" */
+
 /* End of features section. See slrnfeat.h for the rest. */
 
 /* Does your compiler support vsnprintf()? */

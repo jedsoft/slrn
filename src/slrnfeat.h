@@ -91,24 +91,6 @@
 # define SPOOL_ACTIVE_FOR_ART_RANGE 0
 #endif
 
-/* Default Startup mode.  Should slrn use spool or nntp?  What about default
- * posting agent?
- */
-#if SLRN_HAS_NNTP_SUPPORT
-# define SLRN_DEFAULT_SERVER_OBJ	SLRN_SERVER_ID_NNTP
-# define SLRN_DEFAULT_POST_OBJ		SLRN_POST_ID_NNTP
-#else
-# define SLRN_DEFAULT_SERVER_OBJ	SLRN_SERVER_ID_SPOOL
-# define SLRN_DEFAULT_POST_OBJ		SLRN_POST_ID_INEWS
-#endif
-
-#if SLRN_HAS_INEWS_SUPPORT && SLRN_FORCE_INEWS
-# undef SLRN_DEFAULT_POST_OBJ
-# define SLRN_DEFAULT_POST_OBJ SLRN_POST_ID_INEWS
-#endif
-
-
-
 /* ---------------- end of INEWS and LOCAL SPOOL configuration ----------- */
 
 #ifdef VMS
@@ -169,8 +151,6 @@
 
 /* #define OUR_ORGANIZATION "organization-name" */
 /* #define OUR_HOSTNAME "host.name.here" */
-/* #define NNTPSERVER_NAME  "my.server.name" */
-/* #define NNTPSERVER_FILE		"/usr/local/lib/news/nntp_server" */
 
 #if SLRN_HAS_GROUPLENS
 # undef SLRN_USE_SLTCP
@@ -206,11 +186,6 @@
 /* File where messages and errors will be placed. */
 #define SLRNPULL_LOGFILE	"log"
 
-#if SLRN_HAS_PULL_SUPPORT && !SLRN_HAS_SPOOL_SUPPORT
-# undef SLRN_HAS_PULL_SUPPORT
-# define SLRN_HAS_PULL_SUPPORT 0
-#endif
-
 #if !SLRN_HAS_NNTP_SUPPORT
 # undef SLRN_HAS_GROUPLENS
 # define SLRN_HAS_GROUPLENS 0
@@ -232,22 +207,19 @@
 # define N_(a) a
 #endif
 
-/* Sanity checks.  Do not modify. */
-
-#if !defined (SLRN_DEFAULT_SERVER_OBJ)
-# if SLRN_HAS_NNTP_SUPPORT
-#  define SLRN_DEFAULT_SERVER_OBJ SLRN_SERVER_ID_NNTP
-# else
-#  define SLRN_DEFAULT_SERVER_OBJ SLRN_SERVER_ID_SPOOL
-# endif
+/* Default startup mode, selected automatically. Do not modify.
+ */
+#if SLRN_HAS_NNTP_SUPPORT
+# define SLRN_DEFAULT_SERVER_OBJ	SLRN_SERVER_ID_NNTP
+# define SLRN_DEFAULT_POST_OBJ		SLRN_POST_ID_NNTP
+#else
+# define SLRN_DEFAULT_SERVER_OBJ	SLRN_SERVER_ID_SPOOL
+# define SLRN_DEFAULT_POST_OBJ		SLRN_POST_ID_INEWS
 #endif
 
-#if !defined (SLRN_DEFAULT_POST_OBJ)
-# if SLRN_HAS_NNTP_SUPPORT
-#  define SLRN_DEFAULT_POST_OBJ SLRN_POST_ID_NNTP
-# else
-#  define SLRN_DEFAULT_POST_OBJ SLRN_POST_ID_INEWS
-# endif
+#if SLRN_HAS_INEWS_SUPPORT && SLRN_FORCE_INEWS
+# undef SLRN_DEFAULT_POST_OBJ
+# define SLRN_DEFAULT_POST_OBJ SLRN_POST_ID_INEWS
 #endif
 
 #endif				       /* _SLRN_FEATURES_H */

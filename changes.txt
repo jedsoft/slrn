@@ -16,6 +16,9 @@ Changes since 0.9.7.4
    on a patch by Jurriaan W Kalkman).
    
    locate_article ignores leading "news:" (Jarek Baczynski)
+   
+   configure script accepts new options --with-server-name and
+   --with-server-file (Matthias Friedrich).
 
 Changes since 0.9.7.3
 

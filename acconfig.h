@@ -64,6 +64,12 @@
 /* sendmail command */
 #undef SLRN_SENDMAIL_COMMAND
 
+/* hostname of a default NNTP server to use */
+#undef NNTPSERVER_NAME
+
+/* file that contains the hostname of a default NNTP server */
+#undef NNTPSERVER_FILE
+
 /* Whether you want the "setgid" patch to work (docs/slrnpull/setgid.txt) */
 #define SLRNPULL_USE_SETGID_POSTS	0
 

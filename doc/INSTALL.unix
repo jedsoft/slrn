@@ -60,6 +60,18 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
     in /usr/lib into the executable.  You need to specify this if
     compilation fails with a message saying that libslang cannot be opened.
 
+--with-server-name=HOST
+    Hostname of a fallback NNTP server if none has been selected by the user
+    via environment or command line.
+    Default: unset
+
+--with-server-file=FILE
+    At startup, slrn reads the name of a fallback NNTP server from this
+    file. This option overrides --with-server-name; however, users may
+    still select another server via environment or command line.
+    Common settings for FILE are "/etc/nntpserver" and "/etc/news/server".
+    Default: unset
+
 --with-slang-library=DIR
     Explicitly set the location of the slang library.  If not used,
     configure will look for it automatically.
