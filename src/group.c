@@ -1106,11 +1106,13 @@ static void set_current_group (void) /*{{{*/
 
 static void refresh_groups (Slrn_Group_Type **c) /*{{{*/
 {
+   Slrn_Group_Type *g = Groups;
+   Slrn_Group_Range_Type *ranges;
+   
    if (Slrn_Max_Queued_Groups <= 0)
      Slrn_Max_Queued_Groups = 1;
-   {
-   Slrn_Group_Type *g = Groups;
-   Slrn_Group_Range_Type ranges[Slrn_Max_Queued_Groups];
+   ranges = (Slrn_Group_Range_Type *) slrn_safe_malloc
+     (Slrn_Max_Queued_Groups * sizeof(Slrn_Group_Range_Type));
    
    while (g != NULL)
      {
@@ -1129,7 +1131,7 @@ static void refresh_groups (Slrn_Group_Type **c) /*{{{*/
 	if (Slrn_Server_Obj->sv_refresh_groups (ranges, i))
 	  {
 	     slrn_error (_("Server connection dropped."));
-	     return;
+	     goto free_and_return;
 	  }
 	g = start;
 	while (j < i)
@@ -1161,7 +1163,8 @@ static void refresh_groups (Slrn_Group_Type **c) /*{{{*/
 	while ((g != NULL) && (g->flags & GROUP_UNSUBSCRIBED))
 	  g = g->next;
      }
-   }
+   free_and_return:
+   SLfree ((char*) ranges);
 }
 /*}}}*/
 

@@ -82,15 +82,19 @@ any of the others. They are available in all modes.
    0: Hook does not exist or may not be defined multiple times.
    1: Function successfully registered.
    2: Given function was already registered for this hook.
+   3: Undefined function successfully registered.
 #v-
    If you register multiple functions for the same hook, they will be called
    in the order in which they were registered. If a function with the name
    of a hook is defined, it gets called after those that were registered
    using this function.
+
+   It is possible to register a function first and define it
+   afterwards. In this case, register_hook returns 3.
    
    cc_hook, make_from_string_hook and subject_compare_hook may only be
-   defined once, as they return a value and slrn cannot handle more than one
-   of them.
+   defined once, as they return a value and slrn only expects a single
+   return value when calling them.
 \seealso{unregister_hook}
 \done
 

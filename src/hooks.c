@@ -84,7 +84,7 @@ int slrn_register_hook( unsigned int hook, const char *func )
    h->function = slrn_safe_strmalloc( (char *)func );
    h->next = NULL;
    *ins = h;
-   return 1;
+   return (0 < SLang_is_defined(h->function)) ? 1 : 3;
 }
 
 int slrn_register_hook_by_name( const char *hook, const char *func )
@@ -184,5 +184,5 @@ int slrn_is_hook_defined( unsigned int hook )
    if( Hooks[hook].first ) 
       return 1;
    
-   return SLang_is_defined( (char *)Hooks[hook].name );
+   return (2 == SLang_is_defined( (char *)Hooks[hook].name ));
 }

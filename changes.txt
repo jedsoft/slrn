@@ -19,7 +19,8 @@ Changes since 0.9.7.3
    In article mode, "expunge" now triggers the newsrc autosave copy feature.
    
    Added intrinsic functions set_ignore_quotes, set_strip_re_regexp,
-   set_strip_sig_regexp and set_strip_was_regexp.
+   set_strip_sig_regexp and set_strip_was_regexp. Added a return value to
+   register_hook (hopefully, you'll find it backwards compatible).
 
    More translations:
   * es.po (Spanish; Walter Echarri)
