@@ -1275,7 +1275,7 @@ static int read_score_file_internal (char *file, Score_Context_Type *c)
      }
    
    thisfile = (Scorefile_Name_Type *)
-     slrn_safe_malloc (sizeof (Scorefile_Name_Type *));
+     slrn_safe_malloc (sizeof (Scorefile_Name_Type));
    thisfile->filename = slrn_safe_strmalloc (file);
    thisfile->next = Scorefile_Names;
    Scorefile_Names = thisfile;

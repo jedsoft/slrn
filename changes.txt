@@ -4,6 +4,7 @@ Changes since 0.9.7.3
   * slrn sometimes hung when reading via SSL. (Robert Dennis Manchester)
   * Sometimes headers were cut off during MIME encoding (Andreas Ferber)
   * Mouse support did not work correctly when using a translation.
+  * Fixed a segfault while scoring. (Byrial Jensen)
   * Fixed rare segfault caused by broken "References:" lines. (Felix Schueller)
   * get_(fg|bg)_color() mapped color names incorrectly and did not allow
     quotes[0-7] as an argument.

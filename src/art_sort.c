@@ -643,7 +643,10 @@ static void link_same_subjects (void) /*{{{*/
 		    }
 		  
 		  if (last_child->flags & FAKE_PARENT) /* h1 has only fake children */
-		    h1->child = NULL;
+		    {
+		       child = last_child;
+		       h1->child = NULL;
+		    }
 		  else
 		    last_child->sister = NULL;
 		  
@@ -651,7 +654,7 @@ static void link_same_subjects (void) /*{{{*/
 		  while (last_child != NULL)
 		    {
 		       child = last_child->sister;
-		       insert_fake_child (h, child);
+		       insert_fake_child (h, last_child);
 		       last_child = child;
 		    }
 		  h1->flags &= ~FAKE_CHILDREN;
