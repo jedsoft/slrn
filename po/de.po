@@ -1,13 +1,13 @@
 # German Translation for slrn
-# Jens Wahnes <jewa@gmx.net>, 2001.
+# Jens Wahnes <jewa@gmx.net>, 2001-2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.9.7.2pl2\n"
+"Project-Id-Version: 0.9.7.3pl1\n"
 "POT-Creation-Date: 2002-03-05 17:41+0100\n"
-"PO-Revision-Date: 2001-10-29 14:16+0200\n"
+"PO-Revision-Date: 2002-03-08 13:26+0100\n"
 "Last-Translator: Jens Wahnes <jewa@gmx.net>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Jens Wahnes <jewa@gmx.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -135,22 +135,22 @@ msgstr ""
 #: src/art.c:2141
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
-msgstr ""
+msgstr "#%2d/%-2d: %4d/%-4d Zeilen empfangen (%s) mit %.2fkB/Sek"
 
 #: src/art.c:2145
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
-msgstr ""
+msgstr "#%2d/%-2d: %4d/%-4d Zeilen empfangen (%s)"
 
 #: src/art.c:2151
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
-msgstr ""
+msgstr "[%d] %d/%d Zeilen empfangen mit %.2fkB/Sek"
 
 #: src/art.c:2154
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
-msgstr ""
+msgstr "[%d] %d/%d Zeilen empfangen"
 
 #: src/art.c:2194
 msgid "Server sent empty article."
@@ -197,7 +197,7 @@ msgstr "Möchten Sie die Nachricht vor dem Verschicken bearbeiten"
 
 #: src/art.c:2885 src/art.c:3290
 msgid "Posting not allowed by server"
-msgstr "Das Posten wird vom Server nicht erlaubt."
+msgstr "Der Server erlaubt Ihnen nicht zu posten."
 
 #: src/art.c:2892
 msgid "Are you sure you want to followup"
@@ -408,60 +408,51 @@ msgstr "Markierung wurde gesetzt."
 
 #: src/art.c:4568
 msgid "Mark not set."
-msgstr "Markierung wurde nicht gesetzt."
+msgstr "Sie haben noch keine Markierung gesetzt."
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Subject search "
-msgstr "Betreff (Subject): "
+msgstr "Suche nach Betreff (Subject) "
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Author search "
-msgstr "-Suche "
+msgstr "Suche nach Autor "
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(forward)"
-msgstr "vorwärts"
+msgstr "(vorwärts)"
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(backward)"
-msgstr "rückwärts"
+msgstr "(rückwärts)"
 
 #: src/art.c:4776 src/slrnpull.c:1182
-#, fuzzy, c-format
+#, c-format
 msgid "Score %d killed article %s\n"
 msgstr ""
-"Die Bewertung %d führte dazu, daß %s aussortiert wurde\n"
-"Newsgroup: %s\n"
-"From: %s\n"
-"Subject: %s\n"
-"\n"
+"Die Bewertung %d führte dazu, daß der Artikel %s aussortiert wurde\n"
 
 #: src/art.c:4780 src/slrnpull.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
-msgstr "%s wird angelegt (%s).\n"
+msgstr " Bewertung %c%5i: %s (%s:%i)\n"
 
 #: src/art.c:4784 src/slrnpull.c:1190
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
-msgstr ""
+msgstr " Bewertung %c%5i: %s:%i\n"
 
 #: src/art.c:4789 src/slrnpull.c:1195
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "  Newsgroup: %s\n"
 "  From: %s\n"
 "  Subject: %s\n"
 "\n"
 msgstr ""
-"Die Bewertung %d führte dazu, daß %s aussortiert wurde\n"
-"Newsgroup: %s\n"
-"From: %s\n"
-"Subject: %s\n"
+"  Newsgroup: %s\n"
+"  From: %s\n"
+"  Subject: %s\n"
 "\n"
 
 #: src/art.c:4854
@@ -476,7 +467,7 @@ msgstr ""
 
 #: src/art.c:4907
 msgid "Apply scorefile now"
-msgstr "Bewertungsdatei jetzt neu anwenden"
+msgstr "Bewertungsdatei (scorefile) jetzt neu anwenden"
 
 #: src/art.c:4955
 msgid "This article is not matched by any scorefile entries."
@@ -565,7 +556,7 @@ msgstr "Bewerten Sie den Artikel (1-5):"
 
 #: src/art.c:6563
 msgid "Rating must be in range 1 to 5."
-msgstr "Ihre Bewertung muß im zwischen 1 und 5 liegen."
+msgstr "Ihre Bewertung muß zwischen 1 und 5 liegen."
 
 #: src/art.c:6856
 msgid "Unable to create Article keymap!"
@@ -639,18 +630,16 @@ msgid "Spoilers visible!"
 msgstr "Es sind Spoiler sichtbar."
 
 #: src/art_sort.c:329
-#, fuzzy
 msgid "slrn_sort_headers(): memory allocation failure."
-msgstr "sort_headers(): Kein Speicher verfügbar."
+msgstr "slrn_sort_headers(): Kein Speicher verfügbar."
 
 #: src/art_sort.c:586
 msgid "link_same_subjects: memory allocation failure."
 msgstr "link_same_subjects: Kein Speicher verfügbar."
 
 #: src/art_sort.c:797
-#, fuzzy
 msgid "Internal Error in fixup_threads()."
-msgstr "Interner Fehler."
+msgstr "Interner Fehler in fixup_threads()."
 
 #: src/art_sort.c:851
 msgid "Threading by references ..."
@@ -671,12 +660,12 @@ msgstr "\"Verlorene Söhne\" werden eingebunden ..."
 #. * cracks, i.e., no references
 #: src/art_sort.c:922
 msgid "Linking articles with identical subjects ..."
-msgstr "Artikel mit gleichem Betreff werden zusammengeführt."
+msgstr "Artikel mit gleichem Betreff (subject) werden zusammengeführt."
 
 #: src/art_sort.c:1022
 #, c-format
 msgid "Can't sort according to `%s'"
-msgstr ""
+msgstr "Eine Sortierung nach '%s' ist nicht möglich"
 
 #: src/chkslang.c:58
 #, c-format
@@ -783,7 +772,7 @@ msgstr "Unerwartetes Dateiende.\n"
 #: src/decode.c:876
 #, c-format
 msgid "uuencode line appears corrupt: \"%s\""
-msgstr "Diese UUkodierte Zeile scheint kaputt zu sein: \"%s\""
+msgstr "Diese UUkodierte Zeile scheint fehlerhaft zu sein: \"%s\""
 
 #: src/decode.c:919
 #, c-format
@@ -833,7 +822,7 @@ msgstr "Sie haben keine Bewertungsdatei (score file) angegeben."
 #: src/editscore.c:86
 msgid "Pick Score type: Subject, From, References, Edit, Cancel"
 msgstr ""
-"Bewertung nach: Subject:, From:, References:, im Editor Bearbeiten, Abbruch"
+"Bewertung nach: Subject:, From:, References:, im Editor bearbeiten, Abbruch"
 
 #: src/editscore.c:103
 msgid "Which newsgroups: This group, All groups"
@@ -898,7 +887,7 @@ msgstr "Sie sind bereits am Anfang."
 
 #: src/group.c:1133
 msgid "Server connection dropped."
-msgstr "Der Server hat die Verbindung unterbrochen."
+msgstr "Die Verbindung zum Server ist unterbrochen."
 
 #: src/group.c:1176 src/group.c:2675
 #, c-format
@@ -1017,7 +1006,7 @@ msgstr "\"Teure\" Bewertungen werden nicht durchgeführt."
 
 #: src/group.c:1812
 msgid "Scoring disabled."
-msgstr "Es findet keinerlei Bewertung der Artikel statt."
+msgstr "Es findet keinerlei Bewertung (Scoring) der Artikel statt."
 
 #: src/group.c:1830
 msgid "No changes need to be saved."
@@ -1098,7 +1087,7 @@ msgid ""
 "I expected to see: NEWGROUPS yymmdd hhmmss GMT\n"
 "I will patch the file up for you.\n"
 msgstr ""
-"%s scheint kaputt zu sein.\n"
+"%s scheint beschädigt zu sein.\n"
 "Es sollte folgendes Format vorliegen: NEWGROUPS JJMMTT HHMMSS GMT\n"
 "Die Datei wird jetzt angepasst.\n"
 
@@ -1558,7 +1547,7 @@ msgstr "Als gelesen bzw. ungelesen markieren:"
 #: src/help.c:110
 msgid "  d                  Mark article or collapsed thread as read."
 msgstr ""
-"  s               Artikel (oder zusammengeklappten Thread) als gelesen "
+"  d               Artikel (oder zusammengeklappten Thread) als gelesen "
 "markieren"
 
 #: src/help.c:111
@@ -1569,7 +1558,7 @@ msgstr ""
 
 #: src/help.c:112
 msgid "  ESC d              Mark entire (sub-)thread as read."
-msgstr "  ESC d           Den gesamten (Sub-)Thread als gelesen markieren"
+msgstr "  ESC d           Den gesamten (Teil-)Thread als gelesen markieren"
 
 #: src/help.c:113
 msgid "  c                  Catchup - mark all articles as read."
@@ -1691,7 +1680,7 @@ msgstr "Sonstige Kommandos:"
 
 #: src/help.c:142
 msgid "  K                  Create a scorefile entry interactively."
-msgstr "  K               Eine Artikelbewertung mit Rückfragen erstellen"
+msgstr "  K               Eine Artikelbewertung (scorefile entry) mit Rückfragen erstellen"
 
 #: src/help.c:143
 msgid "      ESC 1 K        Edit scorefile."
@@ -1859,7 +1848,7 @@ msgstr "  G               Auf dem Server nach neuen Artikeln suchen"
 
 #: src/help.c:190
 msgid "  K                       Select scoring mode."
-msgstr "  K               Art der Artikelbewertung festlegen"
+msgstr "  K               Art der Artikelbewertung (Scoring) festlegen"
 
 #: src/help.c:191
 msgid "  .                       Repeat last key sequence."
@@ -2050,12 +2039,11 @@ msgstr "Der Wert für den Anzeige-Zeichensatz in Zeile %d ist ungültig."
 #: src/interp.c:452
 #, c-format
 msgid "Array must contain at least one, at most %d elements."
-msgstr ""
+msgstr "Das Array muß mindestens eins, aber höchstens %d Elemente enthalten."
 
 #: src/interp.c:460
-#, fuzzy
 msgid "Failed to allocate memory."
-msgstr "Fehler bei der Auswahl des Zeichensatzes."
+msgstr "Es ist nicht genug Speicher verfügbar."
 
 #: src/interp.c:527
 msgid "definekey: no such keymap."
@@ -2156,7 +2144,7 @@ msgstr "Threaden, dann nach Betreff (subject) sortieren"
 #. 011
 #: src/menu.c:196
 msgid "Sort by scores."
-msgstr "Nach Artikelbewertung sortieren"
+msgstr "Nach Artikelbewertung (Score) sortieren"
 
 #. 100
 #: src/menu.c:197
@@ -2196,7 +2184,7 @@ msgstr "Threaden, dann nach Datum sortieren (Älteste zuerst)"
 #. 1011
 #: src/menu.c:204
 msgid "Custom sorting (see manual)"
-msgstr ""
+msgstr "Selbstdefinierte Reihenfolge (siehe Handbuch)"
 
 #: src/menu.c:212
 msgid "Sorting Method"
@@ -2490,11 +2478,11 @@ msgstr "Verbindung hergestellt. %s"
 
 #: src/nntplib.c:494
 msgid "Posting ok."
-msgstr "Der Server erlaubt Ihnen zu posten."
+msgstr "Der Server nimmt Artikel entgegen."
 
 #: src/nntplib.c:494
 msgid "Posting NOT ok."
-msgstr "Der Server erlaubt Ihnen NICHT zu posten."
+msgstr "Sie haben nur Lesezugriff."
 
 #: src/nntplib.c:500
 msgid "Failed to initialize server"
@@ -2874,9 +2862,9 @@ msgid "***Warning: error writing to %s"
 msgstr "***Achtung: Fehler beim Schreiben von %s"
 
 #: src/post.c:880
-#, fuzzy, c-format
+#, c-format
 msgid "%s Failed post saved in %s"
-msgstr "Die nicht gepostete Nachricht wurde in %s gespeichert."
+msgstr "%s Die nicht gepostete Nachricht wurde in %s gespeichert."
 
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
@@ -2948,14 +2936,12 @@ msgid "Posting ..."
 msgstr "Nachricht wird gepostet ..."
 
 #: src/post.c:1104
-#, fuzzy
 msgid "post_file_hook returned error."
-msgstr "post_file_hook gab einen Fehler zurück. %s wurde nicht gepostet."
+msgstr "post_file_hook gab einen Fehler zurück."
 
 #: src/post.c:1126
-#, fuzzy
 msgid "Could not reach server."
-msgstr "Die Newsgruppe %s konnte nicht ausgewählt werden."
+msgstr "Es konnte keine Verbindung zum Server hergestellt werden."
 
 #: src/post.c:1254
 msgid "Posting...done."
@@ -3050,12 +3036,12 @@ msgstr "%s kann nicht zum Drucken geöffnet werden"
 
 #: src/score.c:587
 msgid "Reloading score file ..."
-msgstr "Die Bewertungsdatei wird erneut eingelesen ..."
+msgstr "Die Bewertungsdatei (score file) wird erneut eingelesen ..."
 
 #: src/score.c:589 src/slrn.c:988
 #, c-format
 msgid "Error processing score file %s."
-msgstr "Fehler beim Verarbeiten der Bewertungsdatei %s."
+msgstr "Fehler beim Verarbeiten der Bewertungsdatei (score file) %s."
 
 #: src/score.c:838
 #, c-format
@@ -3085,7 +3071,7 @@ msgstr "\"Expires\" wird im Format MM/TT/JJJJ oder TT-MM-JJJJ erwartet"
 #: src/score.c:1112
 #, c-format
 msgid "%s has expired score on line %d"
-msgstr "%s: Bewertungsregel in Zeile %d ist unwirksam"
+msgstr "%s: Bewertungsregel in Zeile %d ist abgelaufen"
 
 #: src/score.c:1125
 msgid "Bad group regular expression."
@@ -3095,7 +3081,7 @@ msgstr "Der reguläre Ausdruck für die Gruppe ist fehlerhaft."
 msgid "Expecting Score keyword."
 msgstr "Das Schlüsselwort \"Score\" wurde erwartet."
 
-#: src/score.c:1201 src/score.c:1211
+#: src/score.c:1201 src/score.c:1211	
 msgid "Missing COLON."
 msgstr "Doppelpunkt fehlt."
 
@@ -3115,7 +3101,7 @@ msgstr "*** Achtung: %s wurde bereits eingelesen und wird übersprungen."
 #: src/score.c:1285
 #, c-format
 msgid "Unable to open score file %s"
-msgstr "Die Bewertungsdatei %s konnte nicht geöffnet werden"
+msgstr "Die Bewertungsdatei (score file) %s konnte nicht geöffnet werden"
 
 #: src/server.c:102
 msgid "Couldn't open pipe to inews! -- Article not posted."
@@ -3181,14 +3167,14 @@ msgid ""
 "slrn: pid %d is locking the newsrc file. If you're not running another\n"
 "      copy of slrn, delete the file %s"
 msgstr ""
-"slrn: Die newsrc-Datei wird vom Prozeß mit der ID %d blockiert.\n"
+"slrn: Die newsrc-Datei wird vom Prozeß mit der ID %d gesperrt.\n"
 "      Falls Sie keine weitere Instanz von slrn laufen haben, löschen Sie \n"
 "      die Datei %s"
 
 #: src/slrn.c:186
 #, c-format
 msgid "slrn: pid %d is locking the newsrc file."
-msgstr "slrn: Die newsrc-Datei wird vom Prozeß mit der ID %d blockiert."
+msgstr "slrn: Die newsrc-Datei wird vom Prozeß mit der ID %d gesperrt."
 
 #. delete the "normal" lock file
 #: src/slrn.c:257 src/slrn.c:264
@@ -3260,7 +3246,7 @@ msgstr ""
 "                   entstehende Datei kann mehrere hundert Kilobyte groß "
 "sein.\n"
 "-i init-Datei    Name der Konfigurationsdatei (Vorgabe: %s).\n"
-"-k               Bewertungsdatei nicht einlesen.\n"
+"-k               Bewertungsdatei (score file) nicht einlesen.\n"
 "-k0              Keine \"teuren\" Bewertungen vornehmen.\n"
 "-m               XTerm-Mausunterstützung erzwingen.\n"
 "-n               Nicht nach neuen Newsgruppen suchen. slrn startet "
@@ -3290,12 +3276,12 @@ msgstr "%s wird nicht unterstützt."
 #: src/slrn.c:982
 #, c-format
 msgid "*** Warning: Score file %s does not exist"
-msgstr "*** Achtung: Die Bewertungsdatei %s ist nicht vorhanden"
+msgstr "*** Achtung: Die Bewertungsdatei (score file) %s ist nicht vorhanden"
 
 #: src/slrn.c:1080
 #, c-format
 msgid "Unable to open %s for debugging."
-msgstr "%s konnte nicht zum Debugging geöffnet werden."
+msgstr "%s konnte nicht zum Debuggen geöffnet werden."
 
 #: src/slrn.c:1126
 msgid "The -d and --create flags must not be specified together."
@@ -3311,12 +3297,12 @@ msgstr "Fehler beim Initialisieren des S-Lang-Interpreters.\n"
 
 #: src/slrn.c:1155
 msgid "Error configuring server objects."
-msgstr "Fehler beim Einstellen der Server-Objekte."
+msgstr "Fehler beim Konfigurieren der Server-Objekte."
 
 #: src/slrn.c:1181
 #, c-format
 msgid "Could not read specified config file %s\n"
-msgstr ""
+msgstr "Die angegebene Konfigurationsdatei %s konnte nicht gelesen werden.\n"
 
 #: src/slrn.c:1187
 msgid ""
@@ -3550,7 +3536,7 @@ msgstr "Fehler beim Lesen."
 #: src/slrnpull.c:740
 #, c-format
 msgid "listgroup %s failed: %s"
-msgstr "listgroup schlug fehl: %s"
+msgstr "listgroup %s schlug fehl: %s"
 
 #: src/slrnpull.c:812
 #, c-format
@@ -3701,7 +3687,7 @@ msgstr "chmod 0%o konnte nicht auf %s ausgeführt werden."
 
 #: src/slrnpull.c:1588
 msgid "Server does not permit posting at this time."
-msgstr "Der Server erlaubt Ihnen z.Zt. nicht zu posten."
+msgstr "Der Server nimmt z.Zt. keine Artikel entgegen."
 
 #: src/slrnpull.c:1609
 #, c-format
@@ -3768,7 +3754,7 @@ msgstr ""
 "  --logfile DATEI      DATEI als Log-Datei verwenden.\n"
 "  --new-groups         Liste neuer Gruppen vom Server holen.\n"
 "  --no-post            Keine Artikel posten.\n"
-"  --post-only          Nur Artikel holen, aber keine posten.\n"
+"  --post-only          Nur Artikel posten, aber keine holen.\n"
 "  --version            Versionsnummer ausgeben.\n"
 
 #: src/slrnpull.c:1835
@@ -3777,7 +3763,6 @@ msgid "%s version: %s\n"
 msgstr "%s Version: %s\n"
 
 #: src/slrnpull.c:1941
-#, c-format
 msgid "Unable to create debug file %s\n"
 msgstr "Die Debug-Datei %s konnte nicht angelegt werden\n"
 
@@ -3813,7 +3798,7 @@ msgid ""
 "%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
 "patch the file up for you."
 msgstr ""
-"%s scheint kaputt zu sein. Es sollte folgendes Format vorliegen:\n"
+"%s scheint fehlerhaft zu sein. Es sollte folgendes Format vorliegen:\n"
 "NEWGROUPS JJMMTT HHMMSS GMT. Die Datei wird jetzt angepasst."
 
 #: src/slrnpull.c:2235
@@ -3852,7 +3837,7 @@ msgstr "%s konnte nicht expiret werden."
 #: src/slrnpull.c:2555
 #, c-format
 msgid "%u articles expired in %s."
-msgstr "In %s wurden %u Artikel gelöscht."
+msgstr "Es wurden %u Artikel in %s gelöscht."
 
 #: src/slrnpull.c:2578
 msgid "Termination requested.  Shutting down."
@@ -4041,7 +4026,7 @@ msgid ""
 "%s: Obsolete variable name on line %d: followup\n"
 "The new name is followup_string"
 msgstr ""
-"%s: Veralteter Variablenname in Zeile %s: followup\n"
+"%s: Veralteter Variablenname in Zeile %d: followup\n"
 "Die Variable heißt jetzt followup_string"
 
 #: src/startup.c:804
