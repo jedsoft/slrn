@@ -1,7 +1,6 @@
 # Finnish translation for slrn.
-# Copyright © 2002 Lauri Nurmi <lanurmi@iki.fi>.
-#
-# Lauri Nurmi <lanurmi@iki.fi>, 2002.
+# Copyright © 2002-2003 Lauri Nurmi <lanurmi@iki.fi>.
+# Lauri Nurmi <lanurmi@iki.fi>, 2002-2003.
 #
 # thanks to Jukka Aho <znark at iki.fi> for many suggestions
 #
@@ -9,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: slrn 0.9.8.0\n"
 "POT-Creation-Date: 2003-01-11 15:51+0100\n"
-"PO-Revision-Date: 2002-11-01 02:50+0200\n"
+"PO-Revision-Date: 2003-02-16 12:22+0200\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -76,7 +75,7 @@ msgstr "Ryhmässä ei ole artikkeleita."
 
 #: src/art.c:1147
 msgid "No Web Browser has been defined."
-msgstr "WWW-selainta ei ole määritetty."
+msgstr "WWW-selainta ei ole määritelty."
 
 #: src/art.c:1198
 msgid "No URLs found."
@@ -134,7 +133,7 @@ msgstr "Artikkelin siirto keskeytetty tai yhteys menetetty."
 #: src/art.c:2181
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
-msgstr "#%2d/%-2d: Luettu %4d/%-4d riviä (%s) nopeudella %.2f kB/s"
+msgstr "#%2d/%-2d: Luettu %4d/%-4d riviä (%s) nopeudella %.2f kt/s"
 
 #: src/art.c:2185
 #, c-format
@@ -144,7 +143,7 @@ msgstr "#%2d/%-2d: Luettu %4d/%-4d riviä (%s)"
 #: src/art.c:2191
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
-msgstr "[%d] Luettu %d/%d riviä toistaiseksi, nopeudella %.2f kB/s"
+msgstr "[%d] Luettu %d/%d riviä toistaiseksi, nopeudella %.2f kt/s"
 
 #: src/art.c:2194
 #, c-format
@@ -563,7 +562,7 @@ msgstr "Arvostele artikkeli (1-5):"
 
 #: src/art.c:6877
 msgid "Rating must be in range 1 to 5."
-msgstr "Arvosanan on oltava välillä 1..5."
+msgstr "Arvosanan on oltava välillä 1-5."
 
 #: src/art.c:7171
 msgid "Unable to create Article keymap!"
@@ -714,7 +713,7 @@ msgid ""
 "This library is available via anonymous ftp from\n"
 "space.mit.edu in pub/davis/slang.\n"
 msgstr ""
-"Tämä kirjasto on saatavilla anonyymin ftp:n kautta palvelimelta\n"
+"Tämä kirjasto on saatavilla anonyymin FTP:n kautta palvelimelta\n"
 "space.mit.edu, hakemisto pub/davis/slang.\n"
 
 #: src/chmap.c:147 src/chmap.c:154
@@ -804,7 +803,7 @@ msgstr "TtKk"
 
 #: src/editscore.c:76
 msgid "A Score file has not been specified."
-msgstr "Pisteytystiedostoa ei ole määritetty."
+msgstr "Pisteytystiedostoa ei ole määritelty."
 
 #: src/editscore.c:86
 msgid "Pick Score type: Subject, From, References, Edit, Cancel"
@@ -858,7 +857,7 @@ msgstr "%s: Montako luetaan? "
 #: src/group.c:1039
 #, c-format
 msgid "Only downloading %d of %d articles."
-msgstr ""
+msgstr "Ladataan vain %d artikkelia, kokonaismäärä %d."
 
 #: src/group.c:1119
 msgid "Do you really want to quit"
@@ -1152,7 +1151,7 @@ msgstr "-%D-Keskusteluryhmät: %s %-20g -- %L (%P)"
 #: src/group.c:3238 src/group.c:3276 src/interp.c:360 src/interp.c:430
 msgid "To use this feature, please update s-lang and recompile slrn."
 msgstr ""
-"Tämän ominaisuuden käyttämiseksi s-lang on päivitettävä ja slrn käännettävä "
+"Tämän ominaisuuden käyttämiseksi S-Lang on päivitettävä ja slrn käännettävä "
 "uudelleen."
 
 #: src/group.c:3284 src/interp.c:438
@@ -1266,8 +1265,7 @@ msgstr " Lisää tietoa on slrn:n kotisivulla:   http://slrn.sourceforge.net/"
 #: src/help.c:43
 msgid "   http://slrn.sourceforge.net/"
 msgstr ""
-" Kommentit suomennoksesta listalle: <translation-team-fi@lists.sourceforge."
-"net>"
+" Kommentit suomennoksesta osoitteeseen: <Lauri.Nurmi@iki.fi>"
 
 #: src/help.c:44
 msgid " Questions not covered by the documentation can be posted to"
@@ -1952,7 +1950,7 @@ msgstr "ladataan tiedostoa %s"
 #: src/interp.c:301 src/interp.c:309 src/interp.c:322
 #, c-format
 msgid "%s is not a valid variable name."
-msgstr "%s ei ole kelvollinen muuttujan nimi."
+msgstr "%s ei ole kelvollinen muuttujanimi."
 
 #: src/interp.c:350
 msgid "setlocale is not available on this system."
@@ -2230,7 +2228,7 @@ msgstr "Virheellinen editorimääritys."
 
 #: src/misc.c:1483
 msgid "No editor command defined."
-msgstr "Editorikomentoa ei ole määritetty."
+msgstr "Editorikomentoa ei ole määritelty."
 
 #: src/misc.c:1505
 msgid "The editor could not be found."
@@ -2297,7 +2295,7 @@ msgstr "? [K]yllä, eI, Peruuta"
 
 #: src/misc.c:2466 src/spool.c:1434
 msgid "Invalid regular expression or expression too long."
-msgstr "Virheellinen tai liian pitkä säännöllinen ilmaus."
+msgstr "Virheellinen tai liian pitkä säännöllinen lauseke."
 
 #: src/misc.c:2599
 #, no-c-format
@@ -2861,7 +2859,7 @@ msgstr "Tiedosto on olemassa, ylikirjoitetaanko"
 
 #: src/post.c:1631
 msgid "You must specify a name"
-msgstr "Nimi on määritettävä"
+msgstr "Nimi on määriteltävä"
 
 #: src/post.c:1633
 msgid "Illegal filename. Try again"
@@ -2959,7 +2957,7 @@ msgstr "Tiedoston %s rivillä %d on vanhentunut pisteytyssääntö"
 
 #: src/score.c:1135
 msgid "Bad group regular expression."
-msgstr "Virheellinen ryhmän säännöllinen ilmaus."
+msgstr "Virheellinen ryhmän säännöllinen lauseke."
 
 #: src/score.c:1155
 msgid "Expecting Score keyword."
@@ -2971,7 +2969,7 @@ msgstr "Puuttuva KAKSOISPISTE."
 
 #: src/score.c:1232
 msgid "No regular expression given."
-msgstr "Säännöllistä ilmausta ei ole annettu."
+msgstr "Säännöllistä lauseketta ei ole annettu."
 
 #: src/score.c:1267
 msgid "Missing '}' for  subscore"
@@ -3197,7 +3195,7 @@ msgstr ""
 "! Asetustiedosto sisältää vanhentuneita komentoja tai funktionimiä, joita\n"
 "! tämän ohjelman tulevat versiot eivät tue.\n"
 "! Jos Perl on asennettuna, skriptillä slrnrc-conv voidaan muuttaa\n"
-"! asetukset ajantasalle. Skripti löytyy lähdekoodijakelusta tai sen\n"
+"! asetukset ajan tasalle. Skripti löytyy lähdekoodijakelusta tai sen\n"
 "! voi noutaa osoitteesta <URL:http://slrn.sourceforge.net/data/>.\n"
 
 #: src/slrn.c:1213
@@ -3215,10 +3213,9 @@ msgid ""
 "You will have to specify a hostname in your %s file.\n"
 msgstr ""
 "Kelvollista isäntänimeä ei löydy sähköpostiosoitteen muodostamiseen.\n"
-"Isäntänimi on määritettävä tiedostossa %s.\n"
+"Isäntänimi on määriteltävä tiedostossa %s.\n"
 
 #: src/slrn.c:1275
-#, fuzzy
 msgid ""
 "Unable to find your user name.  This means that a valid 'From' header line\n"
 "cannot be constructed.  Try setting the USER environment variable.\n"
@@ -3434,7 +3431,7 @@ msgstr "%s: Haetaan artikkelit %d-%d."
 #: src/slrnpull.c:901
 #, c-format
 msgid "%s: No articles in specified range."
-msgstr "%s: Ei artikkeleita annetulla välillä."
+msgstr "%s: Annetulla välillä ei ole artikkeleita."
 
 #: src/slrnpull.c:949
 #, c-format
@@ -3608,18 +3605,18 @@ msgid ""
 "  --rebuild            Like --expire; additionally rebuilds overview files.\n"
 "  --version            Show the version number.\n"
 msgstr ""
-"%s\rkäyttö: %s [valitsimet]\n"
+"%.0sKäyttö: %s [valitsimet]\n"
 " Valitsimet:\n"
 "  -d JONOHAKEMISTO     Käytettävä jonohakemisto.\n"
 "  -h ISÄNTÄNIMI        Käytettävän NNTP-palvelimen isäntänimi.\n"
-"  --debug TIED         Kirjoita keskustelu palvelimen kanssa TIEDostoon.\n"
+"  --debug TIEDOSTO     Kirjoita keskustelu palvelimen kanssa TIEDOSTOon.\n"
 "  --expire             Poista vanhat viestit, älä hae uusia.\n"
 "  --help               Näytä tämä käyttöohje.\n"
-"  --kill-log TIED      Pidä lokia TIEDostossa kaikista tapetuista "
+"  --kill-log TIEDOSTO  Pidä lokia TIEDOSTOssa kaikista tapetuista "
 "artikkeleista.\n"
 "  --kill-score PIST    Tapa artikkelit, joiden pisteytys on pienempi kuin "
 "PIST.\n"
-"  --logfile TIED       Käytä TIEDostoa lokitiedostona.\n"
+"  --logfile TIEDOSTO   Käytä TIEDOSTOa lokitiedostona.\n"
 "  --no-post            Älä lähetä artikkeleita.\n"
 "  --post-only          Lähetä artikkelit, mutta älä hae uusia.\n"
 "  --rebuild            Kuten --expire; luo myös yhteenvetotiedostot "
@@ -3638,7 +3635,7 @@ msgstr "Vianetsintätiedostoa %s ei voida luoda\n"
 
 #: src/slrnpull.c:1956
 msgid "The slrnpull spool directory has not been defined."
-msgstr "Slrnpull:in jonohakemistoa ei ole määritetty."
+msgstr "Slrnpull:in jonohakemistoa ei ole määritelty."
 
 #: src/slrnpull.c:1963
 msgid "slrnpull started in expire mode."
@@ -3911,7 +3908,7 @@ msgid ""
 "%serror defining key."
 msgstr ""
 "%s: rivi %d:\n"
-"%svirhe määritettäessä näppäintä."
+"%svirhe määriteltäessä näppäintä."
 
 #: src/startup.c:302
 #, c-format
@@ -3919,7 +3916,7 @@ msgid ""
 "%s: Obsolete function name on line %d: %s\n"
 "The new name is: %s"
 msgstr ""
-"%s: Vanhentunut funktion nimi rivillä %d: %s\n"
+"%s: Vanhentunut funktionimi rivillä %d: %s\n"
 "Uusi nimi on: %s"
 
 #: src/startup.c:358
@@ -3929,7 +3926,7 @@ msgid ""
 "%sInvalid regular expression."
 msgstr ""
 "%s: rivi %d:\n"
-"%sVirheellinen säännöllinen ilmaus."
+"%sVirheellinen säännöllinen lauseke."
 
 #: src/startup.c:374
 #, c-format
@@ -3938,15 +3935,15 @@ msgid ""
 "%sToo many expressions specified."
 msgstr ""
 "%s: rivi %d:\n"
-"%sIlmauksia on määritetty liian monta."
+"%sLausekkeita on määritelty liian monta."
 
 #: src/startup.c:796
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s: Obsolete variable name on line %d: %s\n"
 "The new name is %s"
 msgstr ""
-"%s: Vanhentunut funktion nimi rivillä %d: %s\n"
+"%s: Vanhentunut muuttujanimi rivillä %d: %s\n"
 "Uusi nimi on: %s"
 
 #: src/startup.c:806 src/startup.c:875
