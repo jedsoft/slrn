@@ -67,7 +67,9 @@ mode and allow you to manipulate the header window.
 \function{get_header_number}
 \usage{Integer get_header_number ()}
 \description
-   This function returns the article number for the current header.
+   This function returns the article number for the current header (i.e. the
+   one assigned by the server and recorded in the newsrc file). If you want
+   the current cursor position instead, use \var{header_cursor_pos}.
 \done
 
 \function{get_header_score}
@@ -108,6 +110,19 @@ mode and allow you to manipulate the header window.
 \description
    Returns 1 if the current header has a parent (within a thread tree), 0
    otherwise.
+\done
+
+\function{header_cursor_pos}
+\usage{Integer header_cursor_pos ()}
+\description
+   This function returns the current position of the cursor in the header
+   summary window. This is the same as the ``header number'' of the article
+   that gets displayed if the \var{use_header_numbers} config variable is
+   turned on, so it is always a number in the range 1 through
+   \var{SCREEN_HEIGHT}-3; do not confuse it with the article number assigned
+   by the server (which can be obtained using the intrinsic function
+   \var{get_header_number}). If the article pager is ``zoomed'', this
+   function always returns 1.
 \done
 
 \function{header_down}

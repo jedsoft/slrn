@@ -3499,6 +3499,11 @@ static void supersede (void) /*{{{*/
 
 /*{{{ header movement functions */
 
+int slrn_header_cursor_pos (void)
+{
+   return Last_Cursor_Row;
+}
+
 unsigned int slrn_header_down_n (unsigned int n, int err) /*{{{*/
 {
    unsigned int m;

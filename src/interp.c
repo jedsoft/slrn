@@ -1059,6 +1059,13 @@ static int is_thread_collapsed (void)
    return slrn_is_thread_collapsed (Slrn_Current_Header);
 }
 
+static int header_cursor_pos (void) /*{{{*/
+{
+   if (check_article_mode ()) return -1;
+   return slrn_header_cursor_pos ();
+}
+/*}}}*/
+
 static int header_down (int *num) /*{{{*/
 {
    if ((-1 == check_article_mode ())
@@ -1519,6 +1526,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("group_unread", get_group_unread_count, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("group_up_n", group_up_n, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("has_parent", has_parent, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_0("header_cursor_pos", header_cursor_pos, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("header_down", header_down, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("header_next_unread", header_next_unread, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("header_up", header_up, SLANG_INT_TYPE),

@@ -217,6 +217,7 @@ extern int slrn_pipe_article_to_cmd (char *);
 extern int slrn_save_current_article (char *);
 
 extern Slrn_Article_Line_Type *slrn_search_article (char *, char **, int, int, int);
+extern int slrn_header_cursor_pos (void);
 extern unsigned int slrn_header_down_n (unsigned int, int);
 extern unsigned int slrn_header_up_n (unsigned int, int);
 
