@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slrn 0.9.7.3\n"
 "POT-Creation-Date: 2002-03-05 17:41+0100\n"
-"PO-Revision-Date: 2001-10-31 14:56+0100\n"
+"PO-Revision-Date: 2002-03-05 21:28+0100\n"
 "Last-Translator: Emmanuele Bassi <emmanuele.bassi@iol.it>\n"
 "Language-Team: ITALIAN <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -133,22 +133,22 @@ msgstr "Trasferimento dell'articolo annullato o connessione persa."
 #: src/art.c:2141
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
-msgstr ""
+msgstr "#%2d/%-2d: Lette %4d/%-4d linee (%s) a %.2fkB/sec\""
 
 #: src/art.c:2145
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
-msgstr ""
+msgstr "#%2d/%-2d: Lette %4d/%-4d linee (%s)"
 
 #: src/art.c:2151
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
-msgstr ""
+msgstr "[%d] Lette %d/%d linee fino ad ora a %.2fkB/sec"
 
 #: src/art.c:2154
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
-msgstr ""
+msgstr "[%d] Lette %d/%d linee fino ad ora"
 
 #: src/art.c:2194
 msgid "Server sent empty article."
@@ -408,57 +408,47 @@ msgid "Mark not set."
 msgstr "Segno non impostato."
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Subject search "
-msgstr "Oggetto: "
+msgstr "Cerca oggetto "
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Author search "
-msgstr " Cerca "
+msgstr "Cerca autore "
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(forward)"
-msgstr "Avanti"
+msgstr "(avanti)"
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(backward)"
-msgstr "Indietro"
+msgstr "(indietro)"
 
 #: src/art.c:4776 src/slrnpull.c:1182
-#, fuzzy, c-format
+#, c-format
 msgid "Score %d killed article %s\n"
-msgstr ""
-"Punteggio %d articoli eliminati %s\n"
-"Newsgroup: %s\n"
-"Da: %s\n"
-"Oggetto: %s\n"
-"\n"
+msgstr "Punteggio %d articoli eliminati %s\n"
 
 #: src/art.c:4780 src/slrnpull.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
-msgstr "creazione di %s (%s)\n"
+msgstr " Punteggio %c%5i: %s (%s:%i)\n"
 
 #: src/art.c:4784 src/slrnpull.c:1190
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
-msgstr ""
+msgstr " Punteggio %c%5i: %s:%i\n"
 
 #: src/art.c:4789 src/slrnpull.c:1195
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "  Newsgroup: %s\n"
 "  From: %s\n"
 "  Subject: %s\n"
 "\n"
 msgstr ""
-"Punteggio %d articoli eliminati %s\n"
-"Newsgroup: %s\n"
-"Da: %s\n"
-"Oggetto: %s\n"
+"  Newsgroup: %s\n"
+"  Da: %s\n"
+"  Oggetto: %s\n"
 "\n"
 
 #: src/art.c:4854
@@ -631,18 +621,16 @@ msgid "Spoilers visible!"
 msgstr "Spoiler svelati!"
 
 #: src/art_sort.c:329
-#, fuzzy
 msgid "slrn_sort_headers(): memory allocation failure."
-msgstr "sort_headers(): allocazione di memoria fallita."
+msgstr "slrn_sort_headers(): allocazione di memoria fallita."
 
 #: src/art_sort.c:586
 msgid "link_same_subjects: memory allocation failure."
 msgstr "link_same_subjects: fallita allocazione di memoria."
 
 #: src/art_sort.c:797
-#, fuzzy
 msgid "Internal Error in fixup_threads()."
-msgstr "Errore Interno."
+msgstr "Errore Interno in fixup_threads()."
 
 #: src/art_sort.c:851
 msgid "Threading by references ..."
@@ -668,7 +656,7 @@ msgstr "Collegamento articoli con un identico oggetto ..."
 #: src/art_sort.c:1022
 #, c-format
 msgid "Can't sort according to `%s'"
-msgstr ""
+msgstr "Impossibile ordinare secondo `%s'"
 
 #: src/chkslang.c:58
 #, c-format
@@ -1129,7 +1117,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"--Il prossimo passo potrebbe prendere del tempo se la connessione NNTP è "
+"--Il passo successivopotrebbe richiedere tempo se la connessione NNTP è "
 "lenta.--\n"
 "\n"
 
@@ -1166,7 +1154,7 @@ msgstr "Impossibile scrivere %s! Il disco è pieno?"
 msgid ""
 "SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
 msgstr ""
-"SPC:Selez.  p:Invia c:Letto  l:Lista  q:Esci  ^R:Ridisegna (u)s:(Un)Subscribe"
+"SPC:Selez.  p:Invia  c:Letto  l:Lista  q:Esci  ^R:Ridisegna  (u)s:(Un)Subscribe"
 
 #: src/group.c:3118
 msgid "-%D-News Groups: %s %-20g -- %L (%P)"
@@ -1319,7 +1307,7 @@ msgstr ""
 msgid ""
 " Note: The keys are case sensitive!  That is, 's' and 'S' are not the same."
 msgstr ""
-" Nota: I tasti sono case sensitive!  Cioè, 's' e 'S' sono sono la stessa "
+" Nota: I tasti sono case sensitive!  Cioè, 's' e 'S' non sono la stessa "
 "cosa."
 
 #: src/help.c:56
@@ -1778,7 +1766,7 @@ msgstr "  GIU                     Vai al gruppo successivo."
 
 #: src/help.c:174
 msgid "  UP                      Go to the previous group."
-msgstr "  SU                     Vai al gruppo precedente."
+msgstr "  SU                      Vai al gruppo precedente."
 
 #: src/help.c:175
 msgid "  Ctrl-V, Ctrl-D          Scroll to the next page."
@@ -1986,7 +1974,7 @@ msgstr "la finestra di selezione non è disponibile in modalità batch."
 #: src/interp.c:274 src/interp.c:284
 #, c-format
 msgid "loading %s"
-msgstr "cariamento di %s"
+msgstr "caricamento di %s"
 
 #: src/interp.c:301 src/interp.c:309 src/interp.c:322
 #, c-format
@@ -2026,12 +2014,11 @@ msgstr "Il valore del charset locale nella riga %d è oltre i valori ammessi."
 #: src/interp.c:452
 #, c-format
 msgid "Array must contain at least one, at most %d elements."
-msgstr ""
+msgstr "La lista deve contenere almeno uno, e al massimo %d, elementi."
 
 #: src/interp.c:460
-#, fuzzy
 msgid "Failed to allocate memory."
-msgstr "Errore nella selezione del set di caratteri."
+msgstr "Errore nell'allocazione di memoria."
 
 #: src/interp.c:527
 msgid "definekey: no such keymap."
@@ -2172,7 +2159,7 @@ msgstr "Ordina in thread per data (prima i meno recenti)"
 #. 1011
 #: src/menu.c:204
 msgid "Custom sorting (see manual)"
-msgstr ""
+msgstr "Ordinamento personalizzato (cfr. il manuale)"
 
 #: src/menu.c:212
 msgid "Sorting Method"
@@ -2834,9 +2821,9 @@ msgid "***Warning: error writing to %s"
 msgstr "***Attenzione: errore nello scrivere su %s"
 
 #: src/post.c:880
-#, fuzzy, c-format
+#, c-format
 msgid "%s Failed post saved in %s"
-msgstr "Invio fallito salvato in %s"
+msgstr "%s Articolo non inviato salvato in %s"
 
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
@@ -2907,14 +2894,12 @@ msgid "Posting ..."
 msgstr "Invio ..."
 
 #: src/post.c:1104
-#, fuzzy
 msgid "post_file_hook returned error."
-msgstr "post_file_hook ha ritornato un errore.  %s non è stato inviato."
+msgstr "post_file_hook ha ritornato un errore."
 
 #: src/post.c:1126
-#, fuzzy
 msgid "Could not reach server."
-msgstr "Non posso entrare nel gruppo %s."
+msgstr "Impossibile raggiungere il server."
 
 #: src/post.c:1254
 msgid "Posting...done."
@@ -3270,7 +3255,7 @@ msgstr "Errore nella configurazione degli oggetti server."
 #: src/slrn.c:1181
 #, c-format
 msgid "Could not read specified config file %s\n"
-msgstr ""
+msgstr "Impossibile leggere il file di configurazione %s specificato\n"
 
 #: src/slrn.c:1187
 msgid ""
@@ -4195,22 +4180,3 @@ msgstr "Il server ha chiuso la connessione.  Impossibile recuperare."
 #: src/xover.c:999
 msgid "Server does not provide this capability."
 msgstr "Il server non ha questa opzione."
-
-#~ msgid "Subject"
-#~ msgstr "Oggetto"
-
-#~ msgid "Author"
-#~ msgstr "Autore"
-
-#~ msgid ""
-#~ "***Warning: Unable to find a unique fully-qualified host name.\r\n"
-#~ "            slrn will not generate any Message-IDs.\r\n"
-#~ "            Please note that the \"hostname\" setting does not affect "
-#~ "this;\r\n"
-#~ "            see the \"slrn reference manual\" for details.\r\n"
-#~ msgstr ""
-#~ "***Attenzione: Impossibile trovare un hostname definito (FQDN).\r\n"
-#~ "               slrn non genererà alcun Message-ID.\r\n"
-#~ "               L'opzione \"hostname\" non ha alcun effetto su questo;\r\n"
-#~ "               verificare sul \"manuale di riferimento di slrn\" per i\r\n"
-#~ "               dettagli.\r\n"

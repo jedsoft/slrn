@@ -22,9 +22,9 @@
 # score[file entry] - bedømmelse[sregel]
 msgid ""
 msgstr ""
-"Project-Id-Version: slrn 0.9.7.3 (cvs 2002-03-03)\n"
+"Project-Id-Version: slrn 0.9.7.3pl1 (cvs 2002-03-05)\n"
 "POT-Creation-Date: 2002-03-05 17:41+0100\n"
-"PO-Revision-Date: 2002-03-03 12:01+0100\n"
+"PO-Revision-Date: 2002-03-05 20:56+0100\n"
 "Last-Translator: Byrial Ole Jensen <byrial@image.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -643,44 +643,42 @@ msgid "Spoilers visible!"
 msgstr "Afsløringer synlige!"
 
 #: src/art_sort.c:329
-#, fuzzy
 msgid "slrn_sort_headers(): memory allocation failure."
-msgstr "Tildeling af hukommelse mislykkedes."
+msgstr "slrn_sort_headers(): Tildeling af hukommelse mislykkedes."
 
 #: src/art_sort.c:586
-#, fuzzy
 msgid "link_same_subjects: memory allocation failure."
-msgstr "Tildeling af hukommelse mislykkedes."
+msgstr "link_same_subjects(): Tildeling af hukommelse mislykkedes."
 
 #: src/art_sort.c:797
 msgid "Internal Error in fixup_threads()."
-msgstr ""
+msgstr "Intern fejl i fixup_threads()."
 
 #: src/art_sort.c:851
 msgid "Threading by references ..."
-msgstr ""
+msgstr "Tråder efter referencer ..."
 
 #: src/art_sort.c:888
-#, fuzzy, c-format
+#, c-format
 msgid "Article %d is part of reference loop!"
-msgstr "Hoved er i en referenceløkke"
+msgstr "Indlæg %d er i en referenceløkke!"
 
 #. Now perform a re-arrangement such that those without parents but that
 #. * share the same reference are placed side-by-side as sisters.
 #: src/art_sort.c:917
 msgid "Linking \"lost relatives\" ..."
-msgstr ""
+msgstr "Forbinder \"bortkomne slægtninge\" ..."
 
 #. Now perform sort on subject to catch those that have fallen through the
 #. * cracks, i.e., no references
 #: src/art_sort.c:922
 msgid "Linking articles with identical subjects ..."
-msgstr ""
+msgstr "Forbinder indlæg med ens emner ..."
 
 #: src/art_sort.c:1022
 #, c-format
 msgid "Can't sort according to `%s'"
-msgstr ""
+msgstr "Kan ikke sortere efter '%s'"
 
 #: src/chkslang.c:58
 #, c-format
@@ -2847,9 +2845,9 @@ msgid "***Warning: error writing to %s"
 msgstr "*** Advarsel: fejl ved skrivning til %s"
 
 #: src/post.c:880
-#, fuzzy, c-format
+#, c-format
 msgid "%s Failed post saved in %s"
-msgstr "Mislykket sending gemt i %s"
+msgstr "%s Mislykket sending gemt i %s"
 
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
@@ -2926,14 +2924,12 @@ msgid "Posting ..."
 msgstr "Sender ..."
 
 #: src/post.c:1104
-#, fuzzy
 msgid "post_file_hook returned error."
-msgstr "\"post_file_hook\" returnerede fejl. %s er ikke sendt."
+msgstr "post_file_hook returnerede fejl."
 
 #: src/post.c:1126
-#, fuzzy
 msgid "Could not reach server."
-msgstr "Kunne ikke gå til gruppen %s."
+msgstr "Kunne ikke få kontakt med server."
 
 #: src/post.c:1254
 msgid "Posting...done."

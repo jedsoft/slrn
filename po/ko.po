@@ -2,12 +2,11 @@
 # Copyright (C) 2002 Free Software Foundation, Inc.
 # Im Eunjea <eunjea@kldp.org>, 2002.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.7.3\n"
 "POT-Creation-Date: 2002-03-05 17:41+0100\n"
-"PO-Revision-Date: 2002-02-03 18:12+300\n"
+"PO-Revision-Date: 2002-03-05 22:53+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,31 +18,31 @@ msgstr ""
 #: src/art.c:298
 #, c-format
 msgid "Ctrl-%c"
-msgstr ""
+msgstr "Ctrl-%c"
 
 #: src/art.c:302
 msgid "SPACE"
-msgstr ""
+msgstr "SPACE"
 
 #: src/art.c:303
 msgid "TAB"
-msgstr ""
+msgstr "TAB"
 
 #: src/art.c:304
 msgid "RETURN"
-msgstr ""
+msgstr "Enter"
 
 #: src/art.c:305
 msgid "ESCAPE"
-msgstr ""
+msgstr "ESC"
 
 #: src/art.c:306
 msgid "DELETE"
-msgstr ""
+msgstr "DELETE"
 
 #: src/art.c:307
 msgid "BACKSPACE"
-msgstr ""
+msgstr "BACKSPACE"
 
 #: src/art.c:667
 msgid "No next digest."
@@ -134,22 +133,22 @@ msgstr "기사 전송이 취소되거나 접속이 끊어짐."
 #: src/art.c:2141
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
-msgstr ""
+msgstr "#%2d/%-2d: 읽기 %4d/%-4d 줄 (%s) : %.2fkB/sec"
 
 #: src/art.c:2145
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
-msgstr ""
+msgstr "#%2d/%-2d: 읽기 %4d/%-4d 줄 (%s)"
 
 #: src/art.c:2151
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
-msgstr ""
+msgstr "[%d] 읽기 %d/%d 줄 : %.2fkB/sec"
 
 #: src/art.c:2154
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
-msgstr ""
+msgstr "[%d] 읽기 %d/%d"
 
 #: src/art.c:2194
 msgid "Server sent empty article."
@@ -157,7 +156,7 @@ msgstr "서버가 빈 기사를 보냄."
 
 #: src/art.c:2460
 msgid "%a, %d %b %Y at %H:%M GMT"
-msgstr ""
+msgstr "%a, %d %b %Y %H:%M GMT"
 
 #: src/art.c:2503
 msgid "This operation requires an article"
@@ -218,14 +217,15 @@ msgstr "글쓴이가 선택한 %s로 댓글"
 #.
 #: src/art.c:3013
 msgid "fFpPiIcC"
-msgstr ""
+msgstr "fFpPiIcC"
 
 #: src/art.c:3016
 msgid ""
 "Crossposting. Followup-To this group, Post to this group only, Ignore,"
 " Cancel?"
 msgstr ""
-"교차 투고. F(이 그룹에 Followup-To), P(이 그룹에만 투고), I(무시), C(취소)?"
+"교차 투고. F(이 그룹에 Followup-To), P(이 그룹에만 투고), I(무시),"
+" C(취소)?"
 
 #: src/art.c:3098
 msgid "Cc message as requested by poster"
@@ -409,52 +409,46 @@ msgid "Mark not set."
 msgstr "표시 해제."
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Subject search "
-msgstr "제목: "
+msgstr "제목 검색 "
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Author search "
-msgstr " 검색 "
+msgstr "글쓴이 검색 "
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(forward)"
-msgstr "앞으로"
+msgstr "(앞으로)"
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(backward)"
-msgstr "뒤로"
+msgstr "(뒤로)"
 
 #: src/art.c:4776 src/slrnpull.c:1182
 #, c-format
 msgid "Score %d killed article %s\n"
-msgstr ""
+msgstr "점수 %d가 기사 %s 삭제\n"
 
 #: src/art.c:4780 src/slrnpull.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
-msgstr "생성중 %s (%s)\n"
+msgstr " 점수 %c%5i: %s (%s:%i)\n"
 
 #: src/art.c:4784 src/slrnpull.c:1190
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
-msgstr ""
+msgstr " 점수 %c%5i: %s:%i\n"
 
 #: src/art.c:4789 src/slrnpull.c:1195
-#, fuzzy, c-format
 msgid ""
 "  Newsgroup: %s\n"
 "  From: %s\n"
 "  Subject: %s\n"
 "\n"
 msgstr ""
-"Score %d killed article %s\n"
-"뉴스그룹: %s\n"
-"글쓴이: %s\n"
-"제목: %s\n"
+"  뉴스그룹: %s\n"
+"  글쓴이: %s\n"
+"  제목: %s\n"
 "\n"
 
 #: src/art.c:4854
@@ -623,21 +617,19 @@ msgstr "%p[%u/%t 읽지않음] 그룹: %n%-20g -- %L (%P)"
 
 #: src/art.c:8508
 msgid "Spoilers visible!"
-msgstr ""
+msgstr "스포일러가 보임!"
 
 #: src/art_sort.c:329
-#, fuzzy
 msgid "slrn_sort_headers(): memory allocation failure."
-msgstr "sort_headers(): 메모리 배치 실패."
+msgstr "slrn_sort_headers(): 메모리 배치 실패."
 
 #: src/art_sort.c:586
 msgid "link_same_subjects: memory allocation failure."
 msgstr "link_same_subjects: 메모리 배치 실패."
 
 #: src/art_sort.c:797
-#, fuzzy
 msgid "Internal Error in fixup_threads()."
-msgstr "내부 오류."
+msgstr "fixup_threads()에 내부 오류."
 
 #: src/art_sort.c:851
 msgid "Threading by references ..."
@@ -663,7 +655,7 @@ msgstr "동일한 제목들을 연결중 ..."
 #: src/art_sort.c:1022
 #, c-format
 msgid "Can't sort according to `%s'"
-msgstr ""
+msgstr "`%s'로 정렬 할 수 없음"
 
 #: src/chkslang.c:58
 #, c-format
@@ -804,7 +796,7 @@ msgstr "사용법: uudecode [-64] [--stdout] [--guess] [파일 이름 ...]\n"
 #.
 #: src/editscore.c:66
 msgid "SsFfRrEeCc"
-msgstr ""
+msgstr "SsFfRrEeCc"
 
 #. Note to translators: The translated string needs to have 4 characters.
 #. * The two pairs become valid responses for "This group" and "All groups",
@@ -813,7 +805,7 @@ msgstr ""
 #.
 #: src/editscore.c:72
 msgid "TtAa"
-msgstr ""
+msgstr "TtAa"
 
 #: src/editscore.c:76
 msgid "A Score file has not been specified."
@@ -824,9 +816,8 @@ msgid "Pick Score type: Subject, From, References, Edit, Cancel"
 msgstr "점수 유형 선택: S(제목), F(글쓴이), R(참조), E(편집), C(취소)"
 
 #: src/editscore.c:103
-#, fuzzy
 msgid "Which newsgroups: This group, All groups"
-msgstr "뉴스 그룹 선택: t(현재 그룹), a(모든 그룹)"
+msgstr "뉴스 그룹 선택: T(현재 그룹), A(모든 그룹)"
 
 #: src/editscore.c:111
 msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
@@ -976,7 +967,7 @@ msgstr "뉴스그룹: "
 
 #: src/group.c:1768
 msgid "Followup-To: "
-msgstr ""
+msgstr "Followup-To: "
 
 #. Note to translators: Here, "fF" means "full", "sS" is "simple",
 #. * "nN" means "none" and "cC" is "cancel".
@@ -985,7 +976,7 @@ msgstr ""
 #.
 #: src/group.c:1787
 msgid "fFsSnNcC"
-msgstr ""
+msgstr "fFsSnNcC"
 
 #: src/group.c:1794
 msgid "Select scoring mode: Full, Simple, None, Cancel"
@@ -1078,6 +1069,9 @@ msgid ""
 "I expected to see: NEWGROUPS yymmdd hhmmss GMT\n"
 "I will patch the file up for you.\n"
 msgstr ""
+"%s 가 손상되었음.\n"
+"NEWGROUPS yymmdd hhmmss GMT 형태를 기대함\n"
+"패치 파일을 올립니다.\n"
 
 #: src/group.c:2444
 #, c-format
@@ -1286,7 +1280,8 @@ msgstr "   news.software.readers"
 #: src/help.c:46
 msgid ""
 " Please email bug reports, suggestions or comments to the current maintainer,"
-msgstr " 버그 리포트, 제안등은 메인터이너에게 메일을 보내주세요."
+msgstr ""
+" 버그 리포트, 제안등은 메인터이너에게 메일을 보내주세요."
 
 #: src/help.c:47
 msgid "   Thomas Schultz <tststs@gmx.de>"
@@ -1295,13 +1290,15 @@ msgstr "   Thomas Schultz <tststs@gmx.de>"
 #: src/help.c:48
 msgid ""
 " The original author of this program is John E. Davis <davis@space.mit.edu>"
-msgstr " 이 프로그램 원 제작자: John E. Davis <davis@space.mit.edu>"
+msgstr ""
+" 이 프로그램 원 제작자: John E. Davis <davis@space.mit.edu>"
 
 #. begin makehelp(article) - do *NOT* modify this line
 #: src/help.c:55 src/help.c:171
 msgid ""
 " Note: The keys are case sensitive!  That is, 's' and 'S' are not the same."
-msgstr " 참고: 글쇠는 대소문자를 가리지 않습니다! 즉, 's' 와 'S' 는 같습니다."
+msgstr ""
+" 참고: 글쇠는 대소문자를 가리지 않습니다! 즉, 's' 와 'S' 는 같습니다."
 
 #: src/help.c:56
 msgid "General movement:"
@@ -1311,7 +1308,8 @@ msgstr "기본 이동:"
 msgid ""
 "  n                  Go to the next unread article (or next group, if at "
 "end)."
-msgstr "  n                  읽지 않은 다음 기사 (없을 경우 다음 그룹)."
+msgstr ""
+"  n                  읽지 않은 다음 기사 (없을 경우 다음 그룹)."
 
 #: src/help.c:58
 msgid "  p                  Go to the previous unread article."
@@ -1360,7 +1358,8 @@ msgstr "      ESC 1 f        댓글에 모든 헤더를 포함."
 #: src/help.c:69
 msgid ""
 "      ESC 2 f        Followup without modifying (e.g. quoting) the article."
-msgstr "      ESC 2 f        현재 기사를 수정 없이 댓글 (예, 인용)."
+msgstr ""
+"      ESC 2 f        현재 기사를 수정 없이 댓글 (예, 인용)."
 
 #: src/help.c:70
 msgid "  r                  Reply to poster (via email)."
@@ -1369,12 +1368,14 @@ msgstr "  r                  글쓴이에게 답장 (이메일)."
 #: src/help.c:71
 msgid ""
 "  F                  Forward the current article to someone (via email)."
-msgstr "  F                  다른 사람에게 현재 기사 보내기 (이메일)."
+msgstr ""
+"  F                  다른 사람에게 현재 기사 보내기 (이메일)."
 
 #: src/help.c:72
 msgid ""
 "      ESC 1 F        Forward the current article (including all headers)."
-msgstr "      ESC 1 F        기사의 헤더를 포함하여 이메일로 보내기."
+msgstr ""
+"      ESC 1 F        기사의 헤더를 포함하여 이메일로 보내기."
 
 #: src/help.c:73
 msgid "  ESC Ctrl-S         Supersede article (you have to be the author)."
@@ -1434,7 +1435,8 @@ msgstr "  ESC UP             한줄 올리기."
 msgid ""
 "  SPACE              Scroll article down one page (or select next, if at "
 "end)."
-msgstr "  SPACE              다음 페이지 (마지막일 경우 선택)"
+msgstr ""
+"  SPACE              다음 페이지 (마지막일 경우 선택)"
 
 #: src/help.c:89
 msgid "  DELETE, b          Scroll article up one page."
@@ -1539,7 +1541,8 @@ msgstr "  c                  Catchup - 모든 기사에 읽은 표시하기."
 #: src/help.c:114
 msgid ""
 "  C                  Mark all articles up to the current position as read."
-msgstr "  C                  현재 위치 위쪽의 기사에 읽은 표시하기."
+msgstr ""
+"  C                  현재 위치 위쪽의 기사에 읽은 표시하기."
 
 #: src/help.c:115
 msgid "  ESC u              Un-Catchup - mark all articles as unread."
@@ -1548,7 +1551,8 @@ msgstr "  ESC u              Un-Catchup - 모든 기사에 읽지 않음 표시하기."
 #: src/help.c:116
 msgid ""
 "  ESC U              Mark all articles up to the current position as unread."
-msgstr "  ESC U              현재 위치 위쪽의 기사에 읽지 않음 표시하기."
+msgstr ""
+"  ESC U              현재 위치 위쪽의 기사에 읽지 않음 표시하기."
 
 #: src/help.c:117
 msgid "  x                  Remove all non-tagged read articles from the list."
@@ -1645,7 +1649,8 @@ msgstr "      ESC 1 K        점수 파일 편집."
 #: src/help.c:144
 msgid ""
 "  v                  Show which scorefile rules matched the current article."
-msgstr "  v                  현재 기사에 일치하는 점수파일 규칙 보기."
+msgstr ""
+"  v                  현재 기사에 일치하는 점수파일 규칙 보기."
 
 #: src/help.c:145
 msgid "  * The following five commands query the server if necessary:"
@@ -1666,7 +1671,8 @@ msgstr "  ESC p              부모글 찾기."
 #: src/help.c:149
 msgid ""
 "      ESC 1 ESC p    Reconstruct thread (slow when run on large threads)."
-msgstr "      ESC 1 ESC p    글타래 재구성 (매우 큰 글타래일 경우 느림)."
+msgstr ""
+"      ESC 1 ESC p    글타래 재구성 (매우 큰 글타래일 경우 느림)."
 
 #: src/help.c:150
 msgid ""
@@ -1861,7 +1867,8 @@ msgstr "  ESC a                   그룹 표시 포맷 선택."
 #: src/help.c:208
 msgid ""
 "  l                       Toggle display of groups without unread articles."
-msgstr "  l                       읽지 않은 기사가 있는 그룹의 표시 선택."
+msgstr ""
+"  l                       읽지 않은 기사가 있는 그룹의 표시 선택."
 
 #: src/help.c:209
 msgid "  L                       Toggle listing of unsubscribed groups."
@@ -1893,7 +1900,7 @@ msgstr ""
 
 #: src/help.c:308
 msgid "The following copyright notice applies to the slrn newsreader:"
-msgstr ""
+msgstr "slrn은 다음 저작권 정보를 따릅니다."
 
 #: src/help.c:365
 msgid "Press 'c' to start over, or any other key to return to news reader."
@@ -1909,12 +1916,14 @@ msgstr ""
 #: src/help.c:374
 msgid ""
 "Press 'q' to quit help, 'c' to start over, or any other key to continue."
-msgstr "'q'는 도움말 끝내기, 'c'는 처음으로, 다른 키는 계속."
+msgstr ""
+"'q'는 도움말 끝내기, 'c'는 처음으로, 다른 키는 계속."
 
 #: src/help.c:377
 msgid ""
 "Press 'q' to quit help, '?' to start over, or any other key to continue."
-msgstr "'q'는 도움말 끝내기, 'c'는 처음으로, 다른 키는 계속."
+msgstr ""
+"'q'는 도움말 끝내기, 'c'는 처음으로, 다른 키는 계속."
 
 #: src/interp.c:104
 msgid "positive integer expected"
@@ -1967,12 +1976,11 @@ msgstr "%d 열의 로컬 문자셋 값이 범위를 벗어남."
 #: src/interp.c:452
 #, c-format
 msgid "Array must contain at least one, at most %d elements."
-msgstr ""
+msgstr "배열은 최소 한개 이상 최대 %d 이상의 값을 가져하 함."
 
 #: src/interp.c:460
-#, fuzzy
 msgid "Failed to allocate memory."
-msgstr "문자셋 선택 실패."
+msgstr "메모리 배치 실패."
 
 #: src/interp.c:527
 msgid "definekey: no such keymap."
@@ -2033,7 +2041,7 @@ msgstr "도움말"
 
 #: src/menu.c:77
 msgid "Catchup"
-msgstr ""
+msgstr "Catchup"
 
 #: src/menu.c:78
 msgid "NextGrp"
@@ -2113,7 +2121,7 @@ msgstr "글타래, 날짜로 정렬 (이전것 부터)"
 #. 1011
 #: src/menu.c:204
 msgid "Custom sorting (see manual)"
-msgstr ""
+msgstr "커스텀 정렬 (매뉴얼 참고)"
 
 #: src/menu.c:212
 msgid "Sorting Method"
@@ -2184,7 +2192,7 @@ msgstr "이 기능은 배치 모드에서 지원하지 않습니다."
 #. * default characters for different fields.
 #: src/misc.c:1085
 msgid "yYnNeE"
-msgstr ""
+msgstr "yYnNeE"
 
 #: src/misc.c:1089
 msgid "Mail the message? Yes, No, Edit"
@@ -2268,15 +2276,15 @@ msgstr "잘못된 입력! 재시도."
 #.
 #: src/misc.c:2305
 msgid "yYnN"
-msgstr ""
+msgstr "yYnN"
 
 #: src/misc.c:2316
 msgid "? [Y]es, No"
-msgstr ""
+msgstr "? [Y]네, N(아니오)"
 
 #: src/misc.c:2321
 msgid "? Yes, [N]o"
-msgstr ""
+msgstr "? Y(네), [N]아니오"
 
 #. Note to translators:
 #. * The translated string needs to have exactly six characters.
@@ -2286,11 +2294,11 @@ msgstr ""
 #.
 #: src/misc.c:2349
 msgid "yYnNcC"
-msgstr ""
+msgstr "yYnNcC"
 
 #: src/misc.c:2359
 msgid "? [Y]es, No, Cancel"
-msgstr ""
+msgstr "? [Y]네, N(아니오), C(취소)"
 
 #: src/misc.c:2415 src/spool.c:1405
 msgid "Invalid regular expression or expression too long."
@@ -2299,12 +2307,12 @@ msgstr "잘못된 정규 표현식이거나 표현식이 너무 깁니다."
 #. Fill in what is assumed to be non-NULL by rest of program.
 #: src/misc.c:2543
 msgid "In article %m, %r wrote:"
-msgstr ""
+msgstr "In article %m, %r wrote:"
 
 #: src/misc.c:2544
 #, c-format
 msgid "In %n, you wrote:"
-msgstr ""
+msgstr "In %n, you wrote:"
 
 #: src/misc.c:2547
 #, c-format
@@ -2408,7 +2416,8 @@ msgstr "서버 초기화 실패"
 #: src/nntplib.c:564
 msgid ""
 "You need to set the NNTPSERVER environment variable to your server name."
-msgstr "사용할 뉴스 서버를 NNTPSERVER 환경 변수로 설정해야 합니다."
+msgstr ""
+"사용할 뉴스 서버를 NNTPSERVER 환경 변수로 설정해야 합니다."
 
 #: src/nntplib.c:566
 msgid "Example: $ define/job NNTPSERVER my.news.server"
@@ -2429,7 +2438,7 @@ msgstr "예 (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER"
 #. 100
 #: src/nntplib.c:1121
 msgid "Help text on way"
-msgstr ""
+msgstr "도움말 상태"
 
 #. 180
 #: src/nntplib.c:1123
@@ -2454,7 +2463,7 @@ msgstr "Hello; 투고 불가"
 #. 202
 #: src/nntplib.c:1131
 msgid "Slave status noted"
-msgstr ""
+msgstr "상태 기록됨"
 
 #. 205
 #: src/nntplib.c:1133
@@ -2704,7 +2713,8 @@ msgstr "많은 그룹에 한번에 투고하는 것은 다시 한번 생각해 보시기 바랍니다."
 #: src/post.c:542
 msgid ""
 "In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
-msgstr "\"Followup-To:\"을 여러개의 그룹으로 설정하는 것은 좋지 않습니다."
+msgstr ""
+"\"Followup-To:\"을 여러개의 그룹으로 설정하는 것은 좋지 않습니다."
 
 #: src/post.c:545
 msgid "Setting a \"Followup-To:\" is recommended when crossposting."
@@ -2734,7 +2744,8 @@ msgstr "이 메세지는 %d줄을 볼때 생성됨:"
 #: src/post.c:649
 msgid ""
 "Perhaps this error was generated because you did not separate the header"
-msgstr "이 오류는 아마 헤더과 본문이 분리되지 않아서 입니다."
+msgstr ""
+"이 오류는 헤더과 본문이 분리되지 않은 경우 입니다."
 
 #: src/post.c:651
 msgid "section from the body by a BLANK line."
@@ -2769,9 +2780,8 @@ msgid "***Warning: error writing to %s"
 msgstr "***경고: %s 쓰기 오류"
 
 #: src/post.c:880
-#, fuzzy, c-format
 msgid "%s Failed post saved in %s"
-msgstr "%s 저장 오류"
+msgstr "%s 투고 실패 %s에 저장됨"
 
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
@@ -2783,7 +2793,7 @@ msgstr "%s 저장 오류"
 #.
 #: src/post.c:944 src/post.c:977
 msgid "yYnNeEsSdDfF"
-msgstr ""
+msgstr "yYnNeEsSdDfF"
 
 #: src/post.c:947
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
@@ -2791,7 +2801,7 @@ msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기), D(삭제), F(필
 
 #: src/post.c:951
 msgid "yYnNeEsSfF"
-msgstr ""
+msgstr "yYnNeEsSfF"
 
 #: src/post.c:954
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
@@ -2799,7 +2809,7 @@ msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기), F(필터)"
 
 #: src/post.c:962
 msgid "yYnNeEsSdD"
-msgstr ""
+msgstr "yYnNeEsSdD"
 
 #: src/post.c:965
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
@@ -2807,7 +2817,7 @@ msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기), D(삭제)"
 
 #: src/post.c:969
 msgid "yYnNeEsS"
-msgstr ""
+msgstr "yYnNeEsS"
 
 #: src/post.c:972
 msgid "Post the message? Yes, No, Edit, poStpone"
@@ -2823,7 +2833,7 @@ msgstr "정말로 지울까요"
 #.
 #: src/post.c:1019
 msgid "yYeEnNcC"
-msgstr ""
+msgstr "yYeEnNcC"
 
 #: src/post.c:1022
 msgid "re-Edit,  or Cancel"
@@ -2831,7 +2841,7 @@ msgstr "E(수정), C(취소)"
 
 #: src/post.c:1026 src/post.c:1032
 msgid "yYeEnNcCfF"
-msgstr ""
+msgstr "yYeEnNcCfF"
 
 #: src/post.c:1029
 msgid "re-Edit, Cancel, or Force the posting (not recommended)"
@@ -2842,14 +2852,12 @@ msgid "Posting ..."
 msgstr "보내는 중 ..."
 
 #: src/post.c:1104
-#, fuzzy
 msgid "post_file_hook returned error."
-msgstr "post_file_hook 오류. %s가 투고되지 않음."
+msgstr "post_file_hook 오류."
 
 #: src/post.c:1126
-#, fuzzy
 msgid "Could not reach server."
-msgstr "그룹 %s을 선택할 수 없음."
+msgstr "서버에 접근 할 수 없음."
 
 #: src/post.c:1254
 msgid "Posting...done."
@@ -2861,7 +2869,7 @@ msgstr "투고중...끝."
 #.
 #: src/post.c:1274
 msgid "rReEcC"
-msgstr ""
+msgstr "rReEcC"
 
 #: src/post.c:1277
 msgid "Select one: Repost, Edit, Cancel"
@@ -3255,7 +3263,8 @@ msgstr "            은 Message-ID를 만들지 않습니다."
 #: src/slrn.c:1270
 msgid ""
 "            Please note that the \"hostname\" setting does not affect this;"
-msgstr "            \"hostname\" 설정은 효과가 없습니다;"
+msgstr ""
+"            \"hostname\" 설정은 효과가 없습니다;"
 
 #: src/slrn.c:1271
 msgid "            see the \"slrn reference manual\" for details."
@@ -3435,7 +3444,8 @@ msgstr "이 그룹의 마지막 %u개의 기사만 조사함."
 #: src/slrnpull.c:820
 msgid ""
 "Server failed to return proper code for XHDR.  The connection may be lost"
-msgstr "서버가 XHDR 명령에 응답하지 않음. 접속이 끊어저 있을 수 있습니다."
+msgstr ""
+"서버가 XHDR 명령에 응답하지 않음. 접속이 끊어저 있을 수 있습니다."
 
 #: src/slrnpull.c:826
 #, c-format
@@ -3602,7 +3612,7 @@ msgstr "sltcp 인터페이스 열기 오류.\n"
 #: src/slrnpull.c:1729
 #, c-format
 msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
-msgstr ""
+msgstr "전체 %lu byte 받음, %lu byte를 %ld 초 동안 보냄.."
 
 #: src/slrnpull.c:1811
 #, c-format
@@ -3679,7 +3689,8 @@ msgid ""
 "%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
 "patch the file up for you."
 msgstr ""
-"%s 에 오류, 기대 값: NEWGROUPS yymmdd hhmmss GMT, 패치 파일을 올립니다."
+"%s 에 오류, 기대 값: NEWGROUPS yymmdd hhmmss GMT 형태를 기대함"
+"패치 파일을 올립니다."
 
 #: src/slrnpull.c:2235
 msgid "Performing shutdown."
@@ -3922,7 +3933,9 @@ msgstr ""
 msgid ""
 "%s: Obsolete variable on line %d: %s\n"
 "Please make use of the group_display_format variable instead."
-msgstr "%s: 구식의 변수 %d: %s대신에 group_display_format 변수를 사용하세요."
+msgstr ""
+"%s: 구식의 변수 %d: %s\n"
+"대신에 group_display_format 변수를 사용하세요."
 
 #: src/startup.c:819
 #, c-format
@@ -4114,9 +4127,3 @@ msgstr "서버가 연결을 닫음. 복구 불가."
 #: src/xover.c:999
 msgid "Server does not provide this capability."
 msgstr "서버가 이 기능을 지원하지 않음."
-
-#~ msgid "Subject"
-#~ msgstr "제목"
-
-#~ msgid "Author"
-#~ msgstr "글쓴이"
