@@ -636,9 +636,9 @@ static void free_article_lines (Slrn_Article_Type *a)
      return;
    
    free_article_line(a->lines);
-   free_article_line(a->orig_lines);
+   free_article_line(a->raw_lines);
    a->lines = NULL;
-   a->orig_lines = NULL;
+   a->raw_lines = NULL;
 }
 
 static void slrn_art_free_article (Slrn_Article_Type *a)
@@ -2236,8 +2236,8 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	return NULL;
      }
 
-   retval->orig_lines = copy_article_line (retval->lines);
-   if (retval->orig_lines == NULL)
+   retval->raw_lines = copy_article_line (retval->lines);
+   if (retval->raw_lines == NULL)
      {
 	slrn_art_free_article (retval);
 	return NULL;
@@ -2273,7 +2273,7 @@ static int art_undo_modifications (Slrn_Article_Type *a)
    
    free_article_line (a->lines);
    a->lines = NULL;
-   if (NULL == (a->lines = copy_article_line (a->orig_lines)))
+   if (NULL == (a->lines = copy_article_line (a->raw_lines)))
      {
 	slrn_art_free_article (a);
 	return -1;
@@ -2463,7 +2463,7 @@ int slrn_string_to_article (char *str)
 #if 0 /* does this make any sense? */
    Header_Showing = Slrn_Current_Header;
 #endif
-   if (NULL == (a->orig_lines = copy_article_line (a->lines)))
+   if (NULL == (a->raw_lines = copy_article_line (a->lines)))
      {
 	free_article ();
 	return -1;
@@ -3916,7 +3916,7 @@ int slrn_save_current_article (char *file) /*{{{*/
    Slrn_Article_Line_Type *lines;
    int retval = 0;
    
-   /* We're setting MIME_DISPLAY here and use orig_lines if
+   /* We're setting MIME_DISPLAY here and use raw_lines if
     * MIME_SAVE is 0; this saves the re-encoding later */
    if (NULL == (h = affected_header ()) ||
        select_header (h, Slrn_Del_Article_Upon_Read,
@@ -3926,7 +3926,7 @@ int slrn_save_current_article (char *file) /*{{{*/
    lines = Slrn_Current_Article->lines;
 #if SLRN_HAS_MIME
    if (0 == (Slrn_Use_Mime & MIME_SAVE))
-     lines = Slrn_Current_Article->orig_lines;
+     lines = Slrn_Current_Article->raw_lines;
 #endif
    
    fp = fopen (file, "w");
@@ -3987,7 +3987,7 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
 	     l = a->lines;
 	  }
 	else
-	  l = a->orig_lines;
+	  l = a->raw_lines;
 #endif
      }
    
@@ -4335,7 +4335,7 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
    int retval;
    Slrn_Article_Line_Type *lines;
 
-   /* We're setting MIME_DISPLAY here and use orig_lines if
+   /* We're setting MIME_DISPLAY here and use raw_lines if
     * MIME_PIPE is 0; this saves the re-encoding later */   
    if (-1 == (retval = select_affected_article (MIME_DISPLAY)))
      return -1;
@@ -4346,7 +4346,7 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
    lines = Slrn_Current_Article->lines;
 #if SLRN_HAS_MIME
    if (0 == (Slrn_Use_Mime & MIME_PIPE))
-     lines = Slrn_Current_Article->orig_lines;
+     lines = Slrn_Current_Article->raw_lines;
 #endif
    
    if (NULL == (fp = slrn_popen (cmd, "w")))
