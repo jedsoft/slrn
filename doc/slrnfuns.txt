@@ -1,7 +1,7 @@
   Slrn Intrinsic Function Reference Manual
   John E. Davis, davis@space.mit.edu
   Thomas Schultz, tststs@gmx.de
-  Thu Jul 31 19:09:09 2003
+  Tue Sep 28 11:23:34 2004
   ____________________________________________________________
 
   Table of Contents
@@ -408,8 +408,9 @@
         Integer header_next_unread ()
 
       Description
-        Goto next unread header.  The function returns one upon success
-        or zero upon failure.
+        Goto next unread header. When reading from an slrnpull spool,
+        headers for which the article body is not present are skipped.
+        The function returns one upon success or zero upon failure.
 
       See Also
         header_down
@@ -1437,6 +1438,11 @@
         returns 0 upon success or -1 upon failure.  It can fail if the
         group has no articles.
 
+        Note that in some situations, this function will set an slang
+        error condition. This includes cases in which the user
+        interrupted transfer of article headers or all articles got
+        killed by the scorefile.
+
       See Also
         current_newsgroup
 
@@ -1489,6 +1495,7 @@
 
       Usage
         Void set_group_order (Array_Type names)
+
       Description
         When names is a one-dimensional array of strings (group names),
         slrn will sort the group list into the implied order.  Strings
@@ -1553,6 +1560,9 @@
 
       See Also
         get_yes_no_cancel, set_color, get_select_box_response
+
+
+
   4.2.  get_select_box_response
 
 
@@ -1673,15 +1683,11 @@
       See Also
         read_mini, read_mini_variable, getkey, set_input_string,
         set_input_chars
-
-
-
   4.8.  read_mini_integer
 
 
       Usage
         Integer read_mini_integer (String p, Integer dflt)
-
 
       Description
         This function will prompt the user for an integer value using
@@ -1746,6 +1752,7 @@
 
       See Also
         get_select_box_response, get_response
+
 
 
   4.12.  set_input_chars
@@ -1877,6 +1884,7 @@
       Description
         Read a character from the terminal and returns its value.  Note:
         Function and arrow keys usually return more than one character.
+
       See Also
         ungetkey, input_pending, read_mini
 
@@ -1943,6 +1951,8 @@
       See Also
         definekey
 
+
+
   5.9.  ungetkey
 
 
@@ -1993,7 +2003,6 @@
         The log_message function may be used to write a string to the
         log file.  If no log file has been opened via open_log_file, the
         message will be written to stderr.
-
       See Also
         open_log_file, close_log_file, message
 
@@ -2058,6 +2067,7 @@
   7.1.  _.ds h slrn_version Miscellaneous Functions
 
 
+
       Usage
         Integer _slrn_version
 
@@ -2072,6 +2082,8 @@
 
       See Also
         _slrn_version_string
+
+
 
   7.2.  _.ds h slrn_version_string Miscellaneous Functions
 
@@ -2122,9 +2134,6 @@
 
       Notes
         Due to a limitation in S-Lang, this function only works on Unix.
-
-
-
   7.5.  get_fg_color
 
 
@@ -2137,6 +2146,7 @@
 
       Notes
         Due to a limitation in S-Lang, this function only works on Unix.
+
 
 
   7.6.  get_variable_value
@@ -2204,6 +2214,9 @@
 
       See Also
         unregister_hook
+
+
+
   7.9.  reload_scorefile
 
 
@@ -2252,6 +2265,7 @@
   7.12.  set_color_attr
 
 
+
       Usage
         Void set_color_attr (String obj, String fg, String bg, Integer
         attr)
@@ -2268,6 +2282,7 @@
              ATTR_BOLD      bold text
              ATTR_REV       inverse text
              ATTR_ULINE     underlined text
+
 
 
   7.13.  set_ignore_quotes
@@ -2314,7 +2329,6 @@
 
       Usage
         Void set_string_variable (String name, String v)
-
       Description
         This function may be used to set the value of the internal
         string variable specified by name to value v.  name must be a
@@ -2381,7 +2395,6 @@
       Notes
         This function is only available if slrn was compiled with S-Lang
         1.4.x.
-
       See Also
         set_ignore_quotes, set_strip_re_regexp, set_strip_sig_regexp
 
@@ -2445,8 +2458,6 @@
 
      Please note that locales are not supported by all systems.  In this
      case, this function will trigger an slang error.
-
-
 
   7.21.  tt_send
 
@@ -2641,7 +2652,6 @@
         will be active.
 
 
-
   8.9.  header_number_hook
 
 
@@ -2700,18 +2710,18 @@
         Here is a simple example:
 
 
-             define make_save_filename_hook ()
-             {
-               if (string_match (extract_article_header ("Subject"), "slrn", 1) != 0)
-                 return "slrn-related";
-               else
-                 return current_newsgroup();
-             }
+
+        define make_save_filename_hook ()
+        {
+          if (string_match (extract_article_header ("Subject"), "slrn", 1) != 0)
+            return "slrn-related";
+          else
+            return current_newsgroup();
+        }
 
 
 
   8.12.  post_file_hook
-
 
 
       Usage
@@ -2760,6 +2770,7 @@
 
 
   8.15.  pre_article_mode_hook
+
 
 
       Usage
@@ -2822,16 +2833,17 @@
         `uhog' (it is a slow server):
 
 
-             define make_server_specific_settings ()
-             {
-               !if (strcmp (server_name (), "uhog"))
-               {
-                  set_integer_variable ("lines_per_update", 20);
-                  set_integer_variable ("read_active", 0);
-               }
-             }
-             () = register_hook ("startup_hook",
-                                 "make_server_specific_settings");
+
+        define make_server_specific_settings ()
+        {
+          !if (strcmp (server_name (), "uhog"))
+          {
+             set_integer_variable ("lines_per_update", 20);
+             set_integer_variable ("read_active", 0);
+          }
+        }
+        () = register_hook ("startup_hook",
+                            "make_server_specific_settings");
 
 
 
@@ -2840,7 +2852,6 @@
 
       Usage
         Integer subject_compare_hook (String subject1, String subject2)
-
 
       Description
         slrn puts postings with identical subjects into the same thread.

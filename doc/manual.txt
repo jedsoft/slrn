@@ -17,6 +17,8 @@
         1.3.1 History
 
   2. Configuration
+     2.1 A brief introduction to the built-in s-lang prompt
+
   3. Command line switches
   4. Environment variables
   5. The Slrn configuration file
@@ -338,8 +340,6 @@
         7.3.15 self_insert
         7.3.16 trim
         7.3.17 up
-
-
   ______________________________________________________________________
 
   1.  Introduction
@@ -373,8 +373,8 @@
 
 
   First of all, please read the available documentation found in this
-  file and in slrn's FAQ <http://slrn.sourceforge.net/docs/FAQ.html>.
-  You can also look at slrn's web pages at
+  file and in slrn's FAQ <http://slrn.sourceforge.net/manual/slrn-
+  FAQ.html>. You can also look at slrn's web pages at
   <http://slrn.sourceforge.net/> (also known as
   <http://www.slrn.org/>).  There, you will find a list of known bugs
   and feature requests, some useful add-ons, a recent copy of the
@@ -426,6 +426,8 @@
   following revisions:
 
 
+     Added a brief introduction to the s-lang prompt within slrn.
+
      2003-08-25: Revision 2.5
         Updated the manual for version 0.9.8.0.
 
@@ -469,8 +471,8 @@
 
   o  ``a personal configuration file''
 
-  o  ``command line options''
 
+  o  ``command line options''
 
   The list is sorted by priority - environment variables are overridden
   by settings in configuration files that are in turn overridden by
@@ -482,6 +484,67 @@
   Note: Please do not use options that are called ``obsolete'' in this
   manual. They are only included for backwards compatibility and will be
   removed before version 1.0 is released.
+
+
+  2.1.  A brief introduction to the built-in s-lang prompt
+
+  When trying various configuration settings, you may find it quite
+  inconvenient to constantly toggle between slrn and your editor and to
+  restart slrn each time you made a change. Maybe you also want to play
+  around with some settings without making (permanent) changes to your
+  config file. In these cases, making yourself familiar with the built-
+  in s-lang prompt of slrn can be worthwhile.
+
+  You get to the prompt by calling ``evaluate_cmd'' (by default bound to
+  `CTRL-X ESC') in either group or article mode. You will notice that
+  the bottom status line changes and displays S-Lang> - behind that
+  prompt, you can enter your commands. Basically, you can do anything
+  here that you could do in a macro, so if you want to explore the full
+  capabilities of this prompt, you'll have to read the documentation
+  that comes with slang and look at the file slrnfuns.txt that comes
+  with slrn.
+
+  However, you can also do some simple things without understanding much
+  about s-lang:
+
+  o  To find out the current value of a config variable, use a command
+     like this one:
+
+     message(string(get_variable_value("use_metamail")))
+
+
+  After this, the current value of the variable will appear in the bot-
+  tom status line. By the way, the call to string() is only needed when
+  querying an integer variable, so you can omit it if you want when get-
+  ting the value of a string variable.
+
+  o  If you want to set a config variable at runtime, you need to know
+     whether its type is integer or string (if in doubt, look it up in
+     this manual). To set a variable, use something like
+
+     set_integer_variable("use_metamail", 0) % for integer variables
+     set_string_variable("metamail_command", "metamutt") % for string variables
+
+
+  Note that changing a variable does not always have an immediate
+  effect: For example, changing ``sorting_method'' does not automati-
+  cally imply a re-sorting of the articles. By the way, you can call the
+  intrinsic function sort_by_sorting_method from the s-lang prompt
+  afterwards in this specific case.
+
+  o  You can also load macros dynamically using a line like
+
+     () = evalfile("my-macro.sl")
+
+
+
+  Note that you need those funny leading brackets and the equals sign in
+  this case, because evalfile returns 1 on success. Using the given
+  notation, we simply ignore the returned value. If we didn't do any-
+  thing with it, it would be left on the stack and when this happens too
+  often, you'll get a stack overflow at some point. If you really want
+  to understand this, please read the file slang.txt that comes with the
+  s-lang documentation. Otherwise, simply use the notation given here.
 
 
 
@@ -541,7 +604,6 @@
         message when SSL support is not compiled in. Like -p, this
         option is only accepted after --nntp or when NNTP is the default
         mode.
-
      -i file
         Read file as the initialization (slrnrc) file.  The default is
         to use .slrnrc (or slrn.rc on VMS, OS/2 and Windows) in your
@@ -602,13 +664,11 @@
      --pull
         Spool outgoing articles locally for slrnpull to send.
 
-
      --spool
         Read directly from spool.
 
      --version
         Print version and some compile time settings.
-
 
   4.  Environment variables
 
@@ -734,7 +794,6 @@
         If $SLRNHOME is unset, $HOME is used instead.
 
 
-
      SLRNPULL_ROOT
 
         If you want to use slrnpull, you need to define a directory
@@ -800,7 +859,6 @@
   reading such a file, slrn tells you its filename at startup (use slrn
   -w if you want to read the startup messages easily).
 
-
   The right place for your own settings is your personal configuration
   file, which by default is .slrnrc (or slrn.rc on VMS, OS/2 and
   Windows) in your home directory. It is possible to override settings
@@ -810,7 +868,6 @@
   each one on a line of its own. Most commands require arguments that
   can be either strings or integer values. If a string contains
   whitespace, you have to enclose it in double quotes (").
-
   The percent sign (%) is used as the comment character. From this
   character on, everything else on the same line will be ignored.
   Example:
@@ -874,6 +931,7 @@
   having to set a comment character (``%'') in front of each line.
 
   Example:
+
 
 
   #iffalse
@@ -1504,15 +1562,31 @@
 
   function specifies the function that is executed when key-sequence is
   pressed. In key-sequence, special keys can be addressed in different
-  ways:
+  ways. First of all, the control key plus a character C is written as
+  ^C.
 
+  The special function keys found on most keyboards have the following
+  (case insensitive) names: <PageUp> <PageDown> <Up> <Down> <Right>
+  <Left> <Delete> <BackSpace> <Insert> <Home> <End> <Enter> <Return>
+  <Tab> <Space> <Esc>.
+
+  Additionally, the keys <F1> through <F12> denote the function keys.
+  When you use these symbolic names, slrn uses the terminfo database (if
+  available) to look up the key sequences generated be those keys, so if
+  these names do not seem to work, make sure you selected the correct
+  terminal (e.g. via the $TERM environment variable).
+
+  Alternatively, you can specify special keys by entering the key
+  sequence they generate directly. To do this, the following shortcuts
+  may be useful:
 
 
        \e    escape
        \r    return
        \\    backslash
-       ^C    control and character C
        \NNN  the key sending keycode (octal) NNN
+
+
 
   A full list of available functions can be found in sections ``group
   functions'' and ``article functions''.
@@ -1626,8 +1700,6 @@
   This string is displayed in the bottom line while you are reading an
   article. It is intended as a quick help when you cannot remember what
   key to press ;-) If unset, the following line is used (localized):
-
-
   SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit
 
 
@@ -1643,6 +1715,8 @@
   This variable can be used to customize the status line of the article
   pager.  It accepts all % escapes that work for
   ``header_display_format'' plus the ones listed here:
+
+
            H   Prints `H' unless headers are hidden
            I   Prints `P' unless PGP signatures are hidden
            L   Current line (e.g. ``1/18'')
@@ -1690,10 +1764,10 @@
 
 
 
-       0     do not beep
-       1     send audible bell
-       2     send visible bell
-       3     send both visible and audible bell
+  0     do not beep
+  1     send audible bell
+  2     send visible bell
+  3     send both visible and audible bell
 
 
 
@@ -1706,6 +1780,7 @@
   by Message-ID instead of header number. This provides support for
   servers with broken ``Xref:'' headers and should otherwise be left
   untouched.
+
 
   6.8.  cansecret_file
 
@@ -1752,7 +1827,6 @@
   people on usenet consider ``courtesy copies'' to be impolite because
   they do not want to read the same message both in their private email
   and in a newsgroup.
-
   See Also: ``cc_followup_string''
 
 
@@ -1772,6 +1846,7 @@
   This string will be included in the mail copies of any article you
   send. However, it won't be displayed in the editor and will not be
   included in the posting sent to the newsgroup.
+
   The variable may contain the sequence %n, which will be replaced by
   the newsgroup(s) the article was posted to. If you need a ``verbatim''
   % character, use %%.
@@ -1836,7 +1911,6 @@
   to 0. This has the same effect as using the command-line parameter -n.
 
 
-
   6.14.  color_by_score
 
   Type: integer
@@ -1880,6 +1954,7 @@
 
   Thus, the default means that the user is always asked for
   confirmation.
+
 
 
   6.16.  custom_headers
@@ -1941,15 +2016,15 @@
 
 
 
-         author      Sort alphabetically (A-z) by realname
-         body        Sort articles without body first (true offline mode)
-         date        Sort by date, oldest first
-         highscore   Sort high scoring articles, those without high scores first
-         id          Sort alphabetically (A-z) by Message-ID
-         lines       Sort by number of article lines, lowest number first
-         number      Sort by server number, lowest first
-         score       Sort by score, lower numbers first
-         subject     Sort alphabetically (a-z) by subject, ignoring case
+    author      Sort alphabetically (A-z) by realname
+    body        Sort articles without body first (true offline mode)
+    date        Sort by date, oldest first
+    highscore   Sort high scoring articles, those without high scores first
+    id          Sort alphabetically (A-z) by Message-ID
+    lines       Sort by number of article lines, lowest number first
+    number      Sort by server number, lowest first
+    score       Sort by score, lower numbers first
+    subject     Sort alphabetically (a-z) by subject, ignoring case
 
 
 
@@ -2003,6 +2078,7 @@
 
   Type: integer
   Default: (unset)
+
 
   This variable is obsolete. You can now use the much more powerful
   approach of having up to 10 user-defined ``header display formats''.
@@ -2096,6 +2172,7 @@
 
   See also: ``charset'', ``editor_command'', ``mime_charset''
 
+
   6.26.  emphasized_text_mask
 
   Type: integer
@@ -2134,7 +2211,6 @@
   (`*', `/' and `_', respectively) are not printed on the screen; if set
   to 2, these characters are written as spaces. In all other cases
   (including the default value), they will not be changed.
-
   See also: ``emphasized_text_mask''
 
 
@@ -2200,6 +2276,7 @@
 
   If unset, slrn uses %Y-%m-%d (localized).
 
+
   See also: ``use_localtime''
 
 
@@ -2260,6 +2337,7 @@
 
   In this variable, you can use the same percent escapes as in
   ``followup_string''.
+
 
 
   6.36.  force_authentication
@@ -2326,6 +2404,7 @@
   SLRN_HAS_STRICT_FROM was enabled at compile time (default is off).
 
 
+
   6.39.  generate_message_id
 
   Type: integer
@@ -2359,6 +2438,7 @@
 
   Type: string
   Default: (unset)
+
   This string is displayed in the bottom line of the group menu. It is
   intended as a quick help. If unset, the following line is used
   (localized):
@@ -2456,6 +2536,7 @@
   window.  Here is a list of valid % escapes:
 
 
+
            L   Current line (e.g. ``1/74'')
            P   Percentage of the way through the header list
            T   Number of articles in the current subthread
@@ -2491,6 +2572,7 @@
 
   See also: ``hide_signature''
 
+
   6.49.  hide_quotes
 
   Type: integer
@@ -2516,6 +2598,7 @@
 
   See also: ``followup_strip_signature'', ``hide_pgpsignature'',
   ``ignore_signature''
+
 
 
   6.51.  hide_verbatim_marks
@@ -2622,7 +2705,6 @@
   ``post_object'' for details). In this case, inews_program can be used
   to specify the command you want slrn to pipe outgoing articles to.
 
-
   Note: This variable will not work if SLRN_HAS_USER_INEWS in slrnfeat.h
   was disabled at compile time. Obviously, it also has no effect if
   inews support is not compiled in.
@@ -2651,7 +2733,6 @@
   often this message is updated (default is to update it every 50 read
   articles / lines).  You may want to change this value, depending on
   the speed of your server connection and of your display.
-
   Note: If you set this variable to less than 5, slrn will ignore it and
   use the default of 50 instead (or 20, when reading short articles that
   contain less than 200 lines).
@@ -2713,6 +2794,7 @@
   sent twice (both by your MUA and slrn).
 
 
+
   Example (using mutt as an external mailer):
 
   set mail_editor_command "mutt -H '%s'"
@@ -2752,7 +2834,6 @@
   Type: string
   Default: (unset)
 
-
   When you select an article which uses a MIME content type or encoding
   not supported by slrn, an external program can be launched to view it.
   This variable contains the name of the program which will be used in
@@ -2777,6 +2858,7 @@
   (the resulting default is "koi8-r").
 
   Note: This variable should not be set to the value of ``charset''.
+
 
   Setting this variable has no effect if MIME support has not been
   compiled in.
@@ -2819,6 +2901,8 @@
   Bottom Status line     left           page-down
   Bottom Status line     right          page-up
 
+
+
   In article mode:
 
   Object                 Button         Action
@@ -2840,7 +2924,6 @@
                          middle         hide article window
   URL in article window  left/right     confirm and browse URL
                          middle         browse URL
-
 
 
   Note: Setting this variable to -1 will always activate mouse support,
@@ -2949,7 +3032,6 @@
   See also: ``use_localtime''
 
 
-
   6.76.  post_editor_command
 
   Type: string
@@ -2976,7 +3058,6 @@
   external program) or "slrnpull" (spool messages for slrnpull to send).
   If the variable is unset, the default depends on the compile time
   setting of SLRN_DEFAULT_POST_OBJ in slrnfeat.h.
-
   See also: ``server_object'', ``use_slrnpull''
 
 
@@ -3015,7 +3096,6 @@
   This variable can be used to customize the ``print'' function. Its
   meaning and the default action depend on the operating system:
 
-
   On Unix systems, it can contain a command to which slrn will pipe the
   article you want to print. For example, you would set it to
   "my_print_filter | lpr -Pmy_printer" if you want the article to be
@@ -3044,7 +3124,6 @@
   Note: slrn is currently the only program that interprets these
   verbatim marks. This is due to the lack of a standard that would
   describe a way to mark text as ``verbatim'' in usenet articles.
-
   See also: ``emphasized_text_mask'', ``emphasized_text_mode'',
   ``hide_verbatim_marks''
 
@@ -3079,7 +3158,6 @@
   See also: ``query_next_group''
 
 
-
   6.85.  query_next_group
 
   Type: integer
@@ -3107,6 +3185,7 @@
   Setting this variable to a negative number -n has a similar effect.
   However, slrn will not prompt you in this case; instead, it will
   automatically download n articles if more are present.
+
 
 
   6.87.  query_reconnect
@@ -3144,7 +3223,6 @@
   should leave the default setting untouched.
 
 
-
   6.90.  realname
 
   Type: string
@@ -3171,6 +3249,7 @@
   netiquette.
 
   See also: ``netiquette_warnings''
+
 
 
   6.92.  reply_custom_headers
@@ -3210,7 +3289,6 @@
   you do not set this variable, slrn tries to get a default value from
   ``$REPLYTO''.
 
-
   See also: ``hostname'', ``username''
 
 
@@ -3238,6 +3316,7 @@
   (in standard mailbox format). If unset, slrn will not even try to make
   a copy of your postings; if it cannot write to the specified file, it
   will give a warning and post nonetheless.
+
 
   Note: If the filename in save_posts does not contain an absolute path,
   it is interpreted as being relative to your home directory (see
@@ -3342,7 +3421,6 @@
   See also: ``post_object'', ``use_slrnpull''
 
 
-
   6.103.  show_article
 
   Type: integer
@@ -3371,7 +3449,6 @@
   make the screen look busy without giving any additional information.
   If you still prefer to have all subject lines displayed, you can set
   this variable to a non-zero value.
-
 
   6.106.  signature
 
@@ -3408,7 +3485,6 @@
   put it in your ``signature file''.
 
 
-
   6.108.  simulate_graphic_chars
 
   Type: integer
@@ -3430,11 +3506,15 @@
   Type: integer
   Default: 1
 
-  If set to 1 or 3, slrn will insert a blank between your
-  ``quote_string'' and previously unquoted lines, leading to a result
-  most people find better readable. If set to 2 or 3, blank lines are
-  kept unquoted.
+  slrn can be told to insert a blank between your ``quote_string'' and
+  previously unquoted lines, leading to a result most people find better
+  readable. This variable controls the way slrn formats quotes:
 
+
+
+        1     Insert whitespace before previously unquoted lines
+        2     Do not quote blank lines
+        3     Do not quote blank lines, but insert a whitespace before others
 
   6.110.  sorting_method
 
@@ -3469,7 +3549,6 @@
   To learn more about the powerful options in custom sorting, please
   look at the variables ``custom_sort_order'' and
   ``custom_sort_by_threads''.
-
 
 
   6.111.  spoiler_char
@@ -3536,7 +3615,6 @@
   The notes that can be found in the entry for ``spool_active_file''
   also apply to this variable.
 
-
   See also: ``spool_inn_root''
 
 
@@ -3567,6 +3645,7 @@
 
   The default of this variable is set at compile time in slrnfeat.h
   (#define SLRN_SPOOL_INNROOT).
+
 
   See also: ``spool_active_file'', ``spool_activetimes_file'',
   ``spool_newsgroups_file''
@@ -3602,7 +3681,6 @@
   Type: string
   Default: "/var/spool/news"
 
-
   The root directory of the news overview database. Often, this is the
   same as ``spool_root''.
 
@@ -3631,6 +3709,7 @@
   The root directory of your news spool.
 
   See also: ``spool_inn_root'', ``spool_nov_root''
+
 
 
   6.122.  supersedes_custom_headers
@@ -3669,6 +3748,7 @@
 
   When unset, slrn uses "slrn %v ** Press '?' for help, 'q' to quit. **
   Server: %s" (localized) as the default.
+
   Note: The current time and date are printed in the preferred
   representation for the current locale. If you have date/time
   information in the status line, you should be aware that it is not
@@ -3698,7 +3778,6 @@
 
   Enables blinking of display if non-zero. The default is 0 if your
   terminal supports colors, 1 if not.
-
   Note: If you run a color terminal and find that setting this variable
   to 1 makes it possible to use bright colors for the background, please
   look into using a different terminfo entry. See section ``color'' for
@@ -3735,6 +3814,7 @@
 
   This variable has no effect if GroupLens has not been enabled at
   compile time.
+
   Note: As far as we could find out, GroupLens is not in use any more.
   If this is incorrect, we would be grateful for a pointer to additional
   information on it.
@@ -3760,10 +3840,10 @@
 
 
 
-       0    always use GMT
-       1    use local timezone in overview_date_format
-       2    use local timezone in followup_date_format
-       3    always use local timezone
+  0    always use GMT
+  1    use local timezone in overview_date_format
+  2    use local timezone in followup_date_format
+  3    always use local timezone
 
 
 
@@ -3862,7 +3942,6 @@
   explains what will happen if $TMP is unset).
 
 
-
   6.138.  use_uudeview
 
   Type: integer
@@ -3928,6 +4007,8 @@
        1     wrap headers and body
        2     wrap quoted material and body
        3     wrap headers, quoted material and body
+
+
 
   If you want to wrap long lines automatically, without having to press
   a key, you can set the variable to one of these values:
@@ -4018,7 +4099,6 @@
   7.1.  group functions
 
   The functions described here are available in group mode.
-
 
   7.1.1.  add_group
 
@@ -4122,7 +4202,6 @@
   7.1.12.  move_group
 
   Default: "m"
-
 
   Allows you to move the current newsgroup to another position. You can
   move it around using the keys bound to ``line_up'' and ``line_down''
@@ -4379,6 +4458,8 @@
 
   Scrolls the article down one line.
 
+
+
   7.2.5.  article_line_up
 
   Default: "ESC DOWN"
@@ -4508,7 +4589,6 @@
 
   Default: ":"
 
-
   This function decodes files that are included in articles using the UU
   or base64 encoding. You first need to specify a temporary file to
   which the articles that should be decoded are saved. Then, the actual
@@ -4538,8 +4618,6 @@
 
   Marks the current article and its subthread (all of its ``children''
   in the thread tree) as read.
-
-
 
   7.2.20.  enlarge_article_window
 
@@ -4575,6 +4653,9 @@
 
   Removes all articles from the list that are marked as read and not
   tagged as important (using ``toggle_header_tag'').
+
+
+
   7.2.24.  fast_quit
 
   Default: "Q"
@@ -4600,6 +4681,7 @@
   7.2.26.  forward
 
   Default: "F"
+
 
   Forward (mail) the current article to someone. All headers are
   included and the subject is prepended with ``Fwd:''. If you want, you
@@ -4703,6 +4785,7 @@
   Default: "DOWN" "CTRL-N"
 
   Goes to the next visible article in this group.
+
 
 
   7.2.36.  header_line_up
@@ -4922,6 +5005,7 @@
   See also: ``enlarge_article_window''
 
 
+
   7.2.59.  skip_quotes
 
   Default: "TAB"
@@ -5032,6 +5116,7 @@
   can be used to change this and even preserve them between sessions.
 
 
+
   7.2.70.  toggle_headers
 
   Default: "t"
@@ -5098,6 +5183,8 @@
 
   Toggles the variable ``hide_verbatim_marks'', which controls the
   display of ``verbatim marks''.
+
+
   7.2.77.  toggle_verbatim_text
 
   Default: "{"
@@ -5112,7 +5199,6 @@
 
   Marks all articles from the top of the header window up to the current
   article as unread.
-
 
 
   7.2.79.  uncatchup_all
@@ -5161,7 +5247,6 @@
   ``broken'' scorefile entries.
 
   See also: ``create_score''
-
 
 
   7.2.83.  wrap_article
@@ -5227,7 +5312,6 @@
   When no completions are found, this command works like
   ``self_insert''; if you need a literal space character although a
   completion exists, use ``quoted_insert''.
-
 
 
   7.3.5.  del
@@ -5296,6 +5380,7 @@
   Inserts the next key into the buffer, even if it is usually bound to a
   function.
 
+
   7.3.14.  right
 
   Default: "RIGHT" "CTRL-F"
@@ -5309,6 +5394,7 @@
 
   Inserts the key it was called by into the buffer. This is useful if
   you want to ``unbind'' a key in readline mode.
+
 
 
   7.3.16.  trim

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-26 18:37+0200\n"
+"POT-Creation-Date: 2004-09-28 11:15+0200\n"
 "PO-Revision-Date: 2003-08-26 23:01+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Korean - Im Eunjea <eunjea@kldp.org>\n"
@@ -210,12 +210,12 @@ msgstr "글쓴이에게 Cc 메세지"
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s에 오류가 있지만 CC 합니다"
 
-#: src/art.c:3382 src/post.c:1012
+#: src/art.c:3382 src/post.c:1017
 #, c-format
 msgid "Cannot open file: %s"
 msgstr "파일 %s를 열수 없음"
 
-#: src/art.c:3389 src/post.c:1019
+#: src/art.c:3389 src/post.c:1024
 #, c-format
 msgid "Zero length file: %s"
 msgstr "0 크기의 파일: %s"
@@ -286,12 +286,12 @@ msgstr "표시한 기사 저장"
 msgid "Save this thread"
 msgstr "이 글타래를 저장"
 
-#: src/art.c:4100 src/post.c:1637
+#: src/art.c:4100 src/post.c:1642
 #, c-format
 msgid "Do you want to create directory %s"
 msgstr "%s 디렉토리를 만들까요?"
 
-#: src/art.c:4103 src/post.c:1641
+#: src/art.c:4103 src/post.c:1646
 #, c-format
 msgid "Unable to create directory. (errno = %d)"
 msgstr "디렉토리를 만들수 없음. (오류번호 = %d)"
@@ -309,7 +309,7 @@ msgstr "임시 파일 (^G 취소): "
 msgid "Save to file (^G aborts): "
 msgstr "파일로 저장 (^G 취소): "
 
-#: src/art.c:4172 src/editscore.c:167 src/post.c:630
+#: src/art.c:4172 src/editscore.c:167 src/post.c:635
 #, c-format
 msgid "Unable to open %s"
 msgstr "%s를 열수 없음."
@@ -952,7 +952,7 @@ msgstr "그룹 목록 (예, comp*unix*): "
 msgid "No unread articles."
 msgstr "읽지 않은 기사가 없음."
 
-#: src/group.c:1692 src/post.c:979 src/post.c:1365
+#: src/group.c:1692 src/post.c:984 src/post.c:1370
 msgid "Posting not allowed."
 msgstr "투고가 허용되지 않습니다."
 
@@ -1094,7 +1094,7 @@ msgstr ""
 msgid "Do you want to restore your newsrc from the autosave version"
 msgstr "자동 저장된 것으로 부터 newsrc 파일을 복구할까요"
 
-#: src/group.c:2642 src/post.c:1578 src/slrnpull.c:1860
+#: src/group.c:2642 src/post.c:1583 src/slrnpull.c:1860
 #, c-format
 msgid "Unable to create %s."
 msgstr "%s 생성 불가."
@@ -2350,71 +2350,71 @@ msgstr "완성 가능"
 msgid "(default: %s) "
 msgstr "(기본: %s) "
 
-#: src/misc.c:2221
+#: src/misc.c:2224
 msgid "Abort!"
 msgstr "취소!"
 
-#: src/misc.c:2227
+#: src/misc.c:2230
 msgid "Integer expected."
 msgstr "정수 기대."
 
-#: src/misc.c:2329
+#: src/misc.c:2332
 msgid "Invalid response! Try again."
 msgstr "잘못된 입력! 재시도."
 
-#: src/misc.c:2364
+#: src/misc.c:2367
 msgid "yYnN"
 msgstr "yYnN"
 
-#: src/misc.c:2379
+#: src/misc.c:2382
 msgid "? [Y]es, No"
 msgstr "? [Y]네, N(아니오)"
 
-#: src/misc.c:2384
+#: src/misc.c:2387
 msgid "? Yes, [N]o"
 msgstr "? Y(네), [N]아니오"
 
-#: src/misc.c:2412
+#: src/misc.c:2415
 msgid "yYnNcC"
 msgstr "yYnNcC"
 
-#: src/misc.c:2422
+#: src/misc.c:2425
 msgid "? [Y]es, No, Cancel"
 msgstr "? [Y]네, N(아니오), C(취소)"
 
-#: src/misc.c:2478 src/spool.c:1439
+#: src/misc.c:2481 src/spool.c:1439
 msgid "Invalid regular expression or expression too long."
 msgstr "잘못된 정규 표현식이거나 표현식이 너무 깁니다."
 
-#: src/misc.c:2611
+#: src/misc.c:2614
 #, no-c-format
 msgid "On %D, %r <%f> wrote:"
 msgstr "On %D, %r <%f> wrote:"
 
-#: src/misc.c:2613
+#: src/misc.c:2616
 #, no-c-format
 msgid "In %n, you wrote:"
 msgstr "In %n, you wrote:"
 
-#: src/misc.c:2615
+#: src/misc.c:2618
 #, no-c-format
 msgid "[\"Followup-To:\" header set to %n.]"
 msgstr "[\"Followup-To:\" 헤더가 %n로 설정됨.]"
 
-#: src/misc.c:2618
+#: src/misc.c:2621
 #, no-c-format
 msgid "[This message has also been posted to %n.]"
 msgstr "[이 메세지는 %n에도 투고 되었습니다.]"
 
-#: src/misc.c:2849
+#: src/misc.c:2852
 msgid "Cannot generate \"From:\" line without a valid username."
 msgstr "올바른 사용자 이름 없이 \"From:\" 줄을 만들 수 없습니다."
 
-#: src/misc.c:2853
+#: src/misc.c:2856
 msgid "Cannot generate \"From:\" line without a hostname."
 msgstr "호스트 이름 없이 \"From:\" 줄을 만들 수 없습니다."
 
-#: src/misc.c:2858
+#: src/misc.c:2861
 msgid "This client cannot handle addresses longer than 255 characters."
 msgstr "이 클라이언트는 255 글자수 이상의 주소를 처리할 수 없습니다."
 
@@ -2450,7 +2450,7 @@ msgstr ""
 "-p NNTP-PORT    NNTP 포트를 NNTP-PORT로 지정. 기본 값은 119.\n"
 "                 주의: 어떤 시스템에서는 영향을 주지 않음.\n"
 
-#: src/nntplib.c:197 src/post.c:827
+#: src/nntplib.c:197 src/post.c:832
 #, c-format
 msgid "Reason: %s"
 msgstr "이유: %s"
@@ -2712,241 +2712,241 @@ msgstr "알 수 없는 NNTP 코드"
 msgid "Unable to re-open %s."
 msgstr "%s를 열수 없음."
 
-#: src/post.c:646
+#: src/post.c:651
 msgid "The first line must begin with a header."
 msgstr "첫번째 줄은 헤더로 시작되어야 함."
 
-#: src/post.c:656
+#: src/post.c:661
 msgid "Expecting a header.  This is not a header line."
 msgstr "헤더를 기대.  이것은 헤더가 아님."
 
-#: src/post.c:664
+#: src/post.c:669
 msgid "The subject header is not allowed be to empty."
 msgstr "빈 제목은 허용되지 않음."
 
-#: src/post.c:676
+#: src/post.c:681
 msgid "The Newsgroups header is not allowed be to empty."
 msgstr "빈 뉴스그룹 헤더는 허용되지 않음."
 
-#: src/post.c:704
+#: src/post.c:709
 msgid "A space must follow the ':' in a header"
 msgstr "헤더 필드의 ':' 뒤에는 공백이 있어야 함"
 
-#: src/post.c:711
+#: src/post.c:716
 msgid "This news reader will not accept user generated From lines."
 msgstr "사용자가 만든 From 행은 사용할 수 없음."
 
-#: src/post.c:718
+#: src/post.c:723
 msgid "This news reader will not accept user generated Message-IDs."
 msgstr "사용자가 만든 Message-ID 헤더는 사용할 수 없음."
 
-#: src/post.c:728
+#: src/post.c:733
 msgid "Subject header is required."
 msgstr "제목이 필요함."
 
-#: src/post.c:733
+#: src/post.c:738
 msgid "Newsgroups header is required."
 msgstr "뉴스 그룹 헤더가 필요함."
 
-#: src/post.c:740
+#: src/post.c:745
 msgid "Please re-consider if posting to a large number of groups is necessary."
 msgstr "많은 그룹에 한번에 투고하는 것은 다시 한번 생각해 보시기 바랍니다."
 
-#: src/post.c:743
+#: src/post.c:748
 msgid ""
 "In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
 msgstr "\"Followup-To:\"을 여러개의 그룹으로 설정하는 것은 좋지 않습니다."
 
-#: src/post.c:746
+#: src/post.c:751
 msgid "Setting a \"Followup-To:\" is recommended when crossposting."
 msgstr "\"Followup-To:\" 설정은 교차 투고때만 권장합니다."
 
-#: src/post.c:760
+#: src/post.c:765
 msgid "Your message does not appear to have any unquoted text."
 msgstr "인용문 외에 글이 없는것으로 판단됩니다."
 
-#: src/post.c:819
+#: src/post.c:824
 msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
 msgstr "서명을 너무 길게 쓰지 마세요. 4줄 이하가 좋습니다."
 
-#: src/post.c:826
+#: src/post.c:831
 msgid "Message is not acceptable."
 msgstr "메세지가 허용되지 않음."
 
-#: src/post.c:844
+#: src/post.c:849
 msgid "Your message is not acceptable for the following reason:"
 msgstr "메세지가 다음 이유로 허용되지 않습니다:"
 
-#: src/post.c:851
+#: src/post.c:856
 #, c-format
 msgid "This message was generated while looking at line %d:"
 msgstr "이 메세지는 %d줄을 볼때 생성됨:"
 
-#: src/post.c:857
+#: src/post.c:862
 msgid ""
 "Perhaps this error was generated because you did not separate the header"
 msgstr "이 오류는 헤더과 본문이 분리되지 않은 경우 입니다."
 
-#: src/post.c:859
+#: src/post.c:864
 msgid "section from the body by a BLANK line."
 msgstr "본문이 비었음."
 
-#: src/post.c:866
+#: src/post.c:871
 msgid "Your message breaks the following netiquette guidelines:"
 msgstr "당신의 메세지는 다음 네티켓에 위반됩니다:"
 
-#: src/post.c:882
+#: src/post.c:887
 msgid "Lines with more than 80 characters generally need to be wrapped."
 msgstr "한줄을 너무 길게 쓰지 마세요. 80자 이상의 긴 줄은 wrap해야 합니다."
 
-#: src/post.c:886
+#: src/post.c:891
 #, c-format
 msgid "This affects at least line %d:"
 msgstr "%d번째 줄의 효과:"
 
-#: src/post.c:888
+#: src/post.c:893
 #, c-format
 msgid "This affects %d lines between line %d and %d. First one:"
 msgstr "This affects %d lines between line %d and %d. First one:"
 
-#: src/post.c:914 src/post.c:1315 src/post.c:1343
+#: src/post.c:919 src/post.c:1320 src/post.c:1348
 #, c-format
 msgid "File not found: %s--- message not posted."
 msgstr "파일을 찾을 수 없음: %s--- 메세지가 투고되지 않음."
 
-#: src/post.c:921
+#: src/post.c:926
 #, c-format
 msgid "***Warning: error saving to %s"
 msgstr "***경고: %s로 저장중 오류"
 
-#: src/post.c:973
+#: src/post.c:978
 #, c-format
 msgid "***Warning: error writing to %s"
 msgstr "***경고: %s 쓰기 오류"
 
-#: src/post.c:978
+#: src/post.c:983
 #, c-format
 msgid "%s Failed post saved in %s"
 msgstr "%s 투고 실패 %s에 저장됨"
 
-#: src/post.c:1119 src/post.c:1152
+#: src/post.c:1124 src/post.c:1157
 msgid "yYnNeEsSdDfF"
 msgstr "yYnNeEsSdDfF"
 
-#: src/post.c:1122
+#: src/post.c:1127
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
 msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기), D(삭제), F(필터)"
 
-#: src/post.c:1126
+#: src/post.c:1131
 msgid "yYnNeEsSfF"
 msgstr "yYnNeEsSfF"
 
-#: src/post.c:1129
+#: src/post.c:1134
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
 msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기), F(필터)"
 
-#: src/post.c:1137
+#: src/post.c:1142
 msgid "yYnNeEsSdD"
 msgstr "yYnNeEsSdD"
 
-#: src/post.c:1140
+#: src/post.c:1145
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
 msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기), D(삭제)"
 
-#: src/post.c:1144
+#: src/post.c:1149
 msgid "yYnNeEsS"
 msgstr "yYnNeEsS"
 
-#: src/post.c:1147
+#: src/post.c:1152
 msgid "Post the message? Yes, No, Edit, poStpone"
 msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기)"
 
-#: src/post.c:1170
+#: src/post.c:1175
 msgid "Sure you want to delete it"
 msgstr "정말로 지울까요"
 
-#: src/post.c:1194
+#: src/post.c:1199
 msgid "yYeEnNcC"
 msgstr "yYeEnNcC"
 
-#: src/post.c:1197
+#: src/post.c:1202
 msgid "re-Edit,  or Cancel"
 msgstr "E(수정), C(취소)"
 
-#: src/post.c:1201 src/post.c:1207
+#: src/post.c:1206 src/post.c:1212
 msgid "yYeEnNcCfF"
 msgstr "yYeEnNcCfF"
 
-#: src/post.c:1204
+#: src/post.c:1209
 msgid "re-Edit, Cancel, or Force the posting (not recommended)"
 msgstr "E(수정), C(취소), F(강제 투고: 권장하지 않음)"
 
-#: src/post.c:1301 src/post.c:1337
+#: src/post.c:1306 src/post.c:1342
 msgid "Posting ..."
 msgstr "보내는 중 ..."
 
-#: src/post.c:1333
+#: src/post.c:1338
 msgid "post_file_hook returned error."
 msgstr "post_file_hook 오류."
 
-#: src/post.c:1351
+#: src/post.c:1356
 #, c-format
 msgid "Couldn't open %s--- message not posted."
 msgstr "%s를 열 수 없음 --- 메세지가 투고되지 않음."
 
-#: src/post.c:1366
+#: src/post.c:1371
 msgid "Could not reach server."
 msgstr "서버에 접근 할 수 없음."
 
-#: src/post.c:1373
+#: src/post.c:1378
 msgid "Message-ID generating error."
 msgstr "Message-ID 생성 오류."
 
-#: src/post.c:1384
+#: src/post.c:1389
 msgid "\"From\" generating error."
 msgstr "\"From\" 생성 오류."
 
-#: src/post.c:1513
+#: src/post.c:1518
 msgid "Posting...done."
 msgstr "투고중...끝."
 
-#: src/post.c:1534
+#: src/post.c:1539
 msgid "rReEcC"
 msgstr "rReEcC"
 
-#: src/post.c:1537
+#: src/post.c:1542
 msgid "Select one: Repost, Edit, Cancel"
 msgstr "선택: R(재투고), E(편집), C(취소)"
 
-#: src/post.c:1648
+#: src/post.c:1653
 msgid "Aborted on user request."
 msgstr "사용자 요청에 의해 종료."
 
-#: src/post.c:1654
+#: src/post.c:1659
 msgid "postpone_directory points to a regular file (not a directory)"
 msgstr "postpone_directory는 파일로 지정해야 합니다 (디렉토리가 아님)."
 
-#: src/post.c:1666
+#: src/post.c:1671
 msgid "Not implemented yet. Sorry"
 msgstr "아직 지원하지 않습니다."
 
-#: src/post.c:1682
+#: src/post.c:1687
 msgid "Save to: "
 msgstr "파일로 저장: "
 
-#: src/post.c:1688
+#: src/post.c:1693
 msgid "File exists, overwrite"
 msgstr "파일이 있습니다. 덮어 씌울까요"
 
-#: src/post.c:1700
+#: src/post.c:1705
 msgid "You must specify a name"
 msgstr "이름을 지정해야 합니다"
 
-#: src/post.c:1702
+#: src/post.c:1707
 msgid "Illegal filename. Try again"
 msgstr "잘못된 파일이름. 재시도"
 
-#: src/post.c:1727
+#: src/post.c:1732
 #, c-format
 msgid "%s: not a regular file"
 msgstr "%s: 은 정규 파일이 아님"

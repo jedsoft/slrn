@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: slrn 0.9.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-26 18:37+0200\n"
+"POT-Creation-Date: 2004-09-28 11:15+0200\n"
 "PO-Revision-Date: 2003-09-16 21:29+0200\n"
 "Last-Translator: Byrial Ole Jensen <byrial@image.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -228,12 +228,12 @@ msgstr "Send kopi til afsender"
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s synes ugyldig. Send kopi alligevel"
 
-#: src/art.c:3382 src/post.c:1012
+#: src/art.c:3382 src/post.c:1017
 #, c-format
 msgid "Cannot open file: %s"
 msgstr "Kan ikke åbne fil: %s"
 
-#: src/art.c:3389 src/post.c:1019
+#: src/art.c:3389 src/post.c:1024
 #, c-format
 msgid "Zero length file: %s"
 msgstr "Tom fil: %s"
@@ -304,12 +304,12 @@ msgstr "Gem afmærkede indlæg"
 msgid "Save this thread"
 msgstr "Gem denne tråd"
 
-#: src/art.c:4100 src/post.c:1637
+#: src/art.c:4100 src/post.c:1642
 #, c-format
 msgid "Do you want to create directory %s"
 msgstr "Vil du oprette kataloget %s"
 
-#: src/art.c:4103 src/post.c:1641
+#: src/art.c:4103 src/post.c:1646
 #, c-format
 msgid "Unable to create directory. (errno = %d)"
 msgstr "Kan ikke oprette kataloget. (fejlnr. = %d)."
@@ -327,7 +327,7 @@ msgstr "Midlertidig fil (^G afbryder): "
 msgid "Save to file (^G aborts): "
 msgstr "Gem til fil (^G afbryder): "
 
-#: src/art.c:4172 src/editscore.c:167 src/post.c:630
+#: src/art.c:4172 src/editscore.c:167 src/post.c:635
 #, c-format
 msgid "Unable to open %s"
 msgstr "Kan ikke åbne %s"
@@ -975,7 +975,7 @@ msgstr "List grupper (f.eks. comp*unix): "
 msgid "No unread articles."
 msgstr "Ingen ulæste indlæg."
 
-#: src/group.c:1692 src/post.c:979 src/post.c:1365
+#: src/group.c:1692 src/post.c:984 src/post.c:1370
 msgid "Posting not allowed."
 msgstr "Sending til nyhedsgruppe ikke tilladt."
 
@@ -1117,7 +1117,7 @@ msgstr ""
 msgid "Do you want to restore your newsrc from the autosave version"
 msgstr "Ønsker du at retablere din newsrc-fil ud fra sikkerhedskopien"
 
-#: src/group.c:2642 src/post.c:1578 src/slrnpull.c:1860
+#: src/group.c:2642 src/post.c:1583 src/slrnpull.c:1860
 #, c-format
 msgid "Unable to create %s."
 msgstr "Kan ikke oprette %s."
@@ -2410,74 +2410,74 @@ msgstr "Mulige fuldførelser"
 msgid "(default: %s) "
 msgstr "[%s] "
 
-#: src/misc.c:2221
+#: src/misc.c:2224
 msgid "Abort!"
 msgstr "Annulleret!"
 
-#: src/misc.c:2227
+#: src/misc.c:2230
 msgid "Integer expected."
 msgstr "Heltal forventet."
 
-#: src/misc.c:2329
+#: src/misc.c:2332
 msgid "Invalid response! Try again."
 msgstr "Ugyldigt svar! Prøv igen."
 
-#: src/misc.c:2364
+#: src/misc.c:2367
 msgid "yYnN"
 msgstr "jJnN"
 
-#: src/misc.c:2379
+#: src/misc.c:2382
 msgid "? [Y]es, No"
 msgstr "? [J]a, Nej"
 
-#: src/misc.c:2384
+#: src/misc.c:2387
 msgid "? Yes, [N]o"
 msgstr "? Ja, [N]ej"
 
-#: src/misc.c:2412
+#: src/misc.c:2415
 msgid "yYnNcC"
 msgstr "jJnNaA"
 
-#: src/misc.c:2422
+#: src/misc.c:2425
 msgid "? [Y]es, No, Cancel"
 msgstr "? [J]a, Nej, Annullér"
 
-#: src/misc.c:2478 src/spool.c:1439
+#: src/misc.c:2481 src/spool.c:1439
 msgid "Invalid regular expression or expression too long."
 msgstr "Ugyldigt eller for langt regulært udtryk."
 
 # Standardværdi af followup_string.
-#: src/misc.c:2611
+#: src/misc.c:2614
 #, no-c-format
 msgid "On %D, %r <%f> wrote:"
 msgstr "%r <%f> skrev %D:"
 
 # Standardværdi af reply_string.
-#: src/misc.c:2613
+#: src/misc.c:2616
 #, no-c-format
 msgid "In %n, you wrote:"
 msgstr "I %n skrev du:"
 
-#: src/misc.c:2615
+#: src/misc.c:2618
 #, no-c-format
 msgid "[\"Followup-To:\" header set to %n.]"
 msgstr "[\"Followup-To:\"-hoved sat til %n.]"
 
 # Standardværdi af cc_followup_string.
-#: src/misc.c:2618
+#: src/misc.c:2621
 #, no-c-format
 msgid "[This message has also been posted to %n.]"
 msgstr "[Dette brev er også sendt til %n]"
 
-#: src/misc.c:2849
+#: src/misc.c:2852
 msgid "Cannot generate \"From:\" line without a valid username."
 msgstr "Kan ikke generere en \"From:\"-linje uden et gyldigt \"username\"."
 
-#: src/misc.c:2853
+#: src/misc.c:2856
 msgid "Cannot generate \"From:\" line without a hostname."
 msgstr "Kan ikke generere en \"From:\"-linje uden et \"hostname\"."
 
-#: src/misc.c:2858
+#: src/misc.c:2861
 msgid "This client cannot handle addresses longer than 255 characters."
 msgstr "Dette program kan ikke håndtere adresser på mere end 255 tegn."
 
@@ -2515,7 +2515,7 @@ msgstr ""
 "                 Bemærk: Dette tilvalg har ingen virkning på nogle "
 "systemer.\n"
 
-#: src/nntplib.c:197 src/post.c:827
+#: src/nntplib.c:197 src/post.c:832
 #, c-format
 msgid "Reason: %s"
 msgstr "Årsag: %s"
@@ -2783,172 +2783,172 @@ msgstr "Ukendt NNTP-kode"
 msgid "Unable to re-open %s."
 msgstr "Kan ikke åbne %s."
 
-#: src/post.c:646
+#: src/post.c:651
 msgid "The first line must begin with a header."
 msgstr "Den første linje skal begynde med et hoved."
 
-#: src/post.c:656
+#: src/post.c:661
 msgid "Expecting a header.  This is not a header line."
 msgstr "Forventede et hoved. Dette er ikke en hoved-linje."
 
-#: src/post.c:664
+#: src/post.c:669
 msgid "The subject header is not allowed be to empty."
 msgstr "Emne-hovedet (Subject) må ikke være tomt."
 
-#: src/post.c:676
+#: src/post.c:681
 msgid "The Newsgroups header is not allowed be to empty."
 msgstr "Nyhedsgruppe-hovedet (Newsgroups) må ikke være tomt."
 
-#: src/post.c:704
+#: src/post.c:709
 msgid "A space must follow the ':' in a header"
 msgstr "Der skal være mellemrum efter kolonet i et hoved."
 
-#: src/post.c:711
+#: src/post.c:716
 msgid "This news reader will not accept user generated From lines."
 msgstr ""
 "Denne nyhedslæser accepterer ikke brugerens egne id'er for indlæg (Message-"
 "Id)."
 
-#: src/post.c:718
+#: src/post.c:723
 msgid "This news reader will not accept user generated Message-IDs."
 msgstr ""
 "Denne nyhedslæser accepterer ikke bruger-genererede indlægsidentifikationer."
 
-#: src/post.c:728
+#: src/post.c:733
 msgid "Subject header is required."
 msgstr "Der skal være et emne-hoved (Subject)."
 
-#: src/post.c:733
+#: src/post.c:738
 msgid "Newsgroups header is required."
 msgstr "Der skal være et nyhedsgruppe-hoved (Newsgroups)."
 
-#: src/post.c:740
+#: src/post.c:745
 msgid "Please re-consider if posting to a large number of groups is necessary."
 msgstr ""
 "Genovervej venligst om det er nødvendigt at sende til mange nyhedsgrupper."
 
-#: src/post.c:743
+#: src/post.c:748
 msgid ""
 "In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
 msgstr ""
 "I de fleste tilfælde er det en dårlig ide at lave et opfølgningshoved til "
 "flere grupper."
 
-#: src/post.c:746
+#: src/post.c:751
 msgid "Setting a \"Followup-To:\" is recommended when crossposting."
 msgstr "Det anbefales at lave et opfølgningshoved ved flergruppesending."
 
-#: src/post.c:760
+#: src/post.c:765
 msgid "Your message does not appear to have any unquoted text."
 msgstr "Dit indlæg ser ikke ud til at indeholde nyskrevet tekst."
 
-#: src/post.c:819
+#: src/post.c:824
 msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
 msgstr ""
 "Vær venlig at holde din signatur kort. 4 linjer er en almen accepteret "
 "grænse."
 
-#: src/post.c:826
+#: src/post.c:831
 msgid "Message is not acceptable."
 msgstr "Indlægget er ikke acceptabelt."
 
-#: src/post.c:844
+#: src/post.c:849
 msgid "Your message is not acceptable for the following reason:"
 msgstr "Dit indlæg er ikke acceptabelt af følgende grund:"
 
-#: src/post.c:851
+#: src/post.c:856
 #, c-format
 msgid "This message was generated while looking at line %d:"
 msgstr "Beskeden blev lavet ved at kigge på linje %d:"
 
-#: src/post.c:857
+#: src/post.c:862
 msgid ""
 "Perhaps this error was generated because you did not separate the header"
 msgstr "Måske blev fejlbeskeden lavet måske fordi du ikke adskilte hovederne"
 
-#: src/post.c:859
+#: src/post.c:864
 msgid "section from the body by a BLANK line."
 msgstr "fra brødteksten med en tom linje."
 
-#: src/post.c:866
+#: src/post.c:871
 msgid "Your message breaks the following netiquette guidelines:"
 msgstr "Dit indlæg overtræder følgende netikette-retningslinjer:"
 
-#: src/post.c:882
+#: src/post.c:887
 msgid "Lines with more than 80 characters generally need to be wrapped."
 msgstr "Linjer med mere end 80 tegn bør normalt ombrydes."
 
-#: src/post.c:886
+#: src/post.c:891
 #, c-format
 msgid "This affects at least line %d:"
 msgstr "Det berører linje %d og måske flere."
 
-#: src/post.c:888
+#: src/post.c:893
 #, c-format
 msgid "This affects %d lines between line %d and %d. First one:"
 msgstr "Det berører %d linjer mellem linje %d og %d. Den første er:"
 
-#: src/post.c:914 src/post.c:1315 src/post.c:1343
+#: src/post.c:919 src/post.c:1320 src/post.c:1348
 #, c-format
 msgid "File not found: %s--- message not posted."
 msgstr "Fil ikke fundet: %s -- indlægget er ikke sendt."
 
-#: src/post.c:921
+#: src/post.c:926
 #, c-format
 msgid "***Warning: error saving to %s"
 msgstr "*** Advarsel: fejl ved gemning til %s"
 
-#: src/post.c:973
+#: src/post.c:978
 #, c-format
 msgid "***Warning: error writing to %s"
 msgstr "*** Advarsel: fejl ved skrivning til %s"
 
-#: src/post.c:978
+#: src/post.c:983
 #, c-format
 msgid "%s Failed post saved in %s"
 msgstr "%s Mislykket sending gemt i %s"
 
-#: src/post.c:1119 src/post.c:1152
+#: src/post.c:1124 src/post.c:1157
 msgid "yYnNeEsSdDfF"
 msgstr "jJnNrRuUlLfF"
 
-#: src/post.c:1122
+#: src/post.c:1127
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt, Slet, Filtrér"
 
-#: src/post.c:1126
+#: src/post.c:1131
 msgid "yYnNeEsSfF"
 msgstr "jJnNrRuUfF"
 
-#: src/post.c:1129
+#: src/post.c:1134
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt, Filtrér"
 
-#: src/post.c:1137
+#: src/post.c:1142
 msgid "yYnNeEsSdD"
 msgstr "jJnNrRuUlL"
 
-#: src/post.c:1140
+#: src/post.c:1145
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt, Slet"
 
-#: src/post.c:1144
+#: src/post.c:1149
 msgid "yYnNeEsS"
 msgstr "jJnNrRuU"
 
-#: src/post.c:1147
+#: src/post.c:1152
 msgid "Post the message? Yes, No, Edit, poStpone"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt"
 
-#: src/post.c:1170
+#: src/post.c:1175
 msgid "Sure you want to delete it"
 msgstr "Er du sikker på at du vil slette den"
 
-#: src/post.c:1194
+#: src/post.c:1199
 msgid "yYeEnNcC"
 msgstr "jJrRnNaA"
 
-#: src/post.c:1197
+#: src/post.c:1202
 msgid "re-Edit,  or Cancel"
 msgstr "Omredigér eller Annullér"
 
@@ -2958,80 +2958,80 @@ msgstr "Omredigér eller Annullér"
 # menu, men jeg vil alligevel gerne godt undgå at samme bogstav bruges
 # forskelligt i 2 meget beslægtede menuer. 'e', 'n', 'd', 'a', 'l' og
 # 'i' er også i brug til hhv. Edit/Nej/Delete/Annullér/sLet/Ignorér.
-#: src/post.c:1201 src/post.c:1207
+#: src/post.c:1206 src/post.c:1212
 msgid "yYeEnNcCfF"
 msgstr "jJrRnNaAgG"
 
-#: src/post.c:1204
+#: src/post.c:1209
 msgid "re-Edit, Cancel, or Force the posting (not recommended)"
 msgstr "Omredigér, Annullér eller Send alligevel (anbefales ikke)"
 
-#: src/post.c:1301 src/post.c:1337
+#: src/post.c:1306 src/post.c:1342
 msgid "Posting ..."
 msgstr "Sender ..."
 
-#: src/post.c:1333
+#: src/post.c:1338
 msgid "post_file_hook returned error."
 msgstr "post_file_hook returnerede fejl."
 
-#: src/post.c:1351
+#: src/post.c:1356
 #, c-format
 msgid "Couldn't open %s--- message not posted."
 msgstr "Kunne ikke åbne %s -- indlægget er ikke sendt."
 
-#: src/post.c:1366
+#: src/post.c:1371
 msgid "Could not reach server."
 msgstr "Kunne ikke få kontakt med server."
 
-#: src/post.c:1373
+#: src/post.c:1378
 msgid "Message-ID generating error."
 msgstr "Fejl ved dannelse af indlægsidentifikation (Message-ID)."
 
-#: src/post.c:1384
+#: src/post.c:1389
 msgid "\"From\" generating error."
 msgstr "Fejl ved dannelse af \"From:\"-hoved."
 
-#: src/post.c:1513
+#: src/post.c:1518
 msgid "Posting...done."
 msgstr "Sender ... færdig"
 
-#: src/post.c:1534
+#: src/post.c:1539
 msgid "rReEcC"
 msgstr "sSoOaA"
 
-#: src/post.c:1537
+#: src/post.c:1542
 msgid "Select one: Repost, Edit, Cancel"
 msgstr "Vælg mellem: Send igen, Omredigér, Annullér"
 
-#: src/post.c:1648
+#: src/post.c:1653
 msgid "Aborted on user request."
 msgstr "Annulleret efter brugerønske."
 
-#: src/post.c:1654
+#: src/post.c:1659
 msgid "postpone_directory points to a regular file (not a directory)"
 msgstr "\"postpone_directory\" peger på en almindelig fil (ikke et katalog)"
 
-#: src/post.c:1666
+#: src/post.c:1671
 msgid "Not implemented yet. Sorry"
 msgstr "Ikke kodet endnu. Beklager"
 
-#: src/post.c:1682
+#: src/post.c:1687
 msgid "Save to: "
 msgstr "Gem til: "
 
-#: src/post.c:1688
+#: src/post.c:1693
 msgid "File exists, overwrite"
 msgstr "Filen findes, overskriv den"
 
-#: src/post.c:1700
+#: src/post.c:1705
 msgid "You must specify a name"
 msgstr "Du skal angive et navn"
 
-#: src/post.c:1702
+#: src/post.c:1707
 msgid "Illegal filename. Try again"
 msgstr "Ugyldigt filnavn. Prøv igen"
 
-#: src/post.c:1727
+#: src/post.c:1732
 #, c-format
 msgid "%s: not a regular file"
 msgstr "%s er ikke en almindelig fil"
