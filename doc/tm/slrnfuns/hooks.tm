@@ -110,7 +110,7 @@ comes in handy if you want to use pre-written macro sets.
 #v+
    define make_from_string_hook ()
    {
-     return "My Name <me@my.machine>"
+     return "My Name <me@my.machine>";
    }
 #v-
 \done

@@ -704,7 +704,7 @@ Changes since 0.9.5.4
     
           define make_from_string_hook ()
 	  {
-	     return "My Name <me@my.machine>"
+	     return "My Name <me@my.machine>";
 	  }
 
 4.  Small bug in base64 decoding of headers fixed.
