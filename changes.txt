@@ -1,6 +1,7 @@
 Changes since 0.9.7.3
 
 0. Bug fixes include:
+  * slrn sometimes hung when reading via SSL. (Robert Dennis Manchester)
   * Fixed rare segfault caused by broken "References:" lines. (Felix Schueller)
 
 Changes since 0.9.7.2

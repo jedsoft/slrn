@@ -730,13 +730,19 @@ int sltcp_close (SLTCP_Type *tcp) /*{{{*/
 /*}}}*/
 
 #if !defined(VMS) && !defined(USE_WINSOCK_SLTCP)
-static int wait_for_input (int fd) /*{{{*/
+static int wait_for_input (SLTCP_Type *tcp) /*{{{*/
 {
    fd_set fds;
    struct timeval tv;
+   int fd = tcp->tcp_fd;
    
    if (fd == -1)
      return -1;
+   
+#if SLTCP_HAS_SSL_SUPPORT
+   if (tcp->ssl != NULL && SSL_pending(tcp->ssl) > 0)
+     return 0;
+#endif
    
    while (1)
      {
@@ -814,7 +820,7 @@ static int do_read (SLTCP_Type *tcp) /*{{{*/
     * slrn attempts to set signals to NOT restart system calls.  In such a 
     * case, the read below can be interrupted.
     */
-   if (-1 == wait_for_input (fd))
+   if (-1 == wait_for_input (tcp))
      return -1;
 #endif
 
