@@ -138,13 +138,15 @@ comes in handy if you want to use pre-written macro sets.
 \done
 
 \function{post_file_hook}
-\usage{Void post_file_hook ()}
+\usage{Void post_file_hook (String file)}
 \description
    Function called after composing and filtering, but before posting
    article.
+   This hook takes a single parameter: the name of the file that slrn is
+   about to post.
 \example
-   An example of this hook is included in macros/ispell.sl in slrn's source
-   tree.
+   An example of this hook is included in macros/posthook.sl in slrn's
+   source tree.
 \done
 
 \function{post_filter_hook}
@@ -158,6 +160,9 @@ comes in handy if you want to use pre-written macro sets.
 #v-
    This hook takes a single parameter: the name of the file that slrn is
    about to post.
+\example
+   An example of this hook is included in macros/ispell.sl in slrn's source
+   tree.
 \done
 
 \function{post_hook}

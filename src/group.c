@@ -1733,15 +1733,15 @@ void slrn_post_cmd (void) /*{{{*/
 	return;
      }
 
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST) && (Slrn_Batch == 0) &&
+       (slrn_get_yesno (1, _("Are you sure that you want to post")) <= 0))
+     return;
+   
 #if SLRN_HAS_SLANG
    slrn_run_hooks (HOOK_POST, 0);
    if (SLang_get_error ())
      return;
 #endif
-
-   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST) && (Slrn_Batch == 0) &&
-       (slrn_get_yesno (1, _("Are you sure that you want to post")) <= 0))
-     return;
    
    if (Slrn_Group_Current_Group == NULL)
      name = "";

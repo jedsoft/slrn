@@ -3636,15 +3636,6 @@ static void supersede (void) /*{{{*/
 	return;
      }
    
-   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST)
-       && (slrn_get_yesno (1, _("Are you sure you want to supersede")) == 0))
-     return;
-   
-#if SLRN_HAS_SLANG
-   if (-1 == run_article_hook (HOOK_SUPERSEDE))
-     return;
-#endif
-   
    me = slrn_extract_header ("From: ", 6);
    if (me != NULL)
       (void) parse_from (me, from, sizeof(from));
@@ -3658,6 +3649,15 @@ static void supersede (void) /*{{{*/
         slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from);
         return;
      }
+   
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST)
+       && (slrn_get_yesno (1, _("Are you sure you want to supersede")) == 0))
+     return;
+   
+#if SLRN_HAS_SLANG
+   if (-1 == run_article_hook (HOOK_SUPERSEDE))
+     return;
+#endif
    
    if (NULL == (newsgroups = slrn_extract_header ("Newsgroups: ", 12)))
      newsgroups = "";
@@ -6855,11 +6855,6 @@ static void cancel_article (void) /*{{{*/
      return;
    slrn_update_screen ();
    
-   if (slrn_get_yesno (0, _("Are you sure that you want to cancel this article")) <= 0)
-     return;
-   
-   slrn_message_now (_("Cancelling..."));
-   
    /* TO cancel, we post a cancel message with a 'control' header.  First, check to
     * see if this is really the owner of the message.
     */
@@ -6877,6 +6872,11 @@ static void cancel_article (void) /*{{{*/
         slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from);
         return;
      }
+   
+   if (slrn_get_yesno (0, _("Are you sure that you want to cancel this article")) <= 0)
+     return;
+   
+   slrn_message_now (_("Cancelling..."));
    
 #if SLRN_HAS_MIME
    strncpy(from, me, sizeof(from));

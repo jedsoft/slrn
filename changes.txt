@@ -3,6 +3,8 @@ Changes since 0.9.8.1
 0. Bug fixes include:
   * slrnpull fetches marked articles even if no new headers are available.
   * slrn would sometimes eat the last char of an article when posting.
+  * slrnpull gives permission 600 to debugging files (may contain passwords).
+  * Some minor usability glitches (Alain Bench)
 
 Symbolic key names <BackTab> and <F13> through <F20> added (Alain Bench).
 

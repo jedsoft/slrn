@@ -2725,14 +2725,16 @@
 
 
       Usage
-        Void post_file_hook ()
+        Void post_file_hook (String file)
 
       Description
         Function called after composing and filtering, but before
         posting article.
+        This hook takes a single parameter: the name of the file that
+        slrn is about to post.
 
       Example
-        An example of this hook is included in macros/ispell.sl in
+        An example of this hook is included in macros/posthook.sl in
         slrn's source tree.
 
 
@@ -2755,6 +2757,10 @@
 
      This hook takes a single parameter: the name of the file that slrn
      is about to post.
+
+      Example
+        An example of this hook is included in macros/ispell.sl in
+        slrn's source tree.
 
 
 
