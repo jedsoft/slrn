@@ -784,8 +784,8 @@ static int post_references_header (char *line)
 {
 #define GNKSA_LENGTH 986 /* 998 - strlen ("References: ") */
    char buf[GNKSA_LENGTH + 2];
-   char *p, *l, *r, *nextid;
-   unsigned int len = 0;
+   char *p, *l, *r, *nextid, *tmp;
+   unsigned int len = 0, extra_whitespaces=0;
 
    /* Make sure line does not end in whitespace */
    (void) slrn_trim_string (line);
@@ -800,11 +800,23 @@ static int post_references_header (char *line)
    len = r - l + 1;
    if (nextid != NULL) /* Skip enough IDs to fit into our limit */
      {
-	nextid--;
+	tmp=nextid;
+	while (NULL != (tmp = slrn_strchr (tmp+1, '>')))
+	/* make sure that we have enough space for missing whitespaces
+	 * between Message-Ids */
+	  {
+	     if (*(tmp+1) != ' ') extra_whitespaces++;
+	  }
+        nextid--;
 	while (NULL != (nextid = slrn_strchr (nextid + 1, '<')))
 	  {
-	     if (strlen (nextid) + len < GNKSA_LENGTH)
+	     if (strlen (nextid) + extra_whitespaces + len < GNKSA_LENGTH)
 	       break;
+	     else
+	       {
+		  tmp = slrn_strchr (nextid, '>');
+		  if (*(tmp+1) != ' ') extra_whitespaces--;
+	       }
 	  }
      }
    
