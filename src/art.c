@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2004  Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2005  Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -4423,7 +4423,11 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	       }
 	     else num_saved++;
 	  }
-	if (num_saved == 0) return NULL;
+	if (num_saved == 0)
+	  {
+	     slrn_fclose (fp);
+	     return NULL;
+	  }
      }
    else
      {
@@ -4442,7 +4446,11 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	     h = h->next;
 	  }
 	while ((h != NULL) && (h->parent != NULL));
-	if (num_saved == 0) return NULL;
+	if (num_saved == 0)
+	  {
+	     slrn_fclose (fp);
+	     return NULL;
+	  }
      }
    slrn_fclose (fp);
    

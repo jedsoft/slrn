@@ -5,6 +5,7 @@ Changes since 0.9.8.1
   * slrn would sometimes eat the last char of an article when posting.
   * slrnpull gives permission 600 to debugging files (may contain passwords).
   * Some minor usability glitches (Alain Bench)
+  * Fixed fd leaks on some error conditions (Sami Farin)
 
 Introduced quit_hook, which is executed when slrn quits.
 
