@@ -1104,7 +1104,7 @@ static int header_next_unread (void)
    if (-1 == check_article_mode ())
      return -1;
    
-   return slrn_next_unread_header ();
+   return slrn_next_unread_header (1);
 }
 
 static int get_header_flags (void) /*{{{*/

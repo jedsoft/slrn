@@ -3692,7 +3692,7 @@ static void art_prev_unread (void) /*{{{*/
 
 /*}}}*/
 
-int slrn_next_unread_header (void) /*{{{*/
+int slrn_next_unread_header (int skip_without_body) /*{{{*/
 {
    Slrn_Header_Type *h;
    
@@ -3700,7 +3700,9 @@ int slrn_next_unread_header (void) /*{{{*/
    
    while (h != NULL)
      {
-	if (0 == (h->flags & HEADER_READ)) break;
+	if ((0 == (h->flags & HEADER_READ)) &&
+	    (!skip_without_body || (0 == (h->flags & HEADER_WITHOUT_BODY))))
+	  break;
 	h = h->next;
      }
    
@@ -3726,7 +3728,7 @@ static void art_next_unread (void) /*{{{*/
    char ch;
    unsigned char ch1;
    
-   if (slrn_next_unread_header ())
+   if (slrn_next_unread_header (1))
      {
 	if (Article_Visible) art_pagedn  ();
 	return;
@@ -6382,8 +6384,8 @@ static void skip_to_next_group (void) /*{{{*/
    if ((Slrn_Current_Mode != NULL) &&
        (Slrn_Current_Mode->mode == SLRN_ARTICLE_MODE))
      {
-	if ((Slrn_Current_Header->flags & HEADER_READ) &&
-	    (0 == slrn_next_unread_header ()))
+	if ((Slrn_Current_Header->flags & (HEADER_READ|HEADER_WITHOUT_BODY)) &&
+	    (0 == slrn_next_unread_header (1)))
 	  slrn_clear_message ();
 	else if (tmp)
 	  art_pagedn ();
@@ -6767,7 +6769,7 @@ static void delete_header_cmd (void) /*{{{*/
      {
 	for_this_tree (Slrn_Current_Header, delete_header);
      }
-   slrn_next_unread_header ();
+   slrn_next_unread_header (0);
    Slrn_Full_Screen_Update = 1;
 }
 

@@ -233,7 +233,7 @@ extern void slrn_uncollapse_this_thread (Slrn_Header_Type *, int);
 extern unsigned int slrn_thread_size (Slrn_Header_Type *);
 extern int slrn_is_thread_collapsed (Slrn_Header_Type *);
 
-extern int slrn_next_unread_header (void);
+extern int slrn_next_unread_header (int);
 extern int slrn_goto_num_tagged_header (int *);
 extern int slrn_next_tagged_header (void);
 extern int slrn_prev_tagged_header (void);
