@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2005 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -1966,7 +1966,7 @@ static int var_findfirst (char *buf) /*{{{*/
      pos--;
    
    slrn_strncpy (Dir_Name, buf, pos + 1);
-   strcpy (File_Pattern, buf + pos); /* safe; prompt is at most 255 chars */
+   slrn_strncpy (File_Pattern, buf + pos, SLRN_MAX_PATH_LEN);
    Var = (Generic_Var_Type*) Slrn_Int_Variables; Var_Pos = 0;
    return var_findnext (buf);
 }

@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2005 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -1017,9 +1017,6 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
    int dsc_flag = 0;
    int use_active = 0;
    int wait_for_key = 0;
-#if SLANG_VERSION >= 20000
-   int want_utf8 = 1;
-#endif
    FILE *fp;
    char file [SLRN_MAX_PATH_LEN];
    char *init_file = NULL;
@@ -1149,13 +1146,7 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
    if (Slrn_Batch == 0)
      {
 #if SLANG_VERSION >= 20000
-	if (want_utf8)
-	  {
-	     Slrn_UTF8_Mode = SLutf8_enable (-1);
-	     if (Slrn_UTF8_Mode == 0)
-	       SLsmg_utf8_enable (1);
-	     Slrn_UTF8_Mode = 1;
-	  }
+	Slrn_UTF8_Mode = SLutf8_enable (-1);
 #endif
 	
 	SLtt_get_terminfo ();
@@ -1287,7 +1278,8 @@ Could not read specified config file %s\n"), init_file);
      {
 	slrn_exit_error (_("\
 Unable to find a valid hostname for constructing your e-mail address.\n\
-You will have to specify a hostname in your %s file.\n"), 
+You probably want to specify a hostname in your %s file.\n\
+Please see the \"slrn reference manual\" for full details.\n"), 
 			 SLRN_USER_SLRNRC_FILENAME);
      }
    if ((NULL == Slrn_User_Info.username)
