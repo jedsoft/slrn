@@ -1691,7 +1691,7 @@ static Slrn_Header_Type *find_header_from_serverid (int id) /*{{{*/
 static void kill_cross_references (Slrn_Header_Type *h) /*{{{*/
 {
    char *b;
-   char group[256], *g;
+   char *group, *g;
    long num;
    
    if ((h->xref == NULL) || (*h->xref == 0))
@@ -1718,15 +1718,17 @@ static void kill_cross_references (Slrn_Header_Type *h) /*{{{*/
 	if (*b == 0) break;
 	
 	/* now we are looking at the groupname */
-	g = group;
-	while (*b && (*b != ':')) *g++ = *b++;
-	if (*b++ == 0) break;
-	*g = 0;
+	g = b;
+	while (*b && (*b != ':')) b++;
+	if ((*b++ == 0) || (g == b) ||
+	    (NULL == (group = slrn_strnmalloc (g, b-g-1, 0))))
+	  break;
 	num = atoi (b);
 	while ((*b <= '9') && (*b >= '0')) b++;
 	if ((num != h->number)
 	    || strcmp (group, Slrn_Current_Group_Name))
 	  slrn_mark_article_as_read (group, num);
+	SLfree (group);
      }
 }
 
@@ -3078,25 +3080,25 @@ static void followup (void) /*{{{*/
 	  {
 	     /* Original poster has requested a certain cc-ing behaviour
 	      * which should override whatever default the user has set */
-	     cc_address_t = parse_from (cc_address);
-	     if ((cc_address_t == NULL) 
-		 || (0 == slrn_case_strcmp ((unsigned char *) cc_address_t,
-					    (unsigned char *) "never"))
-		 || (0 == slrn_case_strcmp ((unsigned char *) cc_address_t,
-					    (unsigned char *) "nobody")))
+	     perform_cc = 1;
+	     if ((0 == slrn_case_strcmp ((unsigned char *) cc_address,
+					 (unsigned char *) "always"))
+		 || (0 == slrn_case_strcmp ((unsigned char *) cc_address,
+					    (unsigned char *) "poster")))
+	       {
+		  cc_address = NULL;
+	       }
+	     else if ((0 == slrn_case_strcmp ((unsigned char *) cc_address,
+					      (unsigned char *) "never"))
+		      || (0 == slrn_case_strcmp ((unsigned char *) cc_address,
+						 (unsigned char *) "nobody")))
 	       {
 		  perform_cc = 0;
 		  cc_address = NULL;
 	       }
-	     else 
-	       {
-		  perform_cc = 1;
-		  if ((0 == slrn_case_strcmp ((unsigned char *) cc_address_t,
-					      (unsigned char *) "always"))
-		      || (0 == slrn_case_strcmp ((unsigned char *) cc_address_t,
-						 (unsigned char *) "poster")))
-		    cc_address = NULL;
-	       }
+	     else if (NULL == (cc_address_t = parse_from (cc_address)))
+	       cc_address = NULL; /* do CC, but use "From" / "Reply-To:" address */
+
 	  }
 
 	if (prefix_arg == 2)
