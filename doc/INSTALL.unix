@@ -18,9 +18,10 @@ Usually, executing
 is enough to configure, build and install slrn.  All needed information will
 be determined automatically.
 
-"make install-contrib" installs two helpful scripts contributed by slrn
-users.  They require perl to run.  More information about them can be found
-in contrib/README.*
+The square brackets indicate optional commands: "make install-contrib"
+installs two helpful scripts contributed by slrn users.  They require perl
+to run.  More information about them can be found in contrib/README.*
+If you do not know what "strip" does, you probably do not need to run it.
 
 The configure script supports a number of options listed below.  Especially,
 you need to specify --with-slrnpull if you plan to use slrnpull.

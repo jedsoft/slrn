@@ -58,6 +58,9 @@ Changes since 0.9.7.4
    
    The "BEGIN PGP SIGNED ARTICLE" line is displayed using the "pgpsignature"
    color and stripped on followups. (Emmanuele Bassi)
+   
+   Support Turkish characters on Win32 - set charset to "ibm857" for this.
+   With help from A. Alper ATICI
 
 Changes since 0.9.7.3
 

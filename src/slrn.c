@@ -1223,6 +1223,9 @@ Could not read specified config file %s\n"), init_file);
 					(unsigned char *)"ibm852"))
 	       Slrn_Mime_Display_Charset = slrn_safe_strmalloc ("iso-8859-2");
 	     else if (0 == slrn_case_strcmp ((unsigned char *)Slrn_Charset,
+					     (unsigned char *)"ibm857"))
+	       Slrn_Mime_Display_Charset = slrn_safe_strmalloc ("iso-8859-9");
+	     else if (0 == slrn_case_strcmp ((unsigned char *)Slrn_Charset,
 					     (unsigned char *)"koi8"))
 	       Slrn_Mime_Display_Charset = slrn_safe_strmalloc ("koi8-r");
 	     else if (0 == slrn_case_strcmp ((unsigned char *)Slrn_Charset,
