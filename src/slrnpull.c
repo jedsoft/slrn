@@ -1647,7 +1647,7 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 	    || (((unsigned int)server_max <= gmax) && (gmin <= gmax)))
 	  {
 	     log_message (_("%s: no new articles available."), g->name);
-	     return 0;
+	     goto fetch_marked_bodies;
 	  }
 	
 	Num_Duplicates = 0;
@@ -1667,7 +1667,7 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 	     g->max = g->server_max;
 	     log_message (_("%s: No new articles available."), g->name);
 	     slrn_free ((char *) numbers);
-	     return 0;
+	     goto fetch_marked_bodies;
 	  }
 	
 	log_message (_("%s: %u articles available."), g->name, num_numbers - i);
@@ -1716,7 +1716,8 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
      }
 
    /* Now, fetch marked article bodies. */
-   
+
+   fetch_marked_bodies:
    /* Don't request bodies that are no longer there. */
    if (server_min > 1)
      g->requests = slrn_ranges_remove (g->requests, 1, server_min-1);

@@ -1,3 +1,8 @@
+Changes since 0.9.8.1
+
+0. Bug fixes include:
+  * slrnpull fetches marked articles even if no new headers are available.
+
 Changes since 0.9.8.0
 
 0. Bug fixes include:

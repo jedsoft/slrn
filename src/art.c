@@ -1955,7 +1955,7 @@ static char *read_domain (char *start, char *dest, size_t max) /*{{{*/
 	while ((*start == ' ') || (*start == '\t')) start++;
 	while (*start && (*start != ']'))
 	  {
-	     int dotatom_len = read_dotatom (start, dest, max-len-1);
+	     size_t dotatom_len = read_dotatom (start, dest, max-len-1);
 	     if (dotatom_len >= max-len)
 	       {
 		  dest[max-1] = '\0';
@@ -2827,7 +2827,7 @@ static char *subject_skip_re (char *subject) /*{{{*/
  * the reply address is taken from Reply-To: or From: */
 static void reply (char *from) /*{{{*/
 {
-   char *msgid, *subject, *from_t, *f, *cc;
+   char *msgid, *subject, *from_t, *cc;
    Slrn_Article_Line_Type *l;
    FILE *fp;
    char file[256];
@@ -3357,8 +3357,6 @@ static void followup (void) /*{{{*/
 	
 	if (perform_cc)
 	  {
-	     char *ff;
-	     
 	     if ((NULL == cc_address_t)
 		 || ((strlen(cc_address_buf) > 8) &&
 		     !(slrn_case_strcmp((unsigned char*)".invalid",

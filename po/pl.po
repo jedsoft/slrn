@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: slrn 0.9.8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-28 11:15+0200\n"
+"POT-Creation-Date: 2004-10-07 01:44+0200\n"
 "PO-Revision-Date: 2003-10-16 12:03+0100\n"
 "Last-Translator: Tomasz Sienicki <tsca@edb.dk>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -37,7 +37,7 @@ msgstr "Nieprawid³owa definicja przegl±darki."
 msgid "Browse (^G aborts): "
 msgstr "Przegl±daj (^G anuluje): "
 
-#: src/art.c:1061 src/art.c:4166
+#: src/art.c:1061 src/art.c:4326
 msgid "Aborted."
 msgstr "Anulowano."
 
@@ -66,7 +66,7 @@ msgstr "Nie znaleziono ¿adnych adresów URL."
 msgid "Search: "
 msgstr "Znajd¼: "
 
-#: src/art.c:1205 src/art.c:4824 src/group.c:1188
+#: src/art.c:1205 src/art.c:4984 src/group.c:1188
 msgid "Not found."
 msgstr "Nie znaleziono."
 
@@ -84,123 +84,123 @@ msgstr "Koniec artyku³u. %s: przej¶cie do nast. nieprzeczytanej wiadomo¶ci."
 msgid "<Space>"
 msgstr ""
 
-#: src/art.c:2012
+#: src/art.c:2165
 msgid "Goto article: "
 msgstr "Przejd¼ do artyku³u: "
 
-#: src/art.c:2029
+#: src/art.c:2182
 msgid "Article not found."
 msgstr "Nie znaleziono artyku³u."
 
-#: src/art.c:2102
+#: src/art.c:2255
 #, c-format
 msgid "#%2d/%-2d: Retrieving... %s"
 msgstr "#%2d/%-2d: Wyszukiwanie... %s"
 
-#: src/art.c:2105
+#: src/art.c:2258
 #, c-format
 msgid "[%d] Reading..."
 msgstr "[%d] Czytam..."
 
-#: src/art.c:2112
+#: src/art.c:2265
 msgid "Server failed to return article."
 msgstr "Serwer nie zwróci³ artyku³u."
 
-#: src/art.c:2116
+#: src/art.c:2269
 #, c-format
 msgid "Article %d unavailable."
 msgstr "Artyku³ %d jest niedostêpny."
 
-#: src/art.c:2155
+#: src/art.c:2308
 msgid "Article transfer aborted or connection lost."
 msgstr "Przerwano przesy³anie artyku³u lub po³±czenie zosta³o zerwane."
 
-#: src/art.c:2173
+#: src/art.c:2326
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
 msgstr "#%2d/%-2d: Odczytano %4d/%-4d linii (%s) przy %.2fkB/sek"
 
-#: src/art.c:2177
+#: src/art.c:2330
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
 msgstr "#%2d/%-2d: Odczytano %4d/%-4d linii (%s)"
 
-#: src/art.c:2183
+#: src/art.c:2336
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
 msgstr "[%d] Odczytano dot±d %d/%d linii przy %.2fkB/sek"
 
-#: src/art.c:2186
+#: src/art.c:2339
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
 msgstr "[%d] Odczytano dot±d %d/%d linii"
 
-#: src/art.c:2226
+#: src/art.c:2379
 msgid "Server sent empty article."
 msgstr "Serwer zwróci³ pusty artyku³."
 
-#: src/art.c:2549
+#: src/art.c:2703
 msgid "%Y-%m-%d"
 msgstr "%d.%m.%Y"
 
-#: src/art.c:2592
+#: src/art.c:2746
 msgid "This operation requires an article"
 msgstr "Ta operacja wymaga artyku³u."
 
-#: src/art.c:2703
+#: src/art.c:2855
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
 msgstr "%s wygl±da na nieprawid³owy. Kontynuowaæ mimo to"
 
-#: src/art.c:2704
+#: src/art.c:2856 src/art.c:3366
 msgid "Email address"
 msgstr "Adres e-mail"
 
-#: src/art.c:2715 src/art.c:2891 src/art.c:3229 src/art.c:3479
+#: src/art.c:2867 src/art.c:3043 src/art.c:3386 src/art.c:3636
 #: src/slrnpull.c:389 src/slrnpull.c:466 src/slrnpull.c:1134
 #: src/slrnpull.c:1188
 #, c-format
 msgid "Unable to open %s for writing."
 msgstr "Nie mogê otworzyæ %s do zapisu."
 
-#: src/art.c:2841
+#: src/art.c:2993
 msgid "Are you sure you want to reply"
 msgstr "Czy na pewno chcesz odpisaæ autorowi"
 
-#: src/art.c:2868
+#: src/art.c:3020
 msgid "Forward to (^G aborts): "
 msgstr "Prze¶lij do (^G anuluje): "
 
-#: src/art.c:2870
+#: src/art.c:3022
 msgid "Aborted.  An email address is required."
 msgstr "Anulowano. Musisz podaæ adres e-mail."
 
-#: src/art.c:2874
+#: src/art.c:3026
 msgid "Edit the message before sending"
 msgstr "Edytuj wiadomo¶æ przed wys³aniem"
 
-#: src/art.c:2977 src/art.c:3434
+#: src/art.c:3130 src/art.c:3592
 msgid "Posting not allowed by server"
 msgstr "Serwer nie zezwala na wysy³anie"
 
-#: src/art.c:2984
+#: src/art.c:3137
 msgid "Are you sure you want to followup"
 msgstr "Czy na pewno chcesz odpisaæ na grupê"
 
-#: src/art.c:3025
+#: src/art.c:3179
 msgid "Do you want to reply to POSTER as poster prefers"
 msgstr "Chcesz odpisaæ bezpo¶rednio do AUTORA zgodnie z jego ¿yczeniem"
 
-#: src/art.c:3063
+#: src/art.c:3217
 #, c-format
 msgid "Followup to %s as poster prefers"
 msgstr "Wys³aæ na %s zgodnie z ¿yczeniem autora"
 
-#: src/art.c:3105
+#: src/art.c:3259
 msgid "fFaAtTcC"
 msgstr "fFwWtTrR"
 
-#: src/art.c:3108
+#: src/art.c:3262
 msgid ""
 "Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
 " Cancel?"
@@ -208,244 +208,244 @@ msgstr ""
 "Crosspost. Ustaw \"Followup-To\", wy¶lij na Wszystkie / Tylko tê grupê,"
 " Rezygnuj?"
 
-#: src/art.c:3190
+#: src/art.c:3348
 msgid "Cc message as requested by poster"
 msgstr "Czy wys³aæ kopiê wiadomo¶ci do autora, zgodnie z jego ¿yczeniem"
 
-#: src/art.c:3196
+#: src/art.c:3354
 msgid "Cc message to poster"
 msgstr "Czy wys³aæ kopiê wiadomo¶ci do autora"
 
-#: src/art.c:3209
+#: src/art.c:3366
 #, c-format
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s wygl±da na nieprawid³owy. Wys³aæ mimo to"
 
-#: src/art.c:3382 src/post.c:1017
+#: src/art.c:3539 src/post.c:1017
 #, c-format
 msgid "Cannot open file: %s"
 msgstr "Nie mo¿na otworzyæ pliku %s"
 
-#: src/art.c:3389 src/post.c:1024
+#: src/art.c:3546 src/post.c:1024
 #, c-format
 msgid "Zero length file: %s"
 msgstr "Pusty plik: %s"
 
-#: src/art.c:3439
+#: src/art.c:3597
 msgid "Are you sure you want to supersede"
 msgstr "Czy na pewno zast±piæ artyku³ przez edycjê oryginalnego tekstu"
 
-#: src/art.c:3458 src/art.c:6632
+#: src/art.c:3615 src/art.c:6788
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "B³±d: Twój adres: %s nie pasuje do %s"
 
-#: src/art.c:3574 src/art.c:3623
+#: src/art.c:3731 src/art.c:3780
 msgid "End of buffer."
 msgstr "Koniec."
 
-#: src/art.c:3595 src/art.c:3613 src/group.c:1024
+#: src/art.c:3752 src/art.c:3770 src/group.c:1024
 msgid "Top of buffer."
 msgstr "Pocz±tek."
 
-#: src/art.c:3658
+#: src/art.c:3815
 msgid "No previous unread articles."
 msgstr "Nie ma wcze¶niejszych nieprzeczytanych artyku³ów."
 
-#: src/art.c:3704
+#: src/art.c:3861
 msgid "No following unread articles."
 msgstr "Nie ma wiêcej nieprzeczytanych artyku³ów."
 
-#: src/art.c:3745 src/art.c:3758
+#: src/art.c:3902 src/art.c:3915
 #, c-format
 msgid "No following unread articles.  Press %s for next group."
 msgstr "Pozosta³e artyku³y s± przeczytane. %s: przej¶cie do nastêpnej grupy."
 
-#: src/art.c:3789
+#: src/art.c:3946
 msgid "No more high scoring articles."
 msgstr "Nie ma wiêcej wa¿nych artyku³ów."
 
-#: src/art.c:3818 src/group.c:1722
+#: src/art.c:3975 src/group.c:1722
 msgid "Subject: "
 msgstr "Temat: "
 
-#: src/art.c:3843
+#: src/art.c:4000
 msgid "No more articles on that subject."
 msgstr "Nie ma wiêcej artyku³ów z tym tematem."
 
-#: src/art.c:3876
+#: src/art.c:4033
 #, c-format
 msgid "Goto Header: %d"
 msgstr "Przejd¼ do nag³ówka: %d"
 
-#: src/art.c:3958 src/group.c:2593 src/post.c:462
+#: src/art.c:4115 src/group.c:2593 src/post.c:462
 #, c-format
 msgid "Unable to open %s."
 msgstr "Nie mogê otworzyæ pliku %s."
 
-#: src/art.c:3964 src/slrnpull.c:1141 src/slrnpull.c:1149 src/slrnpull.c:1196
+#: src/art.c:4121 src/slrnpull.c:1141 src/slrnpull.c:1149 src/slrnpull.c:1196
 #: src/slrnpull.c:1204
 #, c-format
 msgid "Error writing to %s."
 msgstr "B³±d zapisu do pliku %s."
 
-#: src/art.c:4071
+#: src/art.c:4231
 msgid "Save tagged articles"
 msgstr "Zapisz zaznaczone artyku³y"
 
-#: src/art.c:4079
+#: src/art.c:4239
 msgid "Save this thread"
 msgstr "Zapisz ten w±tek"
 
-#: src/art.c:4100 src/post.c:1642
+#: src/art.c:4260 src/post.c:1642
 #, c-format
 msgid "Do you want to create directory %s"
 msgstr "Czy utworzyæ katalog %s"
 
-#: src/art.c:4103 src/post.c:1646
+#: src/art.c:4263 src/post.c:1646
 #, c-format
 msgid "Unable to create directory. (errno = %d)"
 msgstr "Nie mogê utworzyæ katalogu. (errno = %d)"
 
-#: src/art.c:4108
+#: src/art.c:4268
 #, c-format
 msgid "Warning: %s is a regular file."
 msgstr "Uwaga: %s jest zwyk³ym plikiem"
 
-#: src/art.c:4162
+#: src/art.c:4322
 msgid "Temporary file (^G aborts): "
 msgstr "Plik tymczasowy (^G anuluje): "
 
-#: src/art.c:4163
+#: src/art.c:4323
 msgid "Save to file (^G aborts): "
 msgstr "Zapisz do pliku (^G anuluje): "
 
-#: src/art.c:4172 src/editscore.c:167 src/post.c:635
+#: src/art.c:4332 src/editscore.c:167 src/post.c:635
 #, c-format
 msgid "Unable to open %s"
 msgstr "Nie mo¿na otworzyæ pliku %s"
 
-#: src/art.c:4262
+#: src/art.c:4422
 #, c-format
 msgid "decoding %10s (%3d/%3d) %s"
 msgstr "dekodowanie %10s (%3d/%3d) %s"
 
-#: src/art.c:4278
+#: src/art.c:4438
 msgid "Filename buffer not large enough."
 msgstr "Za ma³y bufor nazwy pliku."
 
-#: src/art.c:4282
+#: src/art.c:4442
 msgid "Calling uudeview ..."
 msgstr "Wywo³ujê uudeview ..."
 
-#: src/art.c:4291
+#: src/art.c:4451
 #, c-format
 msgid "could not load %s: errno = %d"
 msgstr "nie mogê za³adowaæ %s: errno = %d"
 
-#: src/art.c:4294
+#: src/art.c:4454
 #, c-format
 msgid "could not load %s: %s"
 msgstr "nie mogê za³adowaæ %s: %s"
 
-#: src/art.c:4313
+#: src/art.c:4473
 msgid "I/O error."
 msgstr "B³±d Wej¶cia/Wyj¶cia."
 
-#: src/art.c:4316
+#: src/art.c:4476
 #, c-format
 msgid "error decoding %s: %s"
 msgstr "b³±d dekodowania %s: %s"
 
-#: src/art.c:4340
+#: src/art.c:4500
 #, c-format
 msgid "Decode %s"
 msgstr "Zdekodowaæ %s"
 
-#: src/art.c:4351
+#: src/art.c:4511
 #, c-format
 msgid "Delete %s"
 msgstr "Usun±æ %s"
 
-#: src/art.c:4354
+#: src/art.c:4514
 #, c-format
 msgid "Unable to delete %s"
 msgstr "Nie mogê usun±æ %s"
 
-#: src/art.c:4392
+#: src/art.c:4552
 #, c-format
 msgid "Unable to open pipe to %s"
 msgstr "Nie mogê otworzyæ potoku do %s"
 
-#: src/art.c:4403 src/art.c:4424 src/decode.c:65
+#: src/art.c:4563 src/art.c:4584 src/decode.c:65
 msgid "Piping not implemented on this system."
 msgstr "Potoki nie s± dostêpne na tym systemie."
 
-#: src/art.c:4415
+#: src/art.c:4575
 msgid "Pipe to command: "
 msgstr "Prze¶lij potokiem do polecenia: "
 
-#: src/art.c:4417
+#: src/art.c:4577
 msgid "Aborted.  Command name is required."
 msgstr "Anulowano. Musisz podaæ polecenie."
 
-#: src/art.c:4422
+#: src/art.c:4582
 #, c-format
 msgid "Error piping to %s."
 msgstr "B³±d potokowania do %s."
 
-#: src/art.c:4438
+#: src/art.c:4598
 msgid "Printing article..."
 msgstr "Drukowanie artyku³u..."
 
-#: src/art.c:4469
+#: src/art.c:4629
 msgid "Printing article...done"
 msgstr "Drukowanie artyku³u...zakoñczone"
 
-#: src/art.c:4485
+#: src/art.c:4645
 msgid "Are you sure you want to print the article"
 msgstr "Czy na pewno wydrukowaæ ten artyku³"
 
-#: src/art.c:4757
+#: src/art.c:4917
 msgid "Mark set."
 msgstr "Znacznik ustawiony."
 
-#: src/art.c:4769
+#: src/art.c:4929
 msgid "Mark not set."
 msgstr "Znacznik nie ustawiony."
 
-#: src/art.c:4790
+#: src/art.c:4950
 msgid "Subject search "
 msgstr "Szukaj tematu "
 
-#: src/art.c:4790
+#: src/art.c:4950
 msgid "Author search "
 msgstr "Szukaj autora "
 
-#: src/art.c:4791
+#: src/art.c:4951
 msgid "(forward)"
 msgstr "(w przód)"
 
-#: src/art.c:4791
+#: src/art.c:4951
 msgid "(backward)"
 msgstr "(w ty³)"
 
-#: src/art.c:4977 src/slrnpull.c:1339
+#: src/art.c:5137 src/slrnpull.c:1339
 #, c-format
 msgid "Score %d killed article %s\n"
 msgstr "Punktacja %d zabitego artyku³u %s\n"
 
-#: src/art.c:4981 src/slrnpull.c:1345
+#: src/art.c:5141 src/slrnpull.c:1345
 #, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
 msgstr " Punktacja %c%5i: %s (%s:%i)\n"
 
-#: src/art.c:4985 src/slrnpull.c:1349
+#: src/art.c:5145 src/slrnpull.c:1349
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
 msgstr " Punktacja %c%5i: %s:%i\n"
 
-#: src/art.c:4990 src/slrnpull.c:1354
+#: src/art.c:5150 src/slrnpull.c:1354
 #, c-format
 msgid ""
 "  Newsgroup: %s\n"
@@ -458,182 +458,182 @@ msgstr ""
 "  Temat: %s\n"
 "\n"
 
-#: src/art.c:5060
+#: src/art.c:5220
 msgid "Scoring articles ..."
 msgstr "Punktujê artyku³y ..."
 
-#: src/art.c:5073
+#: src/art.c:5233
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr "Punktacja artyku³ów: %2d%%, Zabite: %u, Wa¿ne: %u, Niewa¿ne: %u"
 
-#: src/art.c:5113
+#: src/art.c:5273
 msgid "Apply scorefile now"
 msgstr "Uaktualniæ punktacjê"
 
-#: src/art.c:5159
+#: src/art.c:5319
 msgid "No scorefile loaded."
 msgstr "Nie wczytano pliku punktacji."
 
-#: src/art.c:5168
+#: src/art.c:5328
 msgid "This article is not matched by any scorefile entries."
 msgstr "Ten artyku³ nie pasuje do ¿adnej regu³ki punktacji."
 
-#: src/art.c:5214
+#: src/art.c:5374
 msgid "This article is matched by the following scores"
 msgstr "Artyku³ pasuje do nastêpuj±cych regu³ek punktacji"
 
-#: src/art.c:5316
+#: src/art.c:5476
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: pobieram dodatkowe nag³ówki...[%c]"
 
-#: src/art.c:5401
+#: src/art.c:5561
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: pobrane nag³ówki: %2d/%d"
 
-#: src/art.c:5562
+#: src/art.c:5722
 #, c-format
 msgid "Finding %s from server..."
 msgstr "Szukam %s na serwerze..."
 
-#: src/art.c:5603
+#: src/art.c:5763
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "Szukam potomków na serwerze...[%c]"
 
-#: src/art.c:5611
+#: src/art.c:5771
 msgid "Your server does not provide support for this feature."
 msgstr "Twój serwer nie obs³uguje tej funkcji."
 
-#: src/art.c:5795
+#: src/art.c:5955
 msgid "Header is part of a reference loop"
 msgstr "Artyku³ jest w pêtli referencji"
 
-#: src/art.c:5849
+#: src/art.c:6009
 msgid "Article has no parent reference."
 msgstr "Artyku³ nie posiada ¿adnych referencji."
 
-#: src/art.c:5906
+#: src/art.c:6066
 #, c-format
 msgid "Article %s not available."
 msgstr "Artyku³ %s nie jest dostêpny."
 
-#: src/art.c:5918
+#: src/art.c:6078
 msgid "Enter Message-ID: "
 msgstr "Wprowad¼ Message-ID: "
 
-#: src/art.c:6340
+#: src/art.c:6500
 msgid "Warning: Could not save list of requested bodies."
 msgstr "Uwaga: lista wybranych artyku³ów nie zosta³a zapisana."
 
-#: src/art.c:6609
+#: src/art.c:6769
 msgid "Are you sure that you want to cancel this article"
 msgstr "Czy na pewno anulowaæ ten artyku³"
 
-#: src/art.c:6612
+#: src/art.c:6772
 msgid "Cancelling..."
 msgstr "Anulujê..."
 
-#: src/art.c:6647
+#: src/art.c:6806
 msgid "No message id."
 msgstr "Brak Message-ID."
 
-#: src/art.c:6677
+#: src/art.c:6836
 msgid "Done."
 msgstr "Zrobione."
 
-#: src/art.c:6716
+#: src/art.c:6875
 msgid "Warning: Can only request article bodies from this group."
 msgstr ""
 "Uwaga: z tej grupy mo¿esz oznaczyæ do ¶ci±gniêcia tylko tre¶æ artyku³ów."
 
-#: src/art.c:6733
+#: src/art.c:6892
 msgid "Mark all articles as read"
 msgstr "Zaznaczyæ wszystkie artyku³y jako przeczytane"
 
-#: src/art.c:6743
+#: src/art.c:6902
 msgid "Mark all articles as unread"
 msgstr "Zaznaczyæ wszystkie artyku³y jako nieprzeczytane"
 
-#: src/art.c:6753
+#: src/art.c:6912
 msgid "Mark all articles up to here as read"
 msgstr "Zaznaczyæ artyku³y do bie¿±cej pozycji jako przeczytane"
 
-#: src/art.c:6763
+#: src/art.c:6922
 msgid "Mark all articles up to here as unread"
 msgstr "Zaznaczyæ artyku³y do bie¿±cej pozycji jako nieprzeczytane"
 
-#: src/art.c:6864
+#: src/art.c:7023
 msgid "Rate article (1-5):"
 msgstr "Oceñ artyku³ (1-5):"
 
-#: src/art.c:6869
+#: src/art.c:7028
 msgid "Rating must be in range 1 to 5."
 msgstr "Ocena musi mie¶ciæ siê w zakresie do 1 do 5."
 
-#: src/art.c:7162
+#: src/art.c:7321
 msgid "Unable to create Article keymap!"
 msgstr "Nie mogê utworzyæ mapy klawiszy 'Article'!"
 
-#: src/art.c:7600
+#: src/art.c:7759
 msgid "Group transfer aborted."
 msgstr "Przerwano ¶ci±ganie grupy."
 
-#: src/art.c:7602
+#: src/art.c:7761
 msgid "Server read failed."
 msgstr "B³±d podczas odczytu z serwera."
 
-#: src/art.c:7619
+#: src/art.c:7778
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Nie ma nieprzeczytanych wiadomo¶ci. (%d zabitych)"
 
-#: src/art.c:7621
+#: src/art.c:7780
 msgid "No unread articles found."
 msgstr "Nie ma nieprzeczytanych wiadomo¶ci."
 
-#: src/art.c:7675
+#: src/art.c:7834
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr ""
 "Liczba Zabitych: %u, Wa¿nych: %u, Niewa¿nych: %u, Ocenionych z GroupLens: %d"
 
-#: src/art.c:7681
+#: src/art.c:7840
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "Liczba Zabitych: %u, Wa¿nych: %u, Niewa¿nych: %u"
 
-#: src/art.c:7882
+#: src/art.c:8041
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:Wybierz Ctrl-D:PgDn Ctrl-U:PgUp d:Przecz. n:Nast. p:Poprz. q:Wyj¶cie"
 
-#: src/art.c:7887
+#: src/art.c:8046
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:PgDn  B:PgUp  u:Nieprzecz.  f:Odpowiedz  n:Nast.  p:Poprz.  q:Wyj¶cie"
 
-#: src/art.c:8098
+#: src/art.c:8257
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Koniec w±tku. Nastêpny: %s"
 
-#: src/art.c:8100
+#: src/art.c:8259
 msgid "End of Thread."
 msgstr "Koniec w±tku."
 
-#: src/art.c:8112
+#: src/art.c:8271
 msgid "End of Sub-Thread"
 msgstr "Koniec podw±tku."
 
-#: src/art.c:8735
+#: src/art.c:8894
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t nieprzeczytanych] Grupa: %n%-20g -- %L (%P)"
 
-#: src/art.c:8923
+#: src/art.c:9082
 msgid "Spoilers visible!"
 msgstr "Spoilery widoczne!"
 

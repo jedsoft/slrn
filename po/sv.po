@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slrn 0.9.8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-28 11:15+0200\n"
+"POT-Creation-Date: 2004-10-07 01:44+0200\n"
 "PO-Revision-Date: 2003-09-23 19:30+0200\n"
 "Last-Translator: Johan Svedberg <johan@svedberg.pp.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -25,7 +25,7 @@ msgstr "Ogiltig bläddrardefinition."
 msgid "Browse (^G aborts): "
 msgstr "Bläddra (^G avbryter): "
 
-#: src/art.c:1061 src/art.c:4166
+#: src/art.c:1061 src/art.c:4326
 msgid "Aborted."
 msgstr "Avbrutet."
 
@@ -54,7 +54,7 @@ msgstr "Inga URL:er hittade."
 msgid "Search: "
 msgstr "Sök: "
 
-#: src/art.c:1205 src/art.c:4824 src/group.c:1188
+#: src/art.c:1205 src/art.c:4984 src/group.c:1188
 msgid "Not found."
 msgstr "Inte hittad."
 
@@ -72,123 +72,123 @@ msgstr "Vid slutet på artikeln, tryck %s för nästa olästa artikel."
 msgid "<Space>"
 msgstr ""
 
-#: src/art.c:2012
+#: src/art.c:2165
 msgid "Goto article: "
 msgstr "Gå till artikel: "
 
-#: src/art.c:2029
+#: src/art.c:2182
 msgid "Article not found."
 msgstr "Artikel hittades inte."
 
-#: src/art.c:2102
+#: src/art.c:2255
 #, c-format
 msgid "#%2d/%-2d: Retrieving... %s"
 msgstr "Nr. %2d/%-2d: Tar emot... %s"
 
-#: src/art.c:2105
+#: src/art.c:2258
 #, c-format
 msgid "[%d] Reading..."
 msgstr "[%d] Läser..."
 
-#: src/art.c:2112
+#: src/art.c:2265
 msgid "Server failed to return article."
 msgstr "Server misslyckades att returnera artikel."
 
-#: src/art.c:2116
+#: src/art.c:2269
 #, c-format
 msgid "Article %d unavailable."
 msgstr "Artikel %d otillgänglig."
 
-#: src/art.c:2155
+#: src/art.c:2308
 msgid "Article transfer aborted or connection lost."
 msgstr "Artikelöverföring avbruten eller anslutning tappad."
 
-#: src/art.c:2173
+#: src/art.c:2326
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
 msgstr "Nr. %2d/%-2d: Läste %4d/%-4d rader (%s) i %.2f kB/s"
 
-#: src/art.c:2177
+#: src/art.c:2330
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
 msgstr "Nr. %2d/%-2d: Läste %4d/%-4d rader (%s)"
 
-#: src/art.c:2183
+#: src/art.c:2336
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
 msgstr "[%d] Läst %d/%d rader än så länge i %.2f kB/s"
 
-#: src/art.c:2186
+#: src/art.c:2339
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
 msgstr "[%d] Läst %d/%d rader hittills"
 
-#: src/art.c:2226
+#: src/art.c:2379
 msgid "Server sent empty article."
 msgstr "Server skickade tom artikel"
 
-#: src/art.c:2549
+#: src/art.c:2703
 msgid "%Y-%m-%d"
 msgstr "%Y-%m-%d"
 
-#: src/art.c:2592
+#: src/art.c:2746
 msgid "This operation requires an article"
 msgstr "Den här operationen kräver en artikel"
 
-#: src/art.c:2703
+#: src/art.c:2855
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
 msgstr "%s verkar ogiltig.  Fortsätt ändå"
 
-#: src/art.c:2704
+#: src/art.c:2856 src/art.c:3366
 msgid "Email address"
 msgstr "E-postadress"
 
-#: src/art.c:2715 src/art.c:2891 src/art.c:3229 src/art.c:3479
+#: src/art.c:2867 src/art.c:3043 src/art.c:3386 src/art.c:3636
 #: src/slrnpull.c:389 src/slrnpull.c:466 src/slrnpull.c:1134
 #: src/slrnpull.c:1188
 #, c-format
 msgid "Unable to open %s for writing."
 msgstr "Kunde inte öppna %s för skrivning."
 
-#: src/art.c:2841
+#: src/art.c:2993
 msgid "Are you sure you want to reply"
 msgstr "Är du säker på att du vill svara"
 
-#: src/art.c:2868
+#: src/art.c:3020
 msgid "Forward to (^G aborts): "
 msgstr "Skicka vidare till (^G avbryter): "
 
-#: src/art.c:2870
+#: src/art.c:3022
 msgid "Aborted.  An email address is required."
 msgstr "Avbröt.  En e-postadress krävs."
 
-#: src/art.c:2874
+#: src/art.c:3026
 msgid "Edit the message before sending"
 msgstr "Redigera meddelandet innan sändning"
 
-#: src/art.c:2977 src/art.c:3434
+#: src/art.c:3130 src/art.c:3592
 msgid "Posting not allowed by server"
 msgstr "Postning inte tillåtet av server"
 
-#: src/art.c:2984
+#: src/art.c:3137
 msgid "Are you sure you want to followup"
 msgstr "Är du säker på att du vill följa upp"
 
-#: src/art.c:3025
+#: src/art.c:3179
 msgid "Do you want to reply to POSTER as poster prefers"
 msgstr "Vill du svara till AVSÄNDAREN som avsändaren föredrar"
 
-#: src/art.c:3063
+#: src/art.c:3217
 #, c-format
 msgid "Followup to %s as poster prefers"
 msgstr "Uppföljning till %s som avsändaren föredrar"
 
-#: src/art.c:3105
+#: src/art.c:3259
 msgid "fFaAtTcC"
 msgstr "fFaAdDbB"
 
-#: src/art.c:3108
+#: src/art.c:3262
 msgid ""
 "Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
 " Cancel?"
@@ -196,244 +196,244 @@ msgstr ""
 "Korspostning. Ställ in \"Followup-To\", Posta till alla grupper / Bara denna "
 "grupp, Avbryt?"
 
-#: src/art.c:3190
+#: src/art.c:3348
 msgid "Cc message as requested by poster"
 msgstr "Cc meddelande som begärdes av postare"
 
-#: src/art.c:3196
+#: src/art.c:3354
 msgid "Cc message to poster"
 msgstr "Cc meddelande till postare"
 
-#: src/art.c:3209
+#: src/art.c:3366
 #, c-format
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s förefaller ogiltig.  CC ändå"
 
-#: src/art.c:3382 src/post.c:1017
+#: src/art.c:3539 src/post.c:1017
 #, c-format
 msgid "Cannot open file: %s"
 msgstr "Kan inte öppna fil: %s"
 
-#: src/art.c:3389 src/post.c:1024
+#: src/art.c:3546 src/post.c:1024
 #, c-format
 msgid "Zero length file: %s"
 msgstr "Nollängdsfil: %s"
 
-#: src/art.c:3439
+#: src/art.c:3597
 msgid "Are you sure you want to supersede"
 msgstr "Är du säker på att du vill ersätta"
 
-#: src/art.c:3458 src/art.c:6632
+#: src/art.c:3615 src/art.c:6788
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "Misslyckades: Ditt namn: '%s' är inte '%s'"
 
-#: src/art.c:3574 src/art.c:3623
+#: src/art.c:3731 src/art.c:3780
 msgid "End of buffer."
 msgstr "Slut på buffert."
 
-#: src/art.c:3595 src/art.c:3613 src/group.c:1024
+#: src/art.c:3752 src/art.c:3770 src/group.c:1024
 msgid "Top of buffer."
 msgstr "Topp på buffert."
 
-#: src/art.c:3658
+#: src/art.c:3815
 msgid "No previous unread articles."
 msgstr "Inga tidigare olästa artiklar."
 
-#: src/art.c:3704
+#: src/art.c:3861
 msgid "No following unread articles."
 msgstr "Inga efterföljande olästa artiklar."
 
-#: src/art.c:3745 src/art.c:3758
+#: src/art.c:3902 src/art.c:3915
 #, c-format
 msgid "No following unread articles.  Press %s for next group."
 msgstr "Inga efterföljande olästa artiklar.  Tryck %s för nästa grupp."
 
-#: src/art.c:3789
+#: src/art.c:3946
 msgid "No more high scoring articles."
 msgstr "Inga fler högt poängsatta artiklar."
 
-#: src/art.c:3818 src/group.c:1722
+#: src/art.c:3975 src/group.c:1722
 msgid "Subject: "
 msgstr "Ämne: "
 
-#: src/art.c:3843
+#: src/art.c:4000
 msgid "No more articles on that subject."
 msgstr "Inga fler artiklar i det ämnet."
 
-#: src/art.c:3876
+#: src/art.c:4033
 #, c-format
 msgid "Goto Header: %d"
 msgstr "Gå till huvud: %d"
 
-#: src/art.c:3958 src/group.c:2593 src/post.c:462
+#: src/art.c:4115 src/group.c:2593 src/post.c:462
 #, c-format
 msgid "Unable to open %s."
 msgstr "Kunde inte öppna %s."
 
-#: src/art.c:3964 src/slrnpull.c:1141 src/slrnpull.c:1149 src/slrnpull.c:1196
+#: src/art.c:4121 src/slrnpull.c:1141 src/slrnpull.c:1149 src/slrnpull.c:1196
 #: src/slrnpull.c:1204
 #, c-format
 msgid "Error writing to %s."
 msgstr "Fel vid skrivning till %s."
 
-#: src/art.c:4071
+#: src/art.c:4231
 msgid "Save tagged articles"
 msgstr "Spara taggade artiklar"
 
-#: src/art.c:4079
+#: src/art.c:4239
 msgid "Save this thread"
 msgstr "Spara den här tråden"
 
-#: src/art.c:4100 src/post.c:1642
+#: src/art.c:4260 src/post.c:1642
 #, c-format
 msgid "Do you want to create directory %s"
 msgstr "Vill du skapa katalog %s"
 
-#: src/art.c:4103 src/post.c:1646
+#: src/art.c:4263 src/post.c:1646
 #, c-format
 msgid "Unable to create directory. (errno = %d)"
 msgstr "Kunde inte skapa katalog. (errno = %d)"
 
-#: src/art.c:4108
+#: src/art.c:4268
 #, c-format
 msgid "Warning: %s is a regular file."
 msgstr "Varning: %s är en vanlig fil."
 
-#: src/art.c:4162
+#: src/art.c:4322
 msgid "Temporary file (^G aborts): "
 msgstr "Temporär fil (^G avbryter): "
 
-#: src/art.c:4163
+#: src/art.c:4323
 msgid "Save to file (^G aborts): "
 msgstr "Spara till fil (^G avbryter): "
 
-#: src/art.c:4172 src/editscore.c:167 src/post.c:635
+#: src/art.c:4332 src/editscore.c:167 src/post.c:635
 #, c-format
 msgid "Unable to open %s"
 msgstr "Kunde inte öppna %s"
 
-#: src/art.c:4262
+#: src/art.c:4422
 #, c-format
 msgid "decoding %10s (%3d/%3d) %s"
 msgstr "tolkar %10s (%3d/%3d) %s"
 
-#: src/art.c:4278
+#: src/art.c:4438
 msgid "Filename buffer not large enough."
 msgstr "Filnamnsbuffert är inte stor nog."
 
-#: src/art.c:4282
+#: src/art.c:4442
 msgid "Calling uudeview ..."
 msgstr "Anropar uudeview ..."
 
-#: src/art.c:4291
+#: src/art.c:4451
 #, c-format
 msgid "could not load %s: errno = %d"
 msgstr "kunde inte ladda %s: errno = %d"
 
-#: src/art.c:4294
+#: src/art.c:4454
 #, c-format
 msgid "could not load %s: %s"
 msgstr "kunde inte ladda %s: %s"
 
-#: src/art.c:4313
+#: src/art.c:4473
 msgid "I/O error."
 msgstr "I/O-fel."
 
-#: src/art.c:4316
+#: src/art.c:4476
 #, c-format
 msgid "error decoding %s: %s"
 msgstr "fel vid tolkning av %s: %s"
 
-#: src/art.c:4340
+#: src/art.c:4500
 #, c-format
 msgid "Decode %s"
 msgstr "Tolka %s"
 
-#: src/art.c:4351
+#: src/art.c:4511
 #, c-format
 msgid "Delete %s"
 msgstr "Ta bort %s"
 
-#: src/art.c:4354
+#: src/art.c:4514
 #, c-format
 msgid "Unable to delete %s"
 msgstr "Kunde inte ta bort %s"
 
-#: src/art.c:4392
+#: src/art.c:4552
 #, c-format
 msgid "Unable to open pipe to %s"
 msgstr "Kunde inte öppna rör till %s"
 
-#: src/art.c:4403 src/art.c:4424 src/decode.c:65
+#: src/art.c:4563 src/art.c:4584 src/decode.c:65
 msgid "Piping not implemented on this system."
 msgstr "Skapande av rör inte implementerat på det här systemet."
 
-#: src/art.c:4415
+#: src/art.c:4575
 msgid "Pipe to command: "
 msgstr "Rör till kommando: "
 
-#: src/art.c:4417
+#: src/art.c:4577
 msgid "Aborted.  Command name is required."
 msgstr "Avbröt.  Kommandonamn krävs."
 
-#: src/art.c:4422
+#: src/art.c:4582
 #, c-format
 msgid "Error piping to %s."
 msgstr "Fel vid skapande av rör till %s."
 
-#: src/art.c:4438
+#: src/art.c:4598
 msgid "Printing article..."
 msgstr "Skriver ut artikel..."
 
-#: src/art.c:4469
+#: src/art.c:4629
 msgid "Printing article...done"
 msgstr "Skriver ut artikel...klar"
 
-#: src/art.c:4485
+#: src/art.c:4645
 msgid "Are you sure you want to print the article"
 msgstr "Är du säker på att du vill skriva ut artikeln"
 
-#: src/art.c:4757
+#: src/art.c:4917
 msgid "Mark set."
 msgstr "Märke satt."
 
-#: src/art.c:4769
+#: src/art.c:4929
 msgid "Mark not set."
 msgstr "Märke inte satt."
 
-#: src/art.c:4790
+#: src/art.c:4950
 msgid "Subject search "
 msgstr "Ämnessökning "
 
-#: src/art.c:4790
+#: src/art.c:4950
 msgid "Author search "
 msgstr "Författarsökning "
 
-#: src/art.c:4791
+#: src/art.c:4951
 msgid "(forward)"
 msgstr "(framåt)"
 
-#: src/art.c:4791
+#: src/art.c:4951
 msgid "(backward)"
 msgstr "(bakåt)"
 
-#: src/art.c:4977 src/slrnpull.c:1339
+#: src/art.c:5137 src/slrnpull.c:1339
 #, c-format
 msgid "Score %d killed article %s\n"
 msgstr "Poäng %d dödade artikel %s\n"
 
-#: src/art.c:4981 src/slrnpull.c:1345
+#: src/art.c:5141 src/slrnpull.c:1345
 #, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
 msgstr " Poäng %c%5i: %s (%s:%i)\n"
 
-#: src/art.c:4985 src/slrnpull.c:1349
+#: src/art.c:5145 src/slrnpull.c:1349
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
 msgstr " Poäng %c%5i: %s:%i\n"
 
-#: src/art.c:4990 src/slrnpull.c:1354
+#: src/art.c:5150 src/slrnpull.c:1354
 #, c-format
 msgid ""
 "  Newsgroup: %s\n"
@@ -446,182 +446,182 @@ msgstr ""
 "  Ämne: %s\n"
 "\n"
 
-#: src/art.c:5060
+#: src/art.c:5220
 msgid "Scoring articles ..."
 msgstr "Poängsätter artiklar ..."
 
-#: src/art.c:5073
+#: src/art.c:5233
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr "Poängsatta artiklar: %2d%%, dödade: %u, högsta: %u, lägsta: %u"
 
-#: src/art.c:5113
+#: src/art.c:5273
 msgid "Apply scorefile now"
 msgstr "Lägg till poängfil nu"
 
-#: src/art.c:5159
+#: src/art.c:5319
 msgid "No scorefile loaded."
 msgstr "Ingen poängfil laddad."
 
-#: src/art.c:5168
+#: src/art.c:5328
 msgid "This article is not matched by any scorefile entries."
 msgstr "Den här artikeln matchade inte någon poängfilspost"
 
-#: src/art.c:5214
+#: src/art.c:5374
 msgid "This article is matched by the following scores"
 msgstr "Den här artikeln matchades av följande poäng"
 
-#: src/art.c:5316
+#: src/art.c:5476
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: tar emot ytterligare huvuden...[%c]"
 
-#: src/art.c:5401
+#: src/art.c:5561
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: huvuden mottagna: %2d/%d"
 
-#: src/art.c:5562
+#: src/art.c:5722
 #, c-format
 msgid "Finding %s from server..."
 msgstr "Söker %s från server..."
 
-#: src/art.c:5603
+#: src/art.c:5763
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "Söker barn från server...[%c]"
 
-#: src/art.c:5611
+#: src/art.c:5771
 msgid "Your server does not provide support for this feature."
 msgstr "Din server tillhandahåller inte stöd för den här funktionen."
 
-#: src/art.c:5795
+#: src/art.c:5955
 msgid "Header is part of a reference loop"
 msgstr "Huvud är del av en referens-loop"
 
-#: src/art.c:5849
+#: src/art.c:6009
 msgid "Article has no parent reference."
 msgstr "Artikel har ingen förälderreferens."
 
-#: src/art.c:5906
+#: src/art.c:6066
 #, c-format
 msgid "Article %s not available."
 msgstr "Artikel %s är inte tillgänglig."
 
-#: src/art.c:5918
+#: src/art.c:6078
 msgid "Enter Message-ID: "
 msgstr "Skriv in meddelande-id: "
 
-#: src/art.c:6340
+#: src/art.c:6500
 msgid "Warning: Could not save list of requested bodies."
 msgstr "Varning: Kunde inte spara lista på begärda kroppar."
 
-#: src/art.c:6609
+#: src/art.c:6769
 msgid "Are you sure that you want to cancel this article"
 msgstr "Är du säker på att du vill avbryta den här artikeln"
 
-#: src/art.c:6612
+#: src/art.c:6772
 msgid "Cancelling..."
 msgstr "Avbryter..."
 
-#: src/art.c:6647
+#: src/art.c:6806
 msgid "No message id."
 msgstr "Inget meddelande-id."
 
-#: src/art.c:6677
+#: src/art.c:6836
 msgid "Done."
 msgstr "Klar."
 
-#: src/art.c:6716
+#: src/art.c:6875
 msgid "Warning: Can only request article bodies from this group."
 msgstr "Varning: Kan bara begära artikelkroppar från den här gruppen."
 
-#: src/art.c:6733
+#: src/art.c:6892
 msgid "Mark all articles as read"
 msgstr "Markera alla artiklar som lästa"
 
-#: src/art.c:6743
+#: src/art.c:6902
 msgid "Mark all articles as unread"
 msgstr "Markera alla artiklar som olästa"
 
-#: src/art.c:6753
+#: src/art.c:6912
 msgid "Mark all articles up to here as read"
 msgstr "Markera alla artiklar hit fram som lästa"
 
-#: src/art.c:6763
+#: src/art.c:6922
 msgid "Mark all articles up to here as unread"
 msgstr "Markera alla artiklar hit fram som olästa"
 
-#: src/art.c:6864
+#: src/art.c:7023
 msgid "Rate article (1-5):"
 msgstr "Värdera artikel (1-5):"
 
-#: src/art.c:6869
+#: src/art.c:7028
 msgid "Rating must be in range 1 to 5."
 msgstr "Värdering måste vara inom området 1 till 5."
 
-#: src/art.c:7162
+#: src/art.c:7321
 msgid "Unable to create Article keymap!"
 msgstr "Kunde inte skapa tangentbordsuppsättning för artikel!"
 
-#: src/art.c:7600
+#: src/art.c:7759
 msgid "Group transfer aborted."
 msgstr "Gruppöverföring avbruten."
 
-#: src/art.c:7602
+#: src/art.c:7761
 msgid "Server read failed."
 msgstr "Serverläsning misslyckades."
 
-#: src/art.c:7619
+#: src/art.c:7778
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Inga olästa artiklar hittades. (%d dödade)"
 
-#: src/art.c:7621
+#: src/art.c:7780
 msgid "No unread articles found."
 msgstr "Inga olästa artiklar hittades."
 
-#: src/art.c:7675
+#: src/art.c:7834
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr ""
 "Ant dödade: %u, ant höga: %u, ant låga: %u, ant GroupLens värderade: %d"
 
-#: src/art.c:7681
+#: src/art.c:7840
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "Ant dödade: %u, ant höga: %u, ant låga: %u"
 
-#: src/art.c:7882
+#: src/art.c:8041
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:Välj Ctrl-D:SidNer Ctrl-U:SidUpp d:Markera-som-läst n:Nästa p:Föreg q:"
 "Avsluta"
 
-#: src/art.c:7887
+#: src/art.c:8046
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:SidNer B:SidUpp u:Markera-som-oläst f:Följ-upp n:Nästa p:Föreg q:Avsluta"
 
-#: src/art.c:8098
+#: src/art.c:8257
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Slut på tråd.  Nästa: %s"
 
-#: src/art.c:8100
+#: src/art.c:8259
 msgid "End of Thread."
 msgstr "Slut på tråd."
 
-#: src/art.c:8112
+#: src/art.c:8271
 msgid "End of Sub-Thread"
 msgstr "Slut på under-tråd."
 
-#: src/art.c:8735
+#: src/art.c:8894
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t olästa] Grupp: %n%-20g -- %L (%P)"
 
-#: src/art.c:8923
+#: src/art.c:9082
 msgid "Spoilers visible!"
 msgstr "Förstörare synliga!"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: slrn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-28 11:15+0200\n"
+"POT-Creation-Date: 2004-10-07 01:44+0200\n"
 "PO-Revision-Date: 2003-08-08 20:48+0300\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -30,7 +30,7 @@ msgstr "Virheellinen selainmääritys."
 msgid "Browse (^G aborts): "
 msgstr "Selaa (^G keskeyttää): "
 
-#: src/art.c:1061 src/art.c:4166
+#: src/art.c:1061 src/art.c:4326
 msgid "Aborted."
 msgstr "Keskeytetty."
 
@@ -59,7 +59,7 @@ msgstr "URLeja ei löytynyt."
 msgid "Search: "
 msgstr "Haku: "
 
-#: src/art.c:1205 src/art.c:4824 src/group.c:1188
+#: src/art.c:1205 src/art.c:4984 src/group.c:1188
 msgid "Not found."
 msgstr "Ei löytynyt."
 
@@ -77,367 +77,367 @@ msgstr "Artikkelin loppu, %s siirtyy seuraavaan lukemattomaan artikkeliin."
 msgid "<Space>"
 msgstr ""
 
-#: src/art.c:2012
+#: src/art.c:2165
 msgid "Goto article: "
 msgstr "Siirry artikkeliin: "
 
-#: src/art.c:2029
+#: src/art.c:2182
 msgid "Article not found."
 msgstr "Artikkelia ei löydy."
 
-#: src/art.c:2102
+#: src/art.c:2255
 #, c-format
 msgid "#%2d/%-2d: Retrieving... %s"
 msgstr "#%2d/%-2d: Haetaan... %s"
 
-#: src/art.c:2105
+#: src/art.c:2258
 #, c-format
 msgid "[%d] Reading..."
 msgstr "[%d] Luetaan..."
 
-#: src/art.c:2112
+#: src/art.c:2265
 msgid "Server failed to return article."
 msgstr "Palvelin ei pystynyt palauttamaan artikkelia."
 
-#: src/art.c:2116
+#: src/art.c:2269
 #, c-format
 msgid "Article %d unavailable."
 msgstr "Artikkeli %d ei ole saatavissa."
 
-#: src/art.c:2155
+#: src/art.c:2308
 msgid "Article transfer aborted or connection lost."
 msgstr "Artikkelin siirto keskeytetty tai yhteys menetetty."
 
-#: src/art.c:2173
+#: src/art.c:2326
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
 msgstr "#%2d/%-2d: Luettu %4d/%-4d riviä (%s) nopeudella %.2f kt/s"
 
-#: src/art.c:2177
+#: src/art.c:2330
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
 msgstr "#%2d/%-2d: Luettu %4d/%-4d riviä (%s)"
 
-#: src/art.c:2183
+#: src/art.c:2336
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
 msgstr "[%d] Luettu %d/%d riviä toistaiseksi, nopeudella %.2f kt/s"
 
-#: src/art.c:2186
+#: src/art.c:2339
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
 msgstr "[%d] Luettu %d/%d riviä toistaiseksi"
 
-#: src/art.c:2226
+#: src/art.c:2379
 msgid "Server sent empty article."
 msgstr "Palvelin lähetti tyhjän artikkelin."
 
-#: src/art.c:2549
+#: src/art.c:2703
 msgid "%Y-%m-%d"
 msgstr "%d.%m.%Y"
 
-#: src/art.c:2592
+#: src/art.c:2746
 msgid "This operation requires an article"
 msgstr "Tämä toiminto vaatii kohteekseen artikkelin"
 
-#: src/art.c:2703
+#: src/art.c:2855
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
 msgstr "%s vaikuttaa virheelliseltä. Jatketaanko silti"
 
-#: src/art.c:2704
+#: src/art.c:2856 src/art.c:3366
 msgid "Email address"
 msgstr "Sähköpostiosoite"
 
-#: src/art.c:2715 src/art.c:2891 src/art.c:3229 src/art.c:3479
+#: src/art.c:2867 src/art.c:3043 src/art.c:3386 src/art.c:3636
 #: src/slrnpull.c:389 src/slrnpull.c:466 src/slrnpull.c:1134
 #: src/slrnpull.c:1188
 #, c-format
 msgid "Unable to open %s for writing."
 msgstr "Tiedostoa %s ei voida avata kirjoitusta varten."
 
-#: src/art.c:2841
+#: src/art.c:2993
 msgid "Are you sure you want to reply"
 msgstr "Haluatko varmasti vastata yksityisesti"
 
-#: src/art.c:2868
+#: src/art.c:3020
 msgid "Forward to (^G aborts): "
 msgstr "Lähetä edelleen: (^G keskeyttää): "
 
-#: src/art.c:2870
+#: src/art.c:3022
 msgid "Aborted.  An email address is required."
 msgstr "Keskeytetty. Vaaditaan sähköpostiosoite."
 
-#: src/art.c:2874
+#: src/art.c:3026
 msgid "Edit the message before sending"
 msgstr "Muokkaa viestiä ennen lähetystä"
 
-#: src/art.c:2977 src/art.c:3434
+#: src/art.c:3130 src/art.c:3592
 msgid "Posting not allowed by server"
 msgstr "Palvelin ei salli lähetystä"
 
-#: src/art.c:2984
+#: src/art.c:3137
 msgid "Are you sure you want to followup"
 msgstr "Haluatko varmasti lähettää vastineen"
 
-#: src/art.c:3025
+#: src/art.c:3179
 msgid "Do you want to reply to POSTER as poster prefers"
 msgstr "Haluatko varmasti vastata yksityisesti LÄHETTÄJÄLLE, kuten hän toivoo"
 
-#: src/art.c:3063
+#: src/art.c:3217
 #, c-format
 msgid "Followup to %s as poster prefers"
 msgstr "Vastine ryhmään %s, kuten lähettäjä toivoo"
 
-#: src/art.c:3105
+#: src/art.c:3259
 msgid "fFaAtTcC"
 msgstr "fFkKvVeE"
 
-#: src/art.c:3108
+#: src/art.c:3262
 msgid ""
 "Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
 " Cancel?"
 msgstr ""
 "Ristiinlähetys. Aseta \"Followup-To\", Lähetä Kaikkiin / Vain tähän, pEruuta?"
 
-#: src/art.c:3190
+#: src/art.c:3348
 msgid "Cc message as requested by poster"
 msgstr "Lähetetäänkö kopio (Cc) lähettäjälle, kuten hän toivoo"
 
-#: src/art.c:3196
+#: src/art.c:3354
 msgid "Cc message to poster"
 msgstr "Lähetetäänkö kopio (Cc) lähettäjälle"
 
-#: src/art.c:3209
+#: src/art.c:3366
 #, c-format
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s ei vaikuta kelvolliselta. Lähetetäänkö kopio (Cc) silti"
 
-#: src/art.c:3382 src/post.c:1017
+#: src/art.c:3539 src/post.c:1017
 #, c-format
 msgid "Cannot open file: %s"
 msgstr "Ei voi avata tiedostoa: %s"
 
-#: src/art.c:3389 src/post.c:1024
+#: src/art.c:3546 src/post.c:1024
 #, c-format
 msgid "Zero length file: %s"
 msgstr "Nollan pituinen tiedosto: %s"
 
-#: src/art.c:3439
+#: src/art.c:3597
 msgid "Are you sure you want to supersede"
 msgstr "Haluatko varmasti korvata"
 
-#: src/art.c:3458 src/art.c:6632
+#: src/art.c:3615 src/art.c:6788
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "Epäonnistui: Nimesi: \"%s\" ei ole \"%s\""
 
-#: src/art.c:3574 src/art.c:3623
+#: src/art.c:3731 src/art.c:3780
 msgid "End of buffer."
 msgstr "Puskurin loppu."
 
-#: src/art.c:3595 src/art.c:3613 src/group.c:1024
+#: src/art.c:3752 src/art.c:3770 src/group.c:1024
 msgid "Top of buffer."
 msgstr "Puskurin alku."
 
-#: src/art.c:3658
+#: src/art.c:3815
 msgid "No previous unread articles."
 msgstr "Ei edellisiä lukemattomia artikkeleita."
 
-#: src/art.c:3704
+#: src/art.c:3861
 msgid "No following unread articles."
 msgstr "Ei seuraavia lukemattomia artikkeleita."
 
-#: src/art.c:3745 src/art.c:3758
+#: src/art.c:3902 src/art.c:3915
 #, c-format
 msgid "No following unread articles.  Press %s for next group."
 msgstr "Ei enempää lukemattomia artikkeleita. %s siirtyy seuraavaan ryhmään."
 
-#: src/art.c:3789
+#: src/art.c:3946
 msgid "No more high scoring articles."
 msgstr "Ei enempää tärkeäksi pisteytettyjä artikkeleita."
 
-#: src/art.c:3818 src/group.c:1722
+#: src/art.c:3975 src/group.c:1722
 msgid "Subject: "
 msgstr "Aihe: "
 
-#: src/art.c:3843
+#: src/art.c:4000
 msgid "No more articles on that subject."
 msgstr "Ei enempää artikkeleita samalla otsikolla."
 
-#: src/art.c:3876
+#: src/art.c:4033
 #, c-format
 msgid "Goto Header: %d"
 msgstr "Siirry otsikkoon: %d"
 
-#: src/art.c:3958 src/group.c:2593 src/post.c:462
+#: src/art.c:4115 src/group.c:2593 src/post.c:462
 #, c-format
 msgid "Unable to open %s."
 msgstr "Tiedostoa %s ei voida avata."
 
-#: src/art.c:3964 src/slrnpull.c:1141 src/slrnpull.c:1149 src/slrnpull.c:1196
+#: src/art.c:4121 src/slrnpull.c:1141 src/slrnpull.c:1149 src/slrnpull.c:1196
 #: src/slrnpull.c:1204
 #, c-format
 msgid "Error writing to %s."
 msgstr "Virhe kirjoitettaessa tiedostoon %s."
 
-#: src/art.c:4071
+#: src/art.c:4231
 msgid "Save tagged articles"
 msgstr "Tallenna valitut artikkelit"
 
-#: src/art.c:4079
+#: src/art.c:4239
 msgid "Save this thread"
 msgstr "Tallenna tämä säie"
 
-#: src/art.c:4100 src/post.c:1642
+#: src/art.c:4260 src/post.c:1642
 #, c-format
 msgid "Do you want to create directory %s"
 msgstr "Haluatko luoda hakemiston %s"
 
-#: src/art.c:4103 src/post.c:1646
+#: src/art.c:4263 src/post.c:1646
 #, c-format
 msgid "Unable to create directory. (errno = %d)"
 msgstr "Hakemistoa ei voida luoda. (errno = %d)"
 
-#: src/art.c:4108
+#: src/art.c:4268
 #, c-format
 msgid "Warning: %s is a regular file."
 msgstr "Varoitus: %s on tavallinen tiedosto"
 
-#: src/art.c:4162
+#: src/art.c:4322
 msgid "Temporary file (^G aborts): "
 msgstr "Väliaikaistiedosto (^G keskeyttää): "
 
-#: src/art.c:4163
+#: src/art.c:4323
 msgid "Save to file (^G aborts): "
 msgstr "Tallenna tiedostoon (^G keskeyttää): "
 
-#: src/art.c:4172 src/editscore.c:167 src/post.c:635
+#: src/art.c:4332 src/editscore.c:167 src/post.c:635
 #, c-format
 msgid "Unable to open %s"
 msgstr "Tiedostoa %s ei voida avata"
 
-#: src/art.c:4262
+#: src/art.c:4422
 #, c-format
 msgid "decoding %10s (%3d/%3d) %s"
 msgstr "puretaan %10s (%3d/%3d) %s"
 
-#: src/art.c:4278
+#: src/art.c:4438
 msgid "Filename buffer not large enough."
 msgstr "Tiedostonimipuskuri ei ole riittävän suuri."
 
-#: src/art.c:4282
+#: src/art.c:4442
 msgid "Calling uudeview ..."
 msgstr "Kutsutaan uudeview-ohjelmaa..."
 
-#: src/art.c:4291
+#: src/art.c:4451
 #, c-format
 msgid "could not load %s: errno = %d"
 msgstr "ei voitu ladata tiedostoa %s: errno = %d"
 
-#: src/art.c:4294
+#: src/art.c:4454
 #, c-format
 msgid "could not load %s: %s"
 msgstr "ei voitu ladata tiedostoa %s: %s"
 
-#: src/art.c:4313
+#: src/art.c:4473
 msgid "I/O error."
 msgstr "I/O-virhe."
 
-#: src/art.c:4316
+#: src/art.c:4476
 #, c-format
 msgid "error decoding %s: %s"
 msgstr "virhe purettaessa tiedostoa %s: %s"
 
-#: src/art.c:4340
+#: src/art.c:4500
 #, c-format
 msgid "Decode %s"
 msgstr "Puretaanko %s"
 
-#: src/art.c:4351
+#: src/art.c:4511
 #, c-format
 msgid "Delete %s"
 msgstr "Poistetaanko %s"
 
-#: src/art.c:4354
+#: src/art.c:4514
 #, c-format
 msgid "Unable to delete %s"
 msgstr "Tiedostoa %s ei voida poistaa"
 
-#: src/art.c:4392
+#: src/art.c:4552
 #, c-format
 msgid "Unable to open pipe to %s"
 msgstr "Komennolle %s ei voida avata putkea"
 
-#: src/art.c:4403 src/art.c:4424 src/decode.c:65
+#: src/art.c:4563 src/art.c:4584 src/decode.c:65
 msgid "Piping not implemented on this system."
 msgstr "Putkitusta ei ole toteutettu tässä järjestelmässä."
 
-#: src/art.c:4415
+#: src/art.c:4575
 msgid "Pipe to command: "
 msgstr "Putkita komennolle: "
 
-#: src/art.c:4417
+#: src/art.c:4577
 msgid "Aborted.  Command name is required."
 msgstr "Keskeytetty. Komennon nimi vaaditaan."
 
-#: src/art.c:4422
+#: src/art.c:4582
 #, c-format
 msgid "Error piping to %s."
 msgstr "Virhe putkitettaessa komennolle %s."
 
-#: src/art.c:4438
+#: src/art.c:4598
 msgid "Printing article..."
 msgstr "Tulostetaan artikkelia..."
 
-#: src/art.c:4469
+#: src/art.c:4629
 msgid "Printing article...done"
 msgstr "Tulostetaan artikkelia...valmis"
 
-#: src/art.c:4485
+#: src/art.c:4645
 msgid "Are you sure you want to print the article"
 msgstr "Haluatko varmasti tulostaa artikkelin"
 
-#: src/art.c:4757
+#: src/art.c:4917
 msgid "Mark set."
 msgstr "Merkki asetettu."
 
-#: src/art.c:4769
+#: src/art.c:4929
 msgid "Mark not set."
 msgstr "Merkkiä ei ole asetettu."
 
-#: src/art.c:4790
+#: src/art.c:4950
 msgid "Subject search "
 msgstr "Haku aiheen mukaan "
 
-#: src/art.c:4790
+#: src/art.c:4950
 msgid "Author search "
 msgstr "Haku kirjoittajan mukaan "
 
-#: src/art.c:4791
+#: src/art.c:4951
 msgid "(forward)"
 msgstr "(eteenpäin)"
 
-#: src/art.c:4791
+#: src/art.c:4951
 msgid "(backward)"
 msgstr "(taaksepäin)"
 
-#: src/art.c:4977 src/slrnpull.c:1339
+#: src/art.c:5137 src/slrnpull.c:1339
 #, c-format
 msgid "Score %d killed article %s\n"
 msgstr "Pisteytys %d tappoi artikkelin %s\n"
 
-#: src/art.c:4981 src/slrnpull.c:1345
+#: src/art.c:5141 src/slrnpull.c:1345
 #, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
 msgstr " Pisteytys %c%5i: %s (%s:%i)\n"
 
-#: src/art.c:4985 src/slrnpull.c:1349
+#: src/art.c:5145 src/slrnpull.c:1349
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
 msgstr " Pisteytys %c%5i: %s:%i\n"
 
-#: src/art.c:4990 src/slrnpull.c:1354
+#: src/art.c:5150 src/slrnpull.c:1354
 #, c-format
 msgid ""
 "  Newsgroup: %s\n"
@@ -449,180 +449,180 @@ msgstr ""
 "  Lähettäjä: %s\n"
 "  Aihe: %s\n"
 
-#: src/art.c:5060
+#: src/art.c:5220
 msgid "Scoring articles ..."
 msgstr "Pisteytetään artikkeleita..."
 
-#: src/art.c:5073
+#: src/art.c:5233
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr "Artikkeleiden pisteytys: %2d%%, tapettu: %u, tärkeitä: %u, turhia: %u"
 
-#: src/art.c:5113
+#: src/art.c:5273
 msgid "Apply scorefile now"
 msgstr "Sovelletaanko pisteytystiedostoa nyt"
 
-#: src/art.c:5159
+#: src/art.c:5319
 msgid "No scorefile loaded."
 msgstr "Pisteytystiedostoa ei ladattu."
 
-#: src/art.c:5168
+#: src/art.c:5328
 msgid "This article is not matched by any scorefile entries."
 msgstr "Tämä artikkeli ei vastaa mitään pisteytystiedoston merkintää."
 
-#: src/art.c:5214
+#: src/art.c:5374
 msgid "This article is matched by the following scores"
 msgstr "Tämä artikkeli vastaa seuraavia pisteytysmerkintöjä"
 
-#: src/art.c:5316
+#: src/art.c:5476
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: vastaanotetaan lisäotsakkeita...[%c]"
 
-#: src/art.c:5401
+#: src/art.c:5561
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: otsakkeita vastaanotettu: %2d/%d"
 
-#: src/art.c:5562
+#: src/art.c:5722
 #, c-format
 msgid "Finding %s from server..."
 msgstr "Etsitään artikkelia %s palvelimelta..."
 
-#: src/art.c:5603
+#: src/art.c:5763
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "Etsitään vastineita palvelimelta...[%c]"
 
-#: src/art.c:5611
+#: src/art.c:5771
 msgid "Your server does not provide support for this feature."
 msgstr "Palvelin ei tue tätä ominaisuutta."
 
-#: src/art.c:5795
+#: src/art.c:5955
 msgid "Header is part of a reference loop"
 msgstr "Otsake on osa viitesilmukkaa"
 
-#: src/art.c:5849
+#: src/art.c:6009
 msgid "Article has no parent reference."
 msgstr "Artikkelissa ei ole viitettä edelliseen."
 
-#: src/art.c:5906
+#: src/art.c:6066
 #, c-format
 msgid "Article %s not available."
 msgstr "Artikkeli %s ei ole saatavissa."
 
-#: src/art.c:5918
+#: src/art.c:6078
 msgid "Enter Message-ID: "
 msgstr "Syötä viesti-ID: "
 
-#: src/art.c:6340
+#: src/art.c:6500
 msgid "Warning: Could not save list of requested bodies."
 msgstr "Varoitus: Pyydettyjen runkojen listaa ei voitu tallentaa."
 
-#: src/art.c:6609
+#: src/art.c:6769
 msgid "Are you sure that you want to cancel this article"
 msgstr "Haluatko varmasti peruuttaa tämän artikkelin"
 
-#: src/art.c:6612
+#: src/art.c:6772
 msgid "Cancelling..."
 msgstr "Peruutetaan..."
 
-#: src/art.c:6647
+#: src/art.c:6806
 msgid "No message id."
 msgstr "Ei viesti-ID:tä."
 
-#: src/art.c:6677
+#: src/art.c:6836
 msgid "Done."
 msgstr "Valmis."
 
-#: src/art.c:6716
+#: src/art.c:6875
 msgid "Warning: Can only request article bodies from this group."
 msgstr "Varoitus: Tästä ryhmästä voidaan hakea vain artikkelin runkoja."
 
-#: src/art.c:6733
+#: src/art.c:6892
 msgid "Mark all articles as read"
 msgstr "Merkitäänkö kaikki artikkelit luetuiksi"
 
-#: src/art.c:6743
+#: src/art.c:6902
 msgid "Mark all articles as unread"
 msgstr "Merkitäänkö kaikki artikkelit lukemattomiksi"
 
-#: src/art.c:6753
+#: src/art.c:6912
 msgid "Mark all articles up to here as read"
 msgstr "Merkitäänkö kaikki tähänastiset artikkelit luetuiksi"
 
-#: src/art.c:6763
+#: src/art.c:6922
 msgid "Mark all articles up to here as unread"
 msgstr "Merkitäänkö kaikki tähänastiset artikkelit lukemattomiksi"
 
-#: src/art.c:6864
+#: src/art.c:7023
 msgid "Rate article (1-5):"
 msgstr "Arvostele artikkeli (1-5):"
 
-#: src/art.c:6869
+#: src/art.c:7028
 msgid "Rating must be in range 1 to 5."
 msgstr "Arvosanan on oltava välillä 1-5."
 
-#: src/art.c:7162
+#: src/art.c:7321
 msgid "Unable to create Article keymap!"
 msgstr "Artikkeleita varten ei voi luoda näppäinkarttaa!"
 
-#: src/art.c:7600
+#: src/art.c:7759
 msgid "Group transfer aborted."
 msgstr "Ryhmäsiirto keskeytetty."
 
-#: src/art.c:7602
+#: src/art.c:7761
 msgid "Server read failed."
 msgstr "Luku palvelimelta epäonnistui."
 
-#: src/art.c:7619
+#: src/art.c:7778
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Lukemattomia artikkeleita ei löytynyt. (%d tapettu)"
 
-#: src/art.c:7621
+#: src/art.c:7780
 msgid "No unread articles found."
 msgstr "Lukemattomia artikkeleita ei löytynyt."
 
-#: src/art.c:7675
+#: src/art.c:7834
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr "Tapettuja: %u, Tärkeitä: %u, Turhia: %u, GroupLens-arvosteltuja: %d"
 
-#: src/art.c:7681
+#: src/art.c:7840
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "Tapettuja: %u, Tärkeitä: %u, Turhia: %u"
 
-#: src/art.c:7882
+#: src/art.c:8041
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "Väli:Valitse Ctrl-D:SvYlös Ctrl-U:SvAlas d:Merk.luet. n:Seur p:Edell q:Lopeta"
 
-#: src/art.c:7887
+#: src/art.c:8046
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "Väli:SvAlas  B:SvYlös  u:Merk.lukem.  f:Vastine  n:Seur  p:Edell  q:Lopeta"
 
-#: src/art.c:8098
+#: src/art.c:8257
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Säikeen loppu. Seuraava: %s"
 
-#: src/art.c:8100
+#: src/art.c:8259
 msgid "End of Thread."
 msgstr "Säikeen loppu."
 
-#: src/art.c:8112
+#: src/art.c:8271
 msgid "End of Sub-Thread"
 msgstr "Alisäikeen loppu"
 
-#: src/art.c:8735
+#: src/art.c:8894
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t lukematta] Ryhmä: %n%-20g -- %L (%P)"
 
-#: src/art.c:8923
+#: src/art.c:9082
 msgid "Spoilers visible!"
 msgstr "Spoilerit näkyvissä!"
 

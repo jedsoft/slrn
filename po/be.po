@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-28 11:15+0200\n"
+"POT-Creation-Date: 2004-10-07 01:44+0200\n"
 "PO-Revision-Date: 2003-01-27 23:55+0300\n"
 "Last-Translator: Hleb Valoska <el_globus@tut.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -26,7 +26,7 @@ msgstr "Няправільна вызначаны Browser."
 msgid "Browse (^G aborts): "
 msgstr "Прагледзець (^G каб спыніць): "
 
-#: src/art.c:1061 src/art.c:4166
+#: src/art.c:1061 src/art.c:4326
 msgid "Aborted."
 msgstr "Спынена."
 
@@ -55,7 +55,7 @@ msgstr "URL ня знойдзеныя."
 msgid "Search: "
 msgstr "Пошук: "
 
-#: src/art.c:1205 src/art.c:4824 src/group.c:1188
+#: src/art.c:1205 src/art.c:4984 src/group.c:1188
 msgid "Not found."
 msgstr "Ня знойдзена."
 
@@ -74,123 +74,123 @@ msgstr ""
 msgid "<Space>"
 msgstr ""
 
-#: src/art.c:2012
+#: src/art.c:2165
 msgid "Goto article: "
 msgstr "Перайсьці да артыкула: "
 
-#: src/art.c:2029
+#: src/art.c:2182
 msgid "Article not found."
 msgstr "Артыкул ня знойдзены."
 
-#: src/art.c:2102
+#: src/art.c:2255
 #, c-format
 msgid "#%2d/%-2d: Retrieving... %s"
 msgstr "#%2d/%-2d: Аднаўленьне... %s"
 
-#: src/art.c:2105
+#: src/art.c:2258
 #, c-format
 msgid "[%d] Reading..."
 msgstr "[%d] Чытаньне..."
 
-#: src/art.c:2112
+#: src/art.c:2265
 msgid "Server failed to return article."
 msgstr "Памылка сэрвэра пры вяртаньні артыкула."
 
-#: src/art.c:2116
+#: src/art.c:2269
 #, c-format
 msgid "Article %d unavailable."
 msgstr "Артыкул %d недасяжны."
 
-#: src/art.c:2155
+#: src/art.c:2308
 msgid "Article transfer aborted or connection lost."
 msgstr "Перасыланьне артыкула спыненае альбо страчанае злучэньне."
 
-#: src/art.c:2173
+#: src/art.c:2326
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
 msgstr "#%2d/%-2d: Прачытана %4d/%-4d радкоў (%s), з хуткасьцю %.2fkB/sec"
 
-#: src/art.c:2177
+#: src/art.c:2330
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
 msgstr "#%2d/%-2d: Прачытана %4d/%-4d радкоў (%s)"
 
-#: src/art.c:2183
+#: src/art.c:2336
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
 msgstr "[%d] Прачытана %d/%d радкоў, з хуткасьцю %.2fkB/sec"
 
-#: src/art.c:2186
+#: src/art.c:2339
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
 msgstr "[%d] Прачытана %d/%d радкоў"
 
-#: src/art.c:2226
+#: src/art.c:2379
 msgid "Server sent empty article."
 msgstr "Сэрвэр перадаў пусты артыкул."
 
-#: src/art.c:2549
+#: src/art.c:2703
 msgid "%Y-%m-%d"
 msgstr ""
 
-#: src/art.c:2592
+#: src/art.c:2746
 msgid "This operation requires an article"
 msgstr "Для выкананьня гэтага дзеяньня патрэбны артыкул."
 
-#: src/art.c:2703
+#: src/art.c:2855
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
 msgstr "%s падаецца няправільным. Працягнуць нягледзячы"
 
-#: src/art.c:2704
+#: src/art.c:2856 src/art.c:3366
 msgid "Email address"
 msgstr "Адрас электр. пошты"
 
-#: src/art.c:2715 src/art.c:2891 src/art.c:3229 src/art.c:3479
+#: src/art.c:2867 src/art.c:3043 src/art.c:3386 src/art.c:3636
 #: src/slrnpull.c:389 src/slrnpull.c:466 src/slrnpull.c:1134
 #: src/slrnpull.c:1188
 #, c-format
 msgid "Unable to open %s for writing."
 msgstr "Немагчыма адкрыць %s для запісу"
 
-#: src/art.c:2841
+#: src/art.c:2993
 msgid "Are you sure you want to reply"
 msgstr "Ці ты сапраўды хочаш адказаць аўтару"
 
-#: src/art.c:2868
+#: src/art.c:3020
 msgid "Forward to (^G aborts): "
 msgstr "Даслаць (^G каб спыніць): "
 
-#: src/art.c:2870
+#: src/art.c:3022
 msgid "Aborted.  An email address is required."
 msgstr "Спынена. Патрэбны адрас электр. пошты."
 
-#: src/art.c:2874
+#: src/art.c:3026
 msgid "Edit the message before sending"
 msgstr "Рэдагаваць паведамленьне перад дасыланьнем"
 
-#: src/art.c:2977 src/art.c:3434
+#: src/art.c:3130 src/art.c:3592
 msgid "Posting not allowed by server"
 msgstr "Адпраўка не дазволена сэрвэрам"
 
-#: src/art.c:2984
+#: src/art.c:3137
 msgid "Are you sure you want to followup"
 msgstr "Ці ты сапраўды хочаш адказаць"
 
-#: src/art.c:3025
+#: src/art.c:3179
 msgid "Do you want to reply to POSTER as poster prefers"
 msgstr "Ці ты сапраўды хочаш адказаць АЎТАРУ паводле ягоных ўстановак"
 
-#: src/art.c:3063
+#: src/art.c:3217
 #, c-format
 msgid "Followup to %s as poster prefers"
 msgstr "Адказ у %s паводле ўстановак аўтара"
 
-#: src/art.c:3105
+#: src/art.c:3259
 msgid "fFaAtTcC"
 msgstr ""
 
-#: src/art.c:3108
+#: src/art.c:3262
 #, fuzzy
 msgid ""
 "Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
@@ -199,246 +199,246 @@ msgstr ""
 "Колькі груп. F:Адказы ў гэтую, P:Слаць толькі ў гэтую, I:Ігнараваць, C:"
 "Адмена?"
 
-#: src/art.c:3190
+#: src/art.c:3348
 msgid "Cc message as requested by poster"
 msgstr "Слаць копію паведамленьня (CC), як ўстанавіў аўтар"
 
-#: src/art.c:3196
+#: src/art.c:3354
 msgid "Cc message to poster"
 msgstr "Слаць копію паведамленьня (CC) аўтару"
 
-#: src/art.c:3209
+#: src/art.c:3366
 #, c-format
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s падаецца няправільным. Працягнуць нягледзячы"
 
-#: src/art.c:3382 src/post.c:1017
+#: src/art.c:3539 src/post.c:1017
 #, fuzzy, c-format
 msgid "Cannot open file: %s"
 msgstr "Немагчыма адкрыць файл справаздач %s"
 
-#: src/art.c:3389 src/post.c:1024
+#: src/art.c:3546 src/post.c:1024
 #, fuzzy, c-format
 msgid "Zero length file: %s"
 msgstr "Немагчыма адкрыць файл справаздач %s"
 
-#: src/art.c:3439
+#: src/art.c:3597
 msgid "Are you sure you want to supersede"
 msgstr "Ці ты сапраўды хочаш зьмяніць зыходны тэкст"
 
-#: src/art.c:3458 src/art.c:6632
+#: src/art.c:3615 src/art.c:6788
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "Памылка: тваё імя '%s' не адпавядае '%s'"
 
-#: src/art.c:3574 src/art.c:3623
+#: src/art.c:3731 src/art.c:3780
 msgid "End of buffer."
 msgstr "Канец буфэра."
 
-#: src/art.c:3595 src/art.c:3613 src/group.c:1024
+#: src/art.c:3752 src/art.c:3770 src/group.c:1024
 msgid "Top of buffer."
 msgstr "Пачатак буфэра."
 
-#: src/art.c:3658
+#: src/art.c:3815
 msgid "No previous unread articles."
 msgstr "Няма нечытаных артыкулаў ззаду."
 
-#: src/art.c:3704
+#: src/art.c:3861
 msgid "No following unread articles."
 msgstr "Няма нечытаных артыкулаў наперадзе."
 
-#: src/art.c:3745 src/art.c:3758
+#: src/art.c:3902 src/art.c:3915
 #, c-format
 msgid "No following unread articles.  Press %s for next group."
 msgstr ""
 "Няма нечытаных артыкулаў наперадзе. Націсьні %s каб перайсьці да наступнае "
 "групы."
 
-#: src/art.c:3789
+#: src/art.c:3946
 msgid "No more high scoring articles."
 msgstr "Больш няма артыкулаў з высокім score"
 
-#: src/art.c:3818 src/group.c:1722
+#: src/art.c:3975 src/group.c:1722
 msgid "Subject: "
 msgstr "Тэма: "
 
-#: src/art.c:3843
+#: src/art.c:4000
 msgid "No more articles on that subject."
 msgstr "Больш няма артыкулаў па гэтай тэме."
 
-#: src/art.c:3876
+#: src/art.c:4033
 #, c-format
 msgid "Goto Header: %d"
 msgstr "Перайсьці да загалоўку: %d"
 
-#: src/art.c:3958 src/group.c:2593 src/post.c:462
+#: src/art.c:4115 src/group.c:2593 src/post.c:462
 #, c-format
 msgid "Unable to open %s."
 msgstr "Немагчыма адкрыць %s."
 
-#: src/art.c:3964 src/slrnpull.c:1141 src/slrnpull.c:1149 src/slrnpull.c:1196
+#: src/art.c:4121 src/slrnpull.c:1141 src/slrnpull.c:1149 src/slrnpull.c:1196
 #: src/slrnpull.c:1204
 #, c-format
 msgid "Error writing to %s."
 msgstr "Памылка запісу ў %s."
 
-#: src/art.c:4071
+#: src/art.c:4231
 msgid "Save tagged articles"
 msgstr "Захаваць пазначаныя артыкулы"
 
-#: src/art.c:4079
+#: src/art.c:4239
 msgid "Save this thread"
 msgstr "Захаваць гэтую нітку"
 
-#: src/art.c:4100 src/post.c:1642
+#: src/art.c:4260 src/post.c:1642
 #, fuzzy, c-format
 msgid "Do you want to create directory %s"
 msgstr "Сапраўды выдаліць"
 
-#: src/art.c:4103 src/post.c:1646
+#: src/art.c:4263 src/post.c:1646
 #, fuzzy, c-format
 msgid "Unable to create directory. (errno = %d)"
 msgstr "Немагчыма стварыць каталёг %s. (errno = %d)"
 
-#: src/art.c:4108
+#: src/art.c:4268
 #, fuzzy, c-format
 msgid "Warning: %s is a regular file."
 msgstr "%s: не звычайны файл"
 
-#: src/art.c:4162
+#: src/art.c:4322
 msgid "Temporary file (^G aborts): "
 msgstr "Часовы файл (^G каб спыніць): "
 
-#: src/art.c:4163
+#: src/art.c:4323
 msgid "Save to file (^G aborts): "
 msgstr "Захаваць у файл (^G каб спыніць): "
 
-#: src/art.c:4172 src/editscore.c:167 src/post.c:635
+#: src/art.c:4332 src/editscore.c:167 src/post.c:635
 #, c-format
 msgid "Unable to open %s"
 msgstr "Немагчыма адкрыць %s"
 
-#: src/art.c:4262
+#: src/art.c:4422
 #, c-format
 msgid "decoding %10s (%3d/%3d) %s"
 msgstr "Дэкадаваньне %10s (%3d/%3d) %s"
 
-#: src/art.c:4278
+#: src/art.c:4438
 msgid "Filename buffer not large enough."
 msgstr "Буфэр імя файла замалы."
 
-#: src/art.c:4282
+#: src/art.c:4442
 msgid "Calling uudeview ..."
 msgstr "Выклік uudeview ..."
 
-#: src/art.c:4291
+#: src/art.c:4451
 #, c-format
 msgid "could not load %s: errno = %d"
 msgstr "Немагчыма загрузіць %s: errno = %d"
 
-#: src/art.c:4294
+#: src/art.c:4454
 #, c-format
 msgid "could not load %s: %s"
 msgstr "Немагчыма загрузіць %s: %s"
 
-#: src/art.c:4313
+#: src/art.c:4473
 msgid "I/O error."
 msgstr "Памылка ўводу/вываду."
 
-#: src/art.c:4316
+#: src/art.c:4476
 #, c-format
 msgid "error decoding %s: %s"
 msgstr "Памылка дэкадаваньня %s: %s"
 
-#: src/art.c:4340
+#: src/art.c:4500
 #, c-format
 msgid "Decode %s"
 msgstr "Дэкадаваньне %s"
 
-#: src/art.c:4351
+#: src/art.c:4511
 #, c-format
 msgid "Delete %s"
 msgstr "Выдаленьне %s"
 
-#: src/art.c:4354
+#: src/art.c:4514
 #, c-format
 msgid "Unable to delete %s"
 msgstr "Немагчыма выдаліць %s"
 
-#: src/art.c:4392
+#: src/art.c:4552
 #, c-format
 msgid "Unable to open pipe to %s"
 msgstr "Немагчыма адкрыць трубу ў %s"
 
-#: src/art.c:4403 src/art.c:4424 src/decode.c:65
+#: src/art.c:4563 src/art.c:4584 src/decode.c:65
 msgid "Piping not implemented on this system."
 msgstr "Сыстэма ня мае трубаў."
 
-#: src/art.c:4415
+#: src/art.c:4575
 msgid "Pipe to command: "
 msgstr "Перадаць праз трубу камандзе: "
 
-#: src/art.c:4417
+#: src/art.c:4577
 msgid "Aborted.  Command name is required."
 msgstr "Спынена. Патрэбнае імя каманды."
 
-#: src/art.c:4422
+#: src/art.c:4582
 #, c-format
 msgid "Error piping to %s."
 msgstr "Памылка запісу ў трубу %s."
 
-#: src/art.c:4438
+#: src/art.c:4598
 msgid "Printing article..."
 msgstr "Друкую артыкул..."
 
-#: src/art.c:4469
+#: src/art.c:4629
 msgid "Printing article...done"
 msgstr "Друкую артыкул...гатова"
 
-#: src/art.c:4485
+#: src/art.c:4645
 msgid "Are you sure you want to print the article"
 msgstr "Ці сапраўды ты хочаш надрукаваць артыкул"
 
-#: src/art.c:4757
+#: src/art.c:4917
 msgid "Mark set."
 msgstr "Пазначана."
 
-#: src/art.c:4769
+#: src/art.c:4929
 msgid "Mark not set."
 msgstr "Не пазначана."
 
-#: src/art.c:4790
+#: src/art.c:4950
 msgid "Subject search "
 msgstr "Пошук тэмы "
 
-#: src/art.c:4790
+#: src/art.c:4950
 msgid "Author search "
 msgstr "Пошук аўтара "
 
-#: src/art.c:4791
+#: src/art.c:4951
 msgid "(forward)"
 msgstr "(наперад)"
 
-#: src/art.c:4791
+#: src/art.c:4951
 msgid "(backward)"
 msgstr "(назад)"
 
-#: src/art.c:4977 src/slrnpull.c:1339
+#: src/art.c:5137 src/slrnpull.c:1339
 #, c-format
 msgid "Score %d killed article %s\n"
 msgstr "Бал %d зьнішчанага артыкулу %s\n"
 
-#: src/art.c:4981 src/slrnpull.c:1345
+#: src/art.c:5141 src/slrnpull.c:1345
 #, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
 msgstr " Бал %c%5i: %s (%s:%i)\n"
 
-#: src/art.c:4985 src/slrnpull.c:1349
+#: src/art.c:5145 src/slrnpull.c:1349
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
 msgstr " Бал %c%5i: %s:%i\n"
 
-#: src/art.c:4990 src/slrnpull.c:1354
+#: src/art.c:5150 src/slrnpull.c:1354
 #, c-format
 msgid ""
 "  Newsgroup: %s\n"
@@ -451,184 +451,184 @@ msgstr ""
 "Тэма: %s\n"
 "\n"
 
-#: src/art.c:5060
+#: src/art.c:5220
 msgid "Scoring articles ..."
 msgstr "Наданьне балаў артыкулам..."
 
-#: src/art.c:5073
+#: src/art.c:5233
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr ""
 "Нададзена балаў артыкулам: %2d%%, зьнішчаныя: %u, высокі: %u, нізкі: %u"
 
-#: src/art.c:5113
+#: src/art.c:5273
 msgid "Apply scorefile now"
 msgstr "Ужыць файл з баламі зараз"
 
-#: src/art.c:5159
+#: src/art.c:5319
 #, fuzzy
 msgid "No scorefile loaded."
 msgstr "Болей ня знойдзена файлаў.\n"
 
-#: src/art.c:5168
+#: src/art.c:5328
 msgid "This article is not matched by any scorefile entries."
 msgstr "Гэты артыкул не адпавядае ніводнаму запісу ў файле балаў."
 
-#: src/art.c:5214
+#: src/art.c:5374
 msgid "This article is matched by the following scores"
 msgstr "Гэты артыкул адпавядае наступным балам"
 
-#: src/art.c:5316
+#: src/art.c:5476
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: атрымоўваем дадатковыя загалоўкі...[%c]"
 
-#: src/art.c:5401
+#: src/art.c:5561
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: атрыманыя загалоўкі: %2d/%d"
 
-#: src/art.c:5562
+#: src/art.c:5722
 #, c-format
 msgid "Finding %s from server..."
 msgstr "Пошук %s на сэрвэры..."
 
-#: src/art.c:5603
+#: src/art.c:5763
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "Пошук нашчадкаў на сэрвэры...[%c]"
 
-#: src/art.c:5611
+#: src/art.c:5771
 msgid "Your server does not provide support for this feature."
 msgstr "Твой сэрвэр не патдрымлівае гэтае ўласьцівасьці."
 
-#: src/art.c:5795
+#: src/art.c:5955
 msgid "Header is part of a reference loop"
 msgstr "Загаловак уваходзіць у пятлю спасылак"
 
-#: src/art.c:5849
+#: src/art.c:6009
 msgid "Article has no parent reference."
 msgstr "Артыкул ня мае бацькоўскіх спасылак."
 
-#: src/art.c:5906
+#: src/art.c:6066
 #, c-format
 msgid "Article %s not available."
 msgstr "Артыкул %s недасяжны."
 
-#: src/art.c:5918
+#: src/art.c:6078
 #, fuzzy
 msgid "Enter Message-ID: "
 msgstr "Увядзі Message-Id: "
 
-#: src/art.c:6340
+#: src/art.c:6500
 msgid "Warning: Could not save list of requested bodies."
 msgstr ""
 
-#: src/art.c:6609
+#: src/art.c:6769
 msgid "Are you sure that you want to cancel this article"
 msgstr "Ці ты сапраўды хочаш скасаваць артыкул"
 
-#: src/art.c:6612
+#: src/art.c:6772
 msgid "Cancelling..."
 msgstr "Адмена..."
 
-#: src/art.c:6647
+#: src/art.c:6806
 msgid "No message id."
 msgstr "Няма Message-Id."
 
-#: src/art.c:6677
+#: src/art.c:6836
 msgid "Done."
 msgstr "Гатова."
 
-#: src/art.c:6716
+#: src/art.c:6875
 msgid "Warning: Can only request article bodies from this group."
 msgstr ""
 
-#: src/art.c:6733
+#: src/art.c:6892
 msgid "Mark all articles as read"
 msgstr "Пазначыць усе артыкулы як чытаныя."
 
-#: src/art.c:6743
+#: src/art.c:6902
 msgid "Mark all articles as unread"
 msgstr "Пазначыць усе артыкулы як нечытаныя."
 
-#: src/art.c:6753
+#: src/art.c:6912
 msgid "Mark all articles up to here as read"
 msgstr "Пазначыць усе артыкулы, вышэйшыя за гэты, прачытанымі"
 
-#: src/art.c:6763
+#: src/art.c:6922
 msgid "Mark all articles up to here as unread"
 msgstr "Пазначыць усе артыкулы, вышэйшыя за гэты, нечытанымі"
 
-#: src/art.c:6864
+#: src/art.c:7023
 msgid "Rate article (1-5):"
 msgstr "Адзнака артыкулу (1-5):"
 
-#: src/art.c:6869
+#: src/art.c:7028
 msgid "Rating must be in range 1 to 5."
 msgstr "Адзнака павінная быць між 1 і 5."
 
-#: src/art.c:7162
+#: src/art.c:7321
 msgid "Unable to create Article keymap!"
 msgstr ""
 
-#: src/art.c:7600
+#: src/art.c:7759
 msgid "Group transfer aborted."
 msgstr "Перадача групаў спыненая."
 
-#: src/art.c:7602
+#: src/art.c:7761
 msgid "Server read failed."
 msgstr "Памылка чытаньня з сэрвэра."
 
-#: src/art.c:7619
+#: src/art.c:7778
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Ня знойдзена нечытаных артыкулаў. (%d зьнішчана)"
 
-#: src/art.c:7621
+#: src/art.c:7780
 msgid "No unread articles found."
 msgstr "Ня знойдзена нечытаных артыкулаў."
 
-#: src/art.c:7675
+#: src/art.c:7834
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr ""
 "Выдалена: %u, з высокім балам: %u, зь нізкім: %u, ацэненых у GroupLens: %d"
 
-#: src/art.c:7681
+#: src/art.c:7840
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "Выдалена: %u, з высокім балам: %u, зь нізкім: %u"
 
-#: src/art.c:7882
+#: src/art.c:8041
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:Выбраць ^D:Уніз ^U:Угору d:Прачытаны n:Наступны p:Папярэдні q:Выхад"
 
-#: src/art.c:7887
+#: src/art.c:8046
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:Уніз b:Угору u:Непрачытаны f:Адказаць n:Наступны p:Папярэдні q:Выхад"
 
-#: src/art.c:8098
+#: src/art.c:8257
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Канец ніткі. Наступная: %s"
 
-#: src/art.c:8100
+#: src/art.c:8259
 msgid "End of Thread."
 msgstr "Канец ніткі."
 
-#: src/art.c:8112
+#: src/art.c:8271
 msgid "End of Sub-Thread"
 msgstr "Канец падніткі."
 
-#: src/art.c:8735
+#: src/art.c:8894
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t нечытаных] Група: %n%-20g -- %L (%P)"
 
-#: src/art.c:8923
+#: src/art.c:9082
 msgid "Spoilers visible!"
 msgstr ""
 
