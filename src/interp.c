@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -864,7 +864,7 @@ static char *extract_current_article_header (char *h) /*{{{*/
 
 /*}}}*/
 
-static char *article_as_string (void) /*{{{*/
+static char *generic_article_as_string (int use_orig) /*{{{*/
 {
    unsigned int len;
    Slrn_Article_Line_Type *l;
@@ -873,7 +873,7 @@ static char *article_as_string (void) /*{{{*/
    if (Slrn_Current_Article == NULL)
      return "";
 
-   l = Slrn_Current_Article->lines;
+   l = use_orig ? Slrn_Current_Article->orig_lines : Slrn_Current_Article->lines;
 
    len = 0;
    while (l != NULL)
@@ -897,7 +897,7 @@ static char *article_as_string (void) /*{{{*/
 	return NULL;
      }
    
-   l = Slrn_Current_Article->lines;
+   l = use_orig ? Slrn_Current_Article->orig_lines : Slrn_Current_Article->lines;
    s1 = s;
    
    while (l != NULL)
@@ -917,7 +917,18 @@ static char *article_as_string (void) /*{{{*/
    *s1 = 0;
    return s;
 }
+/*}}}*/
 
+static char *article_as_string (void) /*{{{*/
+{
+   return generic_article_as_string (0);
+}
+/*}}}*/
+
+static char *orig_article_as_string (void) /*{{{*/
+{
+   return generic_article_as_string (1);
+}
 /*}}}*/
 
 static void sort_articles (void) /*{{{*/
@@ -1538,6 +1549,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("is_thread_collapsed", is_thread_collapsed, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("make_home_filename", make_home_filename, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("next_tagged_header", slrn_next_tagged_header, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_0("orig_article_as_string", orig_article_as_string, SLANG_STRING_TYPE),
    MAKE_INTRINSIC_S("pipe_article", pipe_article_cmd, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("popup_window", popup_window, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("prev_tagged_header", slrn_prev_tagged_header, SLANG_INT_TYPE),

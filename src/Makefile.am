@@ -40,7 +40,7 @@ slangversion$(EXEEXT): chkslang$(EXEEXT)
 
 ## Another hack: Find out whether slrnpull support gets compiled in
 stamp2: config.h
-	@if test "x$(SLRNPULL)" != "xslrnpull"; then \
+	@if test "x$(SLRNPULL)" != "xslrnpull$(EXEEXT)"; then \
 	echo ""; \
 	echo "*** WARNING ***"; \
 	echo ""; \

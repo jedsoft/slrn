@@ -39,7 +39,7 @@ mode and allow you to manipulate the article window.
    article as a string.  If no article has been dowloaded, the empty
    string will be returned.  The current article may not be the one
    associated with the currently selected header.
-\seealso{replace_article, is_article_visible}
+\seealso{orig_article_as_string, replace_article, is_article_visible}
 \done
 
 \function{article_cline_as_string}
@@ -182,6 +182,18 @@ mode and allow you to manipulate the article window.
    This function returns 1 if the article window is zoomed, or 0
    otherwise.
 \seealso{is_article_visible, call}
+\done
+
+\function{orig_article_as_string}
+\usage{String_Type orig_article_as_string ()}
+\description
+   This function works exactly like \var{article_as_string}, except that it
+   returns the article as it was sent by the server, not as it has been
+   prepared for display (e.g. before MIME decoding and character recoding).
+\notes
+   The original article is no longer available after you called
+   \var{replace_article}. In this case, the output is the same as the one of
+   \var{article_as_string}.
 \done
 
 \function{pipe_article}
