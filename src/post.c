@@ -464,11 +464,13 @@ static int check_file_for_posting (char *file) /*{{{*/
 {
    char line[MAX_LINE_BUFLEN], buf[MAX_LINE_BUFLEN], *the_line;
    FILE *fp;
-   unsigned int num;
+   unsigned int num=0;
    char *err, *warnings[MAX_WARNINGS];
    int newsgroups_found, subject_found, followupto_found, warn;
    char ch;
    char *colon;
+   /* for detecting overly long lines: */
+   unsigned int last_num = 0, long_lines = 0;
 
    for (warn = 0; warn < MAX_WARNINGS; warn++)
      warnings[warn] = NULL;
@@ -602,7 +604,7 @@ static int check_file_for_posting (char *file) /*{{{*/
    if (err == NULL)
      {
 	char *qs = Slrn_Quote_String;
-	unsigned int qlen;
+	unsigned int qlen, cline=num;
 	int sig_lines = -1;
 	int is_verbatim = 0;
 	if (qs == NULL) qs = ">";
@@ -613,6 +615,7 @@ static int check_file_for_posting (char *file) /*{{{*/
 	while (NULL != fgets (line, sizeof (line), fp))
 	  {
 	     if (the_line == NULL) num++;
+	     cline++;
 	     if (sig_lines != -1) sig_lines++;
 
 	     if (!strncmp (line, qs, qlen))
@@ -649,10 +652,19 @@ static int check_file_for_posting (char *file) /*{{{*/
 		 (Slrn_Reject_Long_Lines == 0))
 	       break;
 
-	     if ((the_line == NULL) && (strlen (line) > 81)) /* allow \n to slip */
+	     if (strlen (line) > 81) /* allow \n to slip */
 	       {
-		  the_line = buf; /* magic: slrn will know that we got here */
-		  strcpy (buf, line); /* safe */
+		  if (the_line == NULL)
+		    {
+		       the_line = buf; /* magic: slrn will know that we got here */
+		       strcpy (buf, line); /* safe */
+		       long_lines = 1;
+		    }
+		  else /* count long lines */
+		    {
+		       long_lines++;
+		       last_num = cline;
+		    }
 	       }
 	  }
 	if (sig_lines > 4)
@@ -722,7 +734,11 @@ static int check_file_for_posting (char *file) /*{{{*/
 	     SLsmg_write_string (_("Lines with more than 80 characters generally need to be wrapped."));
 	     slrn_set_color (SUBJECT_COLOR);
 	     row += 2; SLsmg_gotorc (row, 0);
-	     SLsmg_printf (_("This affects at least line %d:"), num);
+	     if (long_lines == 1)
+	       SLsmg_printf (_("This affects at line %d:"), num);
+	     else
+	       SLsmg_printf (_("This affects %d lines between line %d and %d. First one:"),
+			     long_lines, num, last_num);
 	     row += 2; SLsmg_gotorc (row, 0);
 	     slrn_set_color (QUOTE_COLOR);
 	     SLsmg_write_string (the_line);
