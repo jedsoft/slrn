@@ -22,6 +22,7 @@ Changes since 0.9.7.3
    set_strip_sig_regexp and set_strip_was_regexp.
 
    More translations:
+  * es.po (Spanish; Walter Echarri)
   * fr.po (French; slrn-fr project)
   * ko.po (Korean; Im Eunjea)
    
