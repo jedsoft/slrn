@@ -1,0 +1,36 @@
+Under OS/2 and Win32, the arrow and function keys return a different
+set of escape sequences.  This file lists the escape sequences for
+these systems.  For example, the standard ANSI escape sequence for the
+up arrow is "\e[A" whereas the `up' arrow returns "^@H" under OS/2 and
+Win32.
+
+  [Note: the sequences described here were adapted from the jed
+  documentation.  However, jed has a more sophisticated key mapping than
+  slrn and some of these may be incorrect.  Please let me know if some
+  are wrong.  --John]
+
+%  Home           ^@G
+%  Up             ^@H
+%  PgUp           ^@I
+%  Left           ^@K
+%  Right          ^@M
+%  End            ^@O
+%  Down           ^@P
+%  PgDn           ^@Q
+%  Insert         ^@R
+%  Delete         ^@S
+
+%   Key         No-modifier     Ctrl        Shift        Alt
+% -------------------------------------------------------------
+%   F1:           ^@;           ^@^          ^@T         ^@h
+%   F2:           ^@<           ^@_          ^@U         ^@i
+%   F3:           ^@=           ^@`          ^@V         ^@j
+%   F4:           ^@>           ^@a          ^@W         ^@k
+%   F5:           ^@?           ^@b          ^@X         ^@l
+%   F6:           ^@@           ^@c          ^@Y         ^@m
+%   F7:           ^@A           ^@d          ^@Z         ^@n
+%   F8:           ^@B           ^@e          ^@[         ^@o
+%   F9:           ^@C           ^@f          ^@\         ^@p
+%   F10:          ^@D           ^@g          ^@]         ^@q
+%   F11:          ^@\d133       ^@\d137      ^@\d135     ^@\d139
+%   F12:          ^@\d134       ^@\d136      ^@\d136     ^@\d140

@@ -1,0 +1,960 @@
+1 slrn
+     slrn - An easy to use NNTP based newsreader.
+
+SYNOPSIS
+     slrn [ -n ] [ -h nntp-server-name ] [ -f newsrc-file ] [  --
+     create ] [ -C ] [ -help ]
+
+2 DESCRIPTION
+     slrn is an easy to use but powerful NNTP  based  newsreader.
+     It relies extensively on the S-Lang programmer's library for
+     many of its features.
+
+     If no server is specified on the command line using the  - h
+     option,  the  server specified by the NNTPSERVER environment
+     variable will be used.  The -f option specifies which newsrc
+     file  should be used.  If none is specified, a default value
+     of JNEWS.RC will be used. This value can be set on a  server
+     by server basis using the SLRN.RC initialization file.
+
+     The --create option should be used the first  time  slrn  is
+     used  for  a particular server. This causes slrn to read the
+     entire list of groups available at the server and place them
+     in  the  selected  newsrc  file.   If the NNTP connection is
+     slow, this process may take several  minutes.   Fortunately,
+     this happens only when the --create flag is used.
+
+     If -C is specified on the  command  line,  the  terminal  is
+     assumed to support colors.  Colors may be specified by using
+     the initialization file.  If the -n option  is  present,  no
+     new  newsgroups  will  be checked for.  This may result in a
+     faster startup.
+
+
+2 BASIC_OPERATION
+     Using slrn is simple.  For many,  simply  typing  slrn  will
+     connect  to  a  news server. After starting, slrn checks for
+     the existence of new newsgroups and automatically subscribes
+     to  them.  Then  after  new  news is checked, slrn goes into
+     ``full screen'' mode at which point the user can unsubscribe
+     to  one  or  more  groups. slrn will display a list of news-
+     groups that looks like:
+
+     ->  3      sci.research.postdoc                 689-705
+         1      comp.databases.olap                  1-1
+         4      rec.antiques.radio+phono             1-4
+         1      comp.emulators.ms-windows.win        339-349
+       113      comp.unix.questions                  74401-74513
+        11      gnu.ghostscript.bug                  4874-4884
+       100      alt.music.pink-floyd                 7941-8040
+        11      rec.sport.baseball.analysis          239-249
+         3      rec.sport.baseball.data              267-269
+        13      sci.physics.electromag               1159-1171
+        65      comp.sys.ibm.pc.hardware.systems     4754-4818
+         5      sci.physics.particle                 1069-1073
+         2      comp.sources.x                       2362-2363
+         2      comp.unix.user-friendly              2603-2604
+
+     Here the middle column shows the name of a newsgroup and the
+     left  column  shows  the  number  of  unread articles in the
+     group. The right column shows the range of articles  present
+     on  the  server.  Note  the  presence of the -> in the first
+     column on the `sci.research.postdoc' line.  This  symbol  is
+     used by slrn as a pointer to indicate the currently selected
+     line. It may be moved up and down by using the  arrow  keys.
+     Pressing  the  RETURN key or the SPACEBAR at this point will
+     select the `sci.research.postdoc' group. A new  screen  will
+     appear showing something like:
+
+     ->-        703        (P)      Lecturer       in       Comp.
+     dumontet@nuri.inria.fr (dumo
+       -         704         Research       &        Developnment
+     dumontet@nuri.inria.fr (dumo
+       -        705        Re:      Example      of      proposal
+     shinbrot@bart.chem-eng.nwu.e
+
+     Here, each line consists of four fields and possibly the - >
+     cursor.  The  first  field indicates whether the article has
+     been read or not. A hyphen ( - ) in the  first  field  indi-
+     cates  that  the  article has not been read.  Since a hyphen
+     appears in the first field in all three of the lines  above,
+     none  of  the articles have been marked as read. A d in this
+     field indicates that an article has been read. The currently
+     selected  article can be changed from the read to the unread
+     state by pressing the u key. The d key may be used  to  mark
+     the  article as read without actually reading it.  The c key
+     may be used to mark all the articles as read (Actually  this
+     is  the  preferred way to use the newsreader: scan the arti-
+     cles by eye looking for something  interesting  then  before
+     moving  on to next newsgroup, press `c' to mark all articles
+     as read).
+
+     The second field displays the server number of the  article.
+     The  third  and fourth fields contain the subject and author
+     of the article, respectively.
+
+     Pressing the SPACEBAR or the RETURN key will create a second
+     window  and  display  the contents of the currently selected
+     article. The screen will now consist  of  two  windows  -  a
+     large  one  and  a small one. The large window, known as the
+     article window, will contain the currently selected  article
+     and the small one, known as the summary window, will contain
+     the list of articles as shown above. The space  bar  may  be
+     used  the  scroll  the article forward and the DELETE key or
+     the `B' key may be used to scroll it backward.  The  UP/DOWN
+     arrow  keys  simply  move  the   - > cursor from one line to
+     another in the summary window. To hide the  article  window,
+     press  the  h  key.This will zoom the summary window to full
+     screen.
+
+     The f key may be used to post a followup  to  the  currently
+     selected article. To return to the list of Newsgroups, press
+     the Q key to leave this mode.
+
+2 DEFAULT_KEYBINDINGS
+     These keybindings are always available:   These  keybindings
+     are always available:
+
+     ?    Help
+
+     PageUp Ctrl-U
+          Page up
+
+     PageDn Ctrl-D
+          Page down
+
+     Ctrl-Z
+          Suspend program
+
+     These keybindings may be used at the newsgroup level:
+
+     SPACE   Select articles for the current group.
+
+     UP P    Move to the previous group
+
+     DOWN    Move to the next group
+
+     q       Quit the program
+
+     p       Post an article
+
+     l       Toggle the display of groups with no unread articles
+             on and off
+
+     L       Toggle display of unsubscribed groups (can also sub-
+             scribe with this)
+
+     u       Unsubscribe from the current group
+
+     s       Subscribe to the current group
+
+     c       Mark all articles in the current group as read.
+
+     a       Subscribe to a specified group
+
+     /       Search for a subscribed group
+
+     G       Refresh groups from news server
+
+     X       Save .newsrc
+
+     ESC >   Move to last group
+
+     ESC <   Move to first group
+
+     The following bindings are valid once a newsgroup  has  been
+     selected:
+
+     SPACE   Select or scroll currently selected article forward
+
+     DELETE, b
+             Scroll currently selected article backward
+
+     d       Mark currently selected article as read and move  to
+             the next unread article.
+
+     u       Mark the currently selected article as unread
+
+     #       Numerically tag the article for multiple save (see o
+             command)
+
+     g       Skip to next digest
+
+     h       Hide the article window by zooming the summary  win-
+             dow to full screen
+
+     Ctrl-^  Decrease the size of the header window by one line.
+
+     ^       Increase the size of the header window by one line.
+
+     f       Post follow-up to the currently selected article
+
+     F       Forward the currently selected article to someone
+
+     r       Reply  directly  to  the  author  of  the  currently
+             selected article
+
+     o       Save the currently selected article or thread  to  a
+             file  in  a  Unix mail format by appending it to the
+             the specified file, then optionally decode the arti-
+             cles with uudecode or unshar.  If numerically tagged
+             articles (see # ) are present, then optionally  save
+             and  then  decode the tagged articles.  The built-in
+             uudecoder can decode  files  that  contain  multiple
+             multi-part  uuencoded  articles.  However, they must
+             be tagged in the proper order.  The key ESC # may be
+             used to un-tag articles.
+
+     q       Quit and go back to the list of newsgroups
+
+     T       Toggle quote display
+
+     K       Toggle scoring
+
+     TAB     Skip over quotes in article
+
+     t       Toggle the current articles headers  between  hidden
+             and un-hidden states. By default, uninteresting ones
+             are hidden
+
+     UP      Move to the previous article
+
+     DOWN    Move to the next article
+
+     ESC DOWN, RETURN
+             Scroll the article down one line
+
+     <       Jump to the beginning of the article
+
+     ESC UP  Scroll the article up one line
+
+     ESC >   Move to last article
+
+     ESC <   Move to first article
+
+     RIGHT   Pan the article window to the right
+
+     LEFT    Pan the article window to the left
+
+     n       Move to the next unread article
+
+     o       Append article to a file;  optionally,  decode  with
+             uudecode or shar
+
+     p       Move to a previously unread article
+
+     PageUp, PageDn
+             Page up and down through the header list.
+
+     /       Search forward in the article
+
+     ?       Search backward through article.
+
+     a       Author search forward.
+
+     A       Author search backward.
+
+     s       Subject search forward.
+
+     S       Subject search backward
+
+     H       Hide the article  (make its window disappear)
+
+     N       Skip to next news group
+
+     j       Move to an article
+
+     P       Post an article (also see  f  to  post  a  follow-up
+             article)
+
+     SEMICOLON
+             Set a mark at the current article.
+
+     COMMA   Return to a previously set  mark  setting  the  mark
+             first.
+
+     *       Flag the article as 'important' (prevents catchup in
+             header window from marking the article deleted)
+
+     |       Pipe article to an external command
+
+     ESC Ctrl-C
+             Cancel the current article.
+
+     c       Mark all articles as read
+
+     ESC C   Mark articles to here as read
+
+     ESC U   Mark articles to here as UN-read
+
+     Ctrl-R, Ctrl-L
+             Redraw the screen.
+
+     ESC R   Toggle ROT 13 decryption on and off
+
+     ESC S   Toggle header threading on and off
+
+     ESC T   Toggle collapse of header threading
+
+     ESC A   Switch between header display methods
+
+     ESC p   Find parent header
+
+     ESC Ctrl-P
+             Find child header
+
+     ?       Show help
+
+     Ctrl-Z  Suspend the newsreader.
+
+     E       Edit score parameters using this article as template
+
+2 ENVIRONMENT_VARIABLES
+     slrn uses the following list of environment variables:
+
+     NNTPSERVER  NNTP Server to connect to if none specified when
+                 slrn is started.
+
+     EDITOR
+     SLANG_EDITOR
+                 Editor to use when composing messages. The  '%s'
+                 and  `%d'  format  descriptors  may  be  used to
+                 specify the filename  and  line  number  respec-
+                 tively.  For  example,  if `jed' is your editor,
+                 then     you     can    use    something   like:   
+                 DEFINE SLANG_EDITOR "jed  %s  - g  %d "  in your
+                 LOGIN.COM file.  SLANG_EDITOR  is  the  prefered
+                 environment variable since all  S-Lang  applica-
+                 tions  that use an editor look for this variable
+                 and understand this syntax.
+
+     REPLYTO     Address  to  be  inserted  into  the  `Reply-To'
+                 field.
+
+     ORGANIZATION
+                 String to be used in the `Organization' field.
+
+2 INITIALIZATION_FILE
+     If a file called SLRN.RC is present in the users login direc-
+     tory,  slrn will use it as an initialization file. This file
+     can contain list of personalized keybindings as  well  as  a
+     list of server -- newsrc mappings.
+
+3 BINDING_KEYS
+
+     To bind a key to a particular function use the syntax:
+
+     setkey keymap function key-sequence
+
+     The setkey function requires three arguments.The first argu-
+     ment specifies the keymap to be used for the bindings. Valid
+     keymaps are:  group and article. The function argument  spa-
+     cifies  the  function that is executed when keys in the last
+     argument are pressed. For example,
+
+                            setkey  group  quit "x"
+
+     indicates that if x is pressed at the group level, the  quit
+     function  will  be executed. Note that although not normally
+     necessary, the last argument should be  enclosed  in  double
+     quotes since it may contain SPACE characters.
+
+     The key-sequence argument can consist of several characters.
+     For  example,  on  many terminals, the RIGHT arrow sends the
+     three characters ESC, `[' and `C' to the terminal.  To  bind
+     the RIGHT key to `select_group' function, use:
+
+                             setkey group select_group "\e[C"
+
+     Sometimes, it is necessary to unbind a  key  from  a  keymap
+     before binding the key. For example, one cannot do:
+
+                             setkey group quit "\e"
+
+     to bind the ESC key  to  the  quit  function  without  first
+     unsetting  it.  This is because the default bindings use the
+     ESC character as the prefix character for  certain  keymaps.
+     To achieve this goal, use the unsetkey function:
+
+                              unsetkey group "\e"
+                              setkey group quit "\e"
+
+     Here the unsetkey function has been used to remove the bind-
+     ing  for  the  ESC character before binding it to the `quit'
+     function.  Please note that unsetting the ESC key will  also
+     unset any key sequence been with the ESC key.  This includes
+     most function keys.
+
+     See the example initialization file below for  the  list  of
+     functions and their meaning.
+
+3 USING_MULTIPLE_SERVERS
+
+     The easiest way to use multiple servers is through  the  use
+     of the server command in the SLRN.RC file. This command sim-
+     ple associates a server name with a newsrc file:
+
+     server nntp-server newsrc-file
+
+     For example, suppose that you use three servers  with  host-
+     names `red.news.edu', `blue.news.edu', and `green.news.edu'.
+     The the lines:
+
+     server red.news.edu JNEWS.RC-red
+
+     server blue.news.edu JNEWS.RC-blue
+
+     server green.news.edu JNEWS.RC-green
+
+     specify that the file JNEWS.RC-red is to be  used  when  the
+     server red.news.edu is connected to, etc...
+
+3 DEFINING_COLORS
+
+     Color support is enabled when suing the  `-C'  command  line
+     switch.   Use slrn "-C" to pass an upper case C.  The colors
+     may be defined through the use of the `color' keyword in the
+     `SLRN.RC' file.  The syntax is:
+
+         color OBJECT-NAME FOREGROUND-COLOR BACKGROUND-COLOR
+
+       Here, OBJECT-NAME can be any one of the following items:
+
+         error    --  error messages
+         status   --  status line attached to windows
+         menu     --  Line at the top of the display (menu bar)
+         group    --  newsgroup names (group mode)
+         cursor   --  The --> position indicator
+         author   --  Author's name in the article mode
+         subject  --  Subject in the article mode
+         headers  --  The lines that constitute  the  headers  of
+     the article
+         article  --  The body of the article (not headers)
+         normal   --  anything not included above
+
+       The foreground/background color names can be  any  of  the
+     following:
+
+         black                gray
+         red                  brightred
+         green                brightgreen
+         brown                yellow
+         blue                 brightblue
+         magenta              brightmagenta
+         cyan                 brightcyan
+         lightgray            white
+
+       Most terminals do not support the second group  of  colors
+     for the background.
+
+
+3 HIDING_QUOTED_ARTICLES
+
+       Often articles contain quotes of previous  articles.  slrn
+     is  capable of not displaying lines in an article that match
+     a given regular expression.  The regular expression  may  be
+     specified by putting a line of the form
+
+          ignore_quotes  REGULAR-EXPRESSION
+
+     in the SLRN.RC startup file.  The default regular expression
+     is
+
+          "^ ?[:>=]"
+
+     which matches any line that begins with or without  a  space
+     followed  by  either a colon, greater than sign, or an equal
+     sign.
+
+     To toggle the display of such lines on or off, press the `T'
+     key when in article mode.
+
+2 ARTICLE_SCORING
+     (For a complete description of the flexibility in  the  slrn
+     scorefile  system,  see  the files KILL_FAQ and score.txt in
+     the slrn distribution)
+
+     slrn incorporates a sophisticated system for  scoring  arti-
+     cles.   In other newsreaders, one of slrn's scoring features
+     would be called a " killfile ".  But unlike some other news-
+     readers, slrn provides for a great degree of flexibility and
+     the capability to mark articles in ways  other  than  merely
+     killing them.
+
+     Four levels of scoring are provided:
+
+     -9999
+          The  scored  article  is  deleted  (as  with  a  common
+          killfile) and will not appear in the header window
+
+     -1 through -9998
+          The scored article appears with a " D " as in "Deleted"
+          flag in the header window
+
+     0 through 9999
+          The scored article's header appears with a " !  "  flag
+          to indicate importance
+
+3 CONFIGURING_THE_SCOREFILE
+
+     The scorefile system is disabled until you set scorefile  to
+     the pathname of the file slrn should use to hold the scoring
+     parameters.
+
+     Once set, scorefile may be accessed through the E command at
+     the header window, or may be edited manually.  When accessed
+     with E , slrn appends a template based  upon  the  currently
+     selected  article  to  the scorefile with various parameters
+     taken from the article and you are placed  in  your  editor.
+     To  enable  scoring,  delete  the  % comment symbol from the
+     first column of the header line(s) you wish to score upon.
+
+     The other way to configure your scorefile is by editing  the
+     file  directly, with a text editor.  Here is a sample score-
+     file (remember the KILL_FAQ  and  score.txt  files  are  the
+     definitive references for the score system):
+
+       [news.software.readers]
+          Score: 9999
+
+          % All slrn articles are good
+          Subject: slrn
+
+          Score: 9999
+          % This is someone I want to hear from
+          From: davis@space.mit.edu
+
+          Score = -9999
+          Subject: <f?agent>
+
+       [comp.os.linux.*]
+          Score: -10
+          Expires: 1/1/1996
+          Subject: swap
+
+          Score: 20
+          Subject: SunOS
+
+          Score: 50
+          From: Linus
+
+
+          % Kill all articles cross posted to an advocacy group
+          Score: -9999
+          Xref: advocacy
+          ~From: Linus
+
+          % This person I want nothing to do with unless he posts
+     about
+          % `gizmos' but only in comp.os.linux.development.*
+
+          Score: -9999
+          From: someone@who.knows.where
+          ~Subject: gizmo
+          ~Newsgroup: development
+
+          % These stooges post massive .sigs  all  the  time.   I
+     like
+          % to track them
+
+          [alt.fan.warlord]
+          Score:: 20
+          Subject: larry
+          Subject: curly
+
+
+     This file consists  of  two  sections.   The  first  section
+     defines  a set of tests applied to the news.software.readers
+     newsgroups.  The second section applies to the comp.os.linux
+     newsgroups.
+
+     The first section consists of three tests.  The  first  test
+     applies  a  score  of  9999 to any subject that contains the
+     string `slrn'.  The second test applies to the  `From'.   It
+     says  that  any article from davis@space.mit.edu gets scores
+     9999.  The third test gives a score of -9999 to any  article
+     whose  subject  contains  the word `agent'.  Since tests are
+     applied in order, if an article  contains  both  `slrn'  and
+     `agent',  it  will  be given a score of 9999 since 9999 is a
+     special score value.
+
+     The second section is more complex.  It applies to the news-
+     groups  comp.os.linux  newsgroups  and  consists of 5 tests.
+     The first three are simple: -10 points are given if the sub-
+     ject contains `swap', 20 if it contains SunOS, and 50 if the
+     article is from someone named `Linus'.  This means  that  if
+     Bill@Somewhere  writes  an  article  whose subject is `Swap,
+     Swap, Swap', the article is give -10  points.   However,  if
+     the Linus writes an article with the same title, it is given
+     -10 + 50 = 40 points.  Note that the first test  expires  at
+     the beginning of 1996.
+
+     The fourth test kills all articles that were cross posted to
+     an advocay newsgroup UNLESS they were posted by Linus.  Note
+     that if a keyword begins with the `~' character, the  effect
+     of the regular expression is reversed.
+
+     The  fourth  test  serves   to   filter   out   posts   from
+     someone@who.knows.where  unless  he  posts about `gizmos' in
+     one of the comp.os.development newsgroups.  Again  note  the
+     `~' character.
+
+     The last test marks as important  messages  from  mentioning
+     Moe  or Curly in the alt.fan.warlord newsgroup.  This demon-
+     strates use of an "OR" condition in a scorefile.
+
+
+2 COURTESY_COPY
+     If you elect to send a courtesy copy of your followup  arti-
+     cle to the original poster, you may easily do so by adding a
+     "Cc:" header to the article.  Here is an example of  how  to
+     send  a  courtesy  copy of a followup to John Davis' (slrn's
+     author) announcement of a new slrn version:
+
+      Newsgroups: news.software.readers
+      Subject: Re: slrn 0.8.0 Released!
+      References: <46c6b8$e2@news.mit.edu>
+      Organization: a clean well lit place
+      Reply-To: hg@n2wx.ampr.org
+      Followup-To:
+      Cc: davis@space.mit.edu
+
+      On   22    Oct    1995    01:26:45    GMT,    John    Davis
+     <davis@space.mit.edu> wrote:
+      ...
+
+     John will receive a copy of the followup by email  with  the
+     article  text  preceded by a line of text stating that [This
+     message has also been posted.]  (The text within the  brack-
+     ets  may  be  customized with the SLRN.RC cc_followup_string
+     parameter.)
+
+
+3 MISCELLANEOUS_SETTINGS
+
+     The SLRN.RC initialization file also supports the  following
+     commands:
+
+        signature             <signature file name>
+        organization          <Your organization name>
+        replyto               <Email address to be used reply to>
+        quote_string          <string to  be  used  to  quote  an
+     article>
+        editor_command        <string used to invoke editor>
+        scorefile             <score file name>
+
+
+     For example,
+
+        signature         .news-signature
+        organization      "Society of Famous Outlaws"
+        signature         "Billy the Kid"
+        quote_string      ">"
+        editor_command    "jed %s -g %d -tmp"
+        scorefile         "News/Score"
+
+
+2 FILES
+     SYS$LOGIN:SLRN.RC - the slrn's initialization file
+
+     SYS$LOGIN:JNEWS.RC - default newsrc file for slrn.
+
+2 EXAMPLE_OF_AN_INITIALIZATION_FILE
+      % This is a sample startup file for the slrn  news  reader.
+     The percent
+      % character is used for comments.
+
+      % SERVER to NEWSRC mapping
+      server hsdndev.harvard.edu .jnewrc-hsdndev
+      server news.uni-stuttgart.de JNEWS.RC-stuttgart
+
+      %nnrpaccess HOSTNAME USERNAME PASSWORD
+
+      %realname "John Doe"
+
+      %replyto  jd@somthing.com
+
+      % The quote string will be used when following up/replying
+      quote_string ">"
+
+      % This regular expression defines lines that  are  consider
+     to be quoted lines.
+      % It says that any lines beginning with 0-2 spaces followed
+     by a either
+      % a >, <, :, |, or = character is a quoted line.
+      ignore_quotes "^ ? ?[><:=|]"
+
+      % This sets the follow-up string.  Here, the following for-
+     mat specifiers are
+      % recognized:  %d:date,  %r:real  name,  %f:email  address,
+     %s:subject,
+      %             %m:msgid, %n:newsgroups, %%: percent
+      followup "On %d, %r <%f> wrote:"
+
+      % If autobaud is present, output rate  will  be  synced  to
+     baud rate
+      %autobaud
+
+      %  if  non-zero,  display  first  article   when   entering
+     article-mode.
+      set show_article 0
+
+      % if non-zero, show description of newsgroup if available
+      set show_descriptions 1
+
+      % If non-zero, backups of the  newsrc  file  are  not  per-
+     formed.
+      set no_backups 0
+
+      % If 0, do not beep terminal.  If 1, send audible beep.  If
+     2, send only
+      % visible bell.  If 3, send both.
+      set beep 1
+
+      %  If  non-zero,  slrn  will  automatically  subscribe  new
+     groups.  The default is 0.
+      set unsubscribe_new_groups 0
+
+      % If non-zero, all subject titles will  be  displayed  even
+     though many are
+      % duplicated.  A zero value  makes  the  screen  look  less
+     busy.
+      set show_thread_subject 0
+
+      % Enable xterm mouse support: 1 to enable, 0 to disable
+      set mouse 0
+
+      % Setting either of these to 0  will  enable  you  to  move
+     directly to the
+      % next article/group without confirmation
+      set query_next_group 1
+      set query_next_article 1
+
+      % Set this to 0 for no-confirmation on follow, reply, quit,
+     etc...
+      set confirm_actions 1
+
+      % If non-zero, a Cc: header to poster will automatically be
+     generated on
+      % followups
+      set cc_followup 0
+      cc_followup_string "[This message has also been posted.]"
+
+      % Name of score file  (relative to HOME directory)
+      scorefile "News/Score"
+
+      % Name of directory where decoded files are  placed  (rela-
+     tive to HOME)
+      decode_directory "News"
+
+      % Command used to invoke editor.  In the following example,
+     %s represents
+      % the file name and %d represents the starting line number
+      %editor_command "jed %s -g %d -tmp"
+
+      % If  non-zero, files used for posting, followup and  reply
+     will be regarded as
+      % temporary files in the directory specified by the  TMPDIR
+     environment
+      % variable or /tmp.
+      set use_tmpdir 0
+
+      %------------
+      % Colors
+      %------------
+      color normal black white
+      color error red white
+      color status yellow blue
+      color group blue white
+      color article blue white
+      color cursor brightgreen white
+      color author magenta white
+      color subject black white
+      color headers brightcyan white
+      color menu yellow blue
+      color tree red white
+      color quotes red white
+      color thread_number blue white
+      color high_score red white
+
+      %------------------------       Group       keymap---------
+     ---------------------------
+
+      setkey group  add_group "A"    %  add a new newsgroup
+      setkey group  bob       "\<"  %  beg of buffer
+      setkey group  bob       "^K\OA"
+      setkey group  bob       "^K\[A"
+      setkey group  catch_up  "C"    %  mark group as read
+      setkey group  line_down      "\OB" %  next group
+      setkey group  line_down      "\[B"
+      setkey group  line_down      "^N"
+      setkey group  eob       "\>"  %  end of buffer
+      setkey group  eob       "^K\OB"
+      setkey group  eob       "^K\[B"
+      setkey group  group_search_forward     "/"
+      setkey group  help      "?"
+      setkey group  page_down  "^D"   %  next page of groups
+      setkey group  page_down  "\[6~"
+      setkey group  page_down  "^V"
+      setkey group  page_up         "\V"   %   previous  page  of
+     groups
+      setkey group  page_up         "^U"
+      setkey group  page_up         "\[5~"
+      setkey group  post      "P"
+      setkey group  quit      "Q"
+      setkey group  redraw         "^L"
+      setkey group  redraw         "^R"
+      setkey group  refresh_groups "G"
+      setkey group  save_newsrc    "X"
+      setkey group  select_group   "\e7"    %   read  articles  from
+     group
+      setkey group  select_group   " "
+      setkey group  subscribe "S"    %  subscribe to  group  (See
+     unsubscribe)
+      setkey group  suspend        "^Z"
+      setkey group  toggle_group_display     " 33A"
+      setkey group  toggle_score   "K"
+      setkey group  toggle_hidden  "l"
+      setkey group  toggle_list_all     "L"
+      setkey group  unsubscribe    "U"    %  unsubscribe
+      setkey group  line_up        "\OA" %  previous line
+      setkey group  line_up        "\[A"
+      setkey group  line_up        "^P"
+
+      %----------------        Article        mode         keymap
+     -------------------------------------
+
+      setkey article     goto_article   "j"
+      setkey article     pipe		"|"
+      setkey article     skip_quotes    ""
+
+      setkey article     header_page_up         "^U"
+
+      setkey article     header_page_up         "\[5~"
+      setkey article     header_page_up         "\V"
+
+      setkey article     header_page_down         "\[6~"
+      setkey article     header_page_down         "^D"
+      setkey article     header_page_down         "^V"
+
+      setkey article post "P"
+      setkey article get_parent_header "\p"
+      setkey article     catchup_all    "c"
+      setkey article     catchup_all    "\c"
+      setkey article     uncatchup_all  "\u"
+      setkey article     catchup        "\C"
+      setkey article     uncatchup "\U"
+      setkey article     article_page_down " "  % scroll to next page  of
+     article or select article
+      setkey article     article_page_down "\e7"   %    (article_dn    or
+     article_pagedn)
+      setkey article     article_page_up "^?" % scroll to next page  of
+     article
+      setkey article     article_page_up "b"  %    (scroll_up     or
+     article_pageup)
+      setkey article  article_line_up    "\\[A"    % Scroll  arti-
+     cle one line up
+      setkey article  article_line_up    "\\OA"
+      setkey article  article_line_dn    "\\[B"    % Scroll  arti-
+     cle one line down
+      setkey article  article_line_dn    "\\OB"
+      setkey  article   article_search    "/"  %  Search  forward
+     through article
+      setkey article  author_search_forward  "a"  %  Search  for-
+     ward for an author
+      setkey article  author_search_backward "A"  % Search  back-
+     ward for an author
+      setkey article  cancel       "\^C"     % Cancel the article
+      setkey article  delete       "d"  % Mark current article as
+     read and move to the next unread one
+      setkey article  header_line_down         "^N" % Move to the next  arti-
+     cle
+      setkey article  header_line_down         "\[B"
+      setkey article  header_line_down         "\OB"
+      setkey article  mark_spot    ";"  %  Set  mark  at  current
+     article
+      setkey article  exchange_mark     ","  % Set the  mark  and
+     return to the location of the previous mark.
+      setkey article  followup     "f"  % Followup on the article
+      setkey article  forward      "F"  % Forward the article  to
+     someone
+      setkey article  help         "?"  % Show help screen
+      setkey article  hide_article "H"  % Hide the  article  win-
+     dow.
+      setkey  article   goto_end     ">"  %  Scroll  the  article
+     window to the left
+      setkey article  article_left         "\OD"
+      setkey article  article_left         "\[D"
+      setkey article  next         "n"  % next unread article
+      setkey article  skip_to_next_group     "N"  % next group
+      setkey article  previous         "p"  % previous unread article
+      setkey article   quit         "q"  %  Quit  back  to  group
+     mode.
+      setkey article  redraw       "^L" % Redraw the display
+      setkey article  redraw       "^R"
+      setkey article  reply        "r"  % Reply to the author  of
+     the current article
+      setkey article  goto_beginning    "<"  % Scroll article  to
+     the right
+      setkey article  article_right        "\[C"
+      setkey article  article_right        "\OC"
+      setkey article  save         "O"  % append  to  a  file  in
+     Unix mail format
+      setkey   article    subject_search_forward "s"  %    Search
+     forward/backward for an article with a specific subject
+      setkey article  subject_search_backward     "S"
+      setkey article  suspend      "^Z" % Suspend the newsreader
+      setkey article     toggle_show_author  "\a"
+      setkey article     toggle_rot13   "\R"
+      setkey article     toggle_sort    "\S"
+      setkey article  toggle_headers    "t"  % Toggle the display
+     of some headers on and off
+      setkey article  toggle_quotes     "T"
+      setkey article  undelete     "u"  % Mark the current  arti-
+     cle as unread
+      setkey article  header_line_up      "^P" % Move to the previous article
+      setkey article  header_line_up      "\OA"
+      setkey article  header_line_up      "\[A"
+      setkey  article     art_header_bob "\<" %  Move  to   first
+     article in list
+      setkey article     art_header_eob "\>" % Move to last arti-
+     cle in list
+      setkey article     shrink_article_window  "^^" %  Ctrl-6  or  Ctrl-
+     ^  % Shrink header window
+      setkey article     enlarge_article_window "^"  %  Shift-6  or  just
+     ^ % Enlarge header window
+
+
+
+2 SEE_ALSO
+     DEFINE
+
+     Questions  about  slrn  may  be  posted  to  the   newsgroup
+     news.software.readers  where  they  will  be answered by the
+     author of the program.  In addition,  announcements  of  new
+     versions of slrn are posted there.
+
+     The latest version of slrn is available from
+     http://prdownloads.sourceforge.net/slrn/
+
+
+2 AUTHOR
+     John E. Davis <davis@space.mit.edu>
+
+
+2 ACKNOWLEDGEMENTS
+     (This list is still incomplete)
+
+     Howard Goldstein <hg@n2wx.ampr.org> for  updating  this  man
+     page.
+
+     Andrew Greer <Andrew.Greer@vuw.ac.nz> for the VMS port.
+
+     Lloyd  Zusman  <ljz@ingress.com>  performed  some   cosmetic
+     improvements.
+
+     J.B. Nicholson-Owens  <jbn@mystery-train.cu-online.com>  for
+     extensive testing.
+
+     Mark Olesen <olesen@weber.me.queensu.ca> for suggestions and
+     help with AIX version.

@@ -1,0 +1,2574 @@
+  Slrn Intrinsic Function Reference Manual
+  John E. Davis, davis@space.mit.edu
+  Thomas Schultz, tststs@gmx.de
+  Sun Oct 28 01:01:45 2001
+  ____________________________________________________________
+
+  Table of Contents
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  1. Header and Thread Functions
+
+     1.1 collapse_thread
+     1.2 collapse_threads
+     1.3 extract_article_header
+     1.4 extract_displayed_article_header
+     1.5 get_grouplens_score
+     1.6 get_header_flags
+     1.7 get_header_number
+     1.8 get_header_score
+     1.9 get_header_tag_number
+     1.10 get_visible_headers
+     1.11 goto_num_tagged_header
+     1.12 header_down
+     1.13 header_next_unread
+     1.14 header_up
+     1.15 headers_hidden_mode
+     1.16 is_thread_collapsed
+     1.17 locate_header_by_msgid
+     1.18 next_tagged_header
+     1.19 prev_tagged_header
+     1.20 re_bsearch_author
+     1.21 re_bsearch_subject
+     1.22 re_fsearch_author
+     1.23 re_fsearch_subject
+     1.24 set_header_display_format
+     1.25 set_header_flags
+     1.26 set_header_score
+     1.27 set_visible_headers
+     1.28 sort_by_sorting_method
+     1.29 thread_size
+     1.30 uncollapse_thread
+     1.31 uncollapse_threads
+
+  2. Article Functions
+
+     2.1 is_article_visible
+     2.2 article_as_string
+     2.3 get_article_window_size
+     2.4 get_next_art_pgdn_action
+     2.5 is_article_visible
+     2.6 is_article_window_zoomed
+     2.7 pipe_article
+     2.8 re_search_article
+     2.9 replace_article
+     2.10 save_current_article
+     2.11 search_article
+     2.12 set_article_window_size
+
+  3. Group Functions
+
+     3.1 current_newsgroup
+     3.2 get_group_flags
+     3.3 get_group_order
+     3.4 group_down_n
+     3.5 group_search
+     3.6 group_unread
+     3.7 group_up_n
+     3.8 hide_current_group
+     3.9 is_group_mode
+     3.10 select_group
+     3.11 set_group_display_format
+     3.12 set_group_flags
+     3.13 set_group_order
+
+  4. Dialog and Message Functions
+     4.1 get_response
+     4.2 get_select_box_response
+     4.3 get_yes_no_cancel
+     4.4 message_now
+     4.5 popup_window
+     4.6 read_mini
+     4.7 read_mini_filename
+     4.8 read_mini_integer
+     4.9 read_mini_no_echo
+     4.10 read_mini_variable
+     4.11 select_list_box
+     4.12 set_input_chars
+     4.13 set_input_string
+
+  5. Key Input Functions
+
+     5.1 call
+     5.2 definekey
+     5.3 get_prefix_arg
+     5.4 getkey
+     5.5 input_pending
+     5.6 reset_prefix_arg
+     5.7 set_prefix_argument
+     5.8 undefinekey
+     5.9 ungetkey
+
+  6. File I/O Functions
+
+     6.1 close_log_file
+     6.2 log_message
+     6.3 make_home_filename
+     6.4 open_log_file
+     6.5 print_file
+
+  7. Miscellaneous Functions
+
+     7.1 slrn_version
+     7.2 slrn_version_string
+     7.3 datestring_to_unixtime
+     7.4 get_bg_color
+     7.5 get_fg_color
+     7.6 get_variable_value
+     7.7 quit
+     7.8 register_hook
+     7.9 reload_scorefile
+     7.10 server_name
+     7.11 set_color
+     7.12 set_integer_variable
+     7.13 set_string_variable
+     7.14 set_utf8_conversion_table
+     7.15 setlocale
+     7.16 tt_send
+     7.17 unregister_hook
+     7.18 update
+
+  8. Hooks
+
+     8.1 article_mode_hook
+     8.2 article_mode_quit_hook
+     8.3 article_mode_startup_hook
+     8.4 cc_hook
+     8.5 followup_hook
+     8.6 forward_hook
+     8.7 group_mode_hook
+     8.8 group_mode_startup_hook
+     8.9 header_number_hook
+     8.10 make_from_string_hook
+     8.11 post_file_hook
+     8.12 post_filter_hook
+     8.13 post_hook
+     8.14 pre_article_mode_hook
+     8.15 read_article_hook
+     8.16 reply_hook
+     8.17 resize_screen_hook
+     8.18 startup_hook
+     8.19 subject_compare_hook
+     8.20 supersede_hook
+
+
+  ______________________________________________________________________
+
+  1.  Header and Thread Functions
+
+  The intrinsic functions described in this chapter are available in
+  article mode and allow you to manipulate the header window.
+
+
+  1.1.  collapse_thread
+
+
+      Usage
+        Void collapse_thread ()
+
+      Description
+        This function may be used to collapse the current thread.
+
+      See Also
+        uncollapse_thread, collapse_threads, is_thread_collapsed
+
+
+
+  1.2.  collapse_threads
+
+
+      Usage
+        Void collapse_threads ()
+
+      Description
+        This function will collapse all threads in the current
+        newsgroup.
+
+      See Also
+        uncollapse_threads
+
+
+
+  1.3.  extract_article_header
+
+
+      Usage
+        String_Type extract_article_header (String h)
+
+      Description
+        This function returns the article header line specified by the
+        header keyword h of the currently selected header.  The
+        currently selected header may correspond to the currently
+        displayed article.  To get a header of the currently displayed
+        article, use the extract_displayed_article_header function.
+
+        If the header does not exist, it returns the empty string.
+
+
+      Notes
+        This function will not query the server.  If you are looking for
+        a non-NOV header which was not stored for expensive scoring,
+        then download the message associated with the current header
+        line.
+
+      See Also
+        extract_displayed_article_header, is_article_visible
+
+
+
+  1.4.  extract_displayed_article_header
+
+
+      Usage
+        String_Type extract_displayed_article_header (String h)
+
+      Description
+        This function returns the article header line specified by the
+        header keyword h of the currently displayed message.  If the
+        header does not exist, it returns the empty string.
+
+      See Also
+        extract_displayed_article_header, is_article_visible
+
+
+
+  1.5.  get_grouplens_score
+
+
+      Usage
+        Integer get_grouplens_score ()
+
+      Description
+        This function returns the grouplens score of the current header.
+        If the header has no grouplens score, or if grouplens support
+        has not been enabled, 0 will be returned.
+
+      See Also
+
+
+
+
+  1.6.  get_header_flags
+
+
+      Usage
+        Integer get_header_flags ()
+
+      Description
+        This functions returns the flags for the current header.  This
+        integer is a bitmapped value whose bits are defined by the
+        following constants:
+
+
+                HEADER_READ : set if header is marked as read
+                HEADER_TAGGED : set if header has `*' tag
+                HEADER_HIGH_SCORE : set if header has high score
+                HEADER_LOW_SCORE : set if header has low score
+
+
+
+
+      See Also
+        set_header_flags
+
+  1.7.  get_header_number
+
+
+      Usage
+        Integer get_header_number ()
+
+      Description
+        This function returns the article number for the current header.
+
+
+
+  1.8.  get_header_score
+
+
+      Usage
+        Integer get_header_score ()
+
+      Description
+        This functions returns the score for the current header.
+
+      See Also
+        set_header_score
+
+
+
+  1.9.  get_header_tag_number
+
+
+      Usage
+        Integer get_header_tag_number ()
+
+      Description
+        This function returns the value of the numerical tag associated
+        with the current header.  If the header has no numerical tag,
+        zero is returned.
+
+      See Also
+
+
+
+
+  1.10.  get_visible_headers
+
+
+      Usage
+        String_Type get_visible_headers ()
+
+      Description
+        The get_visible_headers function returns the list of headers
+        headers that are to be displayed when an article is viewed.  See
+        the documentation for the set_visible_headers for the format of
+        this string.
+
+      See Also
+        set_visible_headers, is_article_visible,
+        set_header_display_format
+
+
+
+  1.11.  goto_num_tagged_header
+
+
+      Usage
+        Integer goto_num_tagged_header (Integer n)
+
+
+      Description
+        This function causes the header with numerical tag n to become
+        the current header.  It returns 1 upon success or 0 upon
+        failure.
+
+      See Also
+        header_down, get_header_flags, call
+
+
+
+  1.12.  header_down
+
+
+      Usage
+        Integer header_down (Integer n)
+
+      Description
+        The function moves the current position down n headers.  It
+        returns the number that was actually moved.
+
+      See Also
+        header_up
+
+
+
+  1.13.  header_next_unread
+
+
+      Usage
+        Intger header_next_unread ()
+
+      Description
+        Goto next unread header.  The function returns one upon success
+        or zero upon failure.
+
+      See Also
+        header_down
+
+
+
+  1.14.  header_up
+
+
+      Usage
+        header_up ()
+
+      Description
+        The function moves the current position up n headers.  It
+        returns the number that was actually moved.
+
+      See Also
+        header_down
+
+
+
+  1.15.  headers_hidden_mode
+
+
+      Usage
+        Int_Type headers_hidden_mode ()
+
+      Description
+        This function may be used to determine whether or not some
+        headers will be hidden when an article is displayed.  It returns
+        0 is all headers will be displayed, or a non-zero value if some
+        may be hidden.
+      See Also
+        set_visible_headers, get_visible_headers, is_article_visible
+
+
+
+  1.16.  is_thread_collapsed
+
+
+      Usage
+        Integer is_thread_collapsed ()
+
+      Description
+        If the current header is the start of a collapsed thread, this
+        function will return a non-zero value.  If the thread is
+        expanded, zero will be returned.
+
+      See Also
+        collapse_thread
+
+
+
+  1.17.  locate_header_by_msgid
+
+
+      Usage
+        Int_Type locate_header_by_msgid (String_Type msgid, Int_Type qs)
+
+      Description
+        The locate_header_by_msgid function may be used to set the
+        current header to one whose message-id is given by msgid.  If
+        the second parameter qs is non-zero, then the header will be
+        retrieved from the server if it is not in the current list of
+        headers.  The function returns 1 if an appropriate header was
+        found, or 0 otherwise.
+
+      Example
+        One possible use of this function is to mark the current
+        position in the header list and return to that position later,
+        e.g.,
+
+
+                 % Save the current position
+                 variable msgid = extract_article_header ("Message-Id");
+                    .
+                    .
+                 % Return to previous position.
+                 () = locate_header_by_msgid (msgid);
+
+
+
+
+
+
+  1.18.  next_tagged_header
+
+
+      Usage
+        Integer next_tagged_header ()
+
+      Description
+        This function moves the current header position to the next *
+        tagged header.  It returns non-zero upon success or zero upon
+        failure.
+
+      See Also
+        prev_tagged_header, goto_num_tagged_header, header_up,
+        header_down
+
+
+
+  1.19.  prev_tagged_header
+
+
+      Usage
+        Integer prev_tagged_header ()
+
+      Description
+        This function moves the current header position to the previous
+        `*' tagged header.  It returns non-zero upon success or zero
+        upon failure.
+
+      See Also
+        next_tagged_header, goto_num_tagged_header, header_up,
+        header_down
+
+
+
+  1.20.  re_bsearch_author
+
+
+      Usage
+        Integer re_bsearch_author (String regexp)
+
+      Description
+        Search backward for header whose author matches regular
+        expression regexp. If successful, it returns 1 and the current
+        header is set to the matching header.  It returns 0 upon
+        failure.
+
+      See Also
+        re_fsearch_author, re_fsearch_subject
+
+
+
+  1.21.  re_bsearch_subject
+
+
+      Usage
+        Integer re_bsearch_subject (String regexp)
+
+      Description
+        Search backward for header whose subject matches regular
+        expression regexp. If successful, it returns 1 and the current
+        header is set to the matching header.  It returns 0 upon
+        failure.
+
+      See Also
+        re_fsearch_author, re_bsearch_subject
+
+
+
+  1.22.  re_fsearch_author
+
+
+      Usage
+        Integer re_bsearch_author (String regexp)
+
+      Description
+        Search forward for header whose author matches regular
+        expression regexp. If successful, it returns 1 and the current
+        header is set to the matching header.  It returns 0 upon
+        failure.
+      See Also
+        re_bsearch_author, re_fsearch_subject
+
+
+
+  1.23.  re_fsearch_subject
+
+
+      Usage
+        Integer re_fsearch_subject (String regexp)
+
+      Description
+        Search forward for header whose subject matches regular
+        expression regexp. If successful, it returns 1 and the current
+        header is set to the matching header.  It returns 0 upon
+        failure.
+
+      See Also
+        re_fsearch_author, re_bsearch_subject
+
+
+
+  1.24.  set_header_display_format
+
+
+      Usage
+        Void set_header_display_format (Int_Type nth, String_Type fmt)
+
+      Description
+        The set_header_display_format function may be used to set the
+        nth header display format to fmt.  One may interactively toggle
+        between the formats via the toggle_header_formats keybinding.
+
+        The generic format specifier begins with the % character and
+        must be of the form:
+
+
+                  %[-][w]x
+
+
+
+
+     where the brackets indicate optional items.  Here, w is a width
+     specifier consisting of one or more digits.  If the minus sign (-)
+     is present, the item will be right justified, otherwise it will be
+     left justified.  The item specifier x is required and, depending on
+     it value, has the following meaning:
+
+
+                   s : subject
+                   S : score
+                   r : author real name
+                   f : from header
+                   G : Group lens score
+                   l : Number of lines
+                   n : server number
+                   d : date
+                   t : thread tree
+                   F : flags (read/unread, `*' and `#' tags, header number)
+                   % : percent character
+                   g : goto a specified column
+
+
+
+
+     Thus, "%F%-5l:%t%s" indicates that the header window will contain
+     the, in order: the flags, the number of lines the article contains
+     right justified in a 5 character field, a `:', the tree, and the
+     subject.
+
+     The g format specifier must be preceeded by a number that indicates
+     the next write should take place at the specified column.  If the
+     column number is negative, then the column is interpreted as an
+     offset from the right side of the display.  For example, %-24g%f
+     indicates that then From header is to be written out 24 columns
+     from the right edge of the window.
+
+      See Also
+        set_visible_headers
+
+
+
+  1.25.  set_header_flags
+
+
+      Usage
+        Void set_header_flags (Integer flags)
+
+      Description
+        This function may be used to set the flags associated with the
+        currently selected header.  See the description for the
+        get_header_flags function for more information.
+
+      See Also
+        get_header_flags
+
+
+
+  1.26.  set_header_score
+
+
+      Usage
+        Void set_header_score (Integer score)
+
+      Description
+        This function may be used to set the score of the current
+        header.
+
+      See Also
+        get_header_score
+
+
+
+  1.27.  set_visible_headers
+
+
+      Usage
+        Void set_visible_headers (String_Type header_list)
+
+      Description
+        The set_visible_headers function may be used to specify the
+        headers that are displayed when an article is viewed.  The
+        string header_list specifies a comma separated list of headers
+        to show.
+
+      Example
+        To show only the From header and headers that start with `X-',
+        use:
+
+
+               set_visible_headers ("X-,From:");
+
+      See Also
+        get_visible_headers, headers_hidden_mode, is_article_visible,
+        set_header_display_format
+
+
+
+  1.28.  sort_by_sorting_method
+
+
+      Usage
+        Void sort_by_sorting_method ()
+
+      Description
+        This function sorts the articles in header overview by the
+        current sorting mode.
+
+      Example
+        This is useful if you want to apply changes to sorting_method:
+
+
+               set_integer_variable("sorting_method", 3);
+               sort_by_sorting_method ();
+
+
+
+
+
+
+  1.29.  thread_size
+
+
+      Usage
+        Integer thread_size ()
+
+      Description
+        This function returns the number of articles in the current
+        thread or subthread.
+
+      See Also
+
+
+
+
+  1.30.  uncollapse_thread
+
+
+      Usage
+        Void uncollapse_thread ()
+
+      Description
+        This function may be used to uncollapse the current thread.
+
+      See Also
+        thread_size, collapse_thread, is_thread_collapsed
+
+
+
+  1.31.  uncollapse_threads
+
+
+      Usage
+        Void uncollapse_threads ()
+
+      Description
+        This function uncollapses all threads.  This is usually
+        necessary if you want to use the header movement functions to
+        access hidden headers.
+
+      See Also
+        collapse_threads
+
+
+
+
+  2.  Article Functions
+
+  The intrinsic functions described in this chapter are available in
+  article mode and allow you to manipulate the article window.
+
+
+  2.1.  _.ds h is_article_visible Article Functions
+
+
+      Usage
+        Integer _is_article_visible ()
+
+      Description
+        This function returns information about whether or not the
+        article associated with the current header is visible in a
+        window and whether or not it is attached to the current header.
+        Specifically, it returns a bitmapped value:
+
+
+                0  : if the article window is hidden and not associated with the
+                       current header.
+                1  : if the article window is showing but the current header
+                       does not refer to the article.
+                2  : if the article window is hidden but attached to the current
+                       header.
+                3  : if the article window is showing and contains the current
+                       header article.
+
+
+
+
+      Example
+        If one only want to know whether or not there is an article
+        visible in the window, then use
+
+
+                _is_article_visible () & 1
+
+
+
+
+     To determine whether or not it is associated with the current
+     header regardless of whether or not it is showing, use
+
+
+                _is_article_visible () & 2
+
+
+
+
+      See Also
+        _is_article_visible, is_article_window_zoomed, call
+
+
+
+
+
+
+  2.2.  article_as_string
+
+
+      Usage
+        String_Type article_as_string ()
+
+      Description
+        This function will return the entire contents of the current
+        article as a string.  If no article has been dowloaded, the
+        empty string will be returned.  The current article may not be
+        the one associated with the currently selected header.
+
+      See Also
+        replace_article, is_article_visible
+
+
+
+  2.3.  get_article_window_size
+
+
+      Usage
+        Integer get_article_window_size ()
+
+      Description
+        get_article_window_size may be used to determine the height of
+        the article window.
+
+      See Also
+        set_article_window_size
+
+
+
+  2.4.  get_next_art_pgdn_action
+
+
+      Usage
+        Integer get_next_art_pgdn_action ()
+
+      Description
+        This function may be used to get information about what action
+        slrn will take when an attempt is made to go to the next page of
+        the current article, e.g., by pressing the space key.  It
+        returns one of the following integers:
+
+
+                 -1  Not in article mode
+                  0  Next page of the article will be displayed
+                  1  The next unread article will be displayed
+                  2  The newsreader will go to the next newsgroup
+
+
+
+
+
+
+  2.5.  is_article_visible
+
+
+      Usage
+        Integer is_article_visible ()
+
+      Description
+        This function returns information about whether or not the
+        article associated with the current header is visible in a
+        window.  Specifically, it returns:
+
+           0  : if the article window is hidden
+           1  : if the article window is showing but the current header
+                  does not refer to the article
+           3  : if the article window contains the current header article
+
+
+
+
+      Notes
+        For some purposes, it may be more useful to the the
+        _is_article_visible function which may be slightly more useful.
+        In fact, is_article_visible may be written in terms of
+        _is_article_visible as
+
+
+               define is_article_visible ()
+               {
+                   variable status = _is_article_visible ();
+                   !if (status & 1) return 0;
+                   return status;
+               }
+
+
+
+
+      See Also
+        _is_article_visible, is_article_window_zoomed, call
+
+
+
+  2.6.  is_article_window_zoomed
+
+
+      Usage
+        Integer is_article_window_zoomed ()
+
+      Description
+        This function returns 1 if the article window is zoomed, or 0
+        otherwise.
+
+      See Also
+        is_article_visible, call
+
+
+
+  2.7.  pipe_article
+
+
+      Usage
+        Void pipe_article (String cmd)
+
+      Description
+        This function may be used to pipe the current article to the
+        command given by the cmd argument.  If the article window is
+        hidden, it downloads the article associated with the currently
+        selected header.
+
+      See Also
+        read_mini
+
+
+
+  2.8.  re_search_article
+
+
+
+      Usage
+        Integer re_search_article (String pat)
+
+      Description
+        This function searches forward in the current article for a
+        string matching the regular expression given by the parameter
+        pat.  It returns 0 if no matching line is found.  Otherwise, it
+        returns 1 and the matching line will be left on the stack as a
+        string.
+
+      See Also
+        search_article
+
+
+
+  2.9.  replace_article
+
+
+      Usage
+        replace_article (String_Type string)
+
+      Description
+        The replace_article may be used to replace the text of the
+        currently displayed article with an arbitrary string.
+
+      Example
+        The following code fragment causes the text of an article to be
+        replaced by its lowercase equivalent:
+
+
+               replace_article (strlow (article_as_string ()));
+
+
+
+
+      See Also
+        article_as_string, is_article_visible
+
+
+
+  2.10.  save_current_article
+
+
+      Usage
+        Integer save_current_article (String filename)
+
+      Description
+        This function saves the currently selected article to a file
+        specified by filename.  If the article window is hidden, it
+        downloads the the article associated with the currently selected
+        header.  It returns 0 upon success; upon failure, it returns -1
+        and sets an slang error condition.
+
+      Notes
+        This function always creates a new file, overwriting existing
+        ones.
+
+      See Also
+
+
+
+
+  2.11.  search_article
+
+
+
+      Usage
+        Integer search_article (String str)
+
+      Description
+        This function searches forward in the current article (if none
+        is visible, in the one associated with the currently selected
+        header) for the string given by the parameter str.  It returns 0
+        if no matching line is found.  Otherwise, it returns 1 and the
+        matching line will be left on the stack as a string.
+
+      See Also
+        re_search_article
+
+
+
+  2.12.  set_article_window_size
+
+
+      Usage
+        Void set_article_window_size (Integer nrows)
+
+      Description
+        The set_article_window_size may be used to set the height of the
+        article window.  The variable SCREEN_HEIGHT may be used to
+        facilitate this.
+
+      See Also
+        get_article_window_size
+
+
+
+  3.  Group Functions
+
+  The intrinsic functions described in this chapter are available in
+  group mode.
+
+
+  3.1.  current_newsgroup
+
+
+      Usage
+        String current_newsgroup ()
+
+      Description
+        This function returns the name of the current newsgroup.
+
+      See Also
+        server_name
+
+
+
+  3.2.  get_group_flags
+
+
+      Usage
+        Integer get_group_flags ()
+
+      Description
+        This function returns the flags associated with the current
+        newsgroup.  This integer is a bitmapped value whose bits are
+        defined by the following constants:
+
+
+               GROUP_UNSUBSCRIBED   : set if the group is unsubscribed
+               GROUP_NEW_GROUP_FLAG : set if the group is new
+
+      See Also
+        get_header_flags, set_group_flags, current_newsgroup
+
+
+
+  3.3.  get_group_order
+
+
+      Usage
+        Array_Type get_group_order ()
+
+      Description
+        This function returns an array of strings that contains the
+        names of all known groups in the current order.
+
+      Notes
+        This function is only available if slrn was compiled with S-Lang
+        1.4.x.
+
+      See Also
+        set_group_order
+
+
+
+  3.4.  group_down_n
+
+
+      Usage
+        Integer group_down_n (Integer n)
+
+      Description
+        This function moves the current group pointer down n groups and
+        returns the actual number moved.
+
+      See Also
+        group_up_n, group_search, current_newsgroup
+
+
+
+  3.5.  group_search
+
+
+      Usage
+        Integer group_search (String name)
+
+      Description
+        This function searches for a newsgroup containing the string
+        name.  It also searches newsgroup descriptions.  A non-zero
+        value is returned upon success or zero upon failure.
+
+      Notes
+        This search may wrap.
+
+      See Also
+        select_group, current_newsgroup
+
+
+
+  3.6.  group_unread
+
+
+      Usage
+        Integer group_unread ()
+
+      Description
+        This function returns the number of unread articles in the
+        current newsgroup.
+
+      See Also
+        select_group, current_newsgroup, is_group_mode
+
+
+
+  3.7.  group_up_n
+
+
+      Usage
+        Integer group_up_n (Integer n)
+
+      Description
+        This function moves the current group pointer up n groups and
+        returns the actual number moved.
+
+      See Also
+        group_down_n, group_search, current_newsgroup
+
+
+
+  3.8.  hide_current_group
+
+
+      Usage
+        Void hide_current_group ()
+
+      Description
+        Hides the current group in the group window. Hidden groups can
+        be displayed again by calling ``toggle_hidden''.
+
+
+
+  3.9.  is_group_mode
+
+
+      Usage
+        Integer is_group_mode ()
+
+      Description
+        This function returns non-zero if the current mode is group-
+        mode.
+
+      See Also
+
+
+
+
+  3.10.  select_group
+
+
+      Usage
+        Integer select_group ()
+
+      Description
+        This function may be used to select the current group.  It
+        returns 0 upon success or -1 upon failure.  It can fail if the
+        group has no articles.
+
+      See Also
+        current_newsgroup
+
+
+
+
+  3.11.  set_group_display_format
+
+
+      Usage
+        Void set_group_display_format (Int_Type nth, String_Type fmt)
+
+      Description
+        This function may be used to set the nth group display format to
+        fmt.  One may interactively toggle between the formats via the
+        toggle_group_formats keybinding.
+
+        The generic format is identical to the one described in
+        set_header_display_format. The following descriptors are
+        defined:
+
+
+                   F : Group flag (`U' for unsubscribed, `N' for new)
+                   d : Group description (needs to be downloaded once with slrn -d)
+                   g : goto a specified column
+                   h : ``High water mark'' (highest article number in the group)
+                   l : ``Low water mark'' (lowest article number in the group)
+                   n : Group name
+                   t : Total number of articles in the group (estimate)
+                   u : Number of unread articles in the group
+
+
+
+
+
+
+  3.12.  set_group_flags
+
+
+      Usage
+        Void set_group_flags (Integer flags)
+
+      Description
+        This function may be used to set the flags associated with the
+        current newsgroup.
+
+      See Also
+        get_group_flags
+
+
+
+  3.13.  set_group_order
+
+
+      Usage
+        Void set_group_order (Array_Type names)
+
+      Description
+        When names is a one-dimensional array of strings (group names),
+        slrn will sort the group list into the implied order.  Strings
+        that do not match known groups are ignored; existing groups that
+        are not included in names remain in their current (relative)
+        order, but will be moved to the end of the list.
+
+      Example
+        According to the above rule, it is possible to move a group to
+        the top of the list by using it as the only element of names:
+
+
+                set_group_order ("news.software.readers");
+
+
+     Moving a group to the end of the list can be done by removing it
+     from the list returned by get_group_order and calling
+     set_group_order on the result.
+
+     An example for a simple group sort based on this function can be
+     found in the file gsort.sl that comes with slrn.
+
+      Notes
+        This function is only available if slrn was compiled with S-Lang
+        1.4.x.
+
+      See Also
+        get_group_order
+
+
+
+  4.  Dialog and Message Functions
+
+  This chapter describes some functions which are useful if you want to
+  interact with the user.
+
+
+  4.1.  get_response
+
+
+      Usage
+        Integer get_response (String choices, String prompt)
+
+      Description
+        This function will prompt the user for a single character using
+        the prompt as specifed by the second parameter.  The first
+        parameter, choices, specified the characters that will be
+        accepted.  Any character in the prompt string that is preceeded
+        by \001 will be given the `response_char' color.
+
+      Example
+        The following:
+
+
+                 rsp = get_response ("yYnN", "Are you hungry? \001Yes, \001No");
+
+
+
+
+     will return one of the four characters y, Y, n, or N to the vari-
+     able rsp.
+
+      See Also
+        get_yes_no_cancel, set_color, get_select_box_response
+
+
+
+  4.2.  get_select_box_response
+
+
+      Usage
+        Integer get_select_box_response (title, item_1, ..., n_items)
+
+      Description
+        This function pops a selection box and queries the user for a
+        response.  An integer is returned which indicates the user's
+        choice.
+
+      Example
+
+
+            variable rsp = get_select_box_response (
+                              "Pick a number:",
+                              "one", "two", "three", "four",
+                              4);
+            message (sprintf ("You chose %d", rsp));
+
+
+
+
+      See Also
+        read_mini, message, get_yes_no_cancel, get_response,
+        select_list_box
+
+
+
+  4.3.  get_yes_no_cancel
+
+
+      Usage
+        Integer get_yes_no_cancel (str)
+
+      Description
+        This function displays str in the minibuffer after concatenating
+        "? [Y]-es, N-o, C-ancel" to it.  It then awaits user input and
+        returns:
+
+
+                  1 if yes
+                  0 if no
+                 -1 if cancel
+
+
+
+
+      Notes
+        If a % character is to appear, it must be doubled.
+
+      See Also
+        get_select_box_response, getkey, read_mini, select_list_box
+
+
+
+  4.4.  message_now
+
+
+      Usage
+        Void message_now (String_Type s)
+
+      Description
+        This function displays the string s to the message area
+        immediately.
+
+      See Also
+        message, vmessage, error
+
+
+
+  4.5.  popup_window
+
+
+      Usage
+        Int popup_window (String title, String text)
+
+      Description
+        This function creates a popup window which contains the given
+        text and uses title as its title. It returns the key that was
+        used to exit the window.
+
+      See Also
+        select_list_box
+
+
+
+  4.6.  read_mini
+
+
+      Usage
+        String read_mini (String p, String dflt, String init)
+
+      Description
+        This function will prompt the user for a string value using
+        prompt p.  The second parameter dfl is used to specify the
+        default value. If the final parameter is not the empty string
+        (""), it will be made available to the user for editing.
+
+      See Also
+        read_mini_filename, read_mini_no_echo, read_mini_integer,
+        read_mini_variable, getkey, set_input_string, set_input_chars
+
+
+
+  4.7.  read_mini_filename
+
+
+      Usage
+        String read_mini_filename (String p, String dflt, String init)
+
+      Description
+        This function works like read_mini, but allows the user to tab
+        complete filenames.
+
+      See Also
+        read_mini, read_mini_variable, getkey, set_input_string,
+        set_input_chars
+
+
+
+  4.8.  read_mini_integer
+
+
+      Usage
+        Integer read_mini_integer (String p, Integer dflt)
+
+      Description
+        This function will prompt the user for an integer value using
+        prompt p and taking dflt as the default.
+
+      See Also
+        read_mini
+
+
+
+  4.9.  read_mini_no_echo
+
+
+      Usage
+        String read_mini_no_echo (String p, String dflt, String init)
+
+      Description
+        This function performs the same purpose as read_mini except it
+        does not echo the entered text to the screen.
+
+      See Also
+        read_mini, getkey, set_input_string, set_input_chars
+
+
+
+  4.10.  read_mini_variable
+
+
+      Usage
+        String read_mini_variable (String p, String dflt, String init)
+
+      Description
+        This function works like read_mini, but allows the user to tab
+        complete the names of slrn's configuration variables.
+
+      See Also
+        read_mini, read_mini_filename, getkey, set_input_string,
+        set_input_chars
+
+
+
+  4.11.  select_list_box
+
+
+      Usage
+        String_Type select_list_box (title, s_1, ... s_n, n, active_n)
+
+
+              String_Type title, s_1, ... s_n
+              Int_Type n, active_n
+
+
+
+
+      Description
+        This purpose of this function is to present a list of n strings,
+        specified by the s_1, ... s_n parameters to the user and have
+        the user select one.  The user interface for this operation is
+        that of a box of strings.  The title of the box is specified by
+        the title parameter.  The active_n parameter specifies which
+        string is to be the default selection.  It returns the string
+        selected by the user.
+
+      See Also
+        get_select_box_response, get_response
+
+
+
+  4.12.  set_input_chars
+
+
+      Usage
+        Void set_input_chars (String val)
+
+      Description
+        This function may be used to set the character that will be
+        returned by the next prompt for single character input in the
+        minibuffer.  This is the type of input that get_response
+        solicits.
+
+      Example
+
+
+
+
+
+            set_input_chars ("y");
+            if ('y' == get_yes_no_cancel ("Really Quit"))
+              quit (0);
+
+
+
+
+      See Also
+        set_input_string, get_response, get_yes_no_cancel
+
+
+
+  4.13.  set_input_string
+
+
+      Usage
+        Void set_input_string (String val)
+
+      Description
+        This function may be used to set the string that will be
+        returned by the next prompt for input in the minibuffer.  One
+        can set the value returned for the next n prompts by separating
+        the values by \n characters.
+
+      Example
+        The code
+
+
+                 variable a, b;
+                 set_input_string ("Apple\nOrange");
+                 a = read_mini ("Enter Fruit", "", "");
+                 b = read_mini ("Enter another Fruit", "", "");
+
+
+
+
+     will result in a having the value Apple and b having the value
+     Orange.
+
+      See Also
+        read_mini, set_input_chars
+
+
+
+
+  5.  Key Input Functions
+
+  This chapter describes functions that can be used to control
+  interactive functions from your macros.
+
+
+  5.1.  call
+
+
+      Usage
+        Void call (String fun)
+
+      Description
+        This function is used to execute an interactive slrn internal
+        function.  Such functions are used with setkey statements in the
+        .slrnrc startup files.
+
+      See Also
+        definekey, undefinekey, set_prefix_argument
+
+
+  5.2.  definekey
+
+
+      Usage
+        definekey (String fun, String key, String km)
+
+      Description
+        This function is used to bind a key sequence specified by key to
+        a function fun in the keymap km.  Here fun can be any predefined
+        slang function that takes 0 arguments and returns void.  The
+        parameter km must be either "article", "group", or "readline".
+
+      See Also
+        undefinekey, call, set_prefix_argument
+
+
+
+  5.3.  get_prefix_arg
+
+
+      Usage
+        Int_Type get_prefix_arg ()
+
+      Description
+        The get_prefix_arg function returns the value of the prefix
+        argument. If no prefix argument has been set, the function
+        returns -1, which is an impossible value for the prefix
+        argument.
+
+      Notes
+        The prefix argument is specified interactively via the ESC key
+        followed by one or more digits that determine value of the
+        prefix argument.
+
+        This concept has been borrowed from the emacs text editor.
+
+      See Also
+        set_prefix_argument, reset_prefix_arg
+
+
+
+  5.4.  getkey
+
+
+      Usage
+        Integer getkey ()
+
+      Description
+        Read a character from the terminal and returns its value.  Note:
+        Function and arrow keys usually return more than one character.
+
+      See Also
+        ungetkey, input_pending, read_mini
+
+
+
+  5.5.  input_pending
+
+
+      Usage
+        Integer input_pending (Integer tsecs)
+
+      Description
+        This function checks for keyboard input.  Its argument specifies
+        the number of tenths of a second to wait.  It returns 0 if no
+        input is available or a non-sero value if input is available.
+      See Also
+        getkey, ungetkey
+
+
+
+  5.6.  reset_prefix_arg
+
+
+      Usage
+        Void reset_prefix_arg ()
+
+      Description
+        The reset_prefix_arg function may be used to reset the prefix
+        argument.  This is usually necessary after calling to keep the
+        argument from propagating to other functions.
+
+      See Also
+        get_prefix_arg, set_prefix_argument
+
+
+
+  5.7.  set_prefix_argument
+
+
+      Usage
+        Void set_prefix_argument (Integer val)
+
+      Description
+        The set_prefix_argument function may be used to set the prefix
+        argument to val.  It is mainly used immediately before calling
+        internal functions which take prefix arguments.
+
+      See Also
+        call
+
+
+
+  5.8.  undefinekey
+
+
+      Usage
+        Void undefinekey (String key, String map)
+
+      Description
+        This function undefineds a key sequence specified by key from
+        keymap map.
+
+      See Also
+        definekey
+
+
+
+  5.9.  ungetkey
+
+
+      Usage
+        Void ungetkey (Integer ch)
+
+      Description
+        This function pushes the character ch back upon the input stream
+        such that the next call to getkey will return it.  It is
+        possible to push several characters back.
+
+      See Also
+        getkey
+
+  6.  File I/O Functions
+
+  This chapter lists some useful functions for file input / output.
+  Please note that most functions you might expect to find here (like
+  opening and reading from a regular file) are already part of S-lang
+  itself. If you need one of those, please consult the file slangfun.txt
+  which comes with S-lang.
+
+
+  6.1.  close_log_file
+
+
+      Usage
+        Void close_log_file ()
+
+      Description
+        The close_log_file function closes the file previously opened by
+        open_log_file.
+
+      See Also
+        open_log_file, log_message
+
+
+
+  6.2.  log_message
+
+
+      Usage
+        Void log_message (String_Type msg)
+
+      Description
+        The log_message function may be used to write a string to the
+        log file.  If no log file has been opened via open_log_file, the
+        message will be written to stderr.
+
+      See Also
+        open_log_file, close_log_file, message
+
+
+
+  6.3.  make_home_filename
+
+
+      Usage
+        String make_home_filename (name)
+
+      Description
+        This function returns the complete filename associated with a
+        file called name located in the user's home directory.
+
+      See Also
+        read_mini
+
+
+
+  6.4.  open_log_file
+
+
+      Usage
+        Void open_log_file (String_Type file)
+
+      Description
+        The open_log_file function causes S-lang traceback messages to
+        be written to the specified file.  This is useful for debugging
+        macros.  Traceback messages are enabled by setting the S-lang
+        variable _traceback to a non-zero value.
+      See Also
+        close_log_file, log_message, _traceback, _trace_function
+
+
+
+  6.5.  print_file
+
+
+      Usage
+        Void print_file (String_Type file)
+
+      Description
+        The print_file function may be used to send a specified file to
+        the printer.
+
+      Notes
+        The printer is specified via the slrnrc printer_name variable.
+
+
+
+
+  7.  Miscellaneous Functions
+
+  This chapter is for all functions and variables that did not fit
+  nicely in any of the others. They are available in all modes.
+
+
+  7.1.  _.ds h slrn_version Miscellaneous Functions
+
+
+      Usage
+        Integer _slrn_version
+
+      Description
+        The _slrn_version variable is read only. It is an integer value
+        representing the slrn's version number -- version aa.bb.cc.dd
+        becomes aabbccdd.
+
+      Example
+        In version 0.9.7.1, _slrn_version is 90701 (note that leading
+        zeroes are omitted).
+
+      See Also
+        _slrn_version_string
+
+
+
+  7.2.  _.ds h slrn_version_string Miscellaneous Functions
+
+
+      Usage
+        String _slrn_version_string
+
+      Description
+        The _slrn_version_string variable is read only. It contains the
+        version string as displayed by the program itself (e.g.
+        "0.9.7.1").
+
+      See Also
+        _slrn_version
+
+
+
+
+
+
+  7.3.  datestring_to_unixtime
+
+
+      Usage
+        Integer datestring_to_unixtime (String date)
+
+      Description
+        This function converts the date string date (in any format
+        commonly used in "Date:" header lines) to an integer value,
+        giving the number of seconds since 00:00:00 GMT, January 1,
+        1970.
+
+      Example
+        The following function returns the date of the currently
+        selected header as seconds since the Epoch:
+
+        define get_article_time () { return
+        datestring_to_unixtime(extract_article_header("Date")); }
+
+
+
+  7.4.  get_bg_color
+
+
+      Usage
+        String get_bg_color (String obj)
+
+      Description
+        This function returns the current background color of the object
+        specified by obj.
+
+      Notes
+        Due to a limitation in S-Lang, this function only works on Unix.
+
+
+
+  7.5.  get_fg_color
+
+
+      Usage
+        String get_fg_color (String obj)
+
+      Description
+        This function returns the current foreground color of the object
+        specified by obj.
+
+      Notes
+        Due to a limitation in S-Lang, this function only works on Unix.
+
+
+
+  7.6.  get_variable_value
+
+
+      Usage
+        Value get_variable_value (String v)
+
+      Description
+        This function returns the value of an internal variable
+        specified by v.  Here v must be one of the variable names that
+        can be used in .slrnrc `set' commands.  The type of the object
+        returned will depend upon the type of the object v represents.
+
+      See Also
+        set_integer_variable, set_string_variable
+
+  7.7.  quit
+
+
+      Usage
+        Void quit (Integer exit_status)
+
+      Description
+        This function will cause the newsreader to exit with exit status
+        specified by exit_status.
+
+      See Also
+        call
+
+
+
+  7.8.  register_hook
+
+
+      Usage
+        Integer register_hook (String hook, String function)
+
+      Description
+        register_hook can be used to call a given function whenever one
+        of slrn's hooks is executed. It returns one of the following
+        values:
+
+
+             0: Hook does not exist or may not be defined multiple times.
+             1: Function successfully registered.
+             2: Given function was already registered for this hook.
+
+
+
+
+     If you register multiple functions for the same hook, they will be
+     called in the order in which they were registered. If a function
+     with the name of a hook is defined, it gets called after those that
+     were registered using this function.
+
+     cc_hook, make_from_string_hook and subject_compare_hook may only be
+     defined once, as they return a value and slrn cannot handle more
+     than one of them.
+
+      See Also
+        unregister_hook
+
+
+
+  7.9.  reload_scorefile
+
+
+      Usage
+        Void reload_scorefile (Integer apply_now)
+
+      Description
+        This function can be used to reload the scorefile after a macro
+        changed it.  If the integer apply_now is 1, the new scores are
+        immediately applied.  If it is 0, the new scores are used the
+        next time you enter a group; if -1, the user is queried.
+
+      Notes
+        Outside article mode, apply_now has no effect.
+
+
+
+
+  7.10.  server_name
+
+
+      Usage
+        String server_name ()
+
+      Description
+        The server_name function returns the name of the current server.
+
+      See Also
+        current_newsgroup
+
+
+
+  7.11.  set_color
+
+
+      Usage
+        Void set_color (String obj, String fg, String bg)
+
+      Description
+        This function may be used to set the foreground and background
+        colors of an object.  The obj parameter specifies the object and
+        the fg and bg parameters specify the foreground and background
+        colors, respectively.
+
+
+
+  7.12.  set_integer_variable
+
+
+      Usage
+        Void set_integer_variable (String name, Integer v)
+
+      Description
+        This function may be used to set the value of the internal
+        integer variable specified by name to value v.  name must be an
+        integer variable name allowed in .slrnrc set commands.
+
+      See Also
+        set_string_variable, get_variable_value
+
+
+
+  7.13.  set_string_variable
+
+
+      Usage
+        Void set_string_variable (String name, String v)
+
+      Description
+        This function may be used to set the value of the internal
+        string variable specified by name to value v.  name must be a
+        string variable name allowed in .slrnrc set commands.
+
+      See Also
+        set_integer_variable, get_variable_value
+
+
+
+  7.14.  set_utf8_conversion_table
+
+
+      Usage
+        Void set_utf8_conversion_table (Array_Type table)
+
+      Description
+        This function can be used to define a conversion table for
+        decoding UTF-8.  table has to be a two-dimensional array of
+        integer values that has two columns: The left column contains
+        the Unicode characters you want to convert, the right column the
+        corresponding local characters.
+
+        When decoding, any non-ASCII characters that cannot be found in
+        your table are displayed as question marks.  If table has no
+        rows, UTF-8 will be converted to Latin 1, which is also the
+        default if this function is not called. Thus, you can reset the
+        default using
+
+
+             set_utf8_conversion_table (Integer_Type[2,0]);
+
+
+
+
+      Notes
+        This function is only available if slrn was compiled with S-Lang
+        1.4.x.
+
+
+
+  7.15.  setlocale
+
+
+      Usage
+        String setlocale (Integer category, String locale)
+
+      Description
+        You can use this function to change the current locale at
+        runtime.  You may want to do this if you read groups in
+        different languages.  The syntax is identical to the one of
+        setlocale(3).  For category, the following constants are
+        defined:
+
+
+                LC_CTYPE : affects character handling (e.g. which 8bit characters
+                           are regarded as upper/lower case)
+                LC_TIME  : affects the formatting of dates (12-hour vs. 24-hour
+                           clock, language of month names etc.)
+
+
+
+
+     The locale can be any locale supported by your system.  If it is an
+     empty string, the locale to use will be taken from the environment.
+     The function will return the name of the locale that was actually
+     selected.
+
+     Please note that locales are not supported by all systems.  In this
+     case, this function will trigger an slang error.
+
+
+
+  7.16.  tt_send
+
+
+      Usage
+        Void tt_send (String_Type s)
+
+      Description
+        This function may be used to send a string directly to the
+        display without any involvement of the screen management layer.
+      See Also
+        message, update
+
+
+
+  7.17.  unregister_hook
+
+
+      Usage
+        Integer unregister_hook (String hook, String function)
+
+      Description
+        This function is used to unregister functions that were assigned
+        to a hook using register_hook. Its return values are:
+
+
+             0: Hook does not exist or function is not assigned to it.
+             1: Function successfully unregistered.
+
+
+
+
+      See Also
+        register_hook
+
+
+
+  7.18.  update
+
+
+      Usage
+        update ()
+
+      Description
+        This function may be used to force the display to be updated.
+
+      See Also
+        message
+
+
+
+
+  8.  Hooks
+
+  This chapter is special. Rather than describing intrinsic functions,
+  it gives you a list of hooks that can be used to execute arbitrary S-
+  lang code on certain events (e.g. whenever entering article mode).
+
+  You can define code for a hook by putting it into a function that has
+  exactly the same name as the hook. However, the preferred way to add
+  code to a hook is now using the register_hook () intrinsic function on
+  an arbitrary macro. This mechanism allows to connect more than one
+  macro to a hook, which comes in handy if you want to use pre-written
+  macro sets.
+
+
+  8.1.  article_mode_hook
+
+
+      Usage
+        Void article_mode_hook ()
+
+      Description
+        This hook is called during article mode after headers have been
+        retrieved but before sorting them.  You can use this hook to set
+        variables based on the group name.
+      Example
+        The following macro can be used to change the sorting_method to
+        something more appropriate for newsgroups which contain encoded
+        articles and to chose a different signature when posting to
+        comp.*:
+
+
+             define make_group_specific_settings ()
+             {
+               variable sorting_method = 7;
+               variable signature_file = ".signature";
+
+               if (is_substr (current_newsgroup (), "binaries")
+                   or is_substr (current_newsgroup (), "pictures"))
+                sorting_method = 3;
+
+               if (0 == strncmp (current_newsgroup (), "comp.", 5))
+                 signature_file = ".nerd-signature";
+
+               set_integer_variable ("sorting_method", sorting_method);
+               set_string_variable ("signature", signature_file);
+             }
+             () = register_hook ("article_mode_hook",
+                                 "make_group_specific_settings");
+
+
+
+
+
+
+  8.2.  article_mode_quit_hook
+
+
+      Usage
+        Void article_mode_quit_hook ()
+
+      Description
+        This function is called whenever you leave article mode,
+        including the times you switch directly to a different group
+        (without quitting to group mode in between).
+
+
+
+  8.3.  article_mode_startup_hook
+
+
+      Usage
+        Void article_mode_startup_hook ()
+
+      Description
+        Unlike article_mode_hook, which gets called prior to sorting the
+        headers, this hook gets called after sorting has taken place.
+
+
+
+  8.4.  cc_hook
+
+
+      Usage
+        String cc_hook (String address)
+
+      Description
+        This hook is called when sending a "courtesy copy" of a followup
+        -- it gets the author's email address as an argument and is
+        expected to leave a string on the stack which will be used as
+        the address the CC is actually sent to.  If the returned string
+        is empty, no CC is sent.
+
+      Notes
+        As this hook returns a value, you cannot bind multiple macros to
+        it.
+
+
+
+  8.5.  followup_hook
+
+
+      Usage
+        Void followup_hook ()
+
+      Description
+        Function called when following up to an article.
+
+
+
+  8.6.  forward_hook
+
+
+      Usage
+        Void forward_hook ()
+
+      Description
+        Function called when forwarding an article to someone.
+
+
+
+  8.7.  group_mode_hook
+
+
+      Usage
+        Void group_mode_hook ()
+
+      Description
+        This hook will be called whenever group mode is entered.  This
+        includes the times when one exists article mode back to group
+        mode.
+
+
+
+  8.8.  group_mode_startup_hook
+
+
+      Usage
+        Void group_mode_startup_hook ()
+
+      Description
+        This hook is called after checking for news and immediately
+        before entering the main keyboard loop.  When called, group mode
+        will be active.
+
+
+
+  8.9.  header_number_hook
+
+
+      Usage
+        Void header_number_hook ()
+
+      Description
+        If defined, this function will be called after selecting a
+        header via a header number.
+
+  8.10.  make_from_string_hook
+
+
+      Usage
+        String make_from_string_hook ()
+
+      Description
+        This function is expected to leave a string on the stack which
+        will be used to generate ``From'' header lines whenever one is
+        needed.
+
+      Notes
+        As this hook returns a value, you cannot bind multiple macros to
+        it.
+
+      Example
+        Here is a simple example:
+
+
+             define make_from_string_hook ()
+             {
+               return "My Name <me@my.machine>"
+             }
+
+
+
+
+
+
+  8.11.  post_file_hook
+
+
+      Usage
+        Void post_file_hook ()
+
+      Description
+        Function called after composing and filtering, but before
+        posting article.
+
+      Example
+        An example of this hook is included in macros/ispell.sl in
+        slrn's source tree.
+
+
+
+  8.12.  post_filter_hook
+
+
+      Usage
+        Void post_filter_hook (String file)
+
+      Description
+        This hook may be called just before slrn attempts to post a
+        file. The hook is only called if the user selects the filter
+        option from the prompt:
+
+
+               Post the message? Yes, No, Edit, poStpone, Filter
+
+
+
+
+     This hook takes a single parameter: the name of the file that slrn
+     is about to post.
+
+
+  8.13.  post_hook
+
+
+      Usage
+        Void post_hook ()
+
+      Description
+        Function called when posting an article.
+
+
+
+  8.14.  pre_article_mode_hook
+
+
+      Usage
+        Void pre_article_mode_hook ()
+
+      Description
+        This hook is similar to article_mode_hook except that it is
+        called before any headers for the group have been retrieved.
+
+
+
+  8.15.  read_article_hook
+
+
+      Usage
+        Void read_article_hook ()
+
+      Description
+        Function called after reading and processing an article. It may
+        use the replace_article function to change it.
+
+
+
+  8.16.  reply_hook
+
+
+      Usage
+        Void reply_hook ()
+
+      Description
+        Function called when replying to poster.
+
+
+
+  8.17.  resize_screen_hook
+
+
+      Usage
+        Void resize_screen_hook ()
+
+      Description
+        This hook will be called whenever the screen size changes.
+
+
+
+  8.18.  startup_hook
+
+
+      Usage
+        Void startup_hook ()
+
+      Description
+        This hook is called right after the newsreader is initialized
+        and immediately before checking for news.  It allows the user to
+        set variables on a server by server basis.
+
+      Example
+        The following example sets the `lines_per_update' variable to 20
+        and turns off reading of the active file if the servername is
+        `uhog' (it is a slow server):
+
+
+             define make_server_specific_settings ()
+             {
+               !if (strcmp (server_name (), "uhog"))
+               {
+                  set_integer_variable ("lines_per_update", 20);
+                  set_integer_variable ("read_active", 0);
+               }
+             }
+             () = register_hook ("startup_hook",
+                                 "make_server_specific_settings");
+
+
+
+
+
+
+  8.19.  subject_compare_hook
+
+
+      Usage
+        Integer subject_compare_hook (String subject1, String subject2)
+
+      Description
+        slrn puts postings with identical subjects into the same thread.
+        This hook can be used to override slrn's decision that two
+        subjects are not identical: In this case, it is called with both
+        subjects as arguments.  If it returns 0, the articles are put in
+        the same thread.
+
+
+
+  8.20.  supersede_hook
+
+
+      Usage
+        Void supersede_hook ()
+
+      Description
+        Function called when superseding an article.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

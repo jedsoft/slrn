@@ -1,0 +1,78 @@
+Note: The patch described in this file has been integrated, but is disabled
+by default.  To enable it, pass --enable-setgid-code to ./configure when
+building slrn.
+
+The patch is from Sylvain Robitaille <syl@alcor.concordia.ca>, and is
+described below:
+
+---------------------------------------------------------------------------
+This patch will allow you to run slrnpull as an unprivileged user, rather
+than as root, (or as yourself). To do this (if you're already using
+slrnpull), you'll need change the ownerships of all the directories and
+files from your SLRNPULL_ROOT_DIR and down.
+
+ie:
+# chown -R news.news /local/var/slrnpull
+
+Use whatever user name, group name, and path appropriate for your own
+system. Run slrnpull from the news user's crontab, rather than from root's
+(or your own).
+
+Note that this has been tested on Linux-2.0.xx, but should work fine on
+any Unix I've seen. It relies simply on the fact that a setgid directory
+forces all files placed within that directory to be owned by the group
+owner of the directory.
+
+Please post questions, comments, or criticisms to the newsgroup.
+
+
+# 1998/07/07 Sylvain Robitaille: Patch to allow slrnpull to run with
+#                                reduced privileges.
+#
+# Background: Slrn runs with a umask of 077, as set in src/slrn.c. This
+#             means that any files created by slrn on behalf of a user
+#             are readable and writable only to that user. Normally,
+#             this is the desired result.
+#
+#             Unfortunately, it also means that out-going posts created
+#             in the slrnpull/out.going directory are also created with
+#             the same file modes. This means that for slrnpull to be
+#             able to remove the file from the out.going directory after
+#             it's been posted, (or move it to the out.going/rejects
+#             directory if posting failed), slrnpull must either be run
+#             by the same user that posted the message, or by root. On a
+#             multi-user system, the latter is the only option.
+#
+#             For a variety of reasons, programs should only run as root
+#             if they need the extra privilege. In this case, all that
+#             was needed was to give slrnpull enough privilege to
+#             manipulate files created in the out.going directory.
+#
+# Solution: Create a special user and group id for slrnpull. I've chosen
+#           to name them both 'news', (but any name will work just as
+#           well). The only group the news user belongs to is the group
+#           'news'. The entire directory tree where slrnpull works is
+#           owned by user 'news' and group 'news'. Slrnpull is run from
+#           user 'news' crontab file.
+#
+#           This permits slrnpull to run without root privilege, and
+#           still have all the permissions it needs to work within the
+#           news spool and associated log files. The tricky part is that
+#           now, slrnpull can't manipulate local posts in the out.going
+#           directory, because the files are owned by the user/group
+#           that created them with read/write permission only to the
+#           user.
+#
+#           If we make the out.going directory setgid to the group
+#           'news', files created in that directory will be owned by
+#           that group. We now only need to provide read/write
+#           permission to user *and* group at the time the file is
+#           created.
+#
+#           This patch does exactly that. It also patches slrnpull to
+#           create the out.going directory with the setgid bit.
+
+Note: As of version 0.9.7.3, the code has been changed to give only read
+      permission to the group; slrnpull should not need write permissions
+      and removing them prevents the file from being corrupted by users who
+      might be in the same group.

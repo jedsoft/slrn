@@ -1,0 +1,160 @@
+.\"
+.\" This manpage is written by Thomas Schultz
+.\"
+.TH slrnpull 1 "August 2001" Unix "User Manuals"
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH NAME
+slrnpull - Pull a small newsfeed for offline reading.
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH SYNOPSIS
+.B slrnpull
+.RI "[-d\ " spooldir ]
+.RI "[-h\ " server ]
+.RI "[--debug\ " file ]
+[--expire]
+[--help]
+.RI "[--kill-log\ " file ]
+.RI "[--kill-score " n ]
+.RI "[--logfile\ " file ]
+[--new-groups]
+[--no-post]
+[--post]
+[--post-only]
+[--version]
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH DESCRIPTION
+.I slrnpull
+pulls a small newsfeed from an NNTP server.  It puts the articles into a
+spool directory from which
+.I slrn
+can later read them, even if the server is unreachable at that time.
+Typically, this is useful if you do not have a permanent network connection.
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH OPTIONS
+.PP
+The following options can be used when calling
+.I slrnpull
+from the command line.
+.IP "-d \fIspooldir\fP"
+Set slrnpull's root directory for this run to
+.IR spooldir ,
+overriding the
+.I $SLRNPULL_ROOT
+environment variable.
+.IP "-h \fIhost[:port]\fP"
+Connect to the NNTP server on
+.IR host ,
+overriding the
+.I $NNTPSERVER
+environment variable.  If no
+.I port
+is given, the default NNTP port (119) will be used.
+.IP "--debug \fIfile\fP"
+Write dialogue with the server and some additional debugging output to
+.IR file .
+.IP "--expire"
+Expire (remove) old messages from the spool, but do not fetch news.
+.IP "--help"
+Show help for command line switches.
+.IP "--kill-log \fIfile\fP"
+Keep a log of all articles that were killed by the scorefile in
+.IR file .
+By default, no such logfile is created.
+.IP "--kill-score \fIn\fP"
+Kill all articles with a score below
+.IR n .
+The default value for this is 0.
+.IP "--logfile \fIfile\fP"
+Log the messages and errors that slrnpull prints to the screen to
+.IR file .
+By default, they get written to the file log in slrnpull's root directory.
+.IP "--new-groups"
+Check for new groups, appending them to the file new.groups in the data
+directory.
+.IP "--no-post"
+Do not post any articles to the server.
+.IP "--post"
+Obsolete version of
+.IR --post-only .
+.IP "--post-only"
+Post outgoing articles, but do not fetch news.
+.IP "--version"
+Print the version number.
+
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH ENVIRONMENT
+.I slrnpull
+reads the following environment variables.  Note that they can be overridden
+by command line switches.
+.TP
+.B NNTPSERVER
+You can use this variable to tell
+.I slrnpull
+which NNTP server to connect to.  It can be overridden by the command line
+option -h.
+.TP
+.B SLRNPULL_ROOT
+Defines the directory where
+.I slrnpull
+will look for its configuration files and spool the articles.  An absolute
+filename is needed here.  This can be overriden by the option -d.
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH FILES
+.TP
+$SLRNPULL_ROOT/authinfo
+If the server requires authentication, this file needs to contain the data
+(username in the first line, password in the second).  Be careful not to
+make this file world-readable!
+.TP
+$SLRNPULL_ROOT/log
+The default file to log status and error messages to.
+.TP
+$SLRNPULL_ROOT/score
+If you want
+.I slrnpull
+to apply scoring rules to decide which articles to download, put them into
+this file.
+.TP
+$SLRNPULL_ROOT/slrnpull.conf
+The main configuration file.  It tells
+.I slrnpull
+how many articles to get from which groups and when to expire them.
+
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH SEE ALSO
+The documentation that comes with
+.IR slrnpull ,
+especially README, SETUP and FAQ.
+
+You might also want to look at slrn's official home page,
+.I http://slrn.sourceforge.net/
+or post to
+.I news.software.readers
+if you have a question not covered by existing documentation.
+
+The latest version of
+.I slrnpull
+is part of the slrn package available from
+.I http://prdownloads.sourceforge.net/slrn/
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH AUTHOR
+John E. Davis <davis@space.mit.edu>
+
+Please send any bug reports to the current maintainer,
+Thomas Schultz <tststs@gmx.de>

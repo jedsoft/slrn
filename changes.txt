@@ -1,0 +1,2134 @@
+Changes since 0.9.7.2
+
+0. Bug fixes include:
+  * Removed code that unpacks "shell archives" as it causes a serious
+    security hole. Reported by Byrial Jensen.
+  * Even when using read_active, slrn would enter all subscribed groups.
+  * force_authentication was ignored when re-connecting.
+  * In rare cases, the need to send authentication data was not recognized.
+  * Interpret "news:" URLs enclosed in angle brackets correctly.
+  * Scorefiles get "include"d only once (no more loops).
+  * Unsubscribed groups are no longer moved to the bottom of the newsrc file.
+  * Multiple '%s' in (non_)Xbrowser are handled correctly (fixes segfault).
+1. Minor UI changes:
+  * Tagging ('*') an article marks it as unread.
+  * The new default of 'reject_long_lines' is 2.
+  * When confirm_actions is set, catching up a group requires confirmation.
+  * Complain if user specifies a nonexistant config file on the command line.
+2. On Unix, gettext is used to translate messages. Thanks to the slrn-pl and
+   slrn-fr projects who helped with this and provided patches. Thanks to
+   Byrial Jensen for a lot of minor improvements.
+   Currently, the following translations are available:
+    - da.po (Danish; Byrial Jensen)
+    - de.po (German; Jens Wahnes)
+    - it.po (Italian; Emmanuele Bassi)
+    - nl.po (Dutch; Jelmer Vernooij)
+    - pl.po (Polish; Jarek Baczynski / Arkadiusz Sochala)
+    - ru.po (Russian; Andy Shevchenko)
+   Note: This feature made the source tarball grow quite a bit, but I think
+         it is worth it.
+3. Switched to automake to generate Unix Makefiles (which required renaming
+   some source files). Please let me know if this introduces problems for you.
+    * You can now install the contributed scripts using "make install-contrib"
+    * "uninstall" and "dist" targets are available
+    * New directory structure: Config files (slrn.rc and help.txt) should
+      now be put in %sysconfdir (default: /usr/local/etc), macros go into
+      %sharedir/slrn/macros, newsgroups.dsc in %sharedir/slrn (default of
+      %sharedir is /usr/local/share). If slrnpull.conf is not found in
+      $SLRNPULL_ROOT, slrnpull looks for it in %sysconfdir
+   => Pass --prefix=/usr --mandir=/usr/share/man --sysconfdir=/etc/news
+      to ./configure to do an FHS compliant installation.
+4. The new function "view_scores" (bound to 'v' in article mode) shows you
+   which scorefile entries matched the current article. Assigning names to
+   your entries (see score.txt for details) will make this even more useful.
+   Based on a patch by Juergen Graefe <graefe@zpr.uni-koeln.de>
+5. The new intrinsic functions "register_hook" and "unregister_hook" allow
+   the definition of multiple functions for most hooks. Patch by Robin
+   Sommer <rsommer@uni-paderborn.de>   
+6. An autosave copy of the newsrc file is created whenever you leave a
+   group. This can be turned off with no_autosave. Patch by Felix Schueller.
+7. Scoring on "Bytes:" (by integer value, not regexp) is possible. In
+   header_display_format, you can use '%b' to display the number of bytes.
+   This is available when reading overview data only (e.g. _not_ in slrnpull)!
+8. In *_display_format and *_status_line, the additional modifier '*' can be
+   used to center justify text in a field of a given width.
+9. slrn accepts 8bit characters in newsgroup names.
+10. Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
+11. The code that allows running slrnpull as an unpriviledged user can now
+    be turned on by passing --enable-setgid-code to configure. It no longer
+    makes outgoing postings group writeable.
+12. The bottom line now has its own color object ("message").
+13. New intrinsic functions get_fg_color and get_bg_color that return the
+    current color of an object.
+14. In the readline keymap, the new functions "delbol" (^U) and "delbow"
+    (^W) will delete to the beginning of the line or the word, respectively.
+15. In selection lists (e.g. used by color.sl), pressing a letter takes you to
+    the next (or previous, if shift was held down) entry that starts with it.
+16. New descriptors in header_status_line: %h, %l and %k now stand for the
+    number of high / low scoring / killed articles, respectively.
+17. A copyright notice can now be displayed from the help window.
+18. New intrinsic functions read_mini_variable (tab completes variable
+    names) and read_mini_integer. See macros/varset.sl for an example
+    (easy interactive setting of variables at runtime).
+
+Changes since 0.9.7.1
+
+!!! Changes when building on Un*x:
+  * Support for inews, slrnpull and spool is now disabled by default.
+  * Please use --with-slrnpull instead of calling "make slrnpull".
+
+0. Bug fixes include:
+  * In spool mode, slrn hung when applying expensive scores immediately.
+  * In spool mode, slrn choked on 0xFF characters in overview files.
+  * Don't segfault when trying to decode an empty article.
+  * The "unread articles" counter and group_unread() always work correctly.
+  * Expensive scoring in slrnpull did not work.
+  * "include file" in slrn.rc refers to ~/file again.
+1. More changes to the user interface:
+  * Include only visible headers when forwarding, unless a prefix arg is used.
+  * Re-tagging an article removes the numerical tag.
+  * Numerically tagging a collapsed thread (un-)tags all the children.
+  * The cursor always moves down after numerically (un-)tagging.
+  * The read_mini intrinsic function does not append a colon to the prompt
+    any longer. This was requested to allow for greater flexibility.
+2. Tab completion is available when prompting for filenames. To use this
+   feature in your macros, call read_mini_filename.
+3. slrn no longer uses the deprecated syntax in "From:" headers. Parsing and
+   MIME encoding is also rewritten to be a bit more RFC compliant.
+4. Batch initial GROUP commands (speeds up startup when read_active is 0).
+5. A "Date:" header is generated when writing to mbox files and sending mail;
+   optionally, it can be turned on for posting as well (generate_date_header).
+6. Only send authentication data when the server requests it (RFC2980).
+   If you need to volunteer authinfo (e.g. because the server does not let
+   you post otherwise), set "force_authentication" to 1.
+   When necessary, you are prompted for username and password even if the
+   "nnrpaccess" command is not used.
+7. Text in header lines can be emphasized (add 8 to emphasized_text_mask).
+8. New flag "%P" in header_display_format that is true if article has a
+   parent. (Leopold Toetsch)
+9. New variable mail_editor_is_mua to make sure mail does not get sent twice
+   (both by mail_editor_command and slrn).
+10. On Win32 and OS/2, description files are now <newsrc>.dsc, not ds-<newsrc>
+11. If $SLRNHELP is unset, slrn looks for $SLRN_LIB_DIR/help.txt
+12. slrn now detects and interprets "news:" URLs.
+13. Support Greek characters on Win32 - set charset to "ibm737" for this.
+    With help from Arkadiusz Mucha <arkmch@priv.onet.pl>
+14. You can now use editors that use a different charset than slrn itself
+    (e.g. on Win32); when doing this, set editor_uses_mime_charset to 1.
+15. New intrinsic function "popup_window" to display long messages / text.
+16. New group mode function "group_search_backward", by default bound to "\".
+17. Added manual page for slrnpull.
+18. Better support for filenames on CYGWIN (includes code contributions by
+    Rudy Taraschi <rudy@cae.com>).
+19. New release of cleanscore, see contrib/README.cleanscore (Felix Schueller)
+20. Header lines are saved when decoding (again). Hopefully, the uudecode
+    routine now handles them correctly. If you have uudeview support
+    compiled in, but want to use the builtin code, set use_uudeview to zero.
+
+Changes since 0.9.7.0a
+
+0. Bug fixes:
+  * Saved articles are marked as read if auto_mark_article_as_read is on.
+  * "compatible_charsets" did not work correctly.
+  * Fixed segfault when trying to get an expunged article back in a
+    non-threaded sorting mode.
+  * is_article_window_zoomed works again.
+  * extract_article_header will search full headers again if it does not
+    require a server query.
+  * Only use "from_myself" if realnames match exactly.
+  * Possible crash in external uudeview support fixed.
+  * Fixed segfault when no regexp is given in a scorefile entry.
+  * Fixed reply address extraction when scoring on "Reply-To:" header lines
+    and some related problems.
+  * skip_to_next_group will not fail when all articles in a group are killed.
+  * IBM850 charset mapping was incorrect for some characters (fixed with
+    help from Jens Wahnes <jewa@gmx.net>)
+  * ESC 2/4 RET also work when query_read_group_cutoff is non-zero.
+  * A minor fix for building on OS/2 (Francesco Cipriani <fc76@softhome.net>)
+1. Platform specific improvements:
+  * Added FreeBSD keycodes for PageUp / PageDown. (Jimmy Olgeni)
+  * Implemented "notepad printing" for OS/2.
+2. Better support for broken servers:
+  * Ignore "new" groups which are already in our newsrc file (suggested by
+    Alex Chiang)
+  * Test if XHDR can be used to retrieve non-overview headers.
+  * New option "drop_bogus_groups".
+3. Minor changes to the user interface:
+  * In anticipation of its removal, display_score is now hardcoded to 1.
+    Edit your header_display_format if you do not want to see score values.
+  * cc_followup can be configured to behave depending on the presence of a
+    "Mail-Copies-To" header line. One (which is the new default) means to
+    prompt the user in this case.
+  * slrn -i file (or -f file) now refers to ./file instead of ~/file.
+  * More standard bindings in article mode: "Q" for fast_quit, "[" for
+    toggle_verbatim_marks and "ESC LEFT" / "ESC RIGHT" for
+    "skip_to_previous_group" / "skip_to_next_group".
+4. Improved documentation:
+  * Online help (the one you see when hitting '?') is completely rewritten.
+    Most of the work was done by Matthias Friedrich.
+  * The manual has a new section about interactive functions (Matthias / me).
+  * New files: README and doc/FIRST_STEPS (Felix Schueller).
+  * Cleaned up the doc/ directory a bit (suggested by Felix Schueller).
+  * Rewrote sample slrn.rc (section on keybindings by Matthias).
+  * slrnpull's docs are only installed along with slrnpull itself (Matthias).
+5. Support good netkeeping:
+  * If netiquette_warnings is on (default), warn when crossposting without
+    "Followup-To:" or to more than 4 groups, when "Followup-To:" points to
+    multiple groups or the signature is longer than 4 lines.
+  * Chopped Message-Ids are dropped when posting the "References:" line.
+  * The default of followup_strip_signature is now 1.
+6. All status lines (group_status_line, header_status_line, art_status_line)
+   are now configurable; please refer to the manual for a list of accepted
+   format descriptors. Based on a patch by Leopold Toetsch <lt@toetsch.at>.
+7. Group display can be fully customized via "group_display_format". This
+   makes "group_dsc_start_column" and "show_descriptions" obsolete.
+   toggle_group_display is now called toggle_group_formats.
+8. If "highlight_urls" is non-zero (default), URLs are drawn in the color
+   set with "url" and are "clickable" when mouse reporting is on.  slrn
+   prompts for changes to the URL unless the middle mouse key is used.
+9. Use "LIST OVERVIEW.FMT" to make sure we score "inexpensively" on all
+   information found in the XOVER output.
+10. If available, use "LIST SUBSCRIPTIONS" to decide which groups are
+    subscribed by default when creating a new newsrc file.
+11. Use "LIST ACTIVE" instead of XGTITLE (which is not really appropriate for
+    our cause and deprecated by RFC 2980). This makes use_xgtitle obsolete.
+12. Always decode base64 / quoted-printable in article bodies. If the
+    charset is not supported, 8bit characters are stripped.
+13. Added a new way to highlight unread subjects; it is enabled by setting
+    "highlight_unread_subjects" to 2. Please see manual.txt for details.
+14. Don't quote blank lines when smart_quote is set to 2 or 3.
+15. Warn user on startup if his config file contains obsolete commands or
+    variables. Matthias Friedrich updated contrib/slrnrc-conv to correct
+    those as well. The new command line option "-w" makes slrn wait before
+    switching to full screen mode and lets you read the startup messages.
+16. More autoconf updates. Most notably, --with-uudeview is added, the code
+    for finding OpenSSL is completely rewritten and --with-slang* takes
+    precedence over cached values (with help from Matthias Friedrich). By
+    default, documentation now goes to $(prefix)/share/doc/slrn (FHS).
+17. New descriptors in "header_display_format": "%T" draws the thread tree
+    only, "%c" is the number of messages in the subthread.  Unlike with "%T"
+    and "%t", the field width of "%c" can be changed.
+18. When overview files are present, reconstructing threads in spool mode is
+    much faster (based on a patch by Jurriaan W Kalkman <thunder7@xs4all.nl>).
+19. By default, only visible lines are printed. To print a full, unwrapped
+    version of the article, use a prefix argument (ESC 1 y).
+20. use_mime is now a bitmapped quantity that allows you to view / save /
+    archive / pipe messages (at your option) in encoded or decoded form. The
+    new default is 5 (decode in pager; encode when sending and archiving).
+21. Better support for multipart binary postings (Jurriaan Kalkman):
+    subject_compare_hook can be used to put similar subjects into the same
+    thread (see macros/multipart.sl for an example).
+    Additionally, "subject 3" is now sorted before "subject 13".
+22. ESC 2 L shows all unsubscribed groups (does not query server).
+23. Added intrinsic functions hide_current_group, get_group_order and
+    set_group_order (requires S-Lang >= 1.4.0) as well as the variables
+    _slrn_version and _slrn_version_string.
+24. clientlib.c (only needed on some VMS systems) is now packaged separately
+    (because of its slightly more restrictive license).
+25. (Un-)collapsing single threads in large groups works much faster.
+26. evaluate_cmd (Ctrl-X ESC) reads a line and interprets it as S-Lang.
+    (I hardcoded this so it's always available for debugging purposes.)
+27. In spool mode, --debug will now log error messages (Jurriaan Kalkman).
+
+Changes since 0.9.7.0
+
+0. Bug fixes:
+  * slrn does not crash in spool mode.
+  * S-Lang versions < 1.4.0 can be used; in this case, the
+    set_utf8_conversion_table intrinsic is not available.
+
+Changes since 0.9.6.4
+
+John E. Davis, author and long-time maintainer of slrn, can no longer devote
+enough time to the further development of slrn. Thus, he decided to entrust
+me, Thomas Schultz <tststs@gmx.de>, with the task of maintaining the
+program. I want to thank him for all the time and effort he invested in slrn
+so far and I will try to fulfill the task to the best of my ability.
+
+0. Bug fixes:
+  * refresh_groups can now safely be aborted and will check for new groups
+    unless check_new_groups is 0.
+  * Expensive scoring also works when applying the scorefile in article
+    mode, when MIME encoding is involved and when reconstructing threads.
+  * Let user mark tagged messages unread
+  * Saving tagged messages works correctly
+  * Use correct charset when re-editing rejected postings
+  * Copy "Followup-To:" header line when superseding (Andreas Riedel)
+  * Use LDFLAGS when compiling chkslang (Garry Williams)
+  * Fixed crash on some non-unix systems when no editor was defined
+  * Fixed typo in ispell.sl
+  * Handle code 480 in response to GROUP and NEWGROUPS commands.
+  * Fixed group search when the cursor is on the group you are searching for.
+  * When an article is not on the server, locate_header_by_msgid no longer
+    throws an slang error instead of returning 0.
+  * Fixed some VMS issues (with help from Tilman Linneweh)
+  * Fixed sorting by date on non-unix systems (with help from Sylvan Butler)
+  * uudecoding does not corrupt files that contain legal spaces.
+  * uudecoding also works with "\r\n" line endings.
+  * Realname is not stripped from "To:" address on replies (Felix Schueller)
+  * Avoid race condition when posting to spool.
+  * Correct handling of DST when finding new groups from active.times.
+  * Fixed dozens of potential buffer overflows all over the sourcecode.
+  * Handle formfeed when it is not on a line of its own.
+  * Unwrap articles for replies / forwards. Re-wrap afterwards.
+  * When user aborts followup / forward / supersede, the associated hook is
+    not executed.
+  * Restore old article window size when un-zooming.
+  * Work around a bug in the XPAT implementation of Typhoon servers.
+  * Minor fixes for building on Cygwin (with help from Rudy Taraschi)
+1. In header overview, the color of subjects and scores depends on the score
+   of the article. The new color objects "neg_score" and "pos_score" are
+   used for scores != 0, the existing color object "high_score" for high
+   scoring articles. This can be turned off with "color_by_score".
+   (Collaborative patch from Felix Schueller and me.)
+   Like most GUI newsreaders, slrn now also highlights subjects of unread
+   articles. This can be turned off with "highlight_unread_subjects".
+2. Integrated patch from Felix Schueller <fschueller@netcologne.de> that
+   introduces an improved (downward compatible) scorefile syntax that allows
+   grouping of scoring rules. The score values 9999 and -9999 do not have a
+   special meaning any longer. If desired, you can use the equal sign prefix
+   for the same effect. Please refer to score.txt for details. slrn now also
+   encloses its scorefile entries with comments marking where exactly they
+   begin and end. This is useful for the script cleanscore.
+3. Basic reading support for UTF-8. By default, it is converted to Latin 1,
+   but you can change this by using the intrinsic set_utf8_conversion_table
+   (see macros/latin2.sl for an example).
+   Full UTF-8 support will be added as soon as slang 2.0 is out.
+4. New descriptor "%D" in header_display_format and followup_string which
+   prints the date formatted according to the new variables
+   overview_date_format, followup_date_format and use_localtime.
+5. New scoring keyword "Age:" to score articles which are younger / older
+   than a given number of days.
+6. The top status line is now configurable by setting "top_status_line" to a
+   format string in which the following descriptors are recognized:
+     %d  current date (in the preferred representation for the current locale)
+     %n  name of the current newsgroup
+     %s  name of the current server
+     %t  current time (in the preferred representation for the current locale)
+     %v  version of slrn
+   The %g descriptor works exactly like in "header_display_format".
+7. When creating a scorefile entry, you can now also specify the date of
+   expiry as N days from now. (Philipp Grau <phgrau@zedat.fu-berlin.de>)
+8. Article bodies in base64 are decoded and displayed in the internal pager
+   (patch from Matthias Friedrich).
+9. Long words can now be wrapped at the right border of the screen.
+   Configurable with "wrap_method". (Andreas M. Kirchwitz <amk@krell.snafu.de>)
+10. More readable "smart" (aka tin-like) quoting that adds a blank between
+    your quote_string and previously unquoted lines. Can be turned off with
+    "smart_quote". (Matthias Friedrich <matt@mafr.de>)
+11. When a followup would result in a crossposting, slrn issues a warning
+    and offers a choice of possible actions. (Felix Schueller)
+12. Optionally, slrn can warn you when you write a followup and a Followup-To
+    header line is present. New variable: warn_followup_to (Felix Schueller)
+13. Current download ratio is displayed when getting or saving an article.
+    (patch from QuoteMstr <qtmstr@optonline.net>)
+14. Support for the convention of using "(was:...)" when changing the
+    subject: "new (was: old)" and "new" are treated as equivalent when
+    sorting. Using "strip_was_regexp", you can also automatically strip old
+    subjects on followups and when creating scorefile entries.
+15. "strip_re_regexp" can be used to strip non-standard back-references on
+    followups (some broken user agents translate the "Re:").
+16. "strip_sig_regexp" is available to detect broken signature delimiters
+    (based on patch by Emmanuele Bassi <emmanuele.bassi@iol.it>).
+17. Header lines can explicitly be hidden by prefixing them with a bang (`!')
+    in visible_headers.
+18. If you are used to signing off your messages before the signature, you
+    can now use "signoff_string" to do this automatically.
+19. New variable supersedes_custom_headers that works just like the existing
+    custom_headers variables and is used when superseding a message.
+20. New intrinsic functions datestring_to_unixtime, get_article_window_size,
+    get_header_number, reload_scorefile, setlocale and
+    sort_by_sorting_method (see docs for details).
+21. ESC 2 ESC p can be used to reconstruct a thread much faster than with
+    ESC 1 ESC p; however, in most cases it does not find all articles.
+22. New option "--kill-log" in both slrn and slrnpull to keep a logfile of
+    articles that were killed by the scorefile. New option "--kill-score" in
+    slrnpull to change the kill treshold (default: 0).
+23. In header overview, the new color object "from_myself" is used for the
+    `From:' header line / realname if it contains your name. (patch from
+    Andy Shevchenko <andy@smcl.donetsk.ua>)
+24. When you set "broken_xref" to 1, slrn requests articles by Message-ID
+    instead of header number. This provides support for servers with broken
+    "Xref:" headers. (reported by Robert Jan)
+25. Print a warning if editor_command could not be executed.
+26. locate_article now accepts Message-IDs without angle brackets.
+27. Write "--debug" output to an unbuffered file.
+28. In article mode, "expunge" ('x') will not remove tagged articles.
+29. Compile-time option SLRN_GEN_FROM_EMAIL_HEADER replaced with slrnrc
+    variable "generate_email_from" (default: 1 on IBMPC, 0 everywhere else).
+30. New compile-time feature SLRN_HAS_STRICT_FROM which makes it possible to
+    enforce correct "From:" header lines on Unix and VMS. When turned off
+    (default), the "From:" line now appears in the editor (includes some
+    code by Felix Schueller).
+31. New slrnrc command "posting_host" which can (in some cases) be used to
+    allow generation of Message-IDs on systems without an official hostname.
+32. Added charset mapping for codepage 852 (IBM852) <-> latin2 (Arkadiusz
+    Mucha <arkmucha@priv2.onet.pl>)
+33. Changed behaviour of "move_group" to meet most people's expectations
+    when some groups are hidden. "transpose_groups" is untouched.
+34. Added variable "cc_post_string" that is used when posting
+    ("cc_followup_string" only worked correctly on followups). Currently, it
+    does not support any % format descriptors.
+35. Expensive scoring should now be faster on servers that support XHDR. If
+    you find the opposite to be true for you, set "prefer_head" to 1.
+36. In "followup_string", %R expands to the first part of the realname.
+37. Archived postings and replies look much more like the posted versions.
+38. Improved "--version" output.
+39. New config command "compatible_charsets", which can be set to a comma-
+    separated list of MIME charsets your terminal is capable to display.
+    (This is a bit of a hack, needed until we have better charset support.)
+40. Some UI cleanups (includes many proposals from Matthias Friedrich):
+  * Removed option "cancel" where it did exactly the same as "no".
+  * Renamed some functions for better consistency:
+    In group mode:
+     pageup / pagedown -> page_up / page_down
+     up / down -> line_up / line_down
+    In article mode:
+     art_bob / art_eob -> article_bob / article_eob
+     left / right -> article_left / article_right
+     art_xpunge -> expunge
+     article_*dn / article_*up -> article_*_down / article_*_up
+     down / up -> header_line_down / header_line_up
+     pagedn / pageup -> header_page_down / header_page_up
+     *prev* -> *previous*
+     shrink/enlarge_window -> shrink/enlarge_article_window
+     print/pipe_article -> print/pipe
+    The old names are still working, but will be removed before 1.0
+  * Replaced "scorefile" .slrnrc command with a "scorefile" variable
+  * article_eob skips to the end of the article, even if it was not yet shown
+  * Most functions now affect the currently displayed article (if none is
+    shown, the one associated with the current header is fetched):
+     Interactive: article_search, cancel, create_score, decode, followup,
+		  forward, pipe, print, reply, save, supersede
+     Intrinsic:   pipe_article, re_search_article, save_current_article,
+		  search_article
+  * ESC 2 RET retrieves old articles (like the docs suggested); ESC 4 RET
+    only prompts when reading more than query_read_group_cutoff articles.
+  * Removed compile time options SORT_BY_SCORE and TILDE_FEATURE, as they
+    can be configured at runtime and don't cause significant overhead.
+  * Put compile time options under autoconf control (based on patch by
+    Matthias Friedrich); rewrote some autoconf macros; don't compile local
+    hostname into the binary by default.
+41. Included a much shorter, but up-to-date man page written by Matthias
+    Friedrich. More detailed documentation can be found in the new slrn
+    manual, which is now part of the source distribution (doc/manual.txt).
+    Format is text/plain, but more formats are available online. I also
+    rewrote README.w32 and updated README.macros.
+42. Added contrib/ directory to the source distribution. It currently
+    contains two helpful perl scripts: cleanscore (by Felix Schueller) can
+    be used to purge expired scorefile entries; slrnrc-conv (by Matthias
+    Friedrich) rewrites your slrnrc file to use the new function names.
+
+Changes since 0.9.6.3
+1. src/grplens.c: Connection to grouplens server was not always being
+   closed. (Chris Siegler <siegler@citilink.com>)
+2. src/misc.c: Add a warning if a FQDN cannot be found.
+3. Support for SSL added--- see doc/README.SSL.
+
+Changes since 0.9.6.2
+0. Bug fixes: 
+    artmisc.c: If a line is marked as a PGP line, then it cannot also
+     be a quote line.
+    verbatum-->verbatim
+    art.c: Only wrap/unwrap an article when the display requires it.
+      This avoids a nasty bug in decoding MIME QP.
+    doc/FAQ: 0 and 12 were the same (Hynek Schlawack <hynek.s@web.de>)
+    art.c: Allow rot13 to apply to signature.
+    misc.c: slrn_case_strcmp rewritten to work around a gcc bug on HPUX.
+    uudecode.c: If a line contains a space, then skip it.
+    art.c: get_parent_headers: avoid self-referencing articles
+    group.c: remove arbitrary group name length limit.
+    group.c: code added to support for arbitrarily long newsrc lines.
+    art.c: Fix sorting methods 4 and 6. (Thomas Schultz/Felix Schueller)
+    art.c: Add From header to forwarded emails. (Thomas Schultz/Felix Schueller)
+    art.c: MIME process article after saving it (Thomas Schultz/Felix Schueller)
+    art.c: have ESC-p sync line with parent (Thomas Schultz/Felix Schueller)
+    art.c: avoid infinite loop on search_article ("");
+    post.c: if signature is "", then do not add it.
+    mime.c: allow whitepspace to follow `=' continuations (Thomas Schultz/Felix Schueller)
+    art.c: update thread scores after art_xpunge (Thomas Schultz)
+
+1. #v+/#v- verbatim marks may be hidden via `hide_verbatim_marks'
+   variable.  The article mode function "toggle_verbatim_marks" may be
+   used to toggle the state of the marks.
+2. Special characters in URLs are passed to browser in hex format.
+3. BeOS system name added to version.c (Scot Hacker
+   <shacker@birdhouse.org>).
+4. line length check skipped in verbatim sections.
+5. doc/README.macros: Mention post_file_hook ("Tomasz 'tsca' Sienicki"
+   <tsca@mailserver.dk>).
+6. src/xover.c: algorithm for extracting msg-id from In-Reply-To
+   changed.
+7. The thread tree depth maximum size (for the graphic) was increased from
+   32 to 256 after reworking how the graphic is stored.
+8. doc/slrn.1,slrn.rc: typos fixed (Bill Nottingham
+   <notting@redhat.com>).
+9. src/startup.c: "blue" foreground colors changed to "lightgray" to
+   make the object standout on xterm.
+10. The `Date' header may be given a color (Arkadiusz Sochala
+    <jojoro@priv2.onet.pl>).
+11. macros/color.sl updated (Arkadiusz Sochala)
+12. New slrnrc variable: 'set check_new_groups 1'.  If 0, then do not
+    check for new groups (Ada Lim <adal@cse.unsw.edu.au>).
+13. src/post.c: Allow verbatim sections to exceed 80 character line
+    limit with no warning.
+
+Changes since 0.9.6.1
+1. NULL ponter dereference fixed.
+
+Changes since 0.9.6.0
+    Misc bug fixes:
+      misc.c: get_host_from_file sizeof(host)-->sizeof(line)
+       (Russ Allbery <rra@stanford.edu>)
+      art.c: toggle_headers would sometimes force an article to be
+       downloaded.
+      startup.c: color of "box" changed from b/b to b/w
+      art.c: toggle_wrap with a == NULL caused a SEGV.
+      slrn.c: Use setlocale (Klaus Alexander Seistrup)
+
+1. Updates to slrn.rc and slrn.1.
+2. DESTDIR added to Makefile.in to facilitate the creation of binary
+   distributions (Thomas Schultz <tststs@gmx.de>).
+3. Emphasized text may be scanned in quoted and signature portions of
+   a message if `emphasized_text_mask' is set accordingly.
+4. If process_verbatum_marks is non-zero, #v+ and #v- will be used to
+   denote lines of verbatum text, e.g.,
+     #v+
+        % Some code
+	define this ()
+	{
+	   do_that ();
+	}
+     #v-
+   "set color verbatum" may be used to color such sections of an
+   article.
+5. New hook: article_mode_startup_hook.  Called in article mode after
+   headers have been read, scored, and sorted.
+6. /text/ highlighted as using `italicstext' color.
+
+Changes since 0.9.5.7
+0.  misc bugs fixed
+1.  If the newsrc file indicates that articles in the range 1-N have
+    not been read, but the server indicates that those articles are
+    nolonger available, then mark that range as read.
+2.  slrn incorrectly interpreted an empty body as a server error.  I
+    think that most servers reject such messages but a few allow them.
+3.  Patches from Sylvan Butler <sylvan@bigfoot.com>: improved tin
+    emulation macros; -s added to install to strip slrn; body added
+    to slrn_select_prev_group function;
+4.  If slrn fails to initialized the terminal, it will exit
+    gracefully.  How did this fall through the cracks??
+5.  If username contains a space, avoid the space when creating the
+    message id.
+6.  If `use_flow_control' is non-zero, ^S/^Q processing by the
+    terminal driver will be enabled.
+7.  sortdate.sl: small tweak to handle articles from the 1980s and
+    earlier.
+8.  `author_display' and `display_author_realname' removed from
+    doc/slrn.rc file.
+9.  slrn --version will show all compile-time options.
+10. help.c: Post a postponed article reworded.
+11. A score file may contain an `include' statement to include other
+    score files.  See doc/score.txt for details.  (This feature
+    suggested by Sylvain Robitaille <syl@alcor.concordia.ca>).
+12. Small 32-vs-64 bit problem fixed where an int was used instead of
+    a long in comparing strings.
+13. There is nolonger any need to exit article mode to apply a changed
+    score file.
+14. New intrinsic functions (see docs for more info)
+
+        get_visible_headers (counterpart of set_visible_headers)
+	headers_hidden_mode (indicates whether or not some headers may 
+	   be hidden)
+        _is_article_visible (similar to is_article_visible)
+	extract_displayed_article_header (get the header in the
+	   displayed article)
+
+15. slrn_is_fqdn rejects names that end in a `.'.
+16. `Headers Received' message modified to include group name as
+    suggested by W M Brelsford <k2di@bigfoot.com>.
+17. If `read_article_hook' exists, then it will be called after an
+    article has been read in (Marcin 'Qrczak' Kowalczyk" <qrczak@knm.org.pl>).
+18. Different quote levels may be assigned different colors, e.g.,
+
+        color quotes0 "red" "black"
+        color quotes1 "green" "black"
+	   .
+	   .
+	color quotes7 "yellow" "black"
+    
+    A maximum of 8 levels (0->7) are permitted.  Make sure that your
+    quote regular expressions match as few characters as possible.
+    For example, use ">" and not ">*".
+19. Some code in art.c moved to artmisc.c in an effort to clean it up
+    for future improvements.
+20. The toggle-quotes function maybe used with a prefix-argument to
+    hide the nth level of quotes.
+21. `toggle_signature' function suggested by Tom Friedetzky
+    <friedetz@informatik.tu-muenchen.de>.  Default binding is to "\".
+    Also, toggle_pgp_signature added with binding "]" and a color:
+    pgpsignature.  The `hide_signature' and `hide_pgpsignature'
+    variables may also be used.
+
+22. If compiled with SLRN_HAS_EMPHASIZED_TEXT (default), text such as
+    *this* and _that_ will get highlighted using "underlinetext" and 
+    "boldtext" colors, resp.  This requires the variable
+    `emphasized_text_mode' to be set to a non-zero value: if 1, do not
+    write `_' or `*' characters; if 2, write them as spaces; if 3;
+    write them as they are. (suggested by Dawid Kuroczko
+    <qnex@atlantis.ssw.krakow.pl>).
+23. Improved tin emulation macros from Sylvan Butler <sylvan@bigfoot.com>.
+24. Patch from Sami Farin <sfarin@ratol.fi> replace `/' characters
+    with `_' in decoded filenames.
+
+Changes since 0.9.5.6
+1.  Fixed calculation of article window size in non-zoomed mode.
+2.  Fixed a bug in parsing of realnames that contain no alphabetical
+    characters.
+3.  spool.c will check the .minmax file if no articles are present in a 
+    spool directory.
+4.  New intrinsic added: replace_article.  This allows a macro to
+    replace the contents of an article with a specified string.
+5.  slrnpull `--debug FILENAME' command line option added.
+6.  Some modifications to nntp.c to call the connection-lost-hook as
+    early as possible.
+
+Changes since 0.9.5.5
+1.  Misc bug-fixes:
+    a.   Intrinsic function `locate_header_by_msgid' improperly
+         interfaced to the interpreter.
+    b.   `make install' was trying to install some old, obsolete, and
+         non-existent documentation files.
+    c.   Tiny bug fixed in new get_hostname function that manifests itself
+         when the name server times-out.
+2. With slrnpull it is now possible to specify an alternate log file
+   via the `--logfile FILE' command line option.
+
+3.  Philipp Grau <phgrau@zedat.fu-berlin.de> suggested using ` in the
+    ascii thread tree instead of \.
+
+4.  Add patch from Thomas Schultz <tststs@gmx.de> to mime-encode the
+    real name when posting.  The original patch was due to Joachim
+    Wieland <joe@mcknight.swin.de>.
+
+5.  When replying, slrn adds References headers and also takes into
+    account the To and Cc lines.  This enables the newsreader to
+    better support mailing lists.
+
+6.  If a thread has some unread headers, then it is marked with a `%'
+    instead of a `D'. (Andrzej Radecki <radecki@posejdon.wpk.p.lodz.pl>).
+
+7.  When asking for a password/username, a newline character will be
+    written first (Philipp Grau <phgrau@cis.fu-berlin.de>).
+
+Changes since 0.9.5.4
+0.  Online documentation for slrn intrinsic functions
+    (http://space.mit.edu/%7Edavis/doc/slrn-doc.html).  See also
+    slrn/doc/slrnfuns.txt.
+
+1.  koi8 character set from Roman Shaposhnick
+    <roman@yellow.pdmi.ras.ru>.
+2.  message_now intrinsic function added.
+3.  If make_from_string_hook exists, it will be called to generate
+    `From' header lines, e.g.,
+    
+          define make_from_string_hook ()
+	  {
+	     return "My Name <me@my.machine>"
+	  }
+
+4.  Small bug in base64 decoding of headers fixed.
+5.  art.c:update_ranges rewritten to avoid marking too many articles
+    as read when one recontructs a thread via ESC-p.
+6.  Added patchs from Hubert Figuiere <Hubert.Figuiere@solsoft.fr> to
+    handle some improperly mime encoded headers generated by broken
+    software (specifically when ' ' is not converted to '_'), and to
+    fix a potential problem with XOVER.
+7.  Fixed scrore file problem with groupnames containing `+'.
+8.  Body searching macro added to distribution (slrn/macros/search.sl).
+9.  article mode function locate_header_by_msgid will not uncollapse
+    the thread unless the header is hidden in the fold.
+10. New intrinsic function: locate_header_by_msgid.  This takes 2
+    arguments: the message-id and a flag that indicates whether or not
+    the server should be queried.
+11. Semantics of cc_followup variable modified for GNKSA compliance.
+12. New option: abort_unmodified_edits.  Many users requested this
+    feature.
+13. `set hostname' now possible.
+14. Patch from Dinko Korunic <kreator@fly.cc.fer.hr> fixing a NULL
+    pointer dereference in the Cc code.
+15. Failed posting are appended to a file specified by the
+    failed_posts_file variable.
+16. Patches from Tony Houghton <tonyh@tcp.co.uk>: supersede function
+    and an option to strip signatures on followup:
+       
+       setkey article "supersede" "\e^S"   % ESC Ctrl-S
+       set followup_strip_signature 0
+17. slrnpull: more verbose messages via mapping of nntp codes to strings
+
+Changes since 0.9.5.3
+0. Misc bug fixes, including:
+    * Mapping of / to \\ in Win32 and OS/2 editor variables.
+    * slrn now honors port information encoded in hostname when
+      refreshing newsgroups. 
+
+1. Tweak to generation of NEWGROUPS server command to make it y2k
+   compliant.  (In my opinion, the protocol is weak in this area)
+2. VMS grplens.c support from Martin P.J. Zinser <m.zinser@gsi.de>.
+3. New configuration variable:
+     
+     set simulate_graphic_chars 0
+
+   Setting this to 1 will cause slrn to use simple ascii characters to 
+   represent the thread tree.
+4. Patch from Hubert Figuiere <Hubert.Figuiere@solsoft.fr> to handle
+   (broken?) knews iso-latin1 mime encoding.
+5. New configuration variable: set auto_mark_article_as_read 1
+   If zero, reading an article will not cause it to be marked as read.
+6. It is now possible to specify what headers to show via the .slrnrc
+   line:
+
+       visible_headers "From:,Subject:,Newsgroups:,Followup-To:,Reply-To:"
+
+   or the slang function `set_visible_headers'.  To show no headers,
+   use "", to show only X-* headers in addition to From, use "X-,From:".
+   (Stephane CHAZELAS <Stephane.CHAZELAS@maisel-gw.enst-bretagne.fr>
+   provided code that was used as a basis for this feature).
+7. Tweak to group.c:group_sync_group_with_server courtesy of 
+   stesch@parsec.rhein-neckar.de (Stefan Scholl).
+
+Changes since 0.9.5.2
+0. Misc bug fixes
+1. \n --> \r\n mapping required for the print code.
+2. install target courtesy of Klaus Franken <kfr@klaus.franken.de>.
+3. Mods to update interp.c to use some slang 1.0 features.
+4. Amiga patches and MIME bug fix from Jörg Strohmayer <j_s@gmx.de>.
+5. Winsock initialization bug-fix from sgibier@mail.dotcom.fr
+   (Stephane Gibier).
+6. typo involving signals when quitting article mode corrected.
+7. Bug fix so that article counts are not modified when a group read is
+   aborted.
+8. extract_article_header now trims leading whitespace.
+9. New intrinsic for macros:
+     is_article_window_zoomed ()
+   This may be used to define macros that behave differently depending
+   upon the zoom state of the article window.
+10. New printer code added (vtailor@gte.net).
+11. Added slrnpull setgid patch from Sylvain Robitaille
+    <syl@alcor.concordia.ca>.  See slrnpull/setgid.txt for more
+    information.  By default this is disabled in slrnfeat.h.
+12. User-Agent header added.
+13. New hook: article_mode_quit_hook
+14. Added VMS patches for sltcp.c from Martin P.J. Zinser <m.zinser@gsi.de>.
+
+Changes since 0.9.5.1
+1. ibm850 character set made the default on Win32 and OS/2 systems.
+2. New hook: post_file_hook
+3. new header format descriptor: %g.  This may be used to specify the
+   column the next write to the screen should take place.
+   Specifically, `%Xg' indicates that the cursor should be moved to
+   column X (numbered from 0).  If X is negative, the cursor will be
+   moved X columns from the right edge of the window.  To
+   understand this, compare:
+
+       header_display_format 0 "%F%-5S%-5l:%t%35s %f"
+   to
+       header_display_format 0 "%F%-5S%-5l:%t%35s%-24g%f"
+
+   in the presence of an open thread tree.  The latter form indicates
+   that the `From' header (%f) should be written out 24 columns from
+   the right edge of the window.
+4. Andreas M. Kirchwitz <amk@krell.snafu.de> suggested that scores
+   with a value of zero be printed on the header as a blank to keep
+   the display less busy.  I took his advice.
+5. doc/w32keys.txt and doc/os2keys.txt merged into one file:
+   pc-keys.txt.
+6. SLang_VMessage_Hook was set to slrn_va_message.
+7.  --no-post option added to slrnpull.
+8. New macros files: 
+  
+      slrn/macros/color.sl
+      slrn/macros/posthook.sl
+
+   The latter file illustrates how to use the `post_file_hook' to
+   manipulate a message before posting it.
+9. Fixed a bug in which the references appeared as blank when
+   following up to articles whose message id exceeded the screen with
+   and the headers were wrapped.
+   
+10. New function: print_article.  This function may be customized via
+    the `printer_name' setting.  If `printer_name' is not set, then
+    the default printer will be selected.  Otherwise, the meaning of
+    this variable will depend upon the OS:
+    
+        WIN32  :  The name of the print queue.  The default is to use
+	          the win.ini setting.
+	UNIX   :  The name of a process that represents the printer, e.g.,
+	
+	            set printer_name "my_print_filter | lpr -Pmy_printer"
+
+                  The default is to use "lpr -P$PRINTER".
+
+        OS/2, VMS: ??? needs implemented
+
+    The key binding may be set via, e.g.,
+    
+        setkey article "print_article"  "y"
+
+    (`y' is the default binding)
+
+    Note: This function could have been defined via a macro for Unix systems,
+    but for e.g., windows 95 this was not possible and required a
+    built-in solution.
+
+11. References header truncated to 998 characters to satisfy the GNKSA
+    2.x requirement.  The real implication of this is that no header
+    should be wrapped, nor should the total length of a header be more
+    than 998 characters long since there are broken servers that
+    cannot handle long lines nor can handle a wrapped header.  The
+    previous version of slrn would wrap the headers according to the
+    NNTP protocol standards but the GNKSA forbids that.  Sigh.
+
+Changes since 0.9.5.0
+0. Oops.  score.c contained a break statement where it should not have.
+
+Changes since 0.9.4.6
+0. Misc bug fixes, e.g., the [~group, group] score bug. A silly
+   uudecode bug was also fixed involving multi-part encoded files.
+1. Watcom CC specific typo in src/slrnconf.h corrected (Bill McCarthy
+   <WJMc@pobox.com>).
+2. version.o add to Makefile.OS2 (Bjoern Frantzen)
+3. Header display format is now customizable.  Up to 10 header formats
+   are available and ESC-a will switch among them.  By default there
+   are 4 pre-defined formats:
+
+        "%F%-5S%G%-5l:[%12r]%t%s"
+	"%F%G%-5l:[%12r]%t%s"
+	"%F%-5l:%t%s"
+	"%F%-5S%-5l:%t%50s %r"
+   
+   The generic format specifier begins with the `%' character and must
+   be of the form:
+
+        %[-][w]x
+	
+   where the brackets indicate optional items.  Here, w is a width
+   specifier consisting of one or more digits.  If the minus sign (-)
+   is present, the item will be right justified, otherwise it will be
+   left justified.  The item specifier (x) is required and, depending
+   on it value, has the following meaning:
+   
+         s : subject
+	 S : score
+	 r : author real name
+	 f : from header
+	 G : Group lens score
+	 l : Number of lines
+	 n : server number
+	 d : date
+	 t : thread tree
+	 F : flags (read/unread, `*' and `#' tags, header number)
+	 % : percent character
+	 
+  
+   Thus, "%F%-5l:%t%s" indicates that the header window will contain
+   the, in order: the flags, the number of lines the article contains
+   right justified in a 5 character field, a `:', the tree, and the
+   subject.
+   
+   There are two methods of setting these formats.  The first way is
+   via a line in  the .slrnrc file using the header_display_format
+   command.  This command takes two arguments: an integer that
+   indicates the format to set, and a string that specifies the
+   format, e.g, 
+
+        header_display_format 0 "%F%-5S%G%-5l:[%12r]%t%s"
+  
+   sets the 0th format.  There are 10 formats available and the ESC-a
+   command will switch among them.
+
+   The second method is via the S-Lang macro language, e.g.,
+   
+       set_header_display_format (0, "%F%-5S%G%-5l:[%12r]%t%s");
+       
+   Finally, ESC-a may be used with a prefix argument to select a
+   particular format, e.g., ESC-0 ESC-a will select the 0th format.
+
+4. Added patches from http://home3.inet.tele.dk/byrial/slrn:
+
+     resize patch
+     prefix_arg patch ==> two new slrn macro intrinsics:
+         get_prefix_arg
+	 reset_prefix_arg
+     msgid patch ==> new slrn.rc option:
+	    set generate_message_id 1
+
+5.  If you are using slang 1.2.x, then you can change the `cursor'
+    from "->" to a bar across the display via:
+       
+       set display_cursor_bar 1
+
+6.  Now score files can contains slang preprocessing constructs (patch
+    from Jan Hlavacek <lahvak@math.ohio-state.edu>).
+
+7.  Header window will now scroll horizontally if the article window
+    is not visible.  Otherwise, the article window will be the one
+    that horizontally scrolls.
+    
+8.  New article mode keybinding:
+
+         setkey article "zoom_article_window"  "z"
+	 
+    This will cause the header window to disappear with the article
+    window zoomed to full screen (minus the top/bottom lines of the
+    display).  If the window is already zoomed, it will `un-zoom'.
+
+    
+Changes since 0.9.4.5
+1. uudecode bug fixed.
+2. VMS specific NETLIB update of clientlib.c.
+3. Explicitly added the GNU copyright to source code files.
+4. Updated to use slang 1.0.3.  For Win32 users this means you can
+   use bright background colors and the mouse.
+5. For CYGWIN32 and MINGW32 compilers, use src/Makefile.g32.  Do NOT
+   use the Unix configure script because WIN32 is NOT Unix.  (Note:
+   gcc in the CYGWIN32 distribution (b18) kept getting signal 33, so I
+   could not compile slrn with it.  However, I had no problems with
+   MINGW32.)
+6. Autoconf now checks for socket.h (Marius Groeger <mag@sysgo.de>).
+
+Changes since 0.9.4.4
+1. Bug fix related to  `system' when called from a slang macro.
+
+Changes since 0.9.4.3
+0. Many, many changes to the slang interpreter.  Version 1.0 of slang is now
+   required.  Some changes may affect pre-existing macros.  See
+   the slang documentation for more information (in particular, see
+   slang/UPGRADE.txt for more information about upgrading your slang
+   macros).
+   
+   There are some new intrinsics to help isolate problems by
+   re-routing slang traceback messages to a log file:
+   
+      open_log_file (FILENAME);
+      close_log_file ();
+      log_message ("My Message\n");
+      
+   You also need to set `_traceback = 1;'.
+
+1. Small wrapping changes that permit header lines to be properly
+   wrapped.
+2. Integrated WIN32 patches.  Thanks Chin Huang <cthuang@vex.net>!!!
+3. Included reject-long-lines patch from Byrial Jensen
+   <byrial@post3.tele.dk>.  Add
+   
+      set reject_long_lines 2
+   
+   to be given the opportunity to post an article with long lines.
+
+4. If slrnpull fails, it returns an error code to indicate the failure:
+
+       1    Unspecified reason
+       2    Bad usage
+       3    Failed to connect
+       4    Connection Lost
+       5    Signaled
+       10   Malloc Failure
+       20   File I/O
+
+5. Added Andy Harper's do_netlib_read routine for VMS.  Thanks Andy!
+
+Changes since 0.9.4.2
+
+0. Bug fixes, tiny documentation corrections.  In particular, one of the
+   bug fixes concerns a somewhat nasty bug that, although unnoticed
+   until 0.9.4.1, appears to have been around for a while.
+
+Changes since 0.9.4.1
+1. Add charset tables from Mark Nowiasz <buckaroo@blackbox.free.de>.
+   I also changed `slrn --version' to show the supported character sets.
+2. New customizable color objects:
+
+      box --- This objects represents the are of the screen when a box
+              pops up.
+      frame - The border of the box
+      selection
+              The currently selected text in the selection box
+
+3. New hooks for macro customization
+
+         reply_hook
+	 forward_hook
+	 followup_hook   (see macros/xcomment.sl for example)
+	 post_hook
+	 post_filter_hook
+
+   The post_filter_hook allows you to run the article to be posted
+   through something such as ispell, a shell script, etc...  The file
+   to be posted is passed as a parameter to this hook.  See
+   macros/ispell.sl for an example.
+
+4. New intrinsic macro functions:
+       
+         get_response
+	 set_color
+	 select_list_box
+	 get_grouplens_score
+	 set_input_chars
+
+5. OS/2 patches from Bjoern Frantzen for OS/2 FAT file systems.
+6. Support for X-Mail-Copies-To added.
+7. cc_followup_string now expands %n, etc...
+
+Changes since 0.9.4.0
+0. Small (nothing serious) bug fixes
+1. Typo prevented slrn to compile on Non-POSIX systems corrected.
+2. slrnpull ported to NeXT (flight@mathi.uni-heidelberg.de)
+3. Olly's mail-copies-to patch implemented
+4. A new interface to ``browse-url''.  This is not the clickable
+   interface but it does have the feature that it works on ordinary
+   terminals.
+5. I added a ``postpone'' interface.  To use this, set the variable
+     
+     set postpone_directory "whatever"
+
+   to specify where articles are to be saved.  Make sure the directory
+   exists!  To post a postponed article, press `ESC P'.  Use, e.g.,
+
+     setkey group "post_postponed" "KEY_SEQUENCE"
+     
+   to rebind it.
+6. I integrated the NeXT character set patch from Daniel G. Kluge 
+   <daniel@hallus.swill.org>.
+7. New color object: response_char.  This is used to set the color for
+   response characters in prompts such as:
+     
+         Do you really want to quit? Yes, No
+
+   Here the response characters are `Y' and `N'.
+   
+    
+Changes since 0.9.3.2
+0. Some bug fixes as well as slrnpull bug fixes.  Also, the libc system
+   function has been replaced.  The fact is that system is broken on
+   Linux.
+
+1. Small change to pathname manipulation to avoid problems with \\ and
+   / conflicts on OS/2.
+2. To additions from Olly Betts <olly@muscat.co.uk> that affect spool
+   users:
+   
+       set spool_check_up_on_nov 1
+       
+   will cause slrn to check to make sure that an article that is
+   referred to by the overview file actually exists.  The default is 0.
+   See the slrnfeat.h variable SLRN_HAS_FAKE_REFS for the other feature.
+
+3. New .slrnrc function:
+
+     include "filename"
+     
+   For example, your .slrnrc file can load other files via:
+   
+     include ".slrn/colors"
+     include ".slrn/keybindings"
+     
+4. Two new .slrnrc variables:
+
+     set post_object    "inews"  % or "nntp"
+     set server_object  "spool"  % or "nntp"
+     
+   This means that if you compiled slrn to default to nntp, you
+   nolonger need to run slrn via
+   
+      slrn --spool
+      
+   to read from a news spool.
+   
+5. macro function extract_article_header will not fetch the article
+   from the server if the requested header is already available.
+
+6. Now possible to save replies to a file:
+
+     set save_replies "News/Replies"
+     
+   and you can specify the string to be used in the reply:
+   
+     set reply_string "In %n, you wrote:"
+
+7. Small improvments such as re-wrapping upon window resizing and the
+   message-id is also saved in the save_posts file.
+   
+8. New intrinsic: get_next_art_pgdn_action.  See README.macros for
+   more information.
+
+9. `username whatever' is not obsolete.  Use `set username WHATEVER'
+   instead.  This change allows username to be changed via a macro.
+
+10. Grouplens support changed to match current grouplens protocol.
+
+11. Wrapping now takes place on word boundaries.
+    frank_thieme@l2.maus.de provided a similar patch.
+    
+12. VMS patches by Ian.Miller@softel.co.uk.
+
+Changes since 0.9.3.1
+0. Bug fix involving non-XOVER headers.  This alone caused me to
+   discontinue 0.9.3.1.
+1. Misc bug fixes, char set tweaking
+2. New variable for better compliance with standards:
+   
+      set reject_long_lines 1
+
+   If non-zero, slrn will reject posting articles with non-quoted
+   lines whose length exceeds 80 characters.
+
+3. New editor options:
+     
+      set post_editor_command "my_posting_editor"
+      set mail_editor_command "my_mailing_editor"
+      set score_editor_command "my_score_editor"
+
+   These may be used to override the more generic `editor_command'.
+   For example, I use:
+   
+       set score_editor_command "jed %s -g %d -f score_arrange_score"
+
+4. Patches for display code provided by itz@rahul.net (Ian T Zimmerman).
+   There is a new .slrnrc variable:
+
+      set display_author_realname 1
+      
+   It controls whether or not the real name should be displayed.
+
+5. Spoiler patches from Olly Betts with new slrnrc variable:
+
+   % set to 0 to keep the display still, and just reveal the spoiler
+   % set to 1 to start a new page when spoiler is revealed
+   % set to 2 to keep the display still, and reveal ALL spoilers
+   % set to 3 to start new page and reveal ALL spoilers
+   set spoiler_display_mode 1
+
+Changes since 0.9.2.1
+-13. Small patches from Uichi Katsuta <katsuta@lang2.bs1.fc.nec.co.jp>,
+     and uudeview patches from Mark McWhorter <morak@ziplink.net>.
+-12. Re: now added to subject header of reply.
+-11. Fixed a bug that manifested itself when scoring on non-XOver
+     headers.
+
+-10. If a posted article is cc'd, the message-id used for the article
+     will also be used in the email.
+-9. `slrn --nntp --debug FILE' may be used to write out the dialog
+    between slrn and the nntpserver to FILE.  This is a debugging aid.
+
+-8. Sort by date added:
+       set sorting_method 8    % most recent first
+       set sorting_method 9    % thread with most recent first
+       set sorting_method 10   % most recent last
+       set sorting_method 11   % thread with most recent last
+
+-7. If slrn is run in NNTP mode, the preprocessor symbol NNTP will be
+    defined while processing the .slrnrc file.  If it is run in spool
+    mode, SPOOL will be defined.
+
+-6. Patches from Justus Pendleton <justus@ryoohki.res.cmu.edu> enabling
+    slrn to work with uudeview.
+
+-5. More OS/2 patches from Bjoern Frantzen enabling slrn to work with
+    other mailers.
+
+-4. New slrnrc variable: set metamail_command "metamail"
+
+-3. Workaround for XHDR bug in DNEWS
+
+-2. slrn/doc/os2keys.txt describes OS/2 key sequences.  They differ
+    from the standard ANSI escape sequences.
+
+-1.  Distribution reorganized.  Autoconf config files are in autoconf
+    directory and documentation in doc dir.
+    
+0.  Offline reading possible by using the new `slrnpull' program.  See
+    the slrnpull documentation for details.  `make slrnpull' should be
+    sufficient to compile it.
+
+1.  Small CC: problem under OS/2 fixed by Marko Teittinen
+    (marko@tekamah.com). 
+
+3.  New slrn.rc variable to control scrolling behavior: 
+
+       set scroll_by_page 1
+       
+    to have slrn automatically perform a pagedown/up at window 
+    boundaries.  This requires slang 0.99-38 otherwise this does
+    nothing.
+    
+4.  New .slrnrc options:
+
+      % Start new thread if subject changes
+      set new_subject_breaks_threads  0
+      
+5.  New charcter set mapping code.  The idea is to translate incoming
+    and outgoing articles from isolatin to the ``native'' character
+    set.  For example, under OS/2, the native character set is assumed
+    to be "ibm850".  The character set may be specified by the slrnrc
+    line:
+    
+        set charset "ibm850"      % default for OS/2
+        set charset "isolatin"    % default for Unix and VMS
+	
+    Currently only ibm850 and isolatin are supported.  I suspect a
+    future version of slrn will be more precise in the specification
+    of isolatin and support more chatacter sets.  But the current idea
+    is that there is one ``usenet'' character set called ``isolatin''
+    and selecting isolatin as the host character set will essentually
+    turn of the mapping since isolatin --> isolatin is just the
+    identity map.
+    
+    I am grateful to Bjoern Frantzen, bjoff@bgnett.no for the original
+    code as well as other OS/2 fixes.
+
+6.  Small tweak to MIME encoding.
+
+Changes since 0.9.2.0
+0.  Bug causing slrn to hang on VMS fixed.  The bug was tracked down
+    with the help of Andrew Brennan <brennan@crashprone.allegheny.edu>.
+
+1.  man page and slrn.rc updated to reflect the fact that
+    `art_header_bob' and `art_header_eob' functions were renamed to
+    simply `header_bob' and `header_eob', resp.  Also, the functions
+    `goto_beginning' and `goto_end' are being phased out in favor of
+    `art_bob' and `art_eob', resp.
+2.  Fixed a compilation problem on NeXT.  mching@inow.com
+    submitted OS/2 makefile and config patches for EMX compiler, and
+    cardio@orsola.med.unibo.it (cardio) submitted patches for Ultrix.
+    
+3.  The default for min_high_score was incorrectly set to 0.  It has
+    been changed to 1.
+4.  New intrinsics for macros:
+	 get_header_score
+	 set_header_score
+5.  New feature: SLRN_HAS_END_OF_THREAD
+    See src/slrnfeat.h for more information.  This feature is enabled
+    by default.  In the current implementation, it is a compile-time
+    option-- there is nothing to disable it at run-time.
+
+6.  Some of the documentation updated.
+
+Changes since 0.9.1.0
+0.  The macro functions read_mini and read_mini_no_echo now take three
+    arguments.  See README.macros for more information.  This change
+    was necessary because the ``read input from user'' routines are
+    now more flexible and support recall of previously entered text.
+
+1.  Renamed `group_mode_hook' to `group_mode_startup_hook'.  Added a new
+    hook `group_mode_hook' that is called every time group mode is
+    re-entered.
+2.  Oops.  A horrible bug that manifested itself when the quote string
+    was not specified via `set quote_string' has been fixed.
+3.  `set use_color' added so that `set use_color 0' may be used to
+    turn off color support.
+4.  The name of a header and its value may be be given a different
+    colors using, e.g.,
+    
+        color headers "green" "white"
+        color header_name "red" "white"
+	
+    This means that the header 'From: davis@space.mit.edu' will appear
+    with 'From:' in red/white and the rest will appear as green/white.
+5.  It is now possible to customize the keybindings of the command
+    prompt.  The defaults are:
+    
+setkey readline bol		 "^A"		% Beginning of line
+setkey readline eol		 "^E"		% End of line
+setkey readline right		 "\e[C"		% Move right
+setkey readline left		 "\e[D"		% Move left
+setkey readline bdel		 "^H"		% Delete backward
+setkey readline bdel		 "^?"		% Delete Backward
+setkey readline del		 "^D"		% Delete Foreword
+setkey readline deleol		 "^K"		% Delete to End of line
+setkey readline trim		 "\e/"		% Trim whitespace
+setkey readline quoted_insert	 "^Q"		% Quoted insert
+
+    The name of the keymap is `readline'.
+
+6.  New intrinsic functions for macros include:
+
+      thread_size              % Returns number of headers in thread
+      collapse_thread          % Collapse current thread
+      uncollapse_thread        % Uncollapse current thread
+      is_thread_collapsed      % Returns non-zero if current thread is collapsed
+      get_header_tag_number   
+      article_as_string        % Returns whole article as a string
+      tt_send                  % Send argument to terminal
+      header_next_unread       % goto next unread header
+      input_pending            % Wait for input or timeout
+      getkey                   % read keyboard character
+      ungetkey                 % push back keyboard character
+      set_input_string         % provide answer to prompt
+      get_yes_no_cancel        % get response from user
+      
+    See README.macros for more information.
+
+7.  New .slrnrc variable macro_directory controls where macro file are
+    loaded from.  For example, 
+    
+        set macro_directory "News/macros,/usr/local/lib/slrn/macros"
+	interpret "util.sl"
+	interpret "tin.sl"
+	
+    will search for the macro files in $HOME/News/macros,
+    /usr/local/lib/slrn/macros, and, as a last resort, in the home
+    directory ($HOME).
+
+8.  Now possible to add custom headers to followups and replies.  The
+    actual headers are controlled by new slrn.rc variables:
+    
+         set reply_custom_headers "X-Bla: Bla bla"
+         set followup_custom_headers "X-Bla: Bla bla"
+	 
+    The string assigned to these variables may contain the format
+    specifiers of the 'followup' variable.  This idea was presented to
+    me by John Goerzen <jgoerzen@complete.org>.
+    
+9.  Several people have sent me patches for customization of high/low
+    score thresholds.  The following .slrnrc variables are now available:
+    
+          set min_high_score 1
+	  set max_low_score 0
+	  set kill_score -9999
+
+    One might want to set these on a group by group basis.  This is
+    possible via a macro.  The best way to do this is to put the
+    appropriate statements in a 'pre_article_mode_hook' described below.
+    
+10. New hooks for macros:
+
+        resize_screen_hook : called when screen size changes
+	pre_article_mode_hook: called before grabbing headers from server
+	  in article mode.
+
+
+    
+Changes since 0.9.0.0
+-1. features.h changed to slrnfeat.h to avoid GNU C problems.
+
+0.  Misc bug-fixes, e.g., xgtitle operational again.  In addition, I
+    rewrote the lowlevel tcp/ip code so that slrn should now be more
+    responsive to Ctrl-G abortion and suspension.
+
+1.  The following .slrnrc commands are obsolete and will not be
+    supported for too much longer:
+
+     "quote_string"
+     "realname"
+     "replyto"
+     "organization"
+     "followup"
+     "cc_followup_string"
+     "decode_directory"
+     "editor_command"
+
+    These are now `set' type variables.  That is, the new usage is:
+    
+      set quote_string ">"
+      
+    etc...
+
+2.  If a piece of authentication information is supplied as an empty
+    string as in
+    
+         nnrpaccess "news.mit.edu"  "davis"  ""
+	 
+    slrn will prompt for the information.  
+
+3.  It is now possible to specify the ``help'' string that is
+    displayed at the bottom of the display via the variables:
+
+       set art_help_line "bla bla"
+       set header_help_line "more bla bla"
+       set group_help_line "and even more"
+       
+4.  Scrolling improvements.
+5.  It is now possible to use, e.g., 
+
+        setkey article "digit_arg"  "\eOP1"
+        setkey group   "digit_arg"  "\eOP1"
+       
+    to bind a key to the prefix argument function.
+6.  Group search also search group description
+7.  `set use_tilde 0' may be used to turn off tilde feature.
+8.  New interpreter intrinsics:
+
+      get_group_flags
+      set_group_flags
+      is_article_visible
+      is_group_mode
+      extract_article_header
+      set_article_window_size
+      read_mini_no_echo
+      save_current_article
+      select_group
+      group_search
+      group_down_n
+      group_up_n
+      group_unread
+
+
+Changes since 0.8.8.4
+0.  Tiny problem with server timeout fixed.
+1.  GroupLens support added.  See README.GroupLens
+
+2.  Sort by score implemented.  See src/features.h to disable it.  To
+    sort by score, add:
+    
+        set sorting_method 5
+	set display_score 1
+	
+    to your .slrnrc file.  Set display_score to 0 to disable
+    displaying the score value.  If the score value is displayed, the
+    number of lines in the article will not be displayed.
+    Thanks go to Olly Betts <olly@mantis.co.uk> for this feature.
+
+3.  Score file lines such as:
+
+       [~rec.crafts.*, rec.hobbies.*]
+       
+    are now supported.  The `~' character means that the set of scores
+    implied by this line applies to any group EXCEPT rec.crafts.* and
+    rec.hobbies.*.  That is, the `~' character may be used as a NOT
+    operator in this context.
+    
+4.  New slrnrc configuration option:
+
+      set custom_headers "X-Whatever: bla\nX-Misc: bla bla"
+
+5.  New group mode function: move_group.  This will allow you to use the
+    up/down arrow keys to move a group to a different location.  It
+    has a default binding of `m'.
+
+6.  Added Felix von Leitner's cross posting and tilde patches.  The
+    cross posting patch is enabled via the SLRN_HAS_MSGID_CACHE feature.
+    Similarly, the tilde patch is available via SLRN_HAS_TILDE_FEATURE.
+    Thanks Felix.
+
+7.  S-Lang interpreter available.  Set SLRN_HAS_SLANG in features.h to
+    enable it.  See also README.slang and slrn.sl for more
+    information.  The 0.9 series of slrn releases will feature more
+    and more interpreter capabilities.
+
+Changes since 0.8.8.3
+0.  Bug fix release and patches to get it to compile under VMS again.
+
+Changes since 0.8.8.2
+0.  Misc bug fixes
+1.  Support for INEWS and LOCAL NEWS SPOOL.  The INEWS patches were
+    originally provided by Erik Manders <erik@il.ft.hse.nl>.
+    Olly Betts <olly@mantis.co.uk> is responsible for the local spool support.
+    Edit src/features.h to enable these options.
+    
+    The following slrn.rc variables are are related to the spool support:
+    
+	 set spool_inn_root "/export/opt/inn"
+	 set spool_root "/export/news"
+	 set spool_nov_root "/export/news"
+	 % -- The following filenames are relative to spool_root
+	 set spool_nov_file ".overview"
+	 set spool_active_file "data/active"
+	 set spool_activetimes_file "data/active.times"
+	 set spool_newsgroups_file "data/newsgroups"
+
+    Of course default values for these files may be hard-coded.  See
+    src/features.h.
+    
+    In addition, new command line arguments have been added:
+    
+          --inews ==> use inews for posting
+	  --nntp  ==> use nntp
+	  --spool ==> use local news spool
+	  --version
+	  
+2.  Score files now allow more than one newsgroup pattern to be specified,
+    e.g., 
+    
+        [sci.*, comp.*]
+	   .
+	   .
+
+Changes since 0.8.8.1
+1.  base 64 decoding support
+2.  On VMS, the personal slrn configuration file has been renamed to slrn.rc.
+    See features.h for changing this.  Also, many thanks to Andy Harper
+    (A.HARPER@kcl.ac.uk) for work on DCL make files.
+3.  Small bug fixes
+
+Changes since 0.8.8.0
+
+0.  Bug fixes (hangup, connection aborts, article/header percentage counts,
+    etc..)
+
+1.  Oops.  Forgot to provide a way to turn off video attributes.  Now you can
+    use `none', e.g.,
+    
+        mono headers none
+	
+2.  New variable for group descriptions: group_dsc_start_column
+
+        set group_dsc_start_column 40
+	
+    causes descriptions to start in column 40.
+3.  Now possible to color descriptions via:
+
+        color description blue white
+	mono description bold 
+
+4.  ^G abort of header retrieval.
+5.  New variable:
+
+        set lines_per_update 50
+	
+    sets the granularity of slrn's percentage meters.
+
+6.  Spoiler support provided by Olly Betts (olly@mantis.co.uk).  The .slrnrc
+    variable `spoiler_char' may be used to specify the character used to
+    hide the text.  The default is '*':
+    
+        set spoiler_char '*'
+
+7.  .slrnrc `ignore_quotes' specifier can take up to 5 regular expression
+    patterns, e.g.,
+    
+        ignore_quotes  "^ *[:=|+>]"    "^ *[A-Za-z]>"
+	
+    specifies two patterns.
+
+8.  Certain compiler symbols such as NO_DECODE have been renamed and moved to
+    the new file: features.h
+Changes since 0.8.7
+0.  Misc bug fixes
+
+1.  Use of the XGTITLE command is turned off by default.  Use the variable
+    `use_xgtitle' to turn it on.
+
+2.  New configuration settings for your .slrnrc file
+
+       set Xbrowser "netscape %s &"
+       set non_Xbrowser "lynx %s"
+
+    Press the `U' key (browse_url) for slrn to search for a URL and call the
+    appropriate browser.  Thanks go to Justus Pendleton
+    <justus@ryoohki.res.cmu.edu> for the patches.
+    
+3.  When creating a score from within article mode, you will be prompted for
+    whether or not the score is local or global.  This patch was the idea of 
+    Colin Perkins <csp@ohm.york.ac.uk>.
+
+4.  Use `set query_reconnect 0' in your .slrnrc file to turn off
+    reconnection confirmation.
+
+5.  `ESC 1 *' now removes all `*' marks.
+6.  If `cc_followup' is -1, slrn will prompt whether or not to cc the
+    followup message.
+7.  If linked against slang version 0.99-30 or later, it is possible to
+    customize the video attributes on mono-chrome terminals, e.g.,
+    
+         mono cursor reverse blink
+	 mono headers bold
+	 mono author bold blink
+	   .
+	   .
+
+    The above lines will cause the author part of the header to blink in
+    bold, the cursor will blink in reverse video, etc...
+
+8.  New variable to set: write_newsrc_flags
+    
+         % If 0, save all groups when writing newsrc file
+	 % if 1, do not save any unsubscribed groups
+	 % if 2, do not save any unread-unsubscribed groups
+	 set write_newsrc_flags 0
+
+9.  Better checking of articles before posting.  Now, a new screen will
+    appear with error messages if the article appears badly formatted.
+
+10. Modified scrolling behavior when the article window is open.  Now the
+    next and previous headers are always visible.
+
+Changes since 0.8.6
+0.  Under Unix there is a new `configure' script for building slrn.
+1.  ``Header Numbers'' add for more efficient article selection.  This is
+    enabled by default and may be disabled by adding
+    
+        set use_header_numbers 0
+	
+    in your .slrnrc file.  In addition, the color of these numbers may be
+    controlled via something like
+    
+        color header_number "green" "white"
+	
+    The numbers appear at the left margin of the header window.  To goto a
+    particular numbered header, e.g., 12, simply press `1' then `2' followed
+    by RETURN, SPACE, etc...
+2.  The function ``xpunge'' has been added for article mode.  The default
+    binding of this function is to the `x' key.  It removes already read
+    articles from the list.
+3.  If slrn does not read the active file, then it will now attempt to use
+    the `xgtitle' command to query the server for newsgroups matching a
+    pattern.  (This affects the `L' key in group-mode).
+Changes since 0.8.5
+-1. New distribution structure
+0.  Thanks to Jay Maynard (jmaynard@nwpros.com), slrn now runs under OS/2.  
+    Since this is the first OS/2 version, it should be regarded as ALPHA.
+1.  New .slrnrc configuration variable: prompt_next_group.  If 0, slrn will
+    not provide the opportunity to use up/down arrow keys to select the next
+    group.  Instead, pressing a key that performs a goto next group action,
+    e.g., the Next-Group mouse button, will simply put you in the headers of
+    the next group in the group list.
+2.  When the mouse is clicked on a button at the top of the display, the
+    button will ``flash''.  The color that is used to simulate the flash may
+    be specified by using, e.g., 
+    
+         set color menu_press blue yellow
+	 
+    in your .slrnrc file.
+3.  New groups are displayed with an `N' in the flags column.
+4.  `ESC 1 L' will hide unsubscribed groups  (`L' with a prefix argument).
+5.  The `?' key may be used in help mode to re-start help.
+6.  OS/2 port thanks to Jay Maynard <jmaynard@admin5.hsc.uth.tmc.edu>.
+    Note: this port is still considered to be in its alpha stage.
+7.  slrn will nolonger run unless the user has a username and a FQDN.
+8.  New article mode functions (Thanks to Alain.Knaff@imag.fr (Alain Knaff)):
+      fast_quit                       % quit news reader from article mode
+      skip_to_prev_group              %
+    None of these function have default bindings.
+9.  When replying, slrn will warn the user if the email address appears
+    invalid.
+10. New configuration variable:
+
+       set use_metamail 0
+       
+    If non-zero, metamail will be called to process MIME articles that 
+    slrn does not support.
+
+Changes since 0.8.4
+1.  Small bug fixes (nothing major).
+2.  Cosmetic change where one can more easily see the progress of the
+    download of tagged articles.  In addition the server name is printed on
+    the top status line.
+3.  The `*' (toggle_header_tag) function has been changed.  If used on a
+    collapsed thread, it will tag the entire thread.  In addition, after
+    pressing `*', the pointer moves down one header.
+4.  -m command line option forces XTerm mouse reporting to be turned on.
+5.  When the mouse is enabled, ``buttons'' also appear on the top status
+    line.  Simply click on them with the mouse.  Perhaps in the future,
+    these buttons will become menus.
+
+Changes since 0.8.3
+0.  The slrn makefile has changed.  Now it asks for a location to put slrn
+    object files and it asks for the location of the slang library file.
+    The nice thing about this is that it is easy to compile slrn under
+    multiple architectures.  The down side is that some makes will not work
+    with the Makefile.  If your make fails, use Makefile.old.  Since I do
+    not plan to continue support for Makefile.old, please look into
+    installing GNUmake.
+1.  .newsrc file is now created in mode where only user has read permission
+    to it.
+2.  If a prefix argument is given to the subscribe/unsubscribe commands, the
+    user will be prompted for a group pattern which will be used, e.g., 
+    pressing `ESC 1 s' and entering `*linux*' at the prompt will result in
+    a subscription to all newsgroups of form `*linux*'.
+3.  If a prefix argument is given to the `K' (create_score) function, the
+    editor will be called to edit the score file-- no questions asked.
+4.  New .slrnrc variable: query_read_group_cutoff
+    Whenever slrn enters a group with `query_read_group_cutoff' or more
+    unread articles in it, it will prompt for how many to read.  The default
+    is 100.  If set to 0 or less than 0, slrn will not prompt at all, i.e.,
+    
+        set query_read_group_cutoff 0
+
+5.  It is now possible to have articles automatically wrapped by adding 4 to
+    the wrap flags value.  See the slrn.rc file.
+6.  VMS changes: some patches added, ``makefiles'' fixed
+
+Changes since 0.8.2
+1.  If slrn cannot find a fully qualified domain name, it will not run.
+    This name can be specified in the .slrnrc file so there is no excuse for
+    not having one.  There are too many articles already floating around
+    usenet with bad hostnames and I do not want slrn to contribute to this.
+2.  Bug in authorization fixed
+3.  Oops.  If one were editing a file from within slrn and the window was
+    resized, slrn would re-draw the window!  That is fixed.
+4.  article wrapping added-- press `w' in article mode to wrap/unwrap.  The
+    variable `wrap_flags' may be used to control whether or not headers or
+    quoted material is wrapped, e.g.,
+    
+        set wrap_flags 1    % Wrap headers
+	set wrap_flags 2    % Wrap quoted material
+	set wrap_flags 3    % Wrap headers and quoted material
+	
+    The default is to wrap everything (3).
+
+5.  slrn may be started as in `slrn -h server.name:XXX' where XXX in an
+    integer that represents a port number. 
+
+6.  `set sendmail_command' may be used in the .slrnrc file to specify an
+    alternative mail program.  The default is: 
+    
+          "/usr/lib/sendmail -oi -t -oem -odb"
+	  
+    See config.h for selecting a different default.
+       
+7.  ESC u in group mode may be used to Un-Catchup on a group.
+
+Changes since 0.8.1
+1.  Misc bug fixes:
+      MIME re-worked
+      some VMS problems ironed out
+      VMS: callable mail support
+
+Changes since 0.8.0
+1.  The `toggle_sort' function bound to `ESC s' in article mode has been
+    modifed.  Now, it prompts for the sorting method.
+2.  New variables for the .slrnrc file:
+
+      % If 0, do not sort.  If 1, perform threading.  If 2, sort by subject
+      % If 3, thread then sort result by subject
+      set sorting_method 3
+
+      % If non-zero, threads will be uncollapsed when a group is entered
+      set uncollapse_threads 0
+      
+    Note: methods 2 and 3 were not available in previous versions of slrn.
+    This is why the `toggle_sort' function needed to be modified.
+3.  It is now possible to have all posted articles saved in a file.  The
+    file is specified in the .slrnrc with a line like:
+
+        set save_posts "News/My_Posts"
+
+4.  slrn now generates its own message id provided that it can find the
+    machines fully qualified domain name (FQDN).  The reason for this is
+    that one can easily more efficiently score follow-ups to the user's
+    posted articles.  For example, if the FQDN is `machine.my.domain' and
+    the user's name is `user' then simply put:
+    
+       [*]
+       Score: 100      (or whatever)
+       References: user@machine.my.domain>
+       
+    in the score file.  (The first part of the generated message-id is
+    composed of a base 32 representation of the current time and process-id).
+5.  Default values available at all yes/no prompts.
+
+6.  Saving an article is slightly different but simpler.  The new bindings
+    are: 
+    
+	`:'  uudecode file
+        `o'  save a file-- no decoding
+	
+    Use "decode" and "save_article" to re-bind these.
+    See the FAQ for more detailed help on uudecoding articles.
+    
+7.  New variable: 'save_directory' may be used to specify where files are
+    saved.  The default is 'News'.  Use something in your .slrnrc file:
+    
+        set save_directory "News"
+	
+8.  There is now an option for slrn to read the active file upon startup.
+    Using this option may result in faster startup times.  Using the active
+    file also has the advantage that the `L' key will list all groups
+    available at the server.  
+    
+    There are two ways of enabling this option:
+    
+        a.  Startup slrn with the -a switch:  slrn -a
+	b.  Add the line:
+	  
+	         set read_active 1
+	   
+	    to your .slrnrc file.
+
+9.  The `Expires' date may be given in one of the following formats:
+
+       MM/DD/YYYY
+       DD-MM-YYYY
+       
+    Previous versions only allowed the first format.
+
+10.  MIME support add by Michael Elkins <elkins@aero.org>.
+    To enable MIME support, add:
+    
+        set use_mime 1
+	
+    to your .slrnrc file.  In addition, you may select a character set by
+    adding something like:
+    
+        set mime_charset "iso-8859-1"
+
+    to your .slrnrc file.
+    
+    The MIME code is still in the testing phase but it appears to be ok.
+    
+Changes since 0.7.9.0
+1.  If Cc: header appears in a followup, the message will also be email to 
+    the addresses listed on the line.  The address `poster' will be
+    considered as an alias for the original poster.  This header will
+    automatically be generated if the line:
+    
+         set cc_followup 1
+       
+    appears in the .slrnrc file.
+    By default, the body of an email message generated this way will be
+    prefixed by the string:
+    
+      [This message has also been posted.]
+      
+    To change it, use a line of the form:
+      
+      cc_followup_string "[Note: Even though I posted this, here is a copy.]"
+      
+    in your .slrnrc file.
+    
+2.  Broken threads are now collaped together.
+3.  In replies, the In-Reply-To header is generated with the message-id of
+    the original post.
+4.  New variable for .slrnrc: `set confirm_actions 1'.  If set to 1 (default
+    is 0), confirmation on quitting, followup, reply, etc... is not performed.
+    
+5.  Arbitrary header keywords are now allowed for Score files.  Keep in mind
+    that a score that is based on such keywords take ALOT longer to process.
+    The command line option -k0 will suppress expensive scores.  
+
+    In addition, the K key (bound to `toggle_scoring') may be used at the
+    group level to set the scoring mode.
+
+6.  Enhanced score file syntax:
+
+       a.  If Score::  (TWO colons) is used to denote a score, all
+           expressions that it covers will be considered as OR type
+	   expressions.  That is,
+	  
+	       Score:: 20
+	        Subject: larry
+	        Subject: curly
+	   
+          is (almost) equivalent to
+	  
+	       Score: 20
+	        Subject: larry
+	       Score: 20
+	        Subject: curly
+          
+	  Homework: What do I mean by ``almost''?
+	  Note: Scores with only one colon are AND scores.
+	  
+      b.  If a score value is prefixed with the `=' sign, e.g., Score: =30
+          Then scoring on the article is regarded as finished and a value of
+	  30 will be assigned to the article.
+
+    See score.txt and KILL_FAQ for more information.
+    
+7.  Article mode keybindings of `<' and `>' have been changed to goto the
+    beginning and end of the article, resp.
+    
+8.  The `#' key may be used to NUMERICALLY tag articles.  The save operation
+    now saves tagged articles in their numerically tagged order.  The key
+    sequence `ESC #' will remove all numerical tags.
+9.  The save function is now more sophisticated.  It can now save tagged
+    articles, the current thread, or a single article.  After it saves, it
+    prompts for decoding.  The present version of slrn can only decode
+    uuencoded files or share archives.  If decoding is selected, slrn will
+    prompt for whether or not he save file should be deleted.
+    
+    The variable `decode_directory' may be used to control where decoded
+    files are placed.
+    
+10. If a line of the form:
+
+       set use_tmpdir 1
+      
+    appears in the .slrnrc file, a tmp directory will be used for posting
+    and replying.  The directory /tmp will be used unless the environment
+    variable TMPDIR exists.
+    
+11. It is now possible to set the editor command in the .slrnrc file, e.g.,
+
+        editor_command "jed %s -g %d -tmp"
+	
+      
+
+Changes since 0.7.8.2
+1.  Score files added-- See score.txt for score file syntax.  To use score
+    files you must add a line such as:
+    
+         scorefile "News/Score"
+
+    to you .slrnrc file.  slrn assumes no default value for this file.  With
+    this defined, you may either edit the file by hand or press the `K' key
+    in article mode to automatically add ``scores'' to this file.  If you
+    edit it by hand and you use the jed editor, see `score.sl' for a syntax
+    highlighting and indentation mode for score files.
+    
+    A new commad line option `-k' may be used to turn OFF score file
+    processing.
+
+2.  In article mode, `=' key will now follow articles of a specified
+    subject.  In addition, the `!' key will go to articles with high scores.
+
+Changes since 0.7.8.1
+1.  Threads are now collapsed.  An individual thread may be un-collapsed by
+    pressing `ESC t'.  Pressing `ESC t' will re-collapse it.  In addition,
+    simply reading the first article in a thread will un-collapse it.
+    Deleting a collapsed thread will delete all articles in th thread.
+    Hopefully, this interface will seem intuitive.
+    
+    Note: `ESC 1 ESC t' will toggle collapsing of ALL threads.  
+    
+    To bind this to a different key, use the function 
+    `toggle_collapse_threads'.
+    
+    Of course the thread number has to have a color.  The default is:
+    `color thread_number "blue" "white"'
+    
+2. New configuration variables for your .slrnrc file (defaults shown)
+
+      set query_next_article 1
+      set query_next_group 1
+     
+   For example, setting query_next_article to 0 will result in the next
+   article being read when the end of the current one is reached.
+
+3. Parse error messages while parsing .slrnrc file are now more meaningful.
+
+Changes since 0.7.8.0
+1.  Additional support for XTerm mouse (Thanks Mark).  These include:
+
+    Article mode:
+
+        Left Button: Help bar:        return help
+                     Header status:   header page down
+		     Article status:  Next unread
+		     Article window:  Article page down
+      Middle Button: Help bar:        toggle show author
+                     Header status:   hide article
+		     Article status:  toggle quotes
+		     Article window:  nothing
+      Right Button:  Help bar:        help
+                     Header status:   header page up
+		     Article status:  Prev unread
+		     Article window:  Article page up
+                     
+    Similar functionality for group mode.
+    
+2.  VMS makefile fixed
+3.  New group mode function: transpose_groups.  The default binding is ^X^T.
+    This will transpose the position of two groups.  This may be used to
+    rearrange groups.
+4.  man page updated
+5.  `set color signature' now supported.  (Thanks to
+    combee@ptsg-austin.sps.mot.com (Ben Combee))
+6.  Misc bug fixes.
+7.  `hide article' will now toggle.
+
+Changes since 0.7.7
+0.  Misc bug fixes
+1.  slrn calling syntax changed: The -D parameter has changed to lowercase -d.
+    Now, a new -Ddefine-something is available.
+2.  If using slang0.99-20 or newer, it is possible to use slang preprocessing
+    in your .slrnrc file.  Use the -D flag to define a token.
+3.  Oops!  Previous version broke art_lineup, art_linedn functions.
+4.  Problem with "unknown" as username fixed.
+5.  Suspension now allowed during lengthy transfers.  This requires slang
+    version 0.99-20 or greater.
+6.  New article mode function: "toggle_header_tag".  A header that is
+    ``tagged'' is marked with a `*' in the left column.  The default binding
+    is to the `*' key (Shift-8).  A tagged article will not change its read
+    status by the `catchup' series of functions.  There may be more uses
+    later.
+7.  If a `prefix' argument is given to the `get_parent_header' function, the
+    entire tree will be reconstructed.  This means that the whole tree can
+    be reconstructed by pressing: ESC 1 ESC p
+8.  Another oops.  -create flag was not working in 0.7.7.
+9.  `set unsubscribe_new_groups' added to slrn.rc file.  If this is non-zero,
+    newgroups will not automatically be subscribed to, e.g., if you desire
+    this behavior, put the following in your .slrnrc file:
+       set unsubscribe_new_groups 1
+10. In an effort to make the article screen look less busy, a new
+    configuration variable `show_thread_subject' has been made available.
+    If zero, only the parent thread's subject will be displayed.  If you do
+    not like this, add:
+      
+        set show_thread_subject 1
+	
+    to your .slrnrc file.
+11. By default, articles are saved in folders with names beginning with a 
+    capital letter.  If a folder with a lower case name already exists, slrn
+    will use that.  That is, it is backward compatable.
+12. Improved man page (Thanks to Howard Goldstein <hg@n2wx.ampr.org>)
+13. XTerm mouse support added.  This option requires slang version 0.99-21.
+    Use `set mouse 1' in your .slrnrc file to enable.  Note: mouse reporting
+    is disabled at all slrn prompts so the mouse will be available for
+    cut/paste in such contexts.
+
+Changes since 0.7.6
+1.  Improvements for VMS.  Now supports NETLIB (Thanks Andrew).
+2.  Improved detection of supercite
+3.  The article mode functions `catchup' and `uncatchup' have changed
+    slightly in a way that may be more useful.  Now, they function on all
+    headers from the top of the header list to the current header.
+    Previously they functioned on all headers from the current one to the
+    end of the list.  Of course the functions `catchup_all' and
+    `uncatchup_all' are still available.
+4.  New `config.h' file that allows HOSTNAME, ORGANIZATION, etc... to be
+    compiled into the executable.
+5.  Slightly improved FAQ.
+
+Changes since 0.7.5
+0.  VMS port thanks to Andrew Greer (Andrew.Greer@vuw.ac.nz)
+1.  Small bug in help.c corrected that caused problems on some systems if a
+    custom help file was used.
+2.  New function: repeat_last_key.  The default binding is `.'.  The
+    function that `.' used to be bound to has been moved to `;'.
+3.  slrn.rc may be placed in SLRN_LIB_DIR to provide defaults for all users,
+    e.g., organization, hostname, ...  See INSTALL.
+4.  Catchup bindings changed in article mode.  (By popular demand).
+5.  Misc improvements.
+
+Changes since 0.7.4
+1.  Oops!  It was possible to cancel any article in the old version.  I
+    forgot to add a `return' statement after checking to make sure that the
+    person cancelling actually posted the article.
+2.  Missing comma between two strings in help.c added.
+3.  `delete_thread' function added to article mode keybindings
+4.  `followup' added to slrn.rc.  This allows the user to set the followup 
+     string.  For example, I use:  followup "On %d, %r <%f> wrote:"
+     See slrn.rc for more information.
+5.  It is now possible to concatenate newsrc files.  slrn will now ignore
+    repetitions.  For example, suppose that you have an old newsrc file that
+    you wish to bring uptodate.  Let's call it `old'.  Suppose that another
+    one, `new' is much more extensive.  Then do:
+    
+        % mv old old~
+	% cat old~ new > old
+	% slrn -f old
+	
+    If you have no idea how this may be useful, then you do not need it.
+6.  Group mode searches will automatically wrap.    
+7.  Some support for automatic detection of ``super-cited'' articles so that
+    quoted lines are handled properly.  This works most of the time.
+8.  If `set no_backups 1' appears in the .slrnrc file, backups of the .newsrc
+    file is turned off.
+9.  `g' in article mode will skip to the next digest.
+10. User is now prompted for chance to re-edit a message after editing.
+11. `set beep 0' may now be used to turn off the bell.  See slrn.rc.
+
+Changes since 0.7.3
+1.  -i init-file command option added.  This allows a different slrn.rc file
+    to be specified (default: .slrnrc).
+2.  Silly problem fixed when -create option used but .newsrc does not exist.
+3.  A line read in from the server that begins with two periods is stripped 
+    of one of them as RFC977 requires.
+4.  Using a prefix argument to the followup command will insert the original
+    headers into the followup.
+5.  If server drops the connection, an attempt is made to reconnect.
+    (ljz@panix.com)
+
+Changes since 0.7.2
+1.  Slight modification to extract real name routine so that if the name is
+    not available, the address is used.
+2.  Now possible to specifiy a color for quoted text via `color quotes'.
+    The default is: color quotes red white
+    This really does improve readability of an article with quoted material!
+3.  NNRP authentification support added.  In .slrnrc, use a line like:
+       nnrpaccess HOSTNAME USERNAME PASSWORD
+ 
+Changes since 0.7.1
+0.  The XPAT server command is exploited if it is available.  Not all servers
+      support it even though it is pretty standard.
+1.  ESC Ctrl-P will find all children of current header by querying the
+    server.
+2.  Confirm Follow-up when poster sets the followup line to poster.
+3.  ESC-d will now mark the current thread as read-- that is, current header
+    plus all children.
+4.  SPACE in article mode can be used to read next article or go to next
+    group if pressed twice at the end of the current article.
+    
+Changes since 0.7.0
+1.  Typo in the `unsetkey' function corrected.  The typo was a serious one.
+2.  Small change in the Top/Bottom/Percentage calculation for the status line.
+3.  Misc bug fixes
+4.  See help.txt for creating your own custom help screen.
+
+Changes since 0.6.3
+1.  Added `realname' to slrn.rc file.
+2.  TRUE referenced based threading added.  Subject sorting has been 
+      abandoned.  A tree in drawn showing how articles are threaded.  The
+      color of the tree may be specified by `color tree' in your .slrnrc
+      file.  ESC-p will got to the parent of the current header.
+      
+      Note:  If the terminal cannot support line drawing characters, the
+      tree will not appear.
+
+Changes since 0.6.2
+1.  Xref mark as read now takes advantage of group name hashing.
+2.  Fixed problem with getlogin on some systems.
+
+Changes since 0.6.1
+1.  `N' in article mode will now skip on to next group.  Lowercase `n' still
+    retains its previous meaning.
+2.  Bug fixed in catchup-all in article mode.  Previously, it did not mark
+    all as read.
+3.  A description of each newsgroup can be displayed next to the group name. 
+    Use ESC-a to toggle it on/off.
+4.  New environment variable SLRN_LIB_DIR determines where to load files
+    that may be shared by all users, e.g., the group description file.  By
+    default, it is /usr/local/lib/slrn.  See INSTALL for more details.
+    
+Changes since 0.6.0
+1.  The `G' key at group mode may be used to retrieve new news from the
+    server.  In addition, `X' will force the newsrc file to be saved.
+2.  Small bug corrected that manifests itself when no groups are subscribed
+    to (a very rare situation).
+3.  The one-line help at the bottom of the screen is always visible now.  Of
+    course, the full on-line help is still available.
+4.  The Makefile has been modified so that slrn may be easily termified
+    under Linux.
+5.  Fixed a silly bug that made the -C color flag do nothing.
+
+Changes since 0.5.3
+1.  Selecting a group with an ESC prefix digit argument will now select
+    unread articles too.
+2.  My uudecode program can also unpack shell archives.  No need to edit
+    those headers either.
+3.  When replying, the user defined quote string is used to quote the
+    article. 
+4.  ESC-r from article mode will toggle rot13 decryption.
+5.  `|' in article mode will pipe article to an external command (e.g., lpr)
+6.  Some cosmetic improvements by ljz@ingress.com (Lloyd Zusman).
+7.  ESC-U, ESC-u, ESC-C, ESC-c added by ljz@ingress.com (Lloyd Zusman).
+    These functions may be used to catchup and un-catchup on articles in
+    article mode.
+8.  IF the line: `set show_article 1' appears in your .slrnrc file, the
+    article is displayed when article mode is entered.
+
+Changes since 0.5.2
+1.  Path header added when posting
+2.  When the newsrc file is written, a backup is made of the previous version.
+
+Changes since 0.5.1
+1.  ESC-a toggles showing author's name on/off in the header window.  This
+    provides a wider display for the subject.
+
+Changes since 0.5.0
+1.  Improved help screen for beginners.
+2.  ESC-s now toggles header sorting on/off.
+Changes since 0.4.0
+1.    LOGNAME environment variable now checked to get the user's login name.
+      Previously, only USER was checked.
+2.    newsrc file locking added.
+3.    TAB key now moves past quoted text
+4.    `autobaud' keyword in .slrnrc file may be used to incicate that the
+      output rate to the terminal should be synchronized to the terminal
+      baud rate.  This behavior was always the default in previous versions.
+      Now, it is off by default.
+5.  The `L' key in the group menu may now be used to toggle the display of
+    unsubscribed groups on and off.  
+

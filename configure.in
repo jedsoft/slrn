@@ -1,0 +1,290 @@
+dnl -*- sh -*-
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(src/slrn.c)
+AC_CONFIG_AUX_DIR(autoconf)
+
+dnl remember to update src/VMSMAKE.COM and src/version.h !
+AM_INIT_AUTOMAKE(slrn, 0.9.7.2pl2)
+
+AC_SUBST(PACKAGE)
+AC_SUBST(VERSION)
+
+CF_ANSI_CC
+CF_GCC_OPTIONS
+
+dnl Unfortunately, autoconf lacks a --docdir option. This is a workaround:
+AC_ARG_WITH(docdir,
+    [  --with-docdir=DIR       Where to put the documentation],
+    [ if test "x$withval" = xyes || test "x$withval" = xno; then
+         docdir='${prefix}/share/doc/slrn'
+      else
+         docdir="$withval"
+      fi
+    ], [ docdir='${prefix}/share/doc/slrn' ])
+AC_SUBST(docdir)
+
+dnl directory where .mo (translation) files should be placed
+AC_ARG_WITH(localedir,
+[  --with-localedir=DIR    Where to put locale files])
+if test -z "$with_localedir" || test "x$with_localedir" = xyes || test "x$with_localedir" = xno; then
+    if test "x$prefix" = xNONE; then
+	LOCALEDIR="${ac_default_prefix}/share/locale"
+    else
+        LOCALEDIR="${prefix}/share/locale"
+    fi
+else
+    LOCALEDIR="$with_localedir"
+fi
+		    
+AC_SUBST(LOCALEDIR)
+AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEDIR")
+
+dnl BeOS neither needs nor supports "-lm"
+AC_MSG_CHECKING(for BeOS)
+case `uname` in
+  BeOS)	LM=""; AC_MSG_RESULT(yes);;
+  *)	LM="-lm"; AC_MSG_RESULT(no);;
+esac
+AC_SUBST(LM)
+
+dnl List of all translations.
+ALL_LINGUAS="da de it nl pl ru"
+AM_GNU_GETTEXT
+
+CF_HARDCODE_LIBS
+CF_TERMCAP
+CF_PATH_SLANG_LIB
+CF_PATH_SLANG_INC
+CF_SSL
+CF_UUDEVIEW
+
+dnl find sendmail
+AC_PATH_PROG(SENDMAIL, sendmail, no,
+    $PATH:/usr/local/sbin:/usr/sbin:/usr/local/lib:/usr/lib)
+if test "x$ac_cv_path_SENDMAIL" != xno; then
+    AC_DEFINE_UNQUOTED(SLRN_SENDMAIL_COMMAND, "$ac_cv_path_SENDMAIL -oi -t -oem -odb")
+else
+    AC_MSG_ERROR([
+
+I can't find a sendmail executable.  sendmail is required by slrn for sending
+e-mail.  Please make sure it can be found in your \$PATH.
+])
+fi
+
+dnl SLRN_LIB_DIR: directory for the global slrn.rc and newsgroups.dsc
+AC_ARG_WITH(libdir,
+[  --with-libdir=DIR       Place for global slrn.rc and newsgroups.dsc])
+if test -z "$with_libdir" || test "x$with_libdir" = xyes || test "x$with_libdir" = xno; then
+	if test "x$prefix" = xNONE; then
+		slrn_libdir="${ac_default_prefix}/etc/slrn"
+	else
+		slrn_libdir="${prefix}/etc/slrn"
+	fi
+else
+	slrn_libdir="$with_libdir"
+fi
+AC_SUBST(slrn_libdir)
+AC_DEFINE_UNQUOTED(SLRN_LIB_DIR, "$slrn_libdir")
+
+dnl slrnpull compilation and support
+AC_ARG_WITH(slrnpull,
+    [  --with-slrnpull         Build slrnpull and add support for it to slrn],
+    [if test "x$withval" = "xyes" ; then
+    AC_DEFINE(SLRN_HAS_PULL_SUPPORT, 1)
+    SLRNPULL="slrnpull"
+    MAN_SLRNPULL="slrnpull.1"
+    else
+    AC_DEFINE(SLRN_HAS_PULL_SUPPORT, 0)
+    fi])dnl
+AC_SUBST(SLRNPULL)
+AC_SUBST(MAN_SLRNPULL)
+
+dnl the setgid patch
+CF_COMPILE_OPTION(setgid-code,
+    [  --enable-setgid-code    Allow running slrnpull as an unpriviledged user],
+    [ SLRNPULL_USE_SETGID_POSTS ])
+
+dnl NNTP support
+CF_COMPILE_OPTION(nntp,
+    [  --disable-nntp          Disable NNTP support],
+    [ SLRN_HAS_NNTP_SUPPORT ])
+
+dnl news spool support
+CF_COMPILE_OPTION(spool,
+    [  --enable-spool          Enable support for reading directly from spool],
+    [ SLRN_HAS_SPOOL_SUPPORT ])
+
+dnl inews support
+CF_COMPILE_OPTION(inews,
+    [  --enable-inews          Enable inews posting support],
+    [ SLRN_HAS_INEWS_SUPPORT ])
+
+if test "x$enable_inews" = xyes ; then
+
+  dnl find inews
+  AC_PATH_PROG(INEWS, inews, no, $PATH:/usr/local/bin:/usr/bin)
+  if test "x$ac_cv_path_INEWS" != xno; then
+      AC_DEFINE_UNQUOTED(SLRN_INEWS_COMMAND, "$ac_cv_path_INEWS -S -h")
+  else
+      AC_MSG_ERROR([
+
+I can't find an inews executable.  When using --enable-inews, please make
+sure inews can be found in your \$PATH.
+])
+  fi
+
+fi
+
+dnl enforce the use of inews
+CF_COMPILE_OPTION(force-inews,
+    [  --enable-force-inews    Enforce the use of inews],
+    [ SLRN_FORCE_INEWS ])
+
+dnl disallow custom From headers
+CF_COMPILE_OPTION(strict-from,
+    [  --enable-strict-from    Disallow custom From headers],
+    [ SLRN_HAS_STRICT_FROM ])
+
+dnl embed slang interpreter
+CF_COMPILE_OPTION(slang,
+    [  --disable-slang         Don't make the slang interpreter available],
+    [ SLRN_HAS_SLANG ])
+
+dnl disable MIME support
+CF_COMPILE_OPTION(mime,
+    [  --disable-mime          Disable MIME support],
+    [ SLRN_HAS_MIME ])
+
+dnl character set mapping
+CF_COMPILE_OPTION(charmap,
+    [  --disable-charmap       Disable mapping ISO-Latin to native charsets],
+    [ SLRN_HAS_CHARACTER_MAP])
+
+dnl disable spoiler support
+CF_COMPILE_OPTION(spoilers,
+    [  --disable-spoilers      Disable spoiler support],
+    [ SLRN_HAS_SPOILERS])
+
+dnl disable emphasized text support
+CF_COMPILE_OPTION(emph-text,
+    [  --disable-emph-text     Disable emphasized text support],
+    [ SLRN_HAS_EMPHASIZED_TEXT])
+
+dnl disable verbatim marks support
+CF_COMPILE_OPTION(verb-marks,
+    [  --disable-verb-marks    Disable verbatim marks support],
+    [ SLRN_HAS_VERBATIM_MARKS])
+
+dnl disable the generation of Message-IDs
+CF_COMPILE_OPTION(gen-mid,
+    [  --disable-gen-mid       Prevent slrn (and user) from generating Message-IDs],
+    [ SLRN_HAS_GEN_MSGID])
+
+dnl enable Message-ID caching to eliminate cross-posts
+CF_COMPILE_OPTION(mid-cache,
+    [\
+  --enable-mid-cache      Make slrn cache Message-IDs to eliminate cross-posts
+                          (only needed when server has no xref headers)],
+    [ SLRN_HAS_MSGID_CACHE ])
+
+dnl Use In-Reply-To if necessary
+CF_COMPILE_OPTION(fake-refs,
+    [  --disable-fake-refs     Don't use In-Reply-To if References isn't available],
+    [ SLRN_HAS_FAKE_REFS ])
+
+dnl enable grouplens support
+CF_COMPILE_OPTION(grouplens,
+    [  --enable-grouplens      Enable GroupLens support],
+    [ SLRN_HAS_GROUPLENS])
+
+dnl -------------------------------------------------------------------------
+dnl  Check head files
+dnl -------------------------------------------------------------------------
+
+AC_CHECK_HEADERS( \
+stdlib.h \
+unistd.h \
+memory.h \
+fcntl.h \
+malloc.h \
+termios.h \
+sys/socket.h \
+socket.h \
+sys/wait.h \
+netinet/in.h \
+arpa/inet.h \
+sys/utsname.h \
+sys/time.h \
+locale.h \
+)
+
+dnl AC_CHECK_LIB(socket, socket, [LIBSOCKET="-lnsl -lsocket"]) dnl for Solaris
+dnl AC_CHECK_LIB(bsd, gethostbyname, [LIBSOCKET="-lbsd"]) dnl for LynxOS
+dnl AC_SUBST(LIBSOCKET)
+
+AC_HEADER_DIRENT
+
+AC_TYPE_MODE_T
+AC_TYPE_PID_T
+AC_TYPE_UID_T
+
+AC_CHECK_FUNCS(\
+memset \
+memcpy \
+putenv \
+getcwd \
+getdomainname \
+sigaction \
+sigemptyset \
+sigprocmask \
+sigaddset \
+siglongjmp \
+vsnprintf \
+uname \
+gettimeofday \
+setlocale \
+isalpha isspace isdigit isalnum ispunct \
+)
+
+AC_MSG_CHECKING(if sprintf has a bogus return type)
+AC_TRY_LINK([#include <stdio.h>],
+	[char buf[1]; int ret; ret = sprintf (buf, "") % 1],
+	[AC_DEFINE(HAVE_ANSI_SPRINTF) AC_MSG_RESULT(no)],
+	AC_MSG_RESULT(yes))
+
+AC_MSG_CHECKING(for timezone in time.h)
+AC_TRY_LINK([#include <time.h>],
+	[long int tz; tz = timezone % 1],
+	[AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes)],
+	AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(for tm_gmtoff in struct tm)
+AC_TRY_LINK([#include <time.h>],
+	[struct tm t; t.tm_gmtoff = 0],
+	[AC_DEFINE(HAVE_TM_GMTOFF) AC_MSG_RESULT(yes)],
+	AC_MSG_RESULT(no))
+
+CF_VA_COPY
+
+if test "x$enable_inews" != xyes && test "x$enable_force_inews" = xyes ; then
+AC_MSG_WARN([
+Obviously, you need inews support if you want to force the use of inews.
+I'll enable that for you automatically ...])
+AC_DEFINE(SLRN_HAS_INEWS_SUPPORT, 1)
+fi
+
+if test "x$with_slrnpull" = xyes && test "x$enable_spool" != xyes; then
+enable_spool=yes
+AC_MSG_WARN([
+To use slrnpull, you need spool support in slrn.
+I'll enable that for you automatically ...])
+AC_DEFINE(SLRN_HAS_SPOOL_SUPPORT, 1)
+fi
+
+AM_CONFIG_HEADER(src/config.h)
+AC_OUTPUT(Makefile doc/Makefile doc/tm/Makefile src/Makefile intl/Makefile po/Makefile.in)
+
+rm -f config.h
+ln src/config.h config.h
+
+CF_SUMMARY

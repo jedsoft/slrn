@@ -1,0 +1,128 @@
+# Watcom Makefile for slrn                               -*- sh -*-
+# For CYGWIN32 or MINGW32, use Makefile.g32.
+#
+# 1997, March 01, bjf: Added all necessary (and probably some unnecessay)
+#                      dependencies to the $(OBJDIR)/*$(O) targets.
+#
+#
+#---------------------------------------------------------------------------
+# This file is divided into five configurable sections.  The last section
+# is optional: Section 5 deals with setting up slrn to read the server name
+# from a file. This is probably unnecessary on OS/2.
+
+#-----------------------------------------------------------------------------
+# 1. Choose a C compiler.  It must understand prototypes.
+#-----------------------------------------------------------------------------
+CC = wcl386
+#CC = gcc -g -Zcrtdll -Zmt -DOS2 -D__os2__#
+
+#-----------------------------------------------------------------------------
+# 2. On a few systems, additional libraries are required.
+#-----------------------------------------------------------------------------
+#MISCLIBS = -lsocket -ltermcap -lvideo# OS/2
+MISCLIBS = $(SLIBDIR)\wslang32.lib -lwinspool
+
+#-----------------------------------------------------------------------------
+# 3. Directory where the slang library, slanglib.a, is located.
+#    BUILD SLANG FIRST!!!!  If you do not have it, get it from the same place
+#    you picked up slrn.  The current home is space.mit.edu:/pub/davis/slang.
+#-----------------------------------------------------------------------------
+SDIR = ..\..\slang\src#                  Location of slang.h
+SLIBDIR = $(SDIR)\w32objs#               Location of libslang.a
+
+#-----------------------------------------------------------------------------
+# 4. Location where object files are placed.
+#-----------------------------------------------------------------------------
+OBJDIR = objs#
+
+#-----------------------------------------------------------------------------
+# 5. If you want to read the server from a file, uncomment the following
+#    lines and edit it as appropriate.  See INSTALL for more information.
+#    It is also possible to provide defaults for other variables such as the
+#    HOSTNAME, etc...  by editing the slrnfeat.h file.  Again, read INSTALL.
+#-----------------------------------------------------------------------------
+#NNTPSERVERFILE = -DNNTPSERVER_FILE=\"/usr/local/lib/news/nntp_server\"
+#SLRNLIBDIR = -DSLRN_LIB_DIR=\"/usr/local/lib/news\"
+#SLRNLIBDIR = -DSLRN_LIB_DIR=\"$(HOME)/lib/slrn\"
+
+#----------------------------------------------------------------------------
+# Nothing below here should require changing.
+#----------------------------------------------------------------------------
+
+P = \#
+O = .obj
+
+OBJS = $(OBJDIR)$(P)art$(O) \
+       $(OBJDIR)$(P)art_misc$(O) \
+       $(OBJDIR)$(P)chmap$(O) \
+       $(OBJDIR)$(P)editscore$(O) \
+       $(OBJDIR)$(P)group$(O) \
+       $(OBJDIR)$(P)hash$(O) \
+       $(OBJDIR)$(P)help$(O) \
+       $(OBJDIR)$(P)hooks$(O) \
+       $(OBJDIR)$(P)interp$(O) \
+       $(OBJDIR)$(P)menu$(O) \
+       $(OBJDIR)$(P)mime$(O) \
+       $(OBJDIR)$(P)misc$(O) \
+       $(OBJDIR)$(P)post$(O) \
+       $(OBJDIR)$(P)score$(O) \
+       $(OBJDIR)$(P)server$(O) \
+       $(OBJDIR)$(P)snprintf$(O) \
+       $(OBJDIR)$(P)slrn$(O) \
+       $(OBJDIR)$(P)sortdate$(O) \
+       $(OBJDIR)$(P)startup$(O) \
+       $(OBJDIR)$(P)ttymsg$(O) \
+       $(OBJDIR)$(P)util$(O) \
+       $(OBJDIR)$(P)decode$(O) \
+       $(OBJDIR)$(P)slrndir$(O) \
+       $(OBJDIR)$(P)version$(O) \
+       $(OBJDIR)$(P)print$(O) \
+       $(OBJDIR)$(P)vfile$(O) \
+       $(OBJDIR)$(P)xover$(O)
+
+OBJSpull = \
+	$(OBJDIR)$(P)util$(O) \
+	$(OBJDIR)$(P)snprintf$(O) \
+	$(OBJDIR)$(P)ttymsg$(O) \
+	$(OBJDIR)$(P)slrnpull$(O) \
+	$(OBJDIR)$(P)slrndir$(O) \
+	$(OBJDIR)$(P)nntplib$(O)
+
+DEBUG =
+CFLAGS = $(DEBUG) /bt=nt /ort /DWIN32 -I. -I$(SDIR) $(SLRNLIBDIR)
+LDFLAGS = /l=nt
+
+.c.obj: .AUTODEPEND
+	$(CC) $(CFLAGS) /c $< /fo=$@
+
+slrn.exe: $(OBJDIR) config.h slangversion $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) /fe=$@ $(OBJS) $(MISCLIBS)
+
+slrn.lnk: $(__MAKEFILES__)
+	%create $^@
+	for %i in ($(OBJS)) do %append $^@ FILE %i
+
+slrnpull.exe: $(OBJDIR) config.h slangversion $(OBJSpull)
+	$(CC) $(CFLAGS) $(LDFLAGS) /fe=$@ $(OBJSpull) $(MISCLIBS)
+
+uudecode.exe: decode.c
+	$(CC) $(CFLAGS) -DSTANDALONE -o uudecode.exe decode.c
+	touch decode.c
+
+$(OBJDIR):
+	@mkdir $(OBJDIR)
+
+config.h: slrnconf.h
+	copy slrnconf.h config.h
+
+slangversion: $(OBJDIR)\chkslang.exe .SYMBOLIC
+	.\$(OBJDIR)\chkslang.exe slrn 10003 10400
+
+$(OBJDIR)\chkslang.exe: $(OBJDIR)\chkslang$(O)
+	$(CC) $(OBJDIR)\chkslang$(O) /fe=$(OBJDIR)\chkslang.exe
+
+$(OBJDIR)\chkslang$(O): chkslang.c config.h jdmacros.h
+	$(CC) -c -I$(SDIR) chkslang.c /fo=$(OBJDIR)\chkslang$(O)
+clean:
+	rm -rf *$(O) *~ $(OBJDIR) slrn.exe uudecode.exe *.log \
+	core out out.* typescript files.pck* config.h

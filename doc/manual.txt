@@ -1,0 +1,4950 @@
+  The slrn reference manual
+  Matthias Friedrich <matt@mafr.de>
+  Thomas Schultz <tststs@gmx.de>
+  version 0.9.7.2pl2
+
+  Using and customizing the slrn newsreader
+  ______________________________________________________________________
+
+  Table of Contents
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  1. Introduction
+
+     1.1 Downloading slrn
+     1.2 Getting help
+     1.3 About this manual
+        1.3.1 History
+
+  2. Configuration
+
+  3. Command line switches and environment variables
+
+     3.1 Command line switches
+     3.2 Environment variables
+
+  4. Configuration commands and variables
+
+     4.1 Configuration commands
+        4.1.1 autobaud
+        4.1.2 color
+        4.1.3 compatible_charsets
+        4.1.4 group_display_format
+        4.1.5 grouplens_add
+        4.1.6 header_display_format
+        4.1.7 hostname
+        4.1.8 ignore_quotes
+        4.1.9 include
+        4.1.10 interpret
+        4.1.11 mono
+        4.1.12 nnrpaccess
+        4.1.13 posting_host
+        4.1.14 scorefile
+        4.1.15 server
+        4.1.16 set
+        4.1.17 setkey
+        4.1.18 strip_re_regexp
+        4.1.19 strip_sig_regexp
+        4.1.20 strip_was_regexp
+        4.1.21 unsetkey
+        4.1.22 visible_headers
+     4.2 Configuration variables
+        4.2.1 abort_unmodified_edits
+        4.2.2 art_help_line
+        4.2.3 art_status_line
+        4.2.4 author_display
+        4.2.5 auto_mark_article_as_read
+        4.2.6 beep
+        4.2.7 broken_xref
+        4.2.8 cc_followup
+        4.2.9 cc_followup_string
+        4.2.10 cc_post_string
+        4.2.11 charset
+        4.2.12 check_new_groups
+        4.2.13 color_by_score
+        4.2.14 confirm_actions
+        4.2.15 custom_headers
+        4.2.16 decode_directory
+        4.2.17 display_author_realname
+        4.2.18 display_cursor_bar
+        4.2.19 display_score
+        4.2.20 drop_bogus_groups
+        4.2.21 editor_command
+        4.2.22 editor_uses_mime_charset
+        4.2.23 emphasized_text_mask
+        4.2.24 emphasized_text_mode
+        4.2.25 failed_posts_file
+        4.2.26 fold_headers
+        4.2.27 followup
+        4.2.28 followup_custom_headers
+        4.2.29 followup_date_format
+        4.2.30 followup_string
+        4.2.31 followup_strip_signature
+        4.2.32 force_authentication
+        4.2.33 generate_date_header
+        4.2.34 generate_email_from
+        4.2.35 generate_message_id
+        4.2.36 group_dsc_start_column
+        4.2.37 group_help_line
+        4.2.38 group_status_line
+        4.2.39 grouplens_host
+        4.2.40 grouplens_port
+        4.2.41 grouplens_pseudoname
+        4.2.42 header_help_line
+        4.2.43 header_status_line
+        4.2.44 hide_pgpsignature
+        4.2.45 hide_signature
+        4.2.46 hide_verbatim_marks
+        4.2.47 highlight_unread_subjects
+        4.2.48 highlight_urls
+        4.2.49 hostname
+        4.2.50 ignore_signature
+        4.2.51 inews_program
+        4.2.52 kill_score
+        4.2.53 lines_per_update
+        4.2.54 macro_directory
+        4.2.55 mail_editor_command
+        4.2.56 mail_editor_is_mua
+        4.2.57 max_low_score
+        4.2.58 metamail_command
+        4.2.59 mime_charset
+        4.2.60 min_high_score
+        4.2.61 mouse
+        4.2.62 netiquette_warnings
+        4.2.63 new_subject_breaks_threads
+        4.2.64 no_autosave
+        4.2.65 no_backups
+        4.2.66 non_Xbrowser
+        4.2.67 organization
+        4.2.68 overview_date_format
+        4.2.69 post_editor_command
+        4.2.70 post_object
+        4.2.71 postpone_directory
+        4.2.72 prefer_head
+        4.2.73 printer_name
+        4.2.74 process_verbatim_marks
+        4.2.75 process_verbatum_marks
+        4.2.76 prompt_next_group
+        4.2.77 query_next_article
+        4.2.78 query_next_group
+        4.2.79 query_read_group_cutoff
+        4.2.80 query_reconnect
+        4.2.81 quote_string
+        4.2.82 read_active
+        4.2.83 realname
+        4.2.84 reject_long_lines
+        4.2.85 reply_custom_headers
+        4.2.86 reply_string
+        4.2.87 replyto
+        4.2.88 save_directory
+        4.2.89 save_posts
+        4.2.90 save_replies
+        4.2.91 score_editor_command
+        4.2.92 scorefile
+        4.2.93 scroll_by_page
+        4.2.94 sendmail_command
+        4.2.95 server_object
+        4.2.96 show_article
+        4.2.97 show_descriptions
+        4.2.98 show_thread_subject
+        4.2.99 signature
+        4.2.100 signoff_string
+        4.2.101 simulate_graphic_chars
+        4.2.102 smart_quote
+        4.2.103 sorting_method
+        4.2.104 spoiler_char
+        4.2.105 spoiler_display_mode
+        4.2.106 spool_active_file
+        4.2.107 spool_activetimes_file
+        4.2.108 spool_check_up_on_nov
+        4.2.109 spool_inn_root
+        4.2.110 spool_newsgroups_file
+        4.2.111 spool_nov_file
+        4.2.112 spool_nov_root
+        4.2.113 spool_root
+        4.2.114 supersedes_custom_headers
+        4.2.115 top_status_line
+        4.2.116 uncollapse_threads
+        4.2.117 unsubscribe_new_groups
+        4.2.118 use_blink
+        4.2.119 use_color
+        4.2.120 use_flow_control
+        4.2.121 use_grouplens
+        4.2.122 use_header_numbers
+        4.2.123 use_localtime
+        4.2.124 use_metamail
+        4.2.125 use_mime
+        4.2.126 use_slrnpull
+        4.2.127 use_tilde
+        4.2.128 use_tmpdir
+        4.2.129 use_uudeview
+        4.2.130 use_xgtitle
+        4.2.131 username
+        4.2.132 warn_followup_to
+        4.2.133 wrap_flags
+        4.2.134 wrap_method
+        4.2.135 write_newsrc_flags
+        4.2.136 Xbrowser
+
+  5. Interactive functions
+
+     5.1 group functions
+        5.1.1 add_group
+        5.1.2 bob
+        5.1.3 catchup
+        5.1.4 eob
+        5.1.5 evaluate_cmd
+        5.1.6 group_search
+        5.1.7 group_search_backward
+        5.1.8 group_search_forward
+        5.1.9 help
+        5.1.10 line_down
+        5.1.11 line_up
+        5.1.12 move_group
+        5.1.13 page_down
+        5.1.14 page_up
+        5.1.15 post
+        5.1.16 post_postponed
+        5.1.17 quit
+        5.1.18 redraw
+        5.1.19 refresh_groups
+        5.1.20 repeat_last_key
+        5.1.21 save_newsrc
+        5.1.22 select_group
+        5.1.23 subscribe
+        5.1.24 suspend
+        5.1.25 toggle_group_display
+        5.1.26 toggle_group_formats
+        5.1.27 toggle_hidden
+        5.1.28 toggle_list_all
+        5.1.29 toggle_scoring
+        5.1.30 transpose_groups
+        5.1.31 uncatchup
+        5.1.32 unsubscribe
+     5.2 article functions
+        5.2.1 article_bob
+        5.2.2 article_eob
+        5.2.3 article_left
+        5.2.4 article_line_down
+        5.2.5 article_line_up
+        5.2.6 article_page_down
+        5.2.7 article_page_up
+        5.2.8 article_right
+        5.2.9 article_search
+        5.2.10 author_search_backward
+        5.2.11 author_search_forward
+        5.2.12 browse_url
+        5.2.13 cancel
+        5.2.14 catchup
+        5.2.15 catchup_all
+        5.2.16 create_score
+        5.2.17 decode
+        5.2.18 delete
+        5.2.19 delete_thread
+        5.2.20 enlarge_article_window
+        5.2.21 evaluate_cmd
+        5.2.22 exchange_mark
+        5.2.23 expunge
+        5.2.24 fast_quit
+        5.2.25 followup
+        5.2.26 forward
+        5.2.27 forward_digest
+        5.2.28 get_children_headers
+        5.2.29 get_parent_header
+        5.2.30 grouplens_rate_article
+        5.2.31 goto_article
+        5.2.32 goto_last_read
+        5.2.33 header_bob
+        5.2.34 header_eob
+        5.2.35 header_line_down
+        5.2.36 header_line_up
+        5.2.37 header_page_down
+        5.2.38 header_page_up
+        5.2.39 help
+        5.2.40 hide_article
+        5.2.41 locate_article
+        5.2.42 mark_spot
+        5.2.43 next
+        5.2.44 next_high_score
+        5.2.45 next_same_subject
+        5.2.46 pipe
+        5.2.47 post
+        5.2.48 post_postponed
+        5.2.49 previous
+        5.2.50 print
+        5.2.51 quit
+        5.2.52 redraw
+        5.2.53 repeat_last_key
+        5.2.54 reply
+        5.2.55 save
+        5.2.56 show_spoilers
+        5.2.57 shrink_article_window
+        5.2.58 skip_quotes
+        5.2.59 skip_to_next_group
+        5.2.60 skip_to_previous_group
+        5.2.61 subject_search_backward
+        5.2.62 subject_search_forward
+        5.2.63 supersede
+        5.2.64 suspend
+        5.2.65 tag_header
+        5.2.66 toggle_collapse_threads
+        5.2.67 toggle_header_formats
+        5.2.68 toggle_header_tag
+        5.2.69 toggle_headers
+        5.2.70 toggle_pgpsignature
+        5.2.71 toggle_quotes
+        5.2.72 toggle_rot13
+        5.2.73 toggle_signature
+        5.2.74 toggle_sort
+        5.2.75 toggle_verbatim_marks
+        5.2.76 uncatchup
+        5.2.77 uncatchup_all
+        5.2.78 undelete
+        5.2.79 untag_headers
+        5.2.80 view_scores
+        5.2.81 wrap_article
+        5.2.82 zoom_article_window
+     5.3 readline functions
+        5.3.1 bdel
+        5.3.2 bol
+        5.3.3 complete
+        5.3.4 cycle
+        5.3.5 del
+        5.3.6 delbol
+        5.3.7 delbow
+        5.3.8 deleol
+        5.3.9 down
+        5.3.10 enter
+        5.3.11 eol
+        5.3.12 left
+        5.3.13 quoted_insert
+        5.3.14 right
+        5.3.15 self_insert
+        5.3.16 trim
+        5.3.17 up
+
+
+  ______________________________________________________________________
+
+  1.  Introduction
+
+
+  slrn (``s-lang read news'') is a newsreader, i.e. a program that
+  accesses a newsserver to read messages from the Internet News service
+  (also known as ``Usenet''). It runs in console mode on various Unix-
+  like systems (including Linux), 32-bit Windows, OS/2, BeOS and VMS.
+  Beside the usual features of a newsreader, slrn supports scoring rules
+  to highlight, sort or kill articles based on information from their
+  header. It is highly customizable, allows free key-bindings and can
+  easily be extended using the sophisticated s-lang macro language.
+  Offline reading is possible by using either slrnpull (shipped with
+  slrn) or a local newsserver (like leafnode or INN).
+  1.1.  Downloading slrn
+
+
+  The latest version of slrn is available from slrn's homepage
+  <http://slrn.sourceforge.net/>.
+
+  If you are running Linux, slrn is probably included in your
+  distribution. However, please note that some distributors modify the
+  sources; in this case, slrn might not always behave like it is
+  described here.
+
+
+  1.2.  Getting help
+
+
+  First of all, please read the available documentation found in this
+  file and in slrn's FAQ <http://slrn.sourceforge.net/docs/FAQ.html>.
+  You can also look at slrn's web pages at
+  <http://slrn.sourceforge.net/> (also known as
+  <http://www.slrn.org/>).  There, you will find a list of known bugs
+  and feature requests, some useful add-ons, a recent copy of the
+  documentation and links to more information about slrn.
+
+  Questions not covered by the docs are on-topic in
+  news.software.readers. If you speak German, you also might want to
+  subscribe to de.comm.software.newsreader.
+
+  Slrn-user is a mailing list for discussion of the use, development and
+  extension of slrn. You can subscribe to it through the web interface
+  at  <http://lists.sourceforge.net/lists/listinfo/slrn-user>.
+
+  To keep track of slrn's development, simply subscribe to slrn-
+  announce.  It is a moderated list that informs you about new releases,
+  important bugfixes or major changes to the website. The subscription
+  address is  <http://lists.sourceforge.net/lists/listinfo/slrn-
+  announce>.  All announcements are also mailed to slrn-user, so there
+  is no need to read both lists.
+
+
+  1.3.  About this manual
+
+  This manual has been started by Matthias Friedrich and Thomas Schultz
+  in 1999 since there was no up to date end user documentation
+  available. As of version 0.9.7.0, it is part of the official
+  documentation.
+
+  This manual still needs a lot of work to become more comprehensive.
+  Anyone willing to contribute additional chapters should contact us -
+  you are welcome to join our efforts. Furthermore, we greatly
+  appreciate feedback about errors, bad language or suggestions
+  concerning this manual.
+
+  All questions regarding the manual can be discussed on the slrn-user
+  mailing list <http://lists.sourceforge.net/mailman/listinfo/slrn-
+  user>. Of course, you still can email us privately if you want.
+
+
+  1.3.1.  History
+
+
+     2001-08-20: Revision 2.1
+        Updated the manual for slrn 0.9.7.2; added a section about the
+        functions of the ``readline'' interface.
+
+     2001-06-06: Revision 2
+        Added a section that describes all interactive functions and
+        updated the manual for slrn 0.9.7.1.
+
+     2001-03-28: Revision 1.1
+        Manual updated to reflect the changes in slrn 0.9.7.0.
+
+     2000-09-27: Revision 1
+        First public release, explaining all slrnrc commands,
+        configuration and environment variables and command line
+        switches.
+
+
+
+  2.  Configuration
+
+
+  Basically, there are four ways to change slrn's behaviour:
+
+
+  o  ``environment variables''
+
+  o  ``a global configuration file''
+
+  o  ``a personal configuration file''
+
+  o  ``command line options''
+
+  The list is sorted by priority - environment variables are overridden
+  by settings in configuration files that are in turn overridden by
+  command line switches.
+
+  Most customizations in slrn are done using an initialization file.  If
+  your administrator wanted to provide reasonable defaults for your
+  system, he might have created a global configuration file. When
+  reading such a file, slrn tells you its filename at startup (use slrn
+  -w if you want to read the startup messages easily).
+
+  The right place for your own settings is your personal configuration
+  file, which by default is .slrnrc (or slrn.rc on VMS, OS/2 and
+  Windows) in your home directory. It is possible to override settings
+  from the global file here.
+
+  These files consist of ``configuration commands'', each one on a line
+  of its own. Most commands require arguments that can be either strings
+  or integer values. If a string contains whitespace, you have to
+  enclose it in double quotes (").
+
+  The percent sign (%) is used as the comment character. From this
+  character on, everything else on the same line will be ignored.
+  Example:
+
+
+  % Name of signature file to use
+  set signature ".signature"
+
+
+
+  If you set the same variable more than once in your configuration
+  file, the last setting will take effect.
+
+  The easiest way to build a personal configuration file is to make a
+  copy of the annotated sample slrn.rc that is included in the slrn
+  distribution and to tailor it to your needs.
+
+  This manual contains a list of all ``configuration commands'' and
+  ``variables''.
+
+  3.  Command line switches and environment variables
+
+  This section describes the available command line switches and lists
+  the environment variables that influence slrn.
+
+  Note: Please do not use options that are called ``obsolete'' in this
+  manual. They are only included for backwards compatibility and will be
+  removed before version 1.0 is released.
+
+
+  3.1.  Command line switches
+
+  The following options can be used when calling slrn from the command
+  line:
+
+     -a Read active file when checking for new news. This can be
+        permanently turned on by setting ``read_active'' to 1.
+
+     -C Use colors without checking if the terminal supports it.
+
+     -C-
+        Don't use colors, even if the terminal supports it.
+
+     -d Get group descriptions (taglines) from the news server. Please
+        note that this may cause a download of several hundred kilobytes
+        and thus can take a long time. The output is saved to a local
+        file, so you only need to do this once. May not be specified in
+        combination with ``--create''.
+
+     -Dname
+        Add name to the list of predefined preprocessing tokens, which
+        can be used in your slrnrc file to have conditionally
+        interpreted lines. For example, you can use the following slrnrc
+        entry if you want to read mailing lists (stored as MH mail
+        directories in /home/username/Mail/) with slrn -DMAIL:
+
+        #ifdef MAIL
+          set spool_inn_root      "/home/username/Mail"
+          set spool_root          "/home/username/Mail"
+          set spool_nov_root      "/home/username/Mail"
+          set server_object       "spool"
+          set read_active         1
+          server "/home/username/Mail"  ".jnewsrc.mail"
+        #endif
+
+
+     Similarly, you can test if a given environment variable is set:
+
+     #if$DISPLAY
+       set editor_command "xjed '%s' -g %d -tmp"
+     #endif
+
+
+
+     -f file
+        Use file as the newsrc file for this session.  This is
+        permanently set via the ``server'' configuration command.
+
+     -h [snews://]host[:port]
+        Connect to the NNTP server on host, overriding the $NNTPSERVER
+        environment variable.  If no port is given, the default NNTP
+        port (119) will be used. The prefix snews:// indicates that slrn
+        should attempt a secure connection. This will result in an error
+        message when SSL support is not compiled in. Like -p, this
+        option is only accepted after --nntp or when NNTP is the default
+        mode.
+     -i file
+        Read file as the initialization (slrnrc) file.  The default is
+        to use .slrnrc (or slrn.rc on VMS, OS/2 and Windows) in your
+        home directory.
+
+     -k Don't read the ``score file''.
+
+     -k0
+        Read the score file, but inhibit ``expensive'' scoring. A
+        scoring rule is ``expensive'' if it contains header lines that
+        are not included in the server's overview files. This makes
+        applying them slow.
+
+     -n Do not check for new groups (usually resulting in a faster
+        startup). You can permanently set this via ``check_new_groups''.
+
+     -m Force mouse support (without checking if it works on the current
+        terminal). To permanently activate mouse support, you can use
+        the ``mouse'' configuration variable.
+
+     -p N
+        Use port N to connect to the NNTP server.
+
+     -w Wait for a key before switching to full screen mode. This is
+        useful if you want to read the startup messages.
+
+     --create
+        Read the active file (the list of all groups) from the news
+        server to create an initial newsrc file.
+
+     -create
+        Obsolete version of ``--create''
+
+     --debug file
+        Write debugging output to file. In NNTP mode, this logs the
+        dialog with the server; the spool backend currently only uses
+        this for error messages.
+
+     --help
+        Show help for command line switches.
+
+     --inews
+        Use an external ``inews program'' to post articles.
+
+     --kill-log file
+        Keep a log of all articles that were killed by the scorefile in
+        file.
+
+     --nntp
+        Use builtin NNTP support for reading and posting (an external
+        program is used to post if the ``force inews'' compile time
+        option is set).
+
+     --pull
+        Spool outgoing articles locally for slrnpull to send.
+
+     --spool
+        Read directly from spool.
+
+     --version
+        Print version and some compile time settings.
+
+
+
+
+
+  3.2.  Environment variables
+
+
+     COLORTERM
+
+        If this variable is set, slrn will assume that your terminal
+        supports ``ANSI color sequences''. It also enables a workaround
+        for a problem with the ``mouse reporting'' when running slrn
+        inside of an rxvt.
+
+
+     DISPLAY
+
+        If set, slrn assumes that X11 is running and uses ``Xbrowser''
+        when browsing a URL. Otherwise, ``non_Xbrowser'' is called.
+
+
+     EDITOR
+
+        See ``$SLRN_EDITOR''.
+
+
+     HOME
+
+        See ``$SLRNHOME''.
+
+
+     HOSTNAME
+
+        If no ``hostname'' is given, the value of this environment
+        variable is used. As a last resort, slrn will call
+        gethostname(3) and gethostbyname(3) to find a value it can work
+        with. The hostname can also be hardcoded when building slrn (see
+        OUR_HOSTNAME in slrnfeat.h). The value of OUR_HOSTNAME can
+        either be the hostname as a string or the name of a file
+        containing the hostname. Note that the environment variable
+        overrides the hardcoded default and that the configuration
+        variable overrides both.
+
+
+     LOGNAME
+
+        See ``$USER''.
+
+
+     NAME
+
+        If you did not set ``realname'', slrn tries to get a value from
+        $NAME. On Unix systems, it also queries the /etc/passwd gecos
+        field.
+
+
+     NNTPSERVER
+
+        You can use this variable to tell slrn which NNTP server to
+        connect to.  It can be overridden by the command line option -h.
+        It is possible to compile in a default setting in case the user
+        does not set $NNTPSERVER. This is done in slrnfeat.h by either
+        setting NNTPSERVER_FILE to the name of a file containing the
+        hostname or by directly setting NNTPSERVER_NAME to the hostname.
+        In case both are defined, slrn first tries to read the file and
+        only uses NNTPSERVER_NAME as a fallback.
+
+
+     ORGANIZATION
+
+        If ``organization'' is unset, the value of this variable is
+        used. It overrides the compile time setting of OUR_ORGANIZATION
+        (default is unset) in slrnfeat.h. Both the environment variable
+        and the compile time default can optionally point to a file from
+        which the organization line will be read.
+
+
+     PRINTER
+
+        On Unix systems, slrn pipes the current article to an external
+        program in order to print it. If you do not specify the program
+        using ``printer_name'', it uses lpr -P$PRINTER as the default.
+
+
+     PWD
+
+        This variable is only used on Unix systems that don't support
+        getcwd(3). In these cases, it should be set to the current
+        directory at the time slrn is invoked. This is usually nothing
+        the user has to worry about.
+
+
+     REPLYTO
+
+        The value of this variable is used as the default if you do not
+        set ``replyto'' in your slrnrc file.
+
+
+     SLANG_EDITOR
+
+        See ``$SLRN_EDITOR''.
+
+
+     SLRNHELP
+        The help window you get when hitting `?' inside slrn shows the
+        default key bindings, which may or may not be the ones you are
+        currently using. This is why slrn allows you to change the help
+        text by creating a ``help file'' and letting $SLRNHELP point to
+        it (the absolute filename is needed here). If $SLRNHELP is
+        unset, slrn tries to read help.txt in the config directory.
+
+        Your slrn distribution should include the file help.txt which
+        you can copy and modify to suit your needs. It also serves as an
+        example of the syntax of slrn help files.
+
+
+     SLRNHOME
+
+        When interpreting filenames as relative to your home directory,
+        slrn uses this variable to find out what your home directory is.
+        If $SLRNHOME is unset, $HOME is used instead.
+
+
+     SLRNPULL_ROOT
+
+        If you want to use slrnpull, you need to define a directory
+        where it will look for its configuration files and spool the
+        articles. An absolute filename is needed here. There is a
+        compile time default for it in slrnfeat.h (SLRNPULL_ROOT_DIR,
+        default: "/var/spool/news/slrnpull"), which can be overridden by
+        the environment variable $SLRNPULL_ROOT. If an alternate root
+        directory is given via the command line parameter -d, it
+        overrides both.
+
+
+
+     SLRN_EDITOR
+
+        If you did not define an editor in ``editor_command'' et al,
+        slrn checks this variable. If it is unset, slrn subsequently
+        looks at $SLANG_EDITOR, $EDITOR and $VISUAL. The last desperate
+        call goes to edit (VMS and Windows), e (OS/2) or vi (Unix).
+
+
+     SLRN_LIB_DIR
+
+        This variable is obsolete.
+
+
+     TMP
+
+        Indicates the directory in which slrn should save temporary
+        files. If it is unset or does not contain an existing directory,
+        $TMPDIR is tried. If both are unset, /tmp is used on UNIX
+        systems, the current working directory on OS/2 and Windows and
+        SYS$LOGIN: on VMS.
+
+        An exception to this are temporary files created to invoke
+        ``metamail''. In this case, $TMP is only queried on OS/2 and
+        Windows NT.
+
+
+     TMPDIR
+
+        See ``$TMP''.
+
+
+     USER
+
+        If ``username'' is unset, slrn tries to get your login name from
+        the system first. If this fails, it looks at $USER and $LOGNAME.
+
+
+     VISUAL
+
+        See ``$SLRN_EDITOR''.
+
+
+  4.  Configuration commands and variables
+
+  This section contains a list of all configuration commands and
+  variables that can be used in your slrnrc file to customize slrn.
+
+  Note: Please do not use commands or variables that are called
+  ``obsolete'' in this manual. They are only included for backwards
+  compatibility and will be removed before version 1.0 is released.
+
+
+  4.1.  Configuration commands
+
+
+
+  4.1.1.  autobaud
+
+  Usage: autobaud
+  Default: off
+
+  The autobaud command may be used to synchronize the output rate slrn
+  uses to the terminal baud rate.
+
+
+
+  4.1.2.  color
+
+  Usage: color display_element foreground background
+
+  If your terminal supports ANSI color sequences, you can use the color
+  command to define your own color scheme. You can assign a different
+  color to almost every element on your screen.
+
+  display_element can be one of these:
+
+
+     article
+        Regular text in the article body.
+
+     author
+        The author's name / email address in header overview.
+
+     boldtext
+        Text in the article body that is interpreted as *bold*.
+
+     box
+        Text inside of selection boxes (like the one you see when
+        choosing a sorting mode).
+
+     cursor
+        The cursor you see in the group window and in header overview.
+
+     date
+        The article date in the header overview.
+
+     description
+        The ``group descriptions'' (taglines) in group window.
+
+     error
+        Error messages in the status line.
+
+     frame
+        The frame around selection boxes (see also: ``box'').
+
+     from_myself
+        The ``From:'' header line or realname in header overview, in
+        case it contains your ``name''.
+
+     group
+        The group names in group window.
+
+     grouplens_display
+        ``GroupLens'' scores.
+
+     header_name
+        The name of header lines in the pager (e.g. ``From:'').
+
+     header_number
+        The header number in header overview.
+
+     headers
+        The content of header lines in the pager.
+
+     high_score
+        The exclamation mark (``!'') used to denote ``high scoring''
+        articles in header overview.
+
+     italicstext
+        Text in the article body that is interpreted as /italic/.
+
+
+     menu
+        The first line of your display. If ``mouse reporting'' is turned
+        on, it contains a menu.
+
+     menu_press
+        A menu item while you click on it.
+
+     message
+        The messages and prompts in the bottom line of the screen.
+
+     neg_score
+        The subject / score of articles with a negative score value,
+        depending on the setting of ``color_by_score''.
+
+     normal
+        Everything that does not have its own color object.
+
+     pos_score
+        The subject / score of articles with a positive score value,
+        depending on the setting of ``color_by_score''.
+
+     pgpsignature
+        ``PGP signatures'' appended to the article body.
+
+     quotes
+        ``Quoted text'' in the article body. It is now possible to
+        distinguish up to 8 levels of quoted material by using color
+        objects ``quotes0'' to ``quotes7''.
+
+     response_char
+        The highlighted character you need to press if you want to make
+        a selection (e.g. in ``[Y]es or [N]o?'').
+
+     selection
+        The ``cursor'' used in selection boxes (see also: ``box'').
+
+     signature
+        ``Signatures'' appended to the article body.
+
+     status
+        The status lines slrn displays.
+
+     subject
+        The subject in header overview.
+
+     thread_number
+        The number of articles in the thread (displayed in header
+        overview next to collapsed threads).
+
+     tilde
+        The ``tilde'' displayed at the end of the article body.
+
+     tree
+        The thread tree drawn in the header overview.
+
+     underlinetext
+        Text in the article body that is interpreted as _underlined_.
+
+     unread_subject
+        Color for unread subjects. Please see the entry on
+        ``highlight_unread_subjects'' for details.
+
+     url
+        Used to ``highlight URLs'' in the article body.
+
+
+     verbatim
+        Text in the article body enclosed by ``verbatim marks''.
+
+     verbatum
+        Obsolete spelling of ``verbatim''.
+
+  The foreground and background colors have to be set to one of the
+  following strings:
+
+
+       black                gray
+       red                  brightred
+       green                brightgreen
+       brown                yellow
+       blue                 brightblue
+       magenta              brightmagenta
+       cyan                 brightcyan
+       lightgray            white
+
+
+
+  Additionally, you can use the default foreground / background colors
+  of your terminal via the keyword "default".
+
+  Please note that the colors in the right column are all ``bright'' (or
+  ``bold''). On many terminals, they can only be used for the
+  foreground. If you think your terminal has more than 8 background
+  colors, but slrn refuses to use them, you might need to chose a
+  different terminfo entry. On modern xterms and rxvt, setting $TERM to
+  xterm-16color should work.
+
+  A sample color scheme (which simply sets the colors to their compile
+  time default) can be found in the slrn.rc file that should have come
+  with your slrn distribution.
+
+
+  4.1.3.  compatible_charsets
+
+  Usage: compatible_charsets charsets
+
+  With this command, you can give a (comma-separated) list of MIME
+  charsets your terminal is capable to display. When slrn encounters one
+  of them, it will show the message in the internal pager instead of
+  calling ``metamail''.
+
+
+  4.1.4.  group_display_format
+
+  Usage: group_display_format number format-string
+
+  This command allows you to change the way the groups are presented to
+  you in the group window. You can save up to 10 different formats and
+  switch among them using ``toggle_group_formats'' (default binding: ESC
+  a).
+
+  The default settings are:
+
+          group_display_format 0 "  %F%-5u  %n%45g%d"
+          group_display_format 1 "  %F%-5u  %n%50g%-8l-%h"
+          group_display_format 2 "  %F%-5u [%-6t]  %n"
+
+
+
+  number is the number of the format (0-9).
+
+
+  The following % escapes can be used:
+
+
+           F   Group flag (`U' for unsubscribed, `N' for new)
+           d   Group description (needs to be downloaded once with slrn -d)
+           h   ``High water mark'' (highest article number in the group)
+           l   ``Low water mark'' (lowest article number in the group)
+           n   Group name
+           t   Total number of articles in the group (estimate)
+           u   Number of unread articles in the group
+
+
+
+  The special descriptors ``%g'' and ``%?'' work like in
+  ``header_display_format''.
+
+
+  4.1.5.  grouplens_add
+
+  Usage: grouplens_add newsgroup
+
+  Add newsgroup to the list of groups for which you want to download
+  GroupLens scores.
+
+
+  4.1.6.  header_display_format
+
+  Usage: header_display_format number format-string
+
+  This command can be used to customize the way article headers are
+  presented in the header overview in article mode. You can specify up
+  to 10 different formats and switch among them using
+  ``toggle_header_formats'' (default binding: ESC a). This command may
+  also be used with a prefix argument to select a particular format,
+  e.g., ESC 0 ESC a will select the 0th format.
+
+  Here are slrn's default settings:
+
+          header_display_format 0 "%F%-5S%G%-5l:[%12r]%t%s"
+          header_display_format 1 "%F%G%-5l:[%12r]%t%s"
+          header_display_format 2 "%F%-5l:%t%s"
+          header_display_format 3 "%F%-5S%-5l:%t%50s %r"
+
+
+
+  number is the number of the format (0-9).
+
+  format-string is a string containing printf(3) style % escapes. This
+  is the generic format:
+
+          %[[-*]w]x
+
+
+  The brackets indicate optional items: w may consist of one or more
+  digits and specifies the width of the field. In fields with a fixed
+  width, the minus sign (-) can be used to right justify an item, the
+  asterisk (*) to center justify it. Please note that these modifiers
+  have no effect if the text does not fit into the field.
+
+  The item specifier (x) is required and, depending on its value, has
+  the following meaning:
+
+
+
+
+
+           %   percent character
+           C   prints `C' if current thread is collapsed
+           D   date (as defined by overview_date_format)
+           F   flags (read/unread, `*' and `#' tags, header number)
+           G   GroupLens score
+           P   prints `P' if current article has a parent (inside threads)
+           S   score
+           T   thread tree
+           b   article size (numer of bytes)
+           c   number of messages in current subthread
+           d   date
+           f   from header
+           l   article length (number of lines)
+           n   server number
+           r   author's real name
+           s   subject
+           t   number of messages in thread plus tree
+
+
+
+  Additionally, the special format descriptor %Xg can be used. It is not
+  substituted by text, but specifies that the next write on the screen
+  should take place in column X (numbered from 0). If X is negative, the
+  cursor is placed X columns from the right edge of the window.
+
+  Thus, "%F%-5l:%t%s%-20g %r" indicates that the header window will
+  contain (in that order): the flags, the number of lines the article
+  contains (right justified in a 5 character field), a `:', the tree,
+  the subject, and, beginning 20 columns from the right edge of the
+  window and separated by a blank, the author's real name.
+
+  A %? construct can be used to print a string only if one of the above
+  descriptors expands to a non-zero string (i.e. one that is not empty
+  and does not contain only a single whitespace or the number `0'). It
+  has the following syntax:
+
+
+           %?<descriptor>?<optional string>?
+           %?<descriptor>?<string if true>&<string if false>?
+
+
+
+  You can use escape sequences in optional strings; however, it is not
+  possible to nest them, nor to have literal `?' or `&' characters in
+  them.
+
+  Example: If you want to display the number of messages for collapsed
+  threads and the number of lines in the message otherwise, you can use
+  the following:
+
+
+           %?C?%-3c&%-3l?
+
+
+
+  Note: The descriptors %t and %T write directly to the screen, so they
+  cannot be ``tested'' with the %? operator and ignore the requested
+  field width (i.e. "%10t" is the same as "%t"; the ``10'' is ignored).
+  The descriptor %t is included for backwards compatibility and
+  equivalent to "%?C?%-3c&   ? %T".
+
+  See also: ``group_display_format'', ``overview_date_format''
+
+
+
+
+  4.1.7.  hostname
+
+  Usage: hostname your_host_name
+
+  The hostname command is obsolete.  You can now set the ``hostname''
+  variable directly.
+
+
+  4.1.8.  ignore_quotes
+
+  Usage: ignore_quotes pattern [pattern] ...
+
+  The regular expressions given here are used to determine quoted lines
+  in the body of an article. You can define up to 5 different patterns
+  (this is meant to make up for the lack of an OR operator in slang
+  regexps). Please try to keep them as exact as possible, so that slrn
+  is able to distinguish different quoting levels - e.g. use "^>" rather
+  than "^>*".
+
+  By default, only one pattern is set: "^ ? ?[><:=|]"
+
+
+  4.1.9.  include
+
+  Usage: include filename
+
+  You can use this command to load an additional file that contains
+  configuration commands. With this feature, you can easily keep startup
+  files for different key bindings, colors etc.  filename is relative to
+  your home directory (see ``$SLRNHOME''). This can safely be done
+  multiple times and recursively.
+
+
+  Example: include ".slrnrc-colors"
+
+
+
+
+  4.1.10.  interpret
+
+  Usage: interpret filename
+
+  This command loads and executes an slang macro file. filename is
+  relative to your ``macro_directory'' or (if the file cannot be found
+  there) to your home directory.
+
+  This command has no effect if the slang interpreter has been
+  deactivated at compile time.
+
+
+  4.1.11.  mono
+
+  Usage: mono display_element attributes
+
+  You can use this command to customize slrn's appearence on monochrome
+  displays. See section ``color'' for a description of display_element.
+  attributes can be one of
+
+
+  o  bold
+
+  o  blink
+
+  o  underline
+
+
+  o  reverse
+
+  or ``none'' to turn off video attributes. The attributes can also be
+  combined (simply separate them with blanks). You can find sample
+  settings in the slrn.rc file that should have come with your slrn
+  distribution.
+
+  If you don't like blinking, you can turn it off altogether via
+  ``use_blink''. If you run slrn with colors, these settings will not
+  have any effect.
+
+
+  4.1.12.  nnrpaccess
+
+  Usage: nnrpaccess host username password
+
+  This command can be used to set the necessary data for servers that
+  request NNRP authentification. host is the full hostname of the
+  server.
+
+  If you do not feel comfortable with leaving your password written on
+  disk, you might want to set the password (and optionally the username
+  as well) to an empty string (""). slrn will then prompt for it on
+  startup. If your server requires a username, but no password, set it
+  to a blank (" ") and you won't be prompted.
+
+
+  4.1.13.  posting_host
+
+  Usage: posting_host hostname
+
+  The hostname specified in this command will be used to generate
+  Message-IDs.  Please note that it is usually not necessary to set this
+  manually, as slrn uses the fully-qualified domain name of the machine
+  it is running on for this task, which is the correct solution in most
+  cases.
+
+  However, if your system is part of a local network, it might not have
+  an official hostname. As the current MESSFOR draft permits the use of
+  hostnames without a DNS record for Message-ID generation, some
+  providers started to give each user a unique hostname that may be used
+  here.
+
+  Note: Do not use this command unless you fully understand the
+  implications. Specifically, do not enter an arbitrary string here!
+  Instead, please turn off ``generate_message_id'' if the hostname found
+  by slrn is not unique.
+
+
+  4.1.14.  scorefile
+
+  Usage: scorefile filename
+
+  The scorefile command is now obsolete. Please use the ``scorefile''
+  variable instead.
+
+
+  4.1.15.  server
+
+  Usage: server nntp-server[:port] newsrc-file
+
+  By default, slrn uses .jnewsrc in your home directory (jnews.rc on
+  VMS, OS/2 and Windows) as its newsrc file. If you want to define a
+  different filename for it or if you want to access more than one
+  server, you can use this command. It tells slrn to use newsrc-file
+  when connecting to nntp-server (which has to be the full hostname of
+  the server and an optional port number or, if you are reading from
+  spool, the path of the spool directory).
+
+  If your server requires a password, you will also need to use the
+  ``nnrpaccess'' command.
+
+
+  4.1.16.  set
+
+  Usage: set varname value
+
+  The set command is used to assign values to the ``configuration
+  variables'' described below. varname has to be a valid variable name.
+  value is either a string (best enclosed in double quotes ``"'') or an
+  integer value (number), depending on the variable.
+
+
+  Example: set realname "Matthias Friedrich"
+           set kill_score -9999
+
+
+
+  Note: If you set a variable which controls a feature that has not been
+  compiled in, slrn will not give you an error message. The setting will
+  simply remain without an effect.
+
+
+  4.1.17.  setkey
+
+  Usage: setkey keymap function key-sequence
+
+  This command allows you to map slrn's functions to keys.  There are
+  three different keymaps: The "group" keymap contains all functions in
+  group mode, "article" contains the functions in article mode (note
+  that header overview and pager do not have separate keymaps); finally,
+  the "readline" keymap can be used to customize the line editor.
+
+  function specifies the function that is executed when key-sequence is
+  pressed. In key-sequence, special keys can be addressed in different
+  ways:
+
+
+
+       \e    escape
+       \r    return
+       \\    backslash
+       ^C    control and character C
+       \NNN  the key sending keycode (octal) NNN
+
+
+
+
+
+
+  4.1.18.  strip_re_regexp
+
+  Usage: strip_re_regexp pattern [pattern] ...
+
+  Here, you can define up to 5 different regular expressions to detect
+  non-standard back references created by broken user agents. They will
+  be stripped on followups.
+
+  By default, slrn only checks for the standard "Re:". This test is
+  performed before strip_re_regexp is even tried and it cannot be turned
+  off.
+
+  Note: This variable does not affect the way slrn sorts subjects. For
+  example, ``subject'' and ``Re: subject'' are equivalent when sorting;
+  ``subject'' and ``AW: subject'' are not, even if you defined "^AW:" in
+  strip_re_regexp. The reason for this is that it would be too expensive
+  to do a full regexp search whenever comparing subjects.
+
+
+  4.1.19.  strip_sig_regexp
+
+  Usage: strip_sig_regexp pattern [pattern] ...
+
+  slrn itself makes sure that you use the signature delimiter that
+  current drafts prescribe ("-- " - mind the trailing space!). If you
+  want it to recognize different delimiters as well (e.g. ones created
+  by broken software), you can use this command to define (up to five)
+  regular expressions that match them.
+
+
+  4.1.20.  strip_was_regexp
+
+  Usage: strip_was_regexp pattern [pattern] ...
+
+  When changing the ``Subject:'' header line, some people follow a
+  convention and include the old subject in brackets (e.g. ``new subject
+  (was: old subject)''). You can use this command to strip the old
+  subject automatically on followups and when creating scorefile entries
+  based on the subject (so it will still match when the old subject is
+  stripped). To do this, I recommend the setting " ?(was:.*)$".
+
+  Note: This variable does not affect sorting. See ``strip_re_regexp''
+  for an explanation.
+
+
+  4.1.21.  unsetkey
+
+  Usage: unsetkey keymap key-sequence
+
+  The unsetkey command undoes a key binding. Please see ``setkey'' for
+  more information.
+
+
+  Example: unsetkey group "\e"
+
+
+
+
+  4.1.22.  visible_headers
+
+  Usage: visible_headers header_lines
+
+  With this command, you can specify a comma-separated list of
+  header_lines that should still be visible in the article pager when
+  the display of all headers is turned off (this is toggled via
+  ``toggle_headers'', by default bound to `t').
+
+  Note that the strings are not regular expressions. However, substrings
+  can be used; e.g. "X-" matches all headers beginning with ``X-''. It's
+  also possible to exclude certain headers by preceding them with a bang
+  (`!'). If multiple entries match, the last one decides whether or not
+  the header is displayed, so "X-,!X-Trace:" shows all X-headers except
+  ``X-Trace:''.
+
+  Headers mentioned in visible_headers that don't occur in the article
+  are silently ignored.
+
+
+  Example:
+  visible_headers "From:,Subject:,Newsgroups:,Followup-To:,Reply-To:"
+
+
+
+
+  4.2.  Configuration variables
+
+  The following variables can be set using the ``set'' configuration
+  command:
+
+
+  4.2.1.  abort_unmodified_edits
+
+  Type: integer
+  Default: 0
+
+  If non-zero, slrn aborts posting or email operations if the user did
+  not modify the article.
+
+  See also: ``editor_command'', ``post_editor_command'',
+  ``mail_editor_command''
+
+
+  4.2.2.  art_help_line
+
+  Type: string
+  Default: (unset)
+
+  This string is displayed in the status line while you are reading an
+  article. It is intended as a quick help when you cannot remember what
+  key to press ;-) If unset, the following line is used (localized):
+
+
+  SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit
+
+
+
+  See also: ``group_help_line'', ``header_help_line''
+
+
+  4.2.3.  art_status_line
+
+  Type: string
+  Default: (unset)
+
+  This variable can be used to customize the status line of the article
+  pager.  It accepts all % escapes that work for
+  ``header_display_format'' plus the ones listed here:
+
+
+           H   Prints `H' unless headers are hidden
+           I   Prints `P' unless PGP signatures are hidden
+           L   Current line (e.g. ``1/18'')
+           P   Percentage of the way through the article
+           Q   Prints `Q' unless quotes are hidden
+           T   Prints `S' unless signatures are hidden
+           V   Prints `V' unless verbatim text is hidden
+           W   Prints `W' if wrapping is enabled
+           p   Prints `<' if the window is panned (scrolled horizontally)
+           v   Prints `v' unless verbatim marks are hidden
+
+
+
+  When unset, slrn uses "%p%n : %s %-20g -- %L (%P)" (localized).
+
+  See also: ``group_status_line'', ``header_status_line'',
+  ``top_status_line''
+
+
+
+  4.2.4.  author_display
+
+  Type: integer
+  Default: (unset)
+
+  This variable is obsolete. You can now use the much more powerful
+  approach of having up to 10 user-defined ``header display formats''.
+
+
+  4.2.5.  auto_mark_article_as_read
+
+  Type: integer
+  Default: 1
+
+  If non-zero, every article you open will automatically be marked as
+  read.
+
+
+  4.2.6.  beep
+
+  Type: integer
+  Default: 1
+
+  This variable controls how slrn tries to get your attention.
+
+
+
+       0     do not beep
+       1     send audible bell
+       2     send visible bell
+       3     send both visible and audible bell
+
+
+
+
+
+  4.2.7.  broken_xref
+
+  Type: integer
+  Default: 0
+
+  When you set this variable to a non-zero value, slrn requests articles
+  by Message-ID instead of header number. This provides support for
+  servers with broken ``Xref:'' headers and should otherwise be left
+  untouched.
+
+
+  4.2.8.  cc_followup
+
+  Type: integer
+  Default: 1
+
+  This variable controls whether slrn sends email copies (``courtesy
+  copies'') of followups:
+
+
+
+
+
+
+
+  0     Never send email copies automatically
+  1     Prompt if original poster requested a copy
+  2     Send email copy if original poster requested it
+  3     Always prompt
+  4     Send copy if poster requested it; prompt otherwise
+
+
+
+
+  The original poster can indicate that he wishes to receive an email
+  copy by adding an ``(X-)Mail-Copies-To:'' header line to his posting.
+  If it contains the keyword ``nobody'' (``never'' is not covered by
+  current drafts, but also accepted), the poster does not want any email
+  copies. slrn will not prompt you in that case.
+
+  When using settings three or four, please keep in mind that many
+  people on usenet consider ``courtesy copies'' to be impolite because
+  they do not want to read the same message both in their private email
+  and in a newsgroup.
+
+  See Also: ``cc_followup_string''
+
+
+  4.2.9.  cc_followup_string
+
+  Type: string
+  Default: "[This message has also been posted to %n.]" (localized)
+
+  This string will be included in the mail copies of any followup you
+  send. However, it won't be displayed in the editor and will not be
+  included in the posting sent to the newsgroup.
+
+  The variable may contain printf(3)-style % sequences which will be
+  replaced with the corresponding data from the original posting. See
+  the description of ``followup_string'' for a list of legal sequences.
+
+  Note: If you postponed a followup and do not select the original
+  message before sending it, the information to expand the % sequences
+  is not available. In this case, ``cc_post_string'' is used.
+
+  See Also: ``cc_followup''
+
+
+  4.2.10.  cc_post_string
+
+  Type: string
+  Default: "[This message has also been posted.]" (localized)
+
+  This string is automatically added to mail copies of postings you
+  send. In followups, ``cc_followup_string'' is used instead. As opposed
+  to this variable, cc_post_string currently does not expand any
+  printf(3)-style % sequences.
+
+
+  4.2.11.  charset
+
+  Type: string
+  Default: (unset)
+
+  If you set this variable to the character set your terminal is using,
+  slrn will try to map Latin 1 characters to your local charset, so that
+  they are correctly displayed. Also, your own postings are converted to
+  Latin 1, so that others can read your postings.
+
+  If unset, the default depends on the compile time setting
+  DEFAULT_CHARSET_NAME in ``charmaps.h'' which is set automatically.
+  Valid values are:
+
+
+     ibm850
+        is the default on OS/2 and Windows,
+
+     NeXT
+        is the default on NeXT machines,
+
+     isolatin
+        is the default on all other systems and does no recoding,
+
+     koi8
+        also does no recoding, as users of KOI-8 are expected to have
+        the correct font installed.
+
+     ibm737
+        converts from and to Latin 7 (Greek);
+
+     ibm852
+        converts from and to Latin 2 (east European);
+
+  This variable will only have an effect if ``character mapping'' is
+  enabled at compile time (default). You can query this by calling slrn
+  --version from your shell prompt.
+
+
+  4.2.12.  check_new_groups
+
+  Type: integer
+  Default: 1
+
+  If you do not want to check for new groups on startup and when doing a
+  ``group refresh'' (by default bound to `G'), you can set this variable
+  to 0. This has the same effect as using the command-line parameter -n.
+
+
+  4.2.13.  color_by_score
+
+  Type: integer
+  Default: 3
+
+  Determines whether or not color should be used to indicate the score
+  of an article. The following settings are possible:
+
+
+
+       0    scores do not influence colors
+       1    scores are colored by their value
+       2    subjects are colored by score
+       3    both scores and subjects are colored by score
+
+
+
+
+  If this feature is enabled, slrn uses the color objects neg_score,
+  pos_score and high_score when printing the score / subject of articles
+  with a non-zero score value.
+
+
+  4.2.14.  confirm_actions
+
+  Type: integer
+  Default: 1
+
+
+  If non-zero, you will be prompted for a confirmation when trying to
+
+
+  o  Post, followup to, reply to, or supersede a message.
+
+  o  Print an article.
+
+  o  Mark groups as read or un-read.
+
+  o  Leave the group by following a "news:" URL.
+
+  o  Quit slrn.
+
+
+  4.2.15.  custom_headers
+
+  Type: string
+  Default: (unset)
+
+  Use this variable to create additional header lines when posting to a
+  newsgroup. Note that they will only be added to articles you wrote
+  using ``post'' (by default bound to `P'). If you want to have
+  additional headers in followups, you need to set them in
+  ``followup_custom_headers'' instead; headers in supersedes are set
+  with ``supersedes_custom_headers''. The header lines you add this way
+  will also show up in your editor so you can modify them.
+
+  Note: It is generally not possible to override existing headers using
+  custom_headers. An exception to this rule is the ``Message-Id:''
+  header line which can optionally be set by using this variable.
+  However, there is usually no need to do this as slrn has an excellent
+  algorithm for creating Message-IDs itself. Let me repeat this: Only
+  override the ``Message-Id:'' header if you know exactly what you are
+  doing.
+
+
+  Example: set custom_headers "X-URL: http://foo.com\nX-No-Archive: yes"
+
+
+
+  See also: ``reply_custom_headers''
+
+
+  4.2.16.  decode_directory
+
+  Type: string
+  Default: (unset)
+
+  The directory where uuencoded files, shar archives and things like
+  that are placed after decoding. This variable has no effect if slrn is
+  built without support for decoding articles (i.e. if SLRN_HAS_DECODE
+  in slrnfeat.h is disabled at compile time; default on VMS). If
+  decode_directory is unset, ``save_directory'' is used.
+
+
+  4.2.17.  display_author_realname
+
+  Type: integer
+  Default: (unset)
+
+  This variable is obsolete. You can now use the much more powerful
+  approach of having up to 10 user-defined ``header display formats''.
+
+
+
+
+  4.2.18.  display_cursor_bar
+
+  Type: integer
+  Default: 0
+
+  If non-zero, the ``cursor'' will be displayed as a horizontal bar
+  across the screen rather than an arrow ("->") in the first column.
+
+
+  4.2.19.  display_score
+
+  Type: integer
+  Default: (unset)
+
+  This variable is obsolete. If you do not want to see score values, you
+  can simply omit "%S" in ``header_display_format/''.
+
+
+  4.2.20.  drop_bogus_groups
+
+  Type: integer
+  Default: 1
+
+  When a group is removed from the server, slrn will automatically drop
+  it from your newsrc file, which is generally what you want to do in
+  this situation. However, some broken servers make groups appear as if
+  they were removed, requiring their users to re-subscribe manually when
+  they become available again. If your server is affected, you can set
+  this variable to zero.
+
+
+  4.2.21.  editor_command
+
+  Type: string
+  Default: (unset)
+
+  The value of this variable is used as a shell command to start your
+  favourite editor. However, slrn will prefer the more specific
+  variables - there is one for each case in which an editor is needed:
+
+
+     Posting an article or a followup:
+        slrn uses ``post_editor_command''
+
+     Replying by mail:
+        slrn uses ``mail_editor_command''
+
+     Editing a score file:
+        slrn uses ``score_editor_command''
+
+  editor_command is a kind of fall-back if the more specific editor
+  command is not set. If editor_command is empty, slrn looks at
+  ``$SLRN_EDITOR'' et al.
+
+  The following % escapes can be used:
+
+
+       %s    name of the file to edit
+       %d    number of the first line of the message body
+
+
+
+
+  If no escapes are found, the filename is simply appended to the
+  specified command.
+
+  Example: set editor_command "jed '%s' -g %d -tmp"
+
+
+
+  See also: ``editor_uses_mime_charset''
+
+
+  4.2.22.  editor_uses_mime_charset
+
+  Type: integer
+  Default: 0
+
+  This variable is only relevant if you're using ``character mapping''.
+  In that case, it decides whether the necessary recoding is done before
+  (non-zero setting) or after (default; zero) the editor is called.
+
+  You only need to set this if your editor uses a different character
+  set than slrn itself. This might be the case if you want to use a
+  Windows editor (e.g. Notepad) with slrn on Win32.
+
+  See also: ``charset'', ``editor_command'', ``mime_charset''
+
+
+  4.2.23.  emphasized_text_mask
+
+  Type: integer
+  Default: 1
+
+  This variable controls what parts of an article should be scanned for
+  emphasized text (like *this*, _this_ or /that/), which will then be
+  processed according to the value of ``emphasized_text_mode''. It has a
+  bitmapped value which can be the sum of any combination of the
+  following numbers:
+
+
+
+       1     scan message portion (the non-quoted, non-signature part)
+       2     scan quoted text
+       4     scan signature
+       8     scan header lines
+
+
+
+
+  For example, if you wanted slrn to look for emphasized text in both
+  the message and the quoted portions, you would set this variable to 3
+  (1+2).
+
+
+  4.2.24.  emphasized_text_mode
+
+  Type: integer
+  Default: 3
+
+  This variable controls how slrn displays text that has been recognized
+  as emphasized. If it is non-zero, the text will be highlighted
+  according to the color objects boldtext, italicstext and
+  underlinetext.  Additionally, there are two values which have special
+  meanings: If set to 1, the characters which were used for emphasis
+  (`*', `/' and `_', respectively) are not printed on the screen; if set
+  to 2, these characters are written as spaces. In all other cases
+  (including the default value), they will not be changed.
+
+  See also: ``emphasized_text_mask''
+
+
+  4.2.25.  failed_posts_file
+
+  Type: string
+  Default: (unset)
+
+  If posting failed for some reason, your article will be saved to the
+  file specified by failed_posts_file.
+
+  It this variable is unset, it defaults to the value of
+  SLRN_FAILED_POST_FILE in slrnfeat.h, typically either "slrn-failed-
+  post.txt" (UNIX and VMS) or "failpost.txt" (OS/2 and Windows).
+
+  See also: ``save_posts''
+
+
+  4.2.26.  fold_headers
+
+  Type: integer
+  Default: 1
+
+  When encoded 8bit characters are present, slrn folds header lines that
+  would exceed the 76 character limit imposed by RFC2047. However, some
+  servers seem to choke on folded header lines, so you might have to set
+  this to zero if you get an error message when trying to post long
+  header lines.
+
+
+  4.2.27.  followup
+
+  Type: string
+  Default: "In article %m, %r wrote:" (localized)
+
+  Obsolete; replaced by ``followup_string''.
+
+
+  4.2.28.  followup_custom_headers
+
+  Type: string
+  Default: (unset)
+
+  Use this variable to create additional headers when posting a
+  followup. You can use all % escapes that are defined in
+  ``followup_string''. The headers you add this way will also show up in
+  your editor and can be modified.
+
+  Note: It is generally not possible to override existing headers using
+  followup_custom_headers. See note at ``custom_headers'' for details.
+
+  See also: ``reply_custom_headers'', ``supersedes_custom_headers''
+
+
+  4.2.29.  followup_date_format
+
+  Type: string
+  Default: (unset)
+
+  This variable defines the format string for the ``%D'' specifier in
+  ``followup_string''. Its syntax is identical to the one of
+  strftime(3).
+
+  If unset, slrn uses "%a, %d %b %Y at %H:%M GMT" (localized).
+
+  See also: ``use_localtime''
+
+
+
+  4.2.30.  followup_string
+
+  Type: string
+  Default: "In article %m, %r wrote:" (localized)
+
+  Each followup you write will automatically be prefixed by the value of
+  followup_string. The following % sequences are recognized and replaced
+  with the corresponding text that is extracted from the article you are
+  answering:
+
+
+
+       %s     Subject
+       %m     Message-Id
+       %r     Real name
+       %R     Real name up to the first space (first name)
+       %f     Email address
+       %n     Current newsgroup
+       %d     Date
+       %D     Date (as defined by followup_date_format)
+       %%     %
+
+
+
+
+  Note: It is common practice to have at least the name of the person
+  you are quoting in your followup_string.
+
+  See also: ``followup_date_format'', ``reply_string''
+
+
+  4.2.31.  followup_strip_signature
+
+  Type: integer
+  Default: 1
+
+  If non-zero, the signature is stripped automatically from the article
+  you are answering when writing followups or replies. This is
+  considered good netiquette whenever you do not want to refer to the
+  signature in your reply.
+
+  See also: ``ignore_signature'', ``hide_signature'',
+  ``strip_sig_regexp''
+
+
+  4.2.32.  force_authentication
+
+  Type: integer
+  Default: 0
+
+  By default, slrn only sends authentication data if the server requests
+  it. Although this conforms to RFC 2980, in practice you need to
+  volunteer authentication to some servers. This behaviour can be turned
+  on by setting this variable to a non-zero value.
+
+  Note: This variable is needed with servers that allow you to read, but
+  not to post without a password (it seems the author of RFC 2980 did
+  not take this situation into account).
+
+  Note: If you need to set this variable on a per-server basis, use a
+  startup_hook():
+
+
+
+
+
+  Example:
+
+  define startup_hook()
+    {
+      !if (strcmp (server_name(), "needs.password.com"))
+         set_integer_variable("force_authentication", 1);
+    }
+
+
+
+  See also: ``nnrpaccess''
+
+
+  4.2.33.  generate_date_header
+
+  Type: integer
+  Default: 0
+
+  Usually, the generation of ``Date:'' header lines can be left to the
+  server.  If it does not do this correctly, please complain to its
+  administrator, as a working system clock is essential for a news
+  server.
+
+  That being said, you can still have slrn generate that header line
+  itself by changing this variable; you might want to use this to make
+  postings sent via slrnpull reflect the time they were written.
+  However, please note that this might lead to articles being rejected
+  if your system clock does not work correctly or an outgoing post was
+  left in the queue for a long time.
+
+
+  4.2.34.  generate_email_from
+
+  Type: integer
+  Default: (system dependent)
+
+  If non-zero, a ``From:'' header line is generated when sending email.
+  On Unix systems, this is usually not necessary, because the MTA will
+  do the job for you and might even be configured to reject messages
+  that already have a ``From:'' header.
+
+  This variable defaults to 0, except on Windows and OS/2, where this
+  feature is turned on by default. Its value cannot be changed when
+  SLRN_HAS_STRICT_FROM was enabled at compile time (default is off).
+
+
+  4.2.35.  generate_message_id
+
+  Type: integer
+  Default: 1
+
+  If non-zero, slrn creates its own ``Message-Id:'' header lines
+  (consisting of the string "slrn", time, process id, user- and
+  hostname) when posting. Setting this variable has no effect if
+  creation of Message-Ids has been disabled at compile time.
+
+  Note: Although creating your own Message-Ids has a lot of advantages,
+  you should only allow slrn to do so if the hostname of the machine it
+  is running on is a FQDN (fully qualified domain name) or you can
+  provide a unique hostname. Otherwise, you cannot guarantee that your
+  Message-Ids are unique and should leave the job to your news server.
+
+  See also: ``posting_host'', ``username''
+
+
+
+  4.2.36.  group_dsc_start_column
+
+  Type: integer
+  Default: (unset)
+
+  This variable is obsolete; you can now freely customize the group
+  window by setting ``group_display_format''.
+
+
+  4.2.37.  group_help_line
+
+  Type: string
+  Default: (unset)
+
+  This string is displayed in the status line of the group menu. It is
+  intended as a quick help. If unset, the following line is used
+  (localized):
+
+
+  SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw (u)s:(Un)Subscribe
+
+
+
+  See also: ``art_help_line'', ``header_help_line''
+
+
+  4.2.38.  group_status_line
+
+  Type: string
+  Default: (unset)
+
+  This variable affects the status line in group mode. It accepts all %
+  escapes that are defined for ``group_display_format'' plus the
+  following ones:
+
+
+           D   Prints `*' if newsrc file needs saving, `-' otherwise
+           L   Current line (e.g. ``1/34'')
+           P   Percentage of the way through the group window
+           s   Name of the current server
+
+
+
+  When unset, slrn takes -%D-News Groups: %s %-20g -- %L (%P)
+  (localized) as the default.
+
+  See also: ``art_status_line'', ``header_status_line'',
+  ``top_status_line''
+
+
+  4.2.39.  grouplens_host
+
+  Type: string
+  Default: (unset)
+
+  If you intend to use GroupLens, this variable has to contain the name
+  of the server that carries the GroupLens scores.
+
+  This variable does not have an effect if GroupLens support is
+  disabled; see ``use_grouplens'' for details.
+
+  See also: ``grouplens_port'', ``grouplens_pseudoname''
+
+
+
+
+  4.2.40.  grouplens_port
+
+  Type: integer
+  Default: 0
+
+  This variable contains the port you want slrn to use when connecting
+  to ``grouplens_host''.
+
+  See also: ``grouplens_pseudoname'', ``use_grouplens''
+
+
+  4.2.41.  grouplens_pseudoname
+
+  Type: string
+  Default: (unset)
+
+  This variable is for your registered GroupLens pseudoname.
+
+  See also: ``grouplens_host'', ``grouplens_port'', ``use_grouplens''
+
+
+  4.2.42.  header_help_line
+
+  Type: string
+  Default: (unset)
+
+  This string is displayed in the status line in article mode when no
+  article is shown (e.g. while you are just browsing through the
+  headers). If unset, the following line is used (localized):
+
+
+  SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit
+
+
+
+  See also: ``art_help_line'', ``group_help_line''
+
+
+  4.2.43.  header_status_line
+
+  Type: string
+  Default: (unset)
+
+  You can use this variable to customize the status line of the header
+  window.  Here is a list of valid % escapes:
+
+
+           L   Current line (e.g. ``1/74'')
+           P   Percentage of the way through the header list
+           T   Number of articles in the current subthread
+           h   Number of high scoring articles in the group
+           k   Number of articles killed by the scorefile
+           l   Number of low scoring articles
+           n   Name of the current group
+           p   Prints `<' if the window is panned (scrolled horizontally)
+           r   Number of read articles in the group
+           t   Total number of articles in the group
+           u   Number of unread articles in the group
+
+
+
+  The special descriptors ``%g'' and ``%?'' work like in
+  ``header_display_format''.
+
+  When unset, the default is (the localized form of)
+  "%p[%u/%t unread] Group: %n%-20g -- %L (%P)".
+  See also: ``art_status_line'', ``group_status_line'',
+  ``top_status_line''
+
+
+  4.2.44.  hide_pgpsignature
+
+  Type: integer
+  Default: 0
+
+  If non-zero, PGP signatures in articles will not be displayed. The
+  setting of this variable can be changed using ``toggle_pgpsignature''
+  (default binding: `]') while slrn is running.
+
+  See also: ``hide_signature''
+
+
+  4.2.45.  hide_signature
+
+  Type: integer
+  Default: 0
+
+  If non-zero, signatures in articles (as defined by
+  ``strip_sig_regexp'') will not be displayed. The setting of this
+  variable can be changed using ``toggle_signature'' (default binding:
+  `\') while slrn is running.
+
+  See also: ``followup_strip_signature'', ``hide_pgpsignature'',
+  ``ignore_signature''
+
+
+  4.2.46.  hide_verbatim_marks
+
+  Type: integer
+  Default: 0
+
+  If ``process_verbatim_marks'' is turned on, you can hide ``verbatim
+  marks'' (#v+ and #v-) in the article body by setting this variable to
+  a non-zero value. It can also be changed using toggle_verbatim_marks
+  while slrn is running.
+
+
+  4.2.47.  highlight_unread_subjects
+
+  Type: integer
+  Default: 1
+
+  If non-zero, the subjects of unread articles are highlighted. There
+  are two possible ways of doing this:
+
+  When set to one, unread subjects are printed bright (when using
+  colors) or bold (in monochrome mode). This will obviously not have any
+  visible effect if the subject is printed bold or in a bright color
+  anyways. Besides that, the special color ``default'' does not have a
+  bright version.
+
+  When set to two, unread subjects are printed in the color you set with
+  ``unread_subject''. In this case, only subjects of unread articles can
+  be ``colored by score''.
+
+
+  4.2.48.  highlight_urls
+
+  Type: integer
+  Default: 1
+
+
+  If non-zero, URLs are highlighted in the article pager using the
+  ``url'' color object. This affects all portions of the message that
+  are scanned for emphasized text.
+
+  Note: When mouse reporting is enabled, highlighted URLs are also
+  ``clickable''; if you use the left or right mouse key, slrn will
+  prompt you for changes to the URL before launching the browser.
+
+  See also: ``emphasized_text_mask'', ``mouse''
+
+
+  4.2.49.  hostname
+
+  Type: string
+  Default: (unset)
+
+  hostname is used as the domain part of the email address slrn puts in
+  your ``From:'' header, so it should be set to just that. This may or
+  may not be the hostname of the machine slrn is running on, depending
+  on whether you have an email account on that machine and whether you
+  want to use it for your usenet postings.
+
+  Please see the entry ``$HOSTNAME'' for a discussion of slrn's default
+  behaviour if this variable is unset.
+
+  Note: In each case, slrn either uses the information you set in
+  ``posting_host'' or returned by gethostbyname(3) to generate its
+  Message-Ids, so their domain part is not influenced by the value of
+  this variable.
+
+  See also: ``realname'', ``username''
+
+
+  4.2.50.  ignore_signature
+
+  Type: integer
+  Default: 0
+
+  If you use ``article_page_down'' (default binding: space) to read an
+  article ``page by page'', you might find it annoying if the last page
+  contains nothing but the author's signature. If you set this variable
+  to a non-zero value, slrn will not scroll down in those cases, but
+  immediately goes to the next article instead.
+
+  See also: ``hide_signature'', ``strip_sig_regexp''
+
+
+  4.2.51.  inews_program
+
+  Type: string
+  Default: (compile time setting)
+
+  To post your articles, you can use an external program (usually
+  inews(1)) instead of the builtin NNTP routines slrn offers (see
+  ``post_object'' for details). In this case, inews_program can be used
+  to specify the command you want slrn to pipe outgoing articles to.
+
+  Note: This variable will not work if SLRN_HAS_USER_INEWS in slrnfeat.h
+  was disabled at compile time. Obviously, it also has no effect if
+  inews support is not compiled in.
+
+
+  4.2.52.  kill_score
+
+  Type: integer
+  Default: -9999
+  When the score of an article is equal or less than kill_score points,
+  it will be killed. This means that it will not be displayed in article
+  mode at all, so you won't be bothered with it.
+
+  See also:  ``max_low_score'', ``min_high_score''
+
+
+  4.2.53.  lines_per_update
+
+  Type: integer
+  Default: 50
+
+  When entering a group or reading an article, slrn displays a
+  ``percentage meter'' in the status line, telling the user how many
+  articles (or lines) have already been read. This variable controls how
+  often this message is updated (default is to update it every 50 read
+  articles / lines).  You may want to change this value, depending on
+  the speed of your server connection and of your display.
+
+  Note: If you set this variable to less than 5, slrn will ignore it and
+  use the default of 50 instead (or 20, when reading short articles that
+  contain less than 200 lines).
+
+
+  4.2.54.  macro_directory
+
+  Type: string
+  Default: (compile time setting)
+
+  Use this to specify (in a comma separated list) the directories where
+  you keep your slang macros. This tells slrn where to look when loading
+  macros via the interpret slrnrc command, so you do not have to type
+  the absolute filename for each macro you want to use.
+
+  On Unix, the configure script automatically sets the default of this
+  variable to the directory where the macros that come with slrn are
+  installed. If it was called without any parameters, this is
+  /usr/local/share/slrn/macros. If a macro does not exist in
+  macro_directory, slrn will try to find it in the user's home directory
+  ($HOME).
+
+
+  Example:
+
+  interpret "/usr/share/slrn/macros/util.sl"
+  interpret "News/macros/my-macro.sl"
+
+  can be replaced with
+
+  set macro_directory "News/macros,/usr/share/slrn/macros/"
+  interpret "util.sl"
+  interpret "my-macro.sl"
+
+
+
+
+  4.2.55.  mail_editor_command
+
+  Type: string
+  Default: (unset)
+
+  This variable is interpreted as a shell command which will be used to
+  invoke your editor of choice when you want to reply by email. If it is
+  unset, slrn will use the editor defined by ``editor_command''.
+
+
+  Note: The variable may contain % escapes. A list of them can be found
+  in the section on ``editor_command''.
+
+  See also: ``post_editor_command'', ``score_editor_command''
+
+
+  4.2.56.  mail_editor_is_mua
+
+  Type: integer
+  Default: 0
+
+  Set this variable if your ``mail_editor_command'' is a Mail User
+  Agent, i.e.  sends the email itself.  This makes sure it does not get
+  sent twice (both by your MUA and slrn).
+
+
+  Example (using mutt as an external mailer):
+
+  set mail_editor_command "mutt -H '%s'"
+  set mail_editor_is_mua 1
+
+
+
+
+  4.2.57.  max_low_score
+
+  Type: integer
+  Default: 0
+
+  Articles with a score lower than max_low_score will automatically be
+  marked as read and receive the ``HEADER_LOW_SCORE'' header flag.
+  However, they are still displayed in the header overview.
+
+  See also: ``kill_score'', ``min_high_score''
+
+
+  4.2.58.  metamail_command
+
+  Type: string
+  Default: (unset)
+
+  When you select an article which uses a MIME content type or encoding
+  not supported by slrn, an external program can be launched to view it.
+  This variable contains the name of the program which will be used in
+  those cases. slrn will write the article to a temporary file, so the
+  command used here has to accept a filename as its argument.
+
+  If this variable is unset, slrn will try to invoke metamail. Setting
+  this variable has no effect if MIME support has not been compiled in.
+
+  See also: ``use_metamail''
+
+
+  4.2.59.  mime_charset
+
+  Type: string
+  Default: (automatically chosen)
+
+  This variable tells slrn which MIME character set to declare when
+  posting 8bit characters. The default is "iso-8859-1", unless you set
+  ``charset'' to "ibm852" (then it's "iso-8859-2"), "ibm737" (default
+  for that is "iso-8859-7") or "koi8" (the resulting default is
+  "koi8-r").
+
+  Note: This variable should not be set to the value of ``charset''.
+
+  Setting this variable has no effect if MIME support has not been
+  compiled in.
+
+  See also: ``use_mime''
+
+
+  4.2.60.  min_high_score
+
+  Type: integer
+  Default: 1
+
+  Articles with a score of at least min_high_score points are marked as
+  ``high'' (the ``HEADER_HIGH_SCORE'' header flag is set; this is
+  indicated in header overview by an exclamation mark). Articles with
+  ``high'' scores are displayed first in sorting modes 2-11 and you will
+  be able to jump to the next ``high scoring'' article using
+  ``next_high_score'' (default binding: `!').
+
+  See also: ``kill_score'', ``max_low_score'', ``sorting_method''
+
+
+  4.2.61.  mouse
+
+  Type: integer
+  Default: 0
+
+  If this variable is non-zero and you run slrn inside an X terminal
+  emulator, some basic mouse support will be activated.
+
+  Note: Setting this variable to -1 will always activate mouse support,
+  even if it does not work (and is therefore useless) on the current
+  terminal.
+
+
+  4.2.62.  netiquette_warnings
+
+  Type: integer
+  Default: 1
+
+  When non-zero, slrn will warn you if your posting does not conform to
+  some generally accepted netiquette guidelines.  You can still force
+  the posting, so it's probably a good idea to keep this turned on to
+  make sure that you do not violate these rules without noticing it.
+
+  Note: Currently, this feature warns you when crossposting to more than
+  four groups or without setting a ``Followup-To:'', or if the
+  ``Followup-To:'' header line contains multiple groups.  Additionally,
+  you are notified if your signature has more than four lines.
+
+  See also: ``reject_long_lines''
+
+
+  4.2.63.  new_subject_breaks_threads
+
+  Type: integer
+  Default: 0
+
+  In large threads, the tree built by looking at the ``References:'' can
+  become quite complex and sometimes confusing. Thus, some people prefer
+  to see a separate thread tree whenever the ``Subject:'' header line
+  changes. Set this variable if you want this (more, but smaller trees).
+
+  Note: Before comparing subjects, a leading ``Re: '' and a trailing
+  ``(was: ...)'' is cut off. However, the regular expressions in
+  ``strip_re_regexp'' and ``strip_was_regexp'' are not used.
+
+  4.2.64.  no_autosave
+
+  Type: integer
+  Default: 0
+
+  By default, slrn creates an autosave copy of your newsrc file (ending
+  in ".as") whenever you leave a group. Thus, you won't lose (much) data
+  if slrn (or the system it runs on) should go down hard.
+
+  If you set this variable to 1, this feature is turned off. If you set
+  it to 2, slrn will autosave to the newsrc file itself (not to a
+  temporary file).
+
+  See also: ``no_backups''
+
+
+  4.2.65.  no_backups
+
+  Type: integer
+  Default: 0
+
+  If non-zero, no backups of the newsrc file are created.
+
+  See also: ``no_autosave''
+
+
+  4.2.66.  non_Xbrowser
+
+  Type: string
+  Default: (unset)
+
+  The command in this variable will be used to start a text mode web
+  browser when ``browse_url'' (default binding: `U') is called. slrn
+  will chose the text mode web browser if ``$DISPLAY'' is unset or no
+  command could be found in ``Xbrowser''.
+
+
+  4.2.67.  organization
+
+  Type: string
+  Default: (compile time setting)
+
+  Using this variable, you can set the ``Organization:'' header line to
+  an arbitrary string. A discussion on how slrn obtains the default
+  value can be found in the entry on ``$ORGANIZATION''.
+
+
+  4.2.68.  overview_date_format
+
+  Type: string
+  Default: (unset)
+
+  This variable defines the format string for the ``%D'' specifier in
+  ``header_display_format''.  Its syntax is identical to the one of
+  strftime(3).
+
+  If unset, slrn uses "%d %b %y %H:%M".
+
+  See also: ``use_localtime''
+
+
+  4.2.69.  post_editor_command
+
+  Type: string
+  Default: (unset)
+
+  This variable is interpreted as a shell command which will be used to
+  invoke your editor of choice when you edit a new posting or write a
+  followup. If it is unset, slrn will use the editor defined by
+  ``editor_command''.
+
+  Note: The variable may contain % escapes. You will find a list of them
+  in the section on ``editor_command''.
+
+  See also: ``mail_editor_command'', ``score_editor_command''
+
+
+  4.2.70.  post_object
+
+  Type: string
+  Default: (unset)
+
+  Controls the method slrn uses to post articles. It can be one of
+  "nntp" (use builtin NNTP support), "inews" (pipe article to an
+  external program) or "slrnpull" (spool messages for slrnpull to send).
+  If the variable is unset, the default depends on the compile time
+  setting of SLRN_DEFAULT_POST_OBJ in slrnfeat.h.
+
+  See also: ``server_object'', ``use_slrnpull''
+
+
+  4.2.71.  postpone_directory
+
+  Type: string
+  Default: (unset)
+
+  Directory where articles you want to postpone are saved. If this
+  variable is unset, slrn will try to use ``save_directory'' for this
+  purpose.
+
+
+  4.2.72.  prefer_head
+
+  Type: integer
+  Default: 0
+
+  This variable affects ``expensive scoring'': If available, slrn uses
+  the XOVER and XHDR extensions to retrieve only the needed header
+  lines; otherwise, the HEAD NNTP command is used to get all headers.
+  Although this notably increases network traffic, it might be faster,
+  depending on your connection and the number of ``expensive'' headers
+  you score on. In this case, you can set this variable and slrn will
+  prefer HEAD over XOVER / XHDR.
+
+  When set to 2, slrn never tries to use XOVER. This is only useful for
+  servers with broken XOVER implementations.
+
+
+  4.2.73.  printer_name
+
+  Type: string
+  Default: (unset)
+
+  This variable can be used to customize the ``print'' function. Its
+  meaning and the default action depend on the operating system:
+
+  On Unix systems, it can contain a command to which slrn will pipe the
+  article you want to print. For example, you would set it to
+  "my_print_filter | lpr -Pmy_printer" if you want the article to be
+  processed by my_print_filter and then printed on ``my_printer''. If
+  unset, the default action is to use lpr with the value of ``$PRINTER''
+  as the -P option.
+  On Windows, you can set this variable to the name of the print queue
+  you want to use. Here, the default is to use the setting in
+  ``win.ini''.
+
+  print is not yet implemented for VMS.
+
+
+  4.2.74.  process_verbatim_marks
+
+  Type: integer
+  Default: 1
+
+  If this variable is set to a non-zero value, slrn will interpret text
+  enclosed by "#v+" and "#v-" (on a line of their own) as ``verbatim''.
+  Verbatim text will be displayed according to the color object
+  verbatim; emphasized text it might contain will not be highlighted.
+  This is especially useful when dealing with source code.
+
+  Note: slrn is currently the only program that interprets these
+  verbatim marks. This is due to the lack of a standard that would
+  describe a way to mark text as ``verbatim'' in usenet articles.
+
+  See also: ``emphasized_text_mask'', ``emphasized_text_mode'',
+  ``hide_verbatim_marks''
+
+
+  4.2.75.  process_verbatum_marks
+
+  Type: integer
+  Default: 1
+
+  Obsolete spelling of ``process_verbatim_marks''.
+
+
+  4.2.76.  prompt_next_group
+
+  Type: integer
+  Default: 1
+
+  This variable is obsolete.
+
+
+  4.2.77.  query_next_article
+
+  Type: integer
+  Default: 1
+
+  When you use ``article_page_down'' (default binding: space) while you
+  are already at the end of an article, slrn moves to the next unread
+  article. If this variable is set to 0, this will happen automatically;
+  if it is 1, you will be asked to confirm that you want to select the
+  new article.
+
+  See also: ``query_next_group''
+
+
+  4.2.78.  query_next_group
+
+  Type: integer
+  Default: 1
+
+  When you use ``article_page_down'' (default binding: space) while you
+  are at the end of the last unread article in a group, slrn can move to
+  the next newsgroup that contains unread articles. If this variable is
+  set to 0, this will happen automatically; if it is 1, you will be
+  asked to confirm that you want to select a new group.
+  See also: ``query_next_article''
+
+
+  4.2.79.  query_read_group_cutoff
+
+  Type: integer
+  Default: 100
+
+  When you enter a newsgroup and slrn is about to read more than
+  query_read_group_cutoff article headers, it will prompt you to confirm
+  (or change) the number of articles to read. This feature is turned off
+  if you set this variable to 0.
+
+
+  4.2.80.  query_reconnect
+
+  Type: integer
+  Default: (unset)
+
+  This variable is obsolete.
+
+
+  4.2.81.  quote_string
+
+  Type: string
+  Default: (unset)
+
+  This string will be used to indent quoted text in followups and
+  replies.  If the variable is unset, slrn uses ">".
+
+  Note: slrn's default is the only quote prefix commonly accepted on
+  Usenet. Please do not change it unless you are posting to a group or
+  network that follows different rules.
+
+  See Also: ``smart_quote''
+
+
+  4.2.82.  read_active
+
+  Type: integer
+  Default: 0
+
+  If this variable is non-zero, slrn will read the active file from the
+  server when starting. If your server carries few groups or your
+  network connection is fast (e.g. because you are using a local
+  newsserver), this may lead to a faster startup. If it is slow, you
+  should leave the default setting untouched.
+
+
+  4.2.83.  realname
+
+  Type: string
+  Default: (unset)
+
+  It is considered good netiquette to set this variable to your real
+  name. It will be included in the ``From:'' header line. If you do not
+  set it, slrn tries to get a value from ``$NAME''. On UNIX systems, it
+  also queries the /etc/passwd gecos field.
+
+  See also: ``hostname'', ``username''
+
+
+  4.2.84.  reject_long_lines
+
+  Type: integer
+  Default: 2
+  If set to 1, slrn will not allow you to post articles containing non-
+  quoted lines which are longer than 80 characters. If you set it to 2,
+  slrn will merely issue a warning that you can decide to ignore (e.g.
+  when posting source code). Setting this variable to 0 turns the check
+  off. Please note that long lines are generally considered bad
+  netiquette.
+
+  See also: ``netiquette_warnings''
+
+
+  4.2.85.  reply_custom_headers
+
+  Type: string
+  Default: (unset)
+
+  Use this variable to create additional headers when replying to a
+  posting (via email). You can use all % escapes that are defined in
+  ``followup_string''. The headers you add this way will also show up in
+  your editor and can be modified.
+
+  Note: It is not possible to override existing headers using
+  reply_custom_headers.
+
+  See also:  ``custom_headers'', ``followup_custom_headers'',
+  ``supersedes_custom_headers''
+
+
+  4.2.86.  reply_string
+
+  Type: string
+  Default: "In %n, you wrote:" (localized)
+
+  This variable determines the attribution line slrn uses when replying
+  via email. You can use the same % escapes as in ``followup_string''.
+
+
+  4.2.87.  replyto
+
+  Type: string
+  Default: (unset)
+
+  You can use this variable to set the address you want replies to your
+  articles to be sent to. You only need to set this if you do not want
+  people to send replies to the address in the ``From:'' header line. If
+  you do not set this variable, slrn tries to get a default value from
+  ``$REPLYTO''.
+
+  See also: ``hostname'', ``username''
+
+
+  4.2.88.  save_directory
+
+  Type: string
+  Default: (unset)
+
+  Sets the default directory where saved articles are placed. If it is
+  unset, slrn uses "News".
+
+  Note: If save_directory is not an absolute pathname, it is interpreted
+  as being relative to your home directory as determined by the
+  environment variables ``$SLRNHOME'' or ``$HOME''.
+
+  See also:  ``decode_directory'', ``postpone_directory''
+
+
+
+  4.2.89.  save_posts
+
+  Type: string
+  Default: (unset)
+
+  Specifies a file to which every article you post should be appended
+  (in standard mailbox format). If unset, slrn will not even try to make
+  a copy of your postings; if it cannot write to the specified file, it
+  will give a warning and post nonetheless.
+
+  Note: If the filename in save_posts does not contain an absolute path,
+  it is interpreted as being relative to your home directory (see
+  ``$SLRNHOME'').
+
+  See also:  ``save_replies''
+
+
+  4.2.90.  save_replies
+
+  Type: string
+  Default: (unset)
+
+  Specifies a file to which every reply you send by email should be
+  appended (in standard mailbox format). The same rules apply as for
+  ``save_posts''.
+
+  Note: If you send a Cc (carbon copy) of one of your articles by email,
+  the posting will only be appended to the folder in save_posts, not to
+  save_replies.
+
+
+  4.2.91.  score_editor_command
+
+  Type: string
+  Default: (unset)
+
+  Defines the program that will be called to edit your score file. If
+  unset, the editor in ``editor_command'' is used.
+
+  Note: The variable may contain % escapes. They are listed in the
+  section on ``editor_command''.
+
+  See also: ``mail_editor_command'', ``post_editor_command''
+
+
+  4.2.92.  scorefile
+
+  Type: string
+  Default: (unset)
+
+  If you want to score articles, you need to set this variable to the
+  filename of your scorefile. It is interpreted as being relative to
+  your home directory (unless it starts with a slash).
+
+  If you want to use more than one scorefile, you need to use an include
+  statement in the scorefile itself. Please do not confuse this with the
+  ``include'' slrnrc command discussed above.
+
+  For further details on scoring, please refer to the files score.txt
+  and SCORE_FAQ that should have come with your slrn distribution. A
+  future version of this manual might also include a separate section
+  about the concept of ``scoring''.
+
+
+
+
+  4.2.93.  scroll_by_page
+
+  Type: integer
+  Default: 0
+
+  If set to non-zero, both group window and header window will scroll by
+  a full page instead of a single line. This does not affect the article
+  window.
+
+
+  4.2.94.  sendmail_command
+
+  Type: string
+  Default: (compile time setting)
+
+  slrn uses this string as a command to send email (when forwarding or
+  replying). Input will be piped to the program if the system supports
+  it.  On systems without pipes, sendmail_command will be given the name
+  of a temporary file containing the email as the last command line
+  argument.
+
+  The default is set at compile time. On Unix, the configure script
+  tries to find the sendmail binary; otherwise, you can set
+  SLRN_SENDMAIL_COMMAND in slrnfeat.h.
+
+
+  4.2.95.  server_object
+
+  Type: string
+  Default: (unset)
+
+  Controls the method slrn uses to read news. It can be either "nntp"
+  (connect an NNTP server) or "spool" (read from a local spool).
+
+  If this variable is unset, the default behaviour depends on the
+  compile time #define SLRN_DEFAULT_SERVER_OBJ in slrnfeat.h. If NNTP
+  support is compiled in, it is used by default.
+
+  See also: ``post_object'', ``use_slrnpull''
+
+
+  4.2.96.  show_article
+
+  Type: integer
+  Default: 0
+
+  If non-zero, the first article is automatically displayed when
+  entering a group.
+
+
+  4.2.97.  show_descriptions
+
+  Type: integer
+  Default: (unset)
+
+  This variable is obsolete; you can now freely customize the group
+  window by setting ``group_display_format''.
+
+
+  4.2.98.  show_thread_subject
+
+  Type: integer
+  Default: 0
+
+  When viewing a thread tree, slrn usually does not display subjects
+  that are identical to the one of the previous posting as this would
+  make the screen look busy without giving any additional information.
+  If you still prefer to have all subject lines displayed, you can set
+  this variable to a non-zero value.
+
+
+  4.2.99.  signature
+
+  Type: string
+  Default: (compile time setting)
+
+  slrn can append a signature to all outgoing articles and mails.  Set
+  signature to the name of your signature file or to an empty string if
+  you don't want to use a signature. slrn will not give any error
+  message if the file specified in signature does not exist.
+
+  The default of this variable is defined in slrnfeat.h
+  (SLRN_SIGNATURE_FILE): It is ".signature" on Unix and VMS and
+  "signatur.txt" on OS/2 and Windows.
+
+  Note: If your signature file doesn't start with sig dashes ("-- \n"),
+  slrn will add them automatically.
+
+  See also: ``signoff_string''
+
+
+  4.2.100.  signoff_string
+
+  Type: string
+  Default: (unset)
+
+  The value of this variable will be inserted before the signature. This
+  is useful for people who want to sign off their messages with their
+  name, like it is common in some groups.
+
+  Note: If you use this feature, do not append much more than your name
+  with it, or you will annoy your readers. If you want to tell people
+  the URL of your homepage or append some funny quote to your postings,
+  put it in your ``signature file''.
+
+
+  4.2.101.  simulate_graphic_chars
+
+  Type: integer
+  Default: 0
+
+  If you see strange characters in the thread tree, you can set this
+  variable to a non-zero value to make slrn restrict itself to the use
+  of simple ASCII characters to represent the thread tree. slrn does
+  this automatically if you use OS/2 or Windows and your system does not
+  have line drawing characters.
+
+  Note: It also might be possible to fix your terminal to support proper
+  line drawing (which looks much better). Please see the slrn FAQ for
+  details.
+
+
+  4.2.102.  smart_quote
+
+  Type: integer
+  Default: 1
+
+  If set to 1 or 3, slrn will insert a blank between your
+  ``quote_string'' and previously unquoted lines, leading to a result
+  most people find better readable. If set to 2 or 3, blank lines are
+  kept unquoted.
+
+  4.2.103.  sorting_method
+
+  Type: integer
+  Default: 3
+
+  This variable controls in which order articles will be displayed in
+  the header window:
+
+
+
+        0     do not sort
+        1     perform threading
+        2     sort by subject
+        3     thread, then sort by subject
+        4     sort by score
+        5     thread, then sort by score
+        6     sort by score, then by subject
+        7     thread, then sort by score and subject
+        8     sort by date with most recent first
+        9     thread, then sort by date with most recent first
+       10     sort by date with most recent last
+       11     thread, then sort by date with most recent last
+
+
+
+
+
+  4.2.104.  spoiler_char
+
+  Type: character
+  Default: '*'
+
+  This character will be used to hide ``spoiler'' text (i.e. text
+  preceded by a formfeed character). The interpretation of formfeed
+  characters as ``spoilers'' can be turned off at compile time.
+
+  See also: ``spoiler_display_mode''
+
+
+  4.2.105.  spoiler_display_mode
+
+  Type: integer
+  Default: 1
+
+  This variable defines what happens when a spoiler is revealed (this is
+  typically done by hitting space, which is the default binding of
+  ``article_page_down''):
+
+
+
+       0    keep the display still, and reveal the current spoiler
+       1    start a new page, and reveal the current spoiler
+       2    keep the display still, and reveal all spoilers
+       3    start new page, and reveal all spoilers
+
+
+
+
+  See also: ``spoiler_char''
+
+
+  4.2.106.  spool_active_file
+
+  Type: string
+  Default: "data/active"
+
+  Sets the location of the active file that lists all available
+  newsgroups.  The filename is relative to ``spool_inn_root'', unless it
+  starts with a slash ('/').
+
+  The default of this variable is set at compile time in slrnfeat.h
+  (#define SLRN_SPOOL_ACTIVE).
+
+  Note: Of course, you only need to set the spool* variables if you want
+  to read your news directly from spool (e.g. when using slrnpull). When
+  using an NNTP server, setting them will have no effect.
+
+  See also: ``spool_inn_root'', ``server_object'', ``post_object'',
+  ``use_slrnpull''
+
+
+  4.2.107.  spool_activetimes_file
+
+  Type: string
+  Default: "data/active.times"
+
+  This variable provides the name of your news server's active.times
+  file.  This file contains the creation dates of the newsgroups.
+
+  The notes that can be found in the entry for ``spool_active_file''
+  also apply to this variable.
+
+  See also: ``spool_inn_root''
+
+
+  4.2.108.  spool_check_up_on_nov
+
+  Type: integer
+  Default: 0
+
+  If non-zero, slrn checks whether the articles referenced by the news
+  overview files actually exist. This may add a perceptible delay and is
+  redundant with servers that keep their overview files up to date.
+  However, some servers don't, so if you see a lot of ``article not
+  available'' errors, you might want to turn this on.
+
+  See also: ``spool_active_file'', ``spool_nov_file''
+
+
+  4.2.109.  spool_inn_root
+
+  Type: string
+  Default: "/var/lib/news"
+
+  The directory that contains the active, active.times and newsgroups
+  files.
+
+  The default of this variable is set at compile time in slrnfeat.h
+  (#define SLRN_SPOOL_INNROOT).
+
+  See also: ``spool_active_file'', ``spool_activetimes_file'',
+  ``spool_newsgroups_file''
+
+
+  4.2.110.  spool_newsgroups_file
+
+  Type: string
+  Default: "data/newsgroups"
+
+  This variable provides the name of your news server's newsgroups file.
+  The file contains a list of newsgroups with short descriptions
+  (taglines).
+  The notes that can be found in the entry for ``spool_active_file''
+  also apply to this variable.
+
+  See also: ``spool_inn_root''
+
+
+  4.2.111.  spool_nov_file
+
+  Type: string
+  Default: ".overview"
+
+  The name of your news server's overview files.
+
+  See also: ``spool_nov_root''
+
+
+  4.2.112.  spool_nov_root
+
+  Type: string
+  Default: "/var/spool/news"
+
+  The root directory of the news overview database. Often, this is the
+  same as ``spool_root''.
+
+  See also: ``spool_nov_file''
+
+
+  4.2.113.  spool_root
+
+  Type: string
+  Default: "/var/spool/news"
+
+  The root directory of your news spool.
+
+  See also: ``spool_inn_root'', ``spool_nov_root''
+
+
+  4.2.114.  supersedes_custom_headers
+
+  Type: string
+  Default: (unset)
+
+  This variable is used to create additional headers when superseding a
+  message. Otherwise, it works exactly like ``followup_custom_headers''.
+
+  See also: ``custom_headers'', ``reply_custom_headers''
+
+
+  4.2.115.  top_status_line
+
+  Type: string
+  Default: (unset)
+
+  Using this variable, you can customize the status line slrn displays
+  at the top of the screen. It can be set to a format string that works
+  like the one used in ``header_display_format''. The following %
+  escapes can be used:
+
+
+           %   percent character
+           d   current date
+           n   name of the current newsgroup
+           s   name of the current server
+           t   current time
+           v   version of slrn
+
+  The special sequences `%g' and `%?' work as described in
+  ``header_display_format''.
+
+  When unset, slrn uses "slrn %v ** Press '?' for help, 'q' to quit. **
+  Server: %s" (localized) as the default.
+
+  Note: The current time and date are printed in the preferred
+  representation for the current locale. If you have date/time
+  information in the status line, you should be aware that it is not
+  automatically redrawn every second.
+
+
+  4.2.116.  uncollapse_threads
+
+  Type: integer
+  Default: 0
+
+  If non-zero, all threads will be uncollapsed when entering a group.
+
+
+  4.2.117.  unsubscribe_new_groups
+
+  Type: integer
+  Default: 0
+
+  If non-zero, new newsgroups won't be subscribed automatically.
+
+
+  4.2.118.  use_blink
+
+  Type: integer
+  Default: (system dependent)
+
+  Enables blinking of display if non-zero. The default is 0 if your
+  terminal supports colors, 1 if not.
+
+  Note: If you run a color terminal and find that setting this variable
+  to 1 makes it possible to use bright colors for the background, please
+  look into using a different terminfo entry. See section ``color'' for
+  details.
+
+
+  4.2.119.  use_color
+
+  Type: integer
+  Default: (system dependent)
+
+  Forces the use of colors (if set to 1) or the use of monochrom mode
+  (if set to 0). When unset, color is automatically used if your
+  terminal supports it according to its termcap entry.
+
+
+  4.2.120.  use_flow_control
+
+  Type: integer
+  Default: 0
+
+  If set to non-zero, ^S/^Q processing by the terminal driver is
+  enabled. This means that you will be able to ``freeze'' the screen
+  using Control-S and ``thaw'' it by pressing Control-Q.
+
+
+  4.2.121.  use_grouplens
+
+  Type: integer
+  Default: 0
+  If non-zero, slrn will try to contact your ``grouplens server'' to
+  exchange GroupLens scores.
+
+  This variable has no effect if GroupLens has not been enabled at
+  compile time.
+
+  Note: As far as we could find out, GroupLens is not in use any more.
+  If this is incorrect, we would be grateful for a pointer to additional
+  information on it.
+
+
+  4.2.122.  use_header_numbers
+
+  Type: integer
+  Default: 1
+
+  If non-zero, header numbers are displayed at the left margin to make
+  article selection more efficient.
+
+
+  4.2.123.  use_localtime
+
+  Type: integer
+  Default: 1
+
+  This variable determines if your local timezone is used by the ``%D''
+  specifiers in ``followup_date_format'' and ``overview_date_format''.
+  The following settings are possible:
+
+
+
+       0    always use GMT
+       1    use local timezone in overview_date_format
+       2    use local timezone in followup_date_format
+       3    always use local timezone
+
+
+
+
+  Note: This setting does not affect the ``Date:'' header lines in your
+  own postings. They are not even generated by slrn, unless you set
+  ``generate_date_header''. VMS and BeOS do not support using GMT.
+
+
+  4.2.124.  use_metamail
+
+  Type: integer
+  Default: 1
+
+  If non-zero, slrn calls the program given in ``metamail_command'' to
+  processes MIME articles it cannot handle.
+
+
+  4.2.125.  use_mime
+
+  Type: integer
+  Default: 5
+
+  MIME support can be enabled separately for different operations. This
+  variable is a bitmapped value that can be set to the sum of any
+  combination of the following numbers:
+
+
+
+
+
+  1    decode MIME in the article pager; encode outgoing messages
+  2    decode MIME when saving articles
+  4    MIME-encode the local copy of your own articles
+  8    decode MIME when piping an article
+
+
+
+
+  Thus, a setting of zero generally disables MIME support, while 15
+  enables all available MIME features. The default (5=1+4) decodes MIME
+  in the pager and encodes messages when sending them and keeping the
+  local copy.
+
+  Note: When you make use of ``character mapping'', you should be aware
+  that slrn uses the original charset rather than your local one when
+  saving and piping messages without decoding them. This is necessary if
+  you want MIME-aware programs to work on them correctly.
+
+  Setting this variable has no effect if MIME support has been
+  deactivated at compile time.
+
+  See also: ``mime_charset''
+
+
+  4.2.126.  use_slrnpull
+
+  Type: integer
+  Default: 0
+
+  If non-zero, slrn will spool outgoing postings to let slrnpull send
+  them instead of contacting the newsserver itself. The same effect can
+  be achieved by setting ``post_object'' to "slrnpull".
+
+  See also: ``server_object''
+
+
+  4.2.127.  use_tilde
+
+  Type: integer
+  Default: 1
+
+  If non-zero, tildes (``~'') are displayed at the end of an article
+  like it is done in the vi editor.
+
+
+  4.2.128.  use_tmpdir
+
+  Type: integer
+  Default: 0
+
+  If non-zero, temporary files for postings, followups and replies will
+  be held in the directory specified by ``$TMP'' (the entry there also
+  explains what will happen if $TMP is unset).
+
+
+  4.2.129.  use_uudeview
+
+  Type: integer
+  Default: (compile time setting)
+
+  If your copy of slrn has support for external uudeview libraries
+  (--with-uudeview), but you still want to use the (faster, but less
+  sophisticated) builtin routines for decoding binary files, set this
+  variable to 0. Otherwise, it has no effect.
+
+
+  4.2.130.  use_xgtitle
+
+  Type: integer
+  Default: (unset)
+
+  This variable is obsolete.
+
+
+  4.2.131.  username
+
+  Type: string
+  Default: (system specific)
+
+  Contains your user name (login name). It is used as the local part of
+  your email address and as a part of the Message-Id: header (if slrn is
+  configured to create one).
+
+  If it is unset, slrn tries to get your login name from the system
+  first. If this fails, it looks at ``$USER'' and ``$LOGNAME''. If it
+  cannot find a valid user name, an error message is issued and the
+  program is aborted.
+
+  Note: Do not confuse your user name  with your real name!
+
+  See also: ``hostname'', ``realname''
+
+
+  4.2.132.  warn_followup_to
+
+  Type: integer
+  Default: 1
+
+  When a ``Followup-To:'' header line is set, your followup will appear
+  in different newsgroups than the original posting. If you always want
+  to be notified of this, you can set this variable to 2. The default
+  setting (1) only warns you when your followup would not appear in the
+  group you are currently reading; setting it to 0 disables this warning
+  completely.
+
+
+  4.2.133.  wrap_flags
+
+  Type: integer
+  Default: 3
+
+  This variable controls what text is wrapped in the article pager when
+  pressing the ``wrap_article'' key (bound to ``W'' by default):
+
+
+
+       0     wrap body only
+       1     wrap headers and body
+       2     wrap quoted material and body
+       3     wrap headers, quoted material and body
+
+
+
+
+  If you want to wrap long lines automatically, without having to press
+  a key, you can set the variable to one of these values:
+
+
+
+
+
+
+  4     wrap body only
+  5     wrap headers and body
+  6     wrap quoted material and body
+  7     wrap headers, quoted material and body
+
+
+
+
+  See also: ``wrap_method'', ``wrap_article''
+
+
+  4.2.134.  wrap_method
+
+  Type: integer
+  Default: 2
+
+  With this variable, you can control how slrn wraps long lines. When 0,
+  it wraps at word boundries, leaving words that are longer than your
+  line width untouched. When 1, it always wraps at the right border of
+  the screen. When 2, it first tries so find a good place to wrap the
+  line and wraps at the right border only when necessary.
+
+  See also: ``wrap_flags''
+
+
+  4.2.135.  write_newsrc_flags
+
+  Type: integer
+  Default: 0
+
+  If this variable is zero, all groups are saved when writing your
+  newsrc file. If it is 1, unsubscribed groups are not saved; if it is
+  2, unsubscribed groups are not saved if there are any unread messages
+  in them.
+
+
+  4.2.136.  Xbrowser
+
+  Type: string
+  Default: (unset)
+
+  Used to start an X11 web browser on a URL when ``browse_url'' (default
+  binding: `U') is called. If ``$DISPLAY'' is set, slrn tries to execute
+  the command stored in Xbrowser. Otherwise, non_Xbrowser is used
+  instead. The string may contain "%s" which will be replaced with the
+  chosen URL. If no such substring is found, the URL is simply appended
+  to the specified command.
+
+
+  Example: set Xbrowser "netscape %s &"
+
+
+
+  See also: ``non_Xbrowser''
+
+
+  5.  Interactive functions
+
+  This section lists all functions with their compiled in bindings. Some
+  functions accept a prefix argument; it can be set by pressing escape
+  and a number before calling the function (e.g. to call
+  ``select_group'' with the prefix argument four, you need to press "ESC
+  4 ENTER".
+
+  If you want, you can use the ``setkey'' configuration command to bind
+  them to different keys. However, please note that the online help
+  won't be updated automatically. If you want it to reflect your
+  changes, you currently need to make use of the ``$SLRNHELP''
+  environment variable and change ``art_help_line'' et al.
+
+  Note: If a function is bound to an uppercase letter, you can call it
+  without holding down shift as long as the corresponding lowercase
+  letter is unbound (e.g. pressing `p' in group mode will post an
+  article, although ``post'' is really bound to `P'). This does not work
+  the other way round (e.g. pressing `M' will do nothing, as
+  ``move_group'' is bound to `m' and `M' is unbound by default).
+
+  Note: Please do not use function names that are called ``obsolete'' in
+  this manual. They are only included for backwards compatibility and
+  will be removed before version 1.0 is released.
+
+
+  5.1.  group functions
+
+  The functions described here are available in group mode.
+
+
+  5.1.1.  add_group
+
+  Default: "a"
+
+  Prompts for a newsgroup that gets added to your list. If the group is
+  in your newsrc file, but was hidden or unsubscribed, it is shown.
+  Otherwise, the server is queried - if the group exists, it is inserted
+  after the current group. In any case, the cursor is moved to the
+  group.
+
+
+
+  5.1.2.  bob
+
+  Default: "CTRL-K UP" "ESC <"
+
+  Moves the cursor to the first newsgroup that is currently visible
+  (``beginning of buffer'').
+
+
+
+  5.1.3.  catchup
+
+  Default: "c"
+
+  Marks the current group as read.
+
+
+
+  5.1.4.  eob
+
+  Default: "CTRL-K DOWN" "ESC >"
+
+  Moves the cursor to the last newsgroup that is currently visible
+  (``end of buffer'').
+
+
+
+  5.1.5.  evaluate_cmd
+
+  Default: "CTRL-X ESC"
+
+  Reads a line and interprets it as S-Lang.
+
+
+  5.1.6.  group_search
+
+  Default: "/"
+
+  Old alias of ``group_search_forward''.
+
+
+
+  5.1.7.  group_search_backward
+
+  Default: "\"
+
+  Works like ``group_search_forward'', but searches backwards.
+
+
+
+  5.1.8.  group_search_forward
+
+  Default: "/"
+
+  Searches for a substring in group names and descriptions (``tag
+  lines''), starting at the current cursor position and wrapping around
+  the list if necessary. Hidden and unsubscribed groups are not taken
+  into account.
+
+  See also: ``group_search_backward''
+
+
+
+  5.1.9.  help
+
+  Default: "?"
+
+  Displays the online help for group mode.
+
+
+
+  5.1.10.  line_down
+
+  Default: "DOWN" "N" "CTRL-N"
+
+  Moves the cursor to the next visible group.
+
+
+
+  5.1.11.  line_up
+
+  Default: "UP" "CTRL-P"
+
+  Moves the cursor to the previous visible group.
+
+
+
+  5.1.12.  move_group
+
+  Default: "m"
+
+  Allows you to move the current newsgroup to another position. You can
+  move it around using the keys bound to ``line_up'' and ``line_down''
+  (the up and down arrow keys by default). When finished, press Return.
+
+  It is probably a good idea to make all groups visible first, calling
+  using ``toggle_hidden'' if necessary. When there are hidden groups,
+  the current group is placed directly before the next visible group
+  when moving it towards the top or directly after it when moving to the
+  bottom, which may or may not be where you really wanted it to be.
+  5.1.13.  page_down
+
+  Default: "PAGEDN" "CTRL-D" "CTRL-V"
+
+  Scrolls down one page.
+
+
+
+  5.1.14.  page_up
+
+  Default: "PAGEUP" "CTRL-U" "ESC V"
+
+  Scrolls up one page.
+
+
+
+  5.1.15.  post
+
+  Default: "P"
+
+  Post an article. The default is to post to the current newsgroup. If
+  no newsgroup or no subject is specified, slrn does not even invoke the
+  editor.
+
+
+
+  5.1.16.  post_postponed
+
+  Default: "ESC P"
+
+  Lets you chose an article from the ``postpone directory'' to re-edit,
+  post or delete it.
+
+
+
+  5.1.17.  quit
+
+  Default: "q" "CTRL-X CTRL-C"
+
+  Quits slrn.
+
+
+
+  5.1.18.  redraw
+
+  Default: "CTRL-R" "CTRL-L"
+
+  Redraws the screen. This should only be necessary when another program
+  wrote to stdout directly.
+
+
+
+  5.1.19.  refresh_groups
+
+  Default: "G"
+
+  Queries server for new articles; unless display of all groups was
+  turned on with ``toggle_list_all'', groups without unread messages are
+  hidden. This function also checks for new groups if
+  ``check_new_groups'' is on.
+
+
+
+
+
+
+  5.1.20.  repeat_last_key
+
+  Default: "."
+
+  Repeats the last keystroke.
+
+
+
+  5.1.21.  save_newsrc
+
+  Default: "X"
+
+  Updates your newsrc file. It contains information about the groups you
+  are subscribed to, the order in which they should be displayed and
+  what articles you marked as read. This file is automatically written
+  when ``quitting'' slrn.
+
+
+
+  5.1.22.  select_group
+
+  Default: "RETURN" "SPACE"
+
+  Enters the current group for reading. When using a prefix argument,
+  this function also downloads previously read articles:
+
+
+    1 Select group with article number query.
+    2 Select group, but do not apply scores.
+    3 Select group with query, but do not apply scores.
+    4 Select group.
+
+
+
+
+
+  5.1.23.  subscribe
+
+  Default: "s"
+
+  Subscribe to the current newsgroup. If used with a prefix argument,
+  slrn will prompt you for a regular expression and subscribe to all
+  groups matching it.
+
+
+
+  5.1.24.  suspend
+
+  Default: "CTRL-Z"
+
+  Suspends slrn (if allowed by your shell).
+
+
+
+  5.1.25.  toggle_group_display
+
+  Default: "ESC A"
+
+  Obsolete alias of ``toggle_group_formats''.
+
+
+
+  5.1.26.  toggle_group_formats
+
+  Default: "ESC A"
+
+  Toggles between the different ``group display formats''. You can chose
+  a particular format by specifying a prefix argument (e.g. the function
+  selects the second display format when called with two as the prefix
+  argument).
+
+
+
+  5.1.27.  toggle_hidden
+
+  Default: "l"
+
+  If some groups are hidden because they contain no unread articles,
+  this function makes them visible and vice versa; however, this
+  function does not toggle the display of unsubscribed groups (see
+  ``toggle_list_all'' for this).
+
+
+
+  5.1.28.  toggle_list_all
+
+  Default: "L"
+
+  This function prompts for a wildmat expression and displays all groups
+  that match it (querying the server if necessary). If your server does
+  not support the ``LIST ACTIVE'' NNTP command with a wildmat argument
+  and ``read_active'' is off, only groups from your newsrc file are
+  taken into account; in that case, you might not find this feature very
+  useful.
+
+  When calling toggle_list_all the second time, the unsubscribed groups
+  are hidden again. You can also hide the unsubscribed groups by using
+  this function with the prefix argument one or show all unsubscribed
+  groups with the prefix argument two (does not query the server).
+
+
+
+  5.1.29.  toggle_scoring
+
+  Default: "K"
+
+  Toggles between slrn's scoring types:
+
+
+      Full        Use ``expensive'' (full header) scoring which may be slow.
+      Simple      Score based on XOVER data only (faster).
+      None        Turn off scoring.
+      Cancel      Keep current setting.
+
+
+
+
+
+  5.1.30.  transpose_groups
+
+  Default: "CTRL-X CTRL-T"
+
+  Transpose the position of the current group with the one above it in
+  the list. If there are hidden groups between them, they remain
+  untouched. If you want to rearrange your group list, you'll probably
+  find the ``move_group'' function more convenient.
+
+
+
+
+
+
+  5.1.31.  uncatchup
+
+  Default: "ESC u"
+
+  Marks all articles in the current group as unread.
+
+
+
+  5.1.32.  unsubscribe
+
+  Default: "u"
+
+  Unsubscribe the current group. If used with a prefix argument, slrn
+  will ask you for a regular expression and unsubscribe all groups that
+  match it. Information about read articles in unsubscribed groups is
+  kept.
+
+
+
+  5.2.  article functions
+
+  These functions can be used in article mode, i.e. after selecting a
+  group and downloading its headers.
+
+
+  5.2.1.  article_bob
+
+  Default: "<"
+
+  Shows the first page (``beginning of buffer'') of the current article.
+
+
+
+  5.2.2.  article_eob
+
+  Default: ">"
+
+  Shows the last page (``end of buffer'') of the current article.
+
+
+
+  5.2.3.  article_left
+
+  Default: "LEFT"
+
+  Pans the article window back to the left (after using
+  ``article_right'').
+
+
+  5.2.4.  article_line_down
+
+  Default: "ESC DOWN" "RETURN"
+
+  Scrolls the article down one line.
+
+
+
+  5.2.5.  article_line_up
+
+  Default: "ESC DOWN"
+
+  Scrolls the article up one line.
+
+
+
+
+  5.2.6.  article_page_down
+
+  Default: "SPACE"
+
+  Scrolls the article down one page.
+
+  If a spoiler is visible, this function reveals it. How exactly this is
+  done depends on the setting of ``spoiler_display_mode''.
+
+  If you are already at the end of the article, slrn goes to the next
+  article. If there is no next unread article in the group, it goes to
+  the next group. If there is no next group with unread headers, it
+  returns to the group screen. Whether or not you are prompted first in
+  these cases depends on the settings of ``query_next_article'' and
+  ``query_next_group''.
+
+
+
+  5.2.7.  article_page_up
+
+  Default: "b" "DELETE"
+
+  Scrolls the article up one page.
+
+
+
+  5.2.8.  article_right
+
+  Default: "RIGHT"
+
+  Pan the article window to the right. This is useful if the article
+  contains long lines and wrapping is turned off.
+
+  See also: ``wrap_flags'', ``wrap_article''
+
+
+
+  5.2.9.  article_search
+
+  Default: "/"
+
+  Searches for a given substring in the current article, starting at the
+  cursor position.
+
+
+
+  5.2.10.  author_search_backward
+
+  Default: "A"
+
+  Like ``author_search_forward'', but searching backwards, starting at
+  the cursor.
+
+
+
+  5.2.11.  author_search_forward
+
+  Default: "a"
+
+  Searches the ``From:'' header lines in the current group for a given
+  substring, starting at the cursor position.
+
+
+
+
+
+  5.2.12.  browse_url
+
+  Default: "U"
+
+  Searches for URLs in the current article and displays them in a menu.
+  If you select one of them, slrn starts your browser on it. An exeption
+  to this are "nntp:" URLs - slrn handles those itself by trying to
+  fetch the referenced article or switching to the given newsgroup.
+
+  See also: ``non_Xbrowser'', ``Xbrowser''
+
+
+
+  5.2.13.  cancel
+
+  Default: "ESC CTRL-C"
+
+  Cancels the current article (i.e. sends a request to delete it to your
+  server). slrn only allows you to cancel articles you wrote yourself.
+  Please note that due to abuse of cancel messages, some servers are
+  configured to ignore them.
+
+
+
+  5.2.14.  catchup
+
+  Default: "C" "ESC C"
+
+  Marks all articles up to the currently selected one as read.
+
+
+
+  5.2.15.  catchup_all
+
+  Default: "c" "ESC c"
+
+  Marks all articles in the current group as read.
+
+
+
+  5.2.16.  create_score
+
+  Default: "K"
+
+  Interactively creates a score file entry based on data from the
+  currently selected article. If this function is called with a prefix
+  argument, it opens the score file for manual editing.
+
+  See also: ``score_editor_command''
+
+
+
+  5.2.17.  decode
+
+  Default: ":"
+
+  This function decodes files that are included in articles using the UU
+  or base64 encoding. You first need to specify a temporary file to
+  which the articles that should be decoded are saved. Then, the actual
+  decoding takes place; the resulting files are put in the directory
+  given in ``decode_directory''. When finished, slrn will ask you
+  whether you want to delete the temporary file, which is usually not
+  needed any longer at this point.
+
+  By placing the cursor on a collapsed thread, you can decode the files
+  in all articles in it. Multipart binary postings can be decoded by
+  using ``tag_header'' to tag all parts first (you need to do this in
+  the correct order; slrn does not re-arrange the parts).
+
+
+  5.2.18.  delete
+
+  Default: "d"
+
+  ``Deletes'' the current article (i.e. marks it as read) and proceeds
+  to the next unread header. If the cursor is on a collapsed thread, all
+  articles in it are marked as read.
+
+
+  5.2.19.  delete_thread
+
+  Default: "ESC d"
+
+  Marks the current article and its subthread (all of its ``children''
+  in the thread tree) as read.
+
+
+
+  5.2.20.  enlarge_article_window
+
+  Default: "^"
+
+  Enlarges the article window one row.
+
+  See also: ``shrink_article_window''
+
+
+  5.2.21.  evaluate_cmd
+
+  Default: "CTRL-X ESC"
+
+  Reads a line and interprets it as S-Lang. Identical with
+  ``evaluate_cmd'' in group mode.
+
+
+
+  5.2.22.  exchange_mark
+
+  Default: ","
+
+  Returns to the article previously marked using ``mark_spot''. Before
+  that, the mark is moved to the current article, so you can jump back
+  to it by calling exchange_mark again.
+
+
+
+  5.2.23.  expunge
+
+  Default: "x"
+
+  Removes all articles from the list that are marked as read and not
+  tagged as important (using ``toggle_header_tag'').
+
+
+
+  5.2.24.  fast_quit
+
+  Default: "Q"
+
+  Quit slrn immediately (without returning to group mode first).
+
+
+  5.2.25.  followup
+
+  Default: "f"
+
+  Write a followup on the current article. The following prefix
+  arguments are accepted:
+
+
+      1   Insert all headers.
+      2   Insert all headers, but do not modify the article (no quoting,
+          don't strip or attach signatures).
+
+
+
+
+
+  5.2.26.  forward
+
+  Default: "F"
+
+  Forward (mail) the current article to someone. All headers are
+  included and the subject is prepended with ``Fwd:''. If you want, you
+  can edit the e-mail before it is sent (to add a comment or cut down
+  the article to the relevant part).
+
+
+
+  5.2.27.  forward_digest
+
+  Default: "g"
+
+  This function can be used to skip to the next part in mailing list
+  digests or to find the next section section in many FAQs. To do this,
+  it first tries to find a line that starts with ``Subject:'' (followed
+  by a blank or a tab); if no such line is present, it looks for a line
+  that starts with a digit.
+
+
+
+  5.2.28.  get_children_headers
+
+  Default: "ESC CTRL-P"
+
+  Reconstructs the current sub-thread (i.e. finds all children of the
+  selected posting). Using a prefix argument makes this function less
+  ``thorough'', which means that it is faster, but more likely to miss
+  some articles.
+
+  For those who are interested in the technical details of this:
+  get_children_headers queries the server for articles that have the
+  current Message-Id in the ``References'' header line. Unless a prefix
+  argument is set, this is done recursively for each child. This often
+  finds additional articles, as the current Message-ID might have been
+  dropped from the ``References'' header when it became too long at some
+  point.
+
+  Note: This function depends on the ``XPAT'' NNTP extension, which is
+  not supported by all servers.  Even when it's supported, it will only
+  find articles that were posted to the current group.
+
+
+
+  5.2.29.  get_parent_header
+
+  Default: "ESC p"
+
+  Goes to the current article's parent, downloading it from the server
+  if necessary. When used with a prefix argument, the whole thread is
+  reconstructed; the prefix argument two makes this faster, but more
+  likely to miss some articles (see ``get_children_headers'' for a
+  discussion of this).
+
+
+
+  5.2.30.  grouplens_rate_article
+
+  Default: "0"
+
+  Set a GroupLens rating for the current article.
+
+
+
+  5.2.31.  goto_article
+
+  Default: "j"
+
+  Jumps to an article with a given header number. Here, ``header
+  number'' refers to the number assigned to the article by the server,
+  not the one which is by default shown at the left border of the header
+  window.
+
+
+
+  5.2.32.  goto_last_read
+
+  Default: "L"
+
+  Jumps to the last article you read.
+
+
+
+  5.2.33.  header_bob
+
+  Default: "ESC <"
+
+  Goes to the first article in this group (``beginning of buffer'').
+
+
+
+  5.2.34.  header_eob
+
+  Default: "ESC >"
+
+  Goes to the last article in this group (``end of buffer'').
+
+
+
+  5.2.35.  header_line_down
+
+  Default: "DOWN" "CTRL-N"
+
+  Goes to the next visible article in this group.
+
+
+
+  5.2.36.  header_line_up
+
+  Default: "UP" "CTRL-P"
+
+  Goes to the previous visible article in this group.
+
+
+  5.2.37.  header_page_down
+
+  Default: "PAGEDN" "CTRL-D" "CTRL-V"
+
+  Scrolls the header window down one page.
+
+
+
+  5.2.38.  header_page_up
+
+  Default: "PAGEUP" "CTRL-U" "ESC V"
+
+  Scrolls the header window up one page.
+
+
+
+  5.2.39.  help
+
+  Default: "?"
+
+  Displays the online help for article mode.
+
+
+
+  5.2.40.  hide_article
+
+  Default: "H"
+
+  Hides the article pager (or shows it, if it was hidden).
+
+
+
+  5.2.41.  locate_article
+
+  Default: "ESC l"
+
+  Locates an article by its Message-ID, downloading it from the server
+  if necessary.
+
+
+
+  5.2.42.  mark_spot
+
+  Default: ";"
+
+  Marks the current article. This makes it possible to come back to it
+  later using ``exchange_mark''.
+
+
+
+  5.2.43.  next
+
+  Default: "n"
+
+  Goes to the next unread article, uncollapsing threads if necessary. If
+  the group does not contain a next unread header, slrn skips to the
+  next group. Whether this happens automatically or you are prompted
+  first depends on the setting of ``query_next_group''.
+
+
+
+  5.2.44.  next_high_score
+
+  Default: "!"
+
+
+  Goes to the next article with a ``high score''.
+
+
+
+  5.2.45.  next_same_subject
+
+  Default: "="
+
+  Goes to the next article that has the same subject as the currently
+  selected article.
+
+
+
+  5.2.46.  pipe
+
+  Default: "|"
+
+  Pipes the current article to a program.
+
+
+
+  5.2.47.  post
+
+  Default: "P"
+
+  Posts an article. This function is identical with ``post'' in group
+  mode.
+
+
+
+  5.2.48.  post_postponed
+
+  Default: "ESC P"
+
+  Post a postponed article. Identical with ``post_postponed'' in group
+  mode.
+
+
+
+  5.2.49.  previous
+
+  Default: "p"
+
+  Goes to the previous unread article, uncollapsing thread if necessary.
+
+
+
+  5.2.50.  print
+
+  Default: "y"
+
+  Sends the selected article to a printer. See ``printer_name'' for a
+  discussion of how exactly this function prints the article and how it
+  can be customized.
+
+  When used with a prefix argument, the article is printed unwrapped and
+  including all hidden lines (e.g. header lines or signatures that are
+  not displayed in the article pager).
+
+
+  5.2.51.  quit
+
+  Default: "q"
+
+  Returns to group mode.
+
+  5.2.52.  redraw
+
+  Default: "CTRL-L" "CTRL-R"
+
+  Redraws the screen. Identical with ``redraw'' in group mode.
+
+
+
+  5.2.53.  repeat_last_key
+
+  Default: "."
+
+  Repeats the last keystroke.
+
+
+
+  5.2.54.  reply
+
+  Default: "r"
+
+  Reply to the selected article via email.
+
+
+
+  5.2.55.  save
+
+  Default: "o"
+
+  Saves the current article to a file (in mbox format). If the cursor is
+  on a collapsed thread or you used ``tag_header'' to tag articles, you
+  are prompted whether you want to save the whole thread or all tagged
+  articles, respectively.
+
+  The default filename is the name of the current group in the directory
+  specified by ``save_directory''.
+
+
+
+  5.2.56.  show_spoilers
+
+  Default: "ESC ?"
+
+  Reveals the next spoiler (i.e. all currently hidden text up to the
+  next formfeed character). When used with a prefix argument, all
+  spoilers are revealed. This function can be customized using
+  ``spoiler_display_mode''.
+
+
+
+  5.2.57.  shrink_article_window
+
+  Default: "CTRL-^"
+
+  Shrinks the article window one row.
+
+  See also: ``enlarge_article_window''
+
+
+  5.2.58.  skip_quotes
+
+  Default: "TAB"
+
+  Skips quoted text. What slrn regards as quoted text is determined by
+  ``ignore_quotes''.
+
+
+  5.2.59.  skip_to_next_group
+
+  Default: "N" "ESC RIGHT"
+
+  Goes to the next group that contains unread articles. If there is no
+  such group, this function returns to group mode.
+
+
+
+  5.2.60.  skip_to_previous_group
+
+  Default: "ESC LEFT"
+
+  Goes to the previous group that contains unread articles, returning to
+  group mode if no such group exists.
+
+
+
+  5.2.61.  subject_search_backward
+
+  Default: "S"
+
+  Like ``subject_search_backward'', but searching backwards.
+
+
+
+  5.2.62.  subject_search_forward
+
+  Default: "s"
+
+  Searches the subjects in the current group for a given substring,
+  beginning at the cursor.
+
+
+
+  5.2.63.  supersede
+
+  Default: "ESC CTRL-S"
+
+  Supersedes the current article, i.e. allows you to re-edit it and
+  sends it to the server along with a request to replace the original
+  version with it.  Like with ``cancel'', this is not honored by some
+  servers due to abuse of this feature and only allowed by slrn if you
+  are the author of the current article.
+
+
+
+  5.2.64.  suspend
+
+  Default: "CTRL-Z"
+
+  Suspends slrn (if allowed by your shell).
+
+
+
+  5.2.65.  tag_header
+
+  Default: "#"
+
+  Attaches a numerical tag to the current header and moves the cursor
+  down one line. If the header is already tagged, the tag is removed.
+  When applied on a collapsed thread, all articles in it are tagged (or
+  untagged, respectively). Numerical tags are useful to ``save'' or
+  ``decode'' multiple messages.
+
+
+  5.2.66.  toggle_collapse_threads
+
+  Default: "ESC t"
+
+  (Un-)Collapses the current thread, depending on its current status.
+  When used with a prefix argument, all threads are (un-)collapsed.
+
+
+
+  5.2.67.  toggle_header_formats
+
+  Default: "ESC a"
+
+  Toggles between different ``header display formats''. You can pick a
+  particular format by specifying a prefix argument (e.g. the function
+  selects the second display format when called with two as the prefix
+  argument).
+
+
+
+  5.2.68.  toggle_header_tag
+
+  Default: "*"
+
+  Marks the current article unread, flags it as important (or removes
+  the flag, if the article already had one) and moves the cursor to the
+  next line.  This flag prevents articles from being marked as read
+  (both explicitly and by ``catchup'' functions). Using this function
+  with a prefix argument removes the flags from all headers.
+
+  Note: By default, these flags are not ``persistent'' - as soon as you
+  leave the group, they are gone. However, the macro set stickytags.sl
+  can be used to change this and even preserve them between sessions.
+
+
+
+  5.2.69.  toggle_headers
+
+  Default: "t"
+
+  Toggles between the display of all or just the article headers
+  selected in ``visible_headers''.
+
+
+
+  5.2.70.  toggle_pgpsignature
+
+  Default: "]"
+
+  Toggles the variable ``hide_pgpsignature'' that controls the display
+  of PGP signatures.
+
+
+
+  5.2.71.  toggle_quotes
+
+  Default: "T"
+
+  Toggles the display of quoted text as recognized using
+  ``ignore_quotes''. When n is set as a prefix arguments, the first n
+  quote levels remain untouched.
+
+
+
+
+
+  5.2.72.  toggle_rot13
+
+  Default: "ESC R"
+
+  ROT13-decode article. Calling this function a second time undoes the
+  effect.
+
+
+
+  5.2.73.  toggle_signature
+
+  Default: "\"
+
+  Toggles the variable ``hide_signature'' which controls the display of
+  signatures.
+
+
+
+  5.2.74.  toggle_sort
+
+  Default: "ESC S"
+
+  Displays a menu that allows you to change the value of
+  ``sorting_method'' which controls the threading / sorting method.
+
+
+
+  5.2.75.  toggle_verbatim_marks
+
+  Default: "["
+
+  Toggles the variable ``hide_verbatim_marks'', which controls the
+  display of ``verbatim marks''.
+
+
+
+  5.2.76.  uncatchup
+
+  Default: "ESC U"
+
+  Marks all articles from the top of the header window up to the current
+  article as unread.
+
+
+
+  5.2.77.  uncatchup_all
+
+  Default: "ESC u"
+
+  Marks all articles in the current group as unread.
+
+
+
+  5.2.78.  undelete
+
+  Default: "u"
+
+  Marks the current article (or all articles in a collapsed thread) as
+  unread and moves the cursor to the next line.
+
+
+
+  5.2.79.  untag_headers
+
+  Default: "ESC #"
+
+  Removes all numerical tags that were previously set using
+  ``tag_headers''.
+
+
+
+  5.2.80.  view_scores
+
+  Default: "v"
+
+  Brings up a selection box that lists all scorefile entries that match
+  on the current article. The available information is: Scoring value of
+  the entry, name of the entry (this field is optional; please see
+  score.txt on how to assign names), name of the scorefile and line
+  number.
+
+  If you select an entry, your editor will be started on the scorefile.
+  If the editor supports it and you have a "%d" escape in your
+  ``score_editor_command'', the cursor is moved to the selected entry,
+  which makes this function especially useful for finding and fixing
+  ``broken'' scorefile entries.
+
+  See also: ``create_score''
+
+
+  5.2.81.  wrap_article
+
+  Default: "W"
+
+  Toggles the wrapping of long lines.
+
+  See also: ``wrap_method''
+
+
+
+  5.2.82.  zoom_article_window
+
+  Default: "z"
+
+  Maximizes the article pager (or unmaximizes it, if it already takes up
+  the whole screen).
+
+
+  5.3.  readline functions
+
+  These functions can be used while entering data in slrn's readline
+  interface, i.e. at a prompt at the bottom of the screen.
+
+
+  5.3.1.  bdel
+
+  Default: "BACKSPACE"
+
+  Deletes the character before the cursor.
+
+
+  5.3.2.  bol
+
+  Default: "HOME" "CTRL-A"
+
+  Moves the cursor to the beginning of the line.
+
+
+  5.3.3.  complete
+
+  Default: "TAB"
+
+  When prompting for a filename, this function tries to complete the
+  content of the line (up to the current position of the cursor) to the
+  name of a file or directory. If multiple completions are possible, it
+  will only insert the portion of the name that is common to all of
+  them. In that case, calling the function again will give you a list of
+  possible completions to chose from.
+
+  On all other prompts, it works like ``self_insert''.
+
+
+  5.3.4.  cycle
+
+  Default: "SPACE"
+
+  This function works like ``complete'', except that it cycles between
+  all possible completions rather than inserting the largest common
+  portion.
+
+  When no completions are found, this command works like
+  ``self_insert''; if you need a literal space character although a
+  completion exists, use ``quoted_insert''.
+
+
+  5.3.5.  del
+
+  Default: "DELETE" "CTRL-D" "CTRL-V"
+
+  Deletes the character under the cursor.
+
+
+  5.3.6.  delbol
+
+  Default: "CTRL-U"
+
+  Deletes everything from the beginning of the line to the cursor
+  position.
+
+
+  5.3.7.  delbow
+
+  Default: "CTRL-W"
+
+  Deletes everything from the beginning of the word to the cursor
+  position.
+
+
+  5.3.8.  deleol
+
+  Default: "CTRL-K" "CTRL-L"
+
+  Deletes everything from the cursor position to the end of the line.
+
+
+  5.3.9.  down
+
+  Default: "DOWN" "CTRL-N"
+
+  Jumps to the next (later) command line history entry.
+
+
+  5.3.10.  enter
+
+  Default: "RETURN"
+
+  Finishes the editing, returning the current content of the line to the
+  program.
+  5.3.11.  eol
+
+  Default: "END" "CTRL-E"
+
+  Moves the cursor to the end of the line.
+
+
+  5.3.12.  left
+
+  Default: "LEFT" "CTRL-B"
+
+  Moves the cursor to the left.
+
+
+  5.3.13.  quoted_insert
+
+  Default: "BACKTICK"
+
+  Inserts the next key into the buffer, even if it is usually bound to a
+  function.
+
+
+  5.3.14.  right
+
+  Default: "RIGHT" "CTRL-F"
+
+  Moves the cursor to the right.
+
+
+  5.3.15.  self_insert
+
+  Default: any key not bound to another function
+
+  Inserts the key it was called by into the buffer. This is useful if
+  you want to ``unbind'' a key in readline mode.
+
+
+  5.3.16.  trim
+
+  Default: "ESC \"
+
+  Strips trailing whitespace from the buffer.
+
+
+  5.3.17.  up
+
+  Default: "UP" "CTRL-P"
+
+  Jumps to the previous (older) command line history entry.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

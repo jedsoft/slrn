@@ -1,0 +1,24 @@
+I want to thank everybody who helped to develop and improve slrn by sending
+in code, bugreports or leading productive discussions.  The list of
+contributors is far too long to be kept in this file; please see changes.txt
+for people who contributed patches.
+
+In the original man page, John E. Davis thanked the following people:
+
+ * Howard Goldstein <hg@n2wx.ampr.org> for updating this man page.
+ * Andrew Greer <Andrew.Greer@vuw.ac.nz> for the VMS port.
+ * Jay Maynard <jmaynard@admin5.hsc.uth.tmc.edu> for the OS/2 port.
+ * Michael Elkins <elkins@aero.org> for the MIME code.
+ * Lloyd Zusman <ljz@ingress.com> performed some cosmetic improvements.
+ * J.B. Nicholson-Owens <jbn@mystery-train.cu-online.com> for extensive
+   testing.
+ * Mark Olesen <olesen@weber.me.queensu.ca> for suggestions and help with
+   AIX version.
+ * Thomas Schultz <tststs@gmx.de> for many patches and code enhancements as
+   well as support on news.software.readers.
+ * David Gerard <fun@thingy.apana.org.au> for his detailed description on
+   how to install slrn on Windows http://thingy.apana.org.au/~fun/slrn/.
+ * Jan Hlavacek <lahvak@math.ohio-state.edu> for his extensive work on
+   documenting slrn http://www.math.ohio-state.edu/~lahvak/software/slrn/.
+ * Sven Guckes <guckes@math.fu-berlin.de> for maintaining the slrn home page
+   http://www.slrn.org.

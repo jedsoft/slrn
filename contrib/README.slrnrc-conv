@@ -1,0 +1,16 @@
+In slrn 0.9.7.0, some functions were renamed (see changes.txt for details).
+Although the old names are currently still working, they will be removed
+before version 1.0, so you will need to update your configuration file at
+some point.
+
+Matthias Friedrich <matt@mafr.de> provided slrnrc-conv, a short perl script
+that does the job automatically for you.  It preserves both comments and
+indentation and is very easy to use:
+
+  perl slrnrc-conv ~/.slrnrc > new_config
+
+You can then replace ~/.slrnrc with new_config.
+
+If you have problems with the script, please contact <matt@mafr.de>.
+Previous versions of slrnrc-conv did not run with perl <= 5.003 - this
+should now be fixed.

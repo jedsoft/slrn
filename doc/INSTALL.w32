@@ -1,0 +1,75 @@
+This file is mainly intended as a quick guide for people who already know
+slrn and want to run it on Windows.  You can find descriptions on the web
+that are both more comprehensive and easier to understand.  Please also
+consult the rest of the documentation that comes with slrn.
+
+Installation (Windows)
+======================
+
+The first thing you need to run slrn on Windows is (obviously) a working
+executable.  You can either download one from the net (just follow the links
+on <URL:http://slrn.sourceforge.net/>) or compile it yourself -- some notes
+on how to do this can be found at the end of this file.  When you have one,
+follow these steps:
+
+1.  Copy slrn.exe to a directory in your path.
+
+2.  Set the following environment variables:
+       set NNTPSERVER=my.news.server
+       set HOME=d:\home\sweet\home
+       (Note: Forward slashes are also ok)
+
+3.  Copy the file slrn.rc into the home-directory and edit it to your needs,
+    it should be pretty well documented.  When entering file path names
+    here, use double backslashes (\\)!
+
+4.  The first time you start slrn, start it with the following parameters
+    "slrn.exe --create", this will create a jnews.rc.  After that you can
+    start it without parameters.
+
+You should now see slrn in action.  If you actually want to work with it,
+you also need an editor (if you don't have your favourite one, MS DOS edit
+will work) and a program like sendsmtp that can deliver email to your mail
+server (for forwards and replies).  If you want to read your news offline,
+you either need a binary of slrnpull or a local server as well.
+
+Compiling slrn for Windows
+==========================
+
+The current version of slrn has been reported to compile with recent
+versions of MinGW and Cygwin.  If you needed to patch the sources to get it
+to work with your favourite compiler, please send me the diffs so they can
+go into the next official release.
+
+1. Compiling S-Lang:
+
+The S-Lang library is required to build slrn.  It's available from
+<URL:ftp://space.mit.edu/pub/davis/slang>. Unpack the tarball into a
+directory called "slang".  In the "src" subdirectory, execute
+
+> .\mkfiles\mkmake WIN32 MINGW32 < mkfiles\makefile.all > makefile
+
+in a DOS box if you are using MinGW, or
+
+> mkfiles/mkmake WIN32 CYGWIN32 < mkfiles/makefile.all > Makefile
+
+from within Cygwin.  Then, simply type "make".
+
+2. Compiling slrn:
+
+Unpack slrn into a directory at the same level as "slang" and go to the
+"src" subdirectory.  You can edit slrnconf.h to play with the compile time
+options if you want.  If you are not in a Cygwin environment, you need to
+copy this file manually to config.h.  Now you can run
+
+> make -f makefile.g32
+
+If you want to compile slrnpull as well, do
+
+> make -f makefile.g32 slrnpull.exe
+
+Cygwin users might note that this will compile slrn as a native Windows
+application, although it would (theoretically) be possible to do a
+"configure build" by emulating a Unix environment.  Please don't do this as
+it won't work out of the box and slrn contains native Windows code (e.g. for
+printing) that would not be used in this case.

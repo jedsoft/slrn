@@ -1,0 +1,64 @@
+
+* Note: The information in this file is outdated.  According to
+* <URL:http://www.cs.umn.edu/Research/GroupLens/>, the trial of the
+* collaborative filtering system for Usenet is finished.
+* Chris Siegler <siegler@visi.com> told me he had a working implementation 
+* of a BBB server.  Although it's currently not online, I'll keep GroupLens
+* support in slrn for now.
+
+The GroupLens support should work on most Unix systems.  It may even
+work for OS/2 or VMS.
+
+For information about GroupLens, see
+
+    http://www.cs.umn.edu/Research/GroupLens/trial.html
+
+Edit src/slrnfeat.h to enable support for GroupLens,
+
+The next step is to create a file called .grplens in your home
+directory.  This file must contain lines such as:
+
+PSEUDONYM your-pseudonym
+BBBHOST grouplens.cs.umn.edu
+BBBPORT 9000
+comp.os.linux.misc
+     .
+     .
+rec.food.recipes
+rec.arts.movies.current-films
+
+The last lines in the file consist of newsgroup names.  See
+http://www.cs.umn.edu/Research/GroupLens/trial.html for information
+about which groups are supported.
+
+The PSEUDONYM line must contain a registered pseudonym.  To register a
+pseudonym, see http://www.cs.umn.edu/Research/GroupLens/trial.html for
+a registering link.
+
+Once you have created your .grplens file with a registered pseudonym,
+you need to add the line
+
+   set use_grouplens 1
+
+to your .slrnrc file.  After doing that, simply run slrn.  When you
+enter a supported newsgroup, slrn will retrieve rating for the
+newsgroup from the GroupLens server and display the ratings in the
+header summary window.  The display format is set via the DISPLAYTYPE
+line in your .grplens file.  Again, see the GroupLens web page for
+supported DISPLAYTYPE or look at the documentation in the GroupLens
+library directory.
+
+To rate articles that you have read, simply press `0' followed by an
+integer `1' through `5' where `1' is a low rating and `5' is a high
+rating. After leaving the newsgroup, slrn will send your ratings back
+to the GroupLens server.  Note: Only those newsgroups that the
+GroupLens server supports which are also listed in your .grplens file
+may be rated.
+
+The header display in a group for which GroupLens ratings have been
+requested, will include a ratings field.  The ratings field will
+either consist of one or more `*' characters, or a `?'.  The `?' means
+that there is no GroupLens information for the article for which the
+header refers.  Articles for which GroupLens information is available
+will contain one or more `*' characters on the header lines to
+indicate a rating of 1 to 5.

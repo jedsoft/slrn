@@ -1,0 +1,88 @@
+This version of slrn can run under OS/2 as well as Unix or VMS.
+The compiled binaries and some useful utilities can be found on
+<URL:http://village.flashnet.it/~rm03703/programs/slrn>
+
+To install the binaries, here are the steps needed;
+
+1.  Get a copy of the EMX runtime libraries, emxrt.zip (version 0.9d or
+    later required). emxrt.zip are available from most OS/2 archives,
+    for example:
+       ftp.leo.org:          /pub/comp/os/os2/leo/gnu/emx+gcc
+       hobbes.nmsu.edu:      /pub/os2/dev/emx/v0.9d
+
+2.  Append the following line to config.sys as a minimum, see notes
+    about variables below.
+       set NNTPSERVER=my.news.server
+       set HOME=d:\home\sweet\home
+
+3.  Copy the file slrn.rc into the home-directory and edit it to your
+    needs, it should be pretty well documented.
+
+4.  First time you start slrn, start it with the following parameters
+    "slrn.exe --create", this will create a jnews.rc. After that you can
+    start it without parameters.
+
+5.  If you want to use the "offline-mode", you have to start slrn.exe with
+    "slrn.exe --spool". Also please read documentation in the slrnpull dir.
+
+ABOUT VARIABLES:
+    slrn knows the following ENVIRONMENT variables;
+        TMP:  Directory for temporary files, this should be set when you
+              installed OS/2 to something like x:\TMP.
+        USER or LOGNAME: This should be the same as the first part in your
+              email-address (until @) 
+        REPLYTO: If you have another emailaddress than the account you're
+              posting from you can set this to the preffered email-address.
+        HOSTNAME: The name of your computer without domain-name.
+        NAME: Your real name
+        ORGANIZATION: Organization to put in the header.
+        EDITOR or VISUAL: Editor used if not defined in slrn.rc. (if none
+              of these are defined we use e.exe.
+
+    Most of these can be overridden in the slrn.rc file.
+
+BUGS - Some of the char-translation is probably wrong, I need feedback
+       about this one. Preferable with a Message-ID so I can test it
+       out myself.
+
+       Scoring: regexp's doesn't match the ibm850 chars, this requires
+       changing the S-Lang code, so it won't be done anytime soon. :-(
+       
+TODO - Adding config-option to hide configuration files and newsrc like
+       dotfiles under *nix.
+
+       I don't think slrn.exe still can be used on a fat-only system,
+       there is still some filenames that don't conform to the 8+3
+       filnameing scheme.
+
+The OS/2 version of slrn will use the full extent of the OS/2 command
+window it's run in. You can do "mode co80,50", and it will use all 50
+lines. You can also specify a wider window and it will use the extra
+width. (If you use a wide window, please take care that your postings
+don't exceed 80 characters per line. The net will thank you.)
+
+To mail a reply or forward a message you need to set up a sendmail-
+command in slrn.rc. The default is 'sendmail -t -af'. To set up slrn
+to use an alternative mailer you can do something like
+
+     set sendmail_command "e:/network/slrn/mailfile.cmd"
+ or  set sendmail_command "e:\\network\\slrn\\mailfile.cmd"
+
+     (note that you either must use one forward slash "/" or double
+      backslashes "\\")
+
+where mailfile.cmd contains something like:
+
+	@echo off
+	cd e:\network\mr2ice
+	start e:\network\mr2ice\mr2i.exe /Q%1
+
+I guess this should work with most mailers.
+
+THANKS
+    John E. Davis,	davis@space.mit.edu	author of slrn
+    Jay Maynard,	jmaynard@nwpros.com	much of the OS/2 port
+
+Until 1997, the OS/2 port (including this document) was maintained by Bjoern
+Frantzen <bjoff@bgnett.no>.  Now, Francesco Cipriani <fc76@softhome.net>
+continues his work.

@@ -1,0 +1,20 @@
+% This is a minimal .slrnrc file for use with slrn when it is used to
+% read from an slrnpull spool directory.  Here I assume that the
+% SLRNPULL_ROOT directory is /var/spool/slrnpull.
+% Note that PULL_SUPPORT must be enabled in configure / slrnconf.h
+% Also look at the sample slrn.rc file in ../ for more options.
+
+set spool_inn_root		"/var/spool/slrnpull"
+set spool_root			"/var/spool/slrnpull/news"
+set spool_nov_root		"/var/spool/slrnpull/news"
+set read_active			1
+set use_slrnpull		1
+
+set server_object		"spool"
+% The previous line is optional.  If you use it, the command line argument
+% `--spool' is not necessary.
+
+% Don't forget to set these up properly:
+
+set hostname			"your.host.name"
+set username			"your.user.name"

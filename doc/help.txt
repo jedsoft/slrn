@@ -1,0 +1,188 @@
+% help.txt, completely rewritten by Matthias Friedrich <matt@mafr.de>,
+% based on the slrn reference manual and the original help.txt.
+
+% This file may be viewed on-line by SLRN by pointing the environment variable
+% SLRNHELP to it.  It is particlularly useful when you modify the default
+% keybindings and you want the on-line help to reflect this fact.
+
+% The format of the file is simple.  Lines that start with `%' are comment
+% lines and will be ignored.  Any line that consists entirely of whitespace
+% is also ignored.
+% cpp Macros may be used but are only useful in combination with the
+% makehelp script, which is used to generate the documentation in help.c
+% from this file.
+
+% The file is divided into sections.  A section is started by the presence of
+% a line that contains a name enclosed in brackets.  Currently, the only
+% names formed in this manner are [Article] and [Group].  The text that
+% follows one of these names will be displayed as the help screen for that 
+% particular mode.
+
+[Group]
+ Note: The keys are case sensitive!  That is, 's' and 'S' are not the same.
+
+Cursor movement:
+  DOWN                    Go to the next group.
+  UP                      Go to the previous group.
+  Ctrl-V, Ctrl-D          Scroll to the next page.
+  ESC V, Ctrl-U           Scroll to the previous page.
+  ESC <                   Go to the bottom of the list.
+  ESC >                   Go to the top of the list.
+  /                       Group keyword search.
+
+Actions:
+  SPACE, RETURN           Enter the current newsgroup.
+  * The following variations also download previously read articles:
+      ESC 1 SPACE         Enter group with article number query.
+      ESC 2 SPACE         Enter group, but do not apply score.
+      ESC 3 SPACE         Enter group with query, but without scoring.
+      ESC 4 SPACE         Enter the current newsgroup.
+  P                       Post an article to the current newsgroup.
+  ESC P                   Post or edit a postponed article.
+  G                       Get new news from server.
+  K                       Select scoring mode.
+  .                       Repeat last key sequence.
+  Ctrl-X ESC              Read line and interpret it as S-Lang.
+  Ctrl-Z                  Suspend slrn.
+  q                       Quit slrn.
+
+Group management (affects newsrc file):
+  c                       Catchup - Mark all articles as read.
+  ESC u                   Un-Catchup - Mark all articles as unread.
+  a                       Add a new newsgroup.
+  s                       Subscribe to the current newsgroup.
+      ESC 1 s             Subscribe to groups matching a pattern.
+  u                       Unsubscribe from the current newsgroup.
+      ESC 1 u             Unsubscribe from groups matching a pattern.
+  m                       Move newsgroup to a different location.
+  Ctrl-X, Ctrl-T          Transpose position of groups.
+  X                       Force a save of the newsrc file.
+
+Display:
+  ESC a                   Toggle between group display formats.
+  l                       Toggle display of groups without unread articles.
+  L                       Toggle listing of unsubscribed groups.
+      ESC 1 L             Hide unsubscribed groups.
+      ESC 2 L             Show unsubscribed groups.
+  Ctrl-L, Ctrl-R          Redraw the screen.
+  ?                       Display this help screen.
+
+
+[Article]
+ Note: The keys are case sensitive!  That is, 's' and 'S' are not the same.
+
+General movement:
+  n                  Go to the next unread article (or next group, if at end).
+  p                  Go to the previous unread article.
+  N, ESC RIGHT       Skip to next group.
+  ESC LEFT           Go to previous group.
+  !                  Go to the next article with a high score.
+  =                  Go to the next article with the same subject.
+  L                  Go to the last read article and display it.
+
+Actions:
+  P                  Post a new article (no followup).
+  ESC P              Post or edit a postponed article.
+  f                  Post a followup to the current article.
+      ESC 1 f        Include all headers in the followup.
+      ESC 2 f        Followup without modifying (e.g. quoting) the article.
+  r                  Reply to poster (via email).
+  F                  Forward the current article to someone (via email).
+      ESC 1 F        Forward the current article (including all headers).
+  ESC Ctrl-S         Supersede article (you have to be the author).
+  ESC Ctrl-C         Cancel article (you have to be the author).
+  o                  Save article, tagged articles or thread to file.
+  |                  Pipe article to an external program.
+  y                  Print article (as displayed).
+      ESC 1 y        Print article (unwrapped and including hidden lines).
+#if SLRN_HAS_DECODE
+  :                  Decode article, tagged articles or thread.
+#endif
+  Ctrl-Z             Suspend slrn.
+  q                  Return to group display.
+  Q                  Quit slrn immediately.
+
+Moving in the article pager:
+  ESC DOWN           Scroll article down one line.
+  ESC UP             Scroll article up one line.
+  SPACE              Scroll article down one page (or select next, if at end).
+  DELETE, b          Scroll article up one page.
+  >                  Move to end of the article.
+  <                  Move to beginning of the article.
+  LEFT               Pan article to the left.
+  RIGHT              Pan article to the right.
+  /                  Search forward in the article.
+  TAB                Skip beyond quoted text.
+  g                  Skip to next digest.
+
+Moving in the header display:
+  DOWN, Ctrl-N       Move to the next article.
+  UP, Ctrl-P         Move to the previous article.
+  Ctrl-D             Scroll down one page.
+  Ctrl-U             Scroll up one page.
+  ESC >              Go to the last article in group.
+  ESC <              Go to the first article in group.
+  j                  Jump to article (by server number).
+  a                  Author search forward.
+  A                  Author search backward.
+  s                  Subject search forward.
+  S                  Subject search backward.
+
+Marking as read/unread:
+  d                  Mark article or collapsed thread as read.
+  u                  Mark article or collapsed thread as unread.
+  ESC d              Mark entire (sub-)thread as read.
+  c                  Catchup - mark all articles as read.
+  C                  Mark all articles up to the current position as read.
+  ESC u              Un-Catchup - mark all articles as unread.
+  ESC U              Mark all articles up to the current position as unread.
+  x                  Remove all non-tagged read articles from the list.
+
+Article pager commands:
+  t                  Show full headers (on/off).
+  ESC r              Decrypt ROT-13 (on/off).
+  T                  Display quoted lines (on/off).
+  \                  Show signature (on/off).
+  W                  Wrap long lines (on/off).
+#if SLRN_HAS_SPOILERS
+  ESC ?              Reveal spoilers (on/off).
+#endif
+  ]                  Show PGP signature (on/off).
+#if SLRN_HAS_VERBATIM_MARKS
+  [                  Show verbatim marks (on/off).
+#endif
+  Ctrl-^             Enlarge the article window.
+  ^                  Shrink the article window.
+  z                  Maximize / Unmaximize the article window.
+  h                  Hide / Show the article window.
+  U                  Search for URLs and follow them.
+
+Header window commands:
+  ESC t              Collapse / Uncollapse thread.
+      ESC 1 ESC t    Collapse / Uncollapse all threads.
+  ESC a              Toggle between header display formats.
+  ESC s              Select threading and sorting method.
+
+Miscellaneous actions:
+  K                  Create a scorefile entry interactively.
+      ESC 1 K        Edit scorefile.
+  v                  Show which scorefile rules matched the current article.
+  * The following five commands query the server if necessary:
+  ESC l              Locate article by its Message-ID.
+  ESC Ctrl-P         Find all children of current article.
+  ESC p              Find parent article.
+      ESC 1 ESC p    Reconstruct thread (slow when run on large threads).
+      ESC 2 ESC p    Reconstruct thread (faster, may not find all articles).
+  ;                  Set a mark at the current article.
+  ,                  Return to previously marked article.
+  #                  Numerically tag article (for saving / decoding).
+  ESC #              Remove all numerical tags.
+  *                  Protect article from catchup commands.
+      ESC 1 *        Remove all protection marks.
+  .                  Repeat last key sequence.
+  Ctrl-X ESC         Read line and interpret it as S-Lang.
+#if SLRN_HAS_GROUPLENS
+  0                  Rate article with GroupLens.
+#endif
+  Ctrl-R, Ctrl-L     Redraw screen.
+  ?                  Display this help screen.

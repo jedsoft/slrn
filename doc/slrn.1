@@ -1,0 +1,294 @@
+.\"
+.\" This manpage has been completely rewritten by Matthias Friedrich
+.\" <matt@mafr.de> based on the slrn reference manual
+.\"
+.TH slrn 1 "September 2001" Unix "User Manuals"
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH NAME
+slrn - An easy to use NNTP / spool based newsreader.
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH SYNOPSIS
+.B slrn
+[-aCdknmw]
+[-C-]
+.RI [-D name ]
+.RI "[-f\ " newsrc-file ]
+.RI "[-i\ " config-file ]
+[-k0]
+[--create]
+[-create]
+.RI "[--debug\ " file ]
+[--help]
+[--inews]
+.RI "[--kill-log " file ]
+.RI "[--nntp [-h\ " server "] [-p\ " port ]]
+[--spool]
+[--version]
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH DESCRIPTION
+.I slrn
+is an easy to use but powerful NNTP / spool based newsreader.
+.PP
+It is highly customizable, supports scoring, free key bindings and can be
+extended using the s-lang macro language.
+.PP
+To use slrn, you either need to set the
+.I NNTPSERVER
+environment variable to the server you want to read news from or specify a
+server on the command line.
+A
+.I newsrc
+file is needed, too.  In case you do not yet have one, you can create it
+using ``slrn -f ~/.jnewsrc --create''.
+.PP
+Inside slrn, online help is available via the '?' key.
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH OPTIONS
+.PP
+The following options can be used when calling slrn from the command line.
+They override both environment variables and settings in private and global
+configuration files.
+.IP "-a"
+Read active file when checking for new news.
+.IP "-C"
+Use colors without checking if the terminal supports it.
+.IP "-C-"
+Don't use colors, even if the terminal supports it.
+.IP "-d"
+Get group descriptions (taglines) from the news server.  Please note that
+this may cause a download of several hundred kilobytes and thus can take a
+long time.  The output is saved to a local file, so you only need to do this
+once.  May not be specified in combination with
+.IR --create .
+.IP "-D\fIname\fP"
+Add name to the list of predefined preprocessing tokens, which can be used
+in your slrnrc file to have conditionally interpreted lines.  See the slrn
+reference manual for details.
+.IP "-f \fInewsrc-file\fP"
+Use file as the newsrc file for this session.  This is permanently set via
+the
+.I server
+configuration command.
+.IP "-h \fIhost[:port]\fP"
+Connect to the NNTP server on
+.IR host ,
+overriding the
+.I $NNTPSERVER
+environment variable.  If no
+.I port
+is given, the default NNTP port (119) will be used.  This option is only
+accepted after
+.I --nntp
+or when NNTP is the default mode.
+.IP "-i \fIconfig-file\fP"
+Read file as the initialization (slrnrc) file.  The default is
+to use .slrnrc (or slrn.rc on VMS, OS/2 and Windows) in your
+home directory.
+.IP "-k"
+Don't read the
+.IR "score file" .
+.IP "-k0"
+Read the score file, but inhibit
+.I expensive
+scoring. A scoring rule is
+.I expensive
+if it contains header lines that are not included in the server's overview
+files.  This makes applying them slow.
+.IP "-m"
+Force mouse support (without checking if it works on the current terminal).
+.IP "-n"
+Do not check for new groups (usually resulting in a faster startup).
+.IP "-p \fIN\fP"
+Use port N to connect to the NNTP server.
+.IP "-w"
+Wait for a key before switching to full screen mode, allowing the user to
+read startup messages.
+.IP "--create"
+Read the active file (the list of all groups) from the news server to create
+an initial newsrc file.
+.IP "-create"
+Obsolete version of
+.IR --create .
+.IP "--debug \fIfile\fP"
+Write debugging output to
+.IR file .
+.IP "--help"
+Show help for command line switches.
+.IP "--inews"
+Use an external
+.I "inews program"
+to post articles.
+.IP "--kill-log \fIfile\fP"
+Keep a log of all articles that were killed by the scorefile in
+.IR file .
+.IP "--nntp"
+Use builtin NNTP support for reading and posting (an external program is
+used to post if slrn was compiled with --enable-force-inews).
+.IP "--pull"
+Spool outgoing articles locally for slrnpull to send.
+.IP "--spool"
+Read directly from spool.
+.IP "--version"
+Print version and some compile time settings.
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH ENVIRONMENT
+.I slrn
+uses the following list of environment variables.  Note: environment
+variables can be overridden by configuration files or command line switches.
+.TP
+.B COLORTERM
+If this variable is set, slrn will assume that your terminal
+supports
+.IR "ANSI color sequences" .
+It also enables a workaround for a problem with the
+.I mouse reporting
+when running slrn inside of an rxvt.
+.TP
+.B DISPLAY
+If set, slrn assumes that X11 is running.
+.TP
+.B EDITOR
+See
+.IR $SLRN_EDITOR .
+.TP
+.B HOME
+See
+.IR $SLRNHOME .
+.TP
+.B HOSTNAME
+If no
+.I hostname
+is given, the value of this environment variable is used.
+.TP
+.B LOGNAME
+See
+.IR $USER .
+.TP
+.B NAME
+Set it to your realname, if slrn can't determine it otherwise.
+.TP
+.B NNTPSERVER
+You can use this variable to tell slrn which NNTP server to
+connect to.  It can be overridden by the command line option -h.
+.TP
+.B ORGANIZATION
+The name of your organization.
+.TP
+.B PRINTER
+On unix systems, slrn pipes the current article to ``lpr -P
+.IR $PRINTER "''"
+to print it.
+.TP
+.B PWD
+This variable is only used on unix systems that don't support getcwd(3).  In
+these cases, it should be set to the current directory at the time slrn is
+invoked.  This is usually done by the shell and nothing the user has to
+worry about.
+.TP
+.B REPLYTO
+The value of this variable is used as the default if you do not set
+.I replyto
+in your slrnrc file.
+.TP
+.B SLANG_EDITOR
+See
+.IR $SLRN_EDITOR .
+.TP
+.B SLRNHELP
+You can set this variable to a file slrn
+should read its online help from.  This is only needed when the default key
+bindings have been changed and you want the help function to reflect this.
+If unset, slrn looks for help.txt in the configuration directory.
+.TP
+.B SLRNHOME
+When interpreting filenames as relative to your home directory,
+slrn uses this variable to find out what your home directory is.
+If
+.I $SLRNHOME
+is unset,
+.I $HOME
+is used instead.
+.TP
+.B SLRN_EDITOR
+The editor to start for editing articles.
+If this variable is unset, slrn subsequently looks at
+.IR $SLANG_EDITOR ", " $EDITOR " and " $VISUAL .
+.TP
+.B TMP
+Indicates the directory in which slrn should save temporary
+files.
+.TP
+.B TMPDIR
+.RI "See " $TMP .
+.TP
+.B USER
+Your username, if slrn can't get it from the system by other means.
+.TP
+.B VISUAL
+.RI "See " $SLRN_EDITOR .
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH FILES
+.TP
+$HOME/.slrnrc
+User-specific configuration file.
+.TP
+config_dir/slrn.rc
+System-wide configuration file. config_dir is set at compile time
+(/usr/local/etc by default).
+.TP
+$HOME/.jnewsrc
+default newsrc file for 
+.I slrn.
+.TP
+$HOME/.jnewsrc.dsc
+Per user newsgroups descriptions.
+.TP
+share_dir/newsgroups.dsc
+Global newsgroup descriptions. share_dir is set at compile time
+(/usr/local/share/slrn by default).
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH SEE ALSO
+The documentation that comes with
+.IR slrn ,
+especially manual.txt, FAQ, score.txt and SCORE_FAQ.  If you consider
+writing s-lang macros, also look at README.macros and slrnfuns.txt.
+
+Recent versions of the slrn manual and the FAQ as well as additional
+information can also be found on slrn's official home page:
+http://slrn.sourceforge.net/
+
+Questions about
+.I slrn
+that are not covered by existing documentation may be posted to the
+newsgroup
+.I news.software.readers
+where they will be answered by knowledgeable users or the author of the
+program.  In addition, announcements of new versions of
+.I slrn
+are posted there.
+
+The latest version of
+.I slrn
+is available from http://prdownloads.sourceforge.net/slrn/
+.\"
+.\" -------------------------------------------------------------------
+.\"
+.SH AUTHOR
+John E. Davis <davis@space.mit.edu>
+
+Please send any bug reports to the current maintainer,
+Thomas Schultz <tststs@gmx.de>

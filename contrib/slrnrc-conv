@@ -1,0 +1,166 @@
+#! /usr/bin/perl -w
+#
+# slrnrc-conv - converts an old ~/.slrnrc file to new format
+#
+# by Matthias Friedrich <matt@mafr.de>
+#
+# Usage: perl slrnrc-conv ~/.slrnrc > new_config
+#
+use strict;
+
+#
+# group functions conversation table
+#
+my %group = (
+	down          =>    'line_down',
+	group_bob     =>    'bob',
+	group_eob     =>    'eob',
+	group_search  =>    'group_search_forward',
+	pagedown      =>    'page_down',
+	pageup        =>    'page_up',
+	toggle_group_display => 'toggle_group_formats',
+	uncatch_up    =>    'uncatchup',
+	up            =>    'line_up'
+);
+
+#
+# article functions conversation table
+#
+my %article = (
+	art_bob                 =>   'article_bob',
+	art_eob                 =>   'article_eob',
+	art_xpunge              =>   'article_expunge',
+	article_linedn          =>   'article_line_down',
+	article_lineup          =>   'article_line_up',
+	article_pagedn          =>   'article_page_down',
+	article_pageup          =>   'article_page_up',
+	down                    =>   'header_line_down',
+	enlarge_window          =>   'enlarge_article_window',
+	goto_beginning          =>   'article_bob',
+	goto_end                =>   'article_eob',
+	left                    =>   'article_left',
+	locate_header_by_msgid	=>   'locate_article',
+	pagedn                  =>   'header_page_down',
+	pageup                  =>   'header_page_up',
+	pipe_article            =>   'pipe',
+	prev                    =>   'previous',
+	print_article           =>   'print',
+	right                   =>   'article_right',
+	scroll_dn               =>   'article_page_down',
+	scroll_up               =>   'article_page_up',
+	shrink_window           =>   'shrink_article_window',
+	skip_to_prev_group      =>   'skip_to_previous_group',
+	toggle_show_author      =>   'toggle_header_formats',
+	up                      =>   'header_line_up'
+);
+
+#
+# variable conversation table
+#
+my %variables = (
+	process_verbatum_marks	=>	'process_verbatim_marks',
+	followup		=>	'followup_string'
+);
+
+#
+# obsolete variables that can't be rewritten automatically
+# they will be commented out and an explanatory message is printed to stderr
+#
+my %obsolete_variables = (
+	prompt_next_group	=>
+		'The feature controlled by this variable has been removed.',
+	query_reconnect		=>
+		'There is no need to confirm reconnects anymore.',
+	use_xgtitle		=>
+		'slrn does not use XGTITLE anymore.',
+	author_display		=>
+		'Please use the %f escape of header_display_format.',
+	display_author_realname	=>
+		'Please use the %r escape of header_display_format.',
+	display_score		=>
+		'Please use the %S escape of header_display_format.',
+	group_dsc_start_column	=>
+		'Please customize group_display_format instead.',
+	show_descriptions	=>
+		'Please use the %d escape of group_display_format.'
+);
+
+
+#
+# colors conversation table
+#
+my %colors = (
+	verbatum		=>	'verbatim'
+);
+
+#
+# obsolete commands, rewrite them to variables
+#
+my @commands = (
+                 'hostname', 'username', 'replyto',
+                 'organization', 'scorefile', 'signature',
+                 'realname', 'followup', 'cc_followup_string',
+                 'quote_string', 'decode_directory', 'editor_command'
+               );
+
+
+# regexps that match a (possibly quoted) string
+my $str_rx = '\S+';
+my $qstr_rx = '"(?:\\\\|\\.|.)*"|\S+';
+
+# read input file line by line
+while ( <> )
+{
+	# rewrite key bindings
+	if ( m/^(\s*setkey\s*"?)(group|article)("?\s*"?)([^\s"]+)(\s*.*)$/ )
+	{
+		if ( $2 eq 'group' and $group{$4} )
+		{
+			$_ = "$1$2$3$group{$4}$5\n";
+		}
+		elsif ( $2 eq 'article' and $article{$4} )
+		{
+			$_ = "$1$2$3$article{$4}$5\n";
+		}
+	}
+	# rewrite color names
+	elsif ( m/^(\s*color\s*)(${qstr_rx})(.*)$/ )
+	{
+		my $name = $colors{$2} || $2;
+
+		$_ =  "$1${name}$3\n";
+	}
+	# rewrite variable names
+	elsif ( m/^(\s*set\s*)(${qstr_rx})(.*)$/ )
+	{
+		my $why;
+		my $name = $variables{$2} || $2;
+		
+		$_ = "$1${name}$3\n";
+
+		if ( $why = $obsolete_variables{$name} )
+		{
+			print STDERR "The variable $name is obsolete.\n",
+				"\t$why\n";
+
+			print "% slrnrc-conv: The variable $name ",
+				"is obsolete.\n", "% $why\n";
+			$_ = '% ' . $_;
+		}
+	}
+	# probably this is a command, rewriting doesn't even need a table
+	elsif ( m/^(\s*)(${str_rx})(.*)$/ )
+	{
+		my $cmd = $2;
+		my $set = '';
+
+		$set = 'set ' if grep {m/$cmd/} @commands;
+
+		$_ = "$set$1$2$3\n";
+
+		redo if $set; # maybe the resulting variable needs rewriting
+	}
+	# no else case needed, simply print line
+
+	print;
+}

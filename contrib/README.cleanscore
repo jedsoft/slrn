@@ -1,0 +1,76 @@
+                                 Cleanscore
+                                 **********
+				 
+        a perlscript to remove expired score entries from the
+        newsreader slrn's scorefile (usually $HOME/News/.score).
+
+1. Install
+==========
+
+(1) Copy or move the script into a directory in your $PATH.
+    The directory "$HOME/bin" usually is a good place for that.
+
+(2) Run cleanscore with at least the '-f <filename>' argument.
+    
+
+2. Commandline options
+======================
+
+Required Options 
+
+-f <filename>   "File".   Chose "filename" for cleaning.
+                          If "filename" is a directory clean
+			  all files in it.
+
+Standard Options for "help" and "version":
+
+-V              "Version."  Print Version and exit.
+-h              "Help".     Prints a help message.
+
+
+
+-b <extension>  "Backup extention".   Overwrites the default backup-
+                extention ('.bak').
+		   
+-d              "Debug."    Prints dates and status for each entry.
+
+-e n            "Empty lines." Cut multiple empty lines down to N.
+
+-i <pattern>    "Ignore pattern".   When scanning through a directory
+                ignore files with names matching "pattern".
+                The "backup extention" is matcht automaticly.
+
+-k n            "Keep for N days".
+                Do not remove expired entries, but instead hold them
+                for N more days.  This allows to keep expired entries
+                so you can still edit them, eg change the expiry date.
+
+-r              "Remove".  Removes comment lines, i.e. lines beginning
+                with '%'. (e.g. remove slrn generated comments
+                when you use '#' for your own comments)
+
+-s <filename>	"Save to". Save removed entries to "filename".
+
+-t              "Test".  Just check for expired entries
+                but do not change the scorefile.
+                Make sense with options -v or -d only.
+
+-v              "Verbose."  Prints all expired entries to stdout.
+
+
+3. Copying
+==========
+
+Cleanscore is distributed unter the terms of the GNU General Public License.
+
+
+4. Changes
+==========
+
+See NEWS.cleanscore
+
+
+5. Author
+=========
+
+Felix Schueller <fschueller@netcologne.de>

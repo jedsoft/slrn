@@ -1,0 +1,191 @@
+See SETUP for minimal installation instructions.
+----------------------------------------------------------------------
+
+What is slrnpull?
+==================
+
+This version of slrn is capable of allowing a user to read offline.
+This is accomplished by using slrn in conjunction with the the
+slrnpull program.  Basically, slrnpull pulls a small newsfeed from an
+NNTP server from which slrn will subsequently read.
+
+There are several other ``sucking'' programs available that perform a
+similar function as slrnpull.  The best known are `leafnode' and
+`suck'.  All of them, with the exception of `leafnode' require the
+user to run a newsserver program such as INN or CNEWS.  Like
+`leafnode', slrnpull does not require a newsserver. 
+
+In many ways `leafnode' is more ambitious than `slrnpull'.  It was
+designed for many more readers and provides an nntp server to access
+the news spool.  However, I felt that even it was overkill for my
+purpose of pulling 10-20 newsgroups for myself.  For that reason, I
+wrote slrnpull.
+
+slrnpull is very simple to setup and use.  It requires only one
+configuration file that is placed in its root news directory.  The
+purpose of the file is to specify which groups to download, how many
+articles should be downloaded at one time for a given newsgroup, and
+how many days can go by before an article will expire.  See
+slrnpull.conf file for an example and documentation for the format of
+the file.
+
+slrnpull also has the ability to score articles so that they will not
+be downloaded from the server.  Unlike slrn, any article that is given
+a negative score by slrnpull will be killed; that is, it will not be
+retrieved from the server.
+
+
+slrnpull directory structure
+=============================
+
+The directory structure assumed by slrnpull is as follows:
+
+    SLRNPULL_ROOT/
+    SLRNPULL_ROOT/data
+    SLRNPULL_ROOT/news/
+    SLRNPULL_ROOT/out.going/
+    SLRNPULL_ROOT/out.going/rejects/
+
+The actual news articles that are pulled from the server are placed in
+directories under the SLRNPULL_ROOT/news tree.  The out.going
+subdirectory is where posted articles will go until slrnpull sends
+them to the server.  Any article that is rejected by the server will
+be moved to the rejects subdirectory.  The files that slrnpull
+generates (active, new.groups, etc.) will be placed in the data
+subdirectory.
+
+The configuration file, slrnpull.conf must be placed in the
+SLRNPULL_ROOT directory.  See the sample slrnpull.conf file for an
+explanation of the format of this file.  When slrnpull runs, it will
+read the slrnpull.conf file.  Based on the information present in that
+file, it will create the appropriate subdirectories under
+SLRNPULL_ROOT/news.
+
+If your server requires authorization information, you will need to
+create a file called `authinfo' in the SLRNPULL_ROOT directory.  The
+file should consist of two lines.  The first line is for the username
+and the second line is for the password.
+
+As slrnpull runs, it will append status and error messages to file
+called `log' in the SLRNPULL_ROOT directory.  You are advised to check
+this file after every run of slrnpull.  For example, if the server
+rejects a posted article, the log file will indicate this fact.
+
+After slrnpull has grabbed articles from the server, it will create a
+file called `active' in the SLRNPULL_ROOT directory.  This `active'
+file will be used by the newsreader.
+
+The SLRNPULL_ROOT directory may be specified several ways:
+
+   1. At compile time.  The default is /var/spool/news/slrn/.
+   2. Via the SLRNPULL_ROOT environment variable.
+   3. Via the -d <dir> command line option.
+
+In the sample script, slrnpull.sh, the third method is used.
+
+Note: the SLRNPULL_ROOT cannot be used for multiple servers.  If you
+intend to use slrnpull with more than one server, you will have to set
+up a different tree for each server.
+
+slrnpull command line options
+=============================
+
+slrnpull may be controlled by several command line parameters:
+
+   slrnpull <options>
+
+where <options> can include any of the following:
+
+  -h HOSTNAME       name of NNTP server
+  -d SPOOLDIR       Spool Directory associated with server
+  --version         Show version number
+  --expire          Perform expiration but do not pull news
+  --post-only       Post news but do not pull new news
+  --no-post         Do not post news
+  --new-groups      Get new groups
+  --logfile FILE    Use FILE as the log file
+
+The `-h' option controls the name of the NNTP server that will be used
+for pulling the news feed.  If it is not specified, slrnpull will look
+for the NNTPSERVER variable.  By default, slrnpull tries to connect on
+port 119. If you need to change this, you can code the port into the
+hostname (like in 'server.name:XXX', where XXX is an integer that
+represents the port number).
+
+If the `-d' option is not specifed, slrnpull will attempt to determine
+the SLRNPULL_ROOT directory by the SLRNPULL_ROOT environment variable.
+If that fails, it will default to the compiled-in value.
+
+The `--version' option causes slrnpull to write the version number to
+stdout.
+
+The `--expire' option is used to run slrnpull in expire mode.  If this
+option is specifed, no attempt will be made to access the server.  It
+is recommended that slrnpull be run in expire mode once every day.  It
+may take a few minutes to run because it causes the OVERVIEW database
+to be rebuilt.
+
+The `--post' flag may be used to tell slrnpull to post any out-going
+articles but do not attempt pull any articles from the server.
+Normally this option is not required since before pulling articles
+because slrnpull will always post any articles in the in the out.going
+directory immediately before pulling new articles.
+
+`--no-post' is used to indicate that slrnpull should not post any
+outgoing messages.
+
+Normally slrnpull does not query the server for new groups.  The
+--new-groups option forces slrnpull to query the server.  If the
+server indicates any new groups, slrnpull will append the new group
+names to the file SLRNPULL_ROOT/data/new.groups and update the time
+stamp in the SLRNPULL_ROOT/data/new.groups-time file.
+
+`--logfile' is used to specifiy a log file instead of the default.
+
+Scoring with slrnpull
+=====================
+
+If slrnpull finds a file called `score' in the SLRNPULL_ROOT
+directory, it will read it as an slrn score file.  This file may be
+used to kill articles before they are pulled from the server.  The
+syntax of this file is identical to an ordinary slrn score file;
+however, any article which scores less than 0 will be killed.
+See the main slrn documentation for information about scoring.  A
+sample score file is present in this directory.
+
+
+Setting up a minimal .slrnrc file.  
+==================================
+
+Assume that the SLRNPULL_ROOT refers to the directory
+/var/spool/slrnpull.  Then the following .slrnrc lines should be
+sufficient to tell slrn how to deal with the news provided by
+slrnpull:
+
+    set spool_inn_root		"/var/spool/slrnpull"
+    set spool_root		"/var/spool/slrnpull/news"
+    set spool_nov_root		"/var/spool/slrnpull/news"
+    set read_active		1
+    set use_slrnpull		1
+
+The 'use_slrnpull' variable must be set to 1 to tell slrn to post the
+file to the out.going directory.  Also note that 'spool_root' and
+'spool_nov_root' must be set to the same value.
+
+In addition, it is a good idea to include the `hostname' and
+`username' lines, e.g.,
+
+    hostname			"your.host.name"
+    username			"your.user.name"
+
+
+Some Limitations
+=============================================================================
+
+Slrnpull tries to be efficient by only downloading one copy of an
+article that has been crossposted.  For example, if an article has
+been crossposted to both sci.physics and sci.astro, then if slrnpull
+already downloaded the article for sci.physics, it will not download
+the article for sci.astro.  Ideally, it should create a copy of the
+downloaded article in sci.astro.  This may be corrected in a future
+version.

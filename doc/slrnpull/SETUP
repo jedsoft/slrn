@@ -1,0 +1,68 @@
+-*- text -*-
+This file indicates how to setup slrnpull for pulling groups from a
+news server.
+
+0.  Build slrn and slrnpull.  On Unix, using ./configure --with-slrnpull
+    makes sure slrnpull is built and the needed features are compiled into
+    slrn.  On Windows, you need to "make slrnpull.exe" explicitly.
+    
+1.  Choose a directory that will be used for slrnpull.  In this file,
+    I will assume it is /var/spool/slrnpull.
+    
+2.  Create the directory:
+
+       mkdir /var/spool/slrnpull
+       
+3.  Create a file called `slrnpull.conf' in that directory.  Use the
+    example provided in the slrn/slrnpull distribution as a template:
+    
+      cp ./slrnpull.conf /var/spool/slrnpull
+      EDIT /var/spool/slrnpull/slrnpull.conf
+      
+    You must edit this file!!  slrnpull will only retrieve the groups
+    that are listed in this file.  It will NOT look at your newsrc file!
+    
+    If your server requires authorization information, create a file called 
+    `authinfo' in the slrnpull directory.  The file should consist of
+    two lines: the first line should contain the username and the
+    second should contain the password.
+  
+4.  Startup your network connection, e.g.,
+
+      ppp-up
+
+5.  Run slrnpull.
+
+      slrnpull -d /var/spool/slrnpull -h YOUR.NNTP.NEWS.SERVER
+   
+    Note that slrnpull runs with the umask of the process that created
+    it.  If you run it from a shell script, it is a good idea to add
+    
+       umask 022
+       
+    before running slrnpull.  That way, the files that it creates will
+    have read permissions for all users.
+
+6.  Stop your internet connection, e.g.,
+
+      ppp-down
+      
+7.  Add the following lines to the end of your .slrnrc file (change
+    accordingly):
+
+       set spool_inn_root	"/var/spool/slrnpull"
+       set spool_root		"/var/spool/slrnpull/news"
+       set spool_nov_root	"/var/spool/slrnpull/news"
+       set use_slrnpull 1
+       set read_active 1
+       set server_object 	"spool"       
+       hostname "YOUR_HOST_NAME"
+       username "YOUR_USER_NAME"
+       
+8.  Now run slrn to read from this spool:
+
+       slrn --spool
+       
+    (You can compile slrn so that it will read from the spool by
+    default without the need to use the --spool command line option.
+    See slrnfeat.h.)

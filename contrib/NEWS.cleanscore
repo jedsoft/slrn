@@ -1,0 +1,67 @@
+=============================================================================
+                         Cleanscore - changes.txt
+=============================================================================
+			   
+0.9.7.4 -> 0.9.8.0 [2001-09-14]
+
+* Added an option to cut multiple empty lines down.
+  (suggested by Guido Ostkamp)
+
+* Cleanscore now can clean all files in a directory.
+
+* The extention for the backupfiles is now configurable.
+
+* The original file is only copyed to a backupfile if there's really a change.
+
+* Moved changes from README to changes.txt.
+
+
+-----------------------------------------------------------------------------
+
+0.9.7.3 -> 0.9.7.4 [2001-08-10]
+
+* Added savefile option.
+  (suggested by Sven Guckes)
+  
+
+-----------------------------------------------------------------------------
+
+0.9.7.2 -> 0.9.7.3 [2001-02-17]
+
+* Cleanscore now uses "flock" to lock the scorefile.
+  (suggested by "The Joneses <jonz@frontier.net>")
+
+* Some cleanup in the code.
+
+
+-----------------------------------------------------------------------------
+
+0.9.7.1 -> 0.9.7.2 [2001-01-05]
+
+Small bugfix: Newer versions of perl want an explizit declaration of each
+function.
+
+
+-----------------------------------------------------------------------------
+
+0.9.7 -> 0.9.7.1 [2000-11-30]
+
+Small bugfix: cleanscore used GMT to calculate expired entries.
+Cleanscore now uses your *local* time to find  expired entries.
+
+
+-----------------------------------------------------------------------------
+
+0.9.6 -> 0.9.7  [2000-11-26]
+
+* Added:  Option "-d".  The "debug" mode gives now output in a usefull form.
+* Added:  Option "-t".  Cleanscore can work test-only now.
+
+
+-----------------------------------------------------------------------------
+
+0.9.5.1 -> 0.9.6  [2000-03-19]
+
+Added:    Copyright notice.
+Changed:  Distribution format.
+

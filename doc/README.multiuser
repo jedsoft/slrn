@@ -1,0 +1,70 @@
+This file concerns a setup of slrn that is suitable for multiple users.
+
+The installation instructions given in this file provide information about
+setting up slrn with defaults that are global to all users.  These defaults
+include such information as the name of the organization and the hostname.
+In addition, only one newsgroup description file is needed instead of one
+per user.
+
+The files that provide such "global" information are put in
+  SYSCONFDIR/slrn.rc           : global initialization file and
+  DATADIR/slrn/newsgroups.dsc  : newsgroup description file.
+The values of SYSCONFDIR and DATADIR can be set when building slrn
+(--sysconfdir and --datadir options of ./configure).
+
+On my system, the global slrn.rc file simply contains the two lines:
+
+   set hostname space.mit.edu
+   set organization "Center for Space Research"
+
+which will appear in the appropriate headers when a user posts a message. In
+addition to specifying these quantities in the slrn.rc file, suitable
+defaults may be compiled into the executable.  Simply edit the slrnfeat.h
+file for this option.
+
+Background:
+
+  When slrn runsn it looks for a file that contains the description of all
+  the news groups.  This is NOT the newsrc file.  Rather, it is a file that
+  contains a one line summary of what each group is about.  This file can be
+  quite large if there are many newsgroups.  For example, on my system, the
+  newsgroup description file is 225 Kilobytes.  It is not desirable for each
+  user to have their own private copy of this file, especially when there is
+  more than one user of slrn on a given system.  Instead, the system
+  administrator only has to keep a copy of it in a directory that slrn knows
+  about.  Part of the installation process described in this file involves
+  the creation of such a directory.
+
+  slrn assumes that newsgroup description file will be called
+  `newsgroups.dsc'.  The directory where this file is located get hardcoded
+  into the binary. By default, it is /usr/local/share/slrn, but you can
+  change this with the --datadir option when running ./configure.
+
+  Now, you have to obtain the newsgroup description file. You can do that in
+  at least two ways.  The easiest is to simply get the file `newsgroups.dsc'
+  from space.mit.edu:/pub/davis/slrn.  The other method is just as easy but
+  involves slrn to create such a file for you.  This is described below.
+
+With this background, the steps presented below should be clear.
+
+  0. Execute the steps outlines in README before continuing.
+  
+  1. Create the directory `/usr/local/share/slrn' (or equivalent; after a
+     successful installation of slrn, it should already exist).
+  
+  2. Run slrn as follows:
+  
+         slrn -f SHAREDIR/slrn/newsgroups -d
+	 
+     (Of course, make the proper substution of SHAREDIR).  This will create
+     a file newsgroups.dsc in SHAREDIR/slrn.
+     
+     This step may take some time to complete for slow NNTP connections.
+     
+  3. If more that one person will be reading this file, make sure it is
+     world readable, e.g.,
+     
+         chmod go+r SHAREDIR/newsgroups.dsc
+
+
+That's it!!

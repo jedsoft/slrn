@@ -1,0 +1,53 @@
+% This is a sample score file used by slrnpull that I use to kill articles 
+% before they are downloaded.  Any article scoring less than 0 will not be 
+% downloaded.
+
+[*]
+% Kill all articles which are uppercase and contain $ sign
+    Score: -9999
+	  Subject: \$
+	 ~Subject: \c[a-z]
+	 
+% Kill all of these too.
+    Score:: -9999
+       % Kill anything cross-posted to news.answers.  
+       % It is probably a long FAQ.
+       Newsgroups: news.answers
+	  Subject: http://
+	  Subject: \d\d\d-[0-z][0-z][0-z]-[0-z][0-z][0-z][0-z]
+	  Subject: (no subject
+	  Subject: (none)
+	  Subject: \<\d\d\d[-+ ]\d\d\d\d\>
+	  Subject: \<011-
+	  Subject: \<[89]00-
+	  Subject: \<Cash\>
+	  Subject: ^FREE\>
+	  Subject: ^Re: FREE\>
+	  Subject: Wincash.zip
+	  Subject: fast.?money
+	  Subject: \$MONEY
+	  Subject: \c\<MONEY\>
+	  Subject: \<fastcash\>
+	  Subject: \$\$
+	  Subject: \<make +\$
+	  Subject: ^!+ +
+	     From: respondby@mail.com
+
+[news.software.*]
+% Kill all articles pertaining to Windows newsreaders
+    Score:: -9999
+	  Subject: \<agent\>
+	  Subject: \<forte\>
+	  Subject: \<fa\>
+	  Subject: \<freeagent\>
+	  Subject: \<F?agent\d
+	  Subject: \<Fagent
+	  Subject: \<X-?press
+	  Subject: Win ?VN
+	  Subject: \<News ?watcher\>
+	  Subject: \<nx2?\>
+	  Subject: \<news? ?e?x ?press?\>
+	  Subject: press95\>
+	  Subject: gravity
+	  Subject: virtual access
+	     Xref: winsock

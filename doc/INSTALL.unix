@@ -1,0 +1,165 @@
+Installation (Unix)
+===================
+
+The S-Lang library is required to build slrn.  If you do not have a current
+version of it on your system (1.4.x is needed for full features), you need
+to build it before you can compile slrn.  S-Lang is available from
+<URL:ftp://space.mit.edu/pub/davis/slang>.
+
+Slrn uses the GNU autoconf package that makes the installation quite simple.
+Usually, executing
+
+    ./configure
+    make
+  [ strip src/slrn src/slrnpull ]
+    make install
+  [ make install-contrib ]
+  
+is enough to configure, build and install slrn.  All needed information will
+be determined automatically.
+
+"make install-contrib" installs two helpful scripts contributed by slrn
+users.  They require perl to run.  More information about them can be found
+in contrib/README.*
+
+The configure script supports a number of options listed below.  Especially,
+you need to specify --with-slrnpull if you plan to use slrnpull.
+
+--prefix=PREFIX
+    Set PREFIX to the base directory where the architecture-independent part
+    of slrn shall be installed.
+    Default: /usr/local
+
+--exec-prefix=EPREFIX
+    Set EPREFIX to the base directory where the architecture-dependent part
+    of slrn will be installed.
+    Default: PREFIX [/usr/local]
+
+--bindir=BINDIR
+    The directory where the slrn executable will be put.
+    Default: EPREFIX/bin [/usr/local/bin]
+
+--mandir=MANDIR
+    The place where man pages will be installed.
+    Default: PREFIX/man [/usr/local/man]
+
+--datadir=DATADIR
+    Architecture-independent read-only files such as slang macros.
+    Default: PREFIX/share/slrn [/usr/local/share/slrn]
+
+--sysconfdir=SYSCONFDIR
+    Directory for global configuration files (like slrn.rc).
+    Default: PREFIX/etc [/usr/local/etc]
+
+--with-docdir=DIR
+    The directory where slrn's documentation is placed.
+    Default: PREFIX/share/doc/slrn [/usr/local/share/doc/slrn]
+
+--enable-hardcode-libs
+    Tells the linker to hardcode the path of dynamic libraries that are not
+    in /usr/lib into the executable.  You need to specify this if
+    compilation fails with a message saying that libslang cannot be opened.
+
+--with-slang-library=DIR
+    Explicitly set the location of the slang library.  If not used,
+    configure will look for it automatically.
+    
+--with-slang-includes=DIR
+    Explicitly set the location of the slang include files.  If not used,
+    configure will automatically look for this as well.
+
+--with-libdir=LIBDIR
+    Directory where slrn will expect the global configuration file
+    and the newsgroups description file
+    Default: PREFIX/lib/slrn [/usr/local/lib/slrn]
+
+--with-ssl[=DIR]
+    Include support for connections via SSL.
+    You need to set DIR to the place where OpenSSL is installed.
+
+--with-uudeview[=DIR]
+    This option tells slrn to use the uudeview library for decoding
+    uuencoded articles instead of its builtin routines.
+
+--with-slrnpull
+    Build slrnpull and enable support for it in slrn.
+
+--enable-setgid-code
+    Enables code that allows you to run slrnpull as an unpriviledged user.
+    See doc/slrnpull/setgid.txt for details.
+
+--disable-nntp
+    Don't include NNTP support.
+
+--enable-spool
+    Include support for reading news directly from a news spool (enabled
+    implicitly by --with-slrnpull).
+
+--enable-inews
+    Enable inews support (enabled implicitly by --enable-force-inews).
+
+--enable-force-inews
+    This option enforces the use of inews for posting.  Without this option,
+    the user is allowed to choose a posting method.
+
+--enable-strict-from
+    This option completely disallows the user to configure his "From" header
+    line.  All attempts to change the startup values that were retrieved
+    from the system for "hostname", "username" and "realname" will fail.
+    make_from_string_hook does not get executed; manually added "From"
+    headers are rejected when posting.
+
+--disable-slang
+    Don't make the slang interpreter available from within slrn.
+    Of course, slrn will still be linked against the slang library.
+
+--disable-mime
+    Don't include MIME support.  You should not do this if you intend to use
+    any other charset than strict US-ASCII.
+
+--disable-charmap
+    Disables the mapping between ISO-Latin and native character sets like
+    isolatin, ibm850, NeXT and koi8
+
+--disable-spoilers
+    Disable the special behaviour if slrn encounters a linefeed character.
+
+--disable-emph-text
+    Turn off the coloring of *emphasized* _text_.
+
+--disable-verb-marks
+    Disable the special treatment of text between #v+/#v- marks.
+    Currently, these verbatim marks are only supported by slrn.
+
+--disable-gen-mid
+    This prevents slrn from generating its own Message-Ids.
+
+--enable-mid-cache
+    Make slrn cache Message-IDs during a session and use them to eliminate
+    cross-posts.  This should not be necessary if your server supports Xref
+    in its overview database.
+
+--disable-fake-refs
+    Don't use the In-Reply-To header for building the thread tree if no
+    References header is available.
+
+--enable-grouplens
+    Enable grouplens support.  Since the grouplens project seems to be dead,
+    you probably won't need this.  See README.GroupLens for further
+    information.
+
+--enable-warnings
+    If using gcc, enable the output of warnings during compilation.
+
+--enable-profiling
+    If using gcc, the slrn binary will write profile data to gmon.out.
+    Never use this option when compiling slrn for production use!
+
+Some rarely used compile-time options are not under autoconf control.  You
+need to edit src/slrnfeat.h manually before running "make" to change them.
+
+If configure cannot find the slang library and include files, it will fail.
+In this case, you need to point it to the right directories using
+--with-slang-library / --with-slang-includes.  If a program (such as
+sendmail or inews) is not found although it is installed on your system, run
+PATH=$PATH:/path/to/program ./configure 

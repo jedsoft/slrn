@@ -1,0 +1,4165 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Jelmer Vernooij <jelmer@nl.linux.org>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Slrn 0.9.7.2\n"
+"POT-Creation-Date: 2001-10-29 15:48+0100\n"
+"PO-Revision-Date: 2001-10-02 20:08+0200\n"
+"Last-Translator: Jelmer Vernooij <jelmer@nl.linux.org>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Note to translators:
+#. * Make sure your translation is shorter than 16 characters.
+#: src/art.c:335
+#, c-format
+msgid "Ctrl-%c"
+msgstr "Ctrl-%c"
+
+#: src/art.c:339
+msgid "SPACE"
+msgstr "SPATIE"
+
+#: src/art.c:340
+msgid "TAB"
+msgstr "TAB"
+
+#: src/art.c:341
+msgid "RETURN"
+msgstr "ENTER"
+
+#: src/art.c:342
+msgid "ESCAPE"
+msgstr "ESCAPE"
+
+#: src/art.c:343
+msgid "DELETE"
+msgstr "DELETE"
+
+#: src/art.c:344
+msgid "BACKSPACE"
+msgstr "BACKSPACE"
+
+#: src/art.c:700
+msgid "No next digest."
+msgstr "Geen volgende samenvatting."
+
+#: src/art.c:1049
+msgid "Invalid Browser definition."
+msgstr "Ongeldige Browser definitie."
+
+#: src/art.c:1083
+msgid "Browse (^G aborts): "
+msgstr "Verkennen (^G stopt):"
+
+#: src/art.c:1085 src/art.c:4021
+msgid "Aborted."
+msgstr "Gestopt."
+
+#: src/art.c:1108
+msgid "Show all available groups"
+msgstr "Toon alle beschikbare groepen"
+
+#: src/art.c:1118
+#, c-format
+msgid "Try switching to %s"
+msgstr "Probeer om te switchen naar %s"
+
+#: src/art.c:1124
+msgid "Group contains no articles."
+msgstr "Groep bevat geen artikelen."
+
+#: src/art.c:1139
+msgid "No Web Browser has been defined."
+msgstr "Er is geen Web Browser gedefinieerd."
+
+#: src/art.c:1190
+msgid "No URLs found."
+msgstr "Geen URL's gevonden."
+
+#: src/art.c:1221
+msgid "Search: "
+msgstr "Zoek: "
+
+#: src/art.c:1225 src/art.c:5526 src/group.c:1232
+msgid "Not found."
+msgstr "Niet gevonden."
+
+#: src/art.c:1325
+#, c-format
+msgid "At end of article, press %s for next group."
+msgstr "Druk %s aan het eind van het artikel voor de volgende groep."
+
+#: src/art.c:1328
+#, c-format
+msgid "At end of article, press %s for next unread article."
+msgstr ""
+"Druk %s aan het eind van het artikel voor het volgende ongelezen artikel. "
+
+#: src/art.c:2010
+msgid "Goto article: "
+msgstr "Ga naar artikel: "
+
+#: src/art.c:2027
+msgid "Article not found."
+msgstr "Artikel niet gevonden."
+
+#: src/art.c:2098
+#, c-format
+msgid "#%2d/%-2d: Retrieving... %s"
+msgstr "#%2d/%-2d: Ophalen... %s"
+
+#: src/art.c:2101
+#, c-format
+msgid "[%d] Reading..."
+msgstr "[%d] Lezen..."
+
+#: src/art.c:2108
+msgid "Server failed to return article."
+msgstr "Server is er niet in geslaagd bericht terug te sturen"
+
+#: src/art.c:2112
+#, c-format
+msgid "Article %d unavailable."
+msgstr "Artikel %d niet beschikbaar."
+
+#: src/art.c:2151
+msgid "Article transfer aborted or connection lost."
+msgstr "Versturen van artikel onderbroken of verbinding verbroken."
+
+#: src/art.c:2234
+msgid "Server sent empty article."
+msgstr "Server is er niet in geslaagd bericht terug te sturen."
+
+#: src/art.c:2500
+msgid "%a, %d %b %Y at %H:%M GMT"
+msgstr "%a, %d %b %Y om %H:%M GMT"
+
+#: src/art.c:2543
+msgid "This operation requires an article"
+msgstr "Deze opdracht vereist een artikel"
+
+#: src/art.c:2651
+#, c-format
+msgid "%s appears invalid.  Continue anyway"
+msgstr "%s lijkt ongeldig. Toch doorgaan"
+
+#: src/art.c:2652
+msgid "Email address"
+msgstr "Email adres"
+
+#: src/art.c:2663 src/art.c:2838 src/art.c:3177 src/art.c:3375
+#: src/slrnpull.c:395 src/slrnpull.c:1031
+#, c-format
+msgid "Unable to open %s for writing."
+msgstr "Kan %s niet openen om te schrijven."
+
+#: src/art.c:2788
+msgid "Are you sure you want to reply"
+msgstr "Weet U zeker dat U wilt antwoorden"
+
+#: src/art.c:2815
+msgid "Forward to (^G aborts): "
+msgstr "Doorsturen naar (^G stopt): "
+
+#: src/art.c:2817
+msgid "Aborted.  An email address is required."
+msgstr "Gestopt. Een email adres is vereist."
+
+#: src/art.c:2821
+msgid "Edit the message before sending"
+msgstr "Bewerk het bericht voor verzending"
+
+#: src/art.c:2925 src/art.c:3330
+msgid "Posting not allowed by server"
+msgstr "Plaatsen bericht niet toegestaan door server"
+
+#: src/art.c:2932
+msgid "Are you sure you want to followup"
+msgstr "Weet U zeker dat U een opvolgend bericht wilt plaatsen"
+
+#: src/art.c:2973
+msgid "Do you want to reply to POSTER as poster prefers"
+msgstr "Wilt U de plaatser van het bericht antwoorden zoals hij/zij wenst"
+
+#: src/art.c:3011
+#, c-format
+msgid "Followup to %s as poster prefers"
+msgstr "Opvolgend bericht naar %s zoals plaatser van bericht wenst"
+
+#. Note to translators: Here, "fF" means "Followup-To", "pP" is for
+#. * "post", "iI" is "ignore" and "cC" means "cancel".
+#. * Do not change the length of the string! You cannot use any of the
+#. * default characters for other fields than they originally stood for.
+#.
+#: src/art.c:3053
+msgid "fFpPiIcC"
+msgstr "fFpPiIcC"
+
+#: src/art.c:3056
+msgid ""
+"Crossposting. Followup-To this group, Post to this group only, Ignore,"
+" Cancel?"
+msgstr ""
+"Kruisplaatsing. Opvolgend bericht naar deze groep, Plaats bericht alleen in "
+"deze groep, Negeer, Annuleren?"
+
+#: src/art.c:3138
+msgid "Cc message as requested by poster"
+msgstr "Plaatser bericht wil graag kopie van antwoord"
+
+#: src/art.c:3144
+msgid "Cc message to poster"
+msgstr "Stuur kopie van bericht naar plaatser"
+
+#: src/art.c:3157
+#, c-format
+msgid "%s appears invalid.  CC anyway"
+msgstr "%s lijkt ongeldig. Toch een kopie versturen"
+
+#: src/art.c:3335
+msgid "Are you sure you want to supersede"
+msgstr "Weet U zeker dat U wilt vervangen"
+
+#: src/art.c:3354 src/art.c:7256
+#, c-format
+msgid "Failed: Your name: '%s' is not '%s'"
+msgstr "Mislukt: Uw naam: '%s' is niet '%s'"
+
+#: src/art.c:3457 src/art.c:3506
+msgid "End of buffer."
+msgstr "Eind van de buffer."
+
+#: src/art.c:3478 src/art.c:3496 src/group.c:1078
+msgid "Top of buffer."
+msgstr "Bovenkant van de buffer."
+
+#: src/art.c:3541
+msgid "No previous unread articles."
+msgstr "Geen vorige ongelezen berichten."
+
+#: src/art.c:3585
+msgid "No following unread articles."
+msgstr "Geen opvolgende ongelezen berichten."
+
+#: src/art.c:3621
+#, c-format
+msgid "No following unread articles.  Press %s for next group."
+msgstr ""
+"Geen opvolgende ongelezen artikelen. Druk op %s voor de volgende groep."
+
+#: src/art.c:3652
+msgid "No more high scoring articles."
+msgstr "Niet meer hoog scorende artikelen."
+
+#: src/art.c:3706
+msgid "No more articles on that subject."
+msgstr "Niet meer artikelen over dat onderwerp."
+
+#: src/art.c:3739
+#, c-format
+msgid "Goto Header: %d"
+msgstr "Ga naar berichtkop: %d"
+
+#: src/art.c:3824 src/group.c:2633 src/post.c:262
+#, c-format
+msgid "Unable to open %s."
+msgstr "Kan %s niet openen."
+
+#: src/art.c:3830 src/slrnpull.c:1039 src/slrnpull.c:1047
+#, c-format
+msgid "Error writing to %s."
+msgstr "Fout bij schrijven naar %s."
+
+#: src/art.c:3962
+msgid "Save tagged articles"
+msgstr "Gemarkeerde berichten opgeslagen"
+
+#: src/art.c:3970
+msgid "Save this thread"
+msgstr "Huidige thread opgeslagen"
+
+#: src/art.c:4017
+msgid "Temporary file (^G aborts): "
+msgstr "Tijdelijk bestand (^G stopt): "
+
+#: src/art.c:4018
+msgid "Save to file (^G aborts): "
+msgstr "Opslaan naar bestand (^G stopt): "
+
+#: src/art.c:4027 src/editscore.c:153 src/post.c:429
+#, c-format
+msgid "Unable to open %s"
+msgstr "Kan %s niet openen"
+
+#: src/art.c:4118
+#, c-format
+msgid "decoding %10s (%3d/%3d) %s"
+msgstr "decoderen %10s (%3d/%3d) %s"
+
+#: src/art.c:4134
+msgid "Filename buffer not large enough."
+msgstr "Bestandsnaam buffer niet groot genoeg."
+
+#. safe
+#: src/art.c:4138
+msgid "Calling uudeview ..."
+msgstr "Aanroepen uudeview ..."
+
+#: src/art.c:4147
+#, c-format
+msgid "could not load %s: errno = %d"
+msgstr "kan %s niet laden: errno = %d"
+
+#: src/art.c:4150
+#, c-format
+msgid "could not load %s: %s"
+msgstr "kan %s niet laden: %s"
+
+#: src/art.c:4165
+msgid "I/O error."
+msgstr "Invoer/Uitvoer fout."
+
+#: src/art.c:4168
+#, c-format
+msgid "error decoding %s: %s"
+msgstr "fout tijdens decoderen %s: %s"
+
+#: src/art.c:4192
+#, c-format
+msgid "Decode %s"
+msgstr "Decordeer %s"
+
+#: src/art.c:4203
+#, c-format
+msgid "Delete %s"
+msgstr "Verwijder %s"
+
+#: src/art.c:4206
+#, c-format
+msgid "Unable to delete %s"
+msgstr "Kan %s niet verwijderen"
+
+#: src/art.c:4238
+#, c-format
+msgid "Unable to open pipe to %s"
+msgstr "Kan geen pijp naar %s openen"
+
+#: src/art.c:4255 src/art.c:4276 src/decode.c:65
+msgid "Piping not implemented on this system."
+msgstr "Pijpen niet ondersteund door dit systeem."
+
+#: src/art.c:4267
+msgid "Pipe to command: "
+msgstr "Pijp naar commando: "
+
+#: src/art.c:4269
+msgid "Aborted.  Command name is required."
+msgstr "Gestopt. Commandonaam is vereist."
+
+#: src/art.c:4274
+#, c-format
+msgid "Error piping to %s."
+msgstr "Fout tijdens verbinden van pijp naar %s."
+
+#: src/art.c:4290
+msgid "Printing article..."
+msgstr "Afdrukken artikel..."
+
+#: src/art.c:4321
+msgid "Printing article...done"
+msgstr "Afdrukken artikel...klaar"
+
+#: src/art.c:4337
+msgid "Are you sure you want to print the article"
+msgstr "Weet U zeker dat U dit artikel wilt printen"
+
+#: src/art.c:4490
+msgid "sort_headers(): memory allocation failure."
+msgstr "sort_headers(): geheugen aanvragen mislukt."
+
+#: src/art.c:5031
+msgid "Internal Error."
+msgstr "Interne Fout."
+
+#: src/art.c:5092
+msgid "link_same_subjects: memory allocation failure."
+msgstr "link_same_subjects: geheugen aanvragen mislukt."
+
+#. SLMEMSET ((char *) Lost_Ancestors, 0, sizeof (Lost_Ancestors));
+#: src/art.c:5325
+msgid "Threading by references ..."
+msgstr "Threads ordenen aan de hand van verwijzingen"
+
+#. self referencing!!!
+#: src/art.c:5362
+#, c-format
+msgid "Article %d is part of reference loop!"
+msgstr "Artikel %d is onderdeel van verwijzingslus"
+
+#. No perform a re-arrangement such that those with the no parents but
+#. * share the same reference are placed side-by-side as sisters.
+#.
+#: src/art.c:5386
+msgid "Linking \"lost relatives\" ..."
+msgstr "Verbinden \"verloren verwanten\" ..."
+
+#. Now perform sort on subject to catch those that have fallen through the
+#. * cracks, i.e., no references
+#: src/art.c:5391
+msgid "Linking articles with identical subjects ..."
+msgstr "Artikelen met gelijke onderwerpen verbinden ..."
+
+#: src/art.c:5458
+msgid "Mark set."
+msgstr "Gemarkeerd."
+
+#: src/art.c:5470
+msgid "Mark not set."
+msgstr "Niet gemarkeerd."
+
+#: src/art.c:5491
+msgid "Subject"
+msgstr "Onderwerp"
+
+#: src/art.c:5491
+msgid "Author"
+msgstr "Auteur"
+
+#: src/art.c:5492
+msgid " Search "
+msgstr " Zoeken "
+
+#: src/art.c:5493 src/group.c:1223
+msgid "Forward"
+msgstr "Doorsturen"
+
+#: src/art.c:5493 src/group.c:1223
+msgid "Backward"
+msgstr "Terugwaarts"
+
+#: src/art.c:5677
+#, c-format
+msgid ""
+"Score %d killed article %s\n"
+"Newsgroup: %s\n"
+"From: %s\n"
+"Subject: %s\n"
+"\n"
+msgstr ""
+"Score %d doodde artikel %s\n"
+"Nieuwsgroep: %s\n"
+"Van: %s\n"
+"Onderwerp: %s\n"
+"\n"
+
+#: src/art.c:5729
+msgid "Scoring articles ..."
+msgstr "Scores toepassen op artikelen ..."
+
+#: src/art.c:5742
+#, c-format
+msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
+msgstr ""
+"Scores toepassen op artikelen: %2d%%, Verwijderd: %u, Hoog: %u, Laag: %u"
+
+#: src/art.c:5777
+msgid "Apply scorefile now"
+msgstr "Scorebestand nu toepassen"
+
+#: src/art.c:5824
+msgid "This article is not matched by any scorefile entries."
+msgstr "Dit artikel voldoet niet aan een van de scores in het scorebestand."
+
+#: src/art.c:5871
+msgid "This article is matched by the following scores"
+msgstr "Dit artikel voldoet aan de volgende scores"
+
+#: src/art.c:5971
+#, c-format
+msgid "%s: receiving additional headers...[%c]"
+msgstr "%s: ontvangen van toegevoegde berichtkoppen...[%c]"
+
+#: src/art.c:6054
+#, c-format
+msgid "%s: headers received: %2d/%d"
+msgstr "%s: berichtkoppen ontvangen: %2d/%d"
+
+#: src/art.c:6217
+#, c-format
+msgid "Finding %s from server..."
+msgstr "Vinden %s van server..."
+
+#: src/art.c:6248
+#, c-format
+msgid "Finding children from server...[%c]"
+msgstr "Vinden van kinderen van server...[%c]"
+
+#: src/art.c:6256
+msgid "Your server does not provide support for this feature."
+msgstr "Uw server biedt geen ondersteuning voor deze optie."
+
+#: src/art.c:6422
+msgid "Header is part of a reference loop"
+msgstr "Berichtkip is onderdeel van verwijzingslus"
+
+#: src/art.c:6470
+msgid "Article has no parent reference."
+msgstr "Artikel heeft geen verwijzing naar ouder."
+
+#: src/art.c:6518
+#, c-format
+msgid "Article %s not available."
+msgstr "Artikel %s niet beschikbaar."
+
+#: src/art.c:6530
+msgid "Enter Message-Id: "
+msgstr "Voer Bericht-Nummer in:"
+
+#: src/art.c:7233
+msgid "Are you sure that you want to cancel this article"
+msgstr "Weet U zeker dat U dit artikel wilt annuleren"
+
+#: src/art.c:7236
+msgid "Cancelling..."
+msgstr "Annuleren..."
+
+#: src/art.c:7271
+msgid "No message id."
+msgstr "Geen bericht-nummer."
+
+#: src/art.c:7292
+msgid "Done."
+msgstr "Klaar."
+
+#: src/art.c:7329
+msgid "Mark all articles as read"
+msgstr "Markeer alle artikelen als gelezen"
+
+#: src/art.c:7339
+msgid "Mark all articles as unread"
+msgstr "Markeer alle artikelen als ongelezen"
+
+#: src/art.c:7349
+msgid "Mark all articles up to here as read"
+msgstr "Markeer alle artikelen tot aan de huidige positie als gelezen."
+
+#: src/art.c:7359
+msgid "Mark all articles up to here as unread"
+msgstr "Markeer alle artikelen tot aan de huidige positie als ongelezen."
+
+#: src/art.c:7426
+msgid "Rate article (1-5):"
+msgstr "Waardeer artikel (1-5):"
+
+#: src/art.c:7431
+msgid "Rating must be in range 1 to 5."
+msgstr "Waardering moet tussen 1 en 5 zijn."
+
+#: src/art.c:7724
+msgid "Unable to create Article keymap!"
+msgstr "Kan geen Artikel keymap maken!"
+
+#: src/art.c:8169
+msgid "Group transfer aborted."
+msgstr "Versturen van groep gestopt."
+
+#: src/art.c:8171
+msgid "Server read failed."
+msgstr "Lezen van server mislukt."
+
+#: src/art.c:8188
+#, c-format
+msgid "No unread articles found. (%d killed)"
+msgstr "Geen ongelezen berichten gevonden. (%d verwijderd)"
+
+#: src/art.c:8190
+msgid "No unread articles found."
+msgstr "Geen ongelezen berichten gevonden."
+
+#: src/art.c:8246
+#, c-format
+msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
+msgstr ""
+"Aantl Gewist: %u, Aantl Hoog: %u, Aantl Laag: %u, Aantl GroepLens Gewrdeerd: "
+"%d"
+
+#: src/art.c:8252
+#, c-format
+msgid "Num Killed: %u, Num High: %u, Num Low: %u"
+msgstr "Aantal Gewist: %u, Aantl Hoog: %u, Aantl Laag: %u"
+
+#: src/art.c:8453
+msgid ""
+"SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
+msgstr ""
+"SPT:Kies Ctrl-D:PgDn Ctrl-U:PgUp d:Zet-als-gelezen n:Volgende p:Vorige q:Stop"
+
+#: src/art.c:8458
+msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
+msgstr ""
+"SPC:Pgdn B:PgUp u:Zet-As-OnGelezen f:Reactie n:Volgende p:Vorige q:Stop"
+
+#: src/art.c:8650
+#, c-format
+msgid "End of Thread.  Next: %s"
+msgstr "Einde van Thread.  Volgende: %s"
+
+#: src/art.c:8652
+msgid "End of Thread."
+msgstr "Einde van Thread."
+
+#. The last test involving ^ is necessary because the two can be
+#. * sisters except that one can have a fake parent.  If this is the
+#. * case, we are at the end of a subthread.
+#.
+#: src/art.c:8664
+msgid "End of Sub-Thread"
+msgstr "Einde van Sub-Thread"
+
+#: src/art.c:9221
+msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
+msgstr "%p[%u/%t ongelezen] Groep: %n%-20g -- %L (%P)"
+
+#: src/art.c:9409
+msgid "Spoilers visible!"
+msgstr "'Bedorven' berichten zichtbaar!"
+
+#: src/chkslang.c:58
+#, c-format
+msgid "Usage: %s <PGM> <SLANG-VERSION> <SUGG VERSION>\n"
+msgstr "Gebruik: %s <PGM> <SLANG-VERSIE> <SUGG VERSIE>\n"
+
+#: src/chkslang.c:68
+msgid ""
+"\n"
+"\n"
+"******\n"
+"slang.h does not match slang library version.  Did you install slang as\n"
+"as a shared library?  Did you run ldconfig?  You have an installation "
+"problem\n"
+"and you will need to check the SLANG variables in the Makefile and properly\n"
+"set them.  Also try: make clean; make\n"
+"******\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"******\n"
+"slang.h komt niet overeen met library versie van slang. Hebt U slang als "
+"een\n"
+"gedeelde library geinstalleerd? Hebt U ldconfig gedraaid? U hebt een\n"
+"installatie probleem en u zult de SLANG variabelen in de Makefile moeten \n"
+"controleren en hen goed instellen. Probeer ook: make clean; make\n"
+"******\n"
+"\n"
+
+#: src/chkslang.c:86
+#, c-format
+msgid "This version of %s requires slang version %s.\n"
+msgstr "Deze versie van %s vereist slang versie %s.\n"
+
+#: src/chkslang.c:93
+#, c-format
+msgid "Your slang version is %s.\n"
+msgstr "Uw slang versie is %s.\n"
+
+#: src/chkslang.c:94
+#, c-format
+msgid ""
+"To fully utilize this program, you should upgrade the slang library to\n"
+"  version %s\n"
+msgstr ""
+"Om volledig gebruik te maken van dit programma moet U de slang library "
+"upgraden naar versie %s\n"
+
+#: src/chkslang.c:96
+msgid ""
+"This library is available via anonymous ftp from\n"
+"space.mit.edu in pub/davis/slang.\n"
+msgstr ""
+"Deze library is beschikbaar via anonieme ftp van\n"
+"space.mit.edu in pub/davis/slang.\n"
+
+#: src/chmap.c:152 src/chmap.c:159
+#, c-format
+msgid "File error: %s --- message not posted."
+msgstr "Bestandsfout: %s --- bericht niet geplaatst."
+
+#: src/chmap.c:171
+msgid "Write Error. Disk Full? --- message not posted."
+msgstr "Schrijffout. Schijf vol? --- bericht niet geplaatst."
+
+#: src/chmap.c:201
+#, c-format
+msgid "  Default character set:     %s\n"
+msgstr "  Standaard karakter set:     %s\n"
+
+#: src/chmap.c:203
+msgid " SUPPORTED CHARACTER SETS:\n"
+msgstr " ONDERSTEUNDE KARAKTER SETS:\n"
+
+#: src/chmap.c:244
+#, c-format
+msgid "Unsupport character set: %s"
+msgstr "Niet ondersteunde karakter set: %s"
+
+#: src/decode.c:105
+msgid "Error closing file.  File system full?"
+msgstr "Fout tijdens sluiten bestand.  Bestandssysteem vol?"
+
+#: src/decode.c:124
+msgid "Unable to open /bin/sh\n"
+msgstr "Kan /bin/sh niet openen\n"
+
+#: src/decode.c:137
+msgid "Error encountered while processing shell archive.\n"
+msgstr "Fout opgetreden tijdens het behandelen van shell archief.\n"
+
+#: src/decode.c:166
+#, c-format
+msgid "Unable to create %s\n"
+msgstr "Kan %s niet maken\n"
+
+#: src/decode.c:170
+#, c-format
+msgid "creating %s (%s)\n"
+msgstr "maken %s (%s)\n"
+
+#: src/decode.c:799 src/decode.c:813
+msgid "Unexpected end of file.\n"
+msgstr "Onverwacht eind van bestand.\n"
+
+#: src/decode.c:876
+#, c-format
+msgid "uuencode line appears corrupt: \"%s\""
+msgstr "uuencode lijn lijkt ongeldig: \"%s\""
+
+#: src/decode.c:919
+#, c-format
+msgid "write to file failed (%u/%u bytes)\n"
+msgstr "schrijven naar bestand mislukt (%u/%u bytes)\n"
+
+#: src/decode.c:1030
+#, c-format
+msgid "Unable to open %s.\n"
+msgstr "Kan %s niet openen.\n"
+
+#: src/decode.c:1054
+msgid "No more files found.\n"
+msgstr "Niet meer bestanden gevonden.\n"
+
+#: src/decode.c:1060
+#, c-format
+msgid "Unable to chdir back to %s.\n"
+msgstr "Kan chdir niet terugveranderen naar %s.\n"
+
+#: src/decode.c:1073
+msgid "Usage: uudecode [-64] [--stdout] [--guess] [filename ...]\n"
+msgstr "Gebruik: uudecode [-64] [--stdout] [--guess] [filename ...]\n"
+
+#. Note to translators: The translated string needs to have 10 characters.
+#. * Each pair becomes a valid response for "Subject", "From", "References",
+#. * "Edit" and "Cancel" (in that order); you cannot use any of the default
+#. * characters for any other field than they originally stood for!
+#.
+#: src/editscore.c:66
+msgid "SsFfRrEeCc"
+msgstr "OoVvRrBbAa"
+
+#. Note to translators: The translated string needs to have 4 characters.
+#. * The two pairs become valid responses for "This group" and "All groups",
+#. * respectively. You cannot use any of the default characters for any other
+#. * field than they originally stood for!
+#.
+#: src/editscore.c:72
+msgid "TtAa"
+msgstr "DdAa"
+
+#: src/editscore.c:76
+msgid "A Score file has not been specified."
+msgstr "Een Score bestand is niet gespecificeerd"
+
+#: src/editscore.c:86
+msgid "Pick Score type: Subject, From, References, Edit, Cancel"
+msgstr "Kies een Score type: Onderwerp, Van, Referenties, Bewerken, Annuleren"
+
+#: src/editscore.c:103
+msgid "Which newsgroups: This group, All groups"
+msgstr "Welke nieuwsgroepen: Deze groep, Alle groepen"
+
+#: src/editscore.c:111
+msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
+msgstr "Verloopt (MM/DD/YYYY, DD-MM-YYYY, +NN (dagen) of laat leeg): "
+
+#: src/group.c:374
+#, c-format
+msgid "Selecting %s ..."
+msgstr "Selecteren %s ..."
+
+#: src/group.c:386 src/group.c:524 src/group.c:1141
+#, c-format
+msgid "Group %s is bogus%s."
+msgstr "Groep %s is vals%s."
+
+#: src/group.c:387 src/group.c:1142
+msgid " - dropping it"
+msgstr " - weggooien"
+
+#: src/group.c:394
+#, c-format
+msgid "Could not enter group %s."
+msgstr "Kan groep %s niet openen."
+
+#: src/group.c:525
+msgid " - ignoring it"
+msgstr " - negeren"
+
+#: src/group.c:619
+#, c-format
+msgid "Group %s is bogus - ignoring it."
+msgstr "Groep %s is vals - negeren."
+
+#: src/group.c:927
+msgid "No articles to read."
+msgstr "Geen te lezen artikelen."
+
+#: src/group.c:949
+#, c-format
+msgid "%s: Read how many? "
+msgstr "%s: Hoeveel lezen? "
+
+#: src/group.c:1034
+msgid "Do you really want to quit"
+msgstr "Weet U zeker dat U wilt stoppen"
+
+#: src/group.c:1043
+msgid "Write to newsrc file failed.  Quit anyway"
+msgstr "Schrijven naar newsrc bestand mislukt. Toch stoppen"
+
+#: src/group.c:1056 src/group.c:1293
+msgid "End of Buffer."
+msgstr "Einde Buffer"
+
+#: src/group.c:1067
+msgid "Top of Buffer."
+msgstr "Bovenkant Buffer"
+
+#: src/group.c:1128
+msgid "Server connection dropped."
+msgstr "Server verbinding verbroken."
+
+#: src/group.c:1169 src/group.c:2668
+#, c-format
+msgid "Checking news%s ..."
+msgstr "Controleren nieuws%s ..."
+
+#: src/group.c:1170 src/group.c:2669
+msgid " via active file"
+msgstr " via actieve bestand"
+
+#: src/group.c:1224
+msgid " Search: "
+msgstr " Zoeken: "
+
+#: src/group.c:1238
+msgid "Search wrapped."
+msgstr "Zoeken omgeslagen."
+
+#: src/group.c:1267
+#, c-format
+msgid "Group %s does not exist."
+msgstr "Groep %s bestaat niet."
+
+#: src/group.c:1283
+msgid "Add group: "
+msgstr "Voeg groept toe: "
+
+#: src/group.c:1354
+#, c-format
+msgid "Moving %s. Press RETURN when finished."
+msgstr "Verplaats %s. Druk ENTER wanneer klaar."
+
+#: src/group.c:1437
+msgid "Subscribe pattern: "
+msgstr "Abonneren pattern: "
+
+#: src/group.c:1466
+#, c-format
+msgid "Mark %s as read"
+msgstr "Markeer %s als gelezen"
+
+#: src/group.c:1470
+msgid "Group marked as read."
+msgstr "Groep gemarkeerd als gelezen."
+
+#: src/group.c:1481
+#, c-format
+msgid "Mark %s as un-read"
+msgstr "Markeer %s als ongelezen"
+
+#: src/group.c:1485
+msgid "Group marked as un-read."
+msgstr "Groep gemarkeerd als ongelezen."
+
+#: src/group.c:1508
+msgid "Un-Subscribe pattern: "
+msgstr "Opzeggen pattern: "
+
+#: src/group.c:1575
+msgid "List Groups (e.g., comp*unix*): "
+msgstr "Lijst van Groepen (bijv., comp*unix*): "
+
+#: src/group.c:1724
+msgid "No unread articles."
+msgstr "Geen ongelezen artikelen."
+
+#: src/group.c:1736 src/post.c:1114
+msgid "Posting not allowed."
+msgstr "Plaatsen berichten niet toegestaan."
+
+#: src/group.c:1747
+msgid "Are you sure that you want to post"
+msgstr "Weet U zeker dat U bericht wilt plaatsen"
+
+#: src/group.c:1757
+msgid "Newsgroup: "
+msgstr "Nieuwsgroep: "
+
+#: src/group.c:1761
+msgid "Followup-To: "
+msgstr "Opvolgend-Op: "
+
+#: src/group.c:1766
+msgid "Subject: "
+msgstr "Onderwerp: "
+
+#. Note to translators: Here, "fF" means "full", "sS" is "simple",
+#. * "nN" means "none" and "cC" is "cancel".
+#. * As always, don't change the length of the string; you cannot use
+#. * the default characters for different fields.
+#.
+#: src/group.c:1780
+msgid "fFsSnNcC"
+msgstr "vVsSGgAa"
+
+#: src/group.c:1787
+msgid "Select scoring mode: Full, Simple, None, Cancel"
+msgstr "Selecteer score modus: Volledig, Simpel, Geen, Annuleren"
+
+#: src/group.c:1795
+msgid "Full Header Scoring enabled."
+msgstr "Volledige berichtkoppen score aangezet."
+
+#: src/group.c:1800
+msgid "Expensive Scoring disabled."
+msgstr "Uitgebreide Score uitgezet."
+
+#: src/group.c:1805
+msgid "Scoring disabled."
+msgstr "Scores uitgezet."
+
+#: src/group.c:1823
+msgid "No changes need to be saved."
+msgstr "Geen veranderingen die opgeslagen hoeven te worden."
+
+#: src/group.c:2014
+msgid "Unable to create group keymap!"
+msgstr "Kan groep keymap niet maken!"
+
+#: src/group.c:2172
+#, c-format
+msgid ""
+"Unable to create newsgroup description file:\n"
+"%s\n"
+msgstr ""
+"Kan geen newsgroep omschrijvings bestand maken:\n"
+"%s\n"
+
+#: src/group.c:2176
+#, c-format
+msgid ""
+"\n"
+"Creating description file %s.\n"
+msgstr ""
+"\n"
+"Maken omschrijvings bestand %s.\n"
+
+#: src/group.c:2177
+msgid ""
+"Getting newsgroup descriptions from server.\n"
+"Note: This step may take some time if you have a slow connection!!!\n"
+msgstr ""
+"Opvragen nieuwsgroep omschrijvingen van server.\n"
+"N.B.: Deze stap kan veel tijd kosten als U een trage verbinding hebt!!!\n"
+
+#: src/group.c:2184
+msgid "Server failed on list newsgroups command."
+msgstr "Server kan geen lijst van nieuwsgroepen weergeven."
+
+#: src/group.c:2199
+msgid "Error reading line from server"
+msgstr "Fout tijdens lezen van regel van server"
+
+#: src/group.c:2330
+msgid "Checking for new groups ..."
+msgstr "Controleren op nieuwe groepen ..."
+
+#: src/group.c:2388 src/slrnpull.c:2092
+msgid "Server does not implement NEWGROUPS command."
+msgstr "Server ondersteunt het NEWSGROUPS commando niet."
+
+#: src/group.c:2392 src/slrnpull.c:2096
+#, c-format
+msgid ""
+"Server failed to return proper response to NEWGROUPS:\n"
+"%s\n"
+msgstr ""
+"Server kon geen begrijpbaar antwoord geven op NEWSGROUPS:\n"
+"%s\n"
+
+#: src/group.c:2406 src/group.c:2519
+msgid "Read from server failed"
+msgstr "Lezen van de server mislukt"
+
+#: src/group.c:2417
+#, c-format
+msgid "%d new newsgroup(s) found."
+msgstr "%d nieuwe nieuwsgroep(en) gevonden."
+
+#: src/group.c:2425
+#, c-format
+msgid ""
+"%s appears corrupt.\n"
+"I expected to see: NEWGROUPS yymmdd hhmmss GMT\n"
+"I will patch the file up for you.\n"
+msgstr ""
+"%s lijkt ongeldig.\n"
+"Ik verwachtte te zien: NEWSGROUPS yymmdd hhmmss GMT\n"
+"Ik zal het bestand voor U wijzigen.\n"
+
+#: src/group.c:2437
+#, c-format
+msgid "Unable to open %s to record date."
+msgstr "Kan %s niet openen om de datum te noteren."
+
+#: src/group.c:2505
+msgid "Server failed LIST ACTIVE - authorization missing."
+msgstr "Server kon geen LIST ACTIVE geven - authenticatie mislukt."
+
+#: src/group.c:2506
+msgid "Server failed LIST ACTIVE."
+msgstr "Server kon geen LIST ACTIVE geven."
+
+#: src/group.c:2619
+#, c-format
+msgid ""
+"\n"
+"* The autosave file of %s is newer than the file itself.\n"
+msgstr ""
+"\n"
+"* Het auto-opslaan bestand van %s is nieuwer dan het bestand zelf.\n"
+
+#: src/group.c:2621
+msgid "Do you want to restore your newsrc from the autosave version"
+msgstr "Wilt U uw oude newsrc herstellen van de auto-opgeslagen versie"
+
+#: src/group.c:2682 src/post.c:1298 src/slrnpull.c:1528
+#, c-format
+msgid "Unable to create %s."
+msgstr "Kan %s niet maken."
+
+#: src/group.c:2685
+msgid ""
+"\n"
+"--The next step may take a while if the NNTP connection is slow.--\n"
+"\n"
+msgstr ""
+"\n"
+"--De volgende stap kan een poosje duren als de NNTP verbinding langzaam "
+"is.--\n"
+"\n"
+
+#: src/group.c:2686
+#, c-format
+msgid "Creating %s."
+msgstr "Maken van %s."
+
+#: src/group.c:2697
+msgid "Unable to read newsrc file"
+msgstr "Kan niet lezen uit newsrc bestand"
+
+#: src/group.c:2790
+#, c-format
+msgid "Writing %s ..."
+msgstr "Schrijven van %s ..."
+
+#: src/group.c:2812
+#, c-format
+msgid "Unable to open file %s for writing."
+msgstr "Kan bestand %s niet openen om te schrijven."
+
+#: src/group.c:2916
+#, c-format
+msgid "Writing %s ... done."
+msgstr "Schrijven van %s ... klaar."
+
+#: src/group.c:2924
+#, c-format
+msgid "Write to %s failed! Disk Full?"
+msgstr "Schrijven naar %s mislukt! Schijf vol?"
+
+#: src/group.c:2939
+msgid ""
+"SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
+msgstr ""
+"SPC:Selecteer p:Plaats c:CatchUp l:Lijst q:Stop ^R:Herteken (u)s:(De)Abonneer"
+
+#: src/group.c:3111
+msgid "-%D-News Groups: %s %-20g -- %L (%P)"
+msgstr "-%D-Nieuwsgroepen: %s %-20g -- %L (%P)"
+
+#: src/group.c:3143 src/group.c:3181 src/interp.c:360
+msgid "To use this feature, please update s-lang and recompile slrn."
+msgstr "Update s-slang en hercompileer slrn om deze functie te gebruiken."
+
+#: src/group.c:3189
+msgid "Array of string expected."
+msgstr "Array of string verwacht."
+
+#: src/group.c:3195
+msgid "One-dimensional array expected."
+msgstr "Een-dimensionaal array verwacht."
+
+#: src/grplens.c:194
+msgid "User is Unregistered"
+msgstr "Gebruiker is Ongeregistreerd"
+
+#: src/grplens.c:195
+msgid "Service is Busy"
+msgstr "Dienst is Bezet"
+
+#: src/grplens.c:196
+msgid "Service Unavailable"
+msgstr "Dienst Onbeschikbaar"
+
+#: src/grplens.c:197
+msgid "Already logged in"
+msgstr "Al ingelogd"
+
+#: src/grplens.c:198
+msgid "Server failed to return proper response"
+msgstr "Server gaf een ongeldig antwoord terug"
+
+#: src/grplens.c:199
+msgid "Not enough memory"
+msgstr "Niet genoeg geheugen"
+
+#: src/grplens.c:200
+msgid "Error writing to server"
+msgstr "Fout tijdens schrijven naar server"
+
+#: src/grplens.c:201
+msgid "Error reading from server"
+msgstr "Fout tijdens lezen van server"
+
+#: src/grplens.c:202
+msgid "Token is invalid"
+msgstr "Pattern ongeldig"
+
+#: src/grplens.c:203
+msgid "Newsgroup not supported"
+msgstr "Nieuwsgroep niet ondersteunt"
+
+#: src/grplens.c:206
+msgid "Unknown Error"
+msgstr "Ongeldige Fout"
+
+#: src/grplens.c:731
+#, c-format
+msgid "Failed: %s"
+msgstr "Mislukt: %s"
+
+#: src/grplens.c:888
+#, c-format
+msgid "%s usage: %s [default] PSEUDONYM"
+msgstr "%s gebruik: %s [standaard] PSEUDONIEM"
+
+#: src/grplens.c:896 src/grplens.c:908
+#, c-format
+msgid "%s: expecting a single argument"
+msgstr "%s: enkele argument verwacht"
+
+#: src/grplens.c:950
+msgid "Too many arguments"
+msgstr "Te veel argumenten"
+
+#: src/grplens.c:986 src/slrnpull.c:535
+#, c-format
+msgid "Reading %s"
+msgstr "Lezen %s"
+
+#: src/grplens.c:1000 src/grplens.c:1026
+#, c-format
+msgid "Error processing line %u of %s"
+msgstr "Fout tijdens behandlen regel %u van %s"
+
+#: src/grplens.c:1050
+#, c-format
+msgid "Checking to see if server %s:%d is alive..."
+msgstr "Controleren om te zien of server %s:%d reageert..."
+
+#: src/grplens.c:1057
+msgid "GroupLens support initialized."
+msgstr "GroupLens ondersteuning geinitialiseerd."
+
+#: src/grplens.c:1096
+msgid "Logging out of GroupLens servers ..."
+msgstr "Uitloggen uit GroupLens servers ..."
+
+#: src/grplens.c:1145
+#, c-format
+msgid "Getting GroupLens predictions from %s:%d..."
+msgstr "Opvragen GroupLens voorspellingen van %s:%d..."
+
+#: src/grplens.c:1195
+#, c-format
+msgid "Sending GroupLens ratings to %s:%d..."
+msgstr "Versturen GroupLens waarderingen naar %s:%d..."
+
+#: src/help.c:41
+msgid " More information about slrn can be found on its home page:"
+msgstr " Meer informatie over slrn kan gevonden worden op zijn homepage:"
+
+#: src/help.c:42
+msgid "   http://slrn.sourceforge.net/"
+msgstr "   http://slrn.sourceforge.net/"
+
+#: src/help.c:43
+msgid " Questions not covered by the documentation can be posted to"
+msgstr ""
+" Vragen die niet behandeld zijn door de documentatie kunnen geplaats worden "
+"op"
+
+#: src/help.c:44
+msgid "   news.software.readers"
+msgstr "   news.software.readers"
+
+#: src/help.c:46
+msgid ""
+" Please email bug reports, suggestions or comments to the current maintainer,"
+msgstr ""
+" Stuur alstublieft email bug verslagen, suggesties of commentaar naar de "
+"huidige beheerder,"
+
+#: src/help.c:47
+msgid "   Thomas Schultz <tststs@gmx.de>"
+msgstr "   Thomas Schultz <tststs@gmx.de>"
+
+#: src/help.c:48
+msgid ""
+" The original author of this program is John E. Davis <davis@space.mit.edu>"
+msgstr ""
+" De originele auteur van dit programma is John E. Davis <davis@space.mit.edu>"
+
+#. begin makehelp(article) - do *NOT* modify this line
+#: src/help.c:55 src/help.c:171
+msgid ""
+" Note: The keys are case sensitive!  That is, 's' and 'S' are not the same."
+msgstr ""
+" N.B.: De sleutels zijn hoofdlettergevoelig!  's' is dus niet hetzelfde als "
+"'S'!"
+
+#: src/help.c:56
+msgid "General movement:"
+msgstr "Algemene verplaatsing:"
+
+#: src/help.c:57
+msgid ""
+"  n                  Go to the next unread article (or next group, if at "
+"end)."
+msgstr ""
+"  n                  Ga naar het volgende onglezen artikel(of volgende "
+"groep, wanneer op eind"
+
+#: src/help.c:58
+msgid "  p                  Go to the previous unread article."
+msgstr "  p                  Ga naar het vorige ongelezen artikel."
+
+#: src/help.c:59
+msgid "  N, ESC RIGHT       Skip to next group."
+msgstr "  N, ESC RECHTS       Sla volgende groep over"
+
+#: src/help.c:60
+msgid "  ESC LEFT           Go to previous group."
+msgstr "  ESC LINKS           Ga naar vorige groep."
+
+#: src/help.c:61
+msgid "  !                  Go to the next article with a high score."
+msgstr "  !                  Ga naar het volgende artikel met een hoge score."
+
+#: src/help.c:62
+msgid "  =                  Go to the next article with the same subject."
+msgstr ""
+"  =                  Ga naar het volgende artikel met hetzelfde onderwerp."
+
+#: src/help.c:63
+msgid "  L                  Go to the last read article and display it."
+msgstr ""
+"  L                  Ga naar het vorige gelezen artikel en geef het weer."
+
+#: src/help.c:64 src/help.c:180
+msgid "Actions:"
+msgstr "Acties:"
+
+#: src/help.c:65
+msgid "  P                  Post a new article (no followup)."
+msgstr "  P                  Plaats een nieuw artikel (geen opvolger)."
+
+#: src/help.c:66
+msgid "  ESC P              Post or edit a postponed article."
+msgstr "  ESC P              Plaats of bewerk een uitgesteld bericht."
+
+#: src/help.c:67
+msgid "  f                  Post a followup to the current article."
+msgstr "  f                  Plaats een opvolger op het huidige artikel."
+
+#: src/help.c:68
+msgid "      ESC 1 f        Include all headers in the followup."
+msgstr "      ESC 1 f        Neem alle berichtkoppen mee in de opvolger."
+
+#: src/help.c:69
+msgid ""
+"      ESC 2 f        Followup without modifying (e.g. quoting) the article."
+msgstr ""
+"      ESC 2 f        Opvolger zonder wijzigen (bijv. quoten) van artikel."
+
+#: src/help.c:70
+msgid "  r                  Reply to poster (via email)."
+msgstr "  r                  Antwoord plaatser bericht (via email)"
+
+#: src/help.c:71
+msgid ""
+"  F                  Forward the current article to someone (via email)."
+msgstr ""
+"  F                  Stuur het huidige artikel naar iemand (via email)."
+
+#: src/help.c:72
+msgid ""
+"      ESC 1 F        Forward the current article (including all headers)."
+msgstr ""
+"      ESC 1 F        Stuur het huidige artikel (inclusief alle "
+"berichtkoppen)."
+
+#: src/help.c:73
+msgid "  ESC Ctrl-S         Supersede article (you have to be the author)."
+msgstr "  ESC Ctrl-S         Vervang artikel (U moet de auteur ervan zijn)."
+
+#: src/help.c:74
+msgid "  ESC Ctrl-C         Cancel article (you have to be the author)."
+msgstr "  ESC Ctrl-C         Annuleer artikel (U moet de auteur ervan zijn)."
+
+#: src/help.c:75
+msgid "  o                  Save article, tagged articles or thread to file."
+msgstr ""
+"  o                  Sla artikel, gemarkeerde artikelen of thread op in "
+"bestand."
+
+#: src/help.c:76
+msgid "  |                  Pipe article to an external program."
+msgstr ""
+"  |                  Stuur artikel naar invoer van een extern programma."
+
+#: src/help.c:77
+msgid "  y                  Print article (as displayed)."
+msgstr "  y                  Druk artikel af (zoals weergegeven)."
+
+#: src/help.c:78
+msgid ""
+"      ESC 1 y        Print article (unwrapped and including hidden lines)."
+msgstr ""
+"      ESC 1 y        Druk artikel af (Geen afgebroken regels en inclusief "
+"verborgen regels"
+
+#: src/help.c:80
+msgid "  :                  Decode article, tagged articles or thread."
+msgstr ""
+"  :                  Decodeer artikel, gemarkeerde artikelen of thread."
+
+#: src/help.c:82
+msgid "  Ctrl-Z             Suspend slrn."
+msgstr "  Ctrl-Z             slrn in slaaptoestand."
+
+#: src/help.c:83
+msgid "  q                  Return to group display."
+msgstr "  q                  Keer terug naar groepsoverzicht."
+
+#: src/help.c:84
+msgid "  Q                  Quit slrn immediately."
+msgstr "  Q                  Sluit slrn onmiddelijk af."
+
+#: src/help.c:85
+msgid "Moving in the article pager:"
+msgstr "Verplaatsen in de artikelenweergave."
+
+#: src/help.c:86
+msgid "  ESC DOWN           Scroll article down one line."
+msgstr "  ESC OMLAAG         Artikel een regel omlaag plaatsen."
+
+#: src/help.c:87
+msgid "  ESC UP             Scroll article up one line."
+msgstr "  ESC OMHOOG         Artikel een regel omhoog verplaatsen."
+
+#: src/help.c:88
+msgid ""
+"  SPACE              Scroll article down one page (or select next, if at "
+"end)."
+msgstr ""
+"  SPATIE             Verplaats artikel een pagina omlaag (of ga naar "
+"volgend, wanneer op eind)."
+
+#: src/help.c:89
+msgid "  DELETE, b          Scroll article up one page."
+msgstr "  DELETE, b          Verplaats artikel een pagina omhoog."
+
+#: src/help.c:90
+msgid "  >                  Move to end of the article."
+msgstr "  >                  Verplaats naar eind van artikel."
+
+#: src/help.c:91
+msgid "  <                  Move to beginning of the article."
+msgstr "  <                  Verplaats naar begin van artikel."
+
+#: src/help.c:92
+msgid "  LEFT               Pan article to the left."
+msgstr "  LINKS              Geef linkergedeelte artikel weer."
+
+#: src/help.c:93
+msgid "  RIGHT              Pan article to the right."
+msgstr "  RECHTS             Geef rechtergedeelte artikel weer."
+
+#: src/help.c:94
+msgid "  /                  Search forward in the article."
+msgstr "  /                  Zoek voorwaarts in het artikel."
+
+#: src/help.c:95
+msgid "  TAB                Skip beyond quoted text."
+msgstr "  TAB                Sla gequote tekst over."
+
+#: src/help.c:96
+msgid "  g                  Skip to next digest."
+msgstr "  g                  Sla volgende overzicht over."
+
+#: src/help.c:97
+msgid "Moving in the header display:"
+msgstr "Verplaats in overzicht headers:"
+
+#: src/help.c:98
+msgid "  DOWN, Ctrl-N       Move to the next article."
+msgstr "  OMLAAG, Ctrl-N     Ga naar volgende artikel."
+
+#: src/help.c:99
+msgid "  UP, Ctrl-P         Move to the previous article."
+msgstr "  OMHOOG, Ctrl-P     Ga naar vorige artikel."
+
+#: src/help.c:100
+msgid "  Ctrl-D             Scroll down one page."
+msgstr "  Ctrl-D             Ga een pagina omlaag."
+
+#: src/help.c:101
+msgid "  Ctrl-U             Scroll up one page."
+msgstr "  Ctrl-U             Ga een pagina omhoog."
+
+#: src/help.c:102
+msgid "  ESC >              Go to the last article in group."
+msgstr "  ESC >              Ga naar het laatste artikel in de groep."
+
+#: src/help.c:103
+msgid "  ESC <              Go to the first article in group."
+msgstr "  ESC <              Ga naar het eerste artikel in de groep."
+
+#: src/help.c:104
+msgid "  j                  Jump to article (by server number)."
+msgstr "  j                  Ga naar artikel (aan hand van server nummer)."
+
+#: src/help.c:105
+msgid "  a                  Author search forward."
+msgstr "  a                  Auteur voorwaarts zoeken."
+
+#: src/help.c:106
+msgid "  A                  Author search backward."
+msgstr "  A                  Auteur achterwaarts zoeken."
+
+#: src/help.c:107
+msgid "  s                  Subject search forward."
+msgstr "  s                  Onderwerp voortwaarts zoeken."
+
+#: src/help.c:108
+msgid "  S                  Subject search backward."
+msgstr "  S                  Onderwerp achterwaarts zoeken."
+
+#: src/help.c:109
+msgid "Marking as read/unread:"
+msgstr "Markeren als (on)gelezen:"
+
+#: src/help.c:110
+msgid "  d                  Mark article or collapsed thread as read."
+msgstr ""
+"  d                  Markeer artikeld of ingeklapte thread als gelezen."
+
+#: src/help.c:111
+msgid "  u                  Mark article or collapsed thread as unread."
+msgstr ""
+"  u                  Markeer artikel of ingeklapte thread als ongelezen."
+
+#: src/help.c:112
+msgid "  ESC d              Mark entire (sub-)thread as read."
+msgstr "  ESC d              Markeer gehele (sub-)thread als gelezen."
+
+#: src/help.c:113
+msgid "  c                  Catchup - mark all articles as read."
+msgstr "  c                  Markeer alle artikelen als gelezen."
+
+#: src/help.c:114
+msgid ""
+"  C                  Mark all articles up to the current position as read."
+msgstr ""
+"  C                  Markeer alle artikelen tot aan de huidige positie als "
+"gelezen."
+
+#: src/help.c:115
+msgid "  ESC u              Un-Catchup - mark all articles as unread."
+msgstr "  ESC u              Markeer alle artikelen als ongelezen."
+
+#: src/help.c:116
+msgid ""
+"  ESC U              Mark all articles up to the current position as unread."
+msgstr ""
+"  ESC U              Markeer alle artikelen tot aan de huidige positie als "
+"ongelezen."
+
+#: src/help.c:117
+msgid "  x                  Remove all non-tagged read articles from the list."
+msgstr ""
+"  x                  Verwijder alle niet-geselecteerde gelezen artikelen uit "
+"de lijst."
+
+#: src/help.c:118
+msgid "Article pager commands:"
+msgstr "Artikelweergave commando's:"
+
+#: src/help.c:119
+msgid "  t                  Show full headers (on/off)."
+msgstr "  t                  Laat alle berichtkoppen zien (aan/uit)."
+
+#: src/help.c:120
+msgid "  ESC r              Decrypt ROT-13 (on/off)."
+msgstr "  ESC r              Decodeer ROT-13 (aan/uit)."
+
+#: src/help.c:121
+msgid "  T                  Display quoted lines (on/off)."
+msgstr "  T                  Laat gequote regels zien (aan/uit)."
+
+#: src/help.c:122
+msgid "  \\                  Show signature (on/off)."
+msgstr "  \\                  Laat signatuur zien (aan/uit)."
+
+#: src/help.c:123
+msgid "  W                  Wrap long lines (on/off)."
+msgstr "  W                  Breek lange regels (aan/uit)."
+
+#: src/help.c:125
+msgid "  ESC ?              Reveal spoilers (on/off)."
+msgstr "  ESC ?              Laat 'bedorven' berichten zien (aan/uit)."
+
+#: src/help.c:127
+msgid "  ]                  Show PGP signature (on/off)."
+msgstr "  ]                  Laat PGP signatuur zien (aan/uit)."
+
+#: src/help.c:129
+msgid "  [                  Show verbatim marks (on/off)."
+msgstr "  [                  Laat woord markeringen zien (aan/uit)."
+
+#: src/help.c:131
+msgid "  Ctrl-^             Enlarge the article window."
+msgstr "  Ctrl-^             Vergroot artikel venster."
+
+#: src/help.c:132
+msgid "  ^                  Shrink the article window."
+msgstr "  ^                  Verklein artikel venster."
+
+#: src/help.c:133
+msgid "  z                  Maximize / Unmaximize the article window."
+msgstr "  z                  (De)Maximaliseer artikel venster."
+
+#: src/help.c:134
+msgid "  h                  Hide / Show the article window."
+msgstr "  h                  Verberg / Toon artikel venster."
+
+#: src/help.c:135
+msgid "  U                  Search for URLs and follow them."
+msgstr "  U                  Zoek naar URLs en bezoek ze."
+
+#: src/help.c:136
+msgid "Header window commands:"
+msgstr "Berichtkoppen venster commando's:"
+
+#: src/help.c:137
+msgid "  ESC t              Collapse / Uncollapse thread."
+msgstr "  ESC t              Inklappen / Uitklappen thread."
+
+#: src/help.c:138
+msgid "      ESC 1 ESC t    Collapse / Uncollapse all threads."
+msgstr "      ESC 1 ESC t    Inklappen / Uitklappen alle threads."
+
+#: src/help.c:139
+msgid "  ESC a              Toggle between header display formats."
+msgstr "  ESC a              Schakel tussen berichtkoppen weergaves."
+
+#: src/help.c:140
+msgid "  ESC s              Select threading and sorting method."
+msgstr "  ESC s              Selecteer thread en sorteer methode."
+
+#: src/help.c:141
+msgid "Miscellaneous actions:"
+msgstr "Verschillende acties:"
+
+#: src/help.c:142
+msgid "  K                  Create a scorefile entry interactively."
+msgstr "  K                  Maak een score interactief aan."
+
+#: src/help.c:143
+msgid "      ESC 1 K        Edit scorefile."
+msgstr "      ESC 1 K        Bewerk score bestand."
+
+#: src/help.c:144
+msgid ""
+"  v                  Show which scorefile rules matched the current article."
+msgstr ""
+"  v                  Toon de scores die voldeden aan het huidige artikel."
+
+#: src/help.c:145
+msgid "  * The following five commands query the server if necessary:"
+msgstr "  * De volgende vijf commando's vragen de server wanneer nodig:"
+
+#: src/help.c:146
+msgid "  ESC l              Locate article by its Message-ID."
+msgstr "  ESC l              Vind locatie artikel aan de hand van Message-ID."
+
+#: src/help.c:147
+msgid "  ESC Ctrl-P         Find all children of current article."
+msgstr "  ESC Ctrl-P         Vind alle kinderen van huidige artikel."
+
+#: src/help.c:148
+msgid "  ESC p              Find parent article."
+msgstr "  ESC p              Vind ouder-artikel."
+
+#: src/help.c:149
+msgid ""
+"      ESC 1 ESC p    Reconstruct thread (slow when run on large threads)."
+msgstr ""
+"      ESC 1 ESC p    Reconstrueer thread (langzaam wanneer toegepast op "
+"grote threads)."
+
+#: src/help.c:150
+msgid ""
+"      ESC 2 ESC p    Reconstruct thread (faster, may not find all articles)."
+msgstr ""
+"      ESC 2 ESC p    Reconstrueer threads (sneller, vind mogelijk niet alle "
+"artikelen)."
+
+#: src/help.c:151
+msgid "  ;                  Set a mark at the current article."
+msgstr "  ;                  Markeer huidige artikel."
+
+#: src/help.c:152
+msgid "  ,                  Return to previously marked article."
+msgstr "  ,                  Ga naar vorige gemarkeerde artikel."
+
+#: src/help.c:153
+msgid "  #                  Numerically tag article (for saving / decoding)."
+msgstr ""
+"  #                  Markeer artikel dmv nummer (voor opslaan / decoderen)."
+
+#: src/help.c:154
+msgid "  ESC #              Remove all numerical tags."
+msgstr "  ESC #              Verwijder alle cijfermatige selecties."
+
+#: src/help.c:155
+msgid "  *                  Protect article from catchup commands."
+msgstr "  *                  Bescherm artikel tegen opruim commando."
+
+#: src/help.c:156
+msgid "      ESC 1 *        Remove all protection marks."
+msgstr "      ESC 1 *        Verwijder alle beschermingsmarkeringen."
+
+#: src/help.c:157
+msgid "  .                  Repeat last key sequence."
+msgstr "  .                  Herhaal laatste toetsaanslag(en)."
+
+#: src/help.c:158
+msgid "  Ctrl-X ESC         Read line and interpret it as S-Lang."
+msgstr "  Ctrl-X ESC         Lees regel en voer die uit als S-Lang."
+
+#: src/help.c:160
+msgid "  0                  Rate article with GroupLens."
+msgstr "  0                  Waardeer artikel met GroupLens."
+
+#: src/help.c:162
+msgid "  Ctrl-R, Ctrl-L     Redraw screen."
+msgstr "  Ctrl-R, Ctrl-L     Teken scherm opnieuw."
+
+#: src/help.c:163
+msgid "  ?                  Display this help screen."
+msgstr "  ?                  Toon dit help overzicht."
+
+#: src/help.c:172
+msgid "Cursor movement:"
+msgstr "Cursor verplaatsen:"
+
+#: src/help.c:173
+msgid "  DOWN                    Go to the next group."
+msgstr "  OMLAAG                  Ga naar de volgende groep."
+
+#: src/help.c:174
+msgid "  UP                      Go to the previous group."
+msgstr "  OMHOOG                  Ga naar de vorige groep."
+
+#: src/help.c:175
+msgid "  Ctrl-V, Ctrl-D          Scroll to the next page."
+msgstr "  Ctrl-V, Ctrl-D          Ga een pagina omlaag."
+
+#: src/help.c:176
+msgid "  ESC V, Ctrl-U           Scroll to the previous page."
+msgstr "  ESC V, Ctrl-U           Ga een pagina omhoog."
+
+#: src/help.c:177
+msgid "  ESC <                   Go to the bottom of the list."
+msgstr "  ESC <                   Ga naar onderkant van lijst."
+
+#: src/help.c:178
+msgid "  ESC >                   Go to the top of the list."
+msgstr "  ESC >                   Ga naar bovenkant lijst."
+
+#: src/help.c:179
+msgid "  /                       Group keyword search."
+msgstr "  /                       Groep zoeken op trefwoord."
+
+#: src/help.c:181
+msgid "  SPACE, RETURN           Enter the current newsgroup."
+msgstr "  SPATIE, ENTER           Ga de huidige nieuwsgroep binnen."
+
+#: src/help.c:182
+msgid "  * The following variations also download previously read articles:"
+msgstr "  * De volgende variaties downloaden ook voorheen gelezen artikelen:"
+
+#: src/help.c:183
+msgid "      ESC 1 SPACE         Enter group with article number query."
+msgstr ""
+"      ESC 1 SPATIE        Ga groep binnen aan de hand van artikel nummer. "
+
+#: src/help.c:184
+msgid "      ESC 2 SPACE         Enter group, but do not apply score."
+msgstr "      ESC 2 SPATIE        Ga groep binnen, maar pas geen scores toe."
+
+#: src/help.c:185
+msgid "      ESC 3 SPACE         Enter group with query, but without scoring."
+msgstr ""
+"      ESC 3 SPATIE        Ga groep binnen met query, maar pas geen scores "
+"toe."
+
+#: src/help.c:186
+msgid "      ESC 4 SPACE         Enter the current newsgroup."
+msgstr "      ESC 4 SPATIE        Ga de huidige nieuwsgroep binnen."
+
+#: src/help.c:187
+msgid "  P                       Post an article to the current newsgroup."
+msgstr ""
+"  P                       Plaats een artikel in de huidige nieuwsgroep."
+
+#: src/help.c:188
+msgid "  ESC P                   Post or edit a postponed article."
+msgstr "  ESC P                   Plaats of bewerk een uitgesteld artikel."
+
+#: src/help.c:189
+msgid "  G                       Get new news from server."
+msgstr "  G                       Haal nieuw nieuws van server."
+
+#: src/help.c:190
+msgid "  K                       Select scoring mode."
+msgstr "  K                       Kies score modus."
+
+#: src/help.c:191
+msgid "  .                       Repeat last key sequence."
+msgstr "  .                       Herhaal laatste toetsaanslag(en)"
+
+#: src/help.c:192
+msgid "  Ctrl-X ESC              Read line and interpret it as S-Lang."
+msgstr "  Ctrl-X ESC              Lees regel en voer die uit als S-Lang."
+
+#: src/help.c:193
+msgid "  Ctrl-Z                  Suspend slrn."
+msgstr "  Ctrl-Z                  Suspendeer slrn."
+
+#: src/help.c:194
+msgid "  q                       Quit slrn."
+msgstr "  q                       Sluit slrn af."
+
+#: src/help.c:195
+msgid "Group management (affects newsrc file):"
+msgstr "Groep beheer (heeft invloed op newsrc bestand):"
+
+#: src/help.c:196
+msgid "  c                       Catchup - Mark all articles as read."
+msgstr "  c                       Ruim op - Markeer alle artikelen als gelezen"
+
+#: src/help.c:197
+msgid "  ESC u                   Un-Catchup - Mark all articles as unread."
+msgstr ""
+"  ESC u                   Zet terug - Markeer alle artikelen als ongelezen."
+
+#: src/help.c:198
+msgid "  a                       Add a new newsgroup."
+msgstr "  a                       Voeg een nieuwe nieuwsgroep toe."
+
+#: src/help.c:199
+msgid "  s                       Subscribe to the current newsgroup."
+msgstr "  s                       Abonneer op huidige nieuwsgroep."
+
+#: src/help.c:200
+msgid "      ESC 1 s             Subscribe to groups matching a pattern."
+msgstr "      ESC 1 s             Abonneer op groepen die aan pattern voldoen."
+
+#: src/help.c:201
+msgid "  u                       Unsubscribe from the current newsgroup."
+msgstr "  u                       Zeg de huidige nieuwsgroep op."
+
+#: src/help.c:202
+msgid "      ESC 1 u             Unsubscribe from groups matching a pattern."
+msgstr ""
+"      ESC 1 u             Zeg de nieuwsgroepen op die voldoen aan een "
+"pattern."
+
+#: src/help.c:203
+msgid "  m                       Move newsgroup to a different location."
+msgstr ""
+"  m                       Verplaats nieuwsgroep naar een andere locatie."
+
+#: src/help.c:204
+msgid "  Ctrl-X, Ctrl-T          Transpose position of groups."
+msgstr "  Ctrl-X, Ctrl-T          Verwissel positie van groepen."
+
+#: src/help.c:205
+msgid "  X                       Force a save of the newsrc file."
+msgstr "  X                       Forceer opslaan van newsrc bestand."
+
+#: src/help.c:206
+msgid "Display:"
+msgstr "Toon:"
+
+#: src/help.c:207
+msgid "  ESC a                   Toggle between group display formats."
+msgstr ""
+"  ESC a                   Schakel tussen verschillende formaten van "
+"groepsoverzichten."
+
+#: src/help.c:208
+msgid ""
+"  l                       Toggle display of groups without unread articles."
+msgstr ""
+"  l                       Schakel overzicht van groepen zonder ongelezen "
+"artikelen."
+
+#: src/help.c:209
+msgid "  L                       Toggle listing of unsubscribed groups."
+msgstr "  L                       Schakel lijst van niet-geabonneerde groepen."
+
+#: src/help.c:210
+msgid "      ESC 1 L             Hide unsubscribed groups."
+msgstr "      ESC 1 L             Verberg geabonneerde groepen."
+
+#: src/help.c:211
+msgid "      ESC 2 L             Show unsubscribed groups."
+msgstr "      ESC 2 L             Toon geabonneerde groepen."
+
+#: src/help.c:212
+msgid "  Ctrl-L, Ctrl-R          Redraw the screen."
+msgstr "  Ctrl-L, Ctrl-R          Teken het scherm opnieuw."
+
+#: src/help.c:213
+msgid "  ?                       Display this help screen."
+msgstr "  ?                       Toon dit help overzicht."
+
+#: src/help.c:299
+msgid " (continued)"
+msgstr " (gaat verder)"
+
+#: src/help.c:304
+msgid "As a translation would not be legally binding, it remains untranslated."
+msgstr ""
+"Aangezien een vertaling niet legaal bindend zou zijn, blijft deze onvertaald."
+
+#: src/help.c:308
+msgid "The following copyright notice applies to the slrn newsreader:"
+msgstr ""
+"Hetvolgende copyright bericht is van toepassing op de slrn nieuwslezer:"
+
+#: src/help.c:365
+msgid "Press 'c' to start over, or any other key to return to news reader."
+msgstr ""
+"Druk op '?' om opnieuw te beginnen, of een andere toets om terug te keren "
+"naar de nieuwslezer."
+
+#: src/help.c:368
+msgid ""
+"Press 'c' for the copyright, '?' to start over, or any other key to quit "
+"help."
+msgstr ""
+"Druk op 'q' om help te verlaten, '?' om overnieuw te beginnen, of een andere "
+"toets om verder te gaan."
+
+#: src/help.c:374
+msgid ""
+"Press 'q' to quit help, 'c' to start over, or any other key to continue."
+msgstr ""
+"Druk op 'q' om help te verlaten, '?' om overnieuw te beginnen, of een andere "
+"toets om verder te gaan."
+
+#: src/help.c:377
+msgid ""
+"Press 'q' to quit help, '?' to start over, or any other key to continue."
+msgstr ""
+"Druk op 'q' om help te verlaten, '?' om overnieuw te beginnen, of een andere "
+"toets om verder te gaan."
+
+#: src/interp.c:104
+msgid "positive integer expected"
+msgstr "positieve integer verwacht"
+
+#: src/interp.c:140
+msgid "select box function not available in batch mode."
+msgstr "functie box selecteren niet beschikbaar in batch modus."
+
+#: src/interp.c:274 src/interp.c:284
+#, c-format
+msgid "loading %s"
+msgstr "laden %s"
+
+#: src/interp.c:301 src/interp.c:309 src/interp.c:322
+#, c-format
+msgid "%s is not a valid variable name."
+msgstr "%s is geen geldige variabele naam."
+
+#: src/interp.c:350
+msgid "setlocale is not available on this system."
+msgstr "setlocale is niet beschikbaar op dit systeem."
+
+#: src/interp.c:363
+msgid "This version of slrn lacks MIME support."
+msgstr "Deze versie van slrn ondersteunt geen MIME."
+
+#: src/interp.c:370
+msgid "Array of integer expected."
+msgstr "Array van integers verwacht."
+
+#: src/interp.c:376
+msgid "Two-dimensional array with two columns expected."
+msgstr "Twee-dimensionaal array met twee colommen verwacht."
+
+#: src/interp.c:388
+msgid "Could not get memory for conversion table."
+msgstr "Kan geen geheugen krijgen voor conversie-tabel."
+
+#: src/interp.c:403
+#, c-format
+msgid "Unicode value in row %d out of range."
+msgstr "Unicode waarde in rij %d buiten bereik."
+
+#: src/interp.c:412
+#, c-format
+msgid "Local charset value in row %d out of range."
+msgstr "Lokale karakterset waarde in rij %d buiten bereik."
+
+#: src/interp.c:457
+msgid "definekey: no such keymap."
+msgstr "definekey: onbekende 'keymap'."
+
+#: src/interp.c:484
+msgid "undefinekey: no such keymap."
+msgstr "undefinekey: onbekende 'keymap'."
+
+#: src/interp.c:521 src/interp.c:559 src/slrn.c:1686
+msgid "Quit!"
+msgstr "Stop!"
+
+#: src/interp.c:594
+msgid "Terminal not initialized."
+msgstr "Terminal niet geinitialiseerd."
+
+#: src/interp.c:645
+msgid "Not in article mode."
+msgstr "Niet in artikel modus."
+
+#: src/interp.c:755
+msgid "No article selected"
+msgstr "Geen artikel geselecteerd"
+
+#: src/interp.c:1066
+msgid "Not in group mode."
+msgstr "Niet in groep modus."
+
+#: src/interp.c:1190
+#, c-format
+msgid "Unable to open log file %s"
+msgstr "Kan log bestand %s niet openen"
+
+#: src/menu.c:63 src/menu.c:76
+msgid "Quit"
+msgstr "Stop"
+
+#: src/menu.c:64
+msgid "Refresh"
+msgstr "Vernieuwen"
+
+#: src/menu.c:65 src/menu.c:80 src/misc.c:221
+msgid "Top"
+msgstr "Bovenkant"
+
+#: src/menu.c:66 src/menu.c:81 src/misc.c:223
+msgid "Bot"
+msgstr "Onderkant"
+
+#: src/menu.c:67 src/menu.c:82
+msgid "Post"
+msgstr "Plaats"
+
+#: src/menu.c:68 src/menu.c:85
+msgid "Help"
+msgstr "Help"
+
+#: src/menu.c:77
+msgid "Catchup"
+msgstr "WisAlles"
+
+#: src/menu.c:78
+msgid "NextGrp"
+msgstr "VolgGrp"
+
+#: src/menu.c:79
+msgid "NextArt"
+msgstr "VolgArt"
+
+#: src/menu.c:83
+msgid "Reply"
+msgstr "Antwoord"
+
+#: src/menu.c:84
+msgid "Followup"
+msgstr "Opvolgend bericht"
+
+#: src/menu.c:192
+msgid "No sorting"
+msgstr "Niet sorteren"
+
+#. 000
+#: src/menu.c:193
+msgid "Thread Headers"
+msgstr "Thread Koppen"
+
+#. 001
+#: src/menu.c:194
+msgid "Sort by subject"
+msgstr "Sorteren op onderwerp"
+
+#. 010
+#: src/menu.c:195
+msgid "Thread, then sort by subject."
+msgstr "Thread, dan sorteren op onderwerp."
+
+#. 011
+#: src/menu.c:196
+msgid "Sort by scores."
+msgstr "Sorten op score."
+
+#. 100
+#: src/menu.c:197
+msgid "Thread, then sort by scores."
+msgstr "Thread, dan sorten op score."
+
+#. 101
+#: src/menu.c:198
+msgid "Sort by score and subject"
+msgstr "Sorteren op score en onderwerp"
+
+#. 110
+#: src/menu.c:199
+msgid "Thread, then sort by score and subject"
+msgstr "Thread, daarna sorten op score en onderwerp"
+
+#. 111
+#: src/menu.c:200
+msgid "Sort by date (most recent first)"
+msgstr "Sorteren op datum (meest recente eerst)"
+
+#. 1000
+#: src/menu.c:201
+msgid "Thread, then sort by date (most recent first)"
+msgstr "Thread, dan sorteren op datum (meest recente eerst)"
+
+#. 1001
+#: src/menu.c:202
+msgid "Sort by date (most recent last)"
+msgstr "Sorteren op datum (meest recente als laatste)"
+
+#. 1010
+#: src/menu.c:203
+msgid "Thread, then Sort by date (most recent last)"
+msgstr "Thread, dan Sorteren op datum (meest recente als laatste)"
+
+#: src/menu.c:211
+msgid "Sorting Method"
+msgstr "Sorteer Methode"
+
+#: src/menu.c:295
+msgid "(Select One)"
+msgstr "(Kies er een)"
+
+#: src/menu.c:355
+msgid "Cancelled."
+msgstr "Geannuleerd."
+
+#: src/menu.c:432
+msgid "[All]"
+msgstr "[Alles]"
+
+#: src/menu.c:432
+msgid "[Top]"
+msgstr "[Bovenkant]"
+
+#: src/menu.c:436
+msgid "[Bot]"
+msgstr "[Onderkant]"
+
+#: src/menu.c:476
+msgid "Press any key to close the window."
+msgstr "Druk op een toets om het vernster te sluiten."
+
+#: src/menu.c:478
+msgid "Use UP/DOWN to move, any other key to close the window."
+msgstr ""
+"Druk op OMHOOG/OMLAAG om te bewegen, een andere toets om het venster te "
+"sluiten."
+
+#: src/menu.c:482
+msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
+msgstr ""
+"Gebruik OMHOOG/OMLAAG om te bewegen, ENTER om te selecteren, Ctrl-G om te "
+"annuleren"
+
+#: src/menu.c:991
+msgid "Creating directory list..."
+msgstr "Maken van mappenlijst..."
+
+#: src/mime.c:943
+msgid "Process this MIME article with metamail"
+msgstr "Dit MIME artikel behandelen met metamail"
+
+#: src/mime.c:957
+msgid "Unable to open tmp file for metamail."
+msgstr "Kan geen tijdel bestand openen voor metamail."
+
+#: src/mime.c:985
+msgid "Press return to continue ..."
+msgstr "Druk op enter om door te gaan ..."
+
+#: src/misc.c:221
+msgid "All"
+msgstr "Alles"
+
+#: src/misc.c:277
+msgid "slrn %v ** Press '?' for help, 'q' to quit. ** Server: %s"
+msgstr "slrn %v ** Druk op '?' voor help, 'q' om af te sluiten. ** Server: %s"
+
+#: src/misc.c:691
+msgid "This function is not available in batch mode."
+msgstr "Deze functie is niet beschikbaar in batch modus."
+
+#. Note to translators: "yY" is for "yes", "nN" for "no", "eE" for "edit".
+#. * Do not change the length of this string. You cannot use any of the
+#. * default characters for different fields.
+#: src/misc.c:1085
+msgid "yYnNeE"
+msgstr "jJnNbB"
+
+#: src/misc.c:1089
+msgid "Mail the message? Yes, No, Edit"
+msgstr "Email het bericht? Ja, Nee, Bewerken"
+
+#: src/misc.c:1096
+msgid "Sending ..."
+msgstr "Versturen ..."
+
+#: src/misc.c:1193
+msgid "Sending...done"
+msgstr "Versturen...klaar"
+
+#: src/misc.c:1291
+msgid "**UNKNOWN**"
+msgstr "**ONBEKEND**"
+
+#: src/misc.c:1304
+#, c-format
+msgid "Command %s returned exit status %d.  Press RETURN.\n"
+msgstr "Commando %s gaf een eindstatus %d terug. Druk op ENTER.\n"
+
+#: src/misc.c:1331
+#, c-format
+msgid "Command %s failed to run.  Press RETURN.\n"
+msgstr "Commando %s kon niet uitgevoerd worden. Druk op ENTER.\n"
+
+#: src/misc.c:1372
+msgid "Invalid Editor definition."
+msgstr "Ongeldige Editor definitie."
+
+#: src/misc.c:1450
+msgid "No editor command defined."
+msgstr "Geen editor commando gedefinierd."
+
+#: src/misc.c:1472
+msgid "The editor could not be found."
+msgstr "De editor kan niet gevonden worden."
+
+#: src/misc.c:1477
+msgid "The editor was found, but could not be executed."
+msgstr "De editor was gevonden, maar kan niet uitgevoerd worden."
+
+#: src/misc.c:1481
+msgid "The editor returned a non-zero status."
+msgstr "De editor gaf een waarde terug die niet gelijk was aan nul."
+
+#: src/misc.c:1495
+msgid "File was not modified."
+msgstr "Bestand niet gewijzigd."
+
+#: src/misc.c:1504
+msgid "Please use double '\\\\' to separate directories in editor_command"
+msgstr "Gebruik dubbele '\\\\' om directories te scheiden in editor_command"
+
+#: src/misc.c:1885
+msgid "Possible completions"
+msgstr "Mogelijke manieren van voltooien"
+
+#: src/misc.c:2013
+#, c-format
+msgid "(default: %s) "
+msgstr "(standaard: %s) "
+
+#: src/misc.c:2176
+msgid "Abort!"
+msgstr "Breek af!"
+
+#: src/misc.c:2182
+msgid "Integer expected."
+msgstr "Integer verwacht."
+
+#: src/misc.c:2284
+msgid "Invalid response! Try again."
+msgstr "Ongeldig antwoord! Probeer opnieuw."
+
+#. Note to translators:
+#. * The translated string needs to have exactly four characters.
+#. * The first two become valid keys for "yes", the last two for "no".
+#. * You *cannot* use "y" for "no" or "n" for "yes".
+#.
+#: src/misc.c:2305
+msgid "yYnN"
+msgstr "jJnN"
+
+#: src/misc.c:2316
+msgid "? [Y]es, No"
+msgstr "? [J]a, Nee"
+
+#: src/misc.c:2321
+msgid "? Yes, [N]o"
+msgstr "? Ja, [N]ee"
+
+#. Note to translators:
+#. * The translated string needs to have exactly six characters.
+#. * The first two become valid keys for "yes", the next two for "no",
+#. * the last ones for "cancel". You cannot use the default characters
+#. * for other fields than they originally stood for.
+#.
+#: src/misc.c:2349
+msgid "yYnNcC"
+msgstr "jJnNaA"
+
+#: src/misc.c:2359
+msgid "? [Y]es, No, Cancel"
+msgstr "? [J]a, Nee, Annuleren"
+
+#: src/misc.c:2415 src/spool.c:1405
+msgid "Invalid regular expression or expression too long."
+msgstr "Ongeldige reguliere expressie of de expressie is te lang."
+
+#. Fill in what is assumed to be non-NULL by rest of program.
+#: src/misc.c:2543
+msgid "In article %m, %r wrote:"
+msgstr "In artikel %m schreef %r:"
+
+#: src/misc.c:2544
+#, c-format
+msgid "In %n, you wrote:"
+msgstr "In %n schreef je:"
+
+#: src/misc.c:2547
+#, c-format
+msgid "[This message has also been posted to %n.]"
+msgstr "[Dit bericht is ook geplaatst in %n.]"
+
+#: src/misc.c:2549
+msgid "[This message has also been posted.]"
+msgstr "[Dit bericht is ook geplaatst.]"
+
+#: src/misc.c:2777
+msgid "Cannot generate \"From:\" line without a valid username."
+msgstr ""
+"Kan geen \"From:\"(van) regel genereren met ene geldige gebruikersnaam."
+
+#. Note: we currently do not check whether hostname is valid
+#: src/misc.c:2781
+msgid "Cannot generate \"From:\" line without a hostname."
+msgstr "Kan geen \"From:\"(van) regel genereren zonder een computernaam."
+
+#: src/misc.c:2786
+msgid "This client cannot handle addresses longer than 255 characters."
+msgstr ""
+"Dit programma kan geen adressen behandelen die langer zijn dan 255 tekens."
+
+#: src/nntp.c:67
+#, c-format
+msgid "Server connection to %s lost.  Cannot recover."
+msgstr "Server verbinding naar %s verbroken. Herstellen mislukt."
+
+#: src/nntp.c:121
+#, c-format
+msgid "Server %s does not implement the XOVER command."
+msgstr "Server %s ondersteunt het XOVER commando niet."
+
+#: src/nntp.c:259
+msgid "Error writing to server."
+msgstr "Fout tijdens schrijven naar server."
+
+#: src/nntp.c:265
+#, c-format
+msgid "Article rejected: %s"
+msgstr "Artikel geweigerd: %s"
+
+#: src/nntp.c:425
+msgid ""
+"--nntp options:\n"
+"-h nntp-host    Host name to connect to.  This overrides NNTPSERVER "
+"variable.\n"
+"-p NNTP-PORT    Set the NNTP port to NNTP-PORT. The default value is 119.\n"
+"                 Note: This option has no effect on some systems.\n"
+msgstr ""
+"--nntp opties:\n"
+"-h nntp-server  Server om mee te verbinden. Heeft meer prioriteit als "
+"NNTPSERVER variabele.\n"
+"-p NNTP-POORT   Stel de NNTP poort in op NNTP-POORT. De standaardwaarde is "
+"11e.\n"
+" N.B.: Deze optie heeft op sommige systemen geen effect.\n"
+
+#: src/nntplib.c:196 src/post.c:620
+#, c-format
+msgid "Reason: %s"
+msgstr "Reden: %s"
+
+#: src/nntplib.c:266
+#, c-format
+msgid "Server %s dropped connection.  Reconnecting..."
+msgstr "Server %s verbrak verbinding. Opnieuw verbinden..."
+
+#: src/nntplib.c:412
+msgid "Authorization needed, but could not determine username / password."
+msgstr "Autorisatie vereist, maar kan geen gebruikersnaam / wachtwoord vinden."
+
+#: src/nntplib.c:416
+#, c-format
+msgid "Authenticating %s ..."
+msgstr "Autoriseren ..."
+
+#: src/nntplib.c:446
+msgid "Authorization failed."
+msgstr "Autorisatie gefaald."
+
+#: src/nntplib.c:457
+#, c-format
+msgid "Connecting to host %s ..."
+msgstr "Verbinden met server %s ..."
+
+#: src/nntplib.c:493
+#, c-format
+msgid "Connected to host.  %s"
+msgstr "Verbonden met server. Plaatsen %sOk."
+
+#: src/nntplib.c:494
+msgid "Posting ok."
+msgstr "Plaatsen ..."
+
+#: src/nntplib.c:494
+msgid "Posting NOT ok."
+msgstr "Plaatsen ..."
+
+#: src/nntplib.c:500
+msgid "Failed to initialize server"
+msgstr "Kan server niet initialiseren"
+
+#: src/nntplib.c:564
+msgid ""
+"You need to set the NNTPSERVER environment variable to your server name."
+msgstr ""
+"U moet de omgevingsvariabele NNTPSERVER naar uw servernaam laten wijzen."
+
+#: src/nntplib.c:566
+msgid "Example: $ define/job NNTPSERVER my.news.server"
+msgstr "Voorbeeld: $ define/job NNTPSERVER mijn.nieuws.server"
+
+#: src/nntplib.c:569
+msgid "Example: set NNTPSERVER=my.news.server"
+msgstr "Voorbeeld: set NNTPSERVER=mijn.nieuws.server"
+
+#: src/nntplib.c:571
+msgid "Example (csh): setenv NNTPSERVER my.news.server"
+msgstr "Voorbeeld (csh): setenv NNTPSERVER mijn.nieuws.server"
+
+#: src/nntplib.c:572
+msgid "Example (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER"
+msgstr "Voorbeeld (sh) : NNTPSERVER='mijn.nieuws.server' && export NNTPSERVER"
+
+#. 100
+#: src/nntplib.c:1121
+msgid "Help text on way"
+msgstr "Help tekst onderweg"
+
+#. 180
+#: src/nntplib.c:1123
+msgid "Authorization capabilities"
+msgstr "Authorisatie mogelijkheden"
+
+#. 199
+#: src/nntplib.c:1125
+msgid "Debug output"
+msgstr "Debug uitvoer"
+
+#. 200
+#: src/nntplib.c:1127
+msgid "Hello; you can post"
+msgstr "Hallo; U kunt berichten plaatsen"
+
+#. 201
+#: src/nntplib.c:1129
+msgid "Hello; you can't post"
+msgstr "Hallo; U kunt geen berichten plaatsen"
+
+#. 202
+#: src/nntplib.c:1131
+msgid "Slave status noted"
+msgstr "Slaaf status opgemerkt"
+
+#. 205
+#: src/nntplib.c:1133
+msgid "Closing connection"
+msgstr "Verbreken verbinding"
+
+#. 211
+#: src/nntplib.c:1135
+msgid "Group selected"
+msgstr "Groep geselecteerd"
+
+#. 215
+#: src/nntplib.c:1137
+msgid "Newsgroups follow"
+msgstr "Nieuwsgroepen volgen"
+
+#. 220
+#: src/nntplib.c:1139
+msgid "Article (head & body) follows"
+msgstr "Artikel (kop & inhoud) volgt"
+
+#. 221
+#: src/nntplib.c:1141
+msgid "Head follows"
+msgstr "Kop volgt"
+
+#. 222
+#: src/nntplib.c:1143
+msgid "Body follows"
+msgstr "Inhoud volgt"
+
+#. 223
+#: src/nntplib.c:1145
+msgid "No text sent -- stat, next, last"
+msgstr "Geen tekst verzonden - stat, volgende, laatste"
+
+#. 230
+#: src/nntplib.c:1147
+msgid "New articles by message-id follow"
+msgstr "Nieuwe artikelen volgen op bericht-id"
+
+#. 231
+#: src/nntplib.c:1149
+msgid "New newsgroups follow"
+msgstr "Nieuwe nieuwsgroepen volgen"
+
+#. 235
+#: src/nntplib.c:1151
+msgid "Article transferred successfully"
+msgstr "Artikel succesvol verstuurd"
+
+#. 240
+#: src/nntplib.c:1153
+msgid "Article posted successfully"
+msgstr "Artikel succesvol geplaatst"
+
+#. 280
+#: src/nntplib.c:1155
+msgid "Authorization system ok"
+msgstr "Authorisatie systeem in orde"
+
+#. 281
+#: src/nntplib.c:1157
+msgid "Authorization (user/pass) ok"
+msgstr "Authorisatie (gebruiker/wachtwoord) in orde"
+
+#. 282
+#: src/nntplib.c:1159
+msgid "Ok, XGTITLE info follows"
+msgstr "Ok, XGTITLE info volgt"
+
+#. 224
+#: src/nntplib.c:1161
+msgid "ok -- overview data follows"
+msgstr "ok -- overzicht van gegevens volgt"
+
+#. 335
+#: src/nntplib.c:1163
+msgid "Continue to send article"
+msgstr "Ga door met verzenden van artikel"
+
+#. 340
+#: src/nntplib.c:1165
+msgid "Continue to post article"
+msgstr "Ga door met plaatsen van artikel"
+
+#. 380
+#: src/nntplib.c:1167
+msgid "authorization is required"
+msgstr "authorisatie is vereist"
+
+#. 381
+#: src/nntplib.c:1169
+msgid "<type> authorization data required"
+msgstr "<type> authorisatie gegevens vereist"
+
+#. 400
+#: src/nntplib.c:1171
+msgid "Have to hang up for some reason"
+msgstr "Verbinding verbroken om bepaalde reden"
+
+#. 411
+#: src/nntplib.c:1173
+msgid "No such newsgroup"
+msgstr "Er bestaat geen nieuwsgroep onder deze naam"
+
+#. 412
+#: src/nntplib.c:1175
+msgid "Not currently in newsgroup"
+msgstr "Momenteel niet in nieuwsgroep"
+
+#. 420
+#: src/nntplib.c:1177
+msgid "No current article selected"
+msgstr "Geen huidige artikel geselecteerd"
+
+#. 421
+#: src/nntplib.c:1179
+msgid "No next article in this group"
+msgstr "Geen volgend artikel in deze groep"
+
+#. 422
+#: src/nntplib.c:1181
+msgid "No previous article in this group"
+msgstr "Geen vorig artikel in deze groep"
+
+#. 423
+#: src/nntplib.c:1183
+msgid "No such article in this group"
+msgstr "Niet zo'n artikel in deze groep"
+
+#. 430
+#: src/nntplib.c:1185
+msgid "No such article at all"
+msgstr "Helemaal niet zo'n artikel"
+
+#. 435
+#: src/nntplib.c:1187
+msgid "Already got that article, don't send"
+msgstr "Artikel al binnen, niet verzenden"
+
+#. 436
+#: src/nntplib.c:1189
+msgid "Transfer failed"
+msgstr "Overdragen mislukt"
+
+#. 437
+#: src/nntplib.c:1191
+msgid "Article rejected, don't resend"
+msgstr "Artikel geweigerd, niet opnieuw verzenden"
+
+#. 440
+#: src/nntplib.c:1193
+msgid "Posting not allowed"
+msgstr "Plaatsen niet toegestaan"
+
+#. 441
+#: src/nntplib.c:1195
+msgid "Posting failed"
+msgstr "Plaatsen mislukt"
+
+#. 480
+#: src/nntplib.c:1197
+msgid "authorization required for command"
+msgstr "authorisatie vereist voor commando"
+
+#. 481
+#. ERR_XGTITLE has same code
+#: src/nntplib.c:1199
+msgid "Authorization system invalid"
+msgstr "Authorisatie systeem ongeldig"
+
+#. 482
+#: src/nntplib.c:1201
+msgid "Authorization data rejected"
+msgstr "Authorisatie gegevens geweigerd"
+
+#. 500
+#: src/nntplib.c:1203
+msgid "Command not recognized"
+msgstr "Commando niet herkent"
+
+#. 501
+#: src/nntplib.c:1205
+msgid "Command syntax error"
+msgstr "Commando syntax fout"
+
+#. 502
+#: src/nntplib.c:1207
+msgid "Access to server denied"
+msgstr "Toegang naar server geweigerd"
+
+#. 503
+#: src/nntplib.c:1209
+msgid "Program fault, command not performed"
+msgstr "Programmafout, commando niet uitgevoerd"
+
+#. 580
+#: src/nntplib.c:1211
+msgid "Authorization Failed"
+msgstr "Authorisatie Mislukt"
+
+#: src/nntplib.c:1214
+msgid "Unknown NNTP code"
+msgstr "Onbekende NNTP code"
+
+#: src/post.c:445
+msgid "The first line must begin with a header."
+msgstr "De eerste regel moet beginnen met een kop"
+
+#: src/post.c:455
+msgid "Expecting a header.  This is not a header line."
+msgstr "Kop verwacht. Dit is geen berichtkop regel."
+
+#: src/post.c:463
+msgid "The subject header is not allowed be to empty."
+msgstr "Het onderwerp mag niet leeg zijn."
+
+#: src/post.c:475
+msgid "The Newsgroups header is not allowed be to empty."
+msgstr "Het veld Newsgroups(nieuwsgroepen) mag niet leeg zijn."
+
+#: src/post.c:503
+msgid "A space must follow the ':' in a header"
+msgstr "Een spatie moet volgen op de ':' in een kop"
+
+#: src/post.c:510
+msgid "This news reader will not accept user generated From lines."
+msgstr ""
+"Deze nieuwslezer cal geen door gebruikers gegenereerde From regels "
+"accepteren."
+
+#: src/post.c:517
+msgid "This news reader will not accept user generated Message-Ids."
+msgstr ""
+"Deze nieuwslezer zal geen door gebruikers gegenereerde Bericht-IDs "
+"accepteren."
+
+#: src/post.c:527
+msgid "Subject header is required."
+msgstr "Onderwerp is vereist."
+
+#: src/post.c:532
+msgid "Newsgroups header is required."
+msgstr "Nieuwsgroepen veld is vereist. "
+
+#: src/post.c:539
+msgid "Please re-consider if posting to a large number of groups is necessary."
+msgstr "Heroverweeg of plaatsen in een groot aantal nieuwsgropen vereist is."
+
+#: src/post.c:542
+msgid ""
+"In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
+msgstr ""
+"In de meeste gevallen is het installen van een \"Followup-To:\" naar "
+"meerdere groepen een slecht idee."
+
+#: src/post.c:545
+msgid "Setting a \"Followup-To:\" is recommended when crossposting."
+msgstr ""
+"Instellen van \"Followup-To:\" is aanbevolen in geval van kruisplaatsing."
+
+#: src/post.c:561
+msgid "Your message does not appear to have any unquoted text."
+msgstr "Uw bericht lijkt geen niet-geciteerde text te bevatten."
+
+#: src/post.c:612
+msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
+msgstr ""
+"Houdt uw ondertekening kort. 4 regels is een wijd-geaccepteerde limiet."
+
+#: src/post.c:619
+msgid "Message is not acceptable."
+msgstr "Bericht is niet acceptabel."
+
+#: src/post.c:636
+msgid "Your message is not acceptable for the following reason:"
+msgstr "Uw bericht is niet acceptabel om de volgende reden:"
+
+#: src/post.c:643
+#, c-format
+msgid "This message was generated while looking at line %d:"
+msgstr "Dit bericht was gegenereert tijdens het controleren van regel %d:"
+
+#: src/post.c:649
+msgid ""
+"Perhaps this error was generated because you did not separate the header"
+msgstr "Misschien was deze fout gegenereert omdat U de koppen niet scheidde"
+
+#: src/post.c:651
+msgid "section from the body by a BLANK line."
+msgstr "van de inhoud door een LEGE regel."
+
+#: src/post.c:658
+msgid "Your message breaks the following netiquette guidelines:"
+msgstr "Uw bericht voldoet niet aan de volgende netiquette regels:"
+
+#: src/post.c:674
+msgid "Lines with more than 80 characters generally need to be wrapped."
+msgstr ""
+"Regels met meer dan 80 tekens behoren over het algemeen afgebroken te worden."
+
+#: src/post.c:677
+#, c-format
+msgid "This affects at least line %d:"
+msgstr "Dit heeft betrekking op onder andere regel %d:"
+
+#: src/post.c:704 src/post.c:1074 src/post.c:1098
+#, c-format
+msgid "File not found: %s--- message not posted."
+msgstr "Bestand niet gevonden: %s--- bericht niet geplaatst."
+
+#: src/post.c:716
+#, c-format
+msgid "***Warning: error saving to %s"
+msgstr "***Waarschuwing: fout opgeslagen naar %s"
+
+#: src/post.c:863
+#, c-format
+msgid "***Warning: error writing to %s"
+msgstr "***Waarschuwing: fout tijdens naar schrijven naar %s"
+
+#: src/post.c:868
+#, c-format
+msgid "Failed post saved in %s"
+msgstr "Geplaatst bericht opslaan in %s mislukt"
+
+#. Note to translators:
+#. * In the following strings, "yY" will mean "yes", "nN" is for "no",
+#. * "eE" for "edit", "sS" for "postpone", "dD" for "delete" and "fF"
+#. * for "filter". Please use the same letter for the same field everywhere,
+#. * or your users will get unexpected results. As always, you can't use the
+#. * default letters for other fields than those they originally stood for.
+#. * Be careful not to change the length of these strings!
+#.
+#: src/post.c:931 src/post.c:964
+msgid "yYnNeEsSdDfF"
+msgstr "jJnNbBuUvVfF"
+
+#: src/post.c:934
+msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
+msgstr "Bericht plaatsen? Ja, Nee, Bewerken, Uitstellen, Verwijderen, Filter"
+
+#: src/post.c:938
+msgid "yYnNeEsSfF"
+msgstr "jJnNbBuUfF"
+
+#: src/post.c:941
+msgid "Post the message? Yes, No, Edit, poStpone, Filter"
+msgstr "Bericht plaatsen? Ja, Nee, Bewerken, Uitstellen, Filter"
+
+#: src/post.c:949
+msgid "yYnNeEsSdD"
+msgstr "jJnNbBuUvV"
+
+#: src/post.c:952
+msgid "Post the message? Yes, No, Edit, poStpone, Delete"
+msgstr "Bericht plaatsen? Ja, Nee, Bewerken, Uitstellen, Verwijderen"
+
+#: src/post.c:956
+msgid "yYnNeEsS"
+msgstr "jJnNbBuU"
+
+#: src/post.c:959
+msgid "Post the message? Yes, No, Edit, poStpone"
+msgstr "Bericht plaatsen? Ja, Nee, Bewerken, Uitstellen"
+
+#: src/post.c:982
+msgid "Sure you want to delete it"
+msgstr "Weet U zeker dat U het wilt verwijderen"
+
+#. Note to translators:
+#. * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
+#. * "cC" is "cancel" and "fF" means "force". The usual rules apply.
+#.
+#: src/post.c:1006
+msgid "yYeEnNcC"
+msgstr "jJbBnNaA"
+
+#: src/post.c:1009
+msgid "re-Edit,  or Cancel"
+msgstr "her-Bewerken,  of Annuleren"
+
+#: src/post.c:1013 src/post.c:1019
+msgid "yYeEnNcCfF"
+msgstr "jJbBnNaAfF"
+
+#: src/post.c:1016
+msgid "re-Edit, Cancel, or Force the posting (not recommended)"
+msgstr "her-Bewerk, Annuleer, of Forceer plaatsen (niet aanbevolen)"
+
+#: src/post.c:1055 src/post.c:1101
+msgid "Posting ..."
+msgstr "Plaatsen ..."
+
+#: src/post.c:1089
+#, c-format
+msgid "post_file_hook returned error.  %s not posted."
+msgstr "post_file_hook gaf fout terug.  %s niet geplaatst."
+
+#: src/post.c:1239
+msgid "Posting...done."
+msgstr "Plaatsen...klaar."
+
+#. Note to translators: Here, "rR" is "repost", "eE" is "edit" and "cC" is
+#. * "cancel". Don't change the length of the string; you cannot re-use any
+#. * of the default characters for different fields.
+#.
+#: src/post.c:1259
+msgid "rReEcC"
+msgstr "oObBaA"
+
+#: src/post.c:1262
+msgid "Select one: Repost, Edit, Cancel"
+msgstr "Kies: Opnieuw posten, Bewerken, Annuleren"
+
+#: src/post.c:1390
+msgid "postpone_directory not specified or does not exist"
+msgstr "postpone_directory (uitstel_map) niet opgegeven of niet bestaand"
+
+#: src/post.c:1401
+msgid "Not implemented yet. Sorry"
+msgstr "Nog niet geimplementeerd. Sorry"
+
+#: src/post.c:1417
+msgid "Save to: "
+msgstr "Opslaan in: "
+
+#: src/post.c:1423
+msgid "File exists, overwrite"
+msgstr "Bestand bestaat, overschrijven"
+
+#: src/post.c:1435
+msgid "You must specify a name"
+msgstr "Je moet een naam opgeven"
+
+#: src/post.c:1437
+msgid "Illegal filename. Try again"
+msgstr "Ongeldige bestandsnaam. Probeer opnieuw"
+
+#: src/post.c:1461
+#, c-format
+msgid "%s: not a regular file"
+msgstr "%s: geen regulier bestand"
+
+#: src/print.c:152
+#, c-format
+msgid "OpenPrinterA failed: %d"
+msgstr "OpenPrinerA mislukt: %d"
+
+#: src/print.c:160
+#, c-format
+msgid "StartDocPrinterA failed: %d"
+msgstr "StartDocPrinterA mislukt: %d"
+
+#: src/print.c:180
+#, c-format
+msgid "Write to printer failed: %d"
+msgstr "Schrijven naar printer mislukt: %d"
+
+#: src/print.c:227
+msgid "Failed to open tmp file"
+msgstr "Openen van tijdelijk bestand mislukt"
+
+#: src/print.c:243
+msgid "Write to printer failed"
+msgstr "Schrijven naar printer mislukt"
+
+#: src/print.c:273
+#, c-format
+msgid "Printer process returned error code %d"
+msgstr "Printer proces gaf waarde %d terug"
+
+#: src/print.c:299
+#, c-format
+msgid "Failed to open process %s"
+msgstr "Openen van proces %s mislukt"
+
+#: src/print.c:315
+msgid "Error writing to print process"
+msgstr "Fout tijdens schrijven naar print proces"
+
+#: src/print.c:333
+msgid "Printer not supported"
+msgstr "Printer niet ondersteund"
+
+#: src/print.c:405
+#, c-format
+msgid "Unable to open %s for printing"
+msgstr "Kan %s niet openen om af te drukken"
+
+#: src/score.c:587
+msgid "Reloading score file ..."
+msgstr "Opnieuw laden van score bestand ..."
+
+#: src/score.c:589 src/slrn.c:946
+#, c-format
+msgid "Error processing score file %s."
+msgstr "Fout tijdens behandelen score bestand %s."
+
+#: src/score.c:838
+#, c-format
+msgid ""
+"Error processing %s\n"
+"Line %u:\n"
+"%s\n"
+"%s\n"
+msgstr ""
+"Fout tijdens behandelen %s\n"
+"Regel %u:\n"
+"%s\n"
+"%s\n"
+
+#: src/score.c:1020
+msgid "Error handling INCLUDE line"
+msgstr "Fout tijdens behandelen INCLUDE regel"
+
+#: src/score.c:1048
+msgid "Syntax Error."
+msgstr "Syntax Fout."
+
+#: src/score.c:1105
+msgid "Expecting 'Expires: MM/DD/YYYY' or 'Expires: DD-MM-YYYY'"
+msgstr "Verwacht wordt 'Expires: MM/DD/JJJJ' of 'Expires: DD-MM-JJJJ'"
+
+#: src/score.c:1112
+#, c-format
+msgid "%s has expired score on line %d"
+msgstr "%s heeft de score op regel %d laten verlopen"
+
+#: src/score.c:1125
+msgid "Bad group regular expression."
+msgstr "Ongeldige reguliere expressie voor groep."
+
+#: src/score.c:1145
+msgid "Expecting Score keyword."
+msgstr "Score keyword verwacht."
+
+#: src/score.c:1201 src/score.c:1211
+msgid "Missing COLON."
+msgstr "Ontbrekende DUBBELE PUNT."
+
+#: src/score.c:1220
+msgid "No regular expression given."
+msgstr "Geen reguliere expressie gegeven."
+
+#: src/score.c:1255
+msgid "Missing '}' for  subscore"
+msgstr "Missende '}' voor subscore"
+
+#: src/score.c:1271
+#, c-format
+msgid "*** Warning * Read file %s before - skipping ..."
+msgstr "*** Waarschuwing * Lees bestand %s vantevoren - overslaan ..."
+
+#: src/score.c:1285
+#, c-format
+msgid "Unable to open score file %s"
+msgstr "Kan score bestand %s niet openen"
+
+#: src/server.c:102
+msgid "Couldn't open pipe to inews! -- Article not posted."
+msgstr "Kan geen pipe openen naar inews! -- Artikel niet geplaatst."
+
+#: src/server.c:114
+msgid "pclose() failed -- check if article was posted"
+msgstr "pclose() mislukt -- controleer of het artikel geplaatst was"
+
+#: src/server.c:171
+#, c-format
+msgid "Unable to locate inews program \"%s\""
+msgstr "Kan inews programma \"%s\" niet vinden"
+
+#: src/server.c:220 src/slrn.c:1059
+#, c-format
+msgid "Unable to add preprocessor name %s."
+msgstr "Kan preprocessor naam %s niet toevoegen."
+
+#: src/server.c:243
+msgid "inews cannot be used with an slrnpull spool."
+msgstr "inews kan niet gebruikt worden met een slrnpull spool."
+
+#: src/server.c:267
+#, c-format
+msgid "%s is not a supported posting agent."
+msgstr "%s is geen ondersteunde plaats agent."
+
+#: src/server.c:307
+#, c-format
+msgid "%s is not a supported server object."
+msgstr "%s is geen ondersteund server object."
+
+#: src/server.c:503
+#, c-format
+msgid "Unable to open file in %s."
+msgstr "Kan bestand in %s niet openen."
+
+#: src/server.c:573
+#, c-format
+msgid "Unable to rename file. errno = %d."
+msgstr "Kan bestand niet van naam veranderen. errno = %d."
+
+#: src/server.c:588
+msgid "Write error.  File system full?"
+msgstr "Schrijf fout. Bestandssysteem vol?"
+
+#: src/server.c:607
+msgid "Write failed.  File system full?"
+msgstr "Schrijven mislukt. Bestandssysteem vol?"
+
+#: src/server.c:634
+#, c-format
+msgid "Posting directory %s does not exist."
+msgstr "Geplaatste berichten map %s bestaat niet."
+
+#: src/slrn.c:171
+#, c-format
+msgid ""
+"slrn: pid %d is locking the newsrc file. If you're not running another\n"
+"      copy of slrn, delete the file %s"
+msgstr ""
+"slrn: pid %d houdt het newsrc bestand vast. Als je geen andere kopie van\n"
+"      slrn uitvoert, verwijder dan het bestand %s"
+
+#: src/slrn.c:176
+#, c-format
+msgid "slrn: pid %d is locking the newsrc file."
+msgstr "slrn: pid %d houdt het newsrc bestand vast."
+
+#. delete the "normal" lock file
+#: src/slrn.c:247 src/slrn.c:254
+#, c-format
+msgid "Unable to create lock file %s."
+msgstr "Kan geen 'slot' %s maken."
+
+#: src/slrn.c:361
+msgid "pop_suspension: underflow!"
+msgstr "pop_suspension: underflow!"
+
+#: src/slrn.c:426
+msgid "Not implemented."
+msgstr "Niet geimplementeerd."
+
+#: src/slrn.c:439 src/slrn.c:458
+msgid "Suspension not allowed by shell."
+msgstr "Suspenderen niet toegestaan door shell."
+
+#: src/slrn.c:619
+msgid "Unable to initialize the tty"
+msgstr "Kan de tty niet initialiseren"
+
+#: src/slrn.c:822
+#, c-format
+msgid "slrn: quiting on signal %d.\n"
+msgstr "slrn: afsluiten vanwege signaal %d.\n"
+
+#: src/slrn.c:839
+msgid "slrn fatal error:"
+msgstr "slrn fatale fout:"
+
+#: src/slrn.c:867
+#, c-format
+msgid ""
+"Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
+"-a              Use active file for getting new news.\n"
+"-f newsrc-file  Name of the newsrc file to use.\n"
+"-C[-]           [Do not] use colors.\n"
+"-Dname          Add 'name' to list of predefined preprocessing tokens.\n"
+"-d              Get new text descriptions of each group from server.\n"
+"                 Note: This may take a LONG time to retrieve this "
+"information.\n"
+"                 The resulting file can be several hundred Kilobytes!\n"
+"-i init-file    Name of initialization file to use (default: %s)\n"
+"-k              Do not process score file.\n"
+"-k0             Process score file but inhibit expensive scores.\n"
+"-m              Force XTerm mouse reporting\n"
+"-n              Do not check for new groups.  This usually results in\n"
+"                 a faster startup.\n"
+"-w              Wait for key before switching to full screen mode\n"
+"--create        Create a newsrc file by getting list of groups from server.\n"
+"--debug FILE    Write debugging information to FILE\n"
+"--help          Print this usage.\n"
+"--kill-log FILE Keep a log of all killed articles in FILE\n"
+"--version       Show version and supported features\n"
+"\n"
+"NNTP mode has additional options; use \"slrn --nntp --help\" to display "
+"them.\n"
+msgstr ""
+"Gebruik: slrn [--inews] [--nntp ...] [--spool] OPTIES\n"
+"-a              Gebruik actief bestand voor verkrijgen nieuw nieuws.\n"
+"-f newsrc-bstnd Naam van te gebruiken newsrc bestand.\n"
+"-C[-]           Gebruik [geen] kleuren.\n"
+"-Dnaam          Voeg 'naam' toe aan lijst van vooraf behandelde tokens.\n"
+"-d              Haal nieuwe beschrijvingen op van elke groep van server.\n"
+"                 N.B.: Dit kan LANG duren. Het resulterende bestand kan\n"
+"                 Een aantal honder kilobytes groot zijn!\n"
+"-i init-bestand Naam van te gebruiken initialisatie bestand (standaard: %s)\n"
+"-k              Behandel score bestand niet.\n"
+"-k0             Behandel score bestand maar onderdruk kostbare scores.\n"
+"-m              Forceer XTerm muis ondersteuning\n"
+"-n              Controleer niet op nieuwe groepen. Dit zorgt gewoonlijk\n"
+"                 voor een snellere start.\n"
+"-w              Wacht op toets voor schakelen naar volledig scherm modus.\n"
+"--create        Maak newrc bestand dmv ophalen van lijst van groepen.\n"
+"--debug BESTAND Schrijf debug informatie naar BESTAND\n"
+"--help          Toon deze informatie.\n"
+"--kill-log FILE Houdt een log bij van alle verwijderde artikelen in FILE\n"
+"--version       Toon de versie en de ondersteunde functies\n"
+"\n"
+"NNTP modus heeft meer opties; gebruik \"slrn --nntp --help\" om hen te "
+"tonen.\n"
+
+#: src/slrn.c:917
+#, c-format
+msgid "%s is not a supported option."
+msgstr "%s is geen ondersteunde optie."
+
+#: src/slrn.c:919
+#, c-format
+msgid "%s is not supported."
+msgstr "%s is niet ondersteund."
+
+#: src/slrn.c:940
+#, c-format
+msgid "*** Warning: Score file %s does not exist"
+msgstr "*** Waarschuwing: Score bestand %s bestaat niet"
+
+#: src/slrn.c:1038
+#, c-format
+msgid "Unable to open %s for debugging."
+msgstr "Kan %s niet openen voor debuggen"
+
+#: src/slrn.c:1084
+msgid "The -d and --create flags must not be specified together."
+msgstr "De -d en --create vlaggen moeten niet samen gebruikt worden."
+
+#: src/slrn.c:1097
+msgid "Error initializing SLtcp interface"
+msgstr "Fout tijdens initialiseren SLtcp interface"
+
+#: src/slrn.c:1102
+msgid "Error initializing S-Lang interpreter.\n"
+msgstr "Fout tijdens initialiseren S-Lang interpreter.\n"
+
+#: src/slrn.c:1113
+msgid "Error configuring server objects."
+msgstr "Fout tijdens configureren server objects."
+
+#: src/slrn.c:1139
+#, c-format
+msgid "Could not read specified config file %s\n"
+msgstr ""
+
+#: src/slrn.c:1145
+msgid ""
+"\n"
+"! Your configuration file contains obsolete commands or function names that\n"
+"! will not be supported by future versions of this program.\n"
+"! If you have Perl installed, you can use the script slrnrc-conv to change\n"
+"! your configuration accordingly.  It can be found in the source "
+"distribution\n"
+"! or retrieved from <URL:http://slrn.sourceforge.net/data/>.\n"
+msgstr ""
+"\n"
+"! Je configuratie bestand bevat verouderde commando's of functies die\n"
+"! niet ondersteund zullen worden in de volgende versies van dit programma.\n"
+"! Als je Perl geinstalleerd hebt, kun je het script slrnrc-conv gebruiken "
+"om\n"
+"! je configuratie up te daten. Dit script kan gevonden worden in de source\n"
+"! distributie of opgehaald van <URL:http://slrn.sourceforge.net/data/>.\n"
+
+#: src/slrn.c:1160
+msgid "Failed to select character set."
+msgstr "Selecteren van karakter set mislukt."
+
+#: src/slrn.c:1194
+msgid "Unable to select server/post object."
+msgstr "Kan geen server/post object selecteren."
+
+#: src/slrn.c:1210
+#, c-format
+msgid ""
+"Unable to find a valid hostname for constructing your e-mail address.\n"
+"You will have to specify a hostname in your %s file.\n"
+msgstr ""
+"Kan geen geldige computernaam vinden voor het construeren van je e-mail "
+"adres.\n"
+"Je zult een computernaam op moeten geven in je %s bestand.\n"
+
+#: src/slrn.c:1219
+msgid ""
+"Unable to find your user name.  This means that a valid 'From' header line\n"
+"cannot be constructed.  Try setting the USER environment variable.\n"
+msgstr ""
+"Kan je gebruikersnaam niet vinden. Dit betekent dat een geldige 'From'(van) "
+"kop\n"
+"niet ge construeerd kan worden. Probeer de USER omgevingsvariabele in te "
+"stellen.\n"
+
+#: src/slrn.c:1226
+msgid "***Warning: Unable to find a unique fully-qualified host name."
+msgstr ""
+"***Waarschuwing: Kan geen unieke volledig gekwalificeerde computernaam "
+"vinden."
+
+#: src/slrn.c:1227
+msgid "            slrn will not generate any Message-IDs."
+msgstr "            slrn zal geen Message-IDs genereren."
+
+#: src/slrn.c:1228
+msgid ""
+"            Please note that the \"hostname\" setting does not affect this;"
+msgstr "            N.B. De \"hostname\" instelling beinvloedt dit niet;"
+
+#: src/slrn.c:1229
+msgid "            see the \"slrn reference manual\" for details."
+msgstr "            zie de \"slrn reference manual\" voor details."
+
+#: src/slrn.c:1258
+#, c-format
+msgid "Using newsrc file %s for server %s."
+msgstr "Gebruiken van newsrc bestand %s voor server %s."
+
+#: src/slrn.c:1270 src/slrnpull.c:1969
+msgid "Unable to initialize server."
+msgstr "Kan de server niet initialiseren."
+
+#: src/slrn.c:1285
+#, c-format
+msgid "Unable to open %s.  I will try .newsrc."
+msgstr "Kan %s niet openen. Ik zal .newsrc proberen."
+
+#: src/slrn.c:1290
+#, c-format
+msgid ""
+"\n"
+"Unable to open %s.\n"
+"If you want to create %s, add command line options:\n"
+"   -f %s --create\n"
+msgstr ""
+"\n"
+"Kan %s niet openen.\n"
+"Als je %s wilt maken, voeg dan commandoregel opties toe:\n"
+"   -f %s --create\n"
+
+#: src/slrn.c:1307 src/slrnpull.c:1744 src/slrnpull.c:1756
+#, c-format
+msgid "Unable to open %s for logging."
+msgstr "Kan %s niet openen voor loggen."
+
+#: src/slrn.c:1323
+msgid "Initializing GroupLens"
+msgstr "Initialiseren van GroupLens"
+
+#: src/slrn.c:1326
+msgid "GroupLens disabled.\n"
+msgstr "GroupLens uitgezet.\n"
+
+#: src/slrn.c:1334
+msgid "Failed to initialize server."
+msgstr "Server initialiseren mislukt."
+
+#: src/slrn.c:1340
+msgid "OVERVIEW.FMT not RFC 2980 compliant -- XOVER support disabled."
+msgstr ""
+"OVERVIEW.FMT voldoet niet aan RFC 2980 -- XOVER ondersteuning uitgezet."
+
+#: src/slrn.c:1353
+msgid "* Press Ctrl-C to quit, any other key to continue.\n"
+msgstr "* Druk op Ctrl-C om af te sluiten, een andere toets om door te gaan.\n"
+
+#: src/slrn.c:1356
+msgid "Exit on user request."
+msgstr "Afsluiten op verzoek gebruiker."
+
+#: src/slrn.c:1383
+msgid "Internal Error: Mode_Stack overflow"
+msgstr "Interne Fout: Mode_Stack overflow"
+
+#: src/slrn.c:1398
+msgid "Internal Error: Mode_Stack underflow"
+msgstr "Interne Fout: Mode_Stack underflow"
+
+#: src/slrn.c:1495
+#, c-format
+msgid "call: %s not in current keymap."
+msgstr "call: %s niet in huidige keymap."
+
+#: src/slrndir.c:79
+msgid "slrn_open_dir has not been ported to VMS"
+msgstr "slrn_open_dir is niet geport naar VMS"
+
+#: src/slrndir.c:167 src/slrndir.c:178
+msgid "Unable to getcwd"
+msgstr "Kan getcwd niet opvragen"
+
+#: src/slrndir.c:231
+#, c-format
+msgid "chdir %s failed.  Does the directory exist?"
+msgstr "chdir %s mislukt. Bestaat de directory?"
+
+#: src/slrnpull.c:318
+#, c-format
+msgid "Created dir %s."
+msgstr "Directory %s aangemaakt."
+
+#: src/slrnpull.c:326
+#, c-format
+msgid "Unable to create directory %s. (errno = %d)"
+msgstr "Kan directory %s niet maken. (errno = %d)"
+
+#: src/slrnpull.c:367
+#, c-format
+msgid "Error reading %s."
+msgstr "Fout tijdens lezen van %s."
+
+#: src/slrnpull.c:375
+#, c-format
+msgid "Error parsing %s."
+msgstr "Fout tijdens uitvoeren %s."
+
+#: src/slrnpull.c:400 src/slrnpull.c:2108
+#, c-format
+msgid "Write to %s failed."
+msgstr "Schrijven naar %s mislukt."
+
+#: src/slrnpull.c:406
+#, c-format
+msgid "Error closing %s."
+msgstr "Fout tijdens sluiten %s."
+
+#: src/slrnpull.c:528
+#, c-format
+msgid "Unable to open active groups file %s"
+msgstr "Kan bestand %s met actieve groepen niet openen."
+
+#: src/slrnpull.c:564
+#, c-format
+msgid "%s: line %u: group name too long."
+msgstr "%s: regel %u: groep naam is te lang."
+
+#: src/slrnpull.c:581
+#, c-format
+msgid "%s: line %u: Group name contains whitespace."
+msgstr "%s: regel %u: Groep naam bevat spaties en/of tabs."
+
+#: src/slrnpull.c:599
+#, c-format
+msgid "%s: line %u: expecting positive integer in second field."
+msgstr "%s: regel %u: positief geheel getal verwacht in tweede veld."
+
+#: src/slrnpull.c:613
+#, c-format
+msgid "%s: line %u: expecting positive integer in third field."
+msgstr "%s: regel %u: positief geheel getal verwacht in derde veld."
+
+#: src/slrnpull.c:630
+#, c-format
+msgid "%s: line %u: group duplicated."
+msgstr "%s: regel %u: groep verdubbeld."
+
+#: src/slrnpull.c:638
+#, c-format
+msgid "%s: line %u: failed to add %s."
+msgstr "%s: regel %u: toevoegen %s mislukt."
+
+#: src/slrnpull.c:672 src/slrnpull.c:712 src/util.c:377 src/util.c:530
+#: src/util.c:549
+msgid "Out of memory."
+msgstr "Geheugen op."
+
+#: src/slrnpull.c:739
+msgid "Read failed."
+msgstr "Lezen mislukt."
+
+#: src/slrnpull.c:740
+#, c-format
+msgid "listgroup %s failed: %s"
+msgstr "listgroup %s mislukt: %s"
+
+#: src/slrnpull.c:812
+#, c-format
+msgid "The server may contain as many as %d articles in this group"
+msgstr "De server kan maximaal %d artikelen in deze groep hebben"
+
+#: src/slrnpull.c:814
+#, c-format
+msgid "Only examining last %u articles since this is a new group"
+msgstr ""
+"Alleen de laatste %u artikelen worden behandeld aangezien dit een nieuwe "
+"groep is."
+
+#: src/slrnpull.c:820
+msgid ""
+"Server failed to return proper code for XHDR.  The connection may be lost"
+msgstr ""
+"De server gaf een ongeldige code voor XHDR. De verbinding kan verbroken zijn"
+
+#: src/slrnpull.c:826
+#, c-format
+msgid "Server failed XHDR command: %s"
+msgstr "XHDR commando server mislukt: %s"
+
+#: src/slrnpull.c:884
+#, c-format
+msgid "%s: Retrieving articles %d-%d."
+msgstr "%s: Ophalen artikelen %d-%d."
+
+#: src/slrnpull.c:907
+#, c-format
+msgid "%s: No articles in specified range."
+msgstr "%s: Geen artikelen in opgegeven bereik."
+
+#: src/slrnpull.c:955
+#, c-format
+msgid "%u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu      "
+msgstr "%u/%u (%u verwijderd), Tijd: %02u:%02u:%02u, BPS: %lu       "
+
+#: src/slrnpull.c:965
+#, c-format
+msgid "%s: %u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu"
+msgstr "%s: %u/%u (%u verwijderd), Tijd: %02u:%02u:%02u, BPS: %lu"
+
+#: src/slrnpull.c:990
+#, c-format
+msgid "Error writing to overview database: %s:%d."
+msgstr "Fout tijdens schrijven naar overzichtsdatabase: %s:%d."
+
+#: src/slrnpull.c:1208
+msgid "Internal error: Buffer in get_heads not large enough!"
+msgstr "Interne fout: Buffer in get_heads is niet groot genoeg!"
+
+#: src/slrnpull.c:1245
+#, c-format
+msgid "Unable to open overview file %s.\n"
+msgstr "Kan overzichtsbestand %s niet openen.\n"
+
+#: src/slrnpull.c:1293
+#, c-format
+msgid "Error closing overview file for %s."
+msgstr "Fout tijdens sluiten overzichtsbestand voor %s."
+
+#: src/slrnpull.c:1329
+#, c-format
+msgid "%s: no new articles available."
+msgstr "%s geen artikelen beschikbaar."
+
+#: src/slrnpull.c:1336
+#, c-format
+msgid "%u duplicates removed leaving %u/%u."
+msgstr "%u dubbele berichten verwijderd met achterlating van %u/%u."
+
+#: src/slrnpull.c:1348
+#, c-format
+msgid "%s: No new articles available."
+msgstr "%s: Geen nieuwe berichten beschikbaar."
+
+#: src/slrnpull.c:1353
+#, c-format
+msgid "%s: %u articles available."
+msgstr "%s: %u artikelen beschikbaar."
+
+#: src/slrnpull.c:1360
+#, c-format
+msgid "%s: Only retrieving last %u articles."
+msgstr "%s: Alleen de laatste %u artikelen worden opgehaald."
+
+#: src/slrnpull.c:1409
+#, c-format
+msgid "Fetching articles for %s."
+msgstr "Artikelen ophalen voor %s."
+
+#: src/slrnpull.c:1414
+#, c-format
+msgid "Error selecting group %s.  Code = %d: %s"
+msgstr "Fout tijdens selecteren groep %s. Code = %d: %s"
+
+#: src/slrnpull.c:1447
+#, c-format
+msgid "Attempting to post %s..."
+msgstr "Plaatsen van %s..."
+
+#: src/slrnpull.c:1452
+#, c-format
+msgid "Unable to open file %s for posting."
+msgstr "Kan bestand %s niet openen voor plaatsen bericht."
+
+#: src/slrnpull.c:1459
+#, c-format
+msgid "Server failed post cmd.  Code = %d: %s"
+msgstr "Plaats commando server mislukt. Code = %d: %s"
+
+#: src/slrnpull.c:1481 src/slrnpull.c:1492
+#, c-format
+msgid "Write to server failed while posting %s."
+msgstr "Schrijven naar server mislukt tijdens plaatsen van %s."
+
+#: src/slrnpull.c:1501
+#, c-format
+msgid "Article %s rejected. status = %d: %s."
+msgstr "Artikel %s geweigerd. status = %d: %s."
+
+#: src/slrnpull.c:1508
+#, c-format
+msgid "Saving article in %s..."
+msgstr "Opslaan van artikel in %s..."
+
+#: src/slrnpull.c:1510 src/slrnpull.c:1626
+#, c-format
+msgid "Failed to rename %s to %s."
+msgstr "Naam wijzigen van %s in %s mislukt."
+
+#: src/slrnpull.c:1516
+#, c-format
+msgid "Unable to delete %s after posting."
+msgstr "Verwijderen %s mislukt na plaatsen."
+
+#: src/slrnpull.c:1525
+#, c-format
+msgid "%s directory does not exist.  Creating it..."
+msgstr "%s directory bestaat niet. Maken directory..."
+
+#: src/slrnpull.c:1533
+#, c-format
+msgid "chmod 0%o failed on %s."
+msgstr "chmod 0%o mislukt op %s."
+
+#: src/slrnpull.c:1557
+msgid "Server does not permit posting at this time."
+msgstr "Server staat plaatsen berichten momenteel niet toe."
+
+#: src/slrnpull.c:1578
+#, c-format
+msgid "Posting of %s failed."
+msgstr "Plaatsen van %s mislukt."
+
+#: src/slrnpull.c:1581
+#, c-format
+msgid "%s posted."
+msgstr "%s geplaatst."
+
+#: src/slrnpull.c:1603
+#, c-format
+msgid "Unable to create tmp active file (%s)."
+msgstr "Kan geen tijdelijk actief bestand (%s) maken."
+
+#: src/slrnpull.c:1633
+#, c-format
+msgid "Write failed to tmp active file (%s)."
+msgstr "Schrijven naar tijdelijk actief bestand (%s) mislukt."
+
+#: src/slrnpull.c:1645
+#, c-format
+msgid "Connection to %s lost. Performing shutdown."
+msgstr "Verbinding naar %s mislukt. Bezig met afsluiten."
+
+#: src/slrnpull.c:1657
+msgid "Error opening sltcp interface.\n"
+msgstr "Fout tijdens openen sltcp interface.\n"
+
+#: src/slrnpull.c:1698
+#, c-format
+msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
+msgstr "%lu bytes ontvangen, %lu bytes verstuurd in %ld seconden."
+
+#: src/slrnpull.c:1780
+#, c-format
+msgid ""
+"%s usage: %s [options]\n"
+" Options:\n"
+"  -d SPOOLDIR          Spool directory to use.\n"
+"  -h HOSTNAME          Hostname of NNTP server to connect to.\n"
+"  --debug FILE         Write dialogue with server to FILE.\n"
+"  --expire             Perform expiration, but do not pull news.\n"
+"  --help               Print this usage information.\n"
+"  --kill-log FILE      Keep a log of all killed articles in FILE.\n"
+"  --kill-score SCORE   Kill articles with a score below SCORE.\n"
+"  --logfile FILE       Use FILE as the log file.\n"
+"  --new-groups         Get a list of new groups.\n"
+"  --no-post            Do not post news.\n"
+"  --post-only          Post news, but do not pull new news.\n"
+"  --version            Show the version number.\n"
+msgstr ""
+"%s gebruik: %s [opties]\n"
+" Opties:\n"
+"  -d SPOOLDIR          De te gebruiken spool directory.\n"
+"  -h SERVER            Stel de server waarmee verbonden moet worden in.\n"
+"  --debug BESTAND      Schrijf dialoog met server naar BESTAND.\n"
+"  --expire             Laat artikelen verlopen, maar haal geen nieuws op.\n"
+"  --help               Toon dit help overzicht.\n"
+"  --kill-log BESTAND   Log alle verwijderde berichten in BESTAND\n"
+"  --kill-score SCORE   Verwijder artikelen met een score lager dan SCORE.\n"
+"  --logfile BESTAND    Gebruik BESTAND als het log bestand.\n"
+"  --new-groups         Haal een lijst op met nieuwe groepen.\n"
+"  --no-post            Plaats geen nieuws.\n"
+"  --version            Toon het versie nummer.\n"
+
+#: src/slrnpull.c:1804
+#, c-format
+msgid "%s version: %s\n"
+msgstr "%s versie: %s\n"
+
+#: src/slrnpull.c:1910
+#, c-format
+msgid "Unable to create debug file %s\n"
+msgstr "Kan geen debug bestand %s maken\n"
+
+#: src/slrnpull.c:1928
+msgid "The slrnpull spool directory has not been defined."
+msgstr "De slrnpull spool directory is niet opgegeven."
+
+#: src/slrnpull.c:1935
+msgid "slrnpull started in expire mode."
+msgstr "slrnpull is gestart in 'verloop' modus."
+
+#: src/slrnpull.c:1937
+msgid "slrnpull started."
+msgstr "slrnpull gestart."
+
+#: src/slrnpull.c:2017
+msgid "Checking for new groups."
+msgstr "Controleren op nieuwe groepen."
+
+#: src/slrnpull.c:2021
+#, c-format
+msgid "Unable to open new groups file %s.\n"
+msgstr "Kan geen nieuwe groepen bestand %s openen.\n"
+
+#: src/slrnpull.c:2118
+#, c-format
+msgid "%d new groups found."
+msgstr "%d nieuwe groepen gevonden."
+
+#: src/slrnpull.c:2125
+#, c-format
+msgid ""
+"%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
+"patch the file up for you."
+msgstr ""
+"%s lijkt corrupt, verwacht werd: NEWSGROUPS jjmmdd uummss GMT, Ik zal het "
+"bestand voor je in orde maken."
+
+#: src/slrnpull.c:2204
+msgid "Performing shutdown."
+msgstr "Bezig met afsluiten."
+
+#: src/slrnpull.c:2207
+msgid "Slrnpull exiting on signal."
+msgstr "Slrn sloot af vanwege signaal."
+
+#: src/slrnpull.c:2326
+#, c-format
+msgid "Creating Overview file for %s..."
+msgstr "Maken van Overzichts bestand voor %s..."
+
+#: src/slrnpull.c:2372 src/slrnpull.c:2502
+#, c-format
+msgid "Unable to stat %s."
+msgstr "Kan geen gegevens opvragen over %s."
+
+#: src/slrnpull.c:2429
+#, c-format
+msgid "opendir %s failed."
+msgstr "opendir %s mislukt."
+
+#: src/slrnpull.c:2456
+#, c-format
+msgid "malloc error. Unable to expire group %s."
+msgstr "malloc fout. Kan groep %s niet laten verlopen."
+
+#: src/slrnpull.c:2519
+#, c-format
+msgid "Unable to expire %s."
+msgstr "Kan %s niet laten verlopen."
+
+#: src/slrnpull.c:2524
+#, c-format
+msgid "%u articles expired in %s."
+msgstr "%u artikelen verlopen in %s."
+
+#: src/slrnpull.c:2547
+msgid "Termination requested.  Shutting down."
+msgstr "Terminatie gevraagd. Bezig met afsluiten."
+
+#: src/slrnpull.c:2595
+#, c-format
+msgid "Error reading name and password from %s."
+msgstr "Fout tijdens lezen naam en wachtwoord van %s."
+
+#: src/slrnpull.c:2608
+msgid "Empty user name.  Please check syntax of the authinfo file."
+msgstr "Lege gebruiksnaam. Controleer de syntax van het authinfo bestand."
+
+#: src/sltcp.c:202
+#, c-format
+msgid "%s: Unknown host.\n"
+msgstr "%s: Onbekende computer.\n"
+
+#: src/sltcp.c:248
+#, c-format
+msgid "trying %s\n"
+msgstr "proberen %s\n"
+
+#: src/sltcp.c:261
+#, c-format
+msgid "connection to %s, port %d:"
+msgstr "verbinden met %s, poort %d:"
+
+#: src/sltcp.c:270
+msgid "Unable to make connection. Giving up.\n"
+msgstr "Kan geen verbinding maken. Ik geef het op.\n"
+
+#: src/sltcp.c:407
+msgid "Unable to generate enough entropy\n"
+msgstr "Kan niet genoeg entropie genereren\n"
+
+#: src/sltcp.c:426
+msgid "SSL_CTX_new failed.\n"
+msgstr "SSL_CTX_new mislukt.\n"
+
+#: src/sltcp.c:441
+msgid "SSL_new failed\n"
+msgstr "SSL_new mislukt\n"
+
+#: src/sltcp.c:458
+msgid "Unexpected error: SSL connection closed\n"
+msgstr "Onverwachte fout: SSL verbinding verbroken\n"
+
+#: src/sltcp.c:461
+#, c-format
+msgid "System call failed: errno = %d\n"
+msgstr "Systeem aanroep mislukt: errno = %d\n"
+
+#: src/sltcp.c:464
+msgid "Possible protocol error\n"
+msgstr "Mogelijke protocol fout\n"
+
+#: src/sltcp.c:468
+#, c-format
+msgid "%s failed\n"
+msgstr "%s mislukt\n"
+
+#: src/sltcp.c:487
+msgid ""
+"\n"
+"\n"
+"*** This program does not support SSL\n"
+msgstr ""
+"\n"
+"\n"
+"*** Dit programma ondersteund geen SSL\n"
+
+#: src/sltcp.c:495
+msgid "Memory Allocation Failure.\n"
+msgstr "Geheugen Aanvragen mislukt.\n"
+
+#. Yuk.  SSL_set_fd returns 0 upon failure
+#: src/sltcp.c:527
+msgid "SSL_set_fd failed\n"
+msgstr "SSL_set_fd mislukt\n"
+
+#: src/sltcp.c:536
+msgid "SSL_connect"
+msgstr "SSL_connect"
+
+#: src/spool.c:793
+#, c-format
+msgid "Unable to open directory %s"
+msgstr "Kan geen directory openen"
+
+#: src/spool.c:1022
+#, c-format
+msgid "Local spool directory '%s' doesn't exist."
+msgstr "Lokale spool directory '%s' bestaat niet."
+
+#: src/startup.c:164
+msgid "Memory Allocation Failure"
+msgstr "Geheugen Aanvragen Mislukt"
+
+#: src/startup.c:166
+#, c-format
+msgid ""
+"%s: Line %d\n"
+"%sMemory Allocation Failure"
+msgstr ""
+"%s: Regel %d\n"
+"%sGeheugen Aanvragen Mislukt"
+
+#: src/startup.c:185
+#, c-format
+msgid ""
+"%s: Error encountered processing line %d\n"
+"%s"
+msgstr ""
+"%s: Fout opgetreden tijdens behandelen regel %d\n"
+"%s"
+
+#: src/startup.c:194
+#, c-format
+msgid ""
+"%s: Command is obsolete on line %d:\n"
+"%s"
+msgstr ""
+"%s: Commando is verouderd op regel %d:\n"
+"%s"
+
+#: src/startup.c:196
+#, c-format
+msgid ""
+"The new usage is:\n"
+"set %s\n"
+msgstr ""
+"Het nieuwe gebruik is:\n"
+"set %s\n"
+
+#: src/startup.c:270 src/startup.c:325
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sNo such keymap: %s"
+msgstr ""
+"%s: regel %d:\n"
+"%sOnbekende keymap: %s"
+
+#: src/startup.c:285
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%serror defining key."
+msgstr ""
+"%s: regel %d:\n"
+"%skan toets niet definieren."
+
+#: src/startup.c:304
+#, c-format
+msgid ""
+"%s: Obsolete function name on line %d: %s\n"
+"The new name is: %s"
+msgstr ""
+"%s: Verouderde functie naam in regel %d: %s\n"
+"De nieuwe naam is: %s"
+
+#: src/startup.c:360
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sInvalid regular expression."
+msgstr ""
+"%s: regel %d:\n"
+"%sOngeldige reguliere expressie."
+
+#: src/startup.c:376
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sToo many expressions specified."
+msgstr ""
+"%s: regel %d:\n"
+"%sTe veel expressies gespecificeerd."
+
+#: src/startup.c:765
+#, c-format
+msgid ""
+"%s: Obsolete variable name on line %d: followup\n"
+"The new name is followup_string"
+msgstr ""
+"%s: Verouderde variabele naam op regel %d: followup\n"
+"De nieuwe naam is followup_string"
+
+#: src/startup.c:803
+#, c-format
+msgid ""
+"%s: Obsolete variable on line %d: %s\n"
+"Please make use of the header_display_format command instead."
+msgstr ""
+"%s: Verouderde variabele op regel %d: %s\n"
+"Gebruik de header_display_format variabele in diens plaats."
+
+#: src/startup.c:811
+#, c-format
+msgid ""
+"%s: Obsolete variable on line %d: %s\n"
+"Please make use of the group_display_format variable instead."
+msgstr ""
+"%s: Verouderde variabele in regel %d: %s\n"
+"Gebruik de group_display_format variabele in diens plaats."
+
+#: src/startup.c:818
+#, c-format
+msgid ""
+"%s: Obsolete spelling on line %d:\n"
+"Use \"process_verbatim_marks\" instead of \"process_verbatum_marks\"."
+msgstr ""
+"%s: Verlopen spelling in regel %d:\n"
+"Gebruik \"process_verbatim_marks\" in plaats van \"process_verbatum_marks\"."
+
+#: src/startup.c:827
+#, c-format
+msgid "%s: Obsolete variable on line %d: %s"
+msgstr "%s: Verlopen spelling in regel %d: %s"
+
+#: src/startup.c:998
+#, c-format
+msgid ""
+"%s: Obsolete spelling on line %d:\n"
+"Use \"verbatim\" instead of \"verbatum\""
+msgstr ""
+"%s: Verlopen spelling in regel %d:\n"
+"Gebruik \"verbatim\" in plaats van \"verbatum\""
+
+#: src/startup.c:1038 src/startup.c:1068
+#, c-format
+msgid "%s is not a color object"
+msgstr "%s is geen kleur object"
+
+#: src/startup.c:1047
+msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
+msgstr ""
+"Vanwege een limitatie in S-Lang is deze functie alleen beschikbaar in Unix."
+
+#: src/startup.c:1160
+#, c-format
+msgid "%s is not a valid fully-qualified host name."
+msgstr "%s is geen volledig-gekwalificeerde computernaam."
+
+#: src/startup.c:1450
+msgid "Username: "
+msgstr "Gebruikersnaam: "
+
+#: src/startup.c:1465
+msgid "Password: "
+msgstr "Wachtwoord: "
+
+#: src/startup.c:1557
+msgid "Unable to initialize S-Lang readline library."
+msgstr "Kan S-Lang readline library niet initialiseren."
+
+#: src/startup.c:1562
+msgid "Error initializing S-Lang preprocessor."
+msgstr "Fout tijdens initialiseren S-Lang preprocessor."
+
+#: src/startup.c:1568
+#, c-format
+msgid "Reading startup file %s."
+msgstr "Lezen opstart bestand %s."
+
+#: src/startup.c:1594
+#, c-format
+msgid "Server object '%s' is not supported."
+msgstr "Server object '%s' is niet ondersteund."
+
+#: src/startup.c:1598
+#, c-format
+msgid "Post object '%s' is not supported."
+msgstr "Plaatsen object '%s' is niet ondersteund."
+
+#: src/startup.c:1617
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sFile not opened: %s"
+msgstr ""
+"%s: regel %d:\n"
+"%sBestand niet geopend: %s"
+
+#: src/util.c:340
+msgid "File name too long."
+msgstr "Bestandsnaam te lang."
+
+#: src/util.c:370
+msgid "Memory allocation failure."
+msgstr "Fout tijdens aanvragen geheugen."
+
+#: src/util.c:433
+msgid "Out of memory"
+msgstr "Te weinig geheugen beschikbaar"
+
+#: src/util.c:472
+msgid "Pattern too long for buffer"
+msgstr "Pattern te lang voor buffer"
+
+#: src/util.c:556
+#, c-format
+msgid "Cygwin conversion of %s failed."
+msgstr "Cygwin conversie van %s mislukt."
+
+#: src/util.c:578
+#, c-format
+msgid "Error closing file.  File system full? (errno = %d)"
+msgstr "Fout tijdens sluiten bestand. Bestandssysteem vol? (foutnr = %d)"
+
+#: src/util.c:671 src/util.c:678
+#, c-format
+msgid "Error opening %s"
+msgstr "Fout tijdens openen %s"
+
+#: src/util.c:687
+#, c-format
+msgid "Write Error: %s"
+msgstr "Schrijf Fout: %s"
+
+#: src/version.c:90
+msgid ""
+"\n"
+" COMPILE TIME OPTIONS:"
+msgstr ""
+"\n"
+" OPTIES TIJDENS COMPILEREN:"
+
+#: src/version.c:101
+msgid ""
+"\n"
+"  Backends:"
+msgstr ""
+"\n"
+"  Basis:"
+
+#: src/version.c:105
+msgid ""
+"\n"
+"  External programs / libs:"
+msgstr ""
+"\n"
+"  Externe programma's / libs:"
+
+#: src/version.c:109
+msgid ""
+"\n"
+"  Features:"
+msgstr ""
+"\n"
+"  Functies:"
+
+#: src/version.c:155
+msgid "\t* Note: This version is a developer preview.\n"
+msgstr "\t* N.B.: Deze versie is een proefversie voor ontwikkelaars.\n"
+
+#: src/version.c:157
+#, c-format
+msgid "S-Lang Library Version: %s\n"
+msgstr "S-Lang Library Versie: %s\n"
+
+#: src/version.c:160
+#, c-format
+msgid "\t* Note: This program was compiled against version %s.\n"
+msgstr "\t* N.B.: Dit programma is gecompileerd tegen versie %s.\n"
+
+#: src/version.c:164
+#, c-format
+msgid "Compiled at: %s %s\n"
+msgstr "Gecompileerd om: %s %s\n"
+
+#: src/version.c:166
+#, c-format
+msgid "Operating System: %s\n"
+msgstr "Besturingssysteem: %s\n"
+
+#: src/version.c:170
+#, c-format
+msgid ""
+" DEFAULTS:\n"
+"  Default server object:     %s\n"
+msgstr ""
+" STANDAARD WAARDES:\n"
+"  Standaard server object:     %s\n"
+
+#: src/version.c:173
+#, c-format
+msgid "  Default posting mechanism: %s\n"
+msgstr "  Standaard manier van bericht plaatsen: %s\n"
+
+#: src/xover.c:953
+msgid "Server closed connection.  Cannot recover."
+msgstr "Server heeft verbinding gesloten. Herstel uitgesloten."
+
+#: src/xover.c:999
+msgid "Server does not provide this capability."
+msgstr "Server ondersteunt deze functie niet."
+
+#~ msgid "  version %s\n"
+#~ msgstr "  versie %s\n"
+
+#~ msgid ""
+#~ "***Warning: Unable to find a unique fully-qualified host name.\r\n"
+#~ "            slrn will not generate any Message-IDs.\r\n"
+#~ "            Please note that the \"hostname\" setting does not affect "
+#~ "this;\r\n"
+#~ "            see the \"slrn reference manual\" for details.\r\n"
+#~ msgstr ""
+#~ "***Waarschuwing: Kan geen unieke volledige-gekwalificeerde computernaam "
+#~ "vinden.\r\n"
+#~ "            slrn zal geen Message-IDs genereren.\r\n"
+#~ "            N.B. De \"hostname\" optie heeft geen invloed hierop;\r\n"
+#~ "            Kijk in de \"slrn referentie handleiding\" voor details.\r\n"

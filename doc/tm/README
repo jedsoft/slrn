@@ -1,0 +1,38 @@
+The slrn documentation in this directory is written in text-macro
+format.  This format was invented by me and currently can only be
+processed by the jed text editor and the tm2txt program that is
+distributed with the S-Lang library.  In fact, ../slrnfuns.txt was
+created from slrnfuns.tm via tm2txt.  The jed editor converts the .tm
+source to SGML and from there it is converted to other formats, e.g.,
+html, via SGML-Tools.
+
+The advantage of text-macro over SGML is that I believe it is much
+easier to write in text-macro than in raw SGML.  In fact, the text-macro
+source is much easier to comprehend than SGML.  For example, the
+\function macro allows the text-macro source to look like
+
+    \function{bla bla}
+        .
+	.
+    \done
+
+whereas the equivalent SGML source would look like:
+
+    <sect><bf>bla bla</bf><label id="bla bla"><p><descrip>
+        .
+	.
+    </descrip><p>
+
+Of course this is possible because \function is a macro defined via
+
+   #d function#1 <sect><bf>$1</bf>\label{$1}}<descrip>
+
+(Note that `\label' is another macro) Now suppose that I wanted the
+section to appear in some other font, e.g., <tt>.  Then it is only
+necessary to make the change to the function macro:
+
+   #d function#1 <sect><tt>$1</tt>\label{$1}}<descrip>
+
+
+
+    

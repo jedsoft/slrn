@@ -1,0 +1,43 @@
+SLRN may be used to access a secure server using SSL.  To do this, SSL
+support must be enabled.
+
+Compiling SLRN with SSL support
+-------------------------------
+
+To build slrn with SSL support, you must first obtain and install the
+OpenSSL library from http://www.openssl.org.  Beware that some
+countries may have import/export regulations concerning such software.
+If you get arrested, do not call me!  Just as important, do not
+contact me if you have trouble compiling OpenSSL --- I have nothing to
+do with the development of OpenSSL.
+
+After installing OpenSSL, configure slrn for SSL support, e.g.,
+
+   ./configure --with-ssl
+
+By default, OpenSSL will install itself in /usr/local/ssl.  If you
+install it elsewhere, e.g., $HOME/ssl, then use:
+
+   ./configure --with-ssl=$HOME/ssl
+
+After compiling it, `slrn --version' should indicate SSL support.
+
+
+Using SLRN with secure servers
+------------------------------
+
+As far as slrn is concerned, only those servers whose names are
+prefixed with "snews://" are secure and require SSL.  So,
+to access a secure server such as netscape's secnews.netscape.com,
+simply prefix the NNTP host name with "snews://".  For instance, 
+
+   slrn -h snews://secnews.netscape.com --create
+
+In your .slrnrc file, you may want to add a line such as:
+
+   server "snews://secnews.netscape.com" ".newsrc-netscape"
+
+to indicate that the file ".newsrc-netscape" should be used for this
+server.
+
+That's it!

@@ -1,0 +1,158 @@
+==============================================================================
+			    S L R N - First Steps
+==============================================================================
+
+
+This document explains the first things you have to do after having
+installed slrn. It doesn't matter how you installed slrn (from source or
+using a binary package), the first steps remain the same on any Unix system.
+If you installed slrn as a binary package, however, it is possible that your
+distributor has already done some work for you.
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+			   Checking the "rc" file
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+The first thing we want to do is to customize slrn's configuration file. 
+
+If you installed slrn from source, you'll find an example slrn.rc at
+$INSTALL_PREFIX/share/doc/slrn/slrn.rc.
+
+If you installed slrn from a binary package, have a look whether your
+distributor has included a global slrn.rc and/or an example slrn.rc. If you
+cannot find a file named "slrn.rc" or any other file which seems to be a
+configuration file for slrn, you can get an example from
+<http://slrn.sourceforge.net/docs/>.
+
+If a global configuration file exists, it will also be read before your
+personal one on each startup, so you might want to look at the default
+settings it makes for you.
+
+If you don't have a configuration file for slrn yet (check your home
+directory), you may copy the example configuration file and edit it with
+your favourite editor:
+
+  cp /path/to/slrn.rc ~/.slrnrc
+  vi ~/.slrnrc
+
+For the exact syntax and descriptions of all variables, have a look at the
+"slrn reference manual" which comes with slrn.
+
+If your "From:" header cannot be generated from your local account, you
+should at least set the following variables:
+
+  set hostname "doe.com"    % sets the domain of your adress to "doe.com"
+  set username "john"       % sets the localpart of your adress to "john"
+  set realname "John Doe"   % sets your realname to "John Doe"
+
+In this example, the resulting "From:" header is "John Doe <john@doe.com>"
+
+The sample slrn.rc file is well documented; feel free to make more changes
+to it if you like.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+			    Choosing a newsserver
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+The second thing we want to do is to choose a newsserver to connect to. The
+easiest way to tell slrn which server to use is to set the environment
+variable "NNTPSERVER" to the hostname of your preferred newsserver. In most
+cases, this is a server on a machine you have a permanent network connection
+to (or even localhost, if you are running a local server like Leafnode).
+
+To set it permanently, add one of the following lines to the configuration
+file of your favourite shell:
+
+  NNTPSERVER='server_name' && export NNTPSERVER     (for sh/ksh/bash/zsh)
+  setenv NNTPSERVER 'server_name'                   (for csh/tcsh)
+
+If you want to use more than one newsserver set the $NNTPSERVER to your
+primary server and access the other server by starting slrn with "slrn -h
+server.name".
+
+Note: When using different servers, you need to specify separate newsrc
+      files using the "server" configuration command.
+
+If your newsserver requires authentication, you also need to use the
+"nnrpaccess" command. "nnrpaccess" and "server" are described in detail in
+the reference manual.
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+			    Do the first connect.
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+Run "slrn --create" at your shell prompt to start slrn and retrieve a list
+of all active newsgroups from the server.  This can take some time if your
+connection is slow; future startups (without that flag) are much faster.
+
+When slrn switches to full screen mode, you can press 'q' to exit it again.
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+		 Get the newsgroups descriptions (optional)
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+Note: You only need to do this if you want to see the newsgroup descriptions
+      in slrn. It works only if your newsserver has the group descriptions
+      in its database.
+
+Run "slrn -d" at your shell prompt and wait until slrn quits. This usually
+results in a large download which takes even longer than the "--create" step
+described before.
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+			     Choosing an editor
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+Slrn has no builtin editor. That way, you can use any editor you like. There
+are two ways to tell slrn which editor it should use.
+
+If you want to use the same editor for all applications on your system, just
+set the enviroment variables "EDITOR" and/or "VISUAL" to your preferred
+editor (if you haven't done this already). slrn will heed this.
+
+If you want to use a special editor or just pass special arguments to it,
+set the variable "editor_command" in your .slrnrc e.g.:
+
+set editor_command "vim '+set tw=72' +%d '%s'"
+
+starts vim with a textwidth of 72 chars and the cursor on the first line of
+the messages body. For a more detailed discussion of this, see the entry
+"editor_command" in the reference manual.
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+			   Subscribe to newsgroups
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+Start slrn from your shellprompt. Some groups which are useful for usenet /
+slrn beginners should already be subscribed. You can now subscribe to any
+group you are interested in:
+
+Press the `L' (capital-L!) key to list all groups matching a specified
+pattern, e.g. comp.*unix*; then, go through the list and use the `s' key to
+subscribe.
+
+Now, you can start reading your news. To see the online help, press `?'.
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+			  Getting more information
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+At first, you should have a look at the "README" file from the source
+distribution. It gives an overview of all the documentation distributed with
+slrn. If you cannot find this file, <http://slrn.sourceforge.net/docs/> is a
+good point to start.
+
+This document is written by Felix Schueller <fschueller@netcologne.de>.

@@ -1,0 +1,44 @@
+-*- text -*-
+Questions:
+
+1.  Why can't I post when using slrnpull?
+2.  How do I get a full list of newsgroups?
+
+Answers:
+
+1.  Why can't I post when using slrnpull?
+
+   In order to post an article via slrnpull, slrn needs to place the
+   article in the slrnpull out.going directory.  Two things are
+   necessary for this to happen:
+   
+       a.  slrn must know that you are using the slrnpull out.going
+           directory for posts.  Make sure the line 
+	     
+	       set use_slrnpull 1
+
+           is in your .slrnrc file.  This indicates to slrn that the
+	   news spool is an slrnpull news spool.
+	   
+       b.  You must have write permission to the out.going directory
+           in order for slrn to place your article in that directory.
+	   The permissions may be changed via the Unix command:
+	   
+	       chmod ugo+rwxt out.going
+	       
+	   Do not put this in your .slrnrc file!
+
+2.  How do I get a full list of newsgroups?
+   
+   You will have to go online for that.  Run slrn as follows:
+   
+     slrn --nntp -h YOUR.NEWS.SERVER -a -f groups.dat --create
+     
+   This will start slrn and down-load the groups and put them in the
+   file groups.dat.  Before actually doing this, modify your .slrnrc
+   (or slrn.rc) file to set
+   
+         set write_newsrc_flags 0
+	 
+   so that all groups will be written out to groups.dat.
+

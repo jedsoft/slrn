@@ -1,0 +1,138 @@
+-*- mode: text; mode: fold; -*-
+The purpose of this note is to provide some instructions on extending the
+newsreader in its macro language.
+
+{{{ Introduction 
+      
+When slrn is started, it reads the .slrnrc user initialization file.
+That file may contain one or more `interpret' commands causing the
+newsreader to load the specified S-Lang scripts, e.g.,
+
+    interpret ".slrn.sl"
+    interpret "src/slrn/macros/search.sl"
+
+Each script must obey the syntax of the S-Lang language.  See the
+slang documentation from www.s-lang.org more more information about
+the syntax.
+
+Several pre-written macros are included in the slrn distribution in
+the macro subdirectory and many more are available from various pages all
+over the web.
+
+}}}
+---------------------------------------------------------------------------
+Defining Key Macros {{{
+---------------------------------------------------------------------------
+
+    Although one is able to bind keys to specific functions via lines
+    of the form
+    
+         setkey group "refresh_groups"  "G"
+	 
+    in the .slrnrc file, it is not possible to defined more
+    complicated actions in this manner.  However, macros can be
+    defined by using a S-Lang script.  For example, the
+    `refresh_groups' internal function refreshes the newsgroups but it
+    does not cause the cursor to move to the top of the newsgroup
+    list.  On the other hand, the internal function `bob' moves to the
+    top of the list but it does not refresh the groups.  One can
+    define a S-Lang function to perform both actions:
+    
+         define refresh_groups_bob ()
+	 {
+	     call ("refresh_groups");
+	     call ("bob");
+	 }
+	 
+    and bind it to a key:
+    
+         definekey ("refresh_groups_bob", "g", "group");
+	 
+    The `definekey' function takes 3 arguments:
+    
+         function to execute
+	 keybinding
+	 keymap name   ("article" or "group")
+	 
+    Here is another macro that may be used in article mode.  It
+    performs a regular expression search for subjects.
+	
+	variable Last_Search_Str = "";
+	define re_subject_search_forward ()
+	{
+	   variable str;
+	   
+	   ERROR_BLOCK
+	     {
+	       () = header_up (1);
+	     }
+	
+	   !if (header_down (1)) return;
+	
+	   str = read_mini ("Subject re-search fwd", Last_Search_Str, "");
+	
+	   !if (strlen (str))
+	     return;
+	
+	   Last_Search_Str = str;
+	   !if (re_fsearch_subject (str))
+	     error ("Not found.");
+	}
+	
+    To bind it to, e.g., `s' in the article keymap, use:
+   
+	definekey ("re_subject_search_forward", "s", "article");
+    
+
+    Some slrn keyboard functions require a ``prefix argument''.
+    Many people find the use of prefix arguments somewhat strange.
+    For example, instead of typing `ESC 1 ESC p' to reconstruct a thread,
+    one can simply use the function:
+    
+        define my_recreate_thread ()
+	{
+	    set_prefix_argument (1);
+	    call ("get_parent_header");
+	}
+	
+   Here is a function that pipes the current article to a
+   command called `most' (a paging program similar to more/less):
+   
+        define pipe_to_most ()
+	{
+	    pipe_article ("most");
+	}
+	definekey ("pipe_to_most", "&", "article");
+ 
+   Here it has been bound to the `&' key.  Most likely one will want
+   to pipe the article to a shell script for further processing.
+   
+   Some of the built-in keyboard functions will prompt for a
+   string.  For example, in article mode, pressing the `:' key will
+   prompt for an filename.  The function `set_input_string' may be
+   used to provide a response to such a prompt, e.g.,
+   
+      % The `:' command will prompt for a filename.
+      set_input_string ("/tmp/decoded");
+      call ("decode");
+
+   For functions that prompt for a single character, such as 
+   
+      Do you really want to quit? [Y]es No
+      
+   a similar intrinsic function, set_input_chars, may be used to
+   provide the answer.
+   
+}}}   
+---------------------------------------------------------------------------
+Hooks and Command Reference
+---------------------------------------------------------------------------
+The above examples used ``intrinsic'' functions such as `call',
+`set_integer_variable', etc.  A description of all slrn intrinsic functions
+that are available via the interpreter is included in slrnfuns.txt.  A
+comprehensive list of all hooks into the newsreader is now also included in
+that file.
+
+The S-Lang language includes many other intrinsics, such as `strcmp' and
+`is_substr' which are described in the file slangfun.txt that comes with
+S-Lang itself.
