@@ -105,8 +105,6 @@ static char *create_message_id (int *error)/*{{{*/
 #endif
 
    *error=0; /* default: create_message_id() has success*/
-   if (Slrn_Generate_Message_Id == 0)
-     return NULL;
 
    if (Slrn_Use_Recom_Id) /* Try to find the Id the server recommends*/
      {
@@ -118,6 +116,9 @@ static char *create_message_id (int *error)/*{{{*/
 #if ! SLRN_HAS_GEN_MSGID
    return NULL;
 #else
+   if (Slrn_Generate_Message_Id == 0)
+     return NULL;
+   
    while (1)
      {
 	if ((Slrn_User_Info.posting_host == NULL)
@@ -1233,6 +1234,9 @@ static void post_printf(FILE *fcc_fp, char *fmt, ...) /*{{{*/
 
    va_start(ap, fmt);
    Slrn_Post_Obj->po_vprintf(fmt, ap);
+   va_end(ap);
+
+   va_start(ap, fmt);
    vfprintf(fcc_fp, fmt, ap);
    va_end(ap);
 }

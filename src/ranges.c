@@ -264,13 +264,17 @@ Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *a, Slrn_Range_Type *b) 
    do
      {
 	/* skip ranges that don't intersect at all */
-	if (b != NULL)
-	  while ((a != NULL) && (a->max < b->min))
-	    a = a->next;
-	
-	if (a != NULL)
-	  while ((b != NULL) && (b->max < a->min))
-	    b = b->next;
+	do
+	  {
+	     if (b != NULL)
+	       while ((a != NULL) && (a->max < b->min))
+		 a = a->next;
+	     
+	     if (a != NULL)
+	       while ((b != NULL) && (b->max < a->min))
+		 b = b->next;
+	  }
+	while ((a!=NULL) && (b!=NULL) && (a->max < b->min));
 	
 	/* append a range containing the next intersection */
 	if ((a!=NULL) && (b!=NULL))
