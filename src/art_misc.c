@@ -1030,7 +1030,7 @@ void slrn_art_mark_pgp_signature (Slrn_Article_Type *a) /*{{{*/
 	     l->flags &= ~QUOTE_LINE;
 	     
 	     if ((NULL != (l = l->next)) &&
-		 (*l->buf != 0))
+		 !strncmp (l->buf, "Hash: ", 6))
 	       {
 		  /* catch the `Hash: ... ' line */
 		  l->flags |= PGP_SIGNATURE_LINE;
@@ -1038,6 +1038,16 @@ void slrn_art_mark_pgp_signature (Slrn_Article_Type *a) /*{{{*/
 		  
 		  l = l->next;
 	       }
+	     if ((NULL != l) &&
+		 !strncmp (l->buf, "NotDashEscaped: ", 16))
+	       {
+		  /* the optional "NotDashEscaped: ..." line */
+		  l->flags |= PGP_SIGNATURE_LINE;
+		  l->flags &= ~QUOTE_LINE;
+		  
+		  l = l->next;		  
+	       }
+	     
 	     continue;
 	  }
 
@@ -1060,14 +1070,14 @@ void slrn_art_mark_pgp_signature (Slrn_Article_Type *a) /*{{{*/
 		  l = l->next;
 		  continue;
 	       }
-	     
+
 	     l0->flags |= PGP_SIGNATURE_LINE;
-	     l0->flags &= ~QUOTE_LINE;
+	     l0->flags &= ~(QUOTE_LINE|SIGNATURE_LINE);
 	     do
 	       {
 		  l0 = l0->next;
 		  l0->flags |= PGP_SIGNATURE_LINE;
-		  l0->flags &= ~QUOTE_LINE;
+		  l0->flags &= ~(QUOTE_LINE|SIGNATURE_LINE);
 	       }
 	     while (l0 != l);
 	     return;

@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003  Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004  Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -2921,8 +2921,7 @@ static void forward_article (void) /*{{{*/
    
    if (0 != *Slrn_User_Info.replyto)
      {
-	fprintf (fp, "Reply-To: %s (%s)\n", 
-		 Slrn_User_Info.replyto, Slrn_User_Info.realname);
+	fprintf (fp, "Reply-To: %s\n", Slrn_User_Info.replyto);
 	n++;
      }
    putc ('\n', fp);

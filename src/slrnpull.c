@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -2620,7 +2620,7 @@ static char *read_header_from_file (char *file, int *has_body)
      {
 	unsigned int len;
 	
-	if (*line == '\n')
+	if ((*line == '\n') || (*line == '\r'))
 	  break;
 
 	len = strlen (line);
@@ -2645,7 +2645,7 @@ static char *read_header_from_file (char *file, int *has_body)
 	buffer_len += len;
      }
    
-   *has_body = (line != NULL) && (*line == '\n');
+   *has_body = (line != NULL) && ((*line == '\n') || (*line == '\r'));
    
    fclose (fp);
    return mbuf;
