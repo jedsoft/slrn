@@ -1007,6 +1007,24 @@ void slrn_art_mark_pgp_signature (Slrn_Article_Type *a) /*{{{*/
 	Slrn_Article_Line_Type *l0;
 	int count;
 
+	if ((l->buf[0] == '-')
+	    && !strcmp (l->buf, "-----BEGIN PGP SIGNED MESSAGE-----"))
+	  {
+	     l->flags |= PGP_SIGNATURE_LINE;
+	     l->flags &= ~QUOTE_LINE;
+	     
+	     if ((NULL != (l = l->next)) &&
+		 (*l->buf != 0))
+	       {
+		  /* catch the `Hash: ... ' line */
+		  l->flags |= PGP_SIGNATURE_LINE;
+		  l->flags &= ~QUOTE_LINE;
+		  
+		  l = l->next;
+	       }
+	     continue;
+	  }
+
 	if ((l->buf[0] != '-')
 	    || strcmp (l->buf, "-----BEGIN PGP SIGNATURE-----"))
 	  {

@@ -328,7 +328,7 @@ static int slrn_cc_file (char *file, char *to, char *msgid)
    linenum = 0;
    
    if (msgid != NULL)
-     fprintf (pp, "Message-Id: <slrn%s@%s>\n", 
+     fprintf (pp, "Message-ID: <slrn%s@%s>\n", 
 	      msgid, Slrn_User_Info.posting_host);
    
    
@@ -514,7 +514,7 @@ static int check_file_for_posting (char *file)
 #if ! SLRN_HAS_GEN_MSGID
 	if (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Message-Id:", 11))
 	  {
-	     err = _("This news reader will not accept user generated Message-Ids.");
+	     err = _("This news reader will not accept user generated Message-IDs.");
 	     break;
 	  }
 #endif
@@ -745,7 +745,7 @@ int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid)
 		    }
 		  slrn_add_date_header (outfp);
 		  if ((has_messageid == 0) && (msgid != NULL))
-		    fprintf (outfp, "Message-Id: <slrn%s@%s>\n", msgid,
+		    fprintf (outfp, "Message-ID: <slrn%s@%s>\n", msgid,
 			     Slrn_User_Info.posting_host);
 #if SLRN_HAS_MIME
 		  if (Slrn_Use_Mime & MIME_ARCHIVE)
@@ -1181,7 +1181,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 		       Slrn_Last_Message_Id = msgid;
 		       if (msgid != NULL)
 			 {
-			    Slrn_Post_Obj->po_printf ("Message-Id: <slrn%s@%s>\n", msgid, Slrn_User_Info.posting_host);
+			    Slrn_Post_Obj->po_printf ("Message-ID: <slrn%s@%s>\n", msgid, Slrn_User_Info.posting_host);
 			 }
 		    }
 #endif
@@ -1210,7 +1210,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 
 	     if (is_empty_header (linep)) continue;
 #if SLRN_HAS_GEN_MSGID
-	     if (!slrn_case_strncmp ((unsigned char *)"Message-Id: ",
+	     if (!slrn_case_strncmp ((unsigned char *)"Message-ID: ",
 				     (unsigned char *)linep, 12))
 	       has_messageid = 1;
 #endif	     

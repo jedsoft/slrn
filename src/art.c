@@ -3229,6 +3229,12 @@ static void followup (void) /*{{{*/
 	    && (l->flags & SIGNATURE_LINE))
 	  break;
 	
+	if (strip_sig && (l->flags & PGP_SIGNATURE_LINE))
+	  {
+	     l = l->next;
+	     continue;
+	  }
+	
 	if ((*l->buf == 0) && (Slrn_Smart_Quote & 0x02))
 	  fputc ('\n', fp);
 	else
@@ -5688,7 +5694,7 @@ static void locate_header_by_msgid (void) /*{{{*/
    *buf = 0;
    *msgid = 0;
    
-   if (slrn_read_input (_("Enter Message-Id: "), NULL, msgid, 1, 0) <= 0) return;
+   if (slrn_read_input (_("Enter Message-ID: "), NULL, msgid, 1, 0) <= 0) return;
    
    if (*msgid != '<')
      {

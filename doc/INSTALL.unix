@@ -143,7 +143,7 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
     Currently, these verbatim marks are only supported by slrn.
 
 --disable-gen-mid
-    This prevents slrn from generating its own Message-Ids.
+    This prevents slrn from generating its own Message-IDs.
 
 --enable-mid-cache
     Make slrn cache Message-IDs during a session and use them to eliminate

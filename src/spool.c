@@ -354,7 +354,7 @@ static int spool_find_artnum_from_msgid (char *msgid)
    
 	for (n = Spool_Min_Artnum; n <= Spool_Max_Artnum; n++)
 	  {
-	     if (-1 == spool_one_xhdr_command ("Message-Id", n, buf, sizeof (buf)))
+	     if (-1 == spool_one_xhdr_command ("Message-ID", n, buf, sizeof (buf)))
 	       continue;
 	     
 	     p = slrn_skip_whitespace (buf);

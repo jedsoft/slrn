@@ -159,7 +159,7 @@ mode and allow you to manipulate the header window.
    in the header list and return to that position later, e.g.,
 #v+
        % Save the current position
-       variable msgid = extract_article_header ("Message-Id");
+       variable msgid = extract_article_header ("Message-ID");
           .
           .
        % Return to previous position.

@@ -814,7 +814,7 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
 	log_message (_("Only examining last %u articles since this is a new group"), g->max_to_get);
      }
 
-   status = nntp_server_vcmd (s, "XHDR Message-Id %u-", max);
+   status = nntp_server_vcmd (s, "XHDR Message-ID %u-", max);
    if (status == -1)
      {
 	log_error (_("Server failed to return proper code for XHDR.  The connection may be lost")); 

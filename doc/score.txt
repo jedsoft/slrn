@@ -13,7 +13,7 @@ difference there).  The news overview file typically contains:
       * Subject
       * From
       * Date
-      * Message-Id
+      * Message-ID
       * References
       * Bytes
       * Lines

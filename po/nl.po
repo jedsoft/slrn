@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Slrn 0.9.7.2\n"
+"Project-Id-Version: Slrn 0.9.7.4\n"
 "POT-Creation-Date: 2002-03-13 14:15+0100\n"
-"PO-Revision-Date: 2001-10-02 20:08+0200\n"
+"PO-Revision-Date: 2002-04-27 10:20+0200\n"
 "Last-Translator: Jelmer Vernooij <jelmer@nl.linux.org>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -134,22 +134,22 @@ msgstr "Versturen van artikel onderbroken of verbinding verbroken."
 #: src/art.c:2142
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
-msgstr ""
+msgstr "#%2d/%-2d: Gelezen %4d/%-4d regels (%s) met %.2fkB/sec"
 
 #: src/art.c:2146
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
-msgstr ""
+msgstr "#%2d/%-2d: Gelezen %4d/%-4d regels (%s)"
 
 #: src/art.c:2152
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
-msgstr ""
+msgstr "[%d] Tot nu toe %d/%d regels gelezen met %.2fkB/sec"
 
 #: src/art.c:2155
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
-msgstr ""
+msgstr "[%d] Tot nu toe %d/%d regels gelezen"
 
 #: src/art.c:2195
 msgid "Server sent empty article."
@@ -218,7 +218,7 @@ msgstr "Opvolgend bericht naar %s zoals plaatser van bericht wenst"
 #.
 #: src/art.c:3014
 msgid "fFpPiIcC"
-msgstr "fFpPiIcC"
+msgstr "oOpPnNaA"
 
 #: src/art.c:3017
 msgid ""
@@ -411,54 +411,44 @@ msgid "Mark not set."
 msgstr "Niet gemarkeerd."
 
 #: src/art.c:4590
-#, fuzzy
 msgid "Subject search "
-msgstr "Onderwerp: "
+msgstr "Onderwerp zoeken "
 
 #: src/art.c:4590
-#, fuzzy
 msgid "Author search "
-msgstr " Zoeken "
+msgstr " Auteur zoeken "
 
 #: src/art.c:4591
-#, fuzzy
 msgid "(forward)"
-msgstr "Doorsturen"
+msgstr "(doorsturen)"
 
 #: src/art.c:4591
-#, fuzzy
 msgid "(backward)"
-msgstr "Terugwaarts"
+msgstr "(terugwaarts)"
 
 #: src/art.c:4777 src/slrnpull.c:1182
-#, fuzzy, c-format
+#, c-format
 msgid "Score %d killed article %s\n"
-msgstr ""
-"Score %d doodde artikel %s\n"
-"Nieuwsgroep: %s\n"
-"Van: %s\n"
-"Onderwerp: %s\n"
-"\n"
+msgstr "Score %d doodde artikel %s\n"
 
 #: src/art.c:4781 src/slrnpull.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
-msgstr "maken %s (%s)\n"
+msgstr " Score %c%5i: %s (%s:%i\n"
 
 #: src/art.c:4785 src/slrnpull.c:1190
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
-msgstr ""
+msgstr " Score %c%5i: %s:%i\n"
 
 #: src/art.c:4790 src/slrnpull.c:1195
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "  Newsgroup: %s\n"
 "  From: %s\n"
 "  Subject: %s\n"
 "\n"
 msgstr ""
-"Score %d doodde artikel %s\n"
 "Nieuwsgroep: %s\n"
 "Van: %s\n"
 "Onderwerp: %s\n"
@@ -637,18 +627,16 @@ msgid "Spoilers visible!"
 msgstr "'Bedorven' berichten zichtbaar!"
 
 #: src/art_sort.c:330
-#, fuzzy
 msgid "slrn_sort_headers(): memory allocation failure."
-msgstr "sort_headers(): geheugen aanvragen mislukt."
+msgstr "slrn_sort_headers(): geheugen aanvragen mislukt."
 
 #: src/art_sort.c:588
 msgid "link_same_subjects: memory allocation failure."
 msgstr "link_same_subjects: geheugen aanvragen mislukt."
 
 #: src/art_sort.c:799
-#, fuzzy
 msgid "Internal Error in fixup_threads()."
-msgstr "Interne Fout."
+msgstr "Interne Fout in fixup_threads()."
 
 #: src/art_sort.c:853
 msgid "Threading by references ..."
@@ -674,7 +662,7 @@ msgstr "Artikelen met gelijke onderwerpen verbinden ..."
 #: src/art_sort.c:1024
 #, c-format
 msgid "Can't sort according to `%s'"
-msgstr ""
+msgstr "Kan niet sorten op `%s'"
 
 #: src/chkslang.c:58
 #, c-format
@@ -2034,12 +2022,11 @@ msgstr "Lokale karakterset waarde in rij %d buiten bereik."
 #: src/interp.c:452
 #, c-format
 msgid "Array must contain at least one, at most %d elements."
-msgstr ""
+msgstr "Array moet minstens één, en ten meeste %d elementen bevatten."
 
 #: src/interp.c:460
-#, fuzzy
 msgid "Failed to allocate memory."
-msgstr "Selecteren van karakter set mislukt."
+msgstr "Aanvragen geheugen mislukt."
 
 #: src/interp.c:527
 msgid "definekey: no such keymap."
@@ -2180,7 +2167,7 @@ msgstr "Thread, dan Sorteren op datum (meest recente als laatste)"
 #. 1011
 #: src/menu.c:205
 msgid "Custom sorting (see manual)"
-msgstr ""
+msgstr "Aangepast sorteren (zie handleiding)"
 
 #: src/menu.c:213
 msgid "Sorting Method"
@@ -2450,9 +2437,9 @@ msgid "Authorization needed, but could not determine username / password."
 msgstr "Autorisatie vereist, maar kan geen gebruikersnaam / wachtwoord vinden."
 
 #: src/nntplib.c:419
-#, c-format, fuzzy
+#, c-format
 msgid "Authenticating %s ..."
-msgstr "Autoriseren ..."
+msgstr "Autoriseren %s ..."
 
 #: src/nntplib.c:449
 msgid "Authorization failed."
@@ -2854,9 +2841,9 @@ msgid "***Warning: error writing to %s"
 msgstr "***Waarschuwing: fout tijdens naar schrijven naar %s"
 
 #: src/post.c:880
-#, fuzzy, c-format
+#, c-format
 msgid "%s Failed post saved in %s"
-msgstr "Geplaatst bericht opslaan in %s mislukt"
+msgstr "%s Mislukte plaatsing opgeslagen in %s"
 
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
@@ -2927,14 +2914,12 @@ msgid "Posting ..."
 msgstr "Plaatsen ..."
 
 #: src/post.c:1104
-#, fuzzy
 msgid "post_file_hook returned error."
-msgstr "post_file_hook gaf fout terug.  %s niet geplaatst."
+msgstr "post_file_hook gaf fout terug."
 
 #: src/post.c:1126
-#, fuzzy
 msgid "Could not reach server."
-msgstr "Kan groep %s niet openen."
+msgstr "Kan server niet bereiken."
 
 #: src/post.c:1254
 msgid "Posting...done."
@@ -3287,7 +3272,7 @@ msgstr "Fout tijdens configureren server objects."
 #: src/slrn.c:1181
 #, c-format
 msgid "Could not read specified config file %s\n"
-msgstr ""
+msgstr "Kan opgegeven configuratibestand %s niet lezen\n"
 
 #: src/slrn.c:1187
 msgid ""
@@ -3902,9 +3887,8 @@ msgid "SSL_connect"
 msgstr "SSL_connect"
 
 #: src/spool.c:793
-#, c-format, fuzzy
 msgid "Unable to open directory %s"
-msgstr "Kan geen directory openen"
+msgstr "Kan directory %s niet openen"
 
 #: src/spool.c:1022
 #, c-format
