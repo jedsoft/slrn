@@ -34,4 +34,4 @@ uninstall-local:
 	list='$(PULLDOCS)'; for p in $$list; do \
 	  rm -f $(DESTDIR)$(docdir)/$$p; \
 	done
-	rmdir $(DESTDIR)$(docdir)/slrnpull
+	rmdir $(DESTDIR)$(docdir)/slrnpull || /bin/true
