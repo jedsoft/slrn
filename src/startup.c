@@ -785,7 +785,15 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 		  Slrn_Saw_Obsolete = 1;
 	       }
 	     
-	     if (sp->svaluep == NULL) return 0;
+	     if (sp->svaluep == NULL)
+	       {
+		  if (This_File != NULL)
+		    slrn_message (_("%s: In this version of slrn, setting variable\n"
+				    "%s has no effect. Please refer to the manual for details."),
+				  This_File, name);
+		  Slrn_Saw_Warning = 1;
+		  return 0;
+	       }
 	     
 	     ss = *sp->svaluep;
 		  
@@ -846,7 +854,15 @@ int slrn_set_integer_variable (char *name, int value) /*{{{*/
 		       Slrn_Saw_Obsolete = 1;
 		    }
 	       } /*}}}*/
-	     if (ip->valuep == NULL) return 0;
+	     if (ip->valuep == NULL)
+	       {
+		  if (This_File != NULL)
+		    slrn_message (_("%s: In this version of slrn, setting variable\n"
+				    "%s has no effect. Please refer to the manual for details."),
+				  This_File, name);
+		  Slrn_Saw_Warning = 1;
+		  return 0;
+	       }
 	     *ip->valuep = value;
 	     return 0;
 	  }
