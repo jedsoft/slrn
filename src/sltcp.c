@@ -193,16 +193,17 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
    struct addrinfo hint;
    
    hint.ai_flags = 0;
-   hint.ai_family = 0;
+   hint.ai_family = PF_UNSPEC;
    hint.ai_socktype = SOCK_STREAM;
    hint.ai_protocol = IPPROTO_IP;
    hint.ai_addrlen = 0;
    hint.ai_addr = NULL;
+   hint.ai_canonname = NULL;
    hint.ai_next = NULL;
    
    do {
       snprintf(portstr, 6, "%i", port);
-      if ((r = getaddrinfo(host, portstr, &hint, &res)) < 0) {
+      if ((r = getaddrinfo(host, portstr, &hint, &res)) != 0) {
 	 if (TCP_Verbose_Reporting) {
 	    fprintf (stderr, "Error resolving %s (port %s): %s\n", host, portstr, gai_strerror(r));
 	 }
@@ -210,7 +211,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 	    slrn_sleep (1);
 	 };
       }
-   } while (!r && (tries++ <= 3));
+   } while (r && (tries++ <= 3));
    
    if (r) {
       fprintf (stderr, _("Failed to resolve %s\n"), host);
@@ -244,7 +245,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 # endif /* HAVE_GETNAMEINFO */
       }
       
-      if ((fd = socket(ai->ai_family, SOCK_STREAM, 0)) < 0) {
+      if ((fd = socket(ai->ai_family, SOCK_STREAM, 0)) == -1) {
 	 if (TCP_Verbose_Reporting) {
 	    fprintf (stderr, "Error creating socket: %s\n", strerror(errno));
 	 }

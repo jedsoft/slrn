@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slrn 0.9.7.3\n"
 "POT-Creation-Date: 2003-07-31 19:19+0200\n"
-"PO-Revision-Date: 2002-03-13 01:29+0100\n"
+"PO-Revision-Date: 2003-08-01 11:53+0200\n"
 "Last-Translator: Emmanuele Bassi <emmanuele.bassi@iol.it>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -154,7 +154,7 @@ msgstr "Il server non ha restituito l'articolo."
 
 #: src/art.c:2557
 msgid "%Y-%m-%d"
-msgstr ""
+msgstr "%Y-%m-%d"
 
 #: src/art.c:2600
 msgid "This operation requires an article"
@@ -211,15 +211,13 @@ msgstr "Risposta a %s come preferisce l'autore"
 
 #: src/art.c:3114
 msgid "fFaAtTcC"
-msgstr ""
+msgstr "fFuUqQcC"
 
 #: src/art.c:3117
-#, fuzzy
 msgid ""
 "Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
 " Cancel?"
-msgstr ""
-"Crosspost. Followup sul gruppo, Posta solo a questo gruppo, Ignora, Cancella?"
+msgstr "Crosspost. Imposta \"Followup-To\", Invia a tutti / questo gruppo, Cancella?"
 
 #: src/art.c:3199
 msgid "Cc message as requested by poster"
@@ -235,14 +233,14 @@ msgid "%s appears invalid.  CC anyway"
 msgstr "%s è invalido. Invia una copia comunque"
 
 #: src/art.c:3389 src/post.c:996
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot open file: %s"
-msgstr "Impossibile aprire il file di log %s"
+msgstr "Impossibile aprire il file: %s"
 
 #: src/art.c:3396 src/post.c:1003
-#, fuzzy, c-format
+#, c-format
 msgid "Zero length file: %s"
-msgstr "Impossibile aprire il file di log %s"
+msgstr "File di dimensione zero: %s"
 
 #: src/art.c:3446
 msgid "Are you sure you want to supersede"
@@ -311,19 +309,19 @@ msgid "Save this thread"
 msgstr "Salva questo thread"
 
 #: src/art.c:4087 src/post.c:1622
-#, fuzzy, c-format
+#, c-format
 msgid "Do you want to create directory %s"
-msgstr "Sei sicuro di volerlo cancellare"
+msgstr "Vuoi creare la directory %s"
 
 #: src/art.c:4090 src/post.c:1626
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create directory. (errno = %d)"
-msgstr "Impossibile creare directory %s. (errno = %d)"
+msgstr "Impossibile creare la directory. (errno = %d)"
 
 #: src/art.c:4095
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: %s is a regular file."
-msgstr "%s: non è un file regolare"
+msgstr "Attenzione: %s non è un file regolare."
 
 #: src/art.c:4149
 msgid "Temporary file (^G aborts): "
@@ -485,9 +483,8 @@ msgid "Apply scorefile now"
 msgstr "Applica scorefile adesso"
 
 #: src/art.c:5146
-#, fuzzy
 msgid "No scorefile loaded."
-msgstr "Non sono stati trovati altri file.\n"
+msgstr "Nessun file di score caricato."
 
 #: src/art.c:5155
 msgid "This article is not matched by any scorefile entries."
@@ -535,13 +532,12 @@ msgid "Article %s not available."
 msgstr "L'articolo %s non è disponibile."
 
 #: src/art.c:5863
-#, fuzzy
 msgid "Enter Message-ID: "
 msgstr "Inserisci il Message-ID: "
 
 #: src/art.c:6285
 msgid "Warning: Could not save list of requested bodies."
-msgstr ""
+msgstr "Attenzione: Impossibile salvare la lista dei corpi richiesti."
 
 #: src/art.c:6554
 msgid "Are you sure that you want to cancel this article"
@@ -560,9 +556,8 @@ msgid "Done."
 msgstr "Fatto."
 
 #: src/art.c:6661
-#, fuzzy
 msgid "Warning: Can only request article bodies from this group."
-msgstr "Nessun articolo precedente in questo gruppo"
+msgstr "Attenzione: puoi richiedere i corpi degli articoli solo da questo gruppo."
 
 #: src/art.c:6678
 msgid "Mark all articles as read"
@@ -884,7 +879,7 @@ msgstr "%s: Quanti da leggere? "
 #: src/group.c:908
 #, c-format
 msgid "Only downloading %d of %d articles."
-msgstr ""
+msgstr "Sto scaricando solo %d dei %d articoli."
 
 #: src/group.c:988
 msgid "Do you really want to quit"
@@ -1688,10 +1683,8 @@ msgid "      ESC 1 K        Edit scorefile."
 msgstr "      ESC 1 K        Edita lo scorefile."
 
 #: src/help.c:144
-#, fuzzy
 msgid "  m                  (Un-)mark article body for download by slrnpull."
-msgstr ""
-"  d                  Segna l'articolo, o il thread collassato, come letto."
+msgstr "  m                  Segna il corpo dell'articolo per il download con slrnpull."
 
 #: src/help.c:146
 msgid ""
@@ -1797,14 +1790,12 @@ msgid "  ESC V, Ctrl-U           Scroll to the previous page."
 msgstr "  ESC V, Ctrl-U           Vai alla pagina precedente."
 
 #: src/help.c:179
-#, fuzzy
 msgid "  ESC >                   Go to the bottom of the list."
-msgstr "  ESC <                   Vai alla fine della lista."
+msgstr "  ESC >                   Vai alla fine della lista."
 
 #: src/help.c:180
-#, fuzzy
 msgid "  ESC <                   Go to the top of the list."
-msgstr "  ESC >                   Vai all'inizio della lista."
+msgstr "  ESC <                   Vai all'inizio della lista."
 
 #: src/help.c:181
 msgid "  /                       Group keyword search."
@@ -2077,7 +2068,7 @@ msgstr "Impossibile aprire il file di log %s"
 
 #: src/interp.c:1457
 msgid "Could not replace article with given string."
-msgstr ""
+msgstr "Impossibile rimpiazzare l'articolo con la stringa data."
 
 #: src/menu.c:64 src/menu.c:77
 msgid "Quit"
@@ -2212,9 +2203,8 @@ msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
 msgstr "Usa SU/GIU per muoverti, INVIO per selezionare, Ctrl-G per uscire"
 
 #: src/menu.c:488
-#, fuzzy
 msgid "Use UP/DOWN to move, RETURN to select, q to quit"
-msgstr "Usa SU/GIU per muoverti, INVIO per selezionare, Ctrl-G per uscire"
+msgstr "Usa PgSU/PgGIU per muoverti, INVIO per selezionare, q per uscire"
 
 #: src/menu.c:1048
 msgid "Creating directory list..."
@@ -2348,9 +2338,9 @@ msgid "Invalid regular expression or expression too long."
 msgstr "Espressione regolare non valida o troppo lunga."
 
 #: src/misc.c:2599
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "On %D, %r <%f> wrote:"
-msgstr "In %n, hai scritto:"
+msgstr "Il %D, %r <%f> ha scritto:"
 
 #: src/misc.c:2601
 #, no-c-format
@@ -2360,7 +2350,7 @@ msgstr "In %n, hai scritto:"
 #: src/misc.c:2603
 #, no-c-format
 msgid "[\"Followup-To:\" header set to %n.]"
-msgstr ""
+msgstr "[Header \"Followup-To:\" impostato su %n.]"
 
 #: src/misc.c:2606
 #, no-c-format
@@ -2459,9 +2449,8 @@ msgid "Failed to initialize server"
 msgstr "Impossibile inizializzare il server"
 
 #: src/nntplib.c:567
-#, fuzzy
 msgid "You should set the NNTPSERVER environment variable to your server name."
-msgstr "Devi impostare la variabile NNTPSERVER con il nome del tuo server."
+msgstr "Devi impostare la variabile d'ambiente NNTPSERVER con il nome del tuo server."
 
 #: src/nntplib.c:569
 msgid "Example: $ define/job NNTPSERVER my.news.server"
@@ -2481,7 +2470,7 @@ msgstr "Esempio (sh) : NNTPSERVER='mio.news.server' && export NNTPSERVER"
 
 #: src/nntplib.c:578
 msgid "For now, I'm going to try \"localhost\" as the default..."
-msgstr ""
+msgstr "Per ora, provo con \"localhost\" come default..."
 
 #: src/nntplib.c:1140
 msgid "Help text on way"
@@ -2696,9 +2685,8 @@ msgid "This news reader will not accept user generated From lines."
 msgstr "Questo news reader non accetta le righe From create dall'utente."
 
 #: src/post.c:702
-#, fuzzy
 msgid "This news reader will not accept user generated Message-IDs."
-msgstr "Questo news reader non accetta i Message-Id creati dall'utente."
+msgstr "Questo news reader non accetta Message-ID creati dall'utente."
 
 #: src/post.c:712
 msgid "Subject header is required."
@@ -2769,9 +2757,9 @@ msgid "This affects at least line %d:"
 msgstr "Questo riguarda la linea %d:"
 
 #: src/post.c:872
-#, fuzzy, c-format
+#, c-format
 msgid "This affects %d lines between line %d and %d. First one:"
-msgstr "Questo riguarda la linea %d:"
+msgstr "Questo riguarda %d linee tra le linee %d e %d. La prima:"
 
 #: src/post.c:898 src/post.c:1290 src/post.c:1313
 #, c-format
@@ -2854,9 +2842,9 @@ msgid "post_file_hook returned error."
 msgstr "post_file_hook ha ritornato un errore."
 
 #: src/post.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open %s--- message not posted."
-msgstr "File non trovato: %s--- messaggio non inviato."
+msgstr "Impossibile aprire %s--- messaggio non inviato."
 
 #: src/post.c:1339
 msgid "Could not reach server."
@@ -2864,11 +2852,11 @@ msgstr "Impossibile raggiungere il server."
 
 #: src/post.c:1346
 msgid "Message-ID generating error."
-msgstr ""
+msgstr "Errore nel generare il Message-ID."
 
 #: src/post.c:1357
 msgid "\"From\" generating error."
-msgstr ""
+msgstr "Errore nel generare il \"From\"."
 
 #: src/post.c:1498
 msgid "Posting...done."
@@ -2883,14 +2871,12 @@ msgid "Select one: Repost, Edit, Cancel"
 msgstr "Seleziona: Ri-invia, Edita, Cancella"
 
 #: src/post.c:1633
-#, fuzzy
 msgid "Aborted on user request."
-msgstr "Uscita su richiesta utente."
+msgstr "Abortito su richiesta utente."
 
 #: src/post.c:1639
-#, fuzzy
 msgid "postpone_directory points to a regular file (not a directory)"
-msgstr "postpone_directory non è specificata o non esiste"
+msgstr "postpone_directory punta ad un file regolare (non una directory)"
 
 #: src/post.c:1651
 msgid "Not implemented yet. Sorry"
@@ -3132,7 +3118,7 @@ msgid "slrn fatal error:"
 msgstr "errore fatale di slrn:"
 
 #: src/slrn.c:915
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
 "-a              Use active file for getting new news.\n"
@@ -3168,7 +3154,7 @@ msgstr ""
 "                 predefinite.\n"
 "-d              Recupera le descrizioni dei newsgroup dal server.\n"
 "                 Nota: Potrebbe richiedere MOLTO tempo per recuperarle.\n"
-"                  Il file prodotto potrebbe essere di vari Kilobyte!\n"
+"                 Il file prodotto potrebbe essere di vari Kilobyte!\n"
 "-i file init    Nome del file di configurazione (default: %s).\n"
 "-k              Non utilizzare il file di score.\n"
 "-k0             Utilizza il file di score, ma inibisci l'expensive score.\n"
@@ -3177,14 +3163,15 @@ msgstr ""
 "                 un avvio più veloce.\n"
 "-w              Attendi la pressione di un tasto prima di passare a tutto\n"
 "                 schermo\n"
+"-w0             Attendi la pressione di un tasto (solo se ci sono avvisi\n"
+"                 o errori\n"
 "--create        Crea un file newsrc con la lista dei gruppi del server.\n"
 "--debug FILE    Scrivi le informazioni di debug su FILE\n"
 "--help          Questa schermata di aiuto.\n"
 "--kill-log FILE Tieni un log di tutti gli articoli filtrati in FILE\n"
 "--version       Mostra la versione e le opzioni supportate\n"
 "\n"
-"La modalità NNTP ha opzioni addizionali; usa \"slrn --nntp --help\" per "
-"vederle\n"
+"La modalità NNTP ha opzioni addizionali; usa \"slrn --nntp --help\" per vederle\n"
 
 #: src/slrn.c:966
 #, c-format
@@ -3429,9 +3416,9 @@ msgid "%s: line %u: expecting positive integer in third field."
 msgstr "%s: linea %u: richiesto intero positivo nel terzo campo."
 
 #: src/slrnpull.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "%s: line %u: expecting 0 or 1 in fourth field."
-msgstr "%s: linea %u: richiesto intero positivo nel terzo campo."
+msgstr "%s: linea %u: richiesto 0 o 1 nel quarto campo."
 
 #: src/slrnpull.c:719
 #, c-format
@@ -3479,19 +3466,17 @@ msgid "Server failed XHDR command: %s"
 msgstr "Il server ha fallito il comando XHDR: %s"
 
 #: src/slrnpull.c:992
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving %s %d-%d."
-msgstr "%s: Recupero articoli %d-%d."
+msgstr "%s: Recupero %s %d-%d."
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "headers"
-msgstr "Collega Intestazioni"
+msgstr "header"
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "articles"
-msgstr "Vai all'articolo: "
+msgstr "articoli"
 
 #: src/slrnpull.c:1017
 #, c-format
@@ -3523,9 +3508,9 @@ msgid "Unable to open overview file %s.\n"
 msgstr "Impossibile aprire il file di overview %s.\n"
 
 #: src/slrnpull.c:1466
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving requested article bodies."
-msgstr "%s: Recupero articoli %d-%d."
+msgstr "%s: Recupero dei corpi degli articoli richiesti."
 
 #: src/slrnpull.c:1574
 #, c-format
@@ -3656,7 +3641,7 @@ msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "Un totale di %lu byte ricevuti, %lu byte inviati in %ld secondi."
 
 #: src/slrnpull.c:2096
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s usage: %s [options]\n"
 " Options:\n"
@@ -3679,15 +3664,17 @@ msgstr ""
 " Opzioni:\n"
 "  -d SPOOLDIR          Directory di spooling da usare.\n"
 "  -h HOSTNAME          Hostname del server NNTP a cui connettersi.\n"
-"  --debug FILE         Scrivi il dialogo con il server su FILE.\n"
-"  --expire             Esegui l'expire ma non scaricare le news.\n"
+"  --debug FILE         Scrive il dialogo con il server su FILE.\n"
+"  --expire             Esegue l'expire ma non scaricare le news.\n"
 "  --help               Stampa questa schermata.\n"
-"  --kill-log FILE      Tieni un log di tutti gli articoli eliminati.\n"
+"  --kill-log FILE      Crea un log di tutti gli articoli eliminati.\n"
 "  --kill-score SCORE   Elimina tutti gli articoli sotto SCORE.\n"
 "  --logfile FILE       Usa FILE come log.\n"
-"  --new-groups         Ottieni una lista dei nuovi gruppi.\n"
+"  --marked-bodies      Scarica solo i corpi segnati per il download.\n"
+"  --new-groups         Ottiene una lista dei nuovi gruppi.\n"
 "  --no-post            Non inviare i post.\n"
 "  --post-only          Invia, ma non scaricare i nuovi articoli.\n"
+"  --rebuild            Come --expire; ricostruisce anche i file overview.\n"
 "  --version            Mostra la versione.\n"
 
 #: src/slrnpull.c:2122
@@ -3744,9 +3731,9 @@ msgid "Slrnpull exiting on signal."
 msgstr "Slrn in uscita su segnale."
 
 #: src/slrnpull.c:2674
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating filename in %s."
-msgstr "Errore in lettura di %s."
+msgstr "Errore mentre creo il file in %s."
 
 #: src/slrnpull.c:2680 src/slrnpull.c:3009
 #, c-format
@@ -3754,28 +3741,27 @@ msgid "Unable to stat %s."
 msgstr "Impossibile verificare %s."
 
 #: src/slrnpull.c:2690
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read header %d in %s."
-msgstr "Impossibile creare %s."
+msgstr "Impossibile leggere l'header %d in %s."
 
 #: src/slrnpull.c:2696
 #, c-format
 msgid "Header %d not parseable for overview."
-msgstr ""
+msgstr "Header %d non è interpretabile per l'overview."
 
 #: src/slrnpull.c:2719
 #, c-format
 msgid "%s overview: article %u of %u in %s."
-msgstr ""
+msgstr "%s overview: articolo %u di %u in %s."
 
 #: src/slrnpull.c:2720
-#, fuzzy
 msgid "Creating"
-msgstr "Sto creando %s."
+msgstr "Sto creando"
 
 #: src/slrnpull.c:2720
 msgid "Updating"
-msgstr ""
+msgstr "Sto aggiornando"
 
 #: src/slrnpull.c:2734
 #, c-format
@@ -3783,29 +3769,28 @@ msgid "Creating Overview file for %s..."
 msgstr "Sto creando un file di Overview per %s..."
 
 #: src/slrnpull.c:2801
-#, fuzzy
 msgid "Unable to create filename for overview file.\n"
-msgstr "Impossibile aprire il file di overview %s.\n"
+msgstr "Impossibile creare il nome per il file di overview.\n"
 
 #: src/slrnpull.c:2811
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open new overview file %s.\n"
-msgstr "Impossibile aprire il file di overview %s.\n"
+msgstr "Impossibile aprire il nuovo file di overview %s.\n"
 
 #: src/slrnpull.c:2889
-#, fuzzy, c-format
+#, c-format
 msgid "failed to close overview file %s.\n"
-msgstr "Impossibile aprire il file di overview %s.\n"
+msgstr "impossibile chiudere il file di overview %s.\n"
 
 #: src/slrnpull.c:2891
-#, fuzzy, c-format
+#, c-format
 msgid "failed to close new overview file %s.\n"
-msgstr "Impossibile aprire il file di overview %s.\n"
+msgstr "impossibile aprire il nuovo file di overview %s.\n"
 
 #: src/slrnpull.c:2901
-#, fuzzy, c-format
+#, c-format
 msgid "failed to rename %s to %s."
-msgstr "Errore nel rinominare %s in %s."
+msgstr "impossibile rinominare %s in %s."
 
 #: src/slrnpull.c:2934
 #, c-format
@@ -3841,29 +3826,29 @@ msgid "Empty user name.  Please check syntax of the authinfo file."
 msgstr "Nuome utente vuoto. Prego verificare la sintassi del file authinfo."
 
 #: src/slrnpull.c:3211
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read headers file for group %s.\n"
-msgstr "Impossibile creare %s."
+msgstr "Impossibile leggere il file header per il gruppo %s.\n"
 
 #: src/slrnpull.c:3220
-#, fuzzy, c-format
+#, c-format
 msgid "File %s exists, but could not be read."
-msgstr "L'editor è stato trovato, ma non è stato possibile avviarlo."
+msgstr "Il file %s esiste, ma è impossibile leggerlo."
 
 #: src/slrnpull.c:3252 src/slrnpull.c:3279
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write headers file for group %s.\n"
-msgstr "Impossibile creare il file di debug %s\n"
+msgstr "Impossibile scrivere il file header per il gruppo %s.\n"
 
 #: src/slrnpull.c:3287
-#, fuzzy, c-format
+#, c-format
 msgid "Error while writing headers file for group %s.\n"
-msgstr "Errore nella chiusura del file di overview per %s."
+msgstr "Errore nella scrittura del file header per il gruppo %s.\n"
 
 #: src/sltcp.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to resolve %s\n"
-msgstr "Errore nel rinominare %s in %s."
+msgstr "Impossibile risolvere %s\n"
 
 #: src/sltcp.c:272 src/sltcp.c:375
 msgid "Unable to make connection. Giving up.\n"
@@ -4027,13 +4012,13 @@ msgstr ""
 "%sTroppe espressioni specificate."
 
 #: src/startup.c:796
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s: Obsolete variable name on line %d: %s\n"
 "The new name is %s"
 msgstr ""
 "%s: Nome di funzione obsoleto alla linea %d: %s\n"
-"Il nuovo nome è: %s"
+"Il nuovo nome è %s"
 
 #: src/startup.c:806 src/startup.c:875
 #, c-format
@@ -4041,6 +4026,8 @@ msgid ""
 "%s: In this version of slrn, setting variable\n"
 "%s has no effect. Please refer to the manual for details."
 msgstr ""
+"%s: In questa versione di slrn, impostare la variabile\n"
+"%s non ha effetto. Prego riferirsi al manuale per i dettaglio."
 
 #: src/startup.c:843
 #, c-format
@@ -4252,25 +4239,3 @@ msgstr "Il server ha chiuso la connessione. Impossibile recuperare."
 #: src/xover.c:1016
 msgid "Server does not provide this capability."
 msgstr "Il server non ha questa opzione."
-
-#~ msgid "trying %s\n"
-#~ msgstr "provo %s\n"
-
-#~ msgid "[This message has also been posted.]"
-#~ msgstr "[Questo articolo è già stato inviato.]"
-
-#~ msgid ""
-#~ "%s: Obsolete variable name on line %d: followup\n"
-#~ "The new name is followup_string"
-#~ msgstr ""
-#~ "%s: Nome di variable obsoleto alla linea %d: followup\n"
-#~ "Il nuovo nome è followup_string"
-
-#~ msgid "%a, %d %b %Y at %H:%M GMT"
-#~ msgstr "%a, %d %b %Y alle %H:%M GMT"
-
-#~ msgid "fFpPiIcC"
-#~ msgstr "fFpPiIcC"
-
-#~ msgid "In article %m, %r wrote:"
-#~ msgstr "Nell'articolo %m, %r ha scritto:"
