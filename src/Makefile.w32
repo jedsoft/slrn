@@ -3,6 +3,7 @@
 #
 # 1997, March 01, bjf: Added all necessary (and probably some unnecessay)
 #                      dependencies to the $(OBJDIR)/*$(O) targets.
+# 2001, oct 10, pomj : small adjustments to fix the makefile. 
 #
 #
 #---------------------------------------------------------------------------
@@ -20,7 +21,7 @@ CC = wcl386
 # 2. On a few systems, additional libraries are required.
 #-----------------------------------------------------------------------------
 #MISCLIBS = -lsocket -ltermcap -lvideo# OS/2
-MISCLIBS = $(SLIBDIR)\wslang32.lib -lwinspool
+MISCLIBS = $(SLIBDIR)\wslang32.lib
 
 #-----------------------------------------------------------------------------
 # 3. Directory where the slang library, slanglib.a, is located.
@@ -89,7 +90,7 @@ OBJSpull = \
 	$(OBJDIR)$(P)nntplib$(O)
 
 DEBUG =
-CFLAGS = $(DEBUG) /bt=nt /ort /DWIN32 -I. -I$(SDIR) $(SLRNLIBDIR)
+CFLAGS = $(DEBUG) /bt=nt /DWIN32 /oneartx /zp4 /5 /fp5 -I. -I$(SDIR) $(SLRNLIBDIR)
 LDFLAGS = /l=nt
 
 .c.obj: .AUTODEPEND

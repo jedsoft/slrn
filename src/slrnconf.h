@@ -120,7 +120,7 @@
 # define __CYGWIN__
 #endif
 
-#if defined(__CYGWIN__) || defined(__MINGW32__)
+#if defined(__CYGWIN__) || defined(__MINGW32__) || defined(__WATCOMC__)
 # ifndef __WIN32__
 #  define __WIN32__
 # endif
