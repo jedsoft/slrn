@@ -157,7 +157,7 @@ msgstr "Server is er niet in geslaagd bericht terug te sturen."
 
 #: src/art.c:2484
 msgid "%Y-%m-%d"
-msgstr ""
+msgstr "%Y-%m-%d"
 
 #: src/art.c:2527
 msgid "This operation requires an article"
@@ -218,16 +218,15 @@ msgstr "Opvolgend bericht naar %s zoals plaatser van bericht wenst"
 #.
 #: src/art.c:3037
 msgid "fFaAtTcC"
-msgstr ""
+msgstr "oOaAdDcC"
 
 #: src/art.c:3040
-#, fuzzy
 msgid ""
 "Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
 " Cancel?"
 msgstr ""
-"Kruisplaatsing. Opvolgend bericht naar deze groep, Plaats bericht alleen in "
-"deze groep, Negeer, Annuleren?"
+"Kruisplaatsing. Opvolgend bericht naar deze groep, Plaats bericht alleen in "
+"alle groepen / deze groep, Annuleren?"
 
 #: src/art.c:3122
 msgid "Cc message as requested by poster"
@@ -243,14 +242,14 @@ msgid "%s appears invalid.  CC anyway"
 msgstr "%s lijkt ongeldig. Toch een kopie versturen"
 
 #: src/art.c:3311 src/post.c:969
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot open file: %s"
-msgstr "Kan log bestand %s niet openen"
+msgstr "Kan bestand %s niet openen"
 
 #: src/art.c:3318 src/post.c:976
-#, fuzzy, c-format
+#, c-format
 msgid "Zero length file: %s"
-msgstr "Kan log bestand %s niet openen"
+msgstr "Bestand %s is leeg"
 
 #: src/art.c:3368
 msgid "Are you sure you want to supersede"
@@ -480,9 +479,8 @@ msgid "Apply scorefile now"
 msgstr "Scorebestand nu toepassen"
 
 #: src/art.c:5063
-#, fuzzy
 msgid "No scorefile loaded."
-msgstr "Niet meer bestanden gevonden.\n"
+msgstr "Niet meer bestanden gevonden."
 
 #: src/art.c:5072
 msgid "This article is not matched by any scorefile entries."
@@ -530,9 +528,8 @@ msgid "Article %s not available."
 msgstr "Artikel %s niet beschikbaar."
 
 #: src/art.c:5778
-#, fuzzy
 msgid "Enter Message-ID: "
-msgstr "Voer Bericht-Nummer in:"
+msgstr "Voer Bericht-Nummer in: "
 
 #: src/art.c:6558
 msgid "Are you sure that you want to cancel this article"
@@ -551,7 +548,6 @@ msgid "Done."
 msgstr "Klaar."
 
 #: src/art.c:6665
-#, fuzzy
 msgid "Warning: Can only request article bodies from this group."
 msgstr "Geen vorig artikel in deze groep"
 
@@ -2085,7 +2081,7 @@ msgstr "Kan log bestand %s niet openen"
 
 #: src/interp.c:1381
 msgid "Could not replace article with given string."
-msgstr ""
+msgstr "Kan article niet vervangen door gegeven tekst."
 
 #: src/menu.c:64 src/menu.c:77
 msgid "Quit"
@@ -2236,11 +2232,8 @@ msgstr ""
 "annuleren"
 
 #: src/menu.c:488
-#, fuzzy
 msgid "Use UP/DOWN to move, RETURN to select, q to quit"
-msgstr ""
-"Gebruik OMHOOG/OMLAAG om te bewegen, ENTER om te selecteren, Ctrl-G om te "
-"annuleren"
+msgstr "Gebruik OMHOOG/OMLAAG om te bewegen, ENTER om te selecteren, q om af te sluiten"
 
 #: src/menu.c:1048
 msgid "Creating directory list..."
@@ -2389,9 +2382,8 @@ msgstr "Ongeldige reguliere expressie of de expressie is te lang."
 
 #. Fill in what is assumed to be non-NULL by rest of program.
 #: src/misc.c:2594
-#, fuzzy
 msgid "On %D, %r <%f> wrote:"
-msgstr "In %n schreef je:"
+msgstr "Op %D, %r schreef <%f>:"
 
 #: src/misc.c:2595
 #, c-format
@@ -2401,7 +2393,7 @@ msgstr "In %n schreef je:"
 #: src/misc.c:2596
 #, c-format
 msgid "[\"Followup-To:\" header set to %n.]"
-msgstr ""
+msgstr "[\"Followup-To(Opvolgend bericht naar):\" header ingesteld op %n.]"
 
 #: src/misc.c:2599
 #, c-format
@@ -2790,10 +2782,8 @@ msgstr ""
 "accepteren."
 
 #: src/post.c:681
-#, fuzzy
 msgid "This news reader will not accept user generated Message-IDs."
-msgstr ""
-"Deze nieuwslezer zal geen door gebruikers gegenereerde Bericht-IDs "
+msgstr "Deze nieuwslezer zal geen door gebruikers gegenereerde Bericht-IDs "
 "accepteren."
 
 #: src/post.c:691
@@ -2866,9 +2856,9 @@ msgid "This affects at least line %d:"
 msgstr "Dit heeft betrekking op onder andere regel %d:"
 
 #: src/post.c:851
-#, fuzzy, c-format
+#, c-format
 msgid "This affects %d lines between line %d and %d. First one:"
-msgstr "Dit heeft betrekking op onder andere regel %d:"
+msgstr "Dit heeft betrekking op %d regels tussen regel %d en %d. Eerste:"
 
 #: src/post.c:877 src/post.c:1215 src/post.c:1238
 #, c-format
@@ -2963,7 +2953,7 @@ msgid "post_file_hook returned error."
 msgstr "post_file_hook gaf fout terug."
 
 #: src/post.c:1249
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open %s--- message not posted."
 msgstr "Bestand niet gevonden: %s--- bericht niet geplaatst."
 
@@ -2973,11 +2963,11 @@ msgstr "Kan server niet bereiken."
 
 #: src/post.c:1271
 msgid "Message-ID generating error."
-msgstr ""
+msgstr "Fout bij genereren Message-ID."
 
 #: src/post.c:1282
 msgid "\"From\" generating error."
-msgstr ""
+msgstr "Fout bij genereren \"From\"(van) header"
 
 #: src/post.c:1418
 msgid "Posting...done."
@@ -3239,7 +3229,7 @@ msgid "slrn fatal error:"
 msgstr "slrn fatale fout:"
 
 #: src/slrn.c:914
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
 "-a              Use active file for getting new news.\n"
@@ -3274,7 +3264,7 @@ msgstr ""
 "-Dnaam          Voeg 'naam' toe aan lijst van vooraf behandelde tokens.\n"
 "-d              Haal nieuwe beschrijvingen op van elke groep van server.\n"
 "                 N.B.: Dit kan LANG duren. Het resulterende bestand kan\n"
-"                 Een aantal honder kilobytes groot zijn!\n"
+"                 Een aantal honderden kilobytes groot zijn!\n"
 "-i init-bestand Naam van te gebruiken initialisatie bestand (standaard: %s)\n"
 "-k              Behandel score bestand niet.\n"
 "-k0             Behandel score bestand maar onderdruk kostbare scores.\n"
@@ -3282,6 +3272,7 @@ msgstr ""
 "-n              Controleer niet op nieuwe groepen. Dit zorgt gewoonlijk\n"
 "                 voor een snellere start.\n"
 "-w              Wacht op toets voor schakelen naar volledig scherm modus.\n"
+"-w0             Wacht op toets (alleen als er fouten optreden).\n"
 "--create        Maak newrc bestand dmv ophalen van lijst van groepen.\n"
 "--debug BESTAND Schrijf debug informatie naar BESTAND\n"
 "--help          Toon deze informatie.\n"
@@ -3745,7 +3736,7 @@ msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "%lu bytes ontvangen, %lu bytes verstuurd in %ld seconden."
 
 #: src/slrnpull.c:1811
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s usage: %s [options]\n"
 " Options:\n"
@@ -3775,6 +3766,8 @@ msgstr ""
 "  --logfile BESTAND    Gebruik BESTAND als het log bestand.\n"
 "  --new-groups         Haal een lijst op met nieuwe groepen.\n"
 "  --no-post            Plaats geen nieuws.\n"
+"  --post-only          Plaats alleen berichten, maar haal geen nieuwe berichten op.\n"
+"  --rebuild            Als --expire; maar stelt ook overzichtsbestanden samen.\n"
 "  --version            Toon het versie nummer.\n"
 
 #: src/slrnpull.c:1836
@@ -3831,9 +3824,9 @@ msgid "Slrnpull exiting on signal."
 msgstr "Slrn sloot af vanwege signaal."
 
 #: src/slrnpull.c:2367
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating filename in %s."
-msgstr "Fout tijdens lezen van %s."
+msgstr "Fout tijdens maken bestandsnaam in %s."
 
 #: src/slrnpull.c:2373 src/slrnpull.c:2697
 #, c-format
@@ -3841,28 +3834,27 @@ msgid "Unable to stat %s."
 msgstr "Kan geen gegevens opvragen over %s."
 
 #: src/slrnpull.c:2383
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read header %d in %s."
-msgstr "Kan %s niet maken."
+msgstr "Kan header %d in %s niet lezen."
 
 #: src/slrnpull.c:2389
 #, c-format
 msgid "Header %d not parseable for overview."
-msgstr ""
+msgstr "Header %d is niet te gebruiken voor overzicht."
 
 #: src/slrnpull.c:2412
 #, c-format
 msgid "%s overview: article %u of %u in %s."
-msgstr ""
+msgstr "%s overzicht: artikel %u van %u in %s."
 
 #: src/slrnpull.c:2413
-#, fuzzy
 msgid "Creating"
-msgstr "Maken van %s."
+msgstr "Maken."
 
 #: src/slrnpull.c:2413
 msgid "Updating"
-msgstr ""
+msgstr "Vernieuwen"
 
 #: src/slrnpull.c:2427
 #, c-format
@@ -3870,29 +3862,28 @@ msgid "Creating Overview file for %s..."
 msgstr "Maken van Overzichts bestand voor %s..."
 
 #: src/slrnpull.c:2494
-#, fuzzy
 msgid "Unable to create filename for overview file.\n"
-msgstr "Kan overzichtsbestand %s niet openen.\n"
+msgstr "Kan geen bestandsnaam maken voor overzichtsbestand.\n"
 
 #: src/slrnpull.c:2504
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open new overview file %s.\n"
 msgstr "Kan overzichtsbestand %s niet openen.\n"
 
 #: src/slrnpull.c:2582
-#, fuzzy, c-format
+#, c-format
 msgid "failed to close overview file %s.\n"
-msgstr "Kan overzichtsbestand %s niet openen.\n"
+msgstr "sluiten overzichtsbestand %s mislukt.\n"
 
 #: src/slrnpull.c:2584
-#, fuzzy, c-format
+#, c-format
 msgid "failed to close new overview file %s.\n"
-msgstr "Kan overzichtsbestand %s niet openen.\n"
+msgstr "kan nieuwe overzichtsbestand %s niet sluiten.\n"
 
 #: src/slrnpull.c:2594
-#, fuzzy, c-format
+#, c-format
 msgid "failed to rename %s to %s."
-msgstr "Naam wijzigen van %s in %s mislukt."
+msgstr "naam wijzigen van %s in %s mislukt."
 
 #: src/slrnpull.c:2624
 #, c-format
