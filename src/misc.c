@@ -2066,6 +2066,9 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
    if ((str == NULL) && (dfl == NULL)) return -1;
    
    Slrn_Keymap_RLI->edit_width = SLtt_Screen_Cols - 1;
+   if (Slrn_Keymap_RLI->edit_width > Slrn_Keymap_RLI->buf_len)
+	   Slrn_Keymap_RLI->edit_width = Slrn_Keymap_RLI->buf_len;
+
    Slrn_Keymap_RLI->prompt = prompt;
    *Slrn_Keymap_RLI->buf = 0;
 
