@@ -1030,7 +1030,7 @@ void slrn_select_prev_group (void) /*{{{*/
 
 void slrn_group_quit (void) /*{{{*/
 {
-   if (Slrn_User_Wants_Confirmation
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_QUIT)
        && (Slrn_Batch == 0)
        && (slrn_get_yesno (1, _("Do you really want to quit")) <= 0)) return;
 
@@ -1468,7 +1468,7 @@ static void subscribe (void) /*{{{*/
 static void catch_up (void) /*{{{*/
 {
    if ((Slrn_Group_Current_Group == NULL)
-       || (Slrn_User_Wants_Confirmation
+       || ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_CATCHUP)
 	   && (Slrn_Batch == 0)
 	   && slrn_get_yesno(1, _("Mark %s as read"), Slrn_Group_Current_Group->group_name) <= 0))
      return;
@@ -1483,7 +1483,7 @@ static void catch_up (void) /*{{{*/
 static void uncatch_up (void) /*{{{*/
 {   
    if ((Slrn_Group_Current_Group == NULL)
-       || (Slrn_User_Wants_Confirmation 
+       || ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_CATCHUP)
 	   && (Slrn_Batch == 0)
 	   && slrn_get_yesno(1, _("Mark %s as un-read"), Slrn_Group_Current_Group->group_name) <= 0))
      return;
@@ -1750,7 +1750,7 @@ void slrn_post_cmd (void) /*{{{*/
      return;
 #endif
 
-   if (Slrn_User_Wants_Confirmation && (Slrn_Batch == 0) &&
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST) && (Slrn_Batch == 0) &&
        (slrn_get_yesno (1, _("Are you sure that you want to post")) <= 0))
      return;
    

@@ -124,7 +124,7 @@ extern int h_errno;
 
 /*{{{ Global Variables */
 int Slrn_Full_Screen_Update = 1; 
-int Slrn_User_Wants_Confirmation = 1;
+int Slrn_User_Wants_Confirmation = SLRN_CONFIRM_ALL;
 int Slrn_Message_Present = 0;
 int Slrn_Abort_Unmodified = 0;
 int Slrn_Mail_Editor_Is_Mua = 0;

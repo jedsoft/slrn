@@ -9,6 +9,16 @@ Changes since 0.9.7.3
     quotes[0-7] as an argument.
   * Use color object "message" for all prompts.
   * The high / low scoring article counters work correctly.
+  * Don't remove _^H combinations in articles (corrupted yenc-encoded data).
+
+   New algorithm for article sorting (based on a patch by Felix Schueller).
+   This adds a highly configurable custom sorting interface (which will
+   completely replace the choice in sorting_method at some point). See
+   custom_sort_order and custom_sort_by_threads in the manual.
+   Moreover, the new code sorts "siblings" inside of threads.
+
+   Made confirm_actions a bitmapped value to allow more fine-grained
+   control. The new default is 31 (confirm all actions).
 
    The output of --kill-log now also shows which scorefile entries match
    the killed article (like view_scores; based on patch by Jurriaan W Kalkman)

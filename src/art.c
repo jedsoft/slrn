@@ -1071,7 +1071,7 @@ static void launch_url (char *url, int want_edit) /*{{{*/
 	  }
 	if (!strcmp (url, "*")) /* special case */
 	  {
-	     if (Slrn_User_Wants_Confirmation &&
+	     if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_URL) &&
 		 (slrn_get_yesno (1, _("Show all available groups"), url) == 0))
 	       return;
 	     
@@ -1081,7 +1081,7 @@ static void launch_url (char *url, int want_edit) /*{{{*/
 	     return;
 	  }
 	/* else: it's a group name */
-	if (Slrn_User_Wants_Confirmation &&
+	if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_URL) &&
 	    (slrn_get_yesno (1, _("Try switching to %s"), url) == 0))
 	  return;
 	
@@ -2055,7 +2055,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
    Slrn_Article_Line_Type *cline, *l;
    int status, num_lines_update;
    unsigned int len, total_lines;
-   char buf[NNTP_BUFFER_SIZE], ch, *b, *b1;
+   char buf[NNTP_BUFFER_SIZE];
 #ifdef HAVE_GETTIMEOFDAY
    double current_bps;
    struct timeval start_time, new_time;
@@ -2162,24 +2162,14 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	     slrn_art_free_article (retval);
 	     return NULL;
 	  }
-
-	/* here I am going to remove _^H combinations.  Later, it will be a
-	 * good idea to perform the implied underlining
-	 */
-	b1 = l->buf;
-	b = buf;
 	
-	if ((*b == '.') && (*(b + 1) == '.')) b++;
-	
-	while (0 != (ch = *b++))
-	  {
-	     if ((ch == '_') && (*b == '\b'))
-	       {
-		  b++;
-	       }
-	     else *b1++ = ch;
-	  }
-	*b1 = 0;
+	/* Note: I no longer remove _^H combinations, as it corrupts yenc-
+	 * encoded data and seems unnecessary in today's usenet.
+	 * We still check whether the server doubled a leading dot. */
+	if ((*buf == '.') && (*(buf + 1) == '.'))
+	  strcpy (l->buf, buf + 1); /* safe */
+	else
+	  strcpy (l->buf, buf); /* safe */
 	
 	l->next = l->prev = NULL;
 	l->flags = 0;
@@ -2749,7 +2739,7 @@ static void reply_cmd (void) /*{{{*/
    select_affected_article (MIME_DISPLAY);
    slrn_update_screen ();
    
-   if (Slrn_User_Wants_Confirmation
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST)
        && (slrn_get_yesno (1, _("Are you sure you want to reply")) == 0))
      return;
    reply (NULL);
@@ -2893,7 +2883,7 @@ static void followup (void) /*{{{*/
 
    strip_sig = ((prefix_arg == -1) && Slrn_Followup_Strip_Sig);
 
-   if (Slrn_User_Wants_Confirmation
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST)
        && (slrn_get_yesno (1, _("Are you sure you want to followup")) == 0))
      return;
    
@@ -3296,7 +3286,7 @@ static void supersede (void) /*{{{*/
 	return;
      }
    
-   if (Slrn_User_Wants_Confirmation
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST)
        && (slrn_get_yesno (1, _("Are you sure you want to supersede")) == 0))
      return;
    
@@ -4285,7 +4275,7 @@ static void print_article_cmd (void) /*{{{*/
 	Slrn_Prefix_Arg_Ptr = NULL;
      }
 
-   if (Slrn_User_Wants_Confirmation
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_PRINT)
        && (slrn_get_yesno (1, _("Are you sure you want to print the article")) == 0))
      return;
    
@@ -6462,7 +6452,7 @@ static void undelete_header (Slrn_Header_Type *h) /*{{{*/
 
 static void catch_up_all (void) /*{{{*/
 {
-   if (Slrn_User_Wants_Confirmation
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_CATCHUP)
        && slrn_get_yesno (1, _("Mark all articles as read")) <= 0)
      return;
    for_all_headers (delete_header, 1);
@@ -6472,7 +6462,7 @@ static void catch_up_all (void) /*{{{*/
 
 static void un_catch_up_all (void) /*{{{*/
 {
-   if (Slrn_User_Wants_Confirmation
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_CATCHUP)
        && slrn_get_yesno (1, _("Mark all articles as unread")) <= 0)
      return;
    for_all_headers (undelete_header, 1);
@@ -6482,7 +6472,7 @@ static void un_catch_up_all (void) /*{{{*/
 
 static void catch_up_to_here (void) /*{{{*/
 {
-   if (Slrn_User_Wants_Confirmation
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_CATCHUP)
        && slrn_get_yesno (1, _("Mark all articles up to here as read")) <= 0)
      return;
    for_all_headers (delete_header, 0);
@@ -6492,7 +6482,7 @@ static void catch_up_to_here (void) /*{{{*/
 
 static void un_catch_up_to_here (void) /*{{{*/
 {
-   if (Slrn_User_Wants_Confirmation
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_CATCHUP)
        && slrn_get_yesno (1, _("Mark all articles up to here as unread")) <= 0)
      return;
    for_all_headers (undelete_header, 0);

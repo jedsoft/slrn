@@ -93,6 +93,13 @@ void slrn_set_input_string (char *);
 void slrn_set_input_chars (char *);
 
 extern int Slrn_Message_Present;
+
+#define SLRN_CONFIRM_CATCHUP	0x1
+#define SLRN_CONFIRM_PRINT	0x2
+#define SLRN_CONFIRM_POST	0x4
+#define SLRN_CONFIRM_URL	0x8
+#define SLRN_CONFIRM_QUIT	0x10
+#define SLRN_CONFIRM_ALL	0x1F
 extern int Slrn_User_Wants_Confirmation;
 extern void slrn_get_mouse_rc (int *, int *);
 #ifndef VMS
