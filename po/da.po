@@ -22,9 +22,9 @@
 # score[file entry] - bedømmelse[sregel]
 msgid ""
 msgstr ""
-"Project-Id-Version: slrn 0.9.7.2pl2\n"
-"POT-Creation-Date: 2001-11-05 12:24+0100\n"
-"PO-Revision-Date: 2001-11-04 14:47+01:00\n"
+"Project-Id-Version: slrn 0.9.7.3 (cvs 2002-03-03)\n"
+"POT-Creation-Date: 2002-03-03 10:54+0100\n"
+"PO-Revision-Date: 2002-03-03 12:01+0100\n"
 "Last-Translator: Byrial Ole Jensen <byrial@image.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -33,179 +33,199 @@ msgstr ""
 
 #. Note to translators:
 #. * Make sure your translation is shorter than 16 characters.
-#: src/art.c:335
+#: src/art.c:298
 #, c-format
 msgid "Ctrl-%c"
 msgstr "Ctrl-%c"
 
-#: src/art.c:339
+#: src/art.c:302
 msgid "SPACE"
 msgstr "MELLEMRUM"
 
-#: src/art.c:340
+#: src/art.c:303
 msgid "TAB"
 msgstr "TAB"
 
-#: src/art.c:341
+#: src/art.c:304
 msgid "RETURN"
 msgstr "RETUR"
 
-#: src/art.c:342
+#: src/art.c:305
 msgid "ESCAPE"
 msgstr "ESC"
 
-#: src/art.c:343
+#: src/art.c:306
 msgid "DELETE"
 msgstr "DELETE"
 
-#: src/art.c:344
+#: src/art.c:307
 msgid "BACKSPACE"
 msgstr "BACKSPACE"
 
-#: src/art.c:700
+#: src/art.c:667
 msgid "No next digest."
 msgstr "Ikke flere sammendrag."
 
-#: src/art.c:1049
+#: src/art.c:1021
 msgid "Invalid Browser definition."
 msgstr "Ugyldigt netlæservalg."
 
-#: src/art.c:1083
+#: src/art.c:1055
 msgid "Browse (^G aborts): "
 msgstr "Gå til (^G afbryder): "
 
-#: src/art.c:1085 src/art.c:4021
+#: src/art.c:1057 src/art.c:3969
 msgid "Aborted."
 msgstr "Afbrudt."
 
-#: src/art.c:1108
+#: src/art.c:1080
 msgid "Show all available groups"
 msgstr "Vis alle tilgængelige grupper"
 
-#: src/art.c:1118
+#: src/art.c:1090
 #, c-format
 msgid "Try switching to %s"
 msgstr "Prøv at skifte til %s"
 
-#: src/art.c:1124
+#: src/art.c:1096
 msgid "Group contains no articles."
 msgstr "Der er ingen indlæg i gruppen."
 
-#: src/art.c:1139
+#: src/art.c:1111
 msgid "No Web Browser has been defined."
 msgstr "Ingen netlæser er valgt."
 
-#: src/art.c:1190
+#: src/art.c:1162
 msgid "No URLs found."
 msgstr "Ingen URL'er fundet."
 
-#: src/art.c:1221
+#: src/art.c:1193
 msgid "Search: "
 msgstr "Søg: "
 
-#: src/art.c:1225 src/art.c:5529 src/group.c:1232
+#: src/art.c:1197 src/art.c:4623 src/group.c:1239
 msgid "Not found."
 msgstr "Ikke fundet."
 
-#: src/art.c:1325
+#: src/art.c:1297
 #, c-format
 msgid "At end of article, press %s for next group."
 msgstr "Ved slutningen af indlægget, tryk %s for næste gruppe."
 
-#: src/art.c:1328
+#: src/art.c:1300
 #, c-format
 msgid "At end of article, press %s for next unread article."
 msgstr "Ved slutningen af indlægget, tryk %s for næste ulæste indlæg."
 
-#: src/art.c:2010
+#: src/art.c:1982
 msgid "Goto article: "
 msgstr "Gå til indlæg: "
 
-#: src/art.c:2027
+#: src/art.c:1999
 msgid "Article not found."
 msgstr "Indlæg ikke fundet."
 
-#: src/art.c:2098
+#: src/art.c:2070
 #, c-format
 msgid "#%2d/%-2d: Retrieving... %s"
 msgstr "#%2d/%-2d: Henter ... %s"
 
-#: src/art.c:2101
+#: src/art.c:2073
 #, c-format
 msgid "[%d] Reading..."
 msgstr "[%d] Læser ..."
 
-#: src/art.c:2108
+#: src/art.c:2080
 msgid "Server failed to return article."
 msgstr "Server kunne ikke returnere indlæg."
 
-#: src/art.c:2112
+#: src/art.c:2084
 #, c-format
 msgid "Article %d unavailable."
 msgstr "Indlæg %d er ikke tilgængelig."
 
-#: src/art.c:2151
+#: src/art.c:2123
 msgid "Article transfer aborted or connection lost."
 msgstr "Overførsel af indlæg afbrudt eller forbindelsen mistet."
 
-#: src/art.c:2234
+#: src/art.c:2141
+#, c-format
+msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
+msgstr "#%2d/%-2d: Læst %4d/%-4d linjer (%s) med %.2fkB/s"
+
+#: src/art.c:2145
+#, c-format
+msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
+msgstr "#%2d/%-2d: Læst %4d/%-4d linjer (%s)"
+
+#: src/art.c:2151
+#, c-format
+msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
+msgstr "[%d] Læst %d/%d linjer nu med %.2fkB/s"
+
+#: src/art.c:2154
+#, c-format
+msgid "[%d] Read %d/%d lines so far"
+msgstr "[%d] Læst %d/%d linjer nu"
+
+#: src/art.c:2194
 msgid "Server sent empty article."
 msgstr "Server sendte et tomt indlæg."
 
 # Standardværdi til followup_date_format. Det er nævnt i manualen
 # at den kan ændres. Default tidszone er GMT, men kan ændres.
-#: src/art.c:2500
+#: src/art.c:2460
 msgid "%a, %d %b %Y at %H:%M GMT"
 msgstr "%a. d. %d %b. %Y kl. %H:%M GMT"
 
-#: src/art.c:2543
+#: src/art.c:2503
 msgid "This operation requires an article"
 msgstr "Denne handling forudsætter et indlæg"
 
-#: src/art.c:2651
+#: src/art.c:2611
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
 msgstr "%s ser ugyldig ud. Fortsæt alligevel"
 
-#: src/art.c:2652
+#: src/art.c:2612
 msgid "Email address"
 msgstr "E-post-adresse"
 
-#: src/art.c:2663 src/art.c:2838 src/art.c:3177 src/art.c:3375
+#: src/art.c:2623 src/art.c:2798 src/art.c:3137 src/art.c:3335
 #: src/slrnpull.c:395 src/slrnpull.c:1031
 #, c-format
 msgid "Unable to open %s for writing."
 msgstr "Kan ikke åbne %s til skrivning."
 
-#: src/art.c:2788
+#: src/art.c:2748
 msgid "Are you sure you want to reply"
 msgstr "Er du sikker på at du vil svare"
 
-#: src/art.c:2815
+#: src/art.c:2775
 msgid "Forward to (^G aborts): "
 msgstr "Videresend til (^G afbryder): "
 
-#: src/art.c:2817
+#: src/art.c:2777
 msgid "Aborted.  An email address is required."
 msgstr "Afbrudt. En e-post-adresse er nødvendig."
 
-#: src/art.c:2821
+#: src/art.c:2781
 msgid "Edit the message before sending"
 msgstr "Redigér indlægget før afsendelse"
 
-#: src/art.c:2925 src/art.c:3330
+#: src/art.c:2885 src/art.c:3290
 msgid "Posting not allowed by server"
 msgstr "Server modtager ikke indlæg"
 
-#: src/art.c:2932
+#: src/art.c:2892
 msgid "Are you sure you want to followup"
 msgstr "Er du sikker på at du vil følge op"
 
-#: src/art.c:2973
+#: src/art.c:2933
 msgid "Do you want to reply to POSTER as poster prefers"
 msgstr "Vil du svare privat som forfatteren foretrækker"
 
-#: src/art.c:3011
+#: src/art.c:2971
 #, c-format
 msgid "Followup to %s as poster prefers"
 msgstr "Opfølgning til %s som forfatter foretrækker"
@@ -215,11 +235,11 @@ msgstr "Opfølgning til %s som forfatter foretrækker"
 #. * Do not change the length of the string! You cannot use any of the
 #. * default characters for other fields than they originally stood for.
 #.
-#: src/art.c:3053
+#: src/art.c:3013
 msgid "fFpPiIcC"
 msgstr "oOsSiIaA"
 
-#: src/art.c:3056
+#: src/art.c:3016
 msgid ""
 "Crossposting. Followup-To this group, Post to this group only, Ignore,"
 " Cancel?"
@@ -227,405 +247,381 @@ msgstr ""
 "Flergruppesending. Opfølgning til denne gruppe, Send kun til denne gruppe,"
 " Ignorér, Afbryd?"
 
-#: src/art.c:3138
+#: src/art.c:3098
 msgid "Cc message as requested by poster"
 msgstr "Send kopi til afsender som ønsket"
 
-#: src/art.c:3144
+#: src/art.c:3104
 msgid "Cc message to poster"
 msgstr "Send kopi til afsender"
 
-#: src/art.c:3157
+#: src/art.c:3117
 #, c-format
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s synes ugyldig. Send kopi alligevel"
 
-#: src/art.c:3335
+#: src/art.c:3295
 msgid "Are you sure you want to supersede"
 msgstr "Er du sikker på at du vil erstatte"
 
-#: src/art.c:3354 src/art.c:7259
+#: src/art.c:3314 src/art.c:6388
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "Mislykket: Dit navn, '%s', er ikke '%s'"
 
-#: src/art.c:3457 src/art.c:3506
+#: src/art.c:3417 src/art.c:3466
 msgid "End of buffer."
 msgstr "Slut på buffer."
 
-#: src/art.c:3478 src/art.c:3496 src/group.c:1078
+#: src/art.c:3438 src/art.c:3456 src/group.c:1079
 msgid "Top of buffer."
 msgstr "Start på buffer."
 
-#: src/art.c:3541
+#: src/art.c:3501
 msgid "No previous unread articles."
 msgstr "Ingen foregående ulæste indlæg."
 
-#: src/art.c:3585
+#: src/art.c:3545
 msgid "No following unread articles."
 msgstr "Ingen ulæste indlæg herefter."
 
-#: src/art.c:3621
+#: src/art.c:3581
 #, c-format
 msgid "No following unread articles.  Press %s for next group."
 msgstr "Ingen ulæste indlæg herefter. Tryk %s for næste gruppe."
 
-#: src/art.c:3652
+#: src/art.c:3612
 msgid "No more high scoring articles."
 msgstr "Ikke flere gode indlæg."
 
-#: src/art.c:3706
+#: src/art.c:3641 src/group.c:1773
+msgid "Subject: "
+msgstr "Emne: "
+
+#: src/art.c:3666
 msgid "No more articles on that subject."
 msgstr "Ikke flere indlæg med det emne."
 
-#: src/art.c:3739
+#: src/art.c:3699
 #, c-format
 msgid "Goto Header: %d"
 msgstr "Gå til hoved: %d"
 
-#: src/art.c:3824 src/group.c:2633 src/post.c:262
+#: src/art.c:3784 src/group.c:2640 src/post.c:262
 #, c-format
 msgid "Unable to open %s."
 msgstr "Kan ikke åbne %s."
 
-#: src/art.c:3830 src/slrnpull.c:1039 src/slrnpull.c:1047
+#: src/art.c:3790 src/slrnpull.c:1039 src/slrnpull.c:1047
 #, c-format
 msgid "Error writing to %s."
 msgstr "Fejl ved skrivning af %s."
 
-#: src/art.c:3962
+#: src/art.c:3910
 msgid "Save tagged articles"
 msgstr "Gem afmærkede indlæg"
 
-#: src/art.c:3970
+#: src/art.c:3918
 msgid "Save this thread"
 msgstr "Gem denne tråd"
 
-#: src/art.c:4017
+#: src/art.c:3965
 msgid "Temporary file (^G aborts): "
 msgstr "Midlertidig fil (^G afbryder): "
 
-#: src/art.c:4018
+#: src/art.c:3966
 msgid "Save to file (^G aborts): "
 msgstr "Gem til fil (^G afbryder): "
 
-#: src/art.c:4027 src/editscore.c:153 src/post.c:429
+#: src/art.c:3975 src/editscore.c:153 src/post.c:429
 #, c-format
 msgid "Unable to open %s"
 msgstr "Kan ikke åbne %s"
 
-#: src/art.c:4118
+#: src/art.c:4065
 #, c-format
 msgid "decoding %10s (%3d/%3d) %s"
 msgstr "afkoder %10s (%3d/%3d) %s"
 
-#: src/art.c:4134
+#: src/art.c:4081
 msgid "Filename buffer not large enough."
 msgstr "Buffer til filnavn er ikke stor nok."
 
 #. safe
-#: src/art.c:4138
+#: src/art.c:4085
 msgid "Calling uudeview ..."
 msgstr "Kalder uudeview ..."
 
-#: src/art.c:4147
+#: src/art.c:4094
 #, c-format
 msgid "could not load %s: errno = %d"
 msgstr "kunne ikke indlæse %s: fejlnr. = %d"
 
-#: src/art.c:4150
+#: src/art.c:4097
 #, c-format
 msgid "could not load %s: %s"
 msgstr "kunne ikke indlæse %s: %s"
 
-#: src/art.c:4165
+#: src/art.c:4112
 msgid "I/O error."
 msgstr "Ind/ud-fejl."
 
-#: src/art.c:4168
+#: src/art.c:4115
 #, c-format
 msgid "error decoding %s: %s"
 msgstr "fejl ved afkodning af %s: %s"
 
-#: src/art.c:4192
+#: src/art.c:4139
 #, c-format
 msgid "Decode %s"
 msgstr "Afkod %s"
 
-#: src/art.c:4203
+#: src/art.c:4150
 #, c-format
 msgid "Delete %s"
 msgstr "Slet %s"
 
-#: src/art.c:4206
+#: src/art.c:4153
 #, c-format
 msgid "Unable to delete %s"
 msgstr "Kan ikke slette %s"
 
-#: src/art.c:4238
+#: src/art.c:4185
 #, c-format
 msgid "Unable to open pipe to %s"
 msgstr "Kan ikke åbne rør til %s"
 
-#: src/art.c:4255 src/art.c:4276 src/decode.c:65
+#: src/art.c:4202 src/art.c:4223 src/decode.c:65
 msgid "Piping not implemented on this system."
 msgstr "Rør findes ikke på dette system."
 
-#: src/art.c:4267
+#: src/art.c:4214
 msgid "Pipe to command: "
 msgstr "Opret rør til kommando: "
 
-#: src/art.c:4269
+#: src/art.c:4216
 msgid "Aborted.  Command name is required."
 msgstr "Afbrudt. Kommandonavn er påkrævet."
 
-#: src/art.c:4274
+#: src/art.c:4221
 #, c-format
 msgid "Error piping to %s."
 msgstr "Fejl ved rør til %s."
 
-#: src/art.c:4290
+#: src/art.c:4237
 msgid "Printing article..."
 msgstr "Udskriver indlæg ..."
 
-#: src/art.c:4321
+#: src/art.c:4268
 msgid "Printing article...done"
 msgstr "Udskriver indlæg ... færdig"
 
-#: src/art.c:4337
+#: src/art.c:4284
 msgid "Are you sure you want to print the article"
 msgstr "Er du sikker på at du vil udskrive indlægget"
 
-#: src/art.c:4490
-msgid "sort_headers(): memory allocation failure."
-msgstr "Tildeling af hukommelse under sortering mislykkedes."
-
-#: src/art.c:5031
-msgid "Internal Error."
-msgstr "Intern fejl."
-
-#: src/art.c:5092
-msgid "link_same_subjects: memory allocation failure."
-msgstr "Tildeling af hukommelse under trådning efter emne mislykkedes."
-
-#. SLMEMSET ((char *) Lost_Ancestors, 0, sizeof (Lost_Ancestors));
-#: src/art.c:5325
-msgid "Threading by references ..."
-msgstr "Referencetrådning ..."
-
-#. self referencing!!!
-#: src/art.c:5362
-#, c-format
-msgid "Article %d is part of reference loop!"
-msgstr "Indlæg %d er i en referenceløkke!"
-
-#. No perform a re-arrangement such that those with the no parents but
-#. * share the same reference are placed side-by-side as sisters.
-#.
-#: src/art.c:5386
-msgid "Linking \"lost relatives\" ..."
-msgstr "Tråder \"bortkomne slægtninge\" ..."
-
-#: src/art.c:5393
-msgid "Linking articles with identical subjects ..."
-msgstr "Tråder indlæg med identiske emner ..."
-
-#: src/art.c:5461
+#: src/art.c:4556
 msgid "Mark set."
 msgstr "Mærke sat."
 
-#: src/art.c:5473
+#: src/art.c:4568
 msgid "Mark not set."
 msgstr "Mærke ikke sat."
 
-# Søgningstype
-#: src/art.c:5494
-msgid "Subject"
-msgstr "Emne"
+#: src/art.c:4589
+msgid "Subject search "
+msgstr "Emnesøgning "
 
-# Søgningstype
-#: src/art.c:5494
-msgid "Author"
-msgstr "Forfatter"
+#: src/art.c:4589
+msgid "Author search "
+msgstr "Forfattersøgning "
 
-# Sammensættes med søgningstype
-#: src/art.c:5495
-msgid " Search "
-msgstr "søgning "
+#: src/art.c:4590
+msgid "(forward)"
+msgstr "(fremad)"
 
-#: src/art.c:5496 src/group.c:1223
-msgid "Forward"
-msgstr "fremad"
+#: src/art.c:4590
+msgid "(backward)"
+msgstr "(bagud)"
 
-#: src/art.c:5496 src/group.c:1223
-msgid "Backward"
-msgstr "bagud"
+#: src/art.c:4776 src/slrnpull.c:1182
+#, c-format
+msgid "Score %d killed article %s\n"
+msgstr "Bedømmelse %d dumpede indlæg %s\n"
 
-#: src/art.c:5680
+#: src/art.c:4780 src/slrnpull.c:1186
+#, c-format
+msgid " Score %c%5i: %s (%s:%i)\n"
+msgstr " Bedømmelse %c%5i: %s (%s:%i)\n"
+
+#: src/art.c:4784 src/slrnpull.c:1190
+#, c-format
+msgid " Score %c%5i: %s:%i\n"
+msgstr " Bedømmelse %c%5i: %s:%i\n"
+
+#: src/art.c:4789 src/slrnpull.c:1195
 #, c-format
 msgid ""
-"Score %d killed article %s\n"
-"Newsgroup: %s\n"
-"From: %s\n"
-"Subject: %s\n"
+"  Newsgroup: %s\n"
+"  From: %s\n"
+"  Subject: %s\n"
 "\n"
 msgstr ""
-"Bedømmelse %d dumpede indlæg %s\n"
-"Nyhedsgruppe: %s\n"
-"Fra: %s\n"
-"Emne: %s\n"
+"  Nyhedsgruppe: %s\n"
+"  Fra: %s\n"
+"  Emne: %s\n"
 "\n"
 
-#: src/art.c:5732
+#: src/art.c:4854
 msgid "Scoring articles ..."
 msgstr "Bedømmer indlæg ..."
 
-#: src/art.c:5745
+#: src/art.c:4867
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr "Bedømmer indlæg: %2d%%, dumpede: %u, gode: %u, dårlige: %u"
 
-#: src/art.c:5780
+#: src/art.c:4907
 msgid "Apply scorefile now"
 msgstr "Anvend bedømmelsesfil nu"
 
-#: src/art.c:5827
+#: src/art.c:4955
 msgid "This article is not matched by any scorefile entries."
 msgstr "Dette indlæg passer ikke på nogen bedømmelsesregler."
 
-#: src/art.c:5874
+#: src/art.c:5002
 msgid "This article is matched by the following scores"
 msgstr "Dette indlæg passer på følgende bedømmelsesregler"
 
-#: src/art.c:5974
+#: src/art.c:5103
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: modtager yderligere hoveder ... [%c]"
 
-#: src/art.c:6057
+#: src/art.c:5186
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: hoveder modtaget: %2d/%d"
 
-#: src/art.c:6220
+#: src/art.c:5349
 #, c-format
 msgid "Finding %s from server..."
 msgstr "Finder %s på server ..."
 
-#: src/art.c:6251
+#: src/art.c:5380
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "Finder børn på server ... [%c]"
 
-#: src/art.c:6259
+#: src/art.c:5388
 msgid "Your server does not provide support for this feature."
 msgstr "Din server understøtter ikke denne funktion."
 
-#: src/art.c:6425
+#: src/art.c:5554
 msgid "Header is part of a reference loop"
 msgstr "Hoved er i en referenceløkke"
 
-#: src/art.c:6473
+#: src/art.c:5602
 msgid "Article has no parent reference."
 msgstr "Indlægget har ingen forældre-reference."
 
-#: src/art.c:6521
+#: src/art.c:5649
 #, c-format
 msgid "Article %s not available."
 msgstr "Indlæg %s er ikke tilgængelig."
 
-#: src/art.c:6533
+#: src/art.c:5661
 msgid "Enter Message-Id: "
 msgstr "Angiv id for indlæg (Message-Id): "
 
-#: src/art.c:7236
+#: src/art.c:6365
 msgid "Are you sure that you want to cancel this article"
 msgstr "Er du sikker på at du vil annullere dette indlæg"
 
-#: src/art.c:7239
+#: src/art.c:6368
 msgid "Cancelling..."
 msgstr "Annullerer ..."
 
-#: src/art.c:7274
+#: src/art.c:6403
 msgid "No message id."
 msgstr "Ingen indlægsidentifikation."
 
-#: src/art.c:7295
+#: src/art.c:6424
 msgid "Done."
 msgstr "Færdig."
 
-#: src/art.c:7332
+#: src/art.c:6461
 msgid "Mark all articles as read"
 msgstr "Markér alle indlæg læste"
 
-#: src/art.c:7342
+#: src/art.c:6471
 msgid "Mark all articles as unread"
 msgstr "Markér alle indlæg ulæste"
 
-#: src/art.c:7352
+#: src/art.c:6481
 msgid "Mark all articles up to here as read"
 msgstr "Markér alle indlæg op til her læste"
 
-#: src/art.c:7362
+#: src/art.c:6491
 msgid "Mark all articles up to here as unread"
 msgstr "Markér alle indlæg op til her ulæste"
 
-#: src/art.c:7429
+#: src/art.c:6558
 msgid "Rate article (1-5):"
 msgstr "Vurdér indlæg (1-5):"
 
-#: src/art.c:7434
+#: src/art.c:6563
 msgid "Rating must be in range 1 to 5."
 msgstr "Vurderingen skal være i området 1 til 5."
 
-#: src/art.c:7727
+#: src/art.c:6856
 msgid "Unable to create Article keymap!"
 msgstr "Kan ikke lave indlægs-tastetildeling!"
 
-#: src/art.c:8172
+#: src/art.c:7270
 msgid "Group transfer aborted."
 msgstr "Gruppeoverførsel afbrudt."
 
-#: src/art.c:8174
+#: src/art.c:7272
 msgid "Server read failed."
 msgstr "Serverlæsning mislykkedes."
 
-#: src/art.c:8191
+#: src/art.c:7289
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Ingen ulæste indlæg fundet (%d dumpede)."
 
-#: src/art.c:8193
+#: src/art.c:7291
 msgid "No unread articles found."
 msgstr "Ingen ulæste indlæg fundet."
 
-#: src/art.c:8249
+#: src/art.c:7345
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr "Antal dumpede: %u, gode: %u, dårlige: %u, GroupLens vurderede: %d"
 
-#: src/art.c:8255
+#: src/art.c:7351
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "Antal dumpede: %u, gode: %u, dårlige: %u"
 
-#: src/art.c:8456
+#: src/art.c:7552
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "ML.RUM:vælg Ctrl-d:ned Ctrl-u:op d:Markér-som-læst n:næste p:forrige q:afslut"
 
-#: src/art.c:8461
+#: src/art.c:7557
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "ML.RUM:ned  B:op  u:markér-som-ulæst  f:følg-op  n:næste  p:forrige  q:afslut"
 
-#: src/art.c:8653
+#: src/art.c:7749
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Tråden er slut. Næste: %s"
 
-#: src/art.c:8655
+#: src/art.c:7751
 msgid "End of Thread."
 msgstr "Tråden er slut."
 
@@ -633,16 +629,16 @@ msgstr "Tråden er slut."
 #. * sisters except that one can have a fake parent.  If this is the
 #. * case, we are at the end of a subthread.
 #.
-#: src/art.c:8667
+#: src/art.c:7763
 msgid "End of Sub-Thread"
 msgstr "Deltråden er slut."
 
 # Standard for header_status_line
-#: src/art.c:9224
+#: src/art.c:8320
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t ulæste] Gruppe: %n%-20g -- %L (%P)"
 
-#: src/art.c:9412
+#: src/art.c:8508
 msgid "Spoilers visible!"
 msgstr "Afsløringer synlige!"
 
@@ -701,25 +697,25 @@ msgstr ""
 "Dette bibliotek kan hentes med anonym ftp fra\n"
 "space.mit.edu in pub/davis/slang.\n"
 
-#: src/chmap.c:152 src/chmap.c:159
+#: src/chmap.c:147 src/chmap.c:154
 #, c-format
 msgid "File error: %s --- message not posted."
 msgstr "Filfejl: %s --- indlæg ikke sendt."
 
-#: src/chmap.c:171
+#: src/chmap.c:166
 msgid "Write Error. Disk Full? --- message not posted."
 msgstr "Skrivefejl. Er disken fuld? --- indlæg ikke sendt."
 
-#: src/chmap.c:201
+#: src/chmap.c:196
 #, c-format
 msgid "  Default character set:     %s\n"
 msgstr "  Standard-tegnsæt:        %s\n"
 
-#: src/chmap.c:203
+#: src/chmap.c:198
 msgid " SUPPORTED CHARACTER SETS:\n"
 msgstr " UNDERSTØTTEDE TEGNSÆT:\n"
 
-#: src/chmap.c:244
+#: src/chmap.c:239
 #, c-format
 msgid "Unsupport character set: %s"
 msgstr "Tegnsæt %s ikke understøttet"
@@ -812,182 +808,189 @@ msgstr "Hvilke nyhedsgrupper: Denne gruppe, Alle grupper"
 msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
 msgstr "Udløber (MM/DD/ÅÅÅÅ, DD-MM-ÅÅÅÅ, +NN (dage) eller blank):"
 
-#: src/group.c:374
+#: src/group.c:375
 #, c-format
 msgid "Selecting %s ..."
 msgstr "Vælger %s ..."
 
-#: src/group.c:386 src/group.c:524 src/group.c:1141
+#: src/group.c:387 src/group.c:525 src/group.c:1146
 #, c-format
 msgid "Group %s is bogus%s."
 msgstr "Gruppen %s findes ikke%s."
 
-#: src/group.c:387 src/group.c:1142
+#: src/group.c:388 src/group.c:1147
 msgid " - dropping it"
 msgstr " - fjerner den"
 
-#: src/group.c:394
+#: src/group.c:395
 #, c-format
 msgid "Could not enter group %s."
 msgstr "Kunne ikke gå til gruppen %s."
 
-#: src/group.c:525
+#: src/group.c:526
 msgid " - ignoring it"
 msgstr " - ignorerer den"
 
-#: src/group.c:619
+#: src/group.c:620
 #, c-format
 msgid "Group %s is bogus - ignoring it."
 msgstr "Gruppen %s findes ikke - ignorerer den."
 
-#: src/group.c:927
+#: src/group.c:928
 msgid "No articles to read."
 msgstr "Ingen indlæg at læse."
 
-#: src/group.c:949
+#: src/group.c:950
 #, c-format
 msgid "%s: Read how many? "
 msgstr "%s: Læs hvor mange? "
 
-#: src/group.c:1034
+#: src/group.c:1035
 msgid "Do you really want to quit"
 msgstr "Vil du virkelig afslutte"
 
-#: src/group.c:1043
+#: src/group.c:1044
 msgid "Write to newsrc file failed.  Quit anyway"
 msgstr "Skrivning af newsrc-fil mislykkedes. Afslut alligevel"
 
-#: src/group.c:1056 src/group.c:1293
+#: src/group.c:1057 src/group.c:1300
 msgid "End of Buffer."
 msgstr "Slut på buffer."
 
-#: src/group.c:1067
+#: src/group.c:1068
 msgid "Top of Buffer."
 msgstr "Start på buffer."
 
-#: src/group.c:1128
+#: src/group.c:1133
 msgid "Server connection dropped."
 msgstr "Forbindelse til server mistet."
 
-#: src/group.c:1169 src/group.c:2668
+#: src/group.c:1176 src/group.c:2675
 #, c-format
 msgid "Checking news%s ..."
 msgstr "Kigger efter nyheder%s ..."
 
-#: src/group.c:1170 src/group.c:2669
+#: src/group.c:1177 src/group.c:2676
 msgid " via active file"
 msgstr "vha. aktivfil"
 
-#: src/group.c:1224
-msgid " Search: "
-msgstr "Søg: "
+# Søgeretning
+#: src/group.c:1230
+msgid "Forward"
+msgstr "Fremad"
 
-#: src/group.c:1238
+# Søgeretning
+#: src/group.c:1230
+msgid "Backward"
+msgstr "Bagud"
+
+# Sættes efter enten "Fremad" eller "Bagud"
+#: src/group.c:1231
+msgid " Search: "
+msgstr "søgning: "
+
+#: src/group.c:1245
 msgid "Search wrapped."
 msgstr "Søgning startet forfra."
 
-#: src/group.c:1267
+#: src/group.c:1274
 #, c-format
 msgid "Group %s does not exist."
 msgstr "Gruppen %s findes ikke."
 
-#: src/group.c:1283
+#: src/group.c:1290
 msgid "Add group: "
 msgstr "Tilføj gruppe: "
 
-#: src/group.c:1354
+#: src/group.c:1361
 #, c-format
 msgid "Moving %s. Press RETURN when finished."
 msgstr "Flytter %s. Tryk RETUR når afsluttet."
 
-#: src/group.c:1437
+#: src/group.c:1444
 msgid "Subscribe pattern: "
 msgstr "Abonnér efter mønster: "
 
-#: src/group.c:1466
+#: src/group.c:1473
 #, c-format
 msgid "Mark %s as read"
 msgstr "Markér %s læst"
 
-#: src/group.c:1470
+#: src/group.c:1477
 msgid "Group marked as read."
 msgstr "Gruppe markeret læst."
 
-#: src/group.c:1481
+#: src/group.c:1488
 #, c-format
 msgid "Mark %s as un-read"
 msgstr "Markér %s ulæst"
 
-#: src/group.c:1485
+#: src/group.c:1492
 msgid "Group marked as un-read."
 msgstr "Gruppe markeret ulæst."
 
-#: src/group.c:1508
+#: src/group.c:1515
 msgid "Un-Subscribe pattern: "
 msgstr "Afmeld abonnement efter mønster: "
 
-#: src/group.c:1575
+#: src/group.c:1582
 msgid "List Groups (e.g., comp*unix*): "
 msgstr "List grupper (f.eks. comp*unix): "
 
-#: src/group.c:1724
+#: src/group.c:1731
 msgid "No unread articles."
 msgstr "Ingen ulæste indlæg."
 
-#: src/group.c:1736 src/post.c:1114
+#: src/group.c:1743 src/post.c:1126
 msgid "Posting not allowed."
 msgstr "Sending til nyhedsgruppe ikke tilladt."
 
-#: src/group.c:1747
+#: src/group.c:1754
 msgid "Are you sure that you want to post"
 msgstr "Er du sikker på at du vil sende til nyhedsgruppe"
 
-#: src/group.c:1757
+#: src/group.c:1764
 msgid "Newsgroup: "
 msgstr "Nyhedsgruppe: "
 
-#: src/group.c:1761
+#: src/group.c:1768
 msgid "Followup-To: "
 msgstr "Opfølgning til: "
-
-#: src/group.c:1766
-msgid "Subject: "
-msgstr "Emne: "
 
 #. Note to translators: Here, "fF" means "full", "sS" is "simple",
 #. * "nN" means "none" and "cC" is "cancel".
 #. * As always, don't change the length of the string; you cannot use
 #. * the default characters for different fields.
 #.
-#: src/group.c:1780
+#: src/group.c:1787
 msgid "fFsSnNcC"
 msgstr "fFsSiIaA"
 
-#: src/group.c:1787
+#: src/group.c:1794
 msgid "Select scoring mode: Full, Simple, None, Cancel"
 msgstr "Vælg bedømmelsesmetode: Fuld, Simpel, Ingen, Annullér"
 
-#: src/group.c:1795
+#: src/group.c:1802
 msgid "Full Header Scoring enabled."
 msgstr "Fuld bedømmelse af hoveder slået til."
 
-#: src/group.c:1800
+#: src/group.c:1807
 msgid "Expensive Scoring disabled."
 msgstr "Dyr bedømmelse slået fra."
 
-#: src/group.c:1805
+#: src/group.c:1812
 msgid "Scoring disabled."
 msgstr "Bedømmelse slået fra."
 
-#: src/group.c:1823
+#: src/group.c:1830
 msgid "No changes need to be saved."
 msgstr "Ingen ændringer at gemme."
 
-#: src/group.c:2014
+#: src/group.c:2021
 msgid "Unable to create group keymap!"
 msgstr "Kan ikke lave gruppe-tastetildeling!"
 
-#: src/group.c:2172
+#: src/group.c:2179
 #, c-format
 msgid ""
 "Unable to create newsgroup description file:\n"
@@ -996,7 +999,7 @@ msgstr ""
 "Kan ikke oprette beskrivelsesfil for grupper:\n"
 "%s\n"
 
-#: src/group.c:2176
+#: src/group.c:2183
 #, c-format
 msgid ""
 "\n"
@@ -1005,7 +1008,7 @@ msgstr ""
 "\n"
 "Opretter beskrivelsesfil %s.\n"
 
-#: src/group.c:2177
+#: src/group.c:2184
 msgid ""
 "Getting newsgroup descriptions from server.\n"
 "Note: This step may take some time if you have a slow connection!!!\n"
@@ -1013,23 +1016,23 @@ msgstr ""
 "Henter gruppebeskrivelser fra server.\n"
 "Bemærk: Dette kan tage en del tid hvis du har en langsom forbindelse!!!\n"
 
-#: src/group.c:2184
+#: src/group.c:2191
 msgid "Server failed on list newsgroups command."
 msgstr "Serverfejl ved hentning af gruppebeskrivelser."
 
-#: src/group.c:2199
+#: src/group.c:2206
 msgid "Error reading line from server"
 msgstr "Fejl ved læsning af linje fra server"
 
-#: src/group.c:2330
+#: src/group.c:2337
 msgid "Checking for new groups ..."
 msgstr "Kigger efter nye grupper ..."
 
-#: src/group.c:2388 src/slrnpull.c:2092
+#: src/group.c:2395 src/slrnpull.c:2123
 msgid "Server does not implement NEWGROUPS command."
 msgstr "Server har ikke NEWGROUPS-kommandoen."
 
-#: src/group.c:2392 src/slrnpull.c:2096
+#: src/group.c:2399 src/slrnpull.c:2127
 #, c-format
 msgid ""
 "Server failed to return proper response to NEWGROUPS:\n"
@@ -1038,16 +1041,16 @@ msgstr ""
 "Server gav en ukorrekt svarkode på NEWSGROUPS-kommando:\n"
 "%s\n"
 
-#: src/group.c:2406 src/group.c:2519
+#: src/group.c:2413 src/group.c:2526
 msgid "Read from server failed"
 msgstr "Læsning fra server mislykkedes"
 
-#: src/group.c:2417
+#: src/group.c:2424
 #, c-format
 msgid "%d new newsgroup(s) found."
 msgstr "Fandt %d nye nyhedgrupper."
 
-#: src/group.c:2425
+#: src/group.c:2432
 #, c-format
 msgid ""
 "%s appears corrupt.\n"
@@ -1058,20 +1061,20 @@ msgstr ""
 "Jeg forventede at se: NEWGROUPS ååmmdd ttmmss GMT\n"
 "Jeg vil rette filen for dig.\n"
 
-#: src/group.c:2437
+#: src/group.c:2444
 #, c-format
 msgid "Unable to open %s to record date."
 msgstr "Kan ikke åbne %s for at indskrive dato."
 
-#: src/group.c:2505
+#: src/group.c:2512
 msgid "Server failed LIST ACTIVE - authorization missing."
 msgstr "Serverfejl ved LIST ACTIVE-kommando - godkendelse mangler."
 
-#: src/group.c:2506
+#: src/group.c:2513
 msgid "Server failed LIST ACTIVE."
 msgstr "Serverfejl ved LIST ACTIVE-kommando."
 
-#: src/group.c:2619
+#: src/group.c:2626
 #, c-format
 msgid ""
 "\n"
@@ -1080,16 +1083,16 @@ msgstr ""
 "\n"
 "* Sikkerhedskopien af %s er nyere end filen selv.\n"
 
-#: src/group.c:2621
+#: src/group.c:2628
 msgid "Do you want to restore your newsrc from the autosave version"
 msgstr "Ønsker du at retablere din newsrc-fil ud fra sikkerhedskopien"
 
-#: src/group.c:2682 src/post.c:1298 src/slrnpull.c:1528
+#: src/group.c:2689 src/post.c:1313 src/slrnpull.c:1559
 #, c-format
 msgid "Unable to create %s."
 msgstr "Kan ikke oprette %s."
 
-#: src/group.c:2685
+#: src/group.c:2692
 msgid ""
 "\n"
 "--The next step may take a while if the NNTP connection is slow.--\n"
@@ -1098,36 +1101,36 @@ msgstr ""
 "\n"
 "--Det næste punkt kan tage en del tid hvis NNTP-forbindelsen er langsom.--\n"
 
-#: src/group.c:2686
+#: src/group.c:2693
 #, c-format
 msgid "Creating %s."
 msgstr "Opretter %s."
 
-#: src/group.c:2697
+#: src/group.c:2704
 msgid "Unable to read newsrc file"
 msgstr "Kan ikke læse newsrc-fil"
 
-#: src/group.c:2790
+#: src/group.c:2797
 #, c-format
 msgid "Writing %s ..."
 msgstr "Skriver %s ..."
 
-#: src/group.c:2812
+#: src/group.c:2819
 #, c-format
 msgid "Unable to open file %s for writing."
 msgstr "Kan ikke åbne filen %s til skrivning."
 
-#: src/group.c:2916
+#: src/group.c:2923
 #, c-format
 msgid "Writing %s ... done."
 msgstr "Skriver %s ... færdig."
 
-#: src/group.c:2924
+#: src/group.c:2931
 #, c-format
 msgid "Write to %s failed! Disk Full?"
 msgstr "Skrivning til %s mislykkedes! Er disken fuld?"
 
-#: src/group.c:2939
+#: src/group.c:2946
 msgid ""
 "SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
 msgstr ""
@@ -1135,20 +1138,20 @@ msgstr ""
 "abonnér"
 
 # Standardværdi for group_status_line
-#: src/group.c:3111
+#: src/group.c:3118
 msgid "-%D-News Groups: %s %-20g -- %L (%P)"
 msgstr "-%D-Nyhedsgrupper: %s %-20g -- %L (%P)"
 
-#: src/group.c:3143 src/group.c:3181 src/interp.c:360
+#: src/group.c:3150 src/group.c:3188 src/interp.c:360 src/interp.c:430
 msgid "To use this feature, please update s-lang and recompile slrn."
 msgstr ""
 "Opgradér venligst s-lang og genoversæt slrn for at bruge denne funktion."
 
-#: src/group.c:3189
+#: src/group.c:3196 src/interp.c:438
 msgid "Array of string expected."
 msgstr "En tabel med strenge var forventet."
 
-#: src/group.c:3195
+#: src/group.c:3202 src/interp.c:444
 msgid "One-dimensional array expected."
 msgstr "En én-dimensionel tabel var forventet."
 
@@ -1967,35 +1970,44 @@ msgstr "Unicode-værdi i række %d i forkert område."
 msgid "Local charset value in row %d out of range."
 msgstr "Værdi for lokalt tegnsæt i række %d i forkert område."
 
-#: src/interp.c:457
+#: src/interp.c:452
+#, c-format
+msgid "Array must contain at least one, at most %d elements."
+msgstr "Tabel skal indeholde mindst én og højst %d elementer."
+
+#: src/interp.c:460
+msgid "Failed to allocate memory."
+msgstr "Tildeling af hukommelse mislykkedes."
+
+#: src/interp.c:527
 msgid "definekey: no such keymap."
 msgstr "definekey: ingen sådan tastetildeling."
 
-#: src/interp.c:484
+#: src/interp.c:554
 msgid "undefinekey: no such keymap."
 msgstr "undefinekey: ingen sådan tastetildeling."
 
-#: src/interp.c:521 src/interp.c:559 src/slrn.c:1686
+#: src/interp.c:591 src/interp.c:629 src/slrn.c:1728
 msgid "Quit!"
 msgstr "Afslutter!"
 
-#: src/interp.c:594
+#: src/interp.c:664
 msgid "Terminal not initialized."
 msgstr "Terminal ikke gjort klar."
 
-#: src/interp.c:645
+#: src/interp.c:715
 msgid "Not in article mode."
 msgstr "Ikke i indlægstilstand."
 
-#: src/interp.c:755
+#: src/interp.c:836
 msgid "No article selected"
 msgstr "Intet indlæg er valgt."
 
-#: src/interp.c:1066
+#: src/interp.c:1147
 msgid "Not in group mode."
 msgstr "Ikke i gruppetilstand."
 
-#: src/interp.c:1190
+#: src/interp.c:1271
 #, c-format
 msgid "Unable to open log file %s"
 msgstr "Kan ikke åbne logfil %s"
@@ -2111,55 +2123,60 @@ msgstr "Efter dato (den nyeste sidst)"
 msgid "Thread, then Sort by date (most recent last)"
 msgstr "Efter tråd og dato (den nyeste sidst)"
 
-#: src/menu.c:211
+#. 1011
+#: src/menu.c:204
+msgid "Custom sorting (see manual)"
+msgstr "Tilpasset sortering (se manualen)"
+
+#: src/menu.c:212
 msgid "Sorting Method"
 msgstr "Sorteringsmetode"
 
-#: src/menu.c:295
+#: src/menu.c:296
 msgid "(Select One)"
 msgstr "(Vælg en)"
 
-#: src/menu.c:355
+#: src/menu.c:356
 msgid "Cancelled."
 msgstr "Annulleret."
 
-#: src/menu.c:432
+#: src/menu.c:433
 msgid "[All]"
 msgstr "[Alt]"
 
-#: src/menu.c:432
+#: src/menu.c:433
 msgid "[Top]"
 msgstr "[Top]"
 
-#: src/menu.c:436
+#: src/menu.c:437
 msgid "[Bot]"
 msgstr "[Bund]"
 
-#: src/menu.c:476
+#: src/menu.c:477
 msgid "Press any key to close the window."
 msgstr "Tryk på en tast for at lukke vinduet."
 
-#: src/menu.c:478
+#: src/menu.c:479
 msgid "Use UP/DOWN to move, any other key to close the window."
 msgstr "Brug OP/NED for at flytte, enhver anden tast for at lukke vindiet."
 
-#: src/menu.c:482
+#: src/menu.c:483
 msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
 msgstr "Brug OP/NED for at flytte, RETUR for at vælge, Ctrl-G for at annullere"
 
-#: src/menu.c:991
+#: src/menu.c:992
 msgid "Creating directory list..."
 msgstr "Laver kataloglistning ..."
 
-#: src/mime.c:943
+#: src/mime.c:945
 msgid "Process this MIME article with metamail"
 msgstr "Behandl dette MIME-indlæg med metamail"
 
-#: src/mime.c:957
+#: src/mime.c:959
 msgid "Unable to open tmp file for metamail."
 msgstr "Kan ikke åbne midlertidig fil til metamail."
 
-#: src/mime.c:985
+#: src/mime.c:987
 msgid "Press return to continue ..."
 msgstr "Tryk retur for at fortsætte ..."
 
@@ -2774,7 +2791,7 @@ msgstr "Linjer med mere end 80 tegn bør normalt ombrydes."
 msgid "This affects at least line %d:"
 msgstr "Det berører linje %d og måske flere."
 
-#: src/post.c:704 src/post.c:1074 src/post.c:1098
+#: src/post.c:704 src/post.c:1086 src/post.c:1110
 #, c-format
 msgid "File not found: %s--- message not posted."
 msgstr "Fil ikke fundet: %s -- indlægget er ikke sendt."
@@ -2784,12 +2801,12 @@ msgstr "Fil ikke fundet: %s -- indlægget er ikke sendt."
 msgid "***Warning: error saving to %s"
 msgstr "*** Advarsel: fejl ved gemning til %s"
 
-#: src/post.c:863
+#: src/post.c:875
 #, c-format
 msgid "***Warning: error writing to %s"
 msgstr "*** Advarsel: fejl ved skrivning til %s"
 
-#: src/post.c:868
+#: src/post.c:880
 #, c-format
 msgid "Failed post saved in %s"
 msgstr "Mislykket sending gemt i %s"
@@ -2802,39 +2819,39 @@ msgstr "Mislykket sending gemt i %s"
 #. * default letters for other fields than those they originally stood for.
 #. * Be careful not to change the length of these strings!
 #.
-#: src/post.c:931 src/post.c:964
+#: src/post.c:943 src/post.c:976
 msgid "yYnNeEsSdDfF"
 msgstr "jJnNrRuUlLfF"
 
-#: src/post.c:934
+#: src/post.c:946
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt, Slet, Filtrér"
 
-#: src/post.c:938
+#: src/post.c:950
 msgid "yYnNeEsSfF"
 msgstr "jJnNrRuUfF"
 
-#: src/post.c:941
+#: src/post.c:953
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt, Filtrér"
 
-#: src/post.c:949
+#: src/post.c:961
 msgid "yYnNeEsSdD"
 msgstr "jJnNrRuUlL"
 
-#: src/post.c:952
+#: src/post.c:964
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt, Slet"
 
-#: src/post.c:956
+#: src/post.c:968
 msgid "yYnNeEsS"
 msgstr "jJnNrRuU"
 
-#: src/post.c:959
+#: src/post.c:971
 msgid "Post the message? Yes, No, Edit, poStpone"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt"
 
-#: src/post.c:982
+#: src/post.c:994
 msgid "Sure you want to delete it"
 msgstr "Er du sikker på at du vil slette den"
 
@@ -2842,11 +2859,11 @@ msgstr "Er du sikker på at du vil slette den"
 #. * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
 #. * "cC" is "cancel" and "fF" means "force". The usual rules apply.
 #.
-#: src/post.c:1006
+#: src/post.c:1018
 msgid "yYeEnNcC"
 msgstr "jJrRnNaA"
 
-#: src/post.c:1009
+#: src/post.c:1021
 msgid "re-Edit,  or Cancel"
 msgstr "Omredigér eller Annullér"
 
@@ -2856,24 +2873,24 @@ msgstr "Omredigér eller Annullér"
 # menu, men jeg vil alligevel gerne godt undgå at samme bogstav bruges
 # forskelligt i 2 meget beslægtede menuer. 'e', 'n', 'd', 'a', 'l' og
 # 'i' er også i brug til hhv. Edit/Nej/Delete/Annullér/sLet/Ignorér.
-#: src/post.c:1013 src/post.c:1019
+#: src/post.c:1025 src/post.c:1031
 msgid "yYeEnNcCfF"
 msgstr "jJrRnNaAgG"
 
-#: src/post.c:1016
+#: src/post.c:1028
 msgid "re-Edit, Cancel, or Force the posting (not recommended)"
 msgstr "Omredigér, Annullér eller Send alligevel (anbefales ikke)"
 
-#: src/post.c:1055 src/post.c:1101
+#: src/post.c:1067 src/post.c:1113
 msgid "Posting ..."
 msgstr "Sender ..."
 
-#: src/post.c:1089
+#: src/post.c:1101
 #, c-format
 msgid "post_file_hook returned error.  %s not posted."
 msgstr "\"post_file_hook\" returnerede fejl. %s er ikke sendt."
 
-#: src/post.c:1239
+#: src/post.c:1254
 msgid "Posting...done."
 msgstr "Sender ... færdig"
 
@@ -2881,39 +2898,39 @@ msgstr "Sender ... færdig"
 #. * "cancel". Don't change the length of the string; you cannot re-use any
 #. * of the default characters for different fields.
 #.
-#: src/post.c:1259
+#: src/post.c:1274
 msgid "rReEcC"
 msgstr "sSoOaA"
 
-#: src/post.c:1262
+#: src/post.c:1277
 msgid "Select one: Repost, Edit, Cancel"
 msgstr "Vælg mellem: Send igen, Omredigér, Annullér"
 
-#: src/post.c:1390
+#: src/post.c:1405
 msgid "postpone_directory not specified or does not exist"
 msgstr "Katalog til udsatte indlæg er ikke angivet eller findes ikke"
 
-#: src/post.c:1401
+#: src/post.c:1416
 msgid "Not implemented yet. Sorry"
 msgstr "Ikke kodet endnu. Beklager"
 
-#: src/post.c:1417
+#: src/post.c:1432
 msgid "Save to: "
 msgstr "Gem til: "
 
-#: src/post.c:1423
+#: src/post.c:1438
 msgid "File exists, overwrite"
 msgstr "Filen findes, overskriv den"
 
-#: src/post.c:1435
+#: src/post.c:1450
 msgid "You must specify a name"
 msgstr "Du skal angive et navn"
 
-#: src/post.c:1437
+#: src/post.c:1452
 msgid "Illegal filename. Try again"
 msgstr "Ugyldigt filnavn. Prøv igen"
 
-#: src/post.c:1461
+#: src/post.c:1476
 #, c-format
 msgid "%s: not a regular file"
 msgstr "%s er ikke en almindelig fil"
@@ -2968,7 +2985,7 @@ msgstr "Kan ikke åbne %s til udskrivning"
 msgid "Reloading score file ..."
 msgstr "Genindlæser bedømmelsesfil ..."
 
-#: src/score.c:589 src/slrn.c:946
+#: src/score.c:589 src/slrn.c:988
 #, c-format
 msgid "Error processing score file %s."
 msgstr "Fejl ved behandling af bedømmelsesfil %s."
@@ -3046,7 +3063,7 @@ msgstr "pclose-kald mislykkedes - tjek om indlægget blev sendt"
 msgid "Unable to locate inews program \"%s\""
 msgstr "Kan ikke finde inews-program \"%s\""
 
-#: src/server.c:220 src/slrn.c:1059
+#: src/server.c:220 src/slrn.c:1101
 #, c-format
 msgid "Unable to add preprocessor name %s."
 msgstr "Kan ikke tilføje forbehandlernavn %s."
@@ -3088,7 +3105,7 @@ msgstr "Skrivning mislykkedes. Er filsystemet fuldt?"
 msgid "Posting directory %s does not exist."
 msgstr "Sendekataloget %s findes ikke."
 
-#: src/slrn.c:171
+#: src/slrn.c:181
 #, c-format
 msgid ""
 "slrn: pid %d is locking the newsrc file. If you're not running another\n"
@@ -3097,43 +3114,43 @@ msgstr ""
 "slrn: pid %d har låst newsrc-filen. Hvis du ikke kører en anden\n"
 "      udgave af slrn, slet så filen %s"
 
-#: src/slrn.c:176
+#: src/slrn.c:186
 #, c-format
 msgid "slrn: pid %d is locking the newsrc file."
 msgstr "slrn: pid %d har låst newsrc-filen."
 
 #. delete the "normal" lock file
-#: src/slrn.c:247 src/slrn.c:254
+#: src/slrn.c:257 src/slrn.c:264
 #, c-format
 msgid "Unable to create lock file %s."
 msgstr "Kan ikke lave låsefilen %s."
 
-#: src/slrn.c:361
+#: src/slrn.c:371
 msgid "pop_suspension: underflow!"
 msgstr "pop_suspension: underløb!"
 
-#: src/slrn.c:426
+#: src/slrn.c:436
 msgid "Not implemented."
 msgstr "Ikke kodet."
 
-#: src/slrn.c:439 src/slrn.c:458
+#: src/slrn.c:449 src/slrn.c:468
 msgid "Suspension not allowed by shell."
 msgstr "Midlertidig afbrydelse tillades ikke af skallen."
 
-#: src/slrn.c:619
+#: src/slrn.c:629
 msgid "Unable to initialize the tty"
 msgstr "Kan ikke klargøre terminalen"
 
-#: src/slrn.c:822
+#: src/slrn.c:864
 #, c-format
 msgid "slrn: quiting on signal %d.\n"
 msgstr "slrn: afbrudt af signal %d.\n"
 
-#: src/slrn.c:839
+#: src/slrn.c:881
 msgid "slrn fatal error:"
 msgstr "slrn kritisk fejl:"
 
-#: src/slrn.c:867
+#: src/slrn.c:909
 #, c-format
 msgid ""
 "Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
@@ -3188,48 +3205,48 @@ msgstr ""
 "vise\n"
 "dem.\n"
 
-#: src/slrn.c:917
+#: src/slrn.c:959
 #, c-format
 msgid "%s is not a supported option."
 msgstr "%s er ikke er et understøttet tilvalg."
 
-#: src/slrn.c:919
+#: src/slrn.c:961
 #, c-format
 msgid "%s is not supported."
 msgstr "%s er ikke understøttet."
 
-#: src/slrn.c:940
+#: src/slrn.c:982
 #, c-format
 msgid "*** Warning: Score file %s does not exist"
 msgstr "*** Advarsel: Bedømmelsesfil %s findes ikke"
 
-#: src/slrn.c:1038
+#: src/slrn.c:1080
 #, c-format
 msgid "Unable to open %s for debugging."
 msgstr "Kan ikke åbne %s til fejlsøgning."
 
-#: src/slrn.c:1084
+#: src/slrn.c:1126
 msgid "The -d and --create flags must not be specified together."
 msgstr "\"-d\" og \"--create\"-flagene må ikke angives samtidigt."
 
-#: src/slrn.c:1097
+#: src/slrn.c:1139
 msgid "Error initializing SLtcp interface"
 msgstr "Fejl ved klargøring af SLtcp-grænseflade"
 
-#: src/slrn.c:1102
+#: src/slrn.c:1144
 msgid "Error initializing S-Lang interpreter.\n"
 msgstr "Fejl ved klargøring af S-Lang-fortolker.\n"
 
-#: src/slrn.c:1113
+#: src/slrn.c:1155
 msgid "Error configuring server objects."
 msgstr "Fejl ved klargøring af servertyper."
 
-#: src/slrn.c:1139
+#: src/slrn.c:1181
 #, c-format
 msgid "Could not read specified config file %s\n"
 msgstr "Kunne ikke læse den angivne konfigurationsfil %s\n"
 
-#: src/slrn.c:1145
+#: src/slrn.c:1187
 msgid ""
 "\n"
 "! Your configuration file contains obsolete commands or function names that\n"
@@ -3247,15 +3264,15 @@ msgstr ""
 "! tilpasse din konfiguration. Det findes i kildetekst-distributionen eller\n"
 "! kan hentes fra <URL:http://slrn.sourceforge.net/data/>.\n"
 
-#: src/slrn.c:1160
+#: src/slrn.c:1202
 msgid "Failed to select character set."
 msgstr "Valg af tegnsæt mislykkedes."
 
-#: src/slrn.c:1194
+#: src/slrn.c:1236
 msgid "Unable to select server/post object."
 msgstr "Kan ikke vælge sende- eller servertype."
 
-#: src/slrn.c:1210
+#: src/slrn.c:1252
 #, c-format
 msgid ""
 "Unable to find a valid hostname for constructing your e-mail address.\n"
@@ -3264,7 +3281,7 @@ msgstr ""
 "Kan ikke finde et gyldigt værtsnavn til konstruktion af din e-post-adresse.\n"
 "Du bliver nødt til at angive et værtsnavn i din %s-fil.\n"
 
-#: src/slrn.c:1219
+#: src/slrn.c:1261
 msgid ""
 "Unable to find your user name.  This means that a valid 'From' header line\n"
 "cannot be constructed.  Try setting the USER environment variable.\n"
@@ -3272,39 +3289,39 @@ msgstr ""
 "Kan ikke finde dit brugernavn. Det betyder at der ikke kan konstrueres en\n"
 "gyldig 'From'-linje. Prøv at sætte USER-miljøvariablen.\n"
 
-#: src/slrn.c:1226
+#: src/slrn.c:1268
 msgid "***Warning: Unable to find a unique fully-qualified host name."
 msgstr "***Advarsel: Kan ikke finde et unikt fuldtkvalificeret værtsnavn."
 
-#: src/slrn.c:1227
+#: src/slrn.c:1269
 msgid "            slrn will not generate any Message-IDs."
 msgstr "             slrn vil ikke selv lave id'er for indlæg (Message-Id)."
 
-#: src/slrn.c:1228
+#: src/slrn.c:1270
 msgid ""
 "            Please note that the \"hostname\" setting does not affect this;"
 msgstr ""
 "             Bemærk venligst at sætning af \"hostname\" ikke påvirker dette;"
 
-#: src/slrn.c:1229
+#: src/slrn.c:1271
 msgid "            see the \"slrn reference manual\" for details."
 msgstr "             se \"slrn reference manual\" for detaljer."
 
-#: src/slrn.c:1258
+#: src/slrn.c:1300
 #, c-format
 msgid "Using newsrc file %s for server %s."
 msgstr "Bruger newsrc-fil %s til server %s."
 
-#: src/slrn.c:1270 src/slrnpull.c:1969
+#: src/slrn.c:1312 src/slrnpull.c:2000
 msgid "Unable to initialize server."
 msgstr "Kan ikke klargøre server."
 
-#: src/slrn.c:1285
+#: src/slrn.c:1327
 #, c-format
 msgid "Unable to open %s.  I will try .newsrc."
 msgstr "Kan ikke åbne %s. Jeg vil prøve .newsrc."
 
-#: src/slrn.c:1290
+#: src/slrn.c:1332
 #, c-format
 msgid ""
 "\n"
@@ -3317,45 +3334,45 @@ msgstr ""
 "Hvis du vil lave %s, så tilføj kommandolinje-tilvalgene:\n"
 "   -f %s --create\n"
 
-#: src/slrn.c:1307 src/slrnpull.c:1744 src/slrnpull.c:1756
+#: src/slrn.c:1349 src/slrnpull.c:1775 src/slrnpull.c:1787
 #, c-format
 msgid "Unable to open %s for logging."
 msgstr "Kan ikke åbne %s til logning."
 
-#: src/slrn.c:1323
+#: src/slrn.c:1365
 msgid "Initializing GroupLens"
 msgstr "Klargør GroupLens"
 
-#: src/slrn.c:1326
+#: src/slrn.c:1368
 msgid "GroupLens disabled.\n"
 msgstr "GroupLens slået fra.\n"
 
-#: src/slrn.c:1334
+#: src/slrn.c:1376
 msgid "Failed to initialize server."
 msgstr "Klargøring af server mislykkedes."
 
-#: src/slrn.c:1340
+#: src/slrn.c:1382
 msgid "OVERVIEW.FMT not RFC 2980 compliant -- XOVER support disabled."
 msgstr ""
 "OVERVIEW.FMT overholder ikke RFC 2980 - XOVER-understøttelse slået fra."
 
-#: src/slrn.c:1353
+#: src/slrn.c:1395
 msgid "* Press Ctrl-C to quit, any other key to continue.\n"
 msgstr "* Tryk Ctrl-C for at afslutte, eller en anden tast for at fortsætte.\n"
 
-#: src/slrn.c:1356
+#: src/slrn.c:1398
 msgid "Exit on user request."
 msgstr "Afslutter efter brugerønske."
 
-#: src/slrn.c:1383
+#: src/slrn.c:1425
 msgid "Internal Error: Mode_Stack overflow"
 msgstr "Intern fejl: overløb i Mode_Stack"
 
-#: src/slrn.c:1398
+#: src/slrn.c:1440
 msgid "Internal Error: Mode_Stack underflow"
 msgstr "Intern fejl: underløb i Mode_Stack"
 
-#: src/slrn.c:1495
+#: src/slrn.c:1537
 #, c-format
 msgid "call: %s not in current keymap."
 msgstr "kald: %s er ikke i den aktuelle tastetildeling."
@@ -3393,7 +3410,7 @@ msgstr "Fejl ved læsning af %s."
 msgid "Error parsing %s."
 msgstr "Fejl ved fortolkning af %s."
 
-#: src/slrnpull.c:400 src/slrnpull.c:2108
+#: src/slrnpull.c:400 src/slrnpull.c:2139
 #, c-format
 msgid "Write to %s failed."
 msgstr "Skrivning af %s mislykkedes."
@@ -3499,144 +3516,144 @@ msgstr "%s: %u/%u (%u dumpede), Tid: %02u:%02u:%02u, bps: %lu"
 msgid "Error writing to overview database: %s:%d."
 msgstr "Fejl ved skrivning til oversigtsdatabase: %s:%d."
 
-#: src/slrnpull.c:1208
+#: src/slrnpull.c:1239
 msgid "Internal error: Buffer in get_heads not large enough!"
 msgstr "Intern fejl: Buffer i get_heads er ikke stor nok!"
 
-#: src/slrnpull.c:1245
+#: src/slrnpull.c:1276
 #, c-format
 msgid "Unable to open overview file %s.\n"
 msgstr "Kan ikke åbne oversigtsfil for %s.\n"
 
-#: src/slrnpull.c:1293
+#: src/slrnpull.c:1324
 #, c-format
 msgid "Error closing overview file for %s."
 msgstr "Fejl ved lukning af oversigtsfil for %s."
 
-#: src/slrnpull.c:1329
+#: src/slrnpull.c:1360
 #, c-format
 msgid "%s: no new articles available."
 msgstr "%s: ingen nye indlæg er tilgængelige."
 
-#: src/slrnpull.c:1336
+#: src/slrnpull.c:1367
 #, c-format
 msgid "%u duplicates removed leaving %u/%u."
 msgstr "%u dubletter fjernet. %u af %u indlæg tilbage."
 
-#: src/slrnpull.c:1348
+#: src/slrnpull.c:1379
 #, c-format
 msgid "%s: No new articles available."
 msgstr "%s: ingen nye indlæg er tilgængelige."
 
-#: src/slrnpull.c:1353
+#: src/slrnpull.c:1384
 #, c-format
 msgid "%s: %u articles available."
 msgstr "%s: %u indlæg er tilgængelige."
 
-#: src/slrnpull.c:1360
+#: src/slrnpull.c:1391
 #, c-format
 msgid "%s: Only retrieving last %u articles."
 msgstr "%s: henter kun de sidste %u indlæg."
 
-#: src/slrnpull.c:1409
+#: src/slrnpull.c:1440
 #, c-format
 msgid "Fetching articles for %s."
 msgstr "Henter indlæg for %s."
 
-#: src/slrnpull.c:1414
+#: src/slrnpull.c:1445
 #, c-format
 msgid "Error selecting group %s.  Code = %d: %s"
 msgstr "Fejl ved valg af gruppe %s. Kode = %d: %s"
 
-#: src/slrnpull.c:1447
+#: src/slrnpull.c:1478
 #, c-format
 msgid "Attempting to post %s..."
 msgstr "Forsøger at sende %s ..."
 
-#: src/slrnpull.c:1452
+#: src/slrnpull.c:1483
 #, c-format
 msgid "Unable to open file %s for posting."
 msgstr "Kan ikke åbne filen %s for sending."
 
-#: src/slrnpull.c:1459
+#: src/slrnpull.c:1490
 #, c-format
 msgid "Server failed post cmd.  Code = %d: %s"
 msgstr "Sende-kommando mislykkedes på server. Kode = %d: %s"
 
-#: src/slrnpull.c:1481 src/slrnpull.c:1492
+#: src/slrnpull.c:1512 src/slrnpull.c:1523
 #, c-format
 msgid "Write to server failed while posting %s."
 msgstr "Skrivning til server mislykkedes ved sending af %s."
 
-#: src/slrnpull.c:1501
+#: src/slrnpull.c:1532
 #, c-format
 msgid "Article %s rejected. status = %d: %s."
 msgstr "Indlæg %s afvist. Status = %d: %s."
 
-#: src/slrnpull.c:1508
+#: src/slrnpull.c:1539
 #, c-format
 msgid "Saving article in %s..."
 msgstr "Gemmer indlæg i %s ..."
 
-#: src/slrnpull.c:1510 src/slrnpull.c:1626
+#: src/slrnpull.c:1541 src/slrnpull.c:1657
 #, c-format
 msgid "Failed to rename %s to %s."
 msgstr "Omdøbning af %s til %s mislykkdes."
 
-#: src/slrnpull.c:1516
+#: src/slrnpull.c:1547
 #, c-format
 msgid "Unable to delete %s after posting."
 msgstr "Kan ikke slette %s efter sending."
 
-#: src/slrnpull.c:1525
+#: src/slrnpull.c:1556
 #, c-format
 msgid "%s directory does not exist.  Creating it..."
 msgstr "Kataloget %s findes ikke. Laver det ..."
 
-#: src/slrnpull.c:1533
+#: src/slrnpull.c:1564
 #, c-format
 msgid "chmod 0%o failed on %s."
 msgstr "chmod 0%o-kald for %s mislykkdes."
 
-#: src/slrnpull.c:1557
+#: src/slrnpull.c:1588
 msgid "Server does not permit posting at this time."
 msgstr "Serveren tillader ikke sending i øjeblikket."
 
-#: src/slrnpull.c:1578
+#: src/slrnpull.c:1609
 #, c-format
 msgid "Posting of %s failed."
 msgstr "Sending af %s mislykkdes."
 
-#: src/slrnpull.c:1581
+#: src/slrnpull.c:1612
 #, c-format
 msgid "%s posted."
 msgstr "%s sendt."
 
-#: src/slrnpull.c:1603
+#: src/slrnpull.c:1634
 #, c-format
 msgid "Unable to create tmp active file (%s)."
 msgstr "Kan ikke lave midlertidig aktivfil (%s)."
 
-#: src/slrnpull.c:1633
+#: src/slrnpull.c:1664
 #, c-format
 msgid "Write failed to tmp active file (%s)."
 msgstr "Skrivning til midlertidig aktivfil (%s) mislykkedes."
 
-#: src/slrnpull.c:1645
+#: src/slrnpull.c:1676
 #, c-format
 msgid "Connection to %s lost. Performing shutdown."
 msgstr "Mistede forbindelsen til %s. Lukker ned."
 
-#: src/slrnpull.c:1657
+#: src/slrnpull.c:1688
 msgid "Error opening sltcp interface.\n"
 msgstr "Fejl ved åbning af sltcp-grænseflade.\n"
 
-#: src/slrnpull.c:1698
+#: src/slrnpull.c:1729
 #, c-format
 msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "I alt blev %lu byte modtaget og %lu byte sendt på %ld sekunder."
 
-#: src/slrnpull.c:1780
+#: src/slrnpull.c:1811
 #, c-format
 msgid ""
 "%s usage: %s [options]\n"
@@ -3669,43 +3686,43 @@ msgstr ""
 "  --post-only          Send, men hent ikke nyheder.\n"
 "  --version            Vis versionsnummer.\n"
 
-#: src/slrnpull.c:1804
+#: src/slrnpull.c:1835
 #, c-format
 msgid "%s version: %s\n"
 msgstr "%s-version: %s\n"
 
-#: src/slrnpull.c:1910
+#: src/slrnpull.c:1941
 #, c-format
 msgid "Unable to create debug file %s\n"
 msgstr "Kan ikke lave fejlsøgningsfil %s\n"
 
-#: src/slrnpull.c:1928
+#: src/slrnpull.c:1959
 msgid "The slrnpull spool directory has not been defined."
 msgstr "Slrnpull-lagerkatalog er ikke valgt."
 
-#: src/slrnpull.c:1935
+#: src/slrnpull.c:1966
 msgid "slrnpull started in expire mode."
 msgstr "Slrnpull startet i slette-tilstand."
 
-#: src/slrnpull.c:1937
+#: src/slrnpull.c:1968
 msgid "slrnpull started."
 msgstr "Slrnpull startet."
 
-#: src/slrnpull.c:2017
+#: src/slrnpull.c:2048
 msgid "Checking for new groups."
 msgstr "Kigger efter nye grupper."
 
-#: src/slrnpull.c:2021
+#: src/slrnpull.c:2052
 #, c-format
 msgid "Unable to open new groups file %s.\n"
 msgstr "Kan ikke åbne fil til nye grupper %s.\n"
 
-#: src/slrnpull.c:2118
+#: src/slrnpull.c:2149
 #, c-format
 msgid "%d new groups found."
 msgstr "%d nye grupper fundet."
 
-#: src/slrnpull.c:2125
+#: src/slrnpull.c:2156
 #, c-format
 msgid ""
 "%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
@@ -3714,54 +3731,54 @@ msgstr ""
 "%s synes forvansket, forventede at se: NEWGROUPS ååmmdd ttmmss GMT. Jeg vil "
 "rette filen for dig."
 
-#: src/slrnpull.c:2204
+#: src/slrnpull.c:2235
 msgid "Performing shutdown."
 msgstr "Lukker ned."
 
-#: src/slrnpull.c:2207
+#: src/slrnpull.c:2238
 msgid "Slrnpull exiting on signal."
 msgstr "Slrnpull afbrudt af signal."
 
-#: src/slrnpull.c:2326
+#: src/slrnpull.c:2357
 #, c-format
 msgid "Creating Overview file for %s..."
 msgstr "Laver oversigtsfil for %s ..."
 
-#: src/slrnpull.c:2372 src/slrnpull.c:2502
+#: src/slrnpull.c:2403 src/slrnpull.c:2533
 #, c-format
 msgid "Unable to stat %s."
 msgstr "Kan ikke kalde stat for %s."
 
-#: src/slrnpull.c:2429
+#: src/slrnpull.c:2460
 #, c-format
 msgid "opendir %s failed."
 msgstr "opendir %s-kald mislykkedes."
 
-#: src/slrnpull.c:2456
+#: src/slrnpull.c:2487
 #, c-format
 msgid "malloc error. Unable to expire group %s."
 msgstr "Fejl ved tildeling af hukommelse. Kan ikke slette i gruppe %s."
 
-#: src/slrnpull.c:2519
+#: src/slrnpull.c:2550
 #, c-format
 msgid "Unable to expire %s."
 msgstr "Kan ikke slette %s."
 
-#: src/slrnpull.c:2524
+#: src/slrnpull.c:2555
 #, c-format
 msgid "%u articles expired in %s."
 msgstr "%u indlæg slettet i %s."
 
-#: src/slrnpull.c:2547
+#: src/slrnpull.c:2578
 msgid "Termination requested.  Shutting down."
 msgstr "Afslutning ønsket. Lukker ned."
 
-#: src/slrnpull.c:2595
+#: src/slrnpull.c:2626
 #, c-format
 msgid "Error reading name and password from %s."
 msgstr "Fejl ved læsning af navn og adgangskode fra %s."
 
-#: src/slrnpull.c:2608
+#: src/slrnpull.c:2639
 msgid "Empty user name.  Please check syntax of the authinfo file."
 msgstr "Tomt brugernavn. Kontrollér venligst syntaksen af authinfo-filen."
 
@@ -3847,11 +3864,11 @@ msgstr "Kan ikke åbne kataloget %s"
 msgid "Local spool directory '%s' doesn't exist."
 msgstr "Lokalt lagerkatalog '%s' findes ikke."
 
-#: src/startup.c:164
+#: src/startup.c:162
 msgid "Memory Allocation Failure"
 msgstr "Tildeling af hukommelse mislykkedes"
 
-#: src/startup.c:166
+#: src/startup.c:164
 #, c-format
 msgid ""
 "%s: Line %d\n"
@@ -3860,7 +3877,7 @@ msgstr ""
 "%s, linje %d:\n"
 "%sTildeling af hukommelse mislykkedes"
 
-#: src/startup.c:185
+#: src/startup.c:183
 #, c-format
 msgid ""
 "%s: Error encountered processing line %d\n"
@@ -3869,7 +3886,7 @@ msgstr ""
 "%s: Stødte på en fejl ved behandling af linje %d:\n"
 "%s"
 
-#: src/startup.c:194
+#: src/startup.c:192
 #, c-format
 msgid ""
 "%s: Command is obsolete on line %d:\n"
@@ -3878,7 +3895,7 @@ msgstr ""
 "%s: Forældet kommando på linje %d:\n"
 "%s"
 
-#: src/startup.c:196
+#: src/startup.c:194
 #, c-format
 msgid ""
 "The new usage is:\n"
@@ -3887,7 +3904,7 @@ msgstr ""
 "Den nye brug er:\n"
 "set %s\n"
 
-#: src/startup.c:270 src/startup.c:325
+#: src/startup.c:268 src/startup.c:323
 #, c-format
 msgid ""
 "%s: line %d:\n"
@@ -3896,7 +3913,7 @@ msgstr ""
 "%s, linje %d:\n"
 "%sIngen sådan tastetildeling: %s"
 
-#: src/startup.c:285
+#: src/startup.c:283
 #, c-format
 msgid ""
 "%s: line %d:\n"
@@ -3905,7 +3922,7 @@ msgstr ""
 "%s, linje %d:\n"
 "%sFejl ved definering af tast."
 
-#: src/startup.c:304
+#: src/startup.c:302
 #, c-format
 msgid ""
 "%s: Obsolete function name on line %d: %s\n"
@@ -3914,7 +3931,7 @@ msgstr ""
 "%s: Forældet funktionsnavn på linje %d: %s\n"
 "Det nye navn er: %s"
 
-#: src/startup.c:360
+#: src/startup.c:358
 #, c-format
 msgid ""
 "%s: line %d:\n"
@@ -3923,7 +3940,7 @@ msgstr ""
 "%s, linje %d:\n"
 "%sUgyldigt regulært udtryk."
 
-#: src/startup.c:376
+#: src/startup.c:374
 #, c-format
 msgid ""
 "%s: line %d:\n"
@@ -3932,7 +3949,7 @@ msgstr ""
 "%s: line %d:\n"
 "%sDer er angivet for mange udtryk."
 
-#: src/startup.c:765
+#: src/startup.c:766
 #, c-format
 msgid ""
 "%s: Obsolete variable name on line %d: followup\n"
@@ -3941,7 +3958,7 @@ msgstr ""
 "%s: Forældet variabelnavn på linje %d: followup\n"
 "Det nye navn er followup_string"
 
-#: src/startup.c:803
+#: src/startup.c:804
 #, c-format
 msgid ""
 "%s: Obsolete variable on line %d: %s\n"
@@ -3950,7 +3967,7 @@ msgstr ""
 "%s: Forældet variabelnavn på linje %d: %s\n"
 "Brug venligst i stedet header_display_format-kommandoen."
 
-#: src/startup.c:811
+#: src/startup.c:812
 #, c-format
 msgid ""
 "%s: Obsolete variable on line %d: %s\n"
@@ -3959,7 +3976,7 @@ msgstr ""
 "%s: Forældet variabelnavn på linje %d: %s\n"
 "Brug venligst i stedet group_display_format-kommandoen."
 
-#: src/startup.c:818
+#: src/startup.c:819
 #, c-format
 msgid ""
 "%s: Obsolete spelling on line %d:\n"
@@ -3969,12 +3986,12 @@ msgstr ""
 "Brug venligst \"process_verbatim_marks\" i stedet for "
 "\"process_verbatum_marks\"."
 
-#: src/startup.c:827
+#: src/startup.c:828
 #, c-format
 msgid "%s: Obsolete variable on line %d: %s"
 msgstr "%s: Forældet variabel på linje %d: %s"
 
-#: src/startup.c:998
+#: src/startup.c:999
 #, c-format
 msgid ""
 "%s: Obsolete spelling on line %d:\n"
@@ -3983,54 +4000,54 @@ msgstr ""
 "%s: Forældet stavemåde på linje %d\n"
 "Brug \"verbatim\" i stedet for \"verbatum\"."
 
-#: src/startup.c:1038 src/startup.c:1068
+#: src/startup.c:1043 src/startup.c:1088
 #, c-format
 msgid "%s is not a color object"
 msgstr "%s er ikke et farveobjekt."
 
-#: src/startup.c:1047
+#: src/startup.c:1064
 msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
 msgstr ""
 "På grund af en begrænsning i S-Lang er denne funktion kun tilgængelig på "
 "Unix."
 
-#: src/startup.c:1160
+#: src/startup.c:1180
 #, c-format
 msgid "%s is not a valid fully-qualified host name."
 msgstr "%s er ikke et gyldigt fuldtkvalificeret værtsnavn."
 
-#: src/startup.c:1450
+#: src/startup.c:1470
 msgid "Username: "
 msgstr "Brugernavn: "
 
-#: src/startup.c:1465
+#: src/startup.c:1485
 msgid "Password: "
 msgstr "Adgangskode: "
 
-#: src/startup.c:1557
+#: src/startup.c:1577
 msgid "Unable to initialize S-Lang readline library."
 msgstr "Kan ikke klargøre S-Lang readline-bibliotek."
 
-#: src/startup.c:1562
+#: src/startup.c:1582
 msgid "Error initializing S-Lang preprocessor."
 msgstr "Fejl ved klargøring af S-Lang-forbehandler."
 
-#: src/startup.c:1568
+#: src/startup.c:1588
 #, c-format
 msgid "Reading startup file %s."
 msgstr "Læser opstartsfil %s."
 
-#: src/startup.c:1594
+#: src/startup.c:1614
 #, c-format
 msgid "Server object '%s' is not supported."
 msgstr "Servertype '%s' er ikke understøttet."
 
-#: src/startup.c:1598
+#: src/startup.c:1618
 #, c-format
 msgid "Post object '%s' is not supported."
 msgstr "Sendetype '%s' er ikke understøttet."
 
-#: src/startup.c:1617
+#: src/startup.c:1637
 #, c-format
 msgid ""
 "%s: line %d:\n"
