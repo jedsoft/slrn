@@ -529,6 +529,11 @@ static int cc_file (char *file, char *to) /*{{{*/
    if (NULL == (vp = vopen (file, 4096, 0)))
      {
 	slrn_error (_("Unable to re-open %s."), file);
+# if defined(IBMPC_SYSTEM)
+	slrn_fclose (pp);
+# else
+	slrn_pclose (pp);
+# endif
 	return -1;
      }
    linenum = 0;
@@ -1433,7 +1438,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 
 	     while ((*white == ' ') || (*white == '\t')) white++;
 
-	     if (*white == '\n') /* Header ends, body begins */
+	     if (*white == 0) /* Header ends, body begins */
 	       {
 		  slrn_add_date_header (NULL);
 		  slrn_add_date_header (fcc_fp);
@@ -1467,7 +1472,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 
 		  SLfree(linep);
 		  continue;
-	       } /* if (*white == '\n') */
+	       } /* if (*white == 0) */
 
 	     if (!slrn_case_strncmp ((unsigned char *)"Cc: ",
 				     (unsigned char *)linep, 4))
