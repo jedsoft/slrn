@@ -412,6 +412,32 @@ static int is_empty_header (char *line) /*{{{*/
 }
 /*}}}*/
 
+static void insert_cc_followup_message (char *newsgroups, FILE* ofile) /*{{{*/
+{
+   char *percnt, *message = Slrn_CC_Followup_Message;
+   if (newsgroups == NULL) return;
+   
+   do
+     {
+	percnt = slrn_strchr (message, '%');
+	if (percnt == NULL)
+	  fputs (message, ofile);
+	else if (percnt[1] == 0)
+	  percnt = NULL;
+	else
+	  {
+	     fwrite (message, 1, percnt-message, ofile);
+	     if (percnt[1] == 'n')
+	       fputs (newsgroups, ofile);
+	     else
+	       fputc (percnt[1], ofile);
+	     message = percnt+2;
+	  }
+     } while (percnt != NULL);
+   fputc ('\n', ofile);
+}
+/*}}}*/
+
 static int cc_file (char *file, char *to) /*{{{*/
 {
 #if defined(VMS) || !SLRN_HAS_PIPING
@@ -426,8 +452,8 @@ static int cc_file (char *file, char *to) /*{{{*/
    unsigned int linenum;
    char buf [MAX_LINE_BUFLEN];
    unsigned int nth;
-   char *l, *ref = NULL;
-   int reflen = 0, ret = -1;
+   char *l, *ref, *newsgroups = NULL;
+   int reflen = 0;
 
    if (NULL == (fp = fopen (file, "r")))
      {
@@ -531,6 +557,8 @@ static int cc_file (char *file, char *to) /*{{{*/
 	  {
 	     fputs ("X-Posted-To: ", pp);
 	     fputs (line + 12, pp);
+	     if (newsgroups == NULL)
+	       newsgroups = slrn_strnmalloc (line + 12, strlen(line+12)-1, 1);
 	  }
 	else
 	  fputs (line, pp);
@@ -538,15 +566,8 @@ static int cc_file (char *file, char *to) /*{{{*/
 
    fputs ("\n", pp);
 
-   if ((Slrn_Current_Header != NULL) && (ref != NULL) &&
-       (0 == strncmp ((unsigned char*)ref,
-		      (unsigned char*)Slrn_Current_Header->msgid, reflen)))
-     ret = slrn_insert_followup_format (Slrn_CC_Followup_Message, pp);
-   else if ((NULL != Slrn_CC_Post_Message) && (*Slrn_CC_Post_Message))
-     ret = fputs (Slrn_CC_Post_Message, pp);
-
-   if (ret >= 0)
-     ret = fputs ("\n", pp);
+   insert_cc_followup_message (newsgroups, pp);
+   slrn_free (newsgroups);
 
 # if SLRN_HAS_MIME
    if (Slrn_Use_Mime & MIME_DISPLAY) fp = slrn_mime_encode (fp);

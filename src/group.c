@@ -1016,18 +1016,29 @@ int slrn_group_select_group (void) /*{{{*/
 
    if ((prefix & 1) ||
        ((n > Slrn_Query_Group_Cutoff)
-	&& (Slrn_Query_Group_Cutoff > 0)))
+	&& (Slrn_Query_Group_Cutoff > 0)) ||
+       ((n > -Slrn_Query_Group_Cutoff)
+	&& (Slrn_Query_Group_Cutoff < 0)))
      {
 	char int_prompt_buf[256];
-	slrn_snprintf (int_prompt_buf, sizeof (int_prompt_buf),
-		       _("%s: Read how many? "),
-		       Slrn_Group_Current_Group->group_name);
-	if ((-1 == slrn_read_integer (int_prompt_buf, &n, &n))
-	    || (n <= 0))
+	if ((prefix & 1) || (Slrn_Query_Group_Cutoff > 0))
 	  {
-	     slrn_clear_message ();
-	     Slrn_Full_Screen_Update = 1;
-	     return 0;
+	     slrn_snprintf (int_prompt_buf, sizeof (int_prompt_buf),
+			    _("%s: Read how many? "),
+			    Slrn_Group_Current_Group->group_name);
+	     if ((-1 == slrn_read_integer (int_prompt_buf, &n, &n))
+		 || (n <= 0))
+	       {
+		  slrn_clear_message ();
+		  Slrn_Full_Screen_Update = 1;
+		  return 0;
+	       }
+	  }
+	else
+	  {
+	     slrn_message_now (_("Only downloading %d of %d articles."),
+			       -Slrn_Query_Group_Cutoff, n);
+	     n = -Slrn_Query_Group_Cutoff;
 	  }
 	
 	if ((0 == prefix)

@@ -635,7 +635,7 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      {"followupto_string", &Slrn_User_Info.followupto_string},
      {"reply_string", &Slrn_User_Info.reply_string},
      {"cc_followup_string", &Slrn_CC_Followup_Message},
-     {"cc_post_string", &Slrn_CC_Post_Message},
+     {"cc_post_string", NULL}, /* FIXME: obsolete */
      {"followup_date_format", &Slrn_Followup_Date_Format},
      {"overview_date_format", &Slrn_Overview_Date_Format},
      {"editor_command", &Slrn_Editor},
@@ -777,12 +777,27 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 	  {
 	     char *ss;
 	     
-	     if ((This_File != NULL) && !strcmp (name, "followup"))
+	     if (This_File != NULL)
 	       {
-		  slrn_message (_("%s: Obsolete variable name on line %d: followup\n"
-				"The new name is followup_string"),
-				This_File, This_Line_Num);
-		  Slrn_Saw_Obsolete = 1;
+		  char *oldname = NULL, *newname = NULL;
+		  if (!strcmp (name, "followup"))
+		    {
+		       oldname = "followup";
+		       newname = "followup_string";
+		    }
+		  else if (!strcmp (name, "cc_post_string"))
+		    {
+		       oldname = "cc_post_string";
+		       newname = "cc_followup_string";
+		    }
+		  
+		  if (oldname != NULL)
+		    {
+		       slrn_message (_("%s: Obsolete variable name on line %d: %s\n"
+				       "The new name is %s"),
+				     This_File, This_Line_Num, oldname, newname);
+		       Slrn_Saw_Obsolete = 1;
+		    }
 	       }
 	     
 	     if (sp->svaluep == NULL)

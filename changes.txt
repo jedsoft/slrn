@@ -1,8 +1,12 @@
 Changes since 0.9.7.4
 
 -1. Changes when building on Un*x:
-   configure script accepts new options --with-server-name and
-   --with-server-file (Matthias Friedrich).
+  * The configure script accepts new options --with-server-name and
+    --with-server-file (Matthias Friedrich).
+  * Upgrade to more recent versions of gettext, automake and autoconf.
+    Please let me know if this introduces problems on your platform.
+  * The intl/ directory is no longer included in the tarball, as most people
+    who want NLS should already have GNU gettext installed.
 0. Bug fixes include:
   * Setting new_subject_breaks_threads to 2 has an effect again.
   * Some translations (fr/ko/nl/ru) were broken and could cause segfaults.
@@ -63,11 +67,16 @@ Changes since 0.9.7.4
     '{') or hide_verbatim_text in the config file. (Arek Sochala)
 13. The "BEGIN PGP SIGNED ARTICLE" line is displayed using the "pgpsignature"
     color and stripped on followups. (Emmanuele Bassi)
-14. Support Turkish characters on Win32 - set charset to "ibm857" for this.
+14. If query_read_group_cutoff is set to -n, slrn will automatically
+    (without prompting) download n articles when more than n are present.
+15. Support Turkish characters on Win32 - set charset to "ibm857" for this.
     With help from A. Alper ATICI
-15. Re-structured the manual and added a chapter about slang's
-    pre-processing facilities. (Matthias Friedrich)
-16. New translations:
+16. Re-structured the manual and added a chapter about slang's
+    pre-processing facilities. (Matthias Friedrich)    
+17. The config variable cc_post_string is obsolete, as cc_followup_string
+    now works correctly in all cases. Currently, the only supported escape
+    sequence is "%n" for newsgroup name.  
+18. New translations:
    * fi.po (Finnish; Lauri Nurmi)
    * tr.po (Turkish; A. Alper ATICI)
 

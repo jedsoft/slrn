@@ -2435,7 +2435,7 @@ int slrn_string_to_article (char *str)
 
 /*{{{ reply, reply_cmd, forward, followup */
 
-int slrn_insert_followup_format (char *f, FILE *fp) /*{{{*/
+static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 {
    char ch, *s, *smax, *c;
    char buf[128];
@@ -2725,10 +2725,10 @@ static void reply (char *from) /*{{{*/
 	n += 1;
      }
    
-   n += slrn_add_custom_headers (fp, Slrn_Reply_Custom_Headers, slrn_insert_followup_format);
+   n += slrn_add_custom_headers (fp, Slrn_Reply_Custom_Headers, insert_followup_format);
    fputs ("\n", fp);
    
-   slrn_insert_followup_format (Slrn_User_Info.reply_string, fp);
+   insert_followup_format (Slrn_User_Info.reply_string, fp);
    fputs ("\n", fp);
 
    n += 2;
@@ -3224,7 +3224,7 @@ static void followup (void) /*{{{*/
    fputs("\n", fp);
    n++;
    
-   n += slrn_add_custom_headers (fp, Slrn_Followup_Custom_Headers, slrn_insert_followup_format);
+   n += slrn_add_custom_headers (fp, Slrn_Followup_Custom_Headers, insert_followup_format);
    
    fputs ("\n", fp);
    
@@ -3232,10 +3232,10 @@ static void followup (void) /*{{{*/
      {
 	if ((followupto != NULL) && (*Slrn_User_Info.followupto_string != 0))
 	  {
-	     slrn_insert_followup_format (Slrn_User_Info.followupto_string, fp);
+	     insert_followup_format (Slrn_User_Info.followupto_string, fp);
 	     fputs ("\n", fp);
 	  }
-	slrn_insert_followup_format (Slrn_User_Info.followup_string, fp);
+	insert_followup_format (Slrn_User_Info.followup_string, fp);
 	fputs ("\n", fp);
      }
    n += 1;			       /* by having + 1, the cursor will be
@@ -3454,7 +3454,7 @@ static void supersede (void) /*{{{*/
 	n++;
      }
    
-   n += slrn_add_custom_headers (fp, Slrn_Supersedes_Custom_Headers, slrn_insert_followup_format);
+   n += slrn_add_custom_headers (fp, Slrn_Supersedes_Custom_Headers, insert_followup_format);
    
    fputs ("\n", fp);
    n += 1;	

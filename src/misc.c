@@ -2604,8 +2604,6 @@ void slrn_get_user_info (void) /*{{{*/
 
    Slrn_CC_Followup_Message =         /* xgettext:no-c-format */
      slrn_safe_strmalloc (_("[This message has also been posted to %n.]"));
-   Slrn_CC_Post_Message =
-     slrn_safe_strmalloc (_("[This message has also been posted.]"));
    
    /* Now get default values for rest. */
    host = get_hostname ();

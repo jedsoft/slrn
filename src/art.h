@@ -23,7 +23,6 @@
 #ifndef SLRNPULL_CODE
 extern int slrn_select_article_mode (Slrn_Group_Type *, int, int);
 extern void slrn_init_article_mode (void);
-extern int slrn_insert_followup_format (char *, FILE *);
 extern void slrn_subject_strip_was (char *);
 extern SLKeyMap_List_Type *Slrn_Article_Keymap;
 extern char *Slrn_Quote_String;
