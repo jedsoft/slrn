@@ -863,7 +863,7 @@ msgstr "%s: Hoeveel lezen? "
 #: src/group.c:1039
 #, c-format
 msgid "Only downloading %d of %d articles."
-msgstr ""
+msgstr "Slechts %d van de %d artikelen worden gedownload"
 
 #: src/group.c:1119
 msgid "Do you really want to quit"
@@ -3983,7 +3983,7 @@ msgstr ""
 "%sTe veel expressies gespecificeerd."
 
 #: src/startup.c:796
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s: Obsolete variable name on line %d: %s\n"
 "The new name is %s"
