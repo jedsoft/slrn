@@ -1,4 +1,4 @@
-$ SLRN_VERSION = "0.9.7.4"
+$ SLRN_VERSION = "0.9.8.0"
 $ SLANG_VERSION =  10003
 $! Modified VMSMAKE for SLRN - Andy Harper, Kings College London
 $!                             Martin Zinser, GSI Darmstadt
@@ -56,6 +56,7 @@ $ write optf "menu.obj"
 $ write optf "mime.obj"
 $ write optf "misc.obj"
 $ write optf "post.obj"
+$ write optf "ranges.obj"
 $ write optf "score.obj"
 $ write optf "server.obj"
 $ write optf "sortdate.obj"
@@ -205,6 +206,7 @@ $   CC 'CFLAGS' MENU.C
 $   CC 'CFLAGS' MIME.C
 $   CC 'CFLAGS' MISC.C
 $   CC 'CFLAGS' POST.C
+$   CC 'CFLAGS' RANGES.C
 $   CC 'CFLAGS' SCORE.C
 $   CC 'CFLAGS' SERVER.C
 $   CC 'CFLAGS' SLRN.C

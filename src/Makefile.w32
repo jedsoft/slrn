@@ -67,6 +67,7 @@ OBJS = $(OBJDIR)$(P)art$(O) \
        $(OBJDIR)$(P)mime$(O) \
        $(OBJDIR)$(P)misc$(O) \
        $(OBJDIR)$(P)post$(O) \
+       $(OBJDIR)$(P)ranges$(O) \
        $(OBJDIR)$(P)score$(O) \
        $(OBJDIR)$(P)server$(O) \
        $(OBJDIR)$(P)snprintf$(O) \
@@ -88,7 +89,9 @@ OBJSpull = \
 	$(OBJDIR)$(P)ttymsg$(O) \
 	$(OBJDIR)$(P)slrnpull$(O) \
 	$(OBJDIR)$(P)slrndir$(O) \
-	$(OBJDIR)$(P)nntplib$(O)
+	$(OBJDIR)$(P)nntplib$(O) \
+	$(OBJDIR)$(P)ranges$(O) \
+	$(OBJDIR)$(P)vfile$(O)
 
 DEBUG =
 CFLAGS = $(DEBUG) /bt=nt /DWIN32 /oneartx /zp4 /5 /fp5 -I. -I$(SDIR) $(SLRNLIBDIR)
