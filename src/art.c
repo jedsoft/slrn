@@ -1364,13 +1364,15 @@ static void art_bob (void) /*{{{*/
 
 unsigned int slrn_art_linedn_n (unsigned int n) /*{{{*/
 {
+   int new_article = 0;
    switch (select_article (0))
      {
       case 0:
+	new_article = 1;
 	if (n-- > 1)
 	  break; /* else fall through */
       case -1:
-	return 0;
+	return new_article;
      }
    
    n = SLscroll_next_n (&Slrn_Article_Window, n);
@@ -1379,7 +1381,7 @@ unsigned int slrn_art_linedn_n (unsigned int n) /*{{{*/
    /* Force current line to be at top of window */
    Slrn_Article_Window.top_window_line = Slrn_Article_Window.current_line;
    Slrn_Full_Screen_Update = 1;
-   return n;
+   return n + new_article;
 }
 
 /*}}}*/

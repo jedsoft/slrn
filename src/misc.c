@@ -838,7 +838,7 @@ void slrn_make_home_filename (char *name, char *file, size_t n) /*{{{*/
 
 /*}}}*/
 
-int slrn_make_home_dirname (char *name, char *dir, size_t n) /*{{{*/
+void slrn_make_home_dirname (char *name, char *dir, size_t n) /*{{{*/
 {
    /* This needs modified to deal with VMS directory syntax */
 #ifndef VMS
@@ -852,7 +852,7 @@ int slrn_make_home_dirname (char *name, char *dir, size_t n) /*{{{*/
    if (NULL != slrn_strchr (name, ':'))
      {
 	slrn_strncpy (dir, name, n);
-	return 0;
+	return;
      }
    home = getenv ("HOME");
    *dir = 0;
@@ -915,7 +915,7 @@ int slrn_make_home_dirname (char *name, char *dir, size_t n) /*{{{*/
      }
 #endif /* VMS */
    
-   return 0;
+   return;
 }
 
 /*}}}*/

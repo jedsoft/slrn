@@ -176,23 +176,11 @@
 /* Define if you have the getdomainname function.  */
 #undef HAVE_GETDOMAINNAME
 
-/* Define if you have the getegid function.  */
-#undef HAVE_GETEGID
-
-/* Define if you have the geteuid function.  */
-#undef HAVE_GETEUID
-
-/* Define if you have the getgid function.  */
-#undef HAVE_GETGID
-
 /* Define if you have the getpagesize function.  */
 #undef HAVE_GETPAGESIZE
 
 /* Define if you have the gettimeofday function.  */
 #undef HAVE_GETTIMEOFDAY
-
-/* Define if you have the getuid function.  */
-#undef HAVE_GETUID
 
 /* Define if you have the isalnum function.  */
 #undef HAVE_ISALNUM
@@ -256,9 +244,6 @@
 
 /* Define if you have the strdup function.  */
 #undef HAVE_STRDUP
-
-/* Define if you have the strtoul function.  */
-#undef HAVE_STRTOUL
 
 /* Define if you have the tsearch function.  */
 #undef HAVE_TSEARCH

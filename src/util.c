@@ -2,6 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
+ Copyright (c) 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -645,6 +646,16 @@ char *slrn_basename (char *file)
 #endif
 }
 
+int slrn_mkdir (char *dir) /*{{{*/
+{
+#if defined(__MINGW32__)
+# define MKDIR(x,y) mkdir(x)
+#else
+# define MKDIR(x,y) mkdir(x,y)
+#endif
+   return MKDIR (dir, 0777);
+}
+/*}}}*/
 
 static int file_eqs (char *a, char *b)
 {

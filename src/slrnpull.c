@@ -305,15 +305,9 @@ static Active_Group_Type *add_group_type (char *name) /*{{{*/
 
 /*}}}*/
 
-#if defined(__MINGW32__)
-# define MKDIR(x,y) mkdir(x)
-#else
-# define MKDIR(x,y) mkdir(x,y)
-#endif
-
 static int do_mkdir (char *dir, int err) /*{{{*/
 {
-   if (0 == MKDIR (dir, 0777))
+   if (0 == slrn_mkdir (dir))
      {
 	log_message (_("Created dir %s."), dir);
 	return 0;
@@ -1554,7 +1548,7 @@ static int post_file (NNTP_Type *s, char *file) /*{{{*/
 static int make_outgoing_dir (char *dir) /*{{{*/
 {
    log_error (_("%s directory does not exist.  Creating it..."), dir);
-   if (-1 == MKDIR (dir, 0700))
+   if (-1 == slrn_mkdir (dir))
      {
 	log_error (_("Unable to create %s."), dir);
 	return -1;

@@ -28,7 +28,7 @@
 #include "vfile.h"
 
 extern void slrn_make_home_filename (char *, char *, size_t);
-extern int slrn_make_home_dirname (char *, char *, size_t);
+extern void slrn_make_home_dirname (char *, char *, size_t);
 extern void slrn_redraw (void);
 extern void slrn_update_screen (void);
 extern int Slrn_Full_Screen_Update;

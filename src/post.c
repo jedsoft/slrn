@@ -27,6 +27,7 @@
 /*{{{ Include Files */
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
@@ -998,7 +999,11 @@ static char *gen_cancel_lock (char *msgid) /*{{{*/
 /*}}}*/
 #endif /* SLRN_HAS_CANLOCK */
 
-/* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
+/* This function returns:
+ * -1 => user does not want to post article
+ *  0 => user wants to delete postponed article
+ *  1 => user postponed the article
+ *  2 => user wants to post article */
 static int post_user_confirm (char *file, int is_postponed) /*{{{*/
 {
    int rsp;
@@ -1149,7 +1154,7 @@ static int post_user_confirm (char *file, int is_postponed) /*{{{*/
 #endif
 	  }
      }
-   return 0;
+   return 2;
 }
 /*}}}*/
 
@@ -1196,7 +1201,8 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 
    if (Slrn_Batch == 0)
      {
-       if ((rsp=post_user_confirm(file, is_postponed)) != 0) return rsp;
+	if ((rsp=post_user_confirm(file, is_postponed)) != 2)
+	  return rsp;
      }
 
    slrn_message_now (_("Posting ..."));
@@ -1532,16 +1538,31 @@ static int get_postpone_dir (char *dirbuf, size_t n) /*{{{*/
    if (Slrn_Postpone_Dir != NULL)
      dir = Slrn_Postpone_Dir;
    else
-     dir = Slrn_Save_Directory;
+     dir = "News/postponed";
 
-   if ((dir == NULL)
-       || (-1 == slrn_make_home_dirname (dir, dirbuf, n))
-       || (2 != slrn_file_exists (dirbuf)))
+   slrn_make_home_dirname (dir, dirbuf, n);
+   switch (slrn_file_exists (dirbuf))
      {
-	slrn_error_now (2, _("postpone_directory not specified or does not exist"));
+      case 0:
+	if (slrn_get_yesno (1, _("Do you want to create directory %s"), dirbuf))
+	  {
+	     if (-1 == slrn_mkdir (dirbuf))
+	       {
+		  slrn_error_now (2, _("Unable to create directory. (errno = %d)"), errno);
+		  return -1;
+	       }
+	  }
+	else
+	  {
+	     slrn_error_now (1, _("Aborted on user request."));
+	     return -1;
+	  }
+	break;
+      case 1:
+	slrn_error_now (2, _("postpone_directory points to a regular file (not a directory)"));
 	return -1;
      }
-
+   
    return 0;
 }
 /*}}}*/

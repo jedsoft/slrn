@@ -3,9 +3,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.9.7.3pl1\n"
+"Project-Id-Version: 0.9.7.4pl1\n"
 "POT-Creation-Date: 2002-08-30 11:28+0200\n"
-"PO-Revision-Date: 2002-03-08 13:26+0100\n"
+"PO-Revision-Date: 2002-09-29 00:17+0100\n"
 "Last-Translator: Jens Wahnes <jewa@gmx.net>\n"
 "Language-Team: German - Jens Wahnes <jewa@gmx.net>\n"
 "MIME-Version: 1.0\n"
@@ -158,7 +158,7 @@ msgstr "Der Server gab einen leeren Artikel zurück."
 
 #: src/art.c:2484
 msgid "%Y-%m-%d"
-msgstr ""
+msgstr "%Y-%m-%d"
 
 #: src/art.c:2527
 msgid "This operation requires an article"
@@ -219,15 +219,13 @@ msgstr "Möchten Sie in %s antworten, wie vom Autor vorgeschlagen"
 #.
 #: src/art.c:3037
 msgid "fFaAtTcC"
-msgstr ""
+msgstr "fFaAdDgG"
 
 #: src/art.c:3040
-#, fuzzy
 msgid ""
 "Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
 " Cancel?"
-msgstr ""
-"Crosspost: Fup2 setzen, Nur in diese Gruppe posten, Trotzdem posten, Abbruch?"
+msgstr "Crosspost: Fup2 setzen, nur in Diese oder in Alle Gruppen oder Gar nicht posten?"
 
 #: src/art.c:3122
 msgid "Cc message as requested by poster"
@@ -243,14 +241,14 @@ msgid "%s appears invalid.  CC anyway"
 msgstr "%s scheint ungültig zu sein. Trotzdem eine E-Mail schicken"
 
 #: src/art.c:3311 src/post.c:969
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot open file: %s"
-msgstr "Die Log-Datei %s konnte nicht geöffnet werden."
+msgstr "Die Datei konnte nicht geöffnet werden: %s"
 
 #: src/art.c:3318 src/post.c:976
-#, fuzzy, c-format
+#, c-format
 msgid "Zero length file: %s"
-msgstr "Die Log-Datei %s konnte nicht geöffnet werden."
+msgstr "Diese Datei ist leer: %s"
 
 #: src/art.c:3368
 msgid "Are you sure you want to supersede"
@@ -480,9 +478,8 @@ msgid "Apply scorefile now"
 msgstr "Bewertungsdatei (scorefile) jetzt neu anwenden"
 
 #: src/art.c:5063
-#, fuzzy
 msgid "No scorefile loaded."
-msgstr "Keine weiteren Dateien.\n"
+msgstr "Es ist keine Bewertungsdatei aktiv."
 
 #: src/art.c:5072
 msgid "This article is not matched by any scorefile entries."
@@ -530,7 +527,6 @@ msgid "Article %s not available."
 msgstr "Der Artikel %s ist nicht verfügbar."
 
 #: src/art.c:5778
-#, fuzzy
 msgid "Enter Message-ID: "
 msgstr "Geben Sie die Message-ID ein: "
 
@@ -551,9 +547,8 @@ msgid "Done."
 msgstr "Fertig."
 
 #: src/art.c:6665
-#, fuzzy
 msgid "Warning: Can only request article bodies from this group."
-msgstr "Kein vorheriger Artikel in dieser Gruppe"
+msgstr "Es können nur Nachrichten aus dieser Gruppe vollständig angezeigt werden."
 
 #: src/art.c:6682
 msgid "Mark all articles as read"
@@ -679,7 +674,7 @@ msgstr "\"Verlorene Söhne\" werden eingebunden ..."
 
 #: src/art_sort.c:938
 msgid "Linking articles with identical subjects ..."
-msgstr "Artikel mit gleichem Betreff (subject) werden zusammengeführt."
+msgstr "Artikel mit gleichem Betreff (Subject) werden zusammengeführt."
 
 #: src/art_sort.c:1049
 #, c-format
@@ -2103,7 +2098,7 @@ msgstr "Die Log-Datei %s konnte nicht geöffnet werden."
 
 #: src/interp.c:1381
 msgid "Could not replace article with given string."
-msgstr ""
+msgstr "Der Artikel konnte nicht durch die angegebene Zeichenkette ersetzt werden."
 
 #: src/menu.c:64 src/menu.c:77
 msgid "Quit"
@@ -2131,7 +2126,7 @@ msgstr "Hilfe"
 
 #: src/menu.c:78
 msgid "Catchup"
-msgstr "Grupe als gel. markieren (catchup)"
+msgstr "Gruppe als gel. markieren (catchup)"
 
 #: src/menu.c:79
 msgid "NextGrp"
@@ -2161,12 +2156,12 @@ msgstr "Threaden"
 #. 001
 #: src/menu.c:195
 msgid "Sort by subject"
-msgstr "Nach Betreff (subject) sortieren"
+msgstr "Nach Betreff (Subject) sortieren"
 
 #. 010
 #: src/menu.c:196
 msgid "Thread, then sort by subject."
-msgstr "Threaden, dann nach Betreff (subject) sortieren"
+msgstr "Threaden, dann nach Betreff (Subject) sortieren"
 
 #. 011
 #: src/menu.c:197
@@ -2181,12 +2176,12 @@ msgstr "Threaden, dann nach Artikelbewertung sortieren"
 #. 101
 #: src/menu.c:199
 msgid "Sort by score and subject"
-msgstr "Nach Artikelbewertung und Betreff (subject) sortieren"
+msgstr "Nach Artikelbewertung und Betreff (Subject) sortieren"
 
 #. 110
 #: src/menu.c:200
 msgid "Thread, then sort by score and subject"
-msgstr "Threaden, dann nach Artikelbewertung und Betreff (subject) sortieren"
+msgstr "Threaden, dann nach Artikelbewertung und Betreff (Subject) sortieren"
 
 #. 111
 #: src/menu.c:201
@@ -2251,9 +2246,8 @@ msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
 msgstr "HOCH/RUNTER zum Bewegen, RETURN zur Auswahl, Strg-G zum Abbrechen"
 
 #: src/menu.c:488
-#, fuzzy
 msgid "Use UP/DOWN to move, RETURN to select, q to quit"
-msgstr "HOCH/RUNTER zum Bewegen, RETURN zur Auswahl, Strg-G zum Abbrechen"
+msgstr "HOCH/RUNTER zum Bewegen, RETURN zur Auswahl, q zum Verlassen der Anzeige."
 
 #: src/menu.c:1048
 msgid "Creating directory list..."
@@ -2406,9 +2400,8 @@ msgstr "Der reguläre Ausdruck ist ungültig oder zu lang."
 
 #. Fill in what is assumed to be non-NULL by rest of program.
 #: src/misc.c:2594
-#, fuzzy
 msgid "On %D, %r <%f> wrote:"
-msgstr "Du schriebst in %n:"
+msgstr "%r <%f> schrieb:"
 
 #: src/misc.c:2595
 #, c-format
@@ -2418,7 +2411,7 @@ msgstr "Du schriebst in %n:"
 #: src/misc.c:2596
 #, c-format
 msgid "[\"Followup-To:\" header set to %n.]"
-msgstr ""
+msgstr "[\"Followup-To:\" nach %n gesetzt.]"
 
 #: src/misc.c:2599
 #, c-format
@@ -2794,7 +2787,7 @@ msgstr "Header erwartet. Dies ist keine Header-Zeile."
 
 #: src/post.c:627
 msgid "The subject header is not allowed be to empty."
-msgstr "Sie müssen einen nicht-leeren Betreff (subject) angeben"
+msgstr "Sie müssen einen nicht-leeren Betreff (Subject) angeben"
 
 #: src/post.c:639
 msgid "The Newsgroups header is not allowed be to empty."
@@ -2810,7 +2803,6 @@ msgid "This news reader will not accept user generated From lines."
 msgstr "Vom Benutzer erstelle \"From:\"-Zeilen werden nicht unterstützt."
 
 #: src/post.c:681
-#, fuzzy
 msgid "This news reader will not accept user generated Message-IDs."
 msgstr "Vom Benutzer erstelle Message-IDs werden nicht unterstützt."
 
@@ -2878,7 +2870,7 @@ msgstr "Diese Nachricht verstößt gegen die Netiquette:"
 
 #: src/post.c:845
 msgid "Lines with more than 80 characters generally need to be wrapped."
-msgstr "Zeilen mit mehr als 80 Zeichen sollten i.A. umbrochen werden."
+msgstr "Zeilen mit mehr als 80 Zeichen sollten i.a. umbrochen werden."
 
 #: src/post.c:849
 #, c-format
@@ -2886,9 +2878,9 @@ msgid "This affects at least line %d:"
 msgstr "Dies betrifft zumindest Zeile %d:"
 
 #: src/post.c:851
-#, fuzzy, c-format
+#, c-format
 msgid "This affects %d lines between line %d and %d. First one:"
-msgstr "Dies betrifft zumindest Zeile %d:"
+msgstr "Dies befrifft %d Zeilen im Bereich zwischen Zeile %d und %d. Beispiel:"
 
 #: src/post.c:877 src/post.c:1215 src/post.c:1238
 #, c-format
@@ -2984,9 +2976,9 @@ msgid "post_file_hook returned error."
 msgstr "post_file_hook gab einen Fehler zurück."
 
 #: src/post.c:1249
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open %s--- message not posted."
-msgstr "Datei nicht gefunden: %s -- Nachricht wurde nicht gepostet."
+msgstr "%s konnte nicht geöffnet werden -- die Nachricht wurde nicht gepostet."
 
 #: src/post.c:1264
 msgid "Could not reach server."
@@ -2994,11 +2986,11 @@ msgstr "Es konnte keine Verbindung zum Server hergestellt werden."
 
 #: src/post.c:1271
 msgid "Message-ID generating error."
-msgstr ""
+msgstr "Fehler beim Erstellen der Message-ID."
 
 #: src/post.c:1282
 msgid "\"From\" generating error."
-msgstr ""
+msgstr "Fehler beim Erstellen des \"From:\"-Headers."
 
 #: src/post.c:1418
 msgid "Posting...done."
@@ -3261,10 +3253,10 @@ msgstr "slrn: Signal %d -- Abbruch.\n"
 
 #: src/slrn.c:886
 msgid "slrn fatal error:"
-msgstr "Schwerer Fehler in slrn:"
+msgstr "Folgender Fehler führte zum Abbruch von slrn:"
 
 #: src/slrn.c:914
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
 "-a              Use active file for getting new news.\n"
@@ -3293,31 +3285,28 @@ msgid ""
 "them.\n"
 msgstr ""
 "Aufruf: slrn [--inews] [--nntp ...] [--spool] Parameter\n"
-"-a               Active-Datei verwenden, um nach neuen Nachrichten zu "
-"suchen.\n"
+"-a               Active-Datei verwenden, um nach neuen Nachrichten zu suchen.\n"
 "-f newsrc-Datei  Name der zu verwendenden newsrc-Datei.\n"
 "-C[-]            [Keine] Farben verwenden.\n"
 "-Dname           'Name' zur Liste der Präprozessor-Tokens hinzufügen.\n"
 "-d               Gruppenbeschreibungen (Taglines) vom Server laden.\n"
 "                   Achtung: Dies kann u.U. einige Minuten dauern und die\n"
-"                   entstehende Datei kann mehrere hundert Kilobyte groß "
-"sein.\n"
+"                   entstehende Datei kann mehrere hundert Kilobyte groß sein.\n"
 "-i init-Datei    Name der Konfigurationsdatei (Vorgabe: %s).\n"
 "-k               Bewertungsdatei (score file) nicht einlesen.\n"
 "-k0              Keine \"teuren\" Bewertungen vornehmen.\n"
 "-m               XTerm-Mausunterstützung erzwingen.\n"
-"-n               Nicht nach neuen Newsgruppen suchen. slrn startet "
-"hierdurch\n"
+"-n               Nicht nach neuen Newsgruppen suchen. slrn startet hierdurch\n"
 "                   normalerweise schneller.\n"
 "-w               Erst nach Tastendruck in den Vollbildmodus wechseln.\n"
-"--create         Gruppenliste vom Newsserver holen, newsrc-Datei neu "
-"anlegen.\n"
+"-w0              Falls beim Start Fehlermeldungen ausgegeben wurden, dann\n"
+"                   erst nach Tastendruck in den Vollbildmodus wechseln.\n"
+"--create         Gruppenliste vom Newsserver holen, newsrc-Datei neu anlegen.\n"
 "--debug Datei    Debugging-Informationen in Datei schreiben.\n"
 "--kill-log Datei Liste der aussortierten Artikel in Datei schreiben.\n"
 "--version        Versionsnummer und die unterstützten Funktionen anzeigen.\n"
 "\n"
-"Im NNTP-Modus gibt es zusätzliche Parameter. Verwenden Sie \"slrn --nntp --"
-"help\"\n"
+"Im NNTP-Modus gibt es zusätzliche Parameter. Verwenden Sie \"slrn --nntp --help\"\n"
 "um diese angezeigt zu bekommen.\n"
 
 #: src/slrn.c:965
@@ -3781,7 +3770,7 @@ msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "Insgesamt %lu Byte empfangen und %lu Byte verschickt in %ld Sekunden."
 
 #: src/slrnpull.c:1811
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s usage: %s [options]\n"
 " Options:\n"
@@ -3813,6 +3802,7 @@ msgstr ""
 "  --new-groups         Liste neuer Gruppen vom Server holen.\n"
 "  --no-post            Keine Artikel posten.\n"
 "  --post-only          Nur Artikel posten, aber keine holen.\n"
+"  --rebuild            Wie --expire; zusätzlich Overview-Dateien neu anlegen.\n"
 "  --version            Versionsnummer ausgeben.\n"
 
 #: src/slrnpull.c:1836
@@ -3869,9 +3859,9 @@ msgid "Slrnpull exiting on signal."
 msgstr "Signal empfangen -- Slrnpull wird abgebrochen."
 
 #: src/slrnpull.c:2367
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating filename in %s."
-msgstr "Fehler beim Lesen von %s."
+msgstr "Fehler beim Anlegen der Datei in %s."
 
 #: src/slrnpull.c:2373 src/slrnpull.c:2697
 #, c-format
@@ -3879,28 +3869,27 @@ msgid "Unable to stat %s."
 msgstr "stat-Aufruf für %s schlug fehl."
 
 #: src/slrnpull.c:2383
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read header %d in %s."
-msgstr "%s konnte nicht angelegt werden."
+msgstr "Fehler beim Lesen des Headers %d in %s."
 
 #: src/slrnpull.c:2389
 #, c-format
 msgid "Header %d not parseable for overview."
-msgstr ""
+msgstr "Der Header %d konnte nicht für die Overview-Daten geparst werden."
 
 #: src/slrnpull.c:2412
 #, c-format
 msgid "%s overview: article %u of %u in %s."
-msgstr ""
+msgstr "%s Overview: Artikel %u von %u in %s."
 
 #: src/slrnpull.c:2413
-#, fuzzy
 msgid "Creating"
-msgstr "%s wird angelegt."
+msgstr "Anlegen von"
 
 #: src/slrnpull.c:2413
 msgid "Updating"
-msgstr ""
+msgstr "Aktualisieren von"
 
 #: src/slrnpull.c:2427
 #, c-format
@@ -3908,27 +3897,26 @@ msgid "Creating Overview file for %s..."
 msgstr "Overview-Datei für %s wird angelegt ..."
 
 #: src/slrnpull.c:2494
-#, fuzzy
 msgid "Unable to create filename for overview file.\n"
-msgstr "Die Overview-Datei %s konnte nicht geöffnet werden.\n"
+msgstr "Fehler beim Anlegen der Overview-Datei für %s.\n"
 
 #: src/slrnpull.c:2504
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open new overview file %s.\n"
-msgstr "Die Overview-Datei %s konnte nicht geöffnet werden.\n"
+msgstr "Die neue Overview-Datei für %s konnte nicht geöffnet werden.\n"
 
 #: src/slrnpull.c:2582
-#, fuzzy, c-format
+#, c-format
 msgid "failed to close overview file %s.\n"
-msgstr "Die Overview-Datei %s konnte nicht geöffnet werden.\n"
+msgstr "Die Overview-Datei %s konnte nicht geschlossen werden.\n"
 
 #: src/slrnpull.c:2584
-#, fuzzy, c-format
+#, c-format
 msgid "failed to close new overview file %s.\n"
-msgstr "Die Overview-Datei %s konnte nicht geöffnet werden.\n"
+msgstr "Die neu Overview-Datei %s konnte nicht geschlossen werden.\n"
 
 #: src/slrnpull.c:2594
-#, fuzzy, c-format
+#, c-format
 msgid "failed to rename %s to %s."
 msgstr "%s konnte nicht in %s umbenannt werden."
 

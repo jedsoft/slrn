@@ -90,6 +90,8 @@ mode and allow you to manipulate the article window.
 \description
    Scrolls the article down \var{num} lines.  Returns the number of lines
    that were actually scrolled.
+\notes
+   If no article is in the pager, scrolling down first downloads an article.
 \seealso{article_goto_line, article_line_up}
 \done
 
