@@ -122,7 +122,26 @@ int _slrn_art_unhide_quotes (Slrn_Article_Type *a) /*{{{*/
 
 /*}}}*/
 
+static unsigned char *is_matching_line (unsigned char *b, SLRegexp_Type **r) /*{{{*/
+{
+   unsigned int len;
+   len = strlen ((char *) b);
 
+   while (*r != NULL)
+     {
+	SLRegexp_Type *re;
+
+	re = *r++;
+	if ((re->min_length > len) 
+	    || (b != SLang_regexp_match (b, len, re)))
+	  continue;
+	
+	return b + re->end_matches[0];
+     }
+   return NULL;
+}
+
+/*}}}*/
 
 int _slrn_art_hide_quotes (Slrn_Article_Type *a, int reset) /*{{{*/
 {
@@ -150,10 +169,29 @@ int _slrn_art_hide_quotes (Slrn_Article_Type *a, int reset) /*{{{*/
 		  if (QUOTE_LEVEL(l->flags) >= (unsigned int) Art_Hide_Quote_Level - 1)
 		    l->flags |= HIDDEN_LINE;
 	       }
-	     else if (last != NULL)
-	       l->flags |= HIDDEN_LINE;
-	     
-	     last = l;
+	     /* Show first line of quoted material; try to pick one that
+	      * actually has text on it! */
+	     else
+	       {
+		  if (last != NULL)
+		    l->flags |= HIDDEN_LINE;
+		  else
+		    {
+		       last = l;
+		       if ((l->next != NULL) && (l->next->flags & QUOTE_LINE))
+			 {
+			    unsigned char *str, *line = (unsigned char*)l->buf;
+			    while (NULL != (str = is_matching_line
+					    (line, Slrn_Ignore_Quote_Regexp)))
+			      line = str;
+			    if (0 == *(slrn_skip_whitespace((char*)line)))
+			      {
+				 l->flags |= HIDDEN_LINE;
+				 last = NULL;
+			      }
+			 }
+		    }
+	       }
 	  }
 	else last = NULL;
 	l = l->next;
@@ -279,28 +317,6 @@ static int try_supercite (Slrn_Article_Line_Type *l) /*{{{*/
 }
 
 /*}}}*/
-
-static unsigned char *is_matching_line (unsigned char *b, SLRegexp_Type **r) /*{{{*/
-{
-   unsigned int len;
-   len = strlen ((char *) b);
-
-   while (*r != NULL)
-     {
-	SLRegexp_Type *re;
-
-	re = *r++;
-	if ((re->min_length > len) 
-	    || (b != SLang_regexp_match (b, len, re)))
-	  continue;
-	
-	return b + re->end_matches[0];
-     }
-   return NULL;
-}
-
-/*}}}*/
-
 
 void slrn_art_mark_quotes (Slrn_Article_Type *a) /*{{{*/
 {

@@ -4843,9 +4843,14 @@ Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *h,
 	     goto free_and_return;
 	  }
 	
-	if (0 == (h->flags & HEADER_READ))
-	  Number_Read++;
-	h->flags |= (HEADER_READ | HEADER_LOW_SCORE);
+	if (0 == (h->flags & HEADER_DONT_DELETE_MASK))
+	  {
+	     if (0 == (h->flags & HEADER_READ))
+	       Number_Read++;
+	     h->flags |= (HEADER_READ | HEADER_LOW_SCORE);
+	  }
+	else
+	  h->flags |= HEADER_LOW_SCORE;
 	Number_Low_Scored++;
 	/* The next line should be made configurable */
 	kill_cross_references (h);
@@ -7242,7 +7247,7 @@ static void slrn_art_hangup (int sig) /*{{{*/
 
 /*}}}*/
 
-static void mark_ranges_read (Slrn_Range_Type *r) /*{{{*/
+static void mark_ranges (Slrn_Range_Type *r, int flag) /*{{{*/
 {
    Slrn_Header_Type *h = Slrn_First_Header;
    int min, max;
@@ -7264,8 +7269,9 @@ static void mark_ranges_read (Slrn_Range_Type *r) /*{{{*/
 		  break;
 	       }
 	     
-	     h->flags |= HEADER_READ;
-	     Number_Read++;
+	     h->flags |= flag;
+	     if (flag == HEADER_READ)
+	       Number_Read++;
 	     h = h->real_next;
 	  }
 	r = r->next;
@@ -7341,7 +7347,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 	if (min < Slrn_Server_Min) min = Slrn_Server_Min;
 	status = get_headers (min, Slrn_Server_Max, &all);
 	if (status != -1)
-	  mark_ranges_read (r);
+	  mark_ranges (r, HEADER_READ);
      }
    else
      {
@@ -7450,6 +7456,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
      }
    
    slrn_close_add_xover (1);
+   mark_ranges (g->requests, HEADER_REQUEST_BODY);
    
    if ((status == -1) || SLKeyBoard_Quit)
      {
