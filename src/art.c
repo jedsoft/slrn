@@ -4949,6 +4949,7 @@ static void view_scores (void) /*{{{*/
    
    Slrn_Score_Debug_Info_Type *sdi = NULL, *hlp;
    
+   slrn_uncollapse_this_thread (affected_header (), 1);
    slrn_score_header (affected_header (), Slrn_Current_Group_Name, &sdi);
    
    if ((hlp = sdi) == NULL)

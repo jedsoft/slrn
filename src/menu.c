@@ -915,7 +915,7 @@ int slrn_popup_win_mode (char *title, char *text)
 	     tab++;
 	     len += 8;
 	  }
-	if (NULL == (curr->data = slrn_malloc (len, 1, 1)))
+	if (NULL == (curr->data = slrn_malloc (len+1, 1, 1)))
 	  {
 	     free_select_list (root, 1);
 	     return -1;

@@ -551,7 +551,7 @@ static void link_lost_relatives (void) /*{{{*/
 
 static int qsort_subject_cmp (Slrn_Header_Type **a, Slrn_Header_Type **b) /*{{{*/
 {
-   return _art_subject_cmp ((*b)->subject, (*a)->subject);
+   return _art_subject_cmp ((*a)->subject, (*b)->subject);
 }
 /*}}}*/
 

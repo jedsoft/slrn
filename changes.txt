@@ -3,7 +3,12 @@ Changes since 0.9.7.4
 0. Bug fixes include:
   * Setting new_subject_breaks_threads to 2 has an effect again.
   * Some translations (fr/ko/nl/ru) were broken and could cause segfaults.
+  * No more rubbish at the end of popup window lines (Jurriaan).
+  * subject_compare_hook leads to the expected result again (Jurriaan).
 
+   Changes to the user interface:
+  * view_scores uncollapses threads (suggested by Jurriaan W Kalkman).
+  
    slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still
    need to rebuild the overview, you can use the new --rebuild option (based
