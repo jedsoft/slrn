@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -441,9 +441,9 @@ int slrn_score_header (Slrn_Header_Type *h, char *newsgroup,
 	     if ((st_score == 9999)
 		 || (st_score == -9999))
 	       return st_score;
-#endif
 	     if (st_score == 0)
 	       return score;
+#endif
 	     score += st_score;
 	  }
 	
