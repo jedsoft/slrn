@@ -1,0 +1,4240 @@
+# Swedish translation for Slrn.
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# FIRST AUTHOR Johan Svedberg <johan@svedberg.pp.se>, 2003.
+msgid ""
+msgstr ""
+"Project-Id-Version: Slrn 0.9.8.0\n"
+"POT-Creation-Date: 2003-08-25 17:14+0200\n"
+"PO-Revision-Date: 2003-09-08 00:04+0200\n"
+"Last-Translator: Johan Svedberg <johan@svedberg.pp.se>\n"
+"Language-Team: Swedish <sv@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/art.c:304
+#, c-format
+msgid "Ctrl-%c"
+msgstr "Ctrl-%c"
+
+#: src/art.c:308
+msgid "SPACE"
+msgstr "MELLANSLAG"
+
+#: src/art.c:309
+msgid "TAB"
+msgstr "TAB"
+
+#: src/art.c:310
+msgid "RETURN"
+msgstr "ENTER"
+
+#: src/art.c:311
+msgid "ESCAPE"
+msgstr "ESCAPE"
+
+#: src/art.c:312
+msgid "DELETE"
+msgstr "DELETE"
+
+#: src/art.c:313
+msgid "BACKSPACE"
+msgstr "BAKSTEG"
+
+#: src/art.c:679
+msgid "No next digest."
+msgstr "Inga fler sammandrag."
+
+#: src/art.c:1059
+msgid "Invalid Browser definition."
+msgstr "Ogiltig bläddrardefinition."
+
+#: src/art.c:1093
+msgid "Browse (^G aborts): "
+msgstr "Bläddra (^G avbryter): "
+
+#: src/art.c:1095 src/art.c:4163
+msgid "Aborted."
+msgstr "Avbrutet."
+
+#: src/art.c:1121
+msgid "Show all available groups"
+msgstr "Visa alla tillgängliga grupper"
+
+#: src/art.c:1131
+#, c-format
+msgid "Try switching to %s"
+msgstr "Pröva byta till %s"
+
+#: src/art.c:1137
+msgid "Group contains no articles."
+msgstr "Grupp innehåller inga artiklar."
+
+#: src/art.c:1152
+msgid "No Web Browser has been defined."
+msgstr "Ingen webbläsare har blivit definierad."
+
+#: src/art.c:1203
+msgid "No URLs found."
+msgstr "Inga URL:er hittade."
+
+#: src/art.c:1235
+msgid "Search: "
+msgstr "Sök: "
+
+#: src/art.c:1239 src/art.c:4821 src/group.c:1188
+msgid "Not found."
+msgstr "Inte hittad."
+
+#: src/art.c:1339
+#, c-format
+msgid "At end of article, press %s for next group."
+msgstr "Vid slutet på artikeln, tryck %s för nästa grupp."
+
+#: src/art.c:1342
+#, c-format
+msgid "At end of article, press %s for next unread article."
+msgstr "Vid slutet på artikeln, tryck %s för nästa olästa artikel."
+
+#: src/art.c:2028
+msgid "Goto article: "
+msgstr "Gå till artikel: "
+
+#: src/art.c:2045
+msgid "Article not found."
+msgstr "Artikel hittades inte."
+
+#: src/art.c:2116
+#, c-format
+msgid "#%2d/%-2d: Retrieving... %s"
+msgstr "#%2d/%-2d: Tar emot... %s"
+
+#: src/art.c:2119
+#, c-format
+msgid "[%d] Reading..."
+msgstr "[%d] Läser..."
+
+#: src/art.c:2126
+msgid "Server failed to return article."
+msgstr "Server misslyckades att returnera artikel."
+
+#: src/art.c:2130
+#, c-format
+msgid "Article %d unavailable."
+msgstr "Artikel %d otillgänglig."
+
+#: src/art.c:2169
+msgid "Article transfer aborted or connection lost."
+msgstr "Artikelöverföring avbruten eller anslutning tappad."
+
+#: src/art.c:2187
+#, c-format
+msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
+msgstr "#%2d/%-2d: Läste %4d/%-4d rader (%s) i %.2fkB/sec"
+
+#: src/art.c:2191
+#, c-format
+msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
+msgstr "#%2d/%-2d: Läste %4d/%-4d rader (%s)"
+
+#: src/art.c:2197
+#, c-format
+msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
+msgstr "[%d] Läst %d/%d rader än så länge i %.2fkB/sec"
+
+#: src/art.c:2200
+#, c-format
+msgid "[%d] Read %d/%d lines so far"
+msgstr "[%d] Läst %d/%d rader än så länge"
+
+#: src/art.c:2240
+msgid "Server sent empty article."
+msgstr "Server skickade tom artikel"
+
+#: src/art.c:2563
+msgid "%Y-%m-%d"
+msgstr "%Y-%m-%d"
+
+#: src/art.c:2606
+msgid "This operation requires an article"
+msgstr "Den här operationen kräver en artikel"
+
+#: src/art.c:2717
+#, c-format
+msgid "%s appears invalid.  Continue anyway"
+msgstr "%s verkar ogiltig.  Fortsätt ändå"
+
+#: src/art.c:2718
+msgid "Email address"
+msgstr "E-postadress"
+
+#: src/art.c:2729 src/art.c:2905 src/art.c:3244 src/art.c:3494
+#: src/slrnpull.c:386 src/slrnpull.c:463 src/slrnpull.c:1131
+#: src/slrnpull.c:1185
+#, c-format
+msgid "Unable to open %s for writing."
+msgstr "Kunde inte öppna %s för skrivning."
+
+#: src/art.c:2855
+msgid "Are you sure you want to reply"
+msgstr "Är du säker på att du vill svara"
+
+#: src/art.c:2882
+msgid "Forward to (^G aborts): "
+msgstr "Skicka vidare till (^G avbryter)"
+
+#: src/art.c:2884
+msgid "Aborted.  An email address is required."
+msgstr "Avbröt.  En e-postadress krävs."
+
+#: src/art.c:2888
+msgid "Edit the message before sending"
+msgstr "Redigera meddelandet innan sändning"
+
+#: src/art.c:2992 src/art.c:3449
+msgid "Posting not allowed by server"
+msgstr "Postning inte tillåtet av server"
+
+#: src/art.c:2999
+msgid "Are you sure you want to followup"
+msgstr "Är du säker på att du vill följa upp"
+
+#: src/art.c:3040
+msgid "Do you want to reply to POSTER as poster prefers"
+msgstr "Vill du svara till AVSÄNDAREN som avsändaren föredrar"
+
+#: src/art.c:3078
+#, c-format
+msgid "Followup to %s as poster prefers"
+msgstr "Uppföljning till %s som avsändaren föredrar"
+
+#: src/art.c:3120
+msgid "fFaAtTcC"
+msgstr "fFaAtTcC"
+
+#: src/art.c:3123
+msgid ""
+"Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
+" Cancel?"
+msgstr ""
+"Krosspostning. Ställ in \"Followup-To\", Posta till alla grupper / Bara "
+"den här gruppen, Avbryt?"
+
+#: src/art.c:3205
+msgid "Cc message as requested by poster"
+msgstr "Cc meddelande som efterfrågades av postare"
+
+#: src/art.c:3211
+msgid "Cc message to poster"
+msgstr "Cc meddelande till postare"
+
+#: src/art.c:3224
+#, c-format
+msgid "%s appears invalid.  CC anyway"
+msgstr "%s förefaller ogiltig.  CC ändå"
+
+#: src/art.c:3397 src/post.c:996
+#, c-format
+msgid "Cannot open file: %s"
+msgstr "Kan inte öppna fil: %s"
+
+#: src/art.c:3404 src/post.c:1003
+#, c-format
+msgid "Zero length file: %s"
+msgstr "Nollängdsfil: %s"
+
+#: src/art.c:3454
+msgid "Are you sure you want to supersede"
+msgstr "Är du säker på att du vill ersätta"
+
+#: src/art.c:3473 src/art.c:6609
+#, c-format
+msgid "Failed: Your name: '%s' is not '%s'"
+msgstr "Misslyckades: Ditt namn: '%s' är inte '%s'"
+
+#: src/art.c:3589 src/art.c:3638
+msgid "End of buffer."
+msgstr "Slut på buffert."
+
+#: src/art.c:3610 src/art.c:3628 src/group.c:1024
+msgid "Top of buffer."
+msgstr "Topp på buffert."
+
+#: src/art.c:3673
+msgid "No previous unread articles."
+msgstr "Inga tidigare olästa artiklar."
+
+#: src/art.c:3719
+msgid "No following unread articles."
+msgstr "Inga efterföljande olästa artiklar."
+
+#: src/art.c:3755
+#, c-format
+msgid "No following unread articles.  Press %s for next group."
+msgstr "Inga efterföljande olästa artiklar.  Tryck %s för nästa grupp."
+
+#: src/art.c:3786
+msgid "No more high scoring articles."
+msgstr "Inga fler högt poängsatta artiklar."
+
+#: src/art.c:3815 src/group.c:1722
+msgid "Subject: "
+msgstr "Ämne: "
+
+#: src/art.c:3840
+msgid "No more articles on that subject."
+msgstr "Inga fler artiklar i det ämnet."
+
+#: src/art.c:3873
+#, c-format
+msgid "Goto Header: %d"
+msgstr "Gå till huvud: %d"
+
+#: src/art.c:3955 src/group.c:2593 src/post.c:459
+#, c-format
+msgid "Unable to open %s."
+msgstr "Kunde inte öppna %s."
+
+#: src/art.c:3961 src/slrnpull.c:1138 src/slrnpull.c:1146 src/slrnpull.c:1193
+#: src/slrnpull.c:1201
+#, c-format
+msgid "Error writing to %s."
+msgstr "Fel vid skrivning till %s."
+
+#: src/art.c:4068
+msgid "Save tagged articles"
+msgstr "Spara taggade artiklar"
+
+#: src/art.c:4076
+msgid "Save this thread"
+msgstr "Spara den här tråden"
+
+#: src/art.c:4097 src/post.c:1622
+#, c-format
+msgid "Do you want to create directory %s"
+msgstr "Vill du skapa katalog %s"
+
+#: src/art.c:4100 src/post.c:1626
+#, c-format
+msgid "Unable to create directory. (errno = %d)"
+msgstr "Kunde inte skapa katalog. (errno = %d)"
+
+#: src/art.c:4105
+#, c-format
+msgid "Warning: %s is a regular file."
+msgstr "Varning: %s är en vanlig fil."
+
+#: src/art.c:4159
+msgid "Temporary file (^G aborts): "
+msgstr "Temporär fil (^G avbryter): "
+
+#: src/art.c:4160
+msgid "Save to file (^G aborts): "
+msgstr "Spara till fil (^G avbryter): "
+
+#: src/art.c:4169 src/editscore.c:167 src/post.c:614
+#, c-format
+msgid "Unable to open %s"
+msgstr "Kunde inte öppna %s"
+
+#: src/art.c:4259
+#, c-format
+msgid "decoding %10s (%3d/%3d) %s"
+msgstr "tolkar %10s (%3d/%3d) %s"
+
+#: src/art.c:4275
+msgid "Filename buffer not large enough."
+msgstr "Filnamnsbuffert är inte stor nog."
+
+#: src/art.c:4279
+msgid "Calling uudeview ..."
+msgstr "Anropar uudeview ..."
+
+#: src/art.c:4288
+#, c-format
+msgid "could not load %s: errno = %d"
+msgstr "kunde inte ladda %s: errno = %d"
+
+#: src/art.c:4291
+#, c-format
+msgid "could not load %s: %s"
+msgstr "kunde inte ladda %s: %s"
+
+#: src/art.c:4310
+msgid "I/O error."
+msgstr "I/O-fel."
+
+#: src/art.c:4313
+#, c-format
+msgid "error decoding %s: %s"
+msgstr "fel vid tolkning av %s: %s"
+
+#: src/art.c:4337
+#, c-format
+msgid "Decode %s"
+msgstr "Tolka %s"
+
+#: src/art.c:4348
+#, c-format
+msgid "Delete %s"
+msgstr "Ta bort %s"
+
+#: src/art.c:4351
+#, c-format
+msgid "Unable to delete %s"
+msgstr "Kunde inte ta bort %s"
+
+#: src/art.c:4389
+#, c-format
+msgid "Unable to open pipe to %s"
+msgstr "Kunde inte öppna rör till %s"
+
+#: src/art.c:4400 src/art.c:4421 src/decode.c:65
+msgid "Piping not implemented on this system."
+msgstr "Skapande av rör inte implementerat på det här systemet."
+
+#: src/art.c:4412
+msgid "Pipe to command: "
+msgstr "Rör till kommando: "
+
+#: src/art.c:4414
+msgid "Aborted.  Command name is required."
+msgstr "Avbröt.  Kommandonamn krävs."
+
+#: src/art.c:4419
+#, c-format
+msgid "Error piping to %s."
+msgstr "Fel vid skapande av rör till %s."
+
+#: src/art.c:4435
+msgid "Printing article..."
+msgstr "Skriver ut artikel..."
+
+#: src/art.c:4466
+msgid "Printing article...done"
+msgstr "Skriver ut artikel...klar"
+
+#: src/art.c:4482
+msgid "Are you sure you want to print the article"
+msgstr "Är du säker på att du vill skriva ut artikeln"
+
+#: src/art.c:4754
+msgid "Mark set."
+msgstr "Märke satt."
+
+#: src/art.c:4766
+msgid "Mark not set."
+msgstr "Märke inte satt."
+
+#: src/art.c:4787
+msgid "Subject search "
+msgstr "Ämnessökning "
+
+#: src/art.c:4787
+msgid "Author search "
+msgstr "Författarsökning "
+
+#: src/art.c:4788
+msgid "(forward)"
+msgstr "(framåt)"
+
+#: src/art.c:4788
+msgid "(backward)"
+msgstr "(bakåt)"
+
+#: src/art.c:4974 src/slrnpull.c:1336
+#, c-format
+msgid "Score %d killed article %s\n"
+msgstr "Poäng %d dödade artikel %s\n"
+
+#: src/art.c:4978 src/slrnpull.c:1340
+#, c-format
+msgid " Score %c%5i: %s (%s:%i)\n"
+msgstr " Poäng %c%5i: %s (%s:%i)\n"
+
+#: src/art.c:4982 src/slrnpull.c:1344
+#, c-format
+msgid " Score %c%5i: %s:%i\n"
+msgstr " Poäng %c%5i: %s:%i\n"
+
+#: src/art.c:4987 src/slrnpull.c:1349
+#, c-format
+msgid ""
+"  Newsgroup: %s\n"
+"  From: %s\n"
+"  Subject: %s\n"
+"\n"
+msgstr ""
+"  Nyhetsgrupp: %s\n"
+"  Från: %s\n"
+"  Ämne: %s\n"
+"\n"
+
+#: src/art.c:5057
+msgid "Scoring articles ..."
+msgstr "Poängsätter artiklar ..."
+
+#: src/art.c:5070
+#, c-format
+msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
+msgstr "Poängsatta artiklar %2d%%, dödade: %u, högsta: %u, lägsta: %u"
+
+#: src/art.c:5110
+msgid "Apply scorefile now"
+msgstr "Lägg till poängfil nu"
+
+#: src/art.c:5156
+msgid "No scorefile loaded."
+msgstr "Ingen poängfil laddad."
+
+#: src/art.c:5165
+msgid "This article is not matched by any scorefile entries."
+msgstr "Den här artikeln matchade inte något poängfilsinlägg"
+
+#: src/art.c:5211
+msgid "This article is matched by the following scores"
+msgstr "Den här artikeln matchades av följande poäng"
+
+#: src/art.c:5313
+#, c-format
+msgid "%s: receiving additional headers...[%c]"
+msgstr "%s: tar emot ytterligare huvuden...[%c]"
+
+#: src/art.c:5398
+#, c-format
+msgid "%s: headers received: %2d/%d"
+msgstr "%s: huvuden mottagna: %2d/%d"
+
+#: src/art.c:5559
+#, c-format
+msgid "Finding %s from server..."
+msgstr "Söker %s från server..."
+
+#: src/art.c:5598
+#, c-format
+msgid "Finding children from server...[%c]"
+msgstr "Söker barn från server...[%c]"
+
+#: src/art.c:5606
+msgid "Your server does not provide support for this feature."
+msgstr "Din server tillhandahåller inte stöd för den här funktionen."
+
+#: src/art.c:5772
+msgid "Header is part of a reference loop"
+msgstr "Huvud är del av en referens-loop"
+
+#: src/art.c:5826
+msgid "Article has no parent reference."
+msgstr "Artikel har ingen förälderreferens."
+
+#: src/art.c:5883
+#, c-format
+msgid "Article %s not available."
+msgstr "Artikel %s är inte tillgänglig."
+
+#: src/art.c:5895
+msgid "Enter Message-ID: "
+msgstr "Skriv in meddelande-id: "
+
+#: src/art.c:6317
+msgid "Warning: Could not save list of requested bodies."
+msgstr "Varning: Kunde inte spara lista på efterfrågade kroppar."
+
+#: src/art.c:6586
+msgid "Are you sure that you want to cancel this article"
+msgstr "Är du säker på att du vill avbryta den här artikeln"
+
+#: src/art.c:6589
+msgid "Cancelling..."
+msgstr "Avbryter..."
+
+#: src/art.c:6624
+msgid "No message id."
+msgstr "Inget meddelande-id."
+
+#: src/art.c:6654
+msgid "Done."
+msgstr "Klar."
+
+#: src/art.c:6693
+msgid "Warning: Can only request article bodies from this group."
+msgstr "Varning: Kan bara efterfråga artikelkroppar från den här gruppen."
+
+#: src/art.c:6710
+msgid "Mark all articles as read"
+msgstr "Markera alla artiklar som lästa"
+
+#: src/art.c:6720
+msgid "Mark all articles as unread"
+msgstr "Markera alla artiklar som olästa"
+
+#: src/art.c:6730
+msgid "Mark all articles up to here as read"
+msgstr "Markera alla artiklar upp till hit som lästa"
+
+#: src/art.c:6740
+msgid "Mark all articles up to here as unread"
+msgstr "Markera alla artiklar upp till hit som olästa"
+
+#: src/art.c:6841
+msgid "Rate article (1-5):"
+msgstr "Värdera artikel (1-5):"
+
+#: src/art.c:6846
+msgid "Rating must be in range 1 to 5."
+msgstr "Värdering måste vara inom området 1 till 5."
+
+#: src/art.c:7139
+msgid "Unable to create Article keymap!"
+msgstr "Kunde inte skapa tangentbordsuppsättning för artikel!"
+
+#: src/art.c:7577
+msgid "Group transfer aborted."
+msgstr "Gruppöverföring avbruten."
+
+#: src/art.c:7579
+msgid "Server read failed."
+msgstr "Serverläsning misslyckades."
+
+#: src/art.c:7596
+#, c-format
+msgid "No unread articles found. (%d killed)"
+msgstr "Inga olästa artiklar hittades. (%d dödade)"
+
+#: src/art.c:7598
+msgid "No unread articles found."
+msgstr "Inga olästa artiklar hittades."
+
+#: src/art.c:7652
+#, c-format
+msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
+msgstr "Ant dödade: %u, ant höga: %u, ant låga: %u, ant GroupLens värderade: %d"
+
+#: src/art.c:7658
+#, c-format
+msgid "Num Killed: %u, Num High: %u, Num Low: %u"
+msgstr "Ant dödade: %u, ant höga: %u, ant låga: %u"
+
+#: src/art.c:7859
+msgid ""
+"SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
+msgstr ""
+"SPC:Välj Ctrl-D:PgDn Ctrl-U:PgUp d:Markera-som-läst n:Nästa p:Tidigare "
+"q:Avsluta"
+
+#: src/art.c:7864
+msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
+msgstr "SPC:Pgdn B:PgUp u:Markera-som-oläst f:Följ-upp n:Nästa p:Tidigare "
+"q:Avsluta"
+
+#: src/art.c:8075
+#, c-format
+msgid "End of Thread.  Next: %s"
+msgstr "Slut på tråd.  Nästa: %s"
+
+#: src/art.c:8077
+msgid "End of Thread."
+msgstr "Slut på tråd."
+
+#: src/art.c:8089
+msgid "End of Sub-Thread"
+msgstr "Slut på under-tråd."
+
+#: src/art.c:8712
+msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
+msgstr "%p[%u/%t olästa] Grupp: %n%-20g -- %L (%P)"
+
+#: src/art.c:8900
+msgid "Spoilers visible!"
+msgstr "Förstörare synliga!"
+
+#: src/art_sort.c:354
+msgid "slrn_sort_headers(): memory allocation failure."
+msgstr "slrn_sort_headers(): minnesallokeringmisslyckande."
+
+#: src/art_sort.c:612
+msgid "link_same_subjects: memory allocation failure."
+msgstr "link_same_subjects: minnesallokeringmisslyckande."
+
+#: src/art_sort.c:823
+msgid "Internal Error in fixup_threads()."
+msgstr "Internt fel i fixup_threads()."
+
+#: src/art_sort.c:877
+msgid "Threading by references ..."
+msgstr "Trådar efter referenser ..."
+
+#: src/art_sort.c:914
+#, c-format
+msgid "Article %d is part of reference loop!"
+msgstr "Artikel %d är en del av en referens-loop!"
+
+#: src/art_sort.c:943
+msgid "Linking \"lost relatives\" ..."
+msgstr "Länkar \"förlorade släktningar\" ..."
+
+#: src/art_sort.c:950
+msgid "Linking articles with identical subjects ..."
+msgstr "Länkar artiklar med identiska ämnen ..."
+
+#: src/art_sort.c:1060
+#, c-format
+msgid "Can't sort according to `%s'"
+msgstr "Kan inte sortera enligt `%s'"
+
+#: src/chkslang.c:58
+#, c-format
+msgid "Usage: %s <PGM> <SLANG-VERSION> <SUGG VERSION>\n"
+msgstr "Användning: %s <PGM> <SLANG­VERSION> <SUGG VERSION>\n"
+
+#: src/chkslang.c:68
+msgid ""
+"\n"
+"\n"
+"******\n"
+"slang.h does not match slang library version.  Did you install slang as\n"
+"as a shared library?  Did you run ldconfig?  You have an installation "
+"problem\n"
+"and you will need to check the SLANG variables in the Makefile and properly\n"
+"set them.  Also try: make clean; make\n"
+"******\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"******\n"
+"slang.h matchar inte slangbibliotekets version. Installerade du slang som\n"
+"ett delat bibliotek? Körde du ldconfig? Du har ett installationsproblem\n"
+"och du kommer att behöva kontrollera SLANG-variablerna i Makefile:en och\n"
+"sätta dem ordentligt. Pröva också: make clean; make\n"
+"******\n"
+"\n"
+
+#: src/chkslang.c:86
+#, c-format
+msgid "This version of %s requires slang version %s.\n"
+msgstr "Den här versionen av %s kräver slang version %s.\n"
+
+#: src/chkslang.c:93
+#, c-format
+msgid "Your slang version is %s.\n"
+msgstr "Din slang version är %s.\n"
+
+#: src/chkslang.c:94
+#, c-format
+msgid ""
+"To fully utilize this program, you should upgrade the slang library to\n"
+"  version %s\n"
+msgstr ""
+"För att använda det här programmet fullt ut, borde du uppgradera\n"
+" slang-biblioteket till version %s\n"
+
+#: src/chkslang.c:96
+msgid ""
+"This library is available via anonymous ftp from\n"
+"space.mit.edu in pub/davis/slang.\n"
+msgstr ""
+"Det här biblioteket är tillgängligt via anonym ftp från\n"
+"space.mut.edu i pub/davis/slang.\n"
+
+#: src/chmap.c:147 src/chmap.c:154
+#, c-format
+msgid "File error: %s --- message not posted."
+msgstr "Fil-fel: %s --- meddelande inte postat."
+
+#: src/chmap.c:166
+msgid "Write Error. Disk Full? --- message not posted."
+msgstr "Skriv-fel. Disken full? --- meddelande inte postat."
+
+#: src/chmap.c:196
+#, c-format
+msgid "  Default character set:     %s\n"
+msgstr "  Standard teckenuppsättning:     %s\n"
+
+#: src/chmap.c:198
+msgid " SUPPORTED CHARACTER SETS:\n"
+msgstr " STÖDDA TECKENUPPSÄTTNINGAR:\n"
+
+#: src/chmap.c:239
+#, c-format
+msgid "Unsupport character set: %s"
+msgstr "Ostödda teckenuppsättningar: %s"
+
+#: src/decode.c:105
+msgid "Error closing file.  File system full?"
+msgstr "Fel vid stängning av fil. Filsystemet full?"
+
+#: src/decode.c:124
+msgid "Unable to open /bin/sh\n"
+msgstr "Kunde inte öppna /bin/sh\n"
+
+#: src/decode.c:137
+msgid "Error encountered while processing shell archive.\n"
+msgstr "Stötte på fel vid bearbetning av skalarkiv.\n"
+
+#: src/decode.c:166
+#, c-format
+msgid "Unable to create %s\n"
+msgstr "Kunde inte skapa %s\n"
+
+#: src/decode.c:170
+#, c-format
+msgid "creating %s (%s)\n"
+msgstr "skapar %s (%s)\n"
+
+#: src/decode.c:799 src/decode.c:813
+msgid "Unexpected end of file.\n"
+msgstr "Oväntat slut av fil.\n"
+
+#: src/decode.c:876
+#, c-format
+msgid "uuencode line appears corrupt: \"%s\""
+msgstr "uuencode-rad verkar trasig: \"%s\""
+
+#: src/decode.c:919
+#, c-format
+msgid "write to file failed (%u/%u bytes)\n"
+msgstr "skrivning till fil misslyckades (%u/%u bitar)\n"
+
+#: src/decode.c:1030
+#, c-format
+msgid "Unable to open %s.\n"
+msgstr "Kunde inte öppna %s.\n"
+
+#: src/decode.c:1054
+msgid "No more files found.\n"
+msgstr "Inga fler filer hittades.\n"
+
+#: src/decode.c:1060
+#, c-format
+msgid "Unable to chdir back to %s.\n"
+msgstr "Kunde inte chdir tillbacka till %s.\n"
+
+#: src/decode.c:1073
+msgid "Usage: uudecode [-64] [--stdout] [--guess] [filename ...]\n"
+msgstr "Användning: uudecode [-64] [--stdout] [-guess] [filnamn ...]\n"
+
+#: src/editscore.c:80
+msgid "SsFfRrEeCc"
+msgstr "SsFfRrEeCc"
+
+#: src/editscore.c:86
+msgid "TtAa"
+msgstr "TtAa"
+
+#: src/editscore.c:90
+msgid "A Score file has not been specified."
+msgstr "En poängfil har inte blivit specifierad."
+
+#: src/editscore.c:100
+msgid "Pick Score type: Subject, From, References, Edit, Cancel"
+msgstr "Välj poängtyp: Ämne, Från, Referenser, Redigera, Avbryt"
+
+#: src/editscore.c:117
+msgid "Which newsgroups: This group, All groups"
+msgstr "Vilken nyhetsgrupp: Den här gruppen, Alla grupper"
+
+#: src/editscore.c:125
+msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
+msgstr "Förfaller (MM/DD/YYYY, DD-MM-YYYY, +NN (dagar) eller lämna blank): "
+
+#: src/group.c:331
+#, c-format
+msgid "Selecting %s ..."
+msgstr "Väljer %s ..."
+
+#: src/group.c:343 src/group.c:476 src/group.c:1095
+#, c-format
+msgid "Group %s is bogus%s."
+msgstr "Grupp %s är falsk%s."
+
+#: src/group.c:344 src/group.c:1096
+msgid " - dropping it"
+msgstr " - struntar i det"
+
+#: src/group.c:352
+#, c-format
+msgid "Could not enter group %s."
+msgstr "Kunde inte gå in i grupp %s."
+
+#: src/group.c:477
+msgid " - ignoring it"
+msgstr " - ignorerar den"
+
+#: src/group.c:570
+#, c-format
+msgid "Group %s is bogus - ignoring it."
+msgstr "Grupp %s är falsk - ignorerar den."
+
+#: src/group.c:862
+msgid "No articles to read."
+msgstr "Inga artiklar att läsa."
+
+#: src/group.c:888
+#, c-format
+msgid "%s: Read how many? "
+msgstr "%s: Läs hur många? "
+
+#: src/group.c:900
+#, c-format
+msgid "Only downloading %d of %d articles."
+msgstr "Laddar bara ned %d av %d artiklar."
+
+#: src/group.c:980
+msgid "Do you really want to quit"
+msgstr "Vill du verkligen avsluta"
+
+#: src/group.c:989
+msgid "Write to newsrc file failed.  Quit anyway"
+msgstr "Skrivning till newsrc-filen misslyckades. Avsluta ändå"
+
+#: src/group.c:1002 src/group.c:1249
+msgid "End of Buffer."
+msgstr "Slutet av buffert."
+
+#: src/group.c:1013
+msgid "Top of Buffer."
+msgstr "Toppen av buffert."
+
+#: src/group.c:1082
+msgid "Server connection dropped."
+msgstr "Serveranslutning tappades."
+
+#: src/group.c:1125 src/group.c:2628
+#, c-format
+msgid "Checking news%s ..."
+msgstr "Kollar nyhet%s ..."
+
+#: src/group.c:1126 src/group.c:2629
+msgid " via active file"
+msgstr " via aktiv filen"
+
+#: src/group.c:1179
+msgid "Forward"
+msgstr "Frammåt"
+
+#: src/group.c:1179
+msgid "Backward"
+msgstr "Bakåt"
+
+#: src/group.c:1180
+msgid " Search: "
+msgstr " Sök: "
+
+#: src/group.c:1194
+msgid "Search wrapped."
+msgstr "Sökning gick runt."
+
+#: src/group.c:1223
+#, c-format
+msgid "Group %s does not exist."
+msgstr "Grupp %s existerar inte."
+
+#: src/group.c:1239
+msgid "Add group: "
+msgstr "Lägg till grupp: "
+
+#: src/group.c:1310
+#, c-format
+msgid "Moving %s. Press RETURN when finished."
+msgstr "Flyttar %s. Tryck ENTER när klar."
+
+#: src/group.c:1393
+msgid "Subscribe pattern: "
+msgstr "Prenumerationsmönster: "
+
+#: src/group.c:1422
+#, c-format
+msgid "Mark %s as read"
+msgstr "Markera %s som läst"
+
+#: src/group.c:1426
+msgid "Group marked as read."
+msgstr "Grupp markerad som läst."
+
+#: src/group.c:1437
+#, c-format
+msgid "Mark %s as un-read"
+msgstr "Markera %s som oläst"
+
+#: src/group.c:1441
+msgid "Group marked as un-read."
+msgstr "Grupp markerad som oläst."
+
+#: src/group.c:1464
+msgid "Un-Subscribe pattern: "
+msgstr "Mönster för avslutning av prenumeration: "
+
+#: src/group.c:1531
+msgid "List Groups (e.g., comp*unix*): "
+msgstr "Lista grupper (t.ex., comp*unix*): "
+
+#: src/group.c:1680
+msgid "No unread articles."
+msgstr "Inga olästa artiklar."
+
+#: src/group.c:1692 src/post.c:963 src/post.c:1338
+msgid "Posting not allowed."
+msgstr "Postning inte tillåten."
+
+#: src/group.c:1703
+msgid "Are you sure that you want to post"
+msgstr "Är du säker på att du vill posta"
+
+#: src/group.c:1713
+msgid "Newsgroup: "
+msgstr "Nyhetsgrupp: "
+
+#: src/group.c:1717
+msgid "Followup-To: "
+msgstr "Followup-To: "
+
+#: src/group.c:1736
+msgid "fFsSnNcC"
+msgstr "fFsSnNcC"
+
+#: src/group.c:1743
+msgid "Select scoring mode: Full, Simple, None, Cancel"
+msgstr "Välj poängsättningsläge: Full, Lätt, Ingen, Avbryt"
+
+#: src/group.c:1751
+msgid "Full Header Scoring enabled."
+msgstr "Full huvudpoängsättning aktiverat."
+
+#: src/group.c:1756
+msgid "Expensive Scoring disabled."
+msgstr "Kostsam poängsättning deaktiverat."
+
+#: src/group.c:1761
+msgid "Scoring disabled."
+msgstr "Poängsättning deaktiverat."
+
+#: src/group.c:1779
+msgid "No changes need to be saved."
+msgstr "Inga ändringar behöver sparas."
+
+#: src/group.c:1974
+msgid "Unable to create group keymap!"
+msgstr "Kunde inte skapa tangentbordsuppsättning för grupp"
+
+#: src/group.c:2132
+#, c-format
+msgid ""
+"Unable to create newsgroup description file:\n"
+"%s\n"
+msgstr ""
+"Kunde inte skapa nyhetsgruppbeskrivningsfil:\n"
+"%s\n"
+
+#: src/group.c:2136
+#, c-format
+msgid ""
+"\n"
+"Creating description file %s.\n"
+msgstr ""
+"\n"
+"Skapar beskrivningsfil %s.\n"
+
+#: src/group.c:2137
+msgid ""
+"Getting newsgroup descriptions from server.\n"
+"Note: This step may take some time if you have a slow connection!!!\n"
+msgstr ""
+"Hämtar nyhetsgruppbeskrivning från server.\n"
+"Notera: Det här steget kan ta tid om du har en långsam anslutning!!!\n"
+
+#: src/group.c:2144
+msgid "Server failed on list newsgroups command."
+msgstr "Server misslyckades på lista nyhetsgrupper kommando."
+
+#: src/group.c:2159
+msgid "Error reading line from server"
+msgstr "Fel vid läsning av rad från server"
+
+#: src/group.c:2290
+msgid "Checking for new groups ..."
+msgstr "Kollar efter nya grupper ..."
+
+#: src/group.c:2348 src/slrnpull.c:2433
+msgid "Server does not implement NEWGROUPS command."
+msgstr "Server implementerar inte NEWGROUPS kommando."
+
+#: src/group.c:2352 src/slrnpull.c:2437
+#, c-format
+msgid ""
+"Server failed to return proper response to NEWGROUPS:\n"
+"%s\n"
+msgstr ""
+"Server misslyckades att returnera ordentligt svar på NEWGROUPS:\n"
+"%s\n"
+
+#: src/group.c:2366 src/group.c:2479
+msgid "Read from server failed"
+msgstr "Läsning från server misslyckades"
+
+#: src/group.c:2377
+#, c-format
+msgid "%d new newsgroup(s) found."
+msgstr "%d ny(a) nyhetsgrupp(er) hittade."
+
+#: src/group.c:2385
+#, c-format
+msgid ""
+"%s appears corrupt.\n"
+"I expected to see: NEWGROUPS yymmdd hhmmss GMT\n"
+"I will patch the file up for you.\n"
+msgstr ""
+"%s verkar trasig.\n"
+"Jag väntade mig att se: NEWGROUPS yymmdd hhmmss GMT\n"
+"Jag kommer att lappa ihop filen åt dig.\n"
+
+#: src/group.c:2397
+#, c-format
+msgid "Unable to open %s to record date."
+msgstr "Kunde inte öppna %s för att hämta datum."
+
+#: src/group.c:2465
+msgid "Server failed LIST ACTIVE - authorization missing."
+msgstr "Server misslyckades med LIST ACTIVE - tillåtelse saknas."
+
+#: src/group.c:2466
+msgid "Server failed LIST ACTIVE."
+msgstr "Server misslyckades med LIST ACTIVE."
+
+#: src/group.c:2579
+#, c-format
+msgid ""
+"\n"
+"* The autosave file of %s is newer than the file itself.\n"
+msgstr ""
+"\n"
+"* Den automatiskt sparade filen av %s är nyare än filen själv.\n"
+
+#: src/group.c:2581
+msgid "Do you want to restore your newsrc from the autosave version"
+msgstr "Vill du återskapa din newsrc från den automatiskt sparade versionen"
+
+#: src/group.c:2642 src/post.c:1563 src/slrnpull.c:1844
+#, c-format
+msgid "Unable to create %s."
+msgstr "Kunde inte skapa %s."
+
+#: src/group.c:2645
+msgid ""
+"\n"
+"--The next step may take a while if the NNTP connection is slow.--\n"
+"\n"
+msgstr ""
+"\n"
+"--Nästa steg kan ta ett tag om NNTP-anslutningen är långsam.--\n"
+"\n"
+
+#: src/group.c:2646
+#, c-format
+msgid "Creating %s."
+msgstr "Skapar %s."
+
+#: src/group.c:2657
+msgid "Unable to read newsrc file"
+msgstr "Kunde inte läsa newsrc-fil"
+
+#: src/group.c:2750
+#, c-format
+msgid "Writing %s ..."
+msgstr "Skriver %s ..."
+
+#: src/group.c:2772
+#, c-format
+msgid "Unable to open file %s for writing."
+msgstr "Kunde inte öppna fil %s för skrivning."
+
+#: src/group.c:2861
+#, c-format
+msgid "Writing %s ... done."
+msgstr "Skriver %s ... klar."
+
+#: src/group.c:2869
+#, c-format
+msgid "Write to %s failed! Disk Full?"
+msgstr "Skrivning till %s misslyckades! Disken full?"
+
+#: src/group.c:2884
+msgid ""
+"SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
+msgstr ""
+"SPC:Välj p:Posta c:Kom ikapp l:Lista q:Avsluta ^R:Rita om (u)s:(Av)Prenumerera"
+
+#: src/group.c:3056
+msgid "-%D-News Groups: %s %-20g -- %L (%P)"
+msgstr "-%D-Nyhetsgrupper: %s %-20g -- %L (%P)"
+
+#: src/group.c:3088 src/group.c:3126 src/interp.c:360 src/interp.c:430
+msgid "To use this feature, please update s-lang and recompile slrn."
+msgstr "För att använda den här funktionen, var vänlig uppdatera s-lang "
+"och kompilera om slrn."
+
+#: src/group.c:3134 src/interp.c:438
+msgid "Array of string expected."
+msgstr "Lista av strängar väntad."
+
+#: src/group.c:3140 src/interp.c:444
+msgid "One-dimensional array expected."
+msgstr "Endimensionell lista väntad."
+
+#: src/grplens.c:194
+msgid "User is Unregistered"
+msgstr "Användaren är inte registrerad"
+
+#: src/grplens.c:195
+msgid "Service is Busy"
+msgstr "Tjänsten är upptagen"
+
+#: src/grplens.c:196
+msgid "Service Unavailable"
+msgstr "Tjänsten otillgänlig"
+
+#: src/grplens.c:197
+msgid "Already logged in"
+msgstr "Redan inloggad"
+
+#: src/grplens.c:198
+msgid "Server failed to return proper response"
+msgstr "Server misslyckades att returnera ordentligt svar"
+
+#: src/grplens.c:199
+msgid "Not enough memory"
+msgstr "Inte tillräckligt med minne"
+
+#: src/grplens.c:200
+msgid "Error writing to server"
+msgstr "Fel vid skrivning till server"
+
+#: src/grplens.c:201
+msgid "Error reading from server"
+msgstr "Fel vid läsning från server"
+
+#: src/grplens.c:202
+msgid "Token is invalid"
+msgstr "Element är ogiltigt"
+
+#: src/grplens.c:203
+msgid "Newsgroup not supported"
+msgstr "Nyhetsgrupp stöds inte"
+
+#: src/grplens.c:206
+msgid "Unknown Error"
+msgstr "Okänt fel"
+
+#: src/grplens.c:731
+#, c-format
+msgid "Failed: %s"
+msgstr "Misslyckades: %s"
+
+#: src/grplens.c:888
+#, c-format
+msgid "%s usage: %s [default] PSEUDONYM"
+msgstr "%s användning: %s [standard] PSEUDONYM"
+
+#: src/grplens.c:896 src/grplens.c:908
+#, c-format
+msgid "%s: expecting a single argument"
+msgstr "%s: väntar ett enkelt argument"
+
+#: src/grplens.c:950
+msgid "Too many arguments"
+msgstr "För många argument"
+
+#: src/grplens.c:986 src/slrnpull.c:603
+#, c-format
+msgid "Reading %s"
+msgstr "Läser %s"
+
+#: src/grplens.c:1000 src/grplens.c:1026
+#, c-format
+msgid "Error processing line %u of %s"
+msgstr "Fel vid bearbetning av rad %u av %s"
+
+#: src/grplens.c:1050
+#, c-format
+msgid "Checking to see if server %s:%d is alive..."
+msgstr "Kollar om server %s:%d lever..."
+
+#: src/grplens.c:1057
+msgid "GroupLens support initialized."
+msgstr "GroupLens-stöd initierat."
+
+#: src/grplens.c:1096
+msgid "Logging out of GroupLens servers ..."
+msgstr "Loggar ut från GroupLens-servrar ..."
+
+#: src/grplens.c:1145
+#, c-format
+msgid "Getting GroupLens predictions from %s:%d..."
+msgstr "Hämtar GroupLens-förutsägelser från %s:%d..."
+
+#: src/grplens.c:1195
+#, c-format
+msgid "Sending GroupLens ratings to %s:%d..."
+msgstr "Skickar GroupLens-värderingar till %s:%d..."
+
+#: src/help.c:42
+msgid " More information about slrn can be found on its home page:"
+msgstr " Mer information om slrn kan hittas på dess hemsida:"
+
+#: src/help.c:43
+msgid "   http://slrn.sourceforge.net/"
+msgstr "   http://slrn.sourceforge.net/"
+
+#: src/help.c:44
+msgid " Questions not covered by the documentation can be posted to"
+msgstr " Frågor som inte är täckta i dokumentationen kan postas till"
+
+#: src/help.c:45
+msgid "   news.software.readers"
+msgstr "   news.software.readers"
+
+#: src/help.c:47
+msgid ""
+" Please email bug reports, suggestions or comments to the current maintainer,"
+msgstr ""
+" Vänligen e-posta buggrapporter, förslag eller kommentarer till den nuvarande "
+"underhållaren,"
+
+#: src/help.c:48
+msgid "   Thomas Schultz <tststs@gmx.de>"
+msgstr "   Thomas Schultz <tststs@gmx.de>"
+
+#: src/help.c:49
+msgid ""
+" The original author of this program is John E. Davis <davis@space.mit.edu>"
+msgstr ""
+" Den ursprunliga upphovsmannen av det här programmet är "
+"John E. Davis <davis@space.mit.edu>"
+
+#: src/help.c:56 src/help.c:173
+msgid ""
+" Note: The keys are case sensitive!  That is, 's' and 'S' are not the same."
+msgstr ""
+" Notera: Tangenterna är skiftlägeskänsliga! Vilket betyder att 's' och 'S' "
+"inte är detsamma."
+
+#: src/help.c:57
+msgid "General movement:"
+msgstr "Generella rörelser:"
+
+#: src/help.c:58
+msgid ""
+"  n                  Go to the next unread article (or next group, if at "
+"end)."
+msgstr ""
+"  n                  Gå till nästa olästa artikel (eller nästa grupp, om vid "
+"slutet)."
+
+#: src/help.c:59
+msgid "  p                  Go to the previous unread article."
+msgstr "  p                  Gå till den tidigare olästa artikeln."
+
+#: src/help.c:60
+msgid "  N, ESC RIGHT       Skip to next group."
+msgstr "  N, ESC HÖGER       Hoppa till nästa grupp."
+
+#: src/help.c:61
+msgid "  ESC LEFT           Go to previous group."
+msgstr "  ESC VÄNSTER        Gå till tidigare grupp."
+
+#: src/help.c:62
+msgid "  !                  Go to the next article with a high score."
+msgstr "  !                  Gå till nästa artikel med en hög poäng."
+
+#: src/help.c:63
+msgid "  =                  Go to the next article with the same subject."
+msgstr "  =                  Gå till nästa artikel med samma ämne."
+
+#: src/help.c:64
+msgid "  L                  Go to the last read article and display it."
+msgstr "  L                  Gå till den sista lästa artikeln och visa den."
+
+#: src/help.c:65 src/help.c:182
+msgid "Actions:"
+msgstr "Operationer:"
+
+#: src/help.c:66
+msgid "  P                  Post a new article (no followup)."
+msgstr "  P                  Posta en ny artikel (ingen uppföljning)."
+
+#: src/help.c:67
+msgid "  ESC P              Post or edit a postponed article."
+msgstr "  ESC P              Posta eller redigera en uppskjuten artikel."
+
+#: src/help.c:68
+msgid "  f                  Post a followup to the current article."
+msgstr "  f                  Posta en uppföljning till den aktuella artikeln."
+
+#: src/help.c:69
+msgid "      ESC 1 f        Include all headers in the followup."
+msgstr "      ESC 1 f        Inkludera alla huvuden i uppföljningen."
+
+#: src/help.c:70
+msgid ""
+"      ESC 2 f        Followup without modifying (e.g. quoting) the article."
+msgstr ""
+"      ESC 2 f        Uppföljning utan att ändra (t.ex. citering) artikeln."
+
+#: src/help.c:71
+msgid "  r                  Reply to poster (via email)."
+msgstr "  r                  Svara till postare (via e-post)."
+
+#: src/help.c:72
+msgid ""
+"  F                  Forward the current article to someone (via email)."
+msgstr ""
+"  F                  Skicka vidare den aktuella artikeln till någon (via "
+"e-post)."
+
+#: src/help.c:73
+msgid ""
+"      ESC 1 F        Forward the current article (including all headers)."
+msgstr ""
+"      ESC 1 F        Skicka vidare den aktuella artikeln (inklusive alla "
+"huvuden)."
+
+#: src/help.c:74
+msgid "  ESC Ctrl-S         Supersede article (you have to be the author)."
+msgstr "  ESC Ctrl-S         Ersätt artikel (du måste vara upphovsmannen)."
+
+#: src/help.c:75
+msgid "  ESC Ctrl-C         Cancel article (you have to be the author)."
+msgstr "  ESC Ctrl-C         Avbryt artikel (du måste vara upphovsmannen)."
+
+#: src/help.c:76
+msgid "  o                  Save article, tagged articles or thread to file."
+msgstr "  o                  Spara artikel, taggade artiklar eller tråd till "
+"fil."
+
+#: src/help.c:77
+msgid "  |                  Pipe article to an external program."
+msgstr "  |                  Skapa rör för artikel till ett externt program."
+
+#: src/help.c:78
+msgid "  y                  Print article (as displayed)."
+msgstr "  y                  Skriv ut artikel (som visad)."
+
+#: src/help.c:79
+msgid ""
+"      ESC 1 y        Print article (unwrapped and including hidden lines)."
+msgstr ""
+"      ESC 1 y        Skriv ut artikel (ej radbruten och inklusive gömda "
+"rader)."
+
+#: src/help.c:81
+msgid "  :                  Decode article, tagged articles or thread."
+msgstr "  :                  Avkoda artikel, taggade artiklar och tråd."
+
+#: src/help.c:83
+msgid "  Ctrl-Z             Suspend slrn."
+msgstr "  Ctrl-Z             Suspendera slrn."
+
+#: src/help.c:84
+msgid "  q                  Return to group display."
+msgstr "   q                 Återvänd till grupp-läge."
+
+#: src/help.c:85
+msgid "  Q                  Quit slrn immediately."
+msgstr "  Q                  Avsluta slrn omedelbart."
+
+#: src/help.c:86
+msgid "Moving in the article pager:"
+msgstr "Förflyttning i artikelytan:"
+
+#: src/help.c:87
+msgid "  ESC DOWN           Scroll article down one line."
+msgstr "  ESC NED            Rulla artikel ned en rad."
+
+#: src/help.c:88
+msgid "  ESC UP             Scroll article up one line."
+msgstr "  ESC UPP            Rulla artikel upp en rad."
+
+#: src/help.c:89
+msgid ""
+"  SPACE              Scroll article down one page (or select next, if at "
+"end)."
+msgstr ""
+"  SPACE              Rulla artikel ned en sida (eller välj nästa, om vid "
+"slutet)."
+
+#: src/help.c:90
+msgid "  DELETE, b          Scroll article up one page."
+msgstr "  DELETE, b          Rulla artikel upp en sida."
+
+#: src/help.c:91
+msgid "  >                  Move to end of the article."
+msgstr "  >                  Flytta till slutet av artikeln."
+
+#: src/help.c:92
+msgid "  <                  Move to beginning of the article."
+msgstr "  <                  Flytta till början av artikeln."
+
+#: src/help.c:93
+msgid "  LEFT               Pan article to the left."
+msgstr "  VÄNSTER            Rulla artikel till vänster."
+
+#: src/help.c:94
+msgid "  RIGHT              Pan article to the right."
+msgstr "  HÖGER              Rulla artikel till höger."
+
+#: src/help.c:95
+msgid "  /                  Search forward in the article."
+msgstr "  /                  Sök framåt i artikeln."
+
+#: src/help.c:96
+msgid "  TAB                Skip beyond quoted text."
+msgstr "  TAB                Hoppa över citerad text."
+
+#: src/help.c:97
+msgid "  g                  Skip to next digest."
+msgstr "  g                  Hoppa till nästa sammandrag."
+
+#: src/help.c:98
+msgid "Moving in the header display:"
+msgstr "Förflyttning i huvud-ytan:"
+
+#: src/help.c:99
+msgid "  DOWN, Ctrl-N       Move to the next article."
+msgstr "  NED, Ctrl-N        Flytta till nästa artikel."
+
+#: src/help.c:100
+msgid "  UP, Ctrl-P         Move to the previous article."
+msgstr "  UPP, Ctrl-P        Flytta till den tidigare artikeln."
+
+#: src/help.c:101
+msgid "  Ctrl-D             Scroll down one page."
+msgstr "  Ctrl-D             Rulla ned en sida."
+
+#: src/help.c:102
+msgid "  Ctrl-U             Scroll up one page."
+msgstr "  Ctrl-U             Rulla upp en sida."
+
+#: src/help.c:103
+msgid "  ESC >              Go to the last article in group."
+msgstr "  ESC >              Gå till den sista artikeln i gruppen."
+
+#: src/help.c:104
+msgid "  ESC <              Go to the first article in group."
+msgstr "  ESC <              Gå till den första artikeln i gruppen."
+
+#: src/help.c:105
+msgid "  j                  Jump to article (by server number)."
+msgstr "  j                  Hoppa till artikel (efter servernummer)."
+
+#: src/help.c:106
+msgid "  a                  Author search forward."
+msgstr "  a                  Författarsökning frammåt."
+
+#: src/help.c:107
+msgid "  A                  Author search backward."
+msgstr "  A                  Författarsökning bakåt."
+
+#: src/help.c:108
+msgid "  s                  Subject search forward."
+msgstr "  s                  Ämnessökning frammåt."
+
+#: src/help.c:109
+msgid "  S                  Subject search backward."
+msgstr "  S                  Ämnessökning bakåt."
+
+#: src/help.c:110
+msgid "Marking as read/unread:"
+msgstr "Markera som läst/oläst:"
+
+#: src/help.c:111
+msgid "  d                  Mark article or collapsed thread as read."
+msgstr "  d                  Markera artikel eller nedbruten tråd som läst."
+
+#: src/help.c:112
+msgid "  u                  Mark article or collapsed thread as unread."
+msgstr "  u                  Markera artikel eller sammanbruten tråd som oläst."
+
+#: src/help.c:113
+msgid "  ESC d              Mark entire (sub-)thread as read."
+msgstr "  ESC d              Markera hela (under-)tråden som läst."
+
+#: src/help.c:114
+msgid "  c                  Catchup - mark all articles as read."
+msgstr "  c                  Kom ikapp - markera alla artiklar som läst."
+
+#: src/help.c:115
+msgid ""
+"  C                  Mark all articles up to the current position as read."
+msgstr ""
+"  C                  Markera alla artiklar upp till den aktuella positionen "
+"som lästa."
+
+#: src/help.c:116
+msgid "  ESC u              Un-Catchup - mark all articles as unread."
+msgstr "  ESC u              Ligg efter - markera alla artiklar som olästa."
+
+#: src/help.c:117
+msgid ""
+"  ESC U              Mark all articles up to the current position as unread."
+msgstr ""
+"  ESC U              Markera alla artiklar upp till den aktuella positionen "
+"som lästa."
+
+#: src/help.c:118
+msgid "  x                  Remove all non-tagged read articles from the list."
+msgstr "  x                  Ta bort alla icke-taggade lästa artiklar från "
+"listan."
+
+#: src/help.c:119
+msgid "Article pager commands:"
+msgstr "Artikelkommandon:"
+
+#: src/help.c:120
+msgid "  t                  Show full headers (on/off)."
+msgstr "  t                  Visa alla huvuden (på/av)."
+
+#: src/help.c:121
+msgid "  ESC r              Decrypt ROT-13 (on/off)."
+msgstr "  ESC r              Avkryptera ROT-13 (på/av)."
+
+#: src/help.c:122
+msgid "  T                  Display quoted lines (on/off)."
+msgstr "  T                  Visa citerade rader (på/av)."
+
+#: src/help.c:123
+msgid "  \\                  Show signature (on/off)."
+msgstr "  \\                  Visa signatur (på/av)."
+
+#: src/help.c:124
+msgid "  W                  Wrap long lines (on/off)."
+msgstr "  W                  Radbryt långa rader (på/av)."
+
+#: src/help.c:126
+msgid "  ESC ?              Reveal spoilers (on/off)."
+msgstr "  ESC ?              Avslöja förstörare (på/av)."
+
+#: src/help.c:128
+msgid "  ]                  Show PGP signature (on/off)."
+msgstr "  ]                  Visa PGP-signatur (på/av)."
+
+#: src/help.c:129
+msgid "  [                  Show verbatim marks (on/off)."
+msgstr "  [                  Visa verbatim-märken (på/av)."
+
+#: src/help.c:130
+msgid "  Ctrl-^             Enlarge the article window."
+msgstr "  Ctrl-^             Förstora artikelfönstret."
+
+#: src/help.c:131
+msgid "  ^                  Shrink the article window."
+msgstr "  ^                  Krymp artikelfönstret."
+
+#: src/help.c:132
+msgid "  z                  Maximize / Unmaximize the article window."
+msgstr "  z                  Maximera / Avmaximera artikelfönstret."
+
+#: src/help.c:133
+msgid "  h                  Hide / Show the article window."
+msgstr "  h                  Göm / Visa artikelfönstret."
+
+#: src/help.c:134
+msgid "  U                  Search for URLs and follow them."
+msgstr "  U                  Sök efter URL:er och följ dem."
+
+#: src/help.c:135
+msgid "Header window commands:"
+msgstr "Huvudfönsterkommandon:"
+
+#: src/help.c:136
+msgid "  ESC t              Collapse / Uncollapse thread."
+msgstr "  ESC t              Bryt ned / Sammanfoga tråd."
+
+#: src/help.c:137
+msgid "      ESC 1 ESC t    Collapse / Uncollapse all threads."
+msgstr "      ESC 1 ESC t    Bryt ned / Sammanfoga alla trådar."
+
+#: src/help.c:138
+msgid "  ESC a              Toggle between header display formats."
+msgstr "  ESC a              Växla mellan huvudvisningsformat."
+
+#: src/help.c:139
+msgid "  ESC s              Select threading and sorting method."
+msgstr "  ESC s              Välj trådnings- och sorteringsmetod."
+
+#: src/help.c:140
+msgid "Miscellaneous actions:"
+msgstr "Blandade operationer:"
+
+#: src/help.c:141
+msgid "  K                  Create a scorefile entry interactively."
+msgstr "  K                  Skapa en poängfilsinlägg interaktivt."
+
+#: src/help.c:142
+msgid "      ESC 1 K        Edit scorefile."
+msgstr "      ESC 1 K        Redigera poängfil."
+
+#: src/help.c:144
+msgid "  m                  (Un-)mark article body for download by slrnpull."
+msgstr "  m                 (Av-)markera artikelkropp för nedladdning av "
+"slrnpull."
+
+#: src/help.c:146
+msgid ""
+"  v                  Show which scorefile rules matched the current article."
+msgstr ""
+"  v                  Visa vilka poängfilsregler som matchade den aktuella "
+"artikeln."
+
+#: src/help.c:147
+msgid "  * The following five commands query the server if necessary:"
+msgstr "  * Följande fem kommandon frågar servern om nödvändigt:"
+
+#: src/help.c:148
+msgid "  ESC l              Locate article by its Message-ID."
+msgstr "  ESC l              Lokalisera artikel efter dess meddelande-id."
+
+#: src/help.c:149
+msgid "  ESC Ctrl-P         Find all children of current article."
+msgstr "  ESC Ctrl-P         Hitta alla barn till aktuell artikel."
+
+#: src/help.c:150
+msgid "  ESC p              Find parent article."
+msgstr "  ESC p              Hitta förälderartikel."
+
+#: src/help.c:151
+msgid ""
+"      ESC 1 ESC p    Reconstruct thread (slow when run on large threads)."
+msgstr ""
+"      ESC 1 ESC p    Omkonstruera tråd (långsamt vid körning på stora trådar)."
+
+#: src/help.c:152
+msgid ""
+"      ESC 2 ESC p    Reconstruct thread (faster, may not find all articles)."
+msgstr ""
+"      ESC 2 ESC p    Omkonstruera tråd (snabbare, kanske inte hittar alla"
+"artiklar)."
+
+#: src/help.c:153
+msgid "  ;                  Set a mark at the current article."
+msgstr "  ;                  Sätt en markering vid den aktuella artikeln."
+
+#: src/help.c:154
+msgid "  ,                  Return to previously marked article."
+msgstr "  ,                  Återvänd till den tidigare markerade artikeln."
+
+#: src/help.c:155
+msgid "  #                  Numerically tag article (for saving / decoding)."
+msgstr "  #                  Numeriskt tagga artikel (för sparning / "
+"avkodning)."
+
+#: src/help.c:156
+msgid "  ESC #              Remove all numerical tags."
+msgstr "  ESC #              Ta bort alla numeriska taggar."
+
+#: src/help.c:157
+msgid "  *                  Protect article from catchup commands."
+msgstr "  *                  Skydda artikel från komma ikapp-kommandon."
+
+#: src/help.c:158
+msgid "      ESC 1 *        Remove all protection marks."
+msgstr "      ESC 1 *        Ta bort alla beskyddningsmärken."
+
+#: src/help.c:159
+msgid "  .                  Repeat last key sequence."
+msgstr "  .                  Upprepa senaste knappsekvens."
+
+#: src/help.c:160
+msgid "  Ctrl-X ESC         Read line and interpret it as S-Lang."
+msgstr "  Ctrl-X ESC         Läs rad och tolka den som S-Lang."
+
+#: src/help.c:162
+msgid "  0                  Rate article with GroupLens."
+msgstr "  0                  Värdera artikel med GroupLens."
+
+#: src/help.c:164
+msgid "  Ctrl-R, Ctrl-L     Redraw screen."
+msgstr "  Ctrl-R, Ctrl-L     Rita om skärm."
+
+#: src/help.c:165
+msgid "  ?                  Display this help screen."
+msgstr "  ?                  Visa den här hjälp texten."
+
+#: src/help.c:174
+msgid "Cursor movement:"
+msgstr "Markörförflyttning:"
+
+#: src/help.c:175
+msgid "  DOWN                    Go to the next group."
+msgstr "  NED                     Gå till nästa grupp."
+
+#: src/help.c:176
+msgid "  UP                      Go to the previous group."
+msgstr "  UPP                     Gå till tidigare grupp."
+
+#: src/help.c:177
+msgid "  Ctrl-V, Ctrl-D          Scroll to the next page."
+msgstr "  Ctrl-V, Ctrl-D          Rulla till nästa sida."
+
+#: src/help.c:178
+msgid "  ESC V, Ctrl-U           Scroll to the previous page."
+msgstr "  ESC V, Ctrl-U           Rulla till nästa sida."
+
+#: src/help.c:179
+msgid "  ESC >                   Go to the bottom of the list."
+msgstr "  ESC >                   Gå till botten av listan."
+
+#: src/help.c:180
+msgid "  ESC <                   Go to the top of the list."
+msgstr "  ESC <                   Gå till toppen av listan."
+
+#: src/help.c:181
+msgid "  /                       Group keyword search."
+msgstr "  /                       Nyckelordssökning i gruppen."
+
+#: src/help.c:183
+msgid "  SPACE, RETURN           Enter the current newsgroup."
+msgstr "  MELLANSLAG, ENTER       Gå in i den aktuella nyhetsgruppen."
+
+#: src/help.c:184
+msgid "  * The following variations also download previously read articles:"
+msgstr "  * Följande variationer laddar också ned tidigare lästa artiklar:"
+
+#: src/help.c:185
+msgid "      ESC 1 SPACE         Enter group with article number query."
+msgstr "      ESC 1 MELLANSLAG    Gå in i grupp med artikelnummerförfrågan."
+
+#: src/help.c:186
+msgid "      ESC 2 SPACE         Enter group, but do not apply score."
+msgstr "      ESC 2 MELLANSLAG    Gå in i grupp, men använd inte poäng."
+
+#: src/help.c:187
+msgid "      ESC 3 SPACE         Enter group with query, but without scoring."
+msgstr "      ESC 3 MELLANSLAG    Gå in i grupp med förfrågan, men utan "
+"poängsättning."
+
+#: src/help.c:188
+msgid "      ESC 4 SPACE         Enter the current newsgroup."
+msgstr "      ESC 4 MELLANSLAG    Gå in i den aktuella nyhetsgruppen."
+
+#: src/help.c:189
+msgid "  P                       Post an article to the current newsgroup."
+msgstr "  P                       Posta en artikel till den aktuella "
+"nyhetsgruppen."
+
+#: src/help.c:190
+msgid "  ESC P                   Post or edit a postponed article."
+msgstr "  ESC P                   Posta eller redigera en uppskjuten artikel."
+
+#: src/help.c:191
+msgid "  G                       Get new news from server."
+msgstr "  G                       Hämta nya nyheter från server."
+
+#: src/help.c:192
+msgid "  K                       Select scoring mode."
+msgstr "  K                       Välj poängsättningsläge."
+
+#: src/help.c:193
+msgid "  .                       Repeat last key sequence."
+msgstr "  .                       Upprepa senaste knappsekvens."
+
+#: src/help.c:194
+msgid "  Ctrl-X ESC              Read line and interpret it as S-Lang."
+msgstr "  Ctrl-X ESC              Läs rad och tolka den som S-Lang."
+
+#: src/help.c:195
+msgid "  Ctrl-Z                  Suspend slrn."
+msgstr "  Ctrl-Z                  Suspendera slrn."
+
+#: src/help.c:196
+msgid "  q                       Quit slrn."
+msgstr "  q                       Avsluta slrn."
+
+#: src/help.c:197
+msgid "Group management (affects newsrc file):"
+msgstr "Grupphantering (påverkar newsrc-fil):"
+
+#: src/help.c:198
+msgid "  c                       Catchup - Mark all articles as read."
+msgstr "  c                       Kom ifatt - Markera alla artiklar som lästa."
+
+#: src/help.c:199
+msgid "  ESC u                   Un-Catchup - Mark all articles as unread."
+msgstr "  ESC u                   Ligg efter - markera alla artiklar som "
+"olästa."
+
+#: src/help.c:200
+msgid "  a                       Add a new newsgroup."
+msgstr "  a                       Lägg till en ny nyhetsgrupp."
+
+#: src/help.c:201
+msgid "  s                       Subscribe to the current newsgroup."
+msgstr "  s                       Prenumerera på den aktuella nyhetsgruppen."
+
+#: src/help.c:202
+msgid "      ESC 1 s             Subscribe to groups matching a pattern."
+msgstr "      ESC 1 s             Prenumerera på grupper matchande ett mönster."
+
+#: src/help.c:203
+msgid "  u                       Unsubscribe from the current newsgroup."
+msgstr "  u                       Avsluta prenumeration på den aktuella "
+"nyhetsgruppen."
+
+#: src/help.c:204
+msgid "      ESC 1 u             Unsubscribe from groups matching a pattern."
+msgstr "      ESC 1 u             Avsluta prenumeration på grupper matchande "
+"ett mönster."
+
+#: src/help.c:205
+msgid "  m                       Move newsgroup to a different location."
+msgstr "  m                       Flytta nyhetsgrupp till en annan plats."
+
+#: src/help.c:206
+msgid "  Ctrl-X, Ctrl-T          Transpose position of groups."
+msgstr "  Ctrl-X, Ctrl-T          Positionera om grupper."
+
+#: src/help.c:207
+msgid "  X                       Force a save of the newsrc file."
+msgstr "  X                       Tvinga en sparning av newsrc-filen."
+
+#: src/help.c:208
+msgid "Display:"
+msgstr "Visa:"
+
+#: src/help.c:209
+msgid "  ESC a                   Toggle between group display formats."
+msgstr "  ESC a                   Växla mellan gruppvisningsformat."
+
+#: src/help.c:210
+msgid ""
+"  l                       Toggle display of groups without unread articles."
+msgstr ""
+"  l                       Växla visning av grupper utan olästa artiklar."
+
+#: src/help.c:211
+msgid "  L                       Toggle listing of unsubscribed groups."
+msgstr "  L                       Växla listning av avprenumererade grupper."
+
+#: src/help.c:212
+msgid "      ESC 1 L             Hide unsubscribed groups."
+msgstr "      ESC 1 L             Göm avprenumererade grupper."
+
+#: src/help.c:213
+msgid "      ESC 2 L             Show unsubscribed groups."
+msgstr "      ESC 2 L             Visa avprenumererade grupper."
+
+#: src/help.c:214
+msgid "  Ctrl-L, Ctrl-R          Redraw the screen."
+msgstr "  Ctrl-L, Ctrl-R          Rita om skärmen."
+
+#: src/help.c:215
+msgid "  ?                       Display this help screen."
+msgstr "  ?                       Visa den här hjälp texten."
+
+#: src/help.c:301
+msgid " (continued)"
+msgstr " (fortsatt)"
+
+#: src/help.c:306
+msgid "As a translation would not be legally binding, it remains untranslated."
+msgstr "Eftersom en översättning inte skulle vara lagligt bindande, kvarstår "
+"den oöversatt."
+
+#: src/help.c:310
+msgid "The following copyright notice applies to the slrn newsreader:"
+msgstr "Följande kopieringsrättighetsnotis gäller för nyhetsläsaren slrn:"
+
+#: src/help.c:367
+msgid "Press 'c' to start over, or any other key to return to news reader."
+msgstr "Tryck \"c\" för att börja om, eller någon annan tangent för att "
+"återvända till nyhetsläsaren."
+
+#: src/help.c:370
+msgid ""
+"Press 'c' for the copyright, '?' to start over, or any other key to quit "
+"help."
+msgstr ""
+"Tryck \"c\" för kopieringsrättigheterna, \"?\" för att börja om, eller någon "
+"annan tangent för att avsluta hjälpen."
+
+#: src/help.c:376
+msgid ""
+"Press 'q' to quit help, 'c' to start over, or any other key to continue."
+msgstr ""
+"Tryck \"q\" för att avsluta hjälpen, \"c\" för att börja om, eller någon "
+"annan tangent för att fortsätta."
+
+#: src/help.c:379
+msgid ""
+"Press 'q' to quit help, '?' to start over, or any other key to continue."
+msgstr ""
+"Tryck \"q\" för att avsluta hjälpen, \"?\" för att börja om, eller någon "
+"annan tangent för att fortsätta."
+
+#: src/interp.c:104
+msgid "positive integer expected"
+msgstr "positivt heltal väntat"
+
+#: src/interp.c:140
+msgid "select box function not available in batch mode."
+msgstr "välja lådfunktion inte tillgängligt i satsläge"
+
+#: src/interp.c:274 src/interp.c:284
+#, c-format
+msgid "loading %s"
+msgstr "laddar %s"
+
+#: src/interp.c:301 src/interp.c:309 src/interp.c:322
+#, c-format
+msgid "%s is not a valid variable name."
+msgstr "%s är inte ett giltigt variabelnamn."
+
+#: src/interp.c:350
+msgid "setlocale is not available on this system."
+msgstr "setlocale är inte tillgängligt på det här systemet."
+
+#: src/interp.c:363
+msgid "This version of slrn lacks MIME support."
+msgstr "Den här versionen av slrn saknar MIME-stöd."
+
+#: src/interp.c:370
+msgid "Array of integer expected."
+msgstr "Lista av heltal väntades."
+
+#: src/interp.c:376
+msgid "Two-dimensional array with two columns expected."
+msgstr "Två-dimensionell lista med två kolumner väntades."
+
+#: src/interp.c:388
+msgid "Could not get memory for conversion table."
+msgstr "Kunde inte hämta minne för konverteringsbord."
+
+#: src/interp.c:403
+#, c-format
+msgid "Unicode value in row %d out of range."
+msgstr "Unicodevärde på rad %d utanför område."
+
+#: src/interp.c:412
+#, c-format
+msgid "Local charset value in row %d out of range."
+msgstr "Lokalt teckenkodsvärde på rad %d utanför område."
+
+#: src/interp.c:452
+#, c-format
+msgid "Array must contain at least one, at most %d elements."
+msgstr "Lista måste innehålla åtminstone en, som mest %d element."
+
+#: src/interp.c:460
+msgid "Failed to allocate memory."
+msgstr "Misslyckades att allokera minne."
+
+#: src/interp.c:527
+msgid "definekey: no such keymap."
+msgstr "definekey: ingen sådan tangentbordsuppsättning."
+
+#: src/interp.c:554
+msgid "undefinekey: no such keymap."
+msgstr "undefinekey: ingen sådan tangentbordsuppsättning."
+
+#: src/interp.c:591 src/interp.c:629 src/slrn.c:1752
+msgid "Quit!"
+msgstr "Avsluta!"
+
+#: src/interp.c:664
+msgid "Terminal not initialized."
+msgstr "Terminal inte initierad."
+
+#: src/interp.c:715
+msgid "Not in article mode."
+msgstr "Inte i artikelläge."
+
+#: src/interp.c:848
+msgid "No article selected"
+msgstr "Ingen artikel vald"
+
+#: src/interp.c:1268
+msgid "Not in group mode."
+msgstr "Inte i gruppläge."
+
+#: src/interp.c:1397
+#, c-format
+msgid "Unable to open log file %s"
+msgstr "Kunde inte öppna log-fil %s"
+
+#: src/interp.c:1457
+msgid "Could not replace article with given string."
+msgstr "Kunde inte ersätta artikel med givna strängen."
+
+#: src/menu.c:64 src/menu.c:77
+msgid "Quit"
+msgstr "Avsluta"
+
+#: src/menu.c:65
+msgid "Refresh"
+msgstr "Uppdatera"
+
+#: src/menu.c:66 src/menu.c:81 src/misc.c:221
+msgid "Top"
+msgstr "Topp"
+
+#: src/menu.c:67 src/menu.c:82 src/misc.c:223
+msgid "Bot"
+msgstr "Bott"
+
+#: src/menu.c:68 src/menu.c:83
+msgid "Post"
+msgstr "Posta"
+
+#: src/menu.c:69 src/menu.c:86
+msgid "Help"
+msgstr "Hjälp"
+
+#: src/menu.c:78
+msgid "Catchup"
+msgstr "Kom ifatt"
+
+#: src/menu.c:79
+msgid "NextGrp"
+msgstr "NästaGrp"
+
+#: src/menu.c:80
+msgid "NextArt"
+msgstr "NästaArt"
+
+#: src/menu.c:84
+msgid "Reply"
+msgstr "Svara"
+
+#: src/menu.c:85
+msgid "Followup"
+msgstr "Följ upp"
+
+#: src/menu.c:193
+msgid "No sorting"
+msgstr "Ingen sortering"
+
+#: src/menu.c:194
+msgid "Thread Headers"
+msgstr "Trådhuvuden"
+
+#: src/menu.c:195
+msgid "Sort by subject"
+msgstr "Sortera efter ämne"
+
+#: src/menu.c:196
+msgid "Thread, then sort by subject."
+msgstr "Tråd, sortera sedan efter ämne."
+
+#: src/menu.c:197
+msgid "Sort by scores."
+msgstr "Sortera efter poäng."
+
+#: src/menu.c:198
+msgid "Thread, then sort by scores."
+msgstr "Tråd, sortera sedan efter poäng."
+
+#: src/menu.c:199
+msgid "Sort by score and subject"
+msgstr "Sortera efter poäng och ämne."
+
+#: src/menu.c:200
+msgid "Thread, then sort by score and subject"
+msgstr "Tråd, sortera sedan efter poäng och ämne"
+
+#: src/menu.c:201
+msgid "Sort by date (most recent first)"
+msgstr "Sortera efter datum (senaste först)"
+
+#: src/menu.c:202
+msgid "Thread, then sort by date (most recent first)"
+msgstr "Tråd, sortera sedan efter datum (senaste först)"
+
+#: src/menu.c:203
+msgid "Sort by date (most recent last)"
+msgstr "Sortera efter datum (senaste sist)"
+
+#: src/menu.c:204
+msgid "Thread, then Sort by date (most recent last)"
+msgstr "Tråd, sortera sedan efter datum (senaste sist)"
+
+#: src/menu.c:205
+msgid "Custom sorting (see manual)"
+msgstr "Specialsortering (se manual)"
+
+#: src/menu.c:213
+msgid "Sorting Method"
+msgstr "Sorteringsmetod"
+
+#: src/menu.c:297
+msgid "(Select One)"
+msgstr "(Välj en)"
+
+#: src/menu.c:357
+msgid "Cancelled."
+msgstr "Avbruten."
+
+#: src/menu.c:435
+msgid "[All]"
+msgstr "[Alla]"
+
+#: src/menu.c:435
+msgid "[Top]"
+msgstr "[Topp]"
+
+#: src/menu.c:439
+msgid "[Bot]"
+msgstr "[Bott]"
+
+#: src/menu.c:479
+msgid "Press any key to close the window."
+msgstr "Tryck någon tangent för att stänga fönstret."
+
+#: src/menu.c:481
+msgid "Use UP/DOWN to move, any other key to close the window."
+msgstr "Använd UPP/NED för att flytta, någon annan tangent för att stänga "
+"fönstret."
+
+#: src/menu.c:486
+msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
+msgstr "Använd UPP/NED för att flytta, ENTER för att välja, Ctrl-G för att "
+"avbryta"
+
+#: src/menu.c:488
+msgid "Use UP/DOWN to move, RETURN to select, q to quit"
+msgstr "Använd UPP/NED för att flytta, ENTER för att välja, q för att avsluta"
+
+#: src/menu.c:1048
+msgid "Creating directory list..."
+msgstr "Skapa kataloglista..."
+
+#: src/mime.c:946
+msgid "Process this MIME article with metamail"
+msgstr "Bearbeta den här MIME-artikeln med metamail"
+
+#: src/mime.c:960
+msgid "Unable to open tmp file for metamail."
+msgstr "Kunde inte öppna tmp-fil för metamail."
+
+#: src/mime.c:988
+msgid "Press return to continue ..."
+msgstr "Tryck enter för att fortsätta ..."
+
+#: src/misc.c:221
+msgid "All"
+msgstr "Alla"
+
+#: src/misc.c:277
+msgid "slrn %v ** Press '?' for help, 'q' to quit. ** Server: %s"
+msgstr "slrn %v ** Tryck \"?\" för hjälp, \"q\" för att avsluta. ** Server: %s"
+
+#: src/misc.c:693
+msgid "This function is not available in batch mode."
+msgstr "Den här funktionen är inte tillgänglig i satsläge."
+
+#: src/misc.c:1090
+msgid "yYnNeE"
+msgstr "jJnNrR"
+
+#: src/misc.c:1094
+msgid "Mail the message? Yes, No, Edit"
+msgstr "E-post:a meddelandet? Ja, Nej, Redigera"
+
+#: src/misc.c:1101
+msgid "Sending ..."
+msgstr "Skickar ..."
+
+#: src/misc.c:1220
+msgid "Sending...done"
+msgstr "Skickar...klar"
+
+#: src/misc.c:1324
+msgid "**UNKNOWN**"
+msgstr "**OKÄND**"
+
+#: src/misc.c:1337
+#, c-format
+msgid "Command %s returned exit status %d.  Press RETURN.\n"
+msgstr "Kommando %s returnerade avslutningsstatus %d. Tryck ENTER.\n"
+
+#: src/misc.c:1364
+#, c-format
+msgid "Command %s failed to run.  Press RETURN.\n"
+msgstr "Kommando %s misslyckades att köra. Tryck ENTER.\n"
+
+#: src/misc.c:1405
+msgid "Invalid Editor definition."
+msgstr "Ogilitg redigerardefinition."
+
+#: src/misc.c:1483
+msgid "No editor command defined."
+msgstr "Inget redigerarkommando definierat."
+
+#: src/misc.c:1505
+msgid "The editor could not be found."
+msgstr "Redigeraren kunde inte hittas."
+
+#: src/misc.c:1510
+msgid "The editor was found, but could not be executed."
+msgstr "Redigeraren hittades, men kunde inte köras."
+
+#: src/misc.c:1514
+msgid "The editor returned a non-zero status."
+msgstr "Redigeraren returnerade en icke-noll status."
+
+#: src/misc.c:1528
+msgid "File was not modified."
+msgstr "Filen blev inte modifierad."
+
+#: src/misc.c:1537
+msgid "Please use double '\\\\' to separate directories in editor_command"
+msgstr "Var snäll och använd använd dubbla \"\\\\\" för att separera "
+"kataloger i editor_command"
+
+#: src/misc.c:1918
+msgid "Possible completions"
+msgstr "Möjliga kompletteringar"
+
+#: src/misc.c:2046
+#, c-format
+msgid "(default: %s) "
+msgstr "(standard: %s) "
+
+#: src/misc.c:2209
+msgid "Abort!"
+msgstr "Avbryt!"
+
+#: src/misc.c:2215
+msgid "Integer expected."
+msgstr "Heltal väntat."
+
+#: src/misc.c:2317
+msgid "Invalid response! Try again."
+msgstr "Ogiltigt svar! Försök igen."
+
+#: src/misc.c:2352
+msgid "yYnN"
+msgstr "jJnN"
+
+#: src/misc.c:2367
+msgid "? [Y]es, No"
+msgstr "? [J]a, Nej"
+
+#: src/misc.c:2372
+msgid "? Yes, [N]o"
+msgstr "? Ja, [N]ej"
+
+#: src/misc.c:2400
+msgid "yYnNcC"
+msgstr "jJnNaA"
+
+#: src/misc.c:2410
+msgid "? [Y]es, No, Cancel"
+msgstr "? [J]a, Nej, Avbryt"
+
+#: src/misc.c:2466 src/spool.c:1439
+msgid "Invalid regular expression or expression too long."
+msgstr "Ogiltigt reguljärt uttryck eller uttryck för långt."
+
+#: src/misc.c:2599
+#, no-c-format
+msgid "On %D, %r <%f> wrote:"
+msgstr "På %D, %r <%f> skrev:"
+
+#: src/misc.c:2601
+#, no-c-format
+msgid "In %n, you wrote:"
+msgstr "I %n, skrev du:"
+
+#: src/misc.c:2603
+#, no-c-format
+msgid "[\"Followup-To:\" header set to %n.]"
+msgstr "[\"Followup-To:\"-huvud satt till %n.]"
+
+#: src/misc.c:2606
+#, no-c-format
+msgid "[This message has also been posted to %n.]"
+msgstr "[Det här meddelandet har också postats till %n.]"
+
+#: src/misc.c:2837
+msgid "Cannot generate \"From:\" line without a valid username."
+msgstr "Kan inte generera \"From:\"-rad utan ett giltigt användarnamn."
+
+#: src/misc.c:2841
+msgid "Cannot generate \"From:\" line without a hostname."
+msgstr "Kan generera \"From:\"-rad utan ett värdnamn."
+
+#: src/misc.c:2846
+msgid "This client cannot handle addresses longer than 255 characters."
+msgstr "Den här klienten kan inte hantera adresser längre än 255 tecken."
+
+#: src/nntp.c:67
+#, c-format
+msgid "Server connection to %s lost.  Cannot recover."
+msgstr "Server-anslutning till %s tappad. Kan inte återskapa."
+
+#: src/nntp.c:121
+#, c-format
+msgid "Server %s does not implement the XOVER command."
+msgstr "Server %s implementerar inte XOVER-kommandot."
+
+#: src/nntp.c:266
+msgid "Error writing to server."
+msgstr "Fel vid skrivning till server."
+
+#: src/nntp.c:272
+#, c-format
+msgid "Article rejected: %s"
+msgstr "Artikel avslagen: %s"
+
+#: src/nntp.c:464
+msgid ""
+"--nntp options:\n"
+"-h nntp-host    Host name to connect to.  This overrides NNTPSERVER "
+"variable.\n"
+"-p NNTP-PORT    Set the NNTP port to NNTP-PORT. The default value is 119.\n"
+"                 Note: This option has no effect on some systems.\n"
+msgstr ""
+"--nntp inställningar:\n"
+"-h nntp-värd    Värdnamn att ansluta till. Det här överskrider NNTPSERVER-"
+"variabeln.\n"
+"-p NNTP-PORT    Sätt NNTP-porten till NNTP-PORT. Standard värdet är 119.\n"
+"                 Notera: Den här inställningen har ingen effekt på vissa "
+"system.\n"
+
+#: src/nntplib.c:196 src/post.c:811
+#, c-format
+msgid "Reason: %s"
+msgstr "Orsak: %s"
+
+#: src/nntplib.c:266
+#, c-format
+msgid "Server %s dropped connection.  Reconnecting..."
+msgstr "Server %s tappade anslutning. Ansluter igen..."
+
+#: src/nntplib.c:415
+msgid "Authorization needed, but could not determine username / password."
+msgstr "Identifiering behövs, men kunde inte hitta användarnamn / lösenord."
+
+#: src/nntplib.c:419
+#, c-format
+msgid "Authenticating %s ..."
+msgstr "Identifierar %s ..."
+
+#: src/nntplib.c:449
+msgid "Authorization failed."
+msgstr "Identifiering misslyckades."
+
+#: src/nntplib.c:460
+#, c-format
+msgid "Connecting to host %s ..."
+msgstr "Ansluter till värd %s ..."
+
+#: src/nntplib.c:496
+#, c-format
+msgid "Connected to host.  %s"
+msgstr "Ansluten till värd. %s"
+
+#: src/nntplib.c:497
+msgid "Posting ok."
+msgstr "Postning ok."
+
+#: src/nntplib.c:497
+msgid "Posting NOT ok."
+msgstr "Postning INTE ok."
+
+#: src/nntplib.c:503
+msgid "Failed to initialize server"
+msgstr "Misslyckades att initialisera server"
+
+#: src/nntplib.c:567
+msgid "You should set the NNTPSERVER environment variable to your server name."
+msgstr "Du borde sätta miljövariabeln NNTPSERVER till ditt servernamn."
+
+#: src/nntplib.c:569
+msgid "Example: $ define/job NNTPSERVER my.news.server"
+msgstr "Exempel: $ define/job NNTPSERVER min.nyhets.server"
+
+#: src/nntplib.c:572
+msgid "Example: set NNTPSERVER=my.news.server"
+msgstr "Exempel: set NNTPSERVER=min.nyhets.server"
+
+#: src/nntplib.c:574
+msgid "Example (csh): setenv NNTPSERVER my.news.server"
+msgstr "Exempel (csh): setenv NNTPSERVER min.nyhets.server"
+
+#: src/nntplib.c:575
+msgid "Example (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER"
+msgstr "Exempel (sh): NNTPSERVER='min.nyhets.server' && export NNTPSERVER"
+
+#: src/nntplib.c:578
+msgid "For now, I'm going to try \"localhost\" as the default..."
+msgstr "För tillfället kommer jag att pröva \"localhost\" som standard..."
+
+#: src/nntplib.c:1140
+msgid "Help text on way"
+msgstr "Hjälptext påväg"
+
+#: src/nntplib.c:1142
+msgid "Authorization capabilities"
+msgstr "Identifieringsmöjligheter"
+
+#: src/nntplib.c:1144
+msgid "Debug output"
+msgstr "Debug-utdata"
+
+#: src/nntplib.c:1146
+msgid "Hello; you can post"
+msgstr "Hej; du kan posta"
+
+#: src/nntplib.c:1148
+msgid "Hello; you can't post"
+msgstr "Hej; du kan inte posta"
+
+#: src/nntplib.c:1150
+msgid "Slave status noted"
+msgstr "Slavstatus noterad"
+
+#: src/nntplib.c:1152
+msgid "Closing connection"
+msgstr "Stänger anslutning"
+
+#: src/nntplib.c:1154
+msgid "Group selected"
+msgstr "Grupp vald"
+
+#: src/nntplib.c:1156
+msgid "Newsgroups follow"
+msgstr "Nyhetsgrupper följer"
+
+#: src/nntplib.c:1158
+msgid "Article (head & body) follows"
+msgstr "Artikel (huvud & kropp) följer"
+
+#: src/nntplib.c:1160
+msgid "Head follows"
+msgstr "Huvud följer"
+
+#: src/nntplib.c:1162
+msgid "Body follows"
+msgstr "Kropp följer"
+
+#: src/nntplib.c:1164
+msgid "No text sent -- stat, next, last"
+msgstr "Ingen text skickad -- stat, nästa, sista"
+
+#: src/nntplib.c:1166
+msgid "New articles by message-id follow"
+msgstr "Nya artiklar efter meddelande-id följer"
+
+#: src/nntplib.c:1168
+msgid "New newsgroups follow"
+msgstr "Nya nyhetsgrupper följer"
+
+#: src/nntplib.c:1170
+msgid "Article transferred successfully"
+msgstr "Artikel överfördes framgångrikt"
+
+#: src/nntplib.c:1172
+msgid "Article posted successfully"
+msgstr "Artikel postades framgångsrikt"
+
+#: src/nntplib.c:1174
+msgid "Authorization system ok"
+msgstr "Identifieringssystem ok"
+
+#: src/nntplib.c:1176
+msgid "Authorization (user/pass) ok"
+msgstr "Identifiering (användare/lösenord) ok"
+
+#: src/nntplib.c:1178
+msgid "Ok, XGTITLE info follows"
+msgstr "Ok, XGTITLE-info följer"
+
+#: src/nntplib.c:1180
+msgid "ok -- overview data follows"
+msgstr "ok -- översiktsdata följer"
+
+#: src/nntplib.c:1182
+msgid "Continue to send article"
+msgstr "Forsätt att sända artikel"
+
+#: src/nntplib.c:1184
+msgid "Continue to post article"
+msgstr "Fortsätt att posta artikel"
+
+#: src/nntplib.c:1186
+msgid "authorization is required"
+msgstr "identifiering krävs"
+
+#: src/nntplib.c:1188
+msgid "<type> authorization data required"
+msgstr "<typ> identifieringsdata krävs"
+
+#: src/nntplib.c:1190
+msgid "Have to hang up for some reason"
+msgstr "Måste lägga på av någon orsak"
+
+#: src/nntplib.c:1192
+msgid "No such newsgroup"
+msgstr "Ingen sådan nyhetsgrupp"
+
+#: src/nntplib.c:1194
+msgid "Not currently in newsgroup"
+msgstr "Inte i nyhetsgrupp för tillfället"
+
+#: src/nntplib.c:1196
+msgid "No current article selected"
+msgstr "Ingen aktuell artikel vald"
+
+#: src/nntplib.c:1198
+msgid "No next article in this group"
+msgstr "Ingen efterföljande artikel i den här gruppen"
+
+#: src/nntplib.c:1200
+msgid "No previous article in this group"
+msgstr "Ingen tidigare artikel i den här gruppen"
+
+#: src/nntplib.c:1202
+msgid "No such article in this group"
+msgstr "Ingen sådan artikel i den här gruppen"
+
+#: src/nntplib.c:1204
+msgid "No such article at all"
+msgstr "Ingen sådan artikel alls"
+
+#: src/nntplib.c:1206
+msgid "Already got that article, don't send"
+msgstr "Har redan den där artikeln, skicka inte"
+
+#: src/nntplib.c:1208
+msgid "Transfer failed"
+msgstr "Överföring misslyckades"
+
+#: src/nntplib.c:1210
+msgid "Article rejected, don't resend"
+msgstr "Artikel avslagen, skicka inte"
+
+#: src/nntplib.c:1212
+msgid "Posting not allowed"
+msgstr "Postning inte tillåten"
+
+#: src/nntplib.c:1214
+msgid "Posting failed"
+msgstr "Postning misslyckades"
+
+#: src/nntplib.c:1216
+msgid "authorization required for command"
+msgstr "identifiering krävs för kommando"
+
+#: src/nntplib.c:1218
+msgid "Authorization system invalid"
+msgstr "Identifieringssystem ogiltigt"
+
+#: src/nntplib.c:1220
+msgid "Authorization data rejected"
+msgstr "Identifieringsdata avslagen"
+
+#: src/nntplib.c:1222
+msgid "Command not recognized"
+msgstr "Kommando kändes inte igen"
+
+#: src/nntplib.c:1224
+msgid "Command syntax error"
+msgstr "Kommando syntaxfel"
+
+#: src/nntplib.c:1226
+msgid "Access to server denied"
+msgstr "Tillgång till server nekad"
+
+#: src/nntplib.c:1228
+msgid "Program fault, command not performed"
+msgstr "Programfel, kommando inte utfört"
+
+#: src/nntplib.c:1230
+msgid "Authorization Failed"
+msgstr "Identifiering misslyckades"
+
+#: src/nntplib.c:1233
+msgid "Unknown NNTP code"
+msgstr "Okänd NNTP-kod"
+
+#: src/post.c:630
+msgid "The first line must begin with a header."
+msgstr "Den första raden måste börja med ett huvud."
+
+#: src/post.c:640
+msgid "Expecting a header.  This is not a header line."
+msgstr "Väntar ett huvud. Det här är inte en huvudrad."
+
+#: src/post.c:648
+msgid "The subject header is not allowed be to empty."
+msgstr "Ämneshuvudet är inte tillåtet att vara tomt."
+
+#: src/post.c:660
+msgid "The Newsgroups header is not allowed be to empty."
+msgstr "Nyhetsgruppshuvudet är inte tillåtet att vara tomt."
+
+#: src/post.c:688
+msgid "A space must follow the ':' in a header"
+msgstr "Ett mellanslag måste följa \":\" i ett huvud"
+
+#: src/post.c:695
+msgid "This news reader will not accept user generated From lines."
+msgstr "Den här nyhetsläsaren kommer inte att acceptera användargenererade "
+"From-rader."
+
+#: src/post.c:702
+msgid "This news reader will not accept user generated Message-IDs."
+msgstr "Den här nyhetsläsaren kommer inte att acceptera användargenererade "
+"meddelande-id:n."
+
+#: src/post.c:712
+msgid "Subject header is required."
+msgstr "Ämneshuvud krävs."
+
+#: src/post.c:717
+msgid "Newsgroups header is required."
+msgstr "Nyhetsgruppshuvud krävs."
+
+#: src/post.c:724
+msgid "Please re-consider if posting to a large number of groups is necessary."
+msgstr "Var snäll och fundera igen på om det är nödvändigt att posta till ett "
+"stort antal nyhetsgrupper."
+
+#: src/post.c:727
+msgid ""
+"In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
+msgstr ""
+"I de flesta fall är det en dålig idé att sätta \"Followup-To:\" flera grupper."
+
+#: src/post.c:730
+msgid "Setting a \"Followup-To:\" is recommended when crossposting."
+msgstr "Sätta en \"Followup-To:\" är rekommenderat vid krosspostning."
+
+#: src/post.c:744
+msgid "Your message does not appear to have any unquoted text."
+msgstr "Ditt meddelande verkar inte ha någon ociterad text."
+
+#: src/post.c:803
+msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
+msgstr "Var snäll och håll din signatur kort. 4 rader är en vanligt accepterad "
+"gräns."
+
+#: src/post.c:810
+msgid "Message is not acceptable."
+msgstr "Meddelande är inte acceptabelt."
+
+#: src/post.c:828
+msgid "Your message is not acceptable for the following reason:"
+msgstr "Ditt meddelande är inte acceptabelt av följande orsak:"
+
+#: src/post.c:835
+#, c-format
+msgid "This message was generated while looking at line %d:"
+msgstr "Den här meddelandet genererades vid undersökning av rad %d:"
+
+#: src/post.c:841
+msgid ""
+"Perhaps this error was generated because you did not separate the header"
+msgstr ""
+"Kanske genererades det här felet eftersom du inte separerade huvudet"
+
+#: src/post.c:843
+msgid "section from the body by a BLANK line."
+msgstr "Separera från kroppen med en BLANK rad."
+
+#: src/post.c:850
+msgid "Your message breaks the following netiquette guidelines:"
+msgstr "Ditt meddelande bryter mot följande netiquette-instruktioner:"
+
+#: src/post.c:866
+msgid "Lines with more than 80 characters generally need to be wrapped."
+msgstr "Rader med fler än 80 tecken måste generellt radbrytas."
+
+#: src/post.c:870
+#, c-format
+msgid "This affects at least line %d:"
+msgstr "Det här påverkar åtminstone rad %d:"
+
+#: src/post.c:872
+#, c-format
+msgid "This affects %d lines between line %d and %d. First one:"
+msgstr "Det här påverkar %d rader mellan rad %d och %d. Den första:"
+
+#: src/post.c:898 src/post.c:1290 src/post.c:1313
+#, c-format
+msgid "File not found: %s--- message not posted."
+msgstr "Fil hittades inte: %s--- meddelande postades inte."
+
+#: src/post.c:905
+#, c-format
+msgid "***Warning: error saving to %s"
+msgstr "***Varning: fel vid sparande till %s"
+
+#: src/post.c:957
+#, c-format
+msgid "***Warning: error writing to %s"
+msgstr "***Varning: fel vid skrivning till %s"
+
+#: src/post.c:962
+#, c-format
+msgid "%s Failed post saved in %s"
+msgstr "%s Misslyckad postning sparad i %s"
+
+#: src/post.c:1103 src/post.c:1136
+msgid "yYnNeEsSdDfF"
+msgstr "jJnNrRsStTfF"
+
+#: src/post.c:1106
+msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
+msgstr "Posta meddelandet? Ja, Nej, Redigera, Skjut upp, Ta bort, "
+"Filtrera"
+
+#: src/post.c:1110
+msgid "yYnNeEsSfF"
+msgstr "jJnNrRsSfF"
+
+#: src/post.c:1113
+msgid "Post the message? Yes, No, Edit, poStpone, Filter"
+msgstr "Posta meddelandet? Ja, Nej, Redigera, Skjut upp, Filtrera"
+
+#: src/post.c:1121
+msgid "yYnNeEsSdD"
+msgstr "jJnNrRsStT"
+
+#: src/post.c:1124
+msgid "Post the message? Yes, No, Edit, poStpone, Delete"
+msgstr "Posta meddelandet? Ja, Nej, Redigera, Skjut upp, Ta bort"
+
+#: src/post.c:1128
+msgid "yYnNeEsS"
+msgstr "jJnNrRsS"
+
+#: src/post.c:1131
+msgid "Post the message? Yes, No, Edit, poStpone"
+msgstr "Post the message? Ja, Nej, Redigera, Skjut upp"
+
+#: src/post.c:1154
+msgid "Sure you want to delete it"
+msgstr "Säker på att du vill ta bort den"
+
+#: src/post.c:1178
+msgid "yYeEnNcC"
+msgstr "jJrRnNaA"
+
+#: src/post.c:1181
+msgid "re-Edit,  or Cancel"
+msgstr "om-Redigera, eller Avbryt"
+
+#: src/post.c:1185 src/post.c:1191
+msgid "yYeEnNcCfF"
+msgstr "jJrRnNaAtT"
+
+#: src/post.c:1188
+msgid "re-Edit, Cancel, or Force the posting (not recommended)"
+msgstr "om-Redigera, Avbryt, eller Tvinga postningen (inte rekommenderat)"
+
+#: src/post.c:1277 src/post.c:1316
+msgid "Posting ..."
+msgstr "Postar ..."
+
+#: src/post.c:1307
+msgid "post_file_hook returned error."
+msgstr "post_file_hook returnerade fel."
+
+#: src/post.c:1324
+#, c-format
+msgid "Couldn't open %s--- message not posted."
+msgstr "Kunde inte öppna %s--- meddelande postades inte."
+
+#: src/post.c:1339
+msgid "Could not reach server."
+msgstr "Kunde inte nå server."
+
+#: src/post.c:1346
+msgid "Message-ID generating error."
+msgstr "Meddelande-id genererar fel."
+
+#: src/post.c:1357
+msgid "\"From\" generating error."
+msgstr "\"From\" genererar fel."
+
+#: src/post.c:1498
+msgid "Posting...done."
+msgstr "Postar...klart."
+
+#: src/post.c:1519
+msgid "rReEcC"
+msgstr "pPrRaA"
+
+#: src/post.c:1522
+msgid "Select one: Repost, Edit, Cancel"
+msgstr "Välj en: Posta igen, Redigera, Avbryt"
+
+#: src/post.c:1633
+msgid "Aborted on user request."
+msgstr "Avbröt på användarens begäran."
+
+#: src/post.c:1639
+msgid "postpone_directory points to a regular file (not a directory)"
+msgstr "postpone_directory pekar till en vanlig fil (inte en katalog)"
+
+#: src/post.c:1651
+msgid "Not implemented yet. Sorry"
+msgstr "Inte implementerat än. Tyvärr"
+
+#: src/post.c:1667
+msgid "Save to: "
+msgstr "Spara till: "
+
+#: src/post.c:1673
+msgid "File exists, overwrite"
+msgstr "Filen existerar, skriv över"
+
+#: src/post.c:1685
+msgid "You must specify a name"
+msgstr "Du måste ange ett namn"
+
+#: src/post.c:1687
+msgid "Illegal filename. Try again"
+msgstr "Ogiltigt filnamn. Försök igen"
+
+#: src/post.c:1712
+#, c-format
+msgid "%s: not a regular file"
+msgstr "%s: inte en vanlig fil"
+
+#: src/print.c:152
+#, c-format
+msgid "OpenPrinterA failed: %d"
+msgstr "OpnePrinterA misslyckades: %d"
+
+#: src/print.c:160
+#, c-format
+msgid "StartDocPrinterA failed: %d"
+msgstr "StartDocPrinterA misslyckades: %d"
+
+#: src/print.c:180
+#, c-format
+msgid "Write to printer failed: %d"
+msgstr "Skrivning till skrivare misslyckades: %d"
+
+#: src/print.c:227
+msgid "Failed to open tmp file"
+msgstr "Misslyckades att öppna tmp-fil"
+
+#: src/print.c:243
+msgid "Write to printer failed"
+msgstr "Skrivning till skrivare misslyckades"
+
+#: src/print.c:273
+#, c-format
+msgid "Printer process returned error code %d"
+msgstr "Utskriftsprocess returnerade fel-kod %d"
+
+#: src/print.c:299
+#, c-format
+msgid "Failed to open process %s"
+msgstr "Misslyckades att öppna process %s"
+
+#: src/print.c:315
+msgid "Error writing to print process"
+msgstr "Fel vid skrivning till utskiftprocess"
+
+#: src/print.c:333
+msgid "Printer not supported"
+msgstr "Skrivare stöds inte"
+
+#: src/print.c:405
+#, c-format
+msgid "Unable to open %s for printing"
+msgstr "Kunde inte öppna %s för utskrift"
+
+#: src/score.c:603
+msgid "Reloading score file ..."
+msgstr "Laddar om poängfil ..."
+
+#: src/score.c:605 src/slrn.c:996
+#, c-format
+msgid "Error processing score file %s."
+msgstr "Fel vid bearbetning av poängfil %s"
+
+#: src/score.c:854
+#, c-format
+msgid ""
+"Error processing %s\n"
+"Line %u:\n"
+"%s\n"
+"%s\n"
+msgstr ""
+"Fel vid bearbetning av %s\n"
+"Rad %u:\n"
+"%s\n"
+"%s\n"
+
+#: src/score.c:1035
+msgid "Error handling INCLUDE line"
+msgstr "Fel vid hantering av INCLUDE-rad"
+
+#: src/score.c:1063
+msgid "Syntax Error."
+msgstr "Syntaxfel."
+
+#: src/score.c:1120
+msgid "Expecting 'Expires: MM/DD/YYYY' or 'Expires: DD-MM-YYYY'"
+msgstr "Väntar \"Expires: MM/DD/YYYY\" eller \"Expires: DD-MM-YYYY\""
+
+#: src/score.c:1127
+#, c-format
+msgid "%s has expired score on line %d"
+msgstr "%s har förfallen poäng på rad %d"
+
+#: src/score.c:1143
+msgid "Bad group regular expression."
+msgstr "Dåligt reguljärt uttryck för grupp."
+
+#: src/score.c:1163
+msgid "Expecting Score keyword."
+msgstr "Väntar poängnyckelord."
+
+#: src/score.c:1222 src/score.c:1233
+msgid "Missing COLON."
+msgstr "Saknar COLON."
+
+#: src/score.c:1242
+msgid "No regular expression given."
+msgstr "Inget reguljärt uttryck givet."
+
+#: src/score.c:1277
+msgid "Missing '}' for  subscore"
+msgstr "Saknar \"}\" för underpoäng"
+
+#: src/score.c:1293
+#, c-format
+msgid "*** Warning * Read file %s before - skipping ..."
+msgstr "*** Varning * Läs fil %s före - skippar ..."
+
+#: src/score.c:1307
+#, c-format
+msgid "Unable to open score file %s"
+msgstr "Kunde inte öppna poängfil %s"
+
+#: src/server.c:112
+msgid "Couldn't open pipe to inews! -- Article not posted."
+msgstr "Kunde inte öppna rör till inews! -- Artikel inte postad."
+
+#: src/server.c:130
+msgid "pclose() failed -- check if article was posted"
+msgstr "pclose() misslyckades -- kolla om artikel blev postad"
+
+#: src/server.c:201
+#, c-format
+msgid "Unable to locate inews program \"%s\""
+msgstr "Kunde inte hitta inews program \"%s\""
+
+#: src/server.c:250 src/slrn.c:1111
+#, c-format
+msgid "Unable to add preprocessor name %s."
+msgstr "Kunde inte lägga till preprocessornamn %s."
+
+#: src/server.c:273
+msgid "inews cannot be used with an slrnpull spool."
+msgstr "inews kan inte användas med en slrnpull-rulle."
+
+#: src/server.c:297
+#, c-format
+msgid "%s is not a supported posting agent."
+msgstr "%s är inte en postningsagent med stöd."
+
+#: src/server.c:337
+#, c-format
+msgid "%s is not a supported server object."
+msgstr "%s är inte ett serverobjekt med stöd."
+
+#: src/server.c:533
+#, c-format
+msgid "Unable to open file in %s."
+msgstr "Kunde inte öppna fil i %s."
+
+#: src/server.c:603
+#, c-format
+msgid "Unable to rename file. errno = %d."
+msgstr "Kunde inte döpa om fil. errno = %d"
+
+#: src/server.c:618
+msgid "Write error.  File system full?"
+msgstr "Skrivfel. Filsystem fullt?"
+
+#: src/server.c:633
+msgid "Write failed.  File system full?"
+msgstr "Skrivning misslyckades. Filsystem fullt?"
+
+#: src/server.c:679
+#, c-format
+msgid "Posting directory %s does not exist."
+msgstr "Postningskatalog %s existerar inte."
+
+#: src/slrn.c:187
+#, c-format
+msgid ""
+"slrn: pid %d is locking the newsrc file. If you're not running another\n"
+"      copy of slrn, delete the file %s"
+msgstr ""
+"slrn: pid %d låser newsrc-filen. Om du inte kör en annan kopia av slrn,\n"
+"      ta bort filen %s"
+
+#: src/slrn.c:192
+#, c-format
+msgid "slrn: pid %d is locking the newsrc file."
+msgstr "slrn: pid %d låser newsrc-filen."
+
+#: src/slrn.c:263 src/slrn.c:270
+#, c-format
+msgid "Unable to create lock file %s."
+msgstr "Kunde inte skapa lås-fil %s."
+
+#: src/slrn.c:377
+msgid "pop_suspension: underflow!"
+msgstr "pop_suspension: flödade under!"
+
+#: src/slrn.c:442
+msgid "Not implemented."
+msgstr "Inte implementerat."
+
+#: src/slrn.c:455 src/slrn.c:474
+msgid "Suspension not allowed by shell."
+msgstr "Suspendering inte tillåtet av skal."
+
+#: src/slrn.c:635
+msgid "Unable to initialize the tty"
+msgstr "Kunde inte initialisera tty"
+
+#: src/slrn.c:870
+#, c-format
+msgid "slrn: quiting on signal %d.\n"
+msgstr "slrn: avslutar på signal %d.\n"
+
+#: src/slrn.c:887
+msgid "slrn fatal error:"
+msgstr "slrn allvarligt fel:"
+
+#: src/slrn.c:915
+#, c-format
+msgid ""
+"Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
+"-a              Use active file for getting new news.\n"
+"-f newsrc-file  Name of the newsrc file to use.\n"
+"-C[-]           [Do not] use colors.\n"
+"-Dname          Add 'name' to list of predefined preprocessing tokens.\n"
+"-d              Get new text descriptions of each group from server.\n"
+"                 Note: This may take a LONG time to retrieve this "
+"information.\n"
+"                 The resulting file can be several hundred Kilobytes!\n"
+"-i init-file    Name of initialization file to use (default: %s)\n"
+"-k              Do not process score file.\n"
+"-k0             Process score file but inhibit expensive scores.\n"
+"-m              Force XTerm mouse reporting\n"
+"-n              Do not check for new groups.  This usually results in\n"
+"                 a faster startup.\n"
+"-w              Wait for key before switching to full screen mode\n"
+"-w0             Wait for key (only when warnings / errors occur)\n"
+"--create        Create a newsrc file by getting list of groups from server.\n"
+"--debug FILE    Write debugging information to FILE\n"
+"--help          Print this usage.\n"
+"--kill-log FILE Keep a log of all killed articles in FILE\n"
+"--version       Show version and supported features\n"
+"\n"
+"NNTP mode has additional options; use \"slrn --nntp --help\" to display "
+"them.\n"
+msgstr ""
+"Användning: slrn [--inews] [--nntp ...] [--spool] FLAGGOR\n"
+"-a              Använd aktiv fil för att hämta nya nyheter.\n"
+"-f newsrc-file  Namn på newsrc-fil att använda.\n"
+"-C[-]           Använd [inte] färger.\n"
+"-Dname          Lägg till \"namn\" till listan av fördefinierade "
+"preprocessingelement.\n"
+"-d              Hämta ny textbeskrivning av varje grupp från server.\n"
+"                 Notera att att det kan ta LÅNG tid att hämta den här "
+"informationen.\n"
+"                 Den resulterande filen kan vara flera hundra kilobytes!\n"
+"-i init-fil     Namn på initialiseringsfil att använda (standard: %s)\n"
+"-k              Bearbeta inte poängfil.\n"
+"-k0             Bearbeta poängfil men undvik kostsamma poänger.\n"
+"-m              Tvinga XTerm-musrapportering\n"
+"-n              Kolla inte efter nya grupper. Detta resulterar ofta i en\n"
+"                 snabbare uppstart.\n"
+"-w              Vänta på tangent innan byte till fullskärmsläge.\n"
+"-w0             Vänta på tangent (bara när varningar / fel uppstår).\n"
+"--create        Skapa en newsrc-fil genom att hämta lista med grupper från "
+"server.\n"
+"--debug FIL     Skriv debuggningsinformation till FIL.\n"
+"--help          Skriv ut den här användningen.\n"
+"--kill-log FIL  För en logg över alla dödade artiklar i FIL.\n"
+"--version       Visa version och funktioner som stöds.\n"
+"\n"
+"NNTP-läge har ytterligare flaggor; använd \"slrn --nntp --help\" för att visa "
+"dem.\n"
+
+#: src/slrn.c:966
+#, c-format
+msgid "%s is not a supported option."
+msgstr "%s är inte en flagga med stöd."
+
+#: src/slrn.c:968
+#, c-format
+msgid "%s is not supported."
+msgstr "%s har inte stöd."
+
+#: src/slrn.c:989
+#, c-format
+msgid "*** Warning: Score file %s does not exist"
+msgstr "*** Varning: Poängfil %s existerar inte"
+
+#: src/slrn.c:1088
+#, c-format
+msgid "Unable to open %s for debugging."
+msgstr "Kunde inte öppna %s för debuggning."
+
+#: src/slrn.c:1136
+msgid "The -d and --create flags must not be specified together."
+msgstr "-d och --create flaggorna får inte användas tillsammans."
+
+#: src/slrn.c:1149
+msgid "Error initializing SLtcp interface"
+msgstr "Fel vid initialisering av SLtcp-gränssnitt"
+
+#: src/slrn.c:1154
+msgid "Error initializing S-Lang interpreter.\n"
+msgstr "Fel vid initialisering av S-Lang tolkare.\n"
+
+#: src/slrn.c:1169
+msgid "Error configuring server objects."
+msgstr "Fel vid konfiguration av serverobjekt."
+
+#: src/slrn.c:1193
+#, c-format
+msgid "Could not read specified config file %s\n"
+msgstr "Kunde inte läsa angiven konfiguration fil %s\n"
+
+#: src/slrn.c:1199
+msgid ""
+"\n"
+"! Your configuration file contains obsolete commands or function names that\n"
+"! will not be supported by future versions of this program.\n"
+"! If you have Perl installed, you can use the script slrnrc-conv to change\n"
+"! your configuration accordingly.  It can be found in the source "
+"distribution\n"
+"! or retrieved from <URL:http://slrn.sourceforge.net/data/>.\n"
+msgstr ""
+"\n"
+"! Din konfigurationsfil innehåller föråldrade kommandon eller funktionsnamn\n"
+"! som inte kommer att stödas i framtida versioner av det här programmet.\n"
+"! Om du har Perl installerat, kan du använda skriptet slrnrc-conv för att\n"
+"! ändra din konfiguration i enlighet med detta. Det kan hittas i käll-\n"
+"distributionen\n"
+"! eller hämtas från <URL:http://slrn.sourceforge.net/data/>.\n"
+
+#: src/slrn.c:1215
+msgid "Failed to select character set."
+msgstr "Misslyckades med att välja tecken teckenkoder."
+
+#: src/slrn.c:1252
+msgid "Unable to select server/post object."
+msgstr "Kunde inte välja server-/postobjekt."
+
+#: src/slrn.c:1268
+#, c-format
+msgid ""
+"Unable to find a valid hostname for constructing your e-mail address.\n"
+"You will have to specify a hostname in your %s file.\n"
+msgstr ""
+"Kunde inte hitta ett giltigt värdnamn för att konstruera din e-postadress.\n"
+"Du kommer att behöva ange ett värdnamn i din %s fil.\n"
+
+#: src/slrn.c:1277
+msgid ""
+"Unable to find your user name.  This means that a valid 'From' header line\n"
+"cannot be constructed.  Try setting the USER environment variable.\n"
+msgstr ""
+"Kunde inte hitta ditt användarnamn. Det betyder att en giltig \"From\"-huvud\n"
+"rad inte kan konstrueras. Pröva sätta miljövariabeln USER.\n"
+
+#: src/slrn.c:1285
+msgid "***Warning: Unable to find a unique fully-qualified host name."
+msgstr "***Varning: Kunde inte hitta ett unikt fullt kvalificerat värdnamn."
+
+#: src/slrn.c:1286
+msgid "            slrn will not generate any Message-IDs."
+msgstr "    slrn kommer inte att generera några meddelande-id:n"
+
+#: src/slrn.c:1287
+msgid ""
+"            Please note that the \"hostname\" setting does not affect this;"
+msgstr ""
+"    Var snäll och notera att \"hostname\"-inställningen inte påverkar detta;"
+
+#: src/slrn.c:1288
+msgid "            see the \"slrn reference manual\" for details."
+msgstr "    se \"slrn's referensmanual\" för detaljer."
+
+#: src/slrn.c:1319
+#, c-format
+msgid "Using newsrc file %s for server %s."
+msgstr "Använder newsrc-fil %s för server %s."
+
+#: src/slrn.c:1331 src/slrnpull.c:2309
+msgid "Unable to initialize server."
+msgstr "Kunde inte initialisera server."
+
+#: src/slrn.c:1346
+#, c-format
+msgid "Unable to open %s.  I will try .newsrc."
+msgstr "Kunde inte öppna %s. Jag kommer att försöka med .newsrc"
+
+#: src/slrn.c:1351
+#, c-format
+msgid ""
+"\n"
+"Unable to open %s.\n"
+"If you want to create %s, add command line options:\n"
+"   -f %s --create\n"
+msgstr ""
+"\n"
+"Kunde inte öppna %s.\n"
+"Om du vill skapa %s, lägg till kommandoradsflaggor:\n"
+"   -f %s --create\n"
+
+#: src/slrn.c:1368 src/slrnpull.c:2060 src/slrnpull.c:2072
+#, c-format
+msgid "Unable to open %s for logging."
+msgstr "Kunde inte öppna %s för loggning."
+
+#: src/slrn.c:1384
+msgid "Initializing GroupLens"
+msgstr "Initialiserar GroupLens"
+
+#: src/slrn.c:1387
+msgid "GroupLens disabled.\n"
+msgstr "GroupLens deaktiverat.\n"
+
+#: src/slrn.c:1396
+msgid "Failed to initialize server."
+msgstr "Misslyckades att initialisera server."
+
+#: src/slrn.c:1402
+msgid "OVERVIEW.FMT not RFC 2980 compliant -- XOVER support disabled."
+msgstr "OVERVIEW.FMT inte RFC 2980 kompatibel -- XOVER-stöd deaktiverat."
+
+#: src/slrn.c:1415
+msgid "* Press Ctrl-C to quit, any other key to continue.\n"
+msgstr "* Tryck Ctrl-C för att avsluta, någon annan tangent för att "
+"fortsätta.\n"
+
+#: src/slrn.c:1418
+msgid "Exit on user request."
+msgstr "Avsluta på användarbegäran."
+
+#: src/slrn.c:1445
+msgid "Internal Error: Mode_Stack overflow"
+msgstr "Internt fel: Mode_Stack flödade över"
+
+#: src/slrn.c:1460
+msgid "Internal Error: Mode_Stack underflow"
+msgstr "Internt fel: Mode_Stack flödade under"
+
+#: src/slrn.c:1561
+#, c-format
+msgid "call: %s not in current keymap."
+msgstr "anrop: %s inte i aktuell tangentbordsuppsättning."
+
+#: src/slrndir.c:79
+msgid "slrn_open_dir has not been ported to VMS"
+msgstr "slrn_open_dir har inte blivit portad till VMS"
+
+#: src/slrndir.c:167 src/slrndir.c:178
+msgid "Unable to getcwd"
+msgstr "Kunde inte getcwd"
+
+#: src/slrndir.c:231
+#, c-format
+msgid "chdir %s failed.  Does the directory exist?"
+msgstr "chdir %s misslyckades. Existerar katalogen?"
+
+#: src/slrnpull.c:319
+#, c-format
+msgid "Created dir %s."
+msgstr "Skapade katalog %s."
+
+#: src/slrnpull.c:327
+#, c-format
+msgid "Unable to create directory %s. (errno = %d)"
+msgstr "Kunde inte skapa katalog %s. (errno = %d)"
+
+#: src/slrnpull.c:362 src/slrnpull.c:435
+#, c-format
+msgid "Error reading %s."
+msgstr "Fel vid läsning av %s."
+
+#: src/slrnpull.c:370 src/slrnpull.c:443
+#, c-format
+msgid "Error parsing %s."
+msgstr "Fel vid tolkning av %s."
+
+#: src/slrnpull.c:391 src/slrnpull.c:468 src/slrnpull.c:2449
+#, c-format
+msgid "Write to %s failed."
+msgstr "Skrivning till %s misslyckades."
+
+#: src/slrnpull.c:396 src/slrnpull.c:474
+#, c-format
+msgid "Error closing %s."
+msgstr "Fel vid stängning av %s."
+
+#: src/slrnpull.c:596
+#, c-format
+msgid "Unable to open active groups file %s"
+msgstr "Kunde inte öppna aktivgrupp-fil %s"
+
+#: src/slrnpull.c:634
+#, c-format
+msgid "%s: line %u: group name too long."
+msgstr "%s: rad %u: gruppnamn för långt."
+
+#: src/slrnpull.c:651
+#, c-format
+msgid "%s: line %u: Group name contains whitespace."
+msgstr "%s: rad %u: Gruppnamn innehåller blanksteg."
+
+#: src/slrnpull.c:671
+#, c-format
+msgid "%s: line %u: expecting positive integer in second field."
+msgstr "%s: rad %u: väntar positivt heltal i andra fältet."
+
+#: src/slrnpull.c:686
+#, c-format
+msgid "%s: line %u: expecting positive integer in third field."
+msgstr "%s: rad %u: väntar positivt heltal i tredje fältet."
+
+#: src/slrnpull.c:701
+#, c-format
+msgid "%s: line %u: expecting 0 or 1 in fourth field."
+msgstr "%s: rad %u: väntar 0 eller 1 i fjärde fältet."
+
+#: src/slrnpull.c:719
+#, c-format
+msgid "%s: line %u: group duplicated."
+msgstr "%s: rad %u: grupp dubblerad."
+
+#: src/slrnpull.c:727
+#, c-format
+msgid "%s: line %u: failed to add %s."
+msgstr "%s: rad %u: misslyckades att lägga till %s."
+
+#: src/slrnpull.c:762 src/slrnpull.c:804 src/util.c:378 src/util.c:531
+#: src/util.c:550
+msgid "Out of memory."
+msgstr "Slut på minne."
+
+#: src/slrnpull.c:833
+msgid "Read failed."
+msgstr "Läsning misslyckades."
+
+#: src/slrnpull.c:834
+#, c-format
+msgid "listgroup %s failed: %s"
+msgstr "listgroup %s misslyckades: %s"
+
+#: src/slrnpull.c:915
+#, c-format
+msgid "The server may contain as many as %d articles in this group"
+msgstr "Servern kan hålla så mycket som %d artiklar i den här gruppen"
+
+#: src/slrnpull.c:917
+#, c-format
+msgid "Only examining last %u articles since this is a new group"
+msgstr "Undersöker bara de sista %u artiklarna eftersom det här är en ny grupp"
+
+#: src/slrnpull.c:923
+msgid ""
+"Server failed to return proper code for XHDR.  The connection may be lost"
+msgstr ""
+"Servern misslyckades att returnera en ordentlig kod för XHDR. Anslutningen "
+"kan tappas"
+
+#: src/slrnpull.c:934
+#, c-format
+msgid "Server failed XHDR command: %s"
+msgstr "Servern misslyckade XHDR-kommando: %s"
+
+#: src/slrnpull.c:992
+#, c-format
+msgid "%s: Retrieving %s %d-%d."
+msgstr "%s: Tar emot %s %d-%d."
+
+#: src/slrnpull.c:993
+msgid "headers"
+msgstr "huvuden"
+
+#: src/slrnpull.c:993
+msgid "articles"
+msgstr "artiklar"
+
+#: src/slrnpull.c:1017
+#, c-format
+msgid "%s: No articles in specified range."
+msgstr "%s: Inga artiklar inom angivet område."
+
+#: src/slrnpull.c:1065
+#, c-format
+msgid "%u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu      "
+msgstr "%u/%u (%u dödade), tid: %02u:%02u:%02u, BPS: %lu      "
+
+#: src/slrnpull.c:1075
+#, c-format
+msgid "%s: %u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu"
+msgstr "%s: %u/%u (%u dödade), tid: %02u:%02u:%02u, BPS: %lu"
+
+#: src/slrnpull.c:1100
+#, c-format
+msgid "Error writing to overview database: %s:%d."
+msgstr "Fel vid skrivning till översiktsdatabas: %s:%d."
+
+#: src/slrnpull.c:1393
+msgid "Internal error: Buffer in get_heads not large enough!"
+msgstr "Internt fel: Buffert i get_heads inte tillräckligt stor!"
+
+#: src/slrnpull.c:1430
+#, c-format
+msgid "Unable to open overview file %s.\n"
+msgstr "Kunde inte öppna öbersikts fil %s.\n"
+
+#: src/slrnpull.c:1466
+#, c-format
+msgid "%s: Retrieving requested article bodies."
+msgstr "%s: Tar emot efterfrågade artikelkroppar."
+
+#: src/slrnpull.c:1574
+#, c-format
+msgid "Error closing overview file for %s."
+msgstr "Fel vid stängning av översiktsfil för %s."
+
+#: src/slrnpull.c:1644
+#, c-format
+msgid "%s: no new articles available."
+msgstr "%s: inga nya artiklar tillgängliga."
+
+#: src/slrnpull.c:1651
+#, c-format
+msgid "%u duplicates removed leaving %u/%u."
+msgstr "%u dubbletter borttagna lämnade %u/%u."
+
+#: src/slrnpull.c:1663
+#, c-format
+msgid "%s: No new articles available."
+msgstr "%s: Inga nya artiklar tillgängliga."
+
+#: src/slrnpull.c:1668
+#, c-format
+msgid "%s: %u articles available."
+msgstr "%s: %u artiklar tillgänliga."
+
+#: src/slrnpull.c:1675
+#, c-format
+msgid "%s: Only retrieving last %u articles."
+msgstr "%s: Tar bara emot de sista %u artiklarna."
+
+#: src/slrnpull.c:1724
+#, c-format
+msgid "Fetching articles for %s."
+msgstr "Hämtar artiklar för %s."
+
+#: src/slrnpull.c:1729
+#, c-format
+msgid "Error selecting group %s.  Code = %d: %s"
+msgstr "Fel vid val av grupp %s. Kod = %d: %s"
+
+#: src/slrnpull.c:1763
+#, c-format
+msgid "Attempting to post %s..."
+msgstr "Försöker att posta %s..."
+
+#: src/slrnpull.c:1768
+#, c-format
+msgid "Unable to open file %s for posting."
+msgstr "Kunde inte öppna fil %s för postning."
+
+#: src/slrnpull.c:1775
+#, c-format
+msgid "Server failed post cmd.  Code = %d: %s"
+msgstr "Servern misslyckades med post kommandot. Kod = %d: %s"
+
+#: src/slrnpull.c:1797 src/slrnpull.c:1808
+#, c-format
+msgid "Write to server failed while posting %s."
+msgstr "Skrivning till server misslyckades vid postning av %s."
+
+#: src/slrnpull.c:1817
+#, c-format
+msgid "Article %s rejected. status = %d: %s."
+msgstr "Artikel %s avslogs. status = %d: %s."
+
+#: src/slrnpull.c:1824
+#, c-format
+msgid "Saving article in %s..."
+msgstr "Sparar artikel i %s..."
+
+#: src/slrnpull.c:1826 src/slrnpull.c:1942
+#, c-format
+msgid "Failed to rename %s to %s."
+msgstr "Misslyckades att döpa om %s till %s."
+
+#: src/slrnpull.c:1832
+#, c-format
+msgid "Unable to delete %s after posting."
+msgstr "Kunde inte ta bort %s efter postning."
+
+#: src/slrnpull.c:1841
+#, c-format
+msgid "%s directory does not exist.  Creating it..."
+msgstr "%s katalogen existerar inte. Skapar den..."
+
+#: src/slrnpull.c:1849
+#, c-format
+msgid "chmod 0%o failed on %s."
+msgstr "chmod 0%o misslyckades på %s."
+
+#: src/slrnpull.c:1873
+msgid "Server does not permit posting at this time."
+msgstr "Servern tillåter inte postning vid den här tidpunkten."
+
+#: src/slrnpull.c:1894
+#, c-format
+msgid "Posting of %s failed."
+msgstr "Postning av %s misslyckades."
+
+#: src/slrnpull.c:1897
+#, c-format
+msgid "%s posted."
+msgstr "%s postades."
+
+#: src/slrnpull.c:1919
+#, c-format
+msgid "Unable to create tmp active file (%s)."
+msgstr "Kunde inte skapa aktiv tmp-fil (%s)."
+
+#: src/slrnpull.c:1949
+#, c-format
+msgid "Write failed to tmp active file (%s)."
+msgstr "Skrivning misslyckades till aktiv tmp-fil (%s)."
+
+#: src/slrnpull.c:1961
+#, c-format
+msgid "Connection to %s lost. Performing shutdown."
+msgstr "Anslutning till %s tappades. Utför nedstängning."
+
+#: src/slrnpull.c:1973
+msgid "Error opening sltcp interface.\n"
+msgstr "Fel vid öppning av sltcp-gränssnitt.\n"
+
+#: src/slrnpull.c:2014
+#, c-format
+msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
+msgstr "Sammanlagt %lu bitar mottagna, %lu bitar skickade på %ld sekunder."
+
+#: src/slrnpull.c:2096
+#, c-format
+msgid ""
+"%s usage: %s [options]\n"
+" Options:\n"
+"  -d SPOOLDIR          Spool directory to use.\n"
+"  -h HOSTNAME          Hostname of NNTP server to connect to.\n"
+"  --debug FILE         Write dialogue with server to FILE.\n"
+"  --expire             Perform expiration, but do not pull news.\n"
+"  --help               Print this usage information.\n"
+"  --kill-log FILE      Keep a log of all killed articles in FILE.\n"
+"  --kill-score SCORE   Kill articles with a score below SCORE.\n"
+"  --logfile FILE       Use FILE as the log file.\n"
+"  --marked-bodies      Only fetch bodies that were marked for download.\n"
+"  --new-groups         Get a list of new groups.\n"
+"  --no-post            Do not post news.\n"
+"  --post-only          Post news, but do not pull new news.\n"
+"  --rebuild            Like --expire; additionally rebuilds overview files.\n"
+"  --version            Show the version number.\n"
+msgstr ""
+"%s användning: %s [flaggor]\n"
+" Flaggor:\n"
+"  -d RULLKAT           Rullkatalog att använda.\n"
+"  -h VÄRDNAMN          Värdnamn för NNTP-server att ansluta till.\n"
+"  --debug FIL          Skriv dialog med server till FIL.\n"
+"  --expire             Utför förfallning, men dra inte nyheter.\n"
+"  --help               Skriv ut den här användningsinformationen.\n"
+"  --kill-log FIL       Underhåll en logg med alla dödade artiklar i FIL.\n"
+"  --kill-score POÄNG   Döda artiklar med en poäng under POÄNG.\n"
+"  --logfile FIL        Använd fil som logg-fil.\n"
+"  --marked-bodies      Hämta bara kroppar som var markerade för nedladdning.\n"
+"  --new-groups         Hämta en lista på nya grupper.\n"
+"  --no-post            Posta inte nyheter.\n"
+"  --post-only          Posta nyheter, men dra inte nya nyheter.\n"
+"  --rebuild            Som --expire; bygger dessutom om översiktsfiler.\n"
+"  --version            Visa versionsnummret.\n"
+
+#: src/slrnpull.c:2122
+#, c-format
+msgid "%s version: %s\n"
+msgstr "%s version: %s\n"
+
+#: src/slrnpull.c:2236
+#, c-format
+msgid "Unable to create debug file %s\n"
+msgstr "Kunde inte skapa debug-fil %s\n"
+
+#: src/slrnpull.c:2254
+msgid "The slrnpull spool directory has not been defined."
+msgstr "Katalogen för slrnpull-rullen har inte blivit definierad."
+
+#: src/slrnpull.c:2261
+msgid "slrnpull started in expire mode."
+msgstr "slrnpull startade i förfallningsläge."
+
+#: src/slrnpull.c:2263
+msgid "slrnpull started."
+msgstr "slrnpull startade."
+
+#: src/slrnpull.c:2358
+msgid "Checking for new groups."
+msgstr "Kollar efter nya grupper."
+
+#: src/slrnpull.c:2362
+#, c-format
+msgid "Unable to open new groups file %s.\n"
+msgstr "Kunde inte öppna nya grupper filen %s.\n"
+
+#: src/slrnpull.c:2459
+#, c-format
+msgid "%d new groups found."
+msgstr "%d nya grupper hittade."
+
+#: src/slrnpull.c:2466
+#, c-format
+msgid ""
+"%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
+"patch the file up for you."
+msgstr ""
+"%s verkar trasig, förväntade att se: NEWGROUPS yymmdd hhmmss GMT, jag kommer "
+"att lappa ihop filen åt dig."
+
+#: src/slrnpull.c:2545
+msgid "Performing shutdown."
+msgstr "Utför nedstängning."
+
+#: src/slrnpull.c:2548
+msgid "Slrnpull exiting on signal."
+msgstr "Slrnpull avslutar på signal."
+
+#: src/slrnpull.c:2678
+#, c-format
+msgid "Error creating filename in %s."
+msgstr "Fel vid skapande av filnamn i %s."
+
+#: src/slrnpull.c:2684 src/slrnpull.c:3037
+#, c-format
+msgid "Unable to stat %s."
+msgstr "Kunde inte fråga %s."
+
+#: src/slrnpull.c:2694
+#, c-format
+msgid "Unable to read header %d in %s."
+msgstr "Kunde inte läsa huvud %d i %s."
+
+#: src/slrnpull.c:2700
+#, c-format
+msgid "Header %d not parseable for overview."
+msgstr "Huvud %d inte tolkningsbart för översikt."
+
+#: src/slrnpull.c:2723
+#, c-format
+msgid "%s overview: article %u of %u in %s."
+msgstr "%s översikt: artikel %u av %u i %s."
+
+#: src/slrnpull.c:2724
+msgid "Creating"
+msgstr "Skapar"
+
+#: src/slrnpull.c:2724
+msgid "Updating"
+msgstr "Uppdaterar"
+
+#: src/slrnpull.c:2741
+#, c-format
+msgid "Creating Overview file for %s..."
+msgstr "Skapar översiktsfil för %s..."
+
+#: src/slrnpull.c:2829
+msgid "Unable to create filename for overview file.\n"
+msgstr "Kunde inte skapa filnamn för översiktsfil.\n"
+
+#: src/slrnpull.c:2839
+#, c-format
+msgid "Unable to open new overview file %s.\n"
+msgstr "Kunde inte öppna ny översiktsfil %s.\n"
+
+#: src/slrnpull.c:2917
+#, c-format
+msgid "failed to close overview file %s.\n"
+msgstr "misslyckades att stänga översiktsfil %s.\n"
+
+#: src/slrnpull.c:2919
+#, c-format
+msgid "failed to close new overview file %s.\n"
+msgstr "misslyckades att stänga ny översiktsfil %s.\n"
+
+#: src/slrnpull.c:2929
+#, c-format
+msgid "failed to rename %s to %s."
+msgstr "misslyckades att döpa om %s till %s."
+
+#: src/slrnpull.c:2962
+#, c-format
+msgid "opendir %s failed."
+msgstr "opendir %s misslyckades."
+
+#: src/slrnpull.c:2989
+#, c-format
+msgid "malloc error. Unable to expire group %s."
+msgstr "malloc fel. Kunde inte förfalla grupp %s."
+
+#: src/slrnpull.c:3115
+#, c-format
+msgid "Unable to expire %s."
+msgstr "Kunde inte förfalla %s."
+
+#: src/slrnpull.c:3122
+#, c-format
+msgid "%u articles expired in %s."
+msgstr "%u artiklar förföll i %s."
+
+#: src/slrnpull.c:3150
+msgid "Termination requested.  Shutting down."
+msgstr "Termination efterfrågad. Stänger ned."
+
+#: src/slrnpull.c:3198
+#, c-format
+msgid "Error reading name and password from %s."
+msgstr "Fel vid läsning av namn och lösenord från %s."
+
+#: src/slrnpull.c:3211
+msgid "Empty user name.  Please check syntax of the authinfo file."
+msgstr "Tomt användarnamn. Var snäll och kontrollera syntax i authinfo-filen."
+
+#: src/slrnpull.c:3239
+#, c-format
+msgid "Unable to read headers file for group %s.\n"
+msgstr "Kunde inte läsa huvud-filen för grupp %s.\n"
+
+#: src/slrnpull.c:3251
+#, c-format
+msgid "File %s exists, but could not be read."
+msgstr "Fil %s existerar, men kunde inte läsas."
+
+#: src/slrnpull.c:3283 src/slrnpull.c:3310
+#, c-format
+msgid "Unable to write headers file for group %s.\n"
+msgstr "Kunde inte skriva huvud-fil för grupp %s.\n"
+
+#: src/slrnpull.c:3318
+#, c-format
+msgid "Error while writing headers file for group %s.\n"
+msgstr "Fel vid skrivning av huvud-fil för grupp %s.\n"
+
+#: src/sltcp.c:217
+#, c-format
+msgid "Failed to resolve %s\n"
+msgstr "Misslyckades att lösa %s\n"
+
+#: src/sltcp.c:273 src/sltcp.c:376
+msgid "Unable to make connection. Giving up.\n"
+msgstr "Kunde inte skapa anslutning. Ger upp.\n"
+
+#: src/sltcp.c:308
+#, c-format
+msgid "%s: Unknown host.\n"
+msgstr "%s: Okänd värd.\n"
+
+#: src/sltcp.c:367
+#, c-format
+msgid "connection to %s, port %d:"
+msgstr "anslutning till %s, port %d:"
+
+#: src/sltcp.c:514
+msgid "Unable to generate enough entropy\n"
+msgstr "Kunde inte generera tillräcklig entropi\n"
+
+#: src/sltcp.c:533
+msgid "SSL_CTX_new failed.\n"
+msgstr "SSL_CTX_new misslyckades.\n"
+
+#: src/sltcp.c:548
+msgid "SSL_new failed\n"
+msgstr "SSL_new misslyckades\n"
+
+#: src/sltcp.c:565
+msgid "Unexpected error: SSL connection closed\n"
+msgstr "Oväntat fel: SSL-anslutning stängd\n"
+
+#: src/sltcp.c:568
+#, c-format
+msgid "System call failed: errno = %d\n"
+msgstr "Systemanrop misslyckades: errno = %d\n"
+
+#: src/sltcp.c:571
+msgid "Possible protocol error\n"
+msgstr "Troligt protokoll-fel.\n"
+
+#: src/sltcp.c:575
+#, c-format
+msgid "%s failed\n"
+msgstr "%s misslyckades\n"
+
+#: src/sltcp.c:594
+msgid ""
+"\n"
+"\n"
+"*** This program does not support SSL\n"
+msgstr ""
+"\n"
+"\n"
+"*** Det här programmet stöder inte SSL\n"
+
+#: src/sltcp.c:602
+msgid "Memory Allocation Failure.\n"
+msgstr "Minnesallokering misslyckades.\n"
+
+#: src/sltcp.c:634
+msgid "SSL_set_fd failed\n"
+msgstr "SSL_set_fd misslyckades\n"
+
+#: src/sltcp.c:643
+msgid "SSL_connect"
+msgstr "SSL_connect"
+
+#: src/spool.c:817
+#, c-format
+msgid "Unable to open directory %s"
+msgstr "Kunde inte öppna katalog %s"
+
+#: src/spool.c:1046
+#, c-format
+msgid "Local spool directory '%s' doesn't exist."
+msgstr "Lokal rullkatalog \"%s\" existerar inte."
+
+#: src/startup.c:162
+msgid "Memory Allocation Failure"
+msgstr "Minnesallokering misslyckades"
+
+#: src/startup.c:164
+#, c-format
+msgid ""
+"%s: Line %d\n"
+"%sMemory Allocation Failure"
+msgstr ""
+"%s: Rad %d\n"
+"%sMinnesallokering misslyckades"
+
+#: src/startup.c:183
+#, c-format
+msgid ""
+"%s: Error encountered processing line %d\n"
+"%s"
+msgstr ""
+"%s: Fel påträffades vid bearbetning av rad %d\n"
+"%s"
+
+#: src/startup.c:192
+#, c-format
+msgid ""
+"%s: Command is obsolete on line %d:\n"
+"%s"
+msgstr ""
+"%s: Kommando är föråldrat på rad %d:\n"
+"%s"
+
+#: src/startup.c:194
+#, c-format
+msgid ""
+"The new usage is:\n"
+"set %s\n"
+msgstr ""
+"Den nya användningen är:\n"
+"set %s\n"
+
+#: src/startup.c:268 src/startup.c:323
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sNo such keymap: %s"
+msgstr ""
+"%s: rad %d:\n"
+"%sIngen sådan tangentbordsuppsättning: %s"
+
+#: src/startup.c:283
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%serror defining key."
+msgstr ""
+"%s: rad %d:\n"
+"%sfel vid definiering av tangent."
+
+#: src/startup.c:302
+#, c-format
+msgid ""
+"%s: Obsolete function name on line %d: %s\n"
+"The new name is: %s"
+msgstr ""
+"%s: Föråldrat funktionsnamn på rad %d: %s\n"
+"Det nya namnet är: %s"
+
+#: src/startup.c:358
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sInvalid regular expression."
+msgstr ""
+"%s: rad %d:\n"
+"%sOgiltigt reguljärt uttryck.."
+
+#: src/startup.c:374
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sToo many expressions specified."
+msgstr ""
+"%s: rad %d:\n"
+"%sFör många uttryck angivna."
+
+#: src/startup.c:797
+#, c-format
+msgid ""
+"%s: Obsolete variable name on line %d: %s\n"
+"The new name is %s"
+msgstr ""
+"%s: Föråldrat variabelnamn på rad %d: %s\n"
+"Det nya namnet är %s"
+
+#: src/startup.c:807 src/startup.c:876
+#, c-format
+msgid ""
+"%s: In this version of slrn, setting variable\n"
+"%s has no effect. Please refer to the manual for details."
+msgstr ""
+"%s: I den här versionen av slrn, har sättning av variabeln\n"
+"%s ingen effekt. Var snäll och referera till manualen för detaljer."
+
+#: src/startup.c:844
+#, c-format
+msgid ""
+"%s: Obsolete variable on line %d: %s\n"
+"Please make use of the header_display_format command instead."
+msgstr ""
+"%s: Föråldrad variabel på rad %d: %s\n"
+"Var snäll och gör användning av header_display_format kommandot istället."
+
+#: src/startup.c:852
+#, c-format
+msgid ""
+"%s: Obsolete variable on line %d: %s\n"
+"Please make use of the group_display_format variable instead."
+msgstr ""
+"%s: Föråldrad variabel på rad %d: %s\n"
+"Var snäll och gör användning av group_display_format variabeln istället."
+
+#: src/startup.c:859
+#, c-format
+msgid ""
+"%s: Obsolete spelling on line %d:\n"
+"Use \"process_verbatim_marks\" instead of \"process_verbatum_marks\"."
+msgstr ""
+"%s: Föråldrad stavning på rad %d:\n"
+"Använd \"process_verbatim_marks\" istället för \"process_verbatum_marks\"."
+
+#: src/startup.c:868
+#, c-format
+msgid "%s: Obsolete variable on line %d: %s"
+msgstr "%s: Föråldrad variabel på rad %d: %s"
+
+#: src/startup.c:1048
+#, c-format
+msgid ""
+"%s: Obsolete spelling on line %d:\n"
+"Use \"verbatim\" instead of \"verbatum\""
+msgstr ""
+"%s: Föråldrad stavning på rad %d:\n"
+"Använd \"verbatim\" istället för \"verbatum\""
+
+#: src/startup.c:1101 src/startup.c:1148
+#, c-format
+msgid "%s is not a color object"
+msgstr "%s är inte ett färgobjekt"
+
+#: src/startup.c:1124
+msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
+msgstr "På grund av en begränsning i S-Lang, är den här funktionen bara "
+"tillgänglig på Unix."
+
+#: src/startup.c:1250
+#, c-format
+msgid "%s is not a valid fully-qualified host name."
+msgstr "%s är inte ett giltigt fullt kvalificerat värdnamn."
+
+#: src/startup.c:1540
+msgid "Username: "
+msgstr "Användarnamn: "
+
+#: src/startup.c:1555
+msgid "Password: "
+msgstr "Lösenord: "
+
+#: src/startup.c:1653
+msgid "Unable to initialize S-Lang readline library."
+msgstr "Kunde inte initialisera S-Lang readline bibliotek."
+
+#: src/startup.c:1658
+msgid "Error initializing S-Lang preprocessor."
+msgstr "Fel vid initialisering av S-lang preprocessor."
+
+#: src/startup.c:1664
+#, c-format
+msgid "Reading startup file %s."
+msgstr "Läser uppstartsfil %s."
+
+#: src/startup.c:1690
+#, c-format
+msgid "Server object '%s' is not supported."
+msgstr "Serverobjekt \"%s\" stöds inte."
+
+#: src/startup.c:1694
+#, c-format
+msgid "Post object '%s' is not supported."
+msgstr "Posta objekt \"%s\" stöds inte."
+
+#: src/startup.c:1713
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sFile not opened: %s"
+msgstr ""
+"%s: rad %d:\n"
+"%sFil inte öppnad: %s"
+
+#: src/util.c:341
+msgid "File name too long."
+msgstr "Filnamn för långt."
+
+#: src/util.c:371
+msgid "Memory allocation failure."
+msgstr "Minnesallokeringmisslyckande."
+
+#: src/util.c:434
+msgid "Out of memory"
+msgstr "Slut på minne"
+
+#: src/util.c:473
+msgid "Pattern too long for buffer"
+msgstr "Mönster för långt för buffer"
+
+#: src/util.c:557
+#, c-format
+msgid "Cygwin conversion of %s failed."
+msgstr "Cygwin konvertering av %s misslyckades."
+
+#: src/util.c:579
+#, c-format
+msgid "Error closing file.  File system full? (errno = %d)"
+msgstr "Fel vid stängning av fil. Filsystemet fullt? (errno = %d)"
+
+#: src/util.c:698 src/util.c:705
+#, c-format
+msgid "Error opening %s"
+msgstr "Fel vid öppning av %s"
+
+#: src/util.c:714
+#, c-format
+msgid "Write Error: %s"
+msgstr "Skrivfel: %s"
+
+#: src/version.c:90
+msgid ""
+"\n"
+" COMPILE TIME OPTIONS:"
+msgstr ""
+"\n"
+" FLAGGOR VID KOMPILERING:"
+
+#: src/version.c:101
+msgid ""
+"\n"
+"  Backends:"
+msgstr ""
+"\n"
+"  Motorer:"
+
+#: src/version.c:105
+msgid ""
+"\n"
+"  External programs / libs:"
+msgstr ""
+"\n"
+"  Externa program / bibliotek:"
+
+#: src/version.c:109
+msgid ""
+"\n"
+"  Features:"
+msgstr ""
+"\n"
+"  Funktioner:"
+
+#: src/version.c:155
+msgid "\t* Note: This version is a developer preview.\n"
+msgstr "\t* Notera: Den här versionen är en utvecklarversion.\n"
+
+#: src/version.c:157
+#, c-format
+msgid "S-Lang Library Version: %s\n"
+msgstr "S-Lang biblioteksversion: %s\n"
+
+#: src/version.c:160
+#, c-format
+msgid "\t* Note: This program was compiled against version %s.\n"
+msgstr "\t* Notera: Det här programmet blev kompilerat mot version %s.\n"
+
+#: src/version.c:164
+#, c-format
+msgid "Compiled at: %s %s\n"
+msgstr "Kompilerat vid: %s %s\n"
+
+#: src/version.c:166
+#, c-format
+msgid "Operating System: %s\n"
+msgstr "Operativsystem: %s\n"
+
+#: src/version.c:170
+#, c-format
+msgid ""
+" DEFAULTS:\n"
+"  Default server object:     %s\n"
+msgstr ""
+" STANDARDER:\n"
+"  Standard serverobjekt:     %s\n"
+
+#: src/version.c:173
+#, c-format
+msgid "  Default posting mechanism: %s\n"
+msgstr "  Standard postningsmekanism: %s\n"
+
+#: src/xover.c:970
+msgid "Server closed connection.  Cannot recover."
+msgstr "Server stängde anslutning. Kan inte återkspa."
+
+#: src/xover.c:1016
+msgid "Server does not provide this capability."
+msgstr "Server tillhandahåller inte den här förmågan."
