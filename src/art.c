@@ -947,6 +947,8 @@ static int extract_urls (unsigned int *argc_ptr, char **argv, unsigned int max_a
 	ptr = l->buf;
 	while (NULL != (ptr = find_url (ptr, &len)))
 	  {
+	     unsigned int iterator;
+
 	     if (argc == max_argc)
 	       break;
 
@@ -957,8 +959,19 @@ static int extract_urls (unsigned int *argc_ptr, char **argv, unsigned int max_a
 	       }
 	     if (Do_Rot13)
 	       decode_rot13 ((unsigned char *) argv[argc]);
-	     argc++;
 	     ptr += len;
+
+	     /* remove duplicates */
+	     for (iterator = 0; iterator < argc; ++iterator)
+	       {
+		  if (!strcmp (argv[iterator], argv[argc]))
+		    {
+		       slrn_free(argv[argc]);
+		       --argc;
+		       break;
+		    }
+	       }
+	     argc++;
 	  }
 	
 	l = l->next;

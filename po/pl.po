@@ -3969,7 +3969,7 @@ msgstr ""
 msgid ""
 "%s: In this version of slrn, setting variable\n"
 "%s has no effect. Please refer to the manual for details."
-msgstr "W tej wersji slrn zmienna\n"
+msgstr "%s: W tej wersji slrn zmienna\n"
 "%s jest ignorowana. Po szczegó³y zajrzyj do dokumentacji."
 
 #: src/startup.c:828

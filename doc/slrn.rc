@@ -39,6 +39,10 @@
 % If you leave username and/or password empty, slrn will prompt for it.
 %nnrpaccess "news.doe.com" "john" "secret"
 
+% Some servers require authentication, but don't ask for it.
+% To offer your authentication data "voluntarily", set this variable to 1.
+%set force_authentication 0
+
 % This can either be set to "nntp" (read online) or "spool" (use local spool)
 %set server_object "nntp"
 

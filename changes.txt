@@ -10,6 +10,7 @@ Changes since 0.9.7.4
 0. Bug fixes include:
   * Setting new_subject_breaks_threads to 2 has an effect again.
   * Some translations (fr/ko/nl/ru) were broken and could cause segfaults.
+  * Fixed possible buffer overrun when parsing "Xref" header lines.
   * Fixed memory leak when grouping scorefile entries.
   * No more rubbish at the end of popup window lines (Jurriaan).
   * subject_compare_hook leads to the expected result again (Jurriaan).
@@ -76,10 +77,11 @@ Changes since 0.9.7.4
     pre-processing facilities. (Matthias Friedrich)    
 17. The config variable cc_post_string is obsolete, as cc_followup_string
     now works correctly in all cases. Currently, the only supported escape
-    sequence is "%n" for newsgroup name.  
+    sequence is "%n" for newsgroup name.
 18. New translations:
    * fi.po (Finnish; Lauri Nurmi)
    * tr.po (Turkish; A. Alper ATICI)
+19. Remove duplicates when browsing URLs (Rüdiger Sonderfeld)
 
 Changes since 0.9.7.3
 
