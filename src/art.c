@@ -229,6 +229,7 @@ static void quick_help (void);
 static void for_this_tree (Slrn_Header_Type *, void (*)(Slrn_Header_Type *));
 static void find_non_hidden_header (void);
 static void get_missing_headers (void);
+static void decode_rot13 (unsigned char *);
 
 static void skip_to_next_group (void);
 
@@ -935,6 +936,8 @@ static int extract_urls (unsigned int *argc_ptr, char **argv, unsigned int max_a
 		  slrn_free_argc_argv_list (argc, argv);
 		  return -1;
 	       }
+	     if (Do_Rot13)
+	       decode_rot13 ((unsigned char *) argv[argc]);
 	     argc++;
 	     ptr += len;
 	  }
@@ -7616,46 +7619,64 @@ static void quick_help (void) /*{{{*/
 
 /*}}}*/
 
-static void write_rot13 (unsigned char *buf, int color, int use_emph) /*{{{*/
+static char Rot13buf[256];
+
+static void init_rot13 (void) /*{{{*/
 {
-   static int init_rot13;
-   static char rot13buf[256];
-   unsigned char ch;
-   int i;
-
-   (void) color;
-   (void) use_emph;
-
-   if (init_rot13 == 0)
+   static int is_initialized;
+   if (is_initialized == 0)
      {
-	init_rot13 = 1;
+	int i;
+	is_initialized = 1;
 	for (i = 0; i < 256; i++)
 	  {
-	     rot13buf[i] = i;
+	     Rot13buf[i] = i;
 	  }
 	
 	for (i = 'A'; i <= 'M'; i++)
 	  {
-	     rot13buf[i] = i + 13;
+	     Rot13buf[i] = i + 13;
 	     /* Now take care of lower case ones */
-	     rot13buf[i + 32] =  i + 32 + 13;
+	     Rot13buf[i + 32] =  i + 32 + 13;
 	  }
 	
 	for (i = 'N'; i <= 'Z'; i++)
 	  {
-	     rot13buf[i] = i - 13;
+	     Rot13buf[i] = i - 13;
 	     /* Now take care of lower case ones */
-	     rot13buf[i + 32] =  i + 32 - 13;
+	     Rot13buf[i + 32] =  i + 32 - 13;
 	  }
      }
+}
+/*}}}*/
+
+static void write_rot13 (unsigned char *buf, int color, int use_emph) /*{{{*/
+{
+   unsigned char ch;
+
+   (void) color;
+   (void) use_emph;
+   init_rot13();
    
    while ((ch = *buf++) != 0)
      {
-	ch = rot13buf[ch];
+	ch = Rot13buf[ch];
 	slrn_write_nchars ((char *) &ch, 1);
      }
 }
+/*}}}*/
 
+/* rot13-"decodes" buf (overwriting its content) */
+static void decode_rot13 (unsigned char *buf) /*{{{*/
+{
+   init_rot13();
+   
+   while (*buf != 0)
+     {
+	*buf = Rot13buf[*buf];
+	buf++;
+     }
+}
 /*}}}*/
 
 /*{{{ utility routines */

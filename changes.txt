@@ -15,6 +15,7 @@ Changes since 0.9.7.4
     upper case filenames are still used when the file already exists. The
     new hook make_save_filename allows overriding these defaults.
   * In header_display_format, %b choses a suitable "unit" automatically.
+  * Browsing URLs will also use rot13 if it's toggled on in the pager.
   
    slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still
