@@ -9,7 +9,7 @@ dnl $1 = option name
 dnl $2 = help string
 dnl $3 = variable to set in sysconf.h
 
-AC_DEFUN(CF_COMPILE_OPTION,
+AC_DEFUN([CF_COMPILE_OPTION],
 [AC_ARG_ENABLE($1,[$2],[if test "x$enableval" = "xyes" ; then
 AC_DEFINE($3, 1)
 else
@@ -17,7 +17,7 @@ AC_DEFINE($3, 0)
 fi])])dnl
 
 dnl Originally called JD_ANSI_CC and written by John E. Davis:
-AC_DEFUN(CF_ANSI_CC,
+AC_DEFUN([CF_ANSI_CC],
 [
 AC_PROG_CC
 AC_PROG_CPP
@@ -39,7 +39,7 @@ AC_TRY_COMPILE([ ],[
 ])dnl
 
 dnl Originally called JD_TERMCAP and written by John E. Davis
-AC_DEFUN(CF_TERMCAP,
+AC_DEFUN([CF_TERMCAP],
 [
 AC_MSG_CHECKING(for Terminfo)
 
@@ -67,7 +67,7 @@ fi
 AC_SUBST(TERMCAP)dnl
 ])
 
-AC_DEFUN(CF_GCC_OPTIONS,
+AC_DEFUN([CF_GCC_OPTIONS],
 [
 AC_ARG_ENABLE(warnings,
 	      [  --enable-warnings       turn on compiler warnings (GCC only)],
@@ -112,7 +112,7 @@ fi
 
 dnl evaluate $libdir and $includedir
 dnl results are in $ev_libdir and $ev_includedir respecively
-AC_DEFUN(CF_EVAL_VARS,
+AC_DEFUN([CF_EVAL_VARS],
 [
 ev_prefix=$prefix
 test "x$ev_prefix" = xNONE && ev_prefix=$ac_default_prefix
@@ -138,7 +138,7 @@ echo ev_sysconfdir="\$sysconfdir"
 `
 ])
 
-AC_DEFUN(CF_HARDCODE_LIBS,
+AC_DEFUN([CF_HARDCODE_LIBS],
 [
 AC_ARG_ENABLE(hardcode-libs,
               [  --enable-hardcode-libs  Hardcode path of dynamic libs in binaries])
@@ -165,7 +165,7 @@ fi
 ])
 
 
-AC_DEFUN(CF_PATH_SLANG_LIB,
+AC_DEFUN([CF_PATH_SLANG_LIB],
 [
   AC_REQUIRE([CF_EVAL_VARS])
   AC_MSG_CHECKING(for the slang library)
@@ -241,7 +241,7 @@ AC_SUBST(SLANG_LIB)dnl
 AC_SUBST(SLANG_LIB_DIR)dnl
 ])
 
-AC_DEFUN(CF_PATH_SLANG_INC,
+AC_DEFUN([CF_PATH_SLANG_INC],
 [
   AC_REQUIRE([CF_EVAL_VARS])
   AC_MSG_CHECKING(for the slang includes)
@@ -315,7 +315,7 @@ AC_SUBST(SLANG_INCLUDE)dnl
 ])
 
 dnl Specify (OpenSSL and ssl) or (GNU TLS and gnutls) as a parameter.
-AC_DEFUN(CF_SSL,
+AC_DEFUN([CF_SSL],
 [
   AH_VERBATIM([SLRN_HAS_SSL_SUPPORT],
 [/* define if you want SSL support using OpenSSL */
@@ -510,7 +510,7 @@ script to the right directory with the --with-ssl-includes=DIR option.
   fi
 ])
 
-AC_DEFUN(CF_MTA,
+AC_DEFUN([CF_MTA],
 [
   AH_TEMPLATE([SLRN_SENDMAIL_COMMAND],[sendmail command])
   AC_ARG_WITH(mta,
@@ -552,7 +552,7 @@ pathname and all needed command line arguments).
 
 dnl CF_WITH_OPT_LIB(NAME, LIBVAR, INCVAR, LIBNAME, LIBVAL, INCNAME,
 dnl                 HASVAR, HELP-TEXT)
-AC_DEFUN(CF_WITH_OPT_LIB,
+AC_DEFUN([CF_WITH_OPT_LIB],
 [
   eval "$2=\"\""
   eval "$3=\"\""
@@ -681,7 +681,7 @@ script to the right directory with the --with-$1=DIR option.
     AC_SUBST([$3])dnl
 ])
 
-AC_DEFUN(CF_VA_COPY,
+AC_DEFUN([CF_VA_COPY],
 [
  dnl va_copy checks taken from glib 1.2.8
  dnl
@@ -766,7 +766,7 @@ fi
 AC_MSG_RESULT($slrn_cv_va_val_copy)
 ])
 
-AC_DEFUN(CF_SUMMARY,
+AC_DEFUN([CF_SUMMARY],
 [
   AC_REQUIRE([CF_EVAL_VARS])
 
