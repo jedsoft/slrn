@@ -2694,7 +2694,7 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
 {
    Slrn_Group_Type *g;
    Slrn_Range_Type *r;
-   char backup_file[SLRN_MAX_PATH_LEN], autosave_file[SLRN_MAX_PATH_LEN];
+   char autosave_file[SLRN_MAX_PATH_LEN];
    char *newsrc_filename;
    static FILE *fp;
    int max;
@@ -2718,18 +2718,13 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
 #ifdef VMS
    slrn_snprintf (autosave_file, sizeof (autosave_file), "%s-as",
 		  Slrn_Newsrc_File);
-   slrn_snprintf (backup_file, sizeof (backup_file), "%s-bak",
-		  Slrn_Newsrc_File);
 #else
 # ifdef SLRN_USE_OS2_FAT
    slrn_os2_make_fat (autosave_file, sizeof (autosave_file), Slrn_Newsrc_File,
 		      ".as");
-   slrn_os2_make_fat (backup_file, sizeof (backup_file), Slrn_Newsrc_File,
-		      ".bak");
 # else
    slrn_snprintf (autosave_file, sizeof (autosave_file), "%s.as",
 		  Slrn_Newsrc_File);
-   slrn_snprintf (backup_file, sizeof (backup_file), "%s~", Slrn_Newsrc_File);
 # endif
 #endif
    
@@ -2760,17 +2755,13 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
 	/* Create a temp backup file.  Delete it later if user 
 	 * does not want backups.
 	 */
-	have_backup = 1;
-	if (-1 == rename (newsrc_filename, backup_file))
-	  {
-	     have_backup = 0;
-	  }
+	have_backup = (0 == slrn_create_backup (newsrc_filename));
      }
 
    if (NULL == (fp = fopen (newsrc_filename, "w")))
      {
 	slrn_error (_("Unable to open file %s for writing."), newsrc_filename);
-	if (have_backup) (void) rename (backup_file, newsrc_filename);
+	if (have_backup) slrn_restore_backup (newsrc_filename);
 	slrn_init_hangup_signals (1);
 	return -1;
      }
@@ -2848,7 +2839,7 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
 
    if (Slrn_No_Backups)
      {
-	if (have_backup) slrn_delete_file (backup_file);
+	if (have_backup) slrn_delete_backup (newsrc_filename);
      }
    
    if (newsrc_filename == Slrn_Newsrc_File)
@@ -2869,7 +2860,7 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
    slrn_error (_("Write to %s failed! Disk Full?"), newsrc_filename);
    
    /* Put back orginal file */
-   if (have_backup) (void) rename (backup_file, newsrc_filename);
+   if (have_backup) slrn_restore_backup (newsrc_filename);
    
    slrn_init_hangup_signals (1);
    return -1;

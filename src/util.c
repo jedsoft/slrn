@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2002, 2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -740,6 +740,98 @@ int slrn_move_file (char *infile, char *outfile)
 	slrn_delete_file (infile);
      }
    return 0;
+}
+
+/* Some functions to handle file backups correctly ... */
+
+/* Make and return a malloc'ed filename by adding an OS-specific suffix
+ * that flags backup files. */
+char *slrn_make_backup_filename (char *filename)
+{
+#ifdef VMS
+   return slrn_strdup_printf ("%s-bak", filename);
+#else
+# ifdef SLRN_USE_OS2_FAT
+   unsigned int len = strlen(filename)+5;
+   char *retval = slrn_safe_malloc (len);
+   slrn_os2_make_fat (retval, len, filename, ".bak");
+   return retval;
+# else
+   return slrn_strdup_printf ("%s~", filename);
+# endif
+#endif
+}
+
+/* Creates a backup of the given file, copying it if necessary (i.e. it is
+ * a softlink or there are multiple hardlinks on it) - after that, filename
+ * may or may no longer denote an existing file.
+ * Returns 0 on success, -1 on errors. */
+int slrn_create_backup (char *filename)
+{
+   char *backup_file = slrn_make_backup_filename (filename);
+   int retval = -1, do_copy = 0;
+#ifdef __unix__
+   struct stat st;
+   
+   if (0 == lstat (filename, &st))
+     {
+	do_copy = (st.st_nlink > 1)
+# ifdef S_ISLNK
+	  || (S_ISLNK(st.st_mode))
+# endif
+	    ;
+     }
+#endif /* __unix__ */
+   
+   if (!do_copy)
+     retval = rename (filename, backup_file);
+   if (retval == -1)
+     retval = slrn_copy_file (filename, backup_file);
+   
+   SLfree (backup_file);
+   
+   return retval;
+}
+
+/* Tries to delete the backup of the given file, ignoring all errors. */
+void slrn_delete_backup (char *filename)
+{
+   char *backup_file = slrn_make_backup_filename (filename);
+   (void) slrn_delete_file (backup_file);
+   SLfree (backup_file);
+}
+
+/* Tries to restore the given file from the backup, copying it if necessary
+ * (same condition as above). */
+int slrn_restore_backup (char *filename)
+{
+   char *backup_file = slrn_make_backup_filename (filename);
+   int retval = -1, do_copy = 0;
+#ifdef __unix__
+   struct stat st;
+   
+   if (0 == lstat (filename, &st))
+     {
+	do_copy = (st.st_nlink > 1)
+# ifdef S_ISLNK
+	  || (S_ISLNK(st.st_mode))
+# endif
+	    ;
+     }
+#endif /* __unix__ */
+   
+   if (!do_copy)
+     retval = rename (backup_file, filename);
+   if (retval == -1)
+     {
+	retval = slrn_copy_file (backup_file, filename);
+	if (retval == 0)
+	  (void) slrn_delete_file (backup_file);
+     }
+   
+   SLfree (backup_file);
+   
+   return retval;
 }
 
 

@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2002, 2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -46,6 +46,12 @@ extern void slrn_os2_make_fat (char *, size_t, char *, char *);
 #ifdef __CYGWIN__
 extern int slrn_cygwin_convert_path (char *, char *, size_t);
 #endif
+
+extern char *slrn_make_backup_filename (char *);
+extern int slrn_create_backup (char *);
+extern void slrn_delete_backup (char *);
+extern int slrn_restore_backup (char *);
+
 extern unsigned int slrn_sleep (unsigned int);
 
 extern char *slrn_simple_strtok (char *, char *);

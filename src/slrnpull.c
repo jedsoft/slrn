@@ -3266,7 +3266,6 @@ static int read_headers_files (void)
 
 static int write_headers_files (void)
 {
-   char backup_file[SLRN_MAX_PATH_LEN + 1];
    char head_file[SLRN_MAX_PATH_LEN + 1];
    FILE *fp;
    int have_backup = 0;
@@ -3285,28 +3284,14 @@ static int write_headers_files (void)
 	     goto next_group;
 	  }
 	   
-#ifdef VMS
-	slrn_snprintf (backup_file, sizeof (backup_file), "%s-bak",
-		       head_file);
-#else
-# ifdef SLRN_USE_OS2_FAT
-	slrn_os2_make_fat (backup_file, sizeof (backup_file), head_file,
-			   ".bak");
-# else
-	slrn_snprintf (backup_file, sizeof (backup_file), "%s~", head_file);
-# endif
-#endif
-
 	/* Save backup file in case anything goes wrong */
-	have_backup = 1;
-	if (-1 == rename (head_file, backup_file))
-	  have_backup = 0;
+	have_backup = (0 == slrn_create_backup (head_file));
 
 	if (group->headers != NULL)
 	  {
 	     if (NULL == (fp = fopen (head_file, "w")))
 	       {
-		  if (have_backup) (void) rename (backup_file, head_file);
+		  if (have_backup) slrn_restore_backup (head_file);
 		  log_error (_("Unable to write headers file for group %s.\n"), group->name);
 		  error = -1;
 		  goto next_group;
@@ -3314,13 +3299,13 @@ static int write_headers_files (void)
 	     if ((-1 == slrn_ranges_to_newsrc_file (group->headers,0,fp)) |
 		 (-1 == slrn_fclose (fp)))
 	       {
-		  if (have_backup) (void) rename (backup_file, head_file);
+		  if (have_backup) slrn_restore_backup (head_file);
 		  log_error (_("Error while writing headers file for group %s.\n"), group->name);
 		  error = -1;
 	       }
 	  }
 	  
-	if (have_backup) slrn_delete_file (backup_file);
+	if (have_backup) slrn_delete_backup (head_file);
 	
 	next_group:
 	group = group->next;

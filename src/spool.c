@@ -1801,7 +1801,7 @@ Slrn_Range_Type *slrn_spool_get_requested_ranges (char *group) /*{{{*/
  * returns 0 on success, -1 otherwise */
 int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 {
-   char old_file[SLRN_MAX_PATH_LEN];
+   char *old_file;
    FILE *fp;
    VFILE *vp;
    char *vline;
@@ -1812,29 +1812,15 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 
    slrn_init_hangup_signals (0);
 
-#ifdef VMS
-   slrn_snprintf (old_file, sizeof (old_file), "%s-bak",
-		  Slrn_Requests_File);
-#else
-# ifdef SLRN_USE_OS2_FAT
-   slrn_os2_make_fat (old_file, sizeof (old_file), Slrn_Requests_File,
-		      ".bak");
-# else
-   slrn_snprintf (old_file, sizeof (old_file), "%s~", Slrn_Requests_File);
-# endif
-#endif
-
    /* Try to preserve file permissions and owner/group. */
    stat_worked = (-1 != stat (Slrn_Requests_File, &filestat));
    
    /* Save old file (we'll copy most of it; then, it gets deleted) */
-   have_old = 1;
-   if (-1 == rename (Slrn_Requests_File, old_file))
-     have_old = 0;
+   have_old = (0 == slrn_create_backup (Slrn_Requests_File));
 
    if (NULL == (fp = fopen (Slrn_Requests_File, "w")))
      {
-	if (have_old) (void) rename (old_file, Slrn_Requests_File);
+	if (have_old) slrn_restore_backup (Slrn_Requests_File);
 	slrn_init_hangup_signals (1);
 	return -1;
      }
@@ -1870,6 +1856,7 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
      }
    
    /* Now, open the old file and append the data of all other groups */
+   old_file = slrn_make_backup_filename (Slrn_Requests_File);
    if (NULL != (vp = vopen (old_file, 4096, 0)))
      {
 	while (NULL != (vline = vgets (vp, &vlen)))
@@ -1901,18 +1888,20 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
    if (-1 == slrn_fclose (fp))
      goto write_error;
 
-   if (have_old) slrn_delete_file (old_file);
+   if (have_old) slrn_delete_backup (Slrn_Requests_File);
 
    slrn_init_hangup_signals (1);
+   SLfree (old_file);
    return 0;
    
    write_error:
    
    slrn_fclose (fp);
    /* Put back orginal file */
-   if (have_old) (void) rename (old_file, Slrn_Requests_File);
+   if (have_old) slrn_restore_backup (Slrn_Requests_File);
    
    slrn_init_hangup_signals (1);
+   SLfree (old_file);
    return -1;
 }
 /*}}}*/
