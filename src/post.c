@@ -1362,7 +1362,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	       {
 		  slrn_add_date_header (NULL);
 		  slrn_add_date_header (fcc_fp);
-		  if ((has_messageid == 0) && (msgid != NULL))
+		  if (msgid != NULL)
 		    {
 #if SLRN_HAS_CANLOCK
 		       char *canlock;
@@ -1372,7 +1372,8 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 			    SLFREE (canlock);
 			 }
 #endif /* SLRN_HAS_CANLOCK */
-		       post_printf(fcc_fp, "Message-ID: %s\n", msgid);
+		       if (has_messageid == 0)
+			 post_printf(fcc_fp, "Message-ID: %s\n", msgid);
 		       SLFREE (msgid);
 		    }
 #if SLRN_HAS_MIME
@@ -1405,12 +1406,16 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	       }
 
 	     if (is_empty_header (linep)) continue;
+	     linep[len - 1] = 0;
 #if SLRN_HAS_GEN_MSGID
 	     if (!slrn_case_strncmp ((unsigned char *)"Message-ID: ",
 				     (unsigned char *)linep, 12))
-	       has_messageid = 1;
+	       {
+		  slrn_free(msgid);
+		  msgid = slrn_strmalloc (linep+12, 0);
+		  has_messageid = 1;
+	       }
 #endif
-	     linep[len - 1] = 0;
 #if SLRN_HAS_MIME
 	     if (Slrn_Use_Mime & MIME_DISPLAY)
 	       {
