@@ -1042,6 +1042,8 @@ FILE *slrn_open_home_file (char *name, char *mode, char *file, /*{{{*/
    (void) create_flag;
 #endif	
 
+   if (2 == slrn_file_exists (file)) /* don't open directories */
+     return NULL;
    return fopen (file, mode);
 }
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slrn 0.9.7.3\n"
 "POT-Creation-Date: 2002-03-05 17:41+0100\n"
-"PO-Revision-Date: 2002-01-10 00:15+ZONE\n"
+"PO-Revision-Date: 2002-03-11 20:49+0000\n"
 "Last-Translator: Walter Oscar Echarri <wecharri@yahoo.com>\n"
 "Language-Team: SPANISH <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -133,22 +133,22 @@ msgstr "La transferencia del artículo fue abortada o se perdió la conexión."
 #: src/art.c:2141
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
-msgstr ""
+msgstr "#%2d/%-2d: Leídas %4d/%-4d líneas (%s) a %.2fkB/seg"
 
 #: src/art.c:2145
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
-msgstr ""
+msgstr "#%2d/%-2d: Leídas %4d/%-4d líneas (%s)"
 
 #: src/art.c:2151
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
-msgstr ""
+msgstr "[%d] Leídas %d/%d líneas hasta el momento a %.2fkB/seg"
 
 #: src/art.c:2154
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
-msgstr ""
+msgstr "[%d] Leídas %d/%d líneas hasta el momento"
 
 #: src/art.c:2194
 msgid "Server sent empty article."
@@ -413,56 +413,47 @@ msgid "Mark not set."
 msgstr "No fijar marca."
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Subject search "
-msgstr "Asunto: "
+msgstr "Buscar por Asunto "
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Author search "
-msgstr " Buscar "
+msgstr "Buscar por Autor "
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(forward)"
-msgstr "Hacia Adelante"
+msgstr "(hacia adelante)"
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(backward)"
-msgstr "Hacia Atrás"
+msgstr "(hacia atrás)"
 
 #: src/art.c:4776 src/slrnpull.c:1182
-#, fuzzy, c-format
+#, c-format
 msgid "Score %d killed article %s\n"
-msgstr ""
-"Puntaje %d artículo eliminado %s\n"
-"Grupo de discusión: %s \n"
-"De: %s\n"
-"Asunto: %s\n"
+msgstr "Puntaje %d artículo eliminado %s\n"
 
 #: src/art.c:4780 src/slrnpull.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
-msgstr "creando %s (%s)\n"
+msgstr " Puntaje %c%5i: %s (%s:%i)\n"
 
 #: src/art.c:4784 src/slrnpull.c:1190
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
-msgstr ""
+msgstr " Puntaje %c%5i: %s:%i\n"
 
 #: src/art.c:4789 src/slrnpull.c:1195
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "  Newsgroup: %s\n"
 "  From: %s\n"
 "  Subject: %s\n"
 "\n"
 msgstr ""
-"Puntaje %d artículo eliminado %s\n"
-"Grupo de discusión: %s \n"
-"De: %s\n"
-"Asunto: %s\n"
+"  Grupo de discusión: %s\n"
+"  De: %s\n"
+"  Asunto: %s\n"
 
 #: src/art.c:4854
 msgid "Scoring articles ..."
@@ -636,18 +627,16 @@ msgid "Spoilers visible!"
 msgstr "¡Spoilers visibles!"
 
 #: src/art_sort.c:329
-#, fuzzy
 msgid "slrn_sort_headers(): memory allocation failure."
-msgstr "sort_headers(): error en la asignación de memoria."
+msgstr "slrn_sort_headers(): error en la asignación de memoria."
 
 #: src/art_sort.c:586
 msgid "link_same_subjects: memory allocation failure."
 msgstr "link_same_subjects: error en la asignación de memoria."
 
 #: src/art_sort.c:797
-#, fuzzy
 msgid "Internal Error in fixup_threads()."
-msgstr "Error Interno."
+msgstr "Error Interno en fixup_threads()."
 
 #: src/art_sort.c:851
 msgid "Threading by references ..."
@@ -673,7 +662,7 @@ msgstr "Vinculando artículos con asuntos idénticos ..."
 #: src/art_sort.c:1022
 #, c-format
 msgid "Can't sort according to `%s'"
-msgstr ""
+msgstr "No se puede ordenar de acuerdo a `%s'"
 
 #: src/chkslang.c:58
 #, c-format
@@ -1675,7 +1664,7 @@ msgstr "  ESC a              Cambiar modo de visualización de cabeceras."
 
 #: src/help.c:140
 msgid "  ESC s              Select threading and sorting method."
-msgstr "  ESC s              Elegir modo de ordenación."
+msgstr "  ESC s              Elegir modo de ordenamiento."
 
 #: src/help.c:141
 msgid "Miscellaneous actions:"
@@ -2045,12 +2034,11 @@ msgstr "Valor del mapa de caracteres local en la fila %d fuera de rango. "
 #: src/interp.c:452
 #, c-format
 msgid "Array must contain at least one, at most %d elements."
-msgstr ""
+msgstr "El arreglo debe contener por lo menos uno y a lo sumo %d elementos."
 
 #: src/interp.c:460
-#, fuzzy
 msgid "Failed to allocate memory."
-msgstr "Error al seleccionar mapa de caracteres."
+msgstr "Error en la asignación de memoria."
 
 #: src/interp.c:527
 msgid "definekey: no such keymap."
@@ -2186,16 +2174,16 @@ msgstr "Ordenar por fecha (los más recientes al final)"
 #. 1010
 #: src/menu.c:203
 msgid "Thread, then Sort by date (most recent last)"
-msgstr "Ordenar en hilo por fecha (los más recientes al final)"
+msgstr "Ordenar en hebra por fecha (los más recientes al final)"
 
 #. 1011
 #: src/menu.c:204
 msgid "Custom sorting (see manual)"
-msgstr ""
+msgstr "Ordenamiento personalizado (ver manual)"
 
 #: src/menu.c:212
 msgid "Sorting Method"
-msgstr "Método de ordenación"
+msgstr "Método de ordenamiento"
 
 #: src/menu.c:296
 msgid "(Select One)"
@@ -2866,9 +2854,9 @@ msgid "***Warning: error writing to %s"
 msgstr "***Advertencia: error al escribir %s"
 
 #: src/post.c:880
-#, fuzzy, c-format
+#, c-format
 msgid "%s Failed post saved in %s"
-msgstr "El mensaje no publicado se guardó en %s"
+msgstr "%s El mensaje no publicado se guardó en %s"
 
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
@@ -2939,14 +2927,12 @@ msgid "Posting ..."
 msgstr "Publicando ..."
 
 #: src/post.c:1104
-#, fuzzy
 msgid "post_file_hook returned error."
-msgstr "post_file_hook devolvío un mensaje de error. No se publicó %s."
+msgstr "post_file_hook devolvío un mensaje de error."
 
 #: src/post.c:1126
-#, fuzzy
 msgid "Could not reach server."
-msgstr "No es posible ingresar al grupo %s."
+msgstr "No es posible comunicarse con el servidor."
 
 #: src/post.c:1254
 msgid "Posting...done."
@@ -4241,8 +4227,4 @@ msgstr "Conexión con el servidor cerrada. No es posible recuperación."
 msgid "Server does not provide this capability."
 msgstr "El servidor no proporciona esta capacidad."
 
-#~ msgid "Subject"
-#~ msgstr "Asunto"
 
-#~ msgid "Author"
-#~ msgstr "Autor"
