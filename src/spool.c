@@ -1880,14 +1880,19 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 	     while ((p < pmax) && (*p != ':'))
 	       p++;
 	     
-	     if ((p != vline) && (strncmp(vline, group, (p-vline))))
+	     if ((p != vline) && ((p-vline != strlen(group) ||
+				   strncmp(vline, group, (p-vline)))))
 	       {
+		  /* It seems we may not write past vline[vlen-1] for vgets
+		   * to work correctly, so save and reset this. */
+		  char ch = vline[vlen];
 		  vline[vlen] = '\0';
 		  if (EOF == fputs (vline, fp))
 		    {
 		       vclose (vp);
 		       goto write_error;
 		    }
+		  vline[vlen] = ch;
 	       }
 	  }
 	vclose (vp);
