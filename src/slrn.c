@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -120,6 +120,7 @@ int Slrn_Use_Mouse;
 
 int Slrn_Batch;
 int Slrn_Suspension_Ok;
+int Slrn_Simulate_Graphic_Chars = 0;
 
 char *Slrn_Newsrc_File = NULL;
 Slrn_Mode_Type *Slrn_Current_Mode;
@@ -128,6 +129,15 @@ int Slrn_Default_Server_Obj = SLRN_DEFAULT_SERVER_OBJ;
 int Slrn_Default_Post_Obj = SLRN_DEFAULT_POST_OBJ;
 
 FILE *Slrn_Debug_Fp = NULL;
+
+int Graphic_LTee_Char = SLSMG_LTEE_CHAR;
+int Graphic_UTee_Char = SLSMG_UTEE_CHAR;
+int Graphic_LLCorn_Char = SLSMG_LLCORN_CHAR;
+int Graphic_HLine_Char = SLSMG_HLINE_CHAR;
+int Graphic_VLine_Char = SLSMG_VLINE_CHAR;
+int Graphic_ULCorn_Char = SLSMG_ULCORN_CHAR;
+
+int Graphic_Chars_Mode = ALT_CHAR_SET_MODE;
 
 /*}}}*/
 /*{{{ Static Variables */
@@ -783,6 +793,38 @@ void slrn_enable_mouse (int mode) /*{{{*/
 
 /*}}}*/
 
+void slrn_init_graphic_chars (void) /*{{{*/
+{
+#ifndef IBMPC_SYSTEM
+   if (SLtt_Has_Alt_Charset == 0)
+     Slrn_Simulate_Graphic_Chars = 1;
+#endif
+   
+   if (Slrn_Simulate_Graphic_Chars)
+     {
+	Graphic_LTee_Char = '+';
+	Graphic_UTee_Char = '+';
+	Graphic_LLCorn_Char = '`';
+	Graphic_HLine_Char = '-';
+	Graphic_VLine_Char = '|';
+	Graphic_ULCorn_Char = '/';
+	
+	Graphic_Chars_Mode = SIMULATED_CHAR_SET_MODE;
+     }
+   else
+     {
+	Graphic_Chars_Mode = ALT_CHAR_SET_MODE;
+	Graphic_LTee_Char = SLSMG_LTEE_CHAR;
+	Graphic_UTee_Char = SLSMG_UTEE_CHAR;
+	Graphic_LLCorn_Char = SLSMG_LLCORN_CHAR;
+	Graphic_HLine_Char = SLSMG_HLINE_CHAR;
+	Graphic_VLine_Char = SLSMG_VLINE_CHAR;
+	Graphic_ULCorn_Char = SLSMG_ULCORN_CHAR;
+	
+	Graphic_Chars_Mode = ALT_CHAR_SET_MODE;   
+     }
+}
+/*}}}*/
 /*}}}*/
 
 static void perform_cleanup (void)

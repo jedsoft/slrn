@@ -51,6 +51,7 @@ OBJDIR = objs#
 
 OBJS = $(OBJDIR)/art.o \
        $(OBJDIR)/art_misc.o \
+       $(OBJDIR)/art_sort.o \
        $(OBJDIR)/chmap.o \
        $(OBJDIR)/decode.o \
        $(OBJDIR)/editscore.o \
@@ -120,6 +121,9 @@ $(OBJDIR)/art_misc.o: art.c config.h slrnfeat.h jdmacros.h slrn.h group.h server
                  score.h menu.h util.h xover.h chmap.h decode.h mime.h \
                  snprintf.h
 	$(CC) -c $(CFLAGS) -o $(OBJDIR)/art_misc.o art_misc.c
+$(OBJDIR)/art_sort.o: art_sort.c jdmacros.h slrn.h group.h art.h art_sort.h \
+                 misc.h hash.h util.h snprintf.h hooks.h menu.h
+	$(CC) -c $(CFLAGS) -o $(OBJDIR)/art_sort.o art_sort.c
 $(OBJDIR)/chmap.o: chmap.c config.h slrnfeat.h jdmacros.h misc.h ttymsg.h \
                  util.h chmap.h group.h art.h charmaps.h \
                  snprintf.h

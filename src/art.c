@@ -48,6 +48,7 @@
 #include "slrn.h"
 #include "group.h"
 #include "art.h"
+#include "art_sort.h"
 #include "misc.h"
 #include "post.h"
 /* #include "clientlib.h" */
@@ -121,7 +122,6 @@ int Slrn_Query_Next_Article = 1;
 int Slrn_Query_Next_Group = 1;
 int Slrn_Auto_CC_To_Poster = 1;
 int Slrn_Use_Tmpdir = 0;
-int Slrn_Threads_Visible = 0;
 int Slrn_Use_Header_Numbers = 1;
 int Slrn_Warn_Followup_To = 1;
 int Slrn_Color_By_Score = 3;
@@ -137,41 +137,27 @@ int Slrn_Sig_Is_End_Of_Article = 0;
 int Slrn_Spoiler_Char = 42;
 int Slrn_Spoiler_Display_Mode = 1;
 #endif
-int Slrn_New_Subject_Breaks_Threads = 0;
 
 #if SLRN_HAS_UUDEVIEW
 int Slrn_Use_Uudeview = 1;
 #endif
 
-int Slrn_Simulate_Graphic_Chars = 0;
 int Slrn_Del_Article_Upon_Read = 1;
 
 char *Slrn_Current_Group_Name;
 Slrn_Header_Type *Slrn_First_Header;
 Slrn_Header_Type *Slrn_Current_Header;
 
+Slrn_Header_Type *_art_Headers;
+
 /* range of articles on server for current group */
 int Slrn_Server_Min, Slrn_Server_Max;
 
-/* Sorting mode:
- *   0 No sorting
- *   1 sort by threads
- *   2 sort by subject
- *   3 sort by subject and threads
- *   4 sort by score
- *   5 sort by score and threads
- *   6 sort by score then by subject
- *   7 thread, then sort by score then subject
- *   8 sort by date
+/* If +1, threads are all collapsed.  If zero, none are.  If -1, some may
+ * be and some may not.  In other words, if -1, this variable should not
+ * be trusted.
  */
-#define SORT_BY_THREADS  1
-#define SORT_BY_SUBJECT  2
-#define SORT_BY_SCORE   4
-#define SORT_BY_DATE	8
-
-int Slrn_Sorting_Mode = (SORT_BY_THREADS|SORT_BY_SUBJECT);
-
-#define ALL_THREAD_FLAGS (FAKE_PARENT | FAKE_CHILDREN | FAKE_HEADER_HIGH_SCORE)
+int _art_Threads_Collapsed = 0;
 
 /*}}}*/
 /*{{{ static global variables */
@@ -200,31 +186,11 @@ static Slrn_Group_Type *Current_Group; /* group being processed */
 
 static int Total_Num_Headers;	       /* headers retrieved from server.  This
 					* number is used only by update meters */
-static Slrn_Header_Type *Headers;
 static int Last_Cursor_Row;	       /* row where --> cursor last was */
 static Slrn_Header_Type *Header_Showing;    /* header whose article is selected */
 static Slrn_Header_Type *Last_Read_Header;
 static int Article_Visible;	       /* non-zero if article window is visible */
 static char Output_Filename[SLRN_MAX_PATH_LEN];
-static int Headers_Threaded;
-
-/* If +1, threads are all collapsed.  If zero, none are.  If -1, some may
- * be and some may not.  In other words, if -1, this variable should not
- * be trusted.
- */
-static int Threads_Collapsed = 0;
-
-static int Graphic_LTee_Char = SLSMG_LTEE_CHAR;
-static int Graphic_UTee_Char = SLSMG_UTEE_CHAR;
-static int Graphic_LLCorn_Char = SLSMG_LLCORN_CHAR;
-static int Graphic_HLine_Char = SLSMG_HLINE_CHAR;
-static int Graphic_VLine_Char = SLSMG_VLINE_CHAR;
-static int Graphic_ULCorn_Char = SLSMG_ULCORN_CHAR;
-
-#define ALT_CHAR_SET_MODE	1
-#define SIMULATED_CHAR_SET_MODE	2
-
-static int Graphic_Chars_Mode = ALT_CHAR_SET_MODE;
 
 #define HEADER_TABLE_SIZE 1250
 static Slrn_Header_Type *Header_Table[HEADER_TABLE_SIZE];
@@ -252,13 +218,10 @@ int Slrn_Verbatim_Marks_Hidden = 0;
 
 static void toggle_header_formats (void);
 static void slrn_art_hangup (int);
-static void sort_threads (void);
 static void hide_or_unhide_quotes (void);
 static void art_update_screen (void);
 static void art_next_unread (void);
 static void art_quit (void);
-static void thread_headers (void);
-static void sort_by_threads (void);
 static int select_header (Slrn_Header_Type *, int, int);
 static int select_article (int);
 static void quick_help (void);
@@ -529,7 +492,7 @@ static void free_header (Slrn_Header_Type *h)
 
 static void free_headers (void)
 {
-   Slrn_Header_Type *next, *h = Headers;
+   Slrn_Header_Type *next, *h = _art_Headers;
    
    while (h != NULL)
      {
@@ -1571,7 +1534,7 @@ static void toggle_header_tag (void) /*{{{*/
 	Slrn_Header_Type *h;
 	
 	Slrn_Prefix_Arg_Ptr = NULL;
-	h = Headers;
+	h = _art_Headers;
 	while (h != NULL)
 	  {
 	     h->flags &= ~HEADER_TAGGED;
@@ -1641,11 +1604,11 @@ int slrn_next_tagged_header (void) /*{{{*/
 /*}}}*/
 /*{{{ Header specific functions */
 
-static void find_header_line_num (void) /*{{{*/
+void _art_find_header_line_num (void) /*{{{*/
 {
    Slrn_Full_Screen_Update = 1;
    find_non_hidden_header ();
-   Slrn_Header_Window.lines = (SLscroll_Type *) Headers;
+   Slrn_Header_Window.lines = (SLscroll_Type *) _art_Headers;
    Slrn_Header_Window.current_line = (SLscroll_Type *) Slrn_Current_Header;
    SLscroll_find_line_num (&Slrn_Header_Window);
 }
@@ -1667,10 +1630,10 @@ static void init_header_window_struct (void) /*{{{*/
 	Slrn_Header_Window.cannot_scroll = 2;
      }
 
-   Slrn_Header_Window.lines = (SLscroll_Type *) Headers;
+   Slrn_Header_Window.lines = (SLscroll_Type *) _art_Headers;
    art_winch ();		       /* get row information correct */
    
-   find_header_line_num ();
+   _art_find_header_line_num ();
 }
 
 /*}}}*/
@@ -1745,7 +1708,7 @@ static void for_all_headers (void (*func)(Slrn_Header_Type *), int all) /*{{{*/
    
    if (all) end = NULL; else end = Slrn_Current_Header;
    
-   h = Headers;
+   h = _art_Headers;
    
    while (h != end)
      {
@@ -1767,7 +1730,7 @@ int slrn_goto_header (Slrn_Header_Type *header, int read_flag) /*{{{*/
    
    Slrn_Current_Header = h;
    if (h->flags & HEADER_HIDDEN) slrn_uncollapse_this_thread (h, 0);
-   find_header_line_num ();
+   _art_find_header_line_num ();
    
    if (read_flag) select_article (1);
    return 0;
@@ -1976,7 +1939,7 @@ static void get_header_real_name (Slrn_Header_Type *h) /*{{{*/
 
 /*}}}*/
 
-static Slrn_Header_Type *find_header_from_msgid (char *r0, char *r1) /*{{{*/
+Slrn_Header_Type *_art_find_header_from_msgid (char *r0, char *r1) /*{{{*/
 {
    unsigned long hash;
    Slrn_Header_Type *h;
@@ -2001,7 +1964,7 @@ static Slrn_Header_Type *find_header_from_msgid (char *r0, char *r1) /*{{{*/
 
 Slrn_Header_Type *slrn_find_header_with_msgid (char *msgid) /*{{{*/
 {
-   return find_header_from_msgid (msgid, msgid + strlen (msgid));
+   return _art_find_header_from_msgid (msgid, msgid + strlen (msgid));
 }
 
 /*}}}*/
@@ -2014,14 +1977,14 @@ static void goto_article (void) /*{{{*/
    if (-1 == slrn_read_integer (_("Goto article: "), NULL, &want_n))
      return;
    
-   h = Headers;
+   h = _art_Headers;
    while (h != NULL)
      {
 	if (h->number == want_n)
 	  {
 	     Slrn_Current_Header = h;
 	     if (h->flags & HEADER_HIDDEN) slrn_uncollapse_this_thread (h, 0);
-	     find_header_line_num ();
+	     _art_find_header_line_num ();
 	     return;
 	  }
 	
@@ -3513,8 +3476,8 @@ static void header_pagedn (void) /*{{{*/
 
 static void header_bob (void) /*{{{*/
 {
-   Slrn_Current_Header = Headers;
-   find_header_line_num ();
+   Slrn_Current_Header = _art_Headers;
+   _art_find_header_line_num ();
 }
 
 /*}}}*/
@@ -3549,7 +3512,7 @@ static int prev_unread (void) /*{{{*/
    if (h->flags & HEADER_HIDDEN)
      slrn_uncollapse_this_thread (h, 0);
 
-   find_header_line_num ();
+   _art_find_header_line_num ();
    return 1;
 }
 
@@ -3592,7 +3555,7 @@ int slrn_next_unread_header (void) /*{{{*/
    if (h->flags & HEADER_HIDDEN)
      slrn_uncollapse_this_thread (h, 0);
      
-   find_header_line_num ();
+   _art_find_header_line_num ();
 
    return 1;
 }
@@ -3658,7 +3621,7 @@ static void next_high_score (void) /*{{{*/
    if (l->flags & HEADER_HIDDEN) slrn_uncollapse_this_thread (l, 0);
    
    Slrn_Current_Header = l;
-   find_header_line_num ();
+   _art_find_header_line_num ();
    
    if (Article_Visible)
      {
@@ -3712,7 +3675,7 @@ static void next_header_same_subject (void) /*{{{*/
    
    if (l->flags & HEADER_HIDDEN) slrn_uncollapse_this_thread (l, 0);
    Slrn_Current_Header = l;
-   find_header_line_num ();
+   _art_find_header_line_num ();
    if ((Same_Subject_Start_Header != NULL)
        && (Article_Visible))
      {
@@ -4334,331 +4297,6 @@ static void print_article_cmd (void) /*{{{*/
 
 /*}}}*/
 
-/*{{{ sorting header functions */
-
-static int subject_cmp (char *sa, char *sb) /*{{{*/
-{
-   char *end_a = sa + strlen (sa);
-   char *end_b = sb + strlen (sb);
-   char *was;
-   
-   /* find "(was: ...)" and set end_[ab] */
-   if (NULL != (was = strstr (sa, "(was:"))
-       && (was != sa) && (*(end_a - 1) == ')'))
-     end_a = was;
-   
-   if (NULL != (was = strstr (sb, "(was:"))
-       && (was != sb) && (*(end_b - 1) == ')'))
-     end_b = was;
-   
-   /* skip past re: */
-   while (*sa == ' ') sa++;
-   while (*sb == ' ') sb++;
-
-   if (((*sa | 0x20) == 'r') && ((*(sa + 1) | 0x20) == 'e')
-       && (*(sa + 2) == ':'))
-     {
-	sa += 3;
-     }
-   
-   if (((*sb | 0x20) == 'r') && ((*(sb + 1) | 0x20) == 'e')
-       && (*(sb + 2) == ':'))
-     {
-	sb += 3;
-     }
-   
-   while (1)
-     {
-	char cha, chb;
-
-	while ((cha = *sa) == ' ') sa++;
-	while ((chb = *sb) == ' ') sb++;
-
-	if ((sa == end_a) && (sb == end_b))
-	  return 0;
-	
-	/* This hack sorts "(3/31)" before "(25/31)" */
-	if (isdigit (cha) && isdigit (chb))
-	  {
-	     int a = atoi (sa), b = atoi (sb);
-	     if (a != b)
-	       return a - b;
-	  }
-	
-	cha = UPPER_CASE(cha);
-	chb = UPPER_CASE(chb);
-	
-	if (cha != chb)
-	  return (int) cha - (int) chb;
-	
-	sa++;
-	sb++;
-     }
-}
-
-/*}}}*/
-
-static int header_subj_cmp (Slrn_Header_Type **ap, Slrn_Header_Type **bp) /*{{{*/
-{
-   int cmp;
-   Slrn_Header_Type *a = *ap, *b = *bp;
-   int ahigh, bhigh;
-   
-   ahigh = (0 != (a->flags & (HEADER_HIGH_SCORE | FAKE_HEADER_HIGH_SCORE)));
-   bhigh = (0 != (b->flags & (HEADER_HIGH_SCORE | FAKE_HEADER_HIGH_SCORE)));
-   
-   if (ahigh == bhigh)
-     {
-	cmp = subject_cmp (a->subject, b->subject);
-	if (!cmp) return a->number - b->number;
-     }
-   else cmp = bhigh - ahigh;
-   
-   return cmp;
-}
-
-/*}}}*/
-
-static int header_date_cmp (Slrn_Header_Type **ap, Slrn_Header_Type **bp) /*{{{*/
-{
-   Slrn_Header_Type *a = *ap, *b = *bp;
-   long ahigh, bhigh;
-   
-   ahigh = (0 != (a->flags & (HEADER_HIGH_SCORE | FAKE_HEADER_HIGH_SCORE)));
-   bhigh = (0 != (b->flags & (HEADER_HIGH_SCORE | FAKE_HEADER_HIGH_SCORE)));
-   
-   if (ahigh == bhigh)
-     {
-	ahigh = slrn_date_to_order_parm (a->date);
-	bhigh = slrn_date_to_order_parm (b->date);
-	
-	if (ahigh == bhigh)
-	  return a->number - b->number;
-	
-	if (Slrn_Sorting_Mode & SORT_BY_SUBJECT)
-	  {
-	     long tmp = ahigh;
-	     ahigh = bhigh;
-	     bhigh = tmp;
-	  }
-     }
-
-   return (int) (bhigh - ahigh);
-}
-
-/*}}}*/
-
-typedef int (*Header_Cmp_Func_Type)(Slrn_Header_Type **, Slrn_Header_Type **);
-
-static void sort_by_function (Header_Cmp_Func_Type cmp_func) /*{{{*/
-{
-   Slrn_Header_Type **header_list, *h;
-   unsigned int i, nheaders;
-   void (*qsort_fun) (char *, unsigned int,
-		      unsigned int, int (*)(Slrn_Header_Type **, Slrn_Header_Type **));
-   
-   /* This is a silly hack to make up for braindead compilers and the lack of
-    * uniformity in prototypes for qsort.
-    */
-   qsort_fun = (void (*)(char *, unsigned int,
-			 unsigned int, int (*)(Slrn_Header_Type **, Slrn_Header_Type **)))
-     qsort;
-   
-   /* Count the number we need to sort. */
-   nheaders = 0;
-   h = Slrn_First_Header;
-   while (h != NULL)
-     {
-	if (h->parent == NULL) nheaders++;
-	h = h->real_next;
-     }
-   if (nheaders < 2) return;
-   
-   if (NULL == (header_list = (Slrn_Header_Type **) SLCALLOC (sizeof (Slrn_Header_Type *), nheaders + 1)))
-     {
-	slrn_error (_("sort_headers(): memory allocation failure."));
-	return;
-     }
-   
-   h = Slrn_First_Header;
-   nheaders = 0;
-   while (h != NULL)
-     {
-	if (h->parent == NULL)
-	  header_list[nheaders++] = h;
-	h = h->real_next;
-     }
-   header_list[nheaders] = NULL;
-   
-   (*qsort_fun) ((char *) header_list, nheaders, sizeof (Slrn_Header_Type *), cmp_func);
-   
-   /* What to do now depends upon the current threading state. */
-   
-   if (Headers_Threaded == 0)
-     {
-	header_list[0]->next = header_list[1];
-	header_list[0]->prev = NULL;
-	
-	for (i = 1; i < nheaders; i++)
-	  {
-	     h = header_list[i];
-	     h->next = header_list[i + 1];
-	     h->prev = header_list[i - 1];
-	  }
-     }
-   else
-     {
-	slrn_collapse_threads (0);
-	/* The headers are threaded so we simply have sorted parents.  Arrange
-	 * those.
-	 */
-	h = NULL;
-	for (i = 0; i <= nheaders; i++)
-	  {
-	     Slrn_Header_Type *h1 = header_list[i];
-	     if (h != NULL)
-	       {
-		  h->sister = h1;
-		  while (h->child != NULL)
-		    {
-		       h = h->child;
-		       while (h->sister != NULL) h = h->sister;
-		    }
-		  h->next = h1;
-	       }
-	     if (h1 != NULL) h1->prev = h;
-	     h = h1;
-	  }
-     }
-   
-   Headers = header_list[0];
-   find_header_line_num ();
-   
-   Slrn_Full_Screen_Update = 1;
-   SLFREE (header_list);
-   
-   if (Slrn_Threads_Visible)
-     {
-	slrn_uncollapse_threads (1);
-     }
-}
-
-/*}}}*/
-
-static void sort_by_subject (void) /*{{{*/
-{
-   sort_by_function (header_subj_cmp);
-}
-
-/*}}}*/
-
-static void sort_by_date (void) /*{{{*/
-{
-   sort_by_function (header_date_cmp);
-}
-
-/*}}}*/
-
-static int header_score_cmp (Slrn_Header_Type **a, Slrn_Header_Type **b) /*{{{*/
-{
-   /* sort by *descending* score */
-   int cmp = (*b)->thread_score - (*a)->thread_score;
-   if (cmp == 0) 
-     {
-	if (Slrn_Sorting_Mode & SORT_BY_SUBJECT)
-	  return header_subj_cmp (a, b);
-	else 
-	  return (*a)->number - (*b)->number;
-     }
-   return cmp;
-}
-
-/*}}}*/
-
-static void sort_by_score (void) /*{{{*/
-{
-   sort_by_function (header_score_cmp);
-}
-
-/*}}}*/
-
-static void sort_by_server_number (void) /*{{{*/
-{
-   Slrn_Header_Type *h;
-   
-   /* This is easy since the real_next, prev are already ordered. */
-   h = Slrn_First_Header;
-   while (h != NULL)
-     {
-	Slrn_Header_Type *next = h->real_next;
-	h->next = h->real_next;
-	h->prev = h->real_prev;
-	h->num_children = 0;
-	h->flags &= ~(HEADER_HIDDEN | ALL_THREAD_FLAGS);
-	h->sister = h->parent = h->child = NULL;
-	h->thread_score = h->score;
-	h = next;
-     }
-   
-   /* Now find out where to put the Headers pointer */
-   while (Headers->prev != NULL) Headers = Headers->prev;
-   
-   Headers_Threaded = 0;
-   
-   find_header_line_num ();
-   Slrn_Full_Screen_Update = 1;
-}
-
-/*}}}*/
-
-static void sort_by_threads (void) /*{{{*/
-{
-   thread_headers ();
-   sort_threads ();
-   
-   if (Slrn_Threads_Visible)
-     {
-	slrn_uncollapse_threads (1);
-     }
-   Slrn_Full_Screen_Update = 1;
-   Headers_Threaded = 1;
-}
-
-/*}}}*/
-
-static void toggle_sort (void) /*{{{*/
-{
-   int rsp;
-   
-   rsp = slrn_sbox_sorting_method ();
-   if (rsp != -1)
-     {
-	Slrn_Sorting_Mode = rsp;
-	slrn_sort_by_sorting_mode ();
-     }
-}
-
-/*}}}*/
-
-void slrn_sort_by_sorting_mode (void) /*{{{*/
-{
-   if ((Slrn_Sorting_Mode & SORT_BY_THREADS) == 0)
-     sort_by_server_number ();
-   else
-     sort_by_threads ();
-   
-   if (Slrn_Sorting_Mode & SORT_BY_SCORE)
-     sort_by_score ();
-   else
-   if (Slrn_Sorting_Mode & SORT_BY_DATE)
-     sort_by_date ();
-   else if (Slrn_Sorting_Mode & SORT_BY_SUBJECT)
-     sort_by_subject ();
-}
-
-/*}}}*/
-
-/*}}}*/
 /*{{{ Thread related functions */
 
 static void find_non_hidden_header (void) /*{{{*/
@@ -4688,7 +4326,7 @@ void slrn_collapse_threads (int sync_now) /*{{{*/
    Slrn_Header_Type *h = Slrn_First_Header;
    
    if ((h == NULL) 
-       || (Threads_Collapsed == 1))
+       || (_art_Threads_Collapsed == 1))
      return;   
    
    while (h != NULL)
@@ -4703,10 +4341,10 @@ void slrn_collapse_threads (int sync_now) /*{{{*/
    
    find_non_hidden_header ();
 	
-   if (sync_now) find_header_line_num ();
+   if (sync_now) _art_find_header_line_num ();
 
    Slrn_Full_Screen_Update = 1;
-   Threads_Collapsed = 1;
+   _art_Threads_Collapsed = 1;
 }
 
 /*}}}*/
@@ -4716,7 +4354,7 @@ void slrn_uncollapse_threads (int sync_now) /*{{{*/
    Slrn_Header_Type *h = Slrn_First_Header;
    
    if ((h == NULL) 
-       || (0 == Threads_Collapsed))
+       || (0 == _art_Threads_Collapsed))
      return;
    
    while (h != NULL)
@@ -4725,8 +4363,8 @@ void slrn_uncollapse_threads (int sync_now) /*{{{*/
 	h = h->real_next;
      }
    Slrn_Full_Screen_Update = 1;
-   Threads_Collapsed = 0;
-   if (sync_now) find_header_line_num ();
+   _art_Threads_Collapsed = 0;
+   if (sync_now) _art_find_header_line_num ();
 }
 
 /*}}}*/
@@ -4777,7 +4415,7 @@ void slrn_uncollapse_this_thread (Slrn_Header_Type *h, int sync_linenum) /*{{{*/
    Slrn_Header_Type *child;
    int back = 0;
    
-   /* if (Threads_Collapsed == 0) return; */
+   /* if (_art_Threads_Collapsed == 0) return; */
    
    while ((h->parent != NULL) && (h->prev != NULL))
      {
@@ -4800,7 +4438,7 @@ void slrn_uncollapse_this_thread (Slrn_Header_Type *h, int sync_linenum) /*{{{*/
 	Slrn_Header_Window.num_lines += h->num_children;
      }
 
-   Threads_Collapsed = -1;	       /* uncertain */
+   _art_Threads_Collapsed = -1;	       /* uncertain */
 }
 
 /*}}}*/
@@ -4810,7 +4448,7 @@ void slrn_collapse_this_thread (Slrn_Header_Type *h, int sync_linenum) /*{{{*/
    Slrn_Header_Type *child;
    int back = 0;
    
-   /* if (Threads_Collapsed == 1) return; */
+   /* if (_art_Threads_Collapsed == 1) return; */
    
    while ((h->parent != NULL) && (h->prev != NULL))
      {
@@ -4832,7 +4470,7 @@ void slrn_collapse_this_thread (Slrn_Header_Type *h, int sync_linenum) /*{{{*/
 	Slrn_Header_Window.num_lines -= h->num_children;
      }
 
-   Threads_Collapsed = -1;	       /* uncertain */
+   _art_Threads_Collapsed = -1;	       /* uncertain */
 }
 
 /*}}}*/
@@ -4841,7 +4479,7 @@ static void toggle_collapse_threads (void) /*{{{*/
 {
    if (Slrn_Prefix_Arg_Ptr != NULL)
      {
-	if (Threads_Collapsed == 1)
+	if (_art_Threads_Collapsed == 1)
 	  {
 	     slrn_uncollapse_threads (0);
 	  }
@@ -4857,125 +4495,7 @@ static void toggle_collapse_threads (void) /*{{{*/
 	
 	find_non_hidden_header ();
      }
-   find_header_line_num ();
-}
-
-/*}}}*/
-
-static Slrn_Header_Type *sort_thread_node (Slrn_Header_Type *h, char *tree) /*{{{*/
-{
-   Slrn_Header_Type *last = NULL;
-   static unsigned int level;
-   unsigned char vline_char;
-   
-   if (h == NULL) return NULL;
-
-   vline_char = Graphic_VLine_Char;
-
-   while (1)
-     {
-	last = h;
-	
-	if (h->child != NULL)
-	  {
-	     Slrn_Header_Type *child = h->child;
-	     unsigned int tree_level;
-	     unsigned int save_level = level;
-	     
-	     h->next = child;
-	     child->prev = h;
-	     
-	     
-	     if (level == 0)
-	       {
-		  if (h->flags & FAKE_CHILDREN)
-		    {
-		       if ((child->flags & FAKE_PARENT) == 0)
-			 {
-			    level = 1;
-			 }
-		    }
-	       }
-	     else if (h->flags & FAKE_PARENT)
-	       {
-		  if (h->sister != NULL) tree[0] = vline_char;
-		  else tree[0] = ' ';
-		  tree[1] = ' ';
-		  level = 1;
-	       }
-	     
-	     tree_level = 2 * level - 2;
-	     
-	     if (level && (tree_level < MAX_TREE_SIZE - 2))
-	       {
-		  if (h->sister != NULL)
-		    {
-		       if (((h->sister->flags & FAKE_PARENT) == 0)
-			   || (h->flags & FAKE_PARENT))
-			 {
-			    tree[tree_level] = vline_char;
-			 }
-		       else tree[tree_level] = ' ';
-		    }
-		  else
-		    {
-		       if ((h->parent == NULL) && (h->flags & FAKE_CHILDREN))
-			 {
-			    tree[tree_level] = vline_char;
-			 }
-		       else tree[tree_level] = ' ';
-		    }
-		  tree[tree_level + 1] = ' ';
-		  tree[tree_level + 2] = 0;
-	       }
-	     
-	     level++;
-	     last = sort_thread_node (h->child, tree);
-	     level--;
-	     
-	     if (level &&
-		 ((tree_level < MAX_TREE_SIZE - 2)))
-	       tree[tree_level] = 0;
-	     
-	     level = save_level;
-	  }
-	
-	if (h->flags & FAKE_PARENT) *tree = 0;
-	
-	slrn_free (h->tree_ptr);
-	h->tree_ptr = NULL;
-
-	if (*tree)
-	  h->tree_ptr = slrn_strmalloc (tree, 0);
-
-	h = h->sister;
-	last->next = h;
-	if (h == NULL) break;
-	h->prev = last;
-     }
-   return last;
-}
-
-/*}}}*/
-
-static unsigned int compute_num_children (Slrn_Header_Type *h) /*{{{*/
-{
-   unsigned int n = 0, dn;
-   
-   h = h->child;
-   while (h != NULL)
-     {
-	n++;
-	if (h->child == NULL) dn = 0;
-	else
-	  {
-	     dn = compute_num_children (h);
-	     n += dn;
-	  }
-	h->num_children = dn;
-	h = h->sister;
-     }
-   return n;
+   _art_find_header_line_num ();
 }
 
 /*}}}*/
@@ -4983,7 +4503,7 @@ static unsigned int compute_num_children (Slrn_Header_Type *h) /*{{{*/
 unsigned int slrn_thread_size (Slrn_Header_Type *h)
 {
    if (h == NULL) return 0;
-   return 1 + compute_num_children (h);
+   return 1 + h->num_children;
 }
 
 int slrn_is_thread_collapsed (Slrn_Header_Type *h)
@@ -4993,415 +4513,6 @@ int slrn_is_thread_collapsed (Slrn_Header_Type *h)
    if (h->child == NULL) return 0;
    return (h->child->flags & HEADER_HIDDEN);
 }
-
-
-static void sort_threads (void) /*{{{*/
-{
-   Slrn_Header_Type *h;
-   char tree[MAX_TREE_SIZE];
-   
-   h = Slrn_First_Header;
-   Headers = NULL;
-   
-   if (h == NULL) return;
-   while (h != NULL)
-     {
-	if ((h->parent == NULL) && (Headers == NULL))
-	  Headers = h;
-	
-	h->prev = h->next = NULL;
-	h->flags &= ~HEADER_HIDDEN;
-	h->thread_score = h->score;
-	h = h->real_next;
-     }
-   Threads_Collapsed = 0;
-   
-   if (Headers == NULL)
-     slrn_exit_error (_("Internal Error."));
-   
-   *tree = 0;
-   sort_thread_node (Headers, tree);
-   while (Headers->prev != NULL) Headers = Headers->prev;
-   
-   slrn_collapse_threads (0);
-   
-   h = Headers;
-   while (h != NULL)
-     {
-	if (h->child == NULL) h->num_children = 0;
-	else
-	  {
-	     Slrn_Header_Type *next;
-	     h->num_children = compute_num_children (h);
-	     next = h->next;
-	     while ((next != NULL) && (next->parent != NULL))
-	       {
-		  if (next->flags & HEADER_HIGH_SCORE)
-		    h->flags |= FAKE_HEADER_HIGH_SCORE;
-		  if (next->score > h->thread_score)
-		    h->thread_score = next->score;
-		  next = next->next;
-	       }
-	  }
-	h = h->sister;
-     }
-   find_header_line_num ();
-}
-
-/*}}}*/
-
-static void link_same_subjects (void) /*{{{*/
-{
-   Slrn_Header_Type **header_list, *h;
-   unsigned int i, nparents;
-   int use_hook = 0;
-   void (*qsort_fun) (char *, unsigned int, unsigned int, int (*)(Slrn_Header_Type **, Slrn_Header_Type **));
-   
-   /* This is a silly hack to make up for braindead compilers and the lack of
-    * uniformity in prototypes for qsort.
-    */
-   qsort_fun = (void (*)(char *,
-			 unsigned int, unsigned int,
-			 int (*)(Slrn_Header_Type **, Slrn_Header_Type **)))
-     qsort;
-   
-   h = Slrn_First_Header;
-   nparents = 0;
-   while (h != NULL)
-     {
-	if (h->parent == NULL)
-	  nparents++;
-	h = h->real_next;
-     }
-   if (nparents < 2) return;
-   
-   
-   if (NULL == (header_list = (Slrn_Header_Type **) SLCALLOC (sizeof (Slrn_Header_Type *), nparents)))
-     {
-	slrn_error (_("link_same_subjects: memory allocation failure."));
-	return;
-     }
-   
-   h = Slrn_First_Header;
-   i = 0;
-   while (i < nparents)
-     {
-	if (h->parent == NULL) header_list[i++] = h;
-	h = h->real_next;
-     }
-   
-   (*qsort_fun) ((char *) header_list,
-		 nparents, sizeof (Slrn_Header_Type *), header_subj_cmp);
-   
-   if (0 != slrn_is_hook_defined(HOOK_SUBJECT_COMPARE))
-     use_hook = 1;
-   
-   h = header_list[0];
-   for (i = 1; i < nparents; i++)
-     {
-	Slrn_Header_Type *h1 = header_list[i];
-	int differ;
-	
-	differ = subject_cmp (h->subject, h1->subject);
-	
-	if (differ && use_hook)
-	  {
-	     int rslt;
-	     
-	     (void) slrn_run_hooks (HOOK_SUBJECT_COMPARE, 2, h->subject, h1->subject);
-	     
-	     if (-1 != SLang_pop_integer (&rslt))
-	       differ = rslt;
-	  }
-	
-	if (differ == 0)
-	  {
-	     if (h->child == NULL)
-	       {
-		  h->child = h1;
-	       }
-	     else
-	       {
-		  Slrn_Header_Type *child = h->child;
-		  while (child->sister != NULL) child = child->sister;
-		  child->sister = h1;
-	       }
-	     
-	     h1->parent = h;
-	     h->flags |= FAKE_CHILDREN;
-	     h1->flags |= FAKE_PARENT;
-	     if (h1->flags & FAKE_CHILDREN)
-	       {
-		  /* Well, we have to link them up to the new parent.  That
-		   * is, h1 will become their sister.  So, extract the
-		   * adopted children of h1 and make them the sister,
-		   */
-		  Slrn_Header_Type *child = h1->child, *last_child;
-		  last_child = child;
-		  
-		  /* child CANNOT be NULL here!! (the parent claims to have
-		   *				  children) */
-		  child = child->sister;
-		  while (child != NULL)
-		    {
-		       if (child->flags & FAKE_PARENT)
-			 break;
-		       last_child = child;
-		       child = child->sister;
-		    }
-		  
-		  if (last_child->flags & FAKE_PARENT)
-		    {
-		       child = last_child;
-		       h1->child = NULL;
-		    }
-		  else last_child->sister = NULL;
-		  
-		  last_child = child;
-		  while (child != NULL)
-		    {
-		       child->parent = h;
-		       /* No need to set fake parent flags since fake children
-			* are all group together.  That is, once you loop
-			* through the sisters and find one, you have found them
-			* all.
-			*/
-		       child = child->sister;
-		    }
-		  
-		  /* Now h1 will become the sister. */
-		  child = h1;
-		  while (child->sister != NULL) child = child->sister;
-		  child->sister = last_child;
-		  h1->flags &= ~FAKE_CHILDREN;
-	       }
-	  }
-	else h = h1;
-     }
-   SLFREE (header_list);
-}
-
-/*}}}*/
-
-typedef struct /*{{{*/
-{
-   unsigned long ref_hash;
-   Slrn_Header_Type *h;
-}
-
-/*}}}*/
-Relative_Type;
-
-static void link_lost_relatives (void) /*{{{*/
-{
-   unsigned int n, i, j;
-   Slrn_Header_Type *h;
-   Relative_Type *relatives;
-   
-   /* count the number of possible relatives */
-   n = 0;
-   h = Slrn_First_Header;
-   while (h != NULL)
-     {
-	if ((h->parent == NULL)
-	    && (h->refs != NULL)
-	    && (*h->refs != 0)) n++;
-	
-	h = h->real_next;
-     }
-   if (n < 2) return;
-   
-   relatives = (Relative_Type *) slrn_malloc (sizeof (Relative_Type) * n, 0, 0);
-   if (relatives == NULL)
-     return;
-   
-   n = 0;
-   h = Slrn_First_Header;
-   while (h != NULL)
-     {
-	if ((h->parent == NULL)
-	    && (h->refs != NULL)
-	    && (*h->refs != 0))
-	  {
-	     unsigned char *r, *ref_begin;
-	     
-	     r = (unsigned char *) h->refs;
-	     while (*r && (*r != '<')) r++;
-	     if (*r == '<')
-	       {
-		  ref_begin = r;
-		  while (*r && (*r != '>')) r++;
-		  if (*r == '>') r++;
-		  relatives[n].ref_hash = slrn_compute_hash (ref_begin, r);
-		  relatives[n].h = h;
-		  n++;
-	       }
-	  }
-	h = h->real_next;
-     }
-   
-   for (i = 0; i < n; i++)
-     {
-	unsigned long ref_hash;
-	Relative_Type *ri = relatives + i;
-	Slrn_Header_Type *rih;
-	
-	ref_hash = ri->ref_hash;
-	rih = ri->h;
-	
-	for (j = i + 1; j < n; j++)
-	  {
-	     if (relatives[j].ref_hash == ref_hash)
-	       {
-		  Slrn_Header_Type *rjh = relatives[j].h;
-		  
-		  if ((Slrn_New_Subject_Breaks_Threads & 1)
-		      && (rih->subject != NULL)
-		      && (rjh->subject != NULL)
-		      && (0 != subject_cmp (rih->subject, rjh->subject)))
-		    continue;
-		  
-		  if (rih->parent != NULL)
-		    {
-		       rih->sister = rjh;
-		       rjh->parent = rih->parent;
-		    }
-		  else if (rih->child == NULL)
-		    {
-		       rih->child = rjh;
-		       rjh->parent = rih;
-		       rih->flags |= FAKE_CHILDREN;
-		    }
-		  else
-		    {
-		       Slrn_Header_Type *child = rih->child;
-		       /* This is an important step.  All adopted children
-			* get linked to the LAST child.  This ordering
-			* assumption is used elsewhere.
-			*/
-		       while (child->sister != NULL) child = child->sister;
-		       child->sister = rjh;
-		       rjh->parent = rih;
-		       rih->flags |= FAKE_CHILDREN;
-		    }
-		  rjh->flags |= FAKE_PARENT;
-		  break;
-	       }
-	  }
-     }
-   SLFREE (relatives);
-}
-
-/*}}}*/
-
-static void thread_headers (void) /*{{{*/
-{
-   Slrn_Header_Type *h, *ref;
-   char *r0, *r1, *rmin;
-   
-   h = Slrn_First_Header;
-   while (h != NULL)
-     {
-	h->next = h->prev = h->child = h->parent = h->sister = NULL;
-	h->flags &= ~ALL_THREAD_FLAGS;
-	slrn_free (h->tree_ptr);
-	h->tree_ptr = NULL;
-	h = h->real_next;
-     }
-   
-   /* SLMEMSET ((char *) Lost_Ancestors, 0, sizeof (Lost_Ancestors)); */
-   
-   slrn_message_now (_("Threading by references ..."));
-   h = Slrn_First_Header;
-   while (h != NULL)
-     {
-	if (*h->refs == 0)
-	  {
-	     h = h->real_next;
-	     continue;
-	  }
-	
-	rmin = h->refs;
-	r1 = rmin + strlen (rmin);
-	
-	while (1)
-	  {
-	     while ((r1 > rmin) && (*r1 != '>')) r1--;
-	     r0 = r1 - 1;
-	     while ((r0 >= rmin) && (*r0 != '<')) r0--;
-	     if ((r0 < rmin) || (r1 == rmin)) break;
-	     
-	     ref = find_header_from_msgid (r0, r1 + 1);
-	     
-	     if (ref != NULL)
-	       {
-		  Slrn_Header_Type *child, *rparent;
-		  
-		  if ((Slrn_New_Subject_Breaks_Threads & 1)
-		      && (h->subject != NULL)
-		      && (ref->subject != NULL)
-		      && (0 != subject_cmp (h->subject, ref->subject)))
-		    break;
-		  
-		  rparent = ref;
-		  while (rparent->parent != NULL) rparent = rparent->parent;
-		  if (rparent == h)
-		    {
-		       /* self referencing!!! */
-		       slrn_error (_("Article %d is part of reference loop!"), h->number);
-		    }
-		  else
-		    {
-		       h->parent = ref;
-		       child = ref->child;
-		       if (child == NULL) ref->child = h;
-		       else
-			 {
-			    while (child->sister != NULL) child = child->sister;
-			    child->sister = h;
-			 }
-		       break;
-		    }
-	       }
-	     r1 = r0;
-	  }
-	h = h->real_next;
-     }
-   
-   /* No perform a re-arrangement such that those with the no parents but
-    * share the same reference are placed side-by-side as sisters.
-    */
-   
-   slrn_message_now (_("Linking \"lost relatives\" ..."));
-   link_lost_relatives ();
-   
-   /* Now perform sort on subject to catch those that have fallen through the
-    * cracks, i.e., no references */
-   if (!(Slrn_New_Subject_Breaks_Threads & 2))
-     {
-	slrn_message_now (_("Linking articles with identical subjects ..."));
-	link_same_subjects ();
-     }
-   
-   /* Now link others up as sisters */
-   h = Slrn_First_Header;
-   while ((h != NULL) && (h->parent != NULL))
-     {
-	h = h->real_next;
-     }
-   
-   while (h != NULL)
-     {
-	Slrn_Header_Type *next;
-	next = h->real_next;
-	while ((next != NULL) && (next->parent != NULL))
-	  next = next->real_next;
-	h->sister = next;
-	h = next;
-     }
-}
-
-/*}}}*/
 
 /*}}}*/
 
@@ -5520,7 +4631,7 @@ static void header_generic_search (int dir, int type) /*{{{*/
    
    if (l->flags & HEADER_HIDDEN) slrn_uncollapse_this_thread (l, 0);
    Slrn_Current_Header = l;
-   find_header_line_num ();
+   _art_find_header_line_num ();
 }
 
 /*}}}*/
@@ -5782,7 +4893,7 @@ static void score_headers (int apply_kill) /*{{{*/
 	SLang_Error = 0;
      }
    if (apply_kill)
-     Slrn_Current_Header = Headers = Slrn_First_Header;
+     Slrn_Current_Header = _art_Headers = Slrn_First_Header;
    /* slrn_set_suspension (0); */
 }
 
@@ -5812,7 +4923,7 @@ void slrn_apply_scores (int apply_now) /*{{{*/
    Perform_Scoring = 1;
    get_missing_headers ();
    score_headers (0);
-   slrn_sort_by_sorting_mode ();
+   slrn_sort_headers ();
    slrn_goto_header (Slrn_Current_Header, 0);
 }
 
@@ -6081,7 +5192,7 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
 	  }
 	
 	if (Slrn_First_Header == NULL)
-	  Slrn_First_Header = Headers = h;
+	  Slrn_First_Header = _art_Headers = h;
 	else
 	  {
 	     h->real_next = Slrn_Current_Header->real_next;
@@ -6176,7 +5287,7 @@ static void insert_header (Slrn_Header_Type *ref) /*{{{*/
 	     h->real_prev = ref;
 	     
 	     if (h == Slrn_First_Header) Slrn_First_Header = ref;
-	     if (h == Headers) Headers = ref;
+	     if (h == _art_Headers) _art_Headers = ref;
 	     
 	     break;
 	  }
@@ -6226,12 +5337,12 @@ static int get_header_by_message_id (char *msgid,
    
    if ((msgid == NULL) || (*msgid == 0)) return -1;
    
-   ref = find_header_from_msgid (msgid, msgid + strlen (msgid));
+   ref = _art_find_header_from_msgid (msgid, msgid + strlen (msgid));
    if (ref != NULL)
      {
 	Slrn_Current_Header = ref;
 	if (reconstruct_thread == 0)
-	  find_header_line_num ();
+	  _art_find_header_line_num ();
 	Slrn_Full_Screen_Update = 1;
 	return 0;
      }
@@ -6255,7 +5366,7 @@ static int get_header_by_message_id (char *msgid,
    Slrn_Current_Header = ref;
    if (reconstruct_thread == 0)
      {
-	slrn_sort_by_sorting_mode ();
+	slrn_sort_headers ();
      }
    return 0;
 }
@@ -6411,7 +5522,7 @@ static void get_children_headers (void) /*{{{*/
 	return;
      }
    
-   slrn_sort_by_sorting_mode ();
+   slrn_sort_headers ();
    
    h = Slrn_Current_Header->child;
    if ((h != NULL) && thorough_search)
@@ -6422,7 +5533,7 @@ static void get_children_headers (void) /*{{{*/
 	 * headers, this would be unnecessary!
 	 */
 	get_children_headers_1 (h);
-	slrn_sort_by_sorting_mode ();
+	slrn_sort_headers ();
      }
    slrn_uncollapse_this_thread (Slrn_Current_Header, 1);
    
@@ -6510,7 +5621,7 @@ static void get_parent_header (void) /*{{{*/
 
    if (no_error_no_thread)
      {
-	slrn_sort_by_sorting_mode ();
+	slrn_sort_headers ();
 	if (SLKeyBoard_Quit == 0) get_children_headers ();
 	else Slrn_Prefix_Arg_Ptr = NULL;
      }
@@ -7003,7 +6114,7 @@ static void update_ranges (void) /*{{{*/
 /*{{{ art_quit */
 static void art_quit (void) /*{{{*/
 {
-   Slrn_Header_Type *h = Headers;
+   Slrn_Header_Type *h = _art_Headers;
    
 #if SLRN_HAS_SLANG
    (void) slrn_run_hooks (HOOK_ARTICLE_MODE_QUIT, 0);
@@ -7029,7 +6140,7 @@ static void art_quit (void) /*{{{*/
 	free_headers ();
      }
    
-   Slrn_First_Header = Headers = Slrn_Current_Header = NULL;
+   Slrn_First_Header = _art_Headers = Slrn_Current_Header = NULL;
    SLMEMSET ((char *) &Slrn_Header_Window, 0, sizeof (SLscroll_Window_Type));
    Total_Num_Headers = 0;
    
@@ -7117,23 +6228,23 @@ static void art_xpunge (void) /*{{{*/
    free_article ();
    free_kill_lists_and_update ();
    
-   save = Headers;
-   if (Headers != NULL)
+   save = _art_Headers;
+   if (_art_Headers != NULL)
      {
 	update_ranges ();
      }
    
-   while (Headers != NULL)
+   while (_art_Headers != NULL)
      {
-	if ((0 == (Headers->flags & HEADER_READ)) ||
-	    (Headers->flags & HEADER_TAGGED))
+	if ((0 == (_art_Headers->flags & HEADER_READ)) ||
+	    (_art_Headers->flags & HEADER_TAGGED))
 	  break;
-	Headers = Headers->next;
+	_art_Headers = _art_Headers->next;
      }
    
-   if (Headers == NULL)
+   if (_art_Headers == NULL)
      {
-	Headers = save;
+	_art_Headers = save;
 	art_quit ();
 	return;
      }
@@ -7221,8 +6332,8 @@ static void art_xpunge (void) /*{{{*/
      }
    
    Last_Read_Header = NULL;
-   h = Headers = Slrn_First_Header;
-   Headers->prev = NULL;
+   h = _art_Headers = Slrn_First_Header;
+   _art_Headers->prev = NULL;
    
    while (h != NULL)
      {
@@ -7234,7 +6345,7 @@ static void art_xpunge (void) /*{{{*/
 	h = next;
      }
    
-   slrn_sort_by_sorting_mode ();
+   slrn_sort_headers ();
    slrn_write_newsrc (1);
    
    Slrn_Full_Screen_Update = 1;
@@ -7688,7 +6799,6 @@ static SLKeymap_Function_Type Art_Functions [] = /*{{{*/
    A_KEY("toggle_quotes", toggle_quotes),
    A_KEY("toggle_rot13", toggle_rot13),
    A_KEY("toggle_signature", toggle_signature),
-   A_KEY("toggle_sort", toggle_sort),
 #if SLRN_HAS_VERBATIM_MARKS
    A_KEY("toggle_verbatim_marks", toggle_verbatim_marks),
 #endif
@@ -7724,6 +6834,7 @@ static SLKeymap_Function_Type Art_Functions [] = /*{{{*/
    A_KEY("shrink_window", shrink_window),
    A_KEY("skip_to_prev_group", skip_to_prev_group),
    A_KEY("toggle_show_author", toggle_header_formats),
+   A_KEY("toggle_sort", _art_toggle_sort),
    A_KEY("up", header_up),
 #endif
    A_KEY(NULL, NULL)
@@ -7819,6 +6930,7 @@ void slrn_init_article_mode (void) /*{{{*/
    SLkm_define_key  ("\033a", (FVOID_STAR) toggle_header_formats, Slrn_Article_Keymap);
    SLkm_define_key  ("\033d", (FVOID_STAR) thread_delete_cmd, Slrn_Article_Keymap);
    SLkm_define_key  ("\033p", (FVOID_STAR) get_parent_header, Slrn_Article_Keymap);
+   SLkm_define_key  ("\033S", (FVOID_STAR) _art_toggle_sort, Slrn_Article_Keymap);
    SLkm_define_key  ("\033t", (FVOID_STAR) toggle_collapse_threads, Slrn_Article_Keymap);
    SLkm_define_key  ("\r", (FVOID_STAR) art_pagedn, Slrn_Article_Keymap);
    SLkm_define_key  ("\t", (FVOID_STAR) skip_quoted_text, Slrn_Article_Keymap);
@@ -7887,7 +6999,6 @@ void slrn_init_article_mode (void) /*{{{*/
    SLkm_define_key  ("\033[D", (FVOID_STAR) art_left, Slrn_Article_Keymap);
    SLkm_define_key  ("\033OD", (FVOID_STAR) art_left, Slrn_Article_Keymap);
 #endif
-   SLkm_define_key  ("\033S", (FVOID_STAR) toggle_sort, Slrn_Article_Keymap);
    SLkm_define_key  ("^U", (FVOID_STAR) header_pageup, Slrn_Article_Keymap);
    SLkm_define_key  ("\033V", (FVOID_STAR) header_pageup, Slrn_Article_Keymap);
 #if defined(IBMPC_SYSTEM)
@@ -7990,37 +7101,6 @@ void slrn_set_header_flags (Slrn_Header_Type *h, unsigned int flags) /*{{{*/
 }
 /*}}}*/
 
-static void init_graphic_chars (void)
-{
-#ifndef IBMPC_SYSTEM
-   if (SLtt_Has_Alt_Charset == 0)
-     Slrn_Simulate_Graphic_Chars = 1;
-#endif
-
-   if (Slrn_Simulate_Graphic_Chars)
-     {
-	Graphic_LTee_Char = '+';
-	Graphic_UTee_Char = '+';
-	Graphic_LLCorn_Char = '`';
-	Graphic_HLine_Char = '-';
-	Graphic_VLine_Char = '|';
-	Graphic_ULCorn_Char = '/';
-	
-	Graphic_Chars_Mode = SIMULATED_CHAR_SET_MODE;
-	return;
-     }
-   
-   Graphic_Chars_Mode = ALT_CHAR_SET_MODE;
-   Graphic_LTee_Char = SLSMG_LTEE_CHAR;
-   Graphic_UTee_Char = SLSMG_UTEE_CHAR;
-   Graphic_LLCorn_Char = SLSMG_LLCORN_CHAR;
-   Graphic_HLine_Char = SLSMG_HLINE_CHAR;
-   Graphic_VLine_Char = SLSMG_VLINE_CHAR;
-   Graphic_ULCorn_Char = SLSMG_ULCORN_CHAR;
-
-   Graphic_Chars_Mode = ALT_CHAR_SET_MODE;
-}
-
 /* If all > 0, get last 'all' headers from server independent of whether
  *             they have been read or not.
  * If all < 0, and this is not the first time this group has been accessed,
@@ -8035,12 +7115,12 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
    Slrn_Range_Type *r;
    int status;
 
-   init_graphic_chars ();
+   slrn_init_graphic_chars ();
 
    Header_Window_HScroll = 0;
    User_Aborted_Group_Read = 0;
-   Headers = Slrn_First_Header = NULL;
-   Threads_Collapsed = 0;
+   _art_Headers = Slrn_First_Header = NULL;
+   _art_Threads_Collapsed = 0;
    Same_Subject_Start_Header = NULL;
    Number_Read = 0;
    Number_Total = 0;
@@ -8206,7 +7286,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
    else if (Perform_Scoring)
      score_headers (1);
    
-   if (Headers == NULL)
+   if (_art_Headers == NULL)
      {
 	slrn_close_score ();
 	slrn_clear_requested_headers ();
@@ -8224,13 +7304,13 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
    make_hash_table ();
    
    /* This must go here to fix up the next/prev pointers */
-   sort_by_server_number ();
+   _art_sort_by_server_number ();
 
    slrn_chmap_fix_headers ();
 
    slrn_push_mode (&Art_Mode_Cap);
    
-   Slrn_Current_Header = Headers;
+   Slrn_Current_Header = _art_Headers;
    Last_Cursor_Row = 0;
    Mark_Header = NULL;
    init_header_window_struct ();
@@ -8250,7 +7330,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 #if SLRN_HAS_SLANG
    (void) slrn_run_hooks (HOOK_ARTICLE_MODE, 0);
 #endif   
-   slrn_sort_by_sorting_mode ();
+   slrn_sort_headers ();
    header_bob ();
 
    quick_help ();
@@ -8643,7 +7723,7 @@ static int check_subject (Slrn_Header_Type *h) /*{{{*/
    psubj = h->prev->subject;	       /* used to be: h->parent->subject */
    if ((subj == NULL) || (psubj == NULL)) return 1;
 
-   return subject_cmp (subj, psubj);
+   return _art_subject_cmp (subj, psubj);
 }
 
 /*}}}*/
@@ -8919,7 +7999,7 @@ static char *display_header_cb (char ch, void *data, int *len, int *color) /*{{{
 	break;
 	
       case 't':
-	if (!Headers_Threaded)
+	if (!_art_Headers_Threaded)
 	  {
 	     retval = " ";
 	     *len = 1;

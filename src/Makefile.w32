@@ -55,6 +55,7 @@ O = .obj
 
 OBJS = $(OBJDIR)$(P)art$(O) \
        $(OBJDIR)$(P)art_misc$(O) \
+       $(OBJDIR)$(P)art_sort$(O) \
        $(OBJDIR)$(P)chmap$(O) \
        $(OBJDIR)$(P)editscore$(O) \
        $(OBJDIR)$(P)group$(O) \

@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -519,7 +519,8 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"cc_followup", &Slrn_Auto_CC_To_Poster},
      {"use_tmpdir", &Slrn_Use_Tmpdir},
      {"sorting_method", &Slrn_Sorting_Mode},
-     {"uncollapse_threads", &Slrn_Threads_Visible},
+     {"custom_sort_by_threads", &Slrn_Sort_By_Threads},
+     {"uncollapse_threads", &Slrn_Uncollapse_Threads},
      {"read_active", &Slrn_List_Active_File},
      {"drop_bogus_groups", &Slrn_Drop_Bogus_Groups},
      {"prefer_head", &Slrn_Prefer_Head},
@@ -744,6 +745,7 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      {"top_status_line", &Slrn_Top_Status_Line},
      {"group_status_line", &Slrn_Group_Status_Line},
      {"scorefile", &Slrn_Score_File},
+     {"custom_sort_order", &Slrn_Sort_Order},
      {NULL, NULL}
 };
 

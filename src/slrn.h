@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -25,6 +25,8 @@
 
 extern int Slrn_TT_Initialized;
 extern int Slrn_Use_Flow_Control;
+extern int Slrn_Simulate_Graphic_Chars;
+
 extern void slrn_quit (int);
 
 extern int slrn_handle_interrupts (void);
@@ -85,6 +87,17 @@ extern int Slrn_Batch;
 extern FILE *Slrn_Debug_Fp;
 
 extern int slrn_sys_system (char *);
+
+extern void slrn_init_graphic_chars (void);
+extern int Graphic_LTee_Char;
+extern int Graphic_UTee_Char;
+extern int Graphic_LLCorn_Char;
+extern int Graphic_HLine_Char;
+extern int Graphic_VLine_Char;
+extern int Graphic_ULCorn_Char;
+extern int Graphic_Chars_Mode;
+#define ALT_CHAR_SET_MODE	1
+#define SIMULATED_CHAR_SET_MODE	2
 
 /* used for ignore_quotes and strip_*_regexp */
 #define SLRN_MAX_REGEXP 5

@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -1875,7 +1875,7 @@ static void generic_mini_complete (int cycle) /*{{{*/
 	     int sel;
 	     void (*qsort_fun) (char **, unsigned int,
 				unsigned int, int (*)(char **, char **));
-	     /* This seems to be necessary (see art.c:sort_by_function) */
+	     /* This seems to be necessary (see art_sort.c:slrn_sort_headers) */
 	     qsort_fun = (void (*)(char **, unsigned int,
 				   unsigned int, int (*)(char **, char **)))
 	       qsort;

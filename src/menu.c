@@ -201,6 +201,7 @@ static char *Sort_Selections [] = /*{{{*/
      N_("Thread, then sort by date (most recent first)"),      /* 1001 */
      N_("Sort by date (most recent last)"),      /* 1010 */
      N_("Thread, then Sort by date (most recent last)"),      /* 1011 */
+     N_("Custom sorting (see manual)"),	/* 1100 */
      NULL
 };
 

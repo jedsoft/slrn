@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -39,8 +39,6 @@ extern char *Slrn_Overview_Date_Format;
 extern char *Slrn_Followup_Date_Format;
 extern int Slrn_Use_Localtime;
 
-extern int Slrn_Simulate_Graphic_Chars;
-
 extern int Slrn_Article_Window_Border;
 extern int Slrn_Startup_With_Article;
 extern int Slrn_Show_Thread_Subject;
@@ -49,8 +47,6 @@ extern int Slrn_Query_Next_Group;
 extern int Slrn_Auto_CC_To_Poster;
 extern int Slrn_Score_After_XOver;
 extern int Slrn_Use_Tmpdir;
-extern int Slrn_Sorting_Mode;
-extern int Slrn_Threads_Visible;
 extern int Slrn_Wrap_Mode;
 extern int Slrn_Wrap_Method;
 extern int Slrn_Use_Header_Numbers;
@@ -76,7 +72,6 @@ extern int Slrn_Generate_Email_From;
 extern int Slrn_Emphasized_Text_Mode;
 extern int Slrn_Emphasized_Text_Mask;
 extern int Slrn_Highlight_Urls;
-extern int Slrn_New_Subject_Breaks_Threads;
 extern int Slrn_Sig_Is_End_Of_Article;
 extern int Slrn_Del_Article_Upon_Read;
 extern int Slrn_Followup_Strip_Sig;
@@ -147,7 +142,6 @@ extern Slrn_Header_Type *Slrn_Current_Header;
 extern int slrn_goto_header (Slrn_Header_Type *, int);
 extern void slrn_set_header_flags (Slrn_Header_Type *, unsigned int);
 extern int slrn_locate_header_by_msgid (char *, int, int);
-
 
 typedef struct Slrn_Article_Line_Type
 {
@@ -242,8 +236,6 @@ extern Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *, int, int,
 						Slrn_Score_Debug_Info_Type *);
 extern void slrn_apply_scores (int);
 
-extern void slrn_sort_by_sorting_mode (void);
-
 extern int slrn_is_article_visible (void);
 extern int slrn_is_article_win_zoomed (void);
 
@@ -260,6 +252,16 @@ extern int slrn_set_header_format (unsigned int, char *);
 
 extern void slrn_art_sync_article (Slrn_Article_Type *);
 extern int slrn_art_get_unread (void);
+
+/* These are in art_sort.c : */
+#ifndef SLRNPULL_CODE
+extern int Slrn_New_Subject_Breaks_Threads;
+extern int Slrn_Sorting_Mode;
+extern int Slrn_Sort_By_Threads;
+extern char *Slrn_Sort_Order;
+extern int Slrn_Uncollapse_Threads;
+#endif				       /* NOT SLRNPULL_CODE */
+extern void slrn_sort_headers (void);
 
 /* These are in art_misc.c : */
 extern int _slrn_art_unhide_quotes (Slrn_Article_Type *a);
