@@ -885,7 +885,8 @@ void slrn_mime_process_article (Slrn_Article_Type *a)
    
    rfc1522_decode_headers (a);
 
-   if (NULL == find_header_line (a, "Mime-Version:")) return;
+/* Is there a reason to use the following line? */
+/*   if (NULL == find_header_line (a, "Mime-Version:")) return;*/
    if ((-1 == parse_content_type_line (a))
        || (-1 == parse_content_transfer_encoding_line (a)))
      {

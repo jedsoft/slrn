@@ -73,6 +73,7 @@ typedef struct
    char *replyto;
    char *org;
    char *followup_string;
+   char *followupto_string;
    char *reply_string;
    char *signature;
    char *posting_host;		       /* FQDN or NULL */

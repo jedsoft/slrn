@@ -2562,6 +2562,7 @@ void slrn_get_user_info (void) /*{{{*/
    /* Fill in what is assumed to be non-NULL by rest of program. */
    Slrn_User_Info.followup_string = slrn_safe_strmalloc (_("In article %m, %r wrote:"));
    Slrn_User_Info.reply_string = slrn_safe_strmalloc (_("In %n, you wrote:"));
+   Slrn_User_Info.followupto_string = slrn_safe_strmalloc (_("[\"Followup-To:\" header set to %n.]"));
 
    Slrn_CC_Followup_Message =
      slrn_safe_strmalloc (_("[This message has also been posted to %n.]"));

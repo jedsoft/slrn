@@ -2447,11 +2447,7 @@ int slrn_insert_followup_format (char *f, FILE *fp) /*{{{*/
 	     s = parse_from (Header_Showing->from);
 	     break;
 	   case 'n':
-#if 0
-	     s = slrn_extract_header ("Newsgroups: ", 12);
-#else
 	     s = Slrn_Current_Group_Name;
-#endif
 	     break;
 	   case 'd':
 	     s = Header_Showing->date;
@@ -3008,28 +3004,28 @@ static void followup (void) /*{{{*/
 	  newsgroups = "";
      }
    
-   if ((strchr(newsgroups, ',')) != NULL)
+   if (Slrn_Netiquette_Warnings && (strchr(newsgroups, ',') != NULL))
      {
-	/* Note to translators: Here, "fF" means "Followup-To", "pP" is for
-	 * "post", "iI" is "ignore" and "cC" means "cancel".
+	/* Note to translators: Here, "fF" means "Followup-To", "aA" is for
+	 * "all groups", "tT" is "this group only" and "cC" means "cancel".
 	 * Do not change the length of the string! You cannot use any of the
 	 * default characters for other fields than they originally stood for.
 	 */
-        char *responses=_("fFpPiIcC");
+        char *responses=_("fFaAoOcC");
 	if (strlen (responses) != 8)
 	  responses = "";
-	rsp = slrn_get_response ("fFpPiIcC", responses, _("Crossposting. \001Followup-To this group, \001Post to this group only, \001Ignore, \001Cancel?"));
-	rsp = slrn_map_translated_char ("fFpPiIcC", responses, rsp) | 0x20;
+	rsp = slrn_get_response ("fFaAoOcC", responses, _("Crossposting. Set \"\001Followup-To\", Post to \001all groups / \001this group only, \001Cancel?"));
+	rsp = slrn_map_translated_char ("fFaAoOcC", responses, rsp) | 0x20;
 	switch (rsp)
 	  {
-	   case 'i':
+	   case 'a':
 	     break;
 	     
 	   case 'f':
 	     followupto = Slrn_Current_Group_Name;
 	     break;
 	     
-	   case 'p':
+	   case 'o':
 	     newsgroups = Slrn_Current_Group_Name;
 	     break;
 	     
@@ -3199,6 +3195,11 @@ static void followup (void) /*{{{*/
    
    if (prefix_arg != 2)
      {
+	if ((followupto != NULL) && (*Slrn_User_Info.followupto_string != 0))
+	  {
+	     slrn_insert_followup_format (Slrn_User_Info.followupto_string, fp);
+	     fputs ("\n", fp);
+	  }
 	slrn_insert_followup_format (Slrn_User_Info.followup_string, fp);
 	fputs ("\n", fp);
      }

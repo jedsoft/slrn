@@ -2,6 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -218,7 +219,7 @@ static char *Copyright_Notice [] =
    " Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>",
      "",
      " For parts of it:",
-     " Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>",
+     " Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>",
      "",
      " For the parts in src/snprintf.c that are based on code from glib 1.2.8:",
      " Copyright (C) 1995-1998  Peter Mattis, Spencer Kimball and Josh MacDonald",

@@ -1523,10 +1523,12 @@ int slrn_init_slang (void) /*{{{*/
    Slrn_Use_Slang = 0;
    if ((-1 == SLang_init_slang ())
        || (-1 == SLang_init_slmath ())
-#ifdef __unix__
-       || (-1 == SLang_init_slunix ())
-#endif
-       || (-1 == SLang_init_slfile ())
+       || (-1 == SLang_init_posix_process ())
+       || (-1 == SLang_init_posix_dir ())
+       || (-1 == SLang_init_stdio ())
+       || (-1 == SLang_init_posix_io ())
+       || (-1 == SLang_init_ospath ())
+       || (-1 == SLang_init_slassoc ())
 #if SLANG_VERSION >= 10400
        || (-1 == SLang_init_import ()) /* enable dynamic linking */
 #endif

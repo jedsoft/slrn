@@ -626,6 +626,7 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      {"organization", &Slrn_User_Info.org},
      {"followup", &Slrn_User_Info.followup_string}, /* FIXME: obsolete */
      {"followup_string", &Slrn_User_Info.followup_string},
+     {"followupto_string", &Slrn_User_Info.followupto_string},
      {"reply_string", &Slrn_User_Info.reply_string},
      {"cc_followup_string", &Slrn_CC_Followup_Message},
      {"cc_post_string", &Slrn_CC_Post_Message},

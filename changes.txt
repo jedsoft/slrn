@@ -9,6 +9,7 @@ Changes since 0.9.7.4
   * Ignore "no data found" errors when using uudeview (Chris Hanson).
   * Don't segfault when toggling past the 10th header_display_format.
   * Follow convention to use "Message-ID" instead of "Message-Id".
+  * Also attempt MIME-decoding if no "Mime-Version:" header line is found.
 
    Changes to the user interface:
   * view_scores uncollapses threads (suggested by Jurriaan W Kalkman).
@@ -17,6 +18,10 @@ Changes since 0.9.7.4
     new hook make_save_filename allows overriding these defaults.
   * In header_display_format, %b choses a suitable "unit" automatically.
   * Browsing URLs will also use rot13 if it's toggled on in the pager.
+  * The prompt when writing a followup to a crosspost should be more
+    understandable and can now be turned off via "netiquette_warnings". When
+    selecting "set Followup-To", this is announced in the message body; this
+    can be configured with the new variable "followupto_string".
   
    slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still
