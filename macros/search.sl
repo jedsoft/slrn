@@ -24,6 +24,7 @@ define search_newsgroup ()
      {
 	flags = get_header_flags ();
 	
+	call ("article_line_up");
 	if (re_search_article (str))
 	  {
 	     pop ();
