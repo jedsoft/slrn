@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Copyright 2002  Thomas Schultz <tststs@gmx.de>
+# For internal use only (not packaged)
+# Generate HTML table from po files
+
+unset LANG
+
+for i in *.po; do
+  code=`echo "$i" | cut -c1,2`
+  lang=`grep '^"Language-Team:' $i | cut -d ' ' -f 2`
+  translator=`grep '^"Last-Translator:' $i | cut -d ' ' -f 2- | cut -d '<' -f 1`
+  revision=`grep '^"PO-Revision-Date:' $i | cut -d ' ' -f 2`
+  stats=`msgfmt -o /dev/null --statistics $i 2>&1`
+  t=`echo $stats | rgrep -H '[0-9]* trans' | cut -d ' ' -f 1`
+  test -z $t && t=0
+  f=`echo $stats | rgrep -H '[0-9]* fuz' | cut -d ' ' -f 1`
+  test -z $f && f=0
+  u=`echo $stats | rgrep -H '[0-9]* unt' | cut -d ' ' -f 1`
+  test -z $u && u=0
+  echo "<tr><td><kbd>$code</kbd> $lang</td><td>$translator</td>"\
+       "<td>$revision</td><td>$t</td><td>$f</td><td>$u</td></tr>"
+done
