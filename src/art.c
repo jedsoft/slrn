@@ -2165,9 +2165,9 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	       current_bps = (Slrn_Server_Obj->sv_nntp_bytes(0) / 1024.0)/current_bps;
 #endif
 	     if (h->tag_number)
-	       slrn_message_now ("#%2d/%-2d: Read %4d/%-4d lines (%s)"
+	       slrn_message_now (_("#%2d/%-2d: Read %4d/%-4d lines (%s)")
 #ifdef HAVE_GETTIMEOFDAY
-				 " at %.2fkB/sec", h->tag_number,
+				 _(" at %.2fkB/sec"), h->tag_number,
 				 Num_Tag_List.len, total_lines, h->lines,
 				 h->subject, current_bps
 #else
@@ -2176,9 +2176,9 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 #endif
 				 );
 	     else
-	       slrn_message_now ("[%d] Read %d/%d lines so far"
+	       slrn_message_now (_("[%d] Read %d/%d lines so far")
 #ifdef HAVE_GETTIMEOFDAY
-				 " at %.2fkB/sec", h->number, total_lines,
+				 _(" at %.2fkB/sec"), h->number, total_lines,
 				 h->lines, current_bps
 #else
 				 , h->number, total_lines, h->lines
@@ -5491,9 +5491,8 @@ static void header_generic_search (int dir, int type) /*{{{*/
    char* prompt;
    int ret;
    
-   prompt = slrn_strdup_strcat ((type == 's' ? _("Subject") : _("Author")),
-				_(" Search "),
-				(dir > 0 ? _("Forward") : _("Backward")), ": ",
+   prompt = slrn_strdup_strcat ((type == 's' ? _("Subject search ") : _("Author search ")),
+				(dir > 0 ? _("(forward)") : _("(backward)")), ": ",
 				NULL);
    
    ret = slrn_read_input (prompt, search_str, NULL, 0, 0);
