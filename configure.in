@@ -47,7 +47,7 @@ case `uname` in
 esac
 
 dnl List of all translations.
-ALL_LINGUAS="da de es fr it ko nl pl ru tr"
+ALL_LINGUAS="da de es fi fr it ko nl pl ru tr"
 AM_GNU_GETTEXT
 
 AC_CHECK_LIB(dl,dlopen,[LIBS="$LIBS -ldl"])
