@@ -2,6 +2,7 @@ Changes since 0.9.7.4
 
 0. Bug fixes include:
   * Setting new_subject_breaks_threads to 2 has an effect again.
+  * Some translations (fr/ko/nl/ru) were broken and could cause segfaults.
 
    slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.7.3\n"
 "POT-Creation-Date: 2002-03-13 14:15+0100\n"
-"PO-Revision-Date: 2002-03-05 22:53+300\n"
+"PO-Revision-Date: 2002-03-17 22:47+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
 "MIME-Version: 1.0\n"
@@ -1234,9 +1234,9 @@ msgid "Reading %s"
 msgstr "읽는중 %s"
 
 #: src/grplens.c:1000 src/grplens.c:1026
-#, c-format, fuzzy
+#, c-format
 msgid "Error processing line %u of %s"
-msgstr "%s의 %u번째줄을 처리중 오류"
+msgstr "%u 번째 줄을 처리중 오류: %s"
 
 #: src/grplens.c:1050
 #, c-format
@@ -2968,9 +2968,9 @@ msgid "Expecting 'Expires: MM/DD/YYYY' or 'Expires: DD-MM-YYYY'"
 msgstr "'Expires: MM/DD/YYYY' 또는 'Expires: DD-MM-YYYY' 형식"
 
 #: src/score.c:1109
-#, c-format, fuzzy
+#, c-format
 msgid "%s has expired score on line %d"
-msgstr "%d째 줄의 %s는 만기됨"
+msgstr "%s 는 만기됨, %d 째 줄"
 
 #: src/score.c:1122
 msgid "Bad group regular expression."
@@ -3553,9 +3553,9 @@ msgid "%s directory does not exist.  Creating it..."
 msgstr "%s 디렉토리가 없음. 생성중..."
 
 #: src/slrnpull.c:1564
-#, c-format, fuzzy
+#, c-format
 msgid "chmod 0%o failed on %s."
-msgstr "%s의 chmod 0%o 실패"
+msgstr "chmod 0%o 실패: %s"
 
 #: src/slrnpull.c:1588
 msgid "Server does not permit posting at this time."
