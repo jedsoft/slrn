@@ -225,8 +225,8 @@ msgid ""
 "Crossposting. Followup-To this group, Post to this group only, Ignore, "
 "Cancel?"
 msgstr ""
-"Колькі груп. \\01F:Адказы ў гэтую, \\01P:Слаць толькі ў гэтую, "
-"\\01I:Ігнараваць, \\01C:Адмена?"
+"Колькі груп. \01F:Адказы ў гэтую, \01P:Слаць толькі ў гэтую, "
+"\01I:Ігнараваць, \01C:Адмена?"
 
 #: src/art.c:3099
 msgid "Cc message as requested by poster"
@@ -594,15 +594,15 @@ msgstr "Выдалена: %u, з высокім балам: %u, зь нізкім: %u"
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
-"\\01S\\01P\\01C:Выбраць \\01^\\01D:Уніз \\01^\\01U:Угору \\01d:Прачытаны "
-"\\01n:Наступны \\01p:Папярэдні \\01q:Выхад"
+"\01S\01P\01C:Выбраць \01^\01D:Уніз \01^\01U:Угору \01d:Прачытаны "
+"\01n:Наступны \01p:Папярэдні \01q:Выхад"
 
 #: src/art.c:7563
 msgid ""
 "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
-"\\01S\\01P\\01C:Уніз \\01b:Угору \\01u:Непрачытаны \\01f:Адказаць "
-"\\01n:Наступны \\01p:Папярэдні \\01q:Выхад"
+"\01S\01P\01C:Уніз \01b:Угору \01u:Непрачытаны \01f:Адказаць "
+"\01n:Наступны \01p:Папярэдні \01q:Выхад"
 
 #: src/art.c:7755
 #, c-format
@@ -824,12 +824,12 @@ msgstr "Файл балаў ня вызначаны!"
 #: src/editscore.c:86
 msgid "Pick Score type: Subject, From, References, Edit, Cancel"
 msgstr ""
-"Балы паводле: \\01S:Тэмы, \\01F:Аўтара, \\01R:Спасылак, \\01E:Рэдагаваць, "
-"\\01C:Адмена"
+"Балы паводле: \01S:Тэмы, \01F:Аўтара, \01R:Спасылак, \01E:Рэдагаваць, "
+"\01C:Адмена"
 
 #: src/editscore.c:103
 msgid "Which newsgroups: This group, All groups"
-msgstr "Групы: \\01T:Гэтая група, \\01A:Усе групы"
+msgstr "Групы: \01T:Гэтая група, \01A:Усе групы"
 
 #: src/editscore.c:111
 msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
@@ -993,7 +993,7 @@ msgstr "fFsSnNcC"
 #: src/group.c:1794
 msgid "Select scoring mode: Full, Simple, None, Cancel"
 msgstr ""
-"Рэжым наданьня балаў: \\01F:Поўны, \\01S:Просты, \\01N:Ніякага, \\01C:Адмена"
+"Рэжым наданьня балаў: \01F:Поўны, \01S:Просты, \01N:Ніякага, \01C:Адмена"
 
 #: src/group.c:1802
 msgid "Full Header Scoring enabled."
@@ -1157,13 +1157,16 @@ msgid "Write to %s failed! Disk Full?"
 msgstr "Памылка запісу ў %s! Дыск поўны?"
 
 #: src/group.c:2950
+msgid ""
+"SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
+msgstr ""
+"\01S\01P\01C:Выбраць \01p:Адправіць \01c:Захоп \01l:Сьпіс \01q:Выхад \01^\01R:Абнавіць (\01s)\01u:(п)адпісацца"
+
 #: src/group.c:3122
 msgid ""
-"SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  "
-"(u)s:(Un)Subscribe-%D-News Groups: %s %-20g -- %L (%P)"
+"-%D-News Groups: %s %-20g -- %L (%P)"
 msgstr ""
-"\\01S\\01P\\01C:Выбраць \\01p:Адправіць \\01c:Захоп \\01l:Сьпіс \\01q:Выхад "
-"\\01^\\01R:Абнавіць (\\01s)\\01u:(п)адпісацца-%D-Групы: %s %-20g -- %L (%P)"
+"-%D-Групы: %s %-20g -- %L (%P)"
 
 #: src/group.c:3154 src/group.c:3192 src/interp.c:360 src/interp.c:430
 msgid "To use this feature, please update s-lang and recompile slrn."
@@ -2211,7 +2214,7 @@ msgstr "yYnNeE"
 
 #: src/misc.c:1091
 msgid "Mail the message? Yes, No, Edit"
-msgstr "Даслаць паведамленьне поштай? \\01Y:Так, \\01N:Не, \\01E:Рэдагаваць"
+msgstr "Даслаць паведамленьне поштай? \01Y:Так, \01N:Не, \01E:Рэдагаваць"
 
 #: src/misc.c:1098
 msgid "Sending ..."
@@ -2814,8 +2817,8 @@ msgstr "yYnNeEsSdDfF"
 #: src/post.c:947
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
 msgstr ""
-"Даслаць? \\01Y:Так \\01N:Не \\01E:Рэдагаваць, \\01S:Адкласьці, \\01F:Фільтар, "
-"\\01D:Выдаліць"
+"Даслаць? \01Y:Так \01N:Не \01E:Рэдагаваць, \01S:Адкласьці, \01F:Фільтар, "
+"\01D:Выдаліць"
 
 #: src/post.c:951
 msgid "yYnNeEsSfF"
@@ -2824,8 +2827,8 @@ msgstr "yYnNeEsSfF"
 #: src/post.c:954
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
 msgstr ""
-"Даслаць артыкул? \\01Y:Так \\01N:Не \\01E:Рэдагаваць, \\01S:Адкласьці, "
-"\\01F:Фільтар"
+"Даслаць артыкул? \01Y:Так \01N:Не \01E:Рэдагаваць, \01S:Адкласьці, "
+"\01F:Фільтар"
 
 #: src/post.c:962
 msgid "yYnNeEsSdD"
@@ -2834,8 +2837,8 @@ msgstr "yYnNeEsSdD"
 #: src/post.c:965
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
 msgstr ""
-"Даслаць артыкул? \\01Y:Так \\01N:Не \\01E:Рэдагаваць, \\01S:Адкласьці, "
-"\\01D:Выдаліць"
+"Даслаць артыкул? \01Y:Так \01N:Не \01E:Рэдагаваць, \01S:Адкласьці, "
+"\01D:Выдаліць"
 
 #: src/post.c:969
 msgid "yYnNeEsS"
@@ -2843,7 +2846,7 @@ msgstr "yYnNeEsS"
 
 #: src/post.c:972
 msgid "Post the message? Yes, No, Edit, poStpone"
-msgstr "Даслаць артыкул? \\01Y:Так \\01N:Не \\01E:Рэдагаваць S:Адкласьці"
+msgstr "Даслаць артыкул? \01Y:Так \01N:Не \01E:Рэдагаваць S:Адкласьці"
 
 #: src/post.c:995
 msgid "Sure you want to delete it"
@@ -2859,7 +2862,7 @@ msgstr "yYeEnNcC"
 
 #: src/post.c:1022
 msgid "re-Edit,  or Cancel"
-msgstr "\\01E:Рэдагаваць ці \\01C:адмяніць"
+msgstr "\01E:Рэдагаваць ці \01C:адмяніць"
 
 #: src/post.c:1026 src/post.c:1032
 msgid "yYeEnNcCfF"
@@ -2867,7 +2870,7 @@ msgstr "yYeEnNcCfF"
 
 #: src/post.c:1029
 msgid "re-Edit, Cancel, or Force the posting (not recommended)"
-msgstr "\\01E:Рэдагаваць, \\01C:Адмена ці \\01F:Даслаць (ня раіцца)"
+msgstr "\01E:Рэдагаваць, \01C:Адмена ці \01F:Даслаць (ня раіцца)"
 
 #: src/post.c:1068 src/post.c:1113
 msgid "Posting ..."
@@ -2895,7 +2898,7 @@ msgstr "rReEcC"
 
 #: src/post.c:1277
 msgid "Select one: Repost, Edit, Cancel"
-msgstr "Веберы дзеяньне: \\01R:Пераслаць, \\01E:Рэдагаваць, \\01C:Адмяніць"
+msgstr "Веберы дзеяньне: \01R:Пераслаць, \01E:Рэдагаваць, \01C:Адмяніць"
 
 #: src/post.c:1405
 msgid "postpone_directory not specified or does not exist"
