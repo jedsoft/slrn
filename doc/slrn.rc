@@ -155,7 +155,7 @@
 % format specifiers are recognized:
 %  %d:date, %D:date (formatted), %r:real name, %R:first name,
 %  %f:email address, %s:subject, %m:msgid, %n:newsgroups, %%: percent
-%set followup_string "On %d, %r <%f> wrote:"
+%set followup_string "On %D, %r <%f> wrote:"
 %set reply_string "In %n, you wrote:"
 
 % Custom headers to add to *new* posts

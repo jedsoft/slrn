@@ -28,6 +28,7 @@ Changes since 0.9.7.4
     selecting "set Followup-To", this is announced in the message body; this
     can be configured with the new variable "followupto_string".
   * toggle_quotes now tries to find a non-blank line to leave on screen.
+  * Defaults for "followup_string" and "followup_date_format" changed.
   
    slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still

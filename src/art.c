@@ -2477,7 +2477,7 @@ int slrn_insert_followup_format (char *f, FILE *fp) /*{{{*/
 		  
 		  fmtstr = Slrn_Followup_Date_Format;
 		  if (fmtstr == NULL)
-		    fmtstr = _("%a, %d %b %Y at %H:%M GMT");
+		    fmtstr = _("%Y-%m-%d");
 		  
 		  slrn_strftime(buf, sizeof(buf), fmtstr,
 				Header_Showing->date,
@@ -3030,11 +3030,11 @@ static void followup (void) /*{{{*/
 	 * Do not change the length of the string! You cannot use any of the
 	 * default characters for other fields than they originally stood for.
 	 */
-        char *responses=_("fFaAoOcC");
+        char *responses=_("fFaAtTcC");
 	if (strlen (responses) != 8)
 	  responses = "";
-	rsp = slrn_get_response ("fFaAoOcC", responses, _("Crossposting. Set \"\001Followup-To\", Post to \001all groups / \001this group only, \001Cancel?"));
-	rsp = slrn_map_translated_char ("fFaAoOcC", responses, rsp) | 0x20;
+	rsp = slrn_get_response ("fFaAtTcC", responses, _("Crossposting. Set \"\001Followup-To\", Post to \001all groups / \001this group only, \001Cancel?"));
+	rsp = slrn_map_translated_char ("fFaAtTcC", responses, rsp) | 0x20;
 	switch (rsp)
 	  {
 	   case 'a':
@@ -3044,7 +3044,7 @@ static void followup (void) /*{{{*/
 	     followupto = Slrn_Current_Group_Name;
 	     break;
 	     
-	   case 'o':
+	   case 't':
 	     newsgroups = Slrn_Current_Group_Name;
 	     break;
 	     
