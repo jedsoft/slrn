@@ -43,6 +43,8 @@ Changes since 0.9.7.3
 
    Added --with-mta option to the configure script to easily allow the use
    of alternate mail transport agents (MTAs).
+   
+   In a Cygwin environment, slrn can (and should) now be built like on Unix.
 
    More translations:
   * es.po (Spanish; Walter Echarri)

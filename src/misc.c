@@ -73,7 +73,7 @@
 #   endif
 #  else
 #   include <netdb.h>
-#   ifndef h_errno
+#   if !defined(h_errno) && !defined(__CYGWIN__)
 extern int h_errno;
 #   endif
 #  endif 
