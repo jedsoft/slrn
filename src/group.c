@@ -69,8 +69,7 @@
 /*{{{ Global Variables */
 
 int Slrn_Query_Group_Cutoff = 100;
-int Slrn_Groups_Dirty;	       /* 1 == need to write newsrc;
-				* 2 == need to write request file */
+int Slrn_Groups_Dirty;	       /* 1 == need to write newsrc */
 int Slrn_List_Active_File = 0;
 int Slrn_Write_Newsrc_Flags = 0;       /* if 1, do not save unsubscribed 
 					* if 2, do not save new unsubscribed.
@@ -153,17 +152,20 @@ void slrn_group_recount_unread (Slrn_Group_Type *g)
      g->unread = 0;
 }   
 
-void slrn_add_group_requests (Slrn_Group_Type *g, int min, int max) /*{{{*/
-{
-   if ((max < min) || (g == NULL)) return;
-   g->requests = slrn_ranges_add (g->requests, min, max);
-   Slrn_Groups_Dirty |= 2;
-}
-/*}}}*/
-
 static int is_article_requested (Slrn_Group_Type *g, long num) /*{{{*/
 {
-   Slrn_Range_Type *r = g->requests;
+#if SLRN_HAS_SPOOL_SUPPORT
+   Slrn_Range_Type *r;
+   
+   if (Slrn_Server_Id != SLRN_SERVER_ID_SPOOL) return 0;
+   
+   if (g->requests_loaded == 0)
+     {
+	g->requests = slrn_spool_get_requested_ranges (g->group_name);
+	g->requests_loaded = 1;
+     }
+   r = g->requests;
+   
    while (r != NULL)
      {
 	if ((r->min <= num) && (r->max >= num))
@@ -172,6 +174,7 @@ static int is_article_requested (Slrn_Group_Type *g, long num) /*{{{*/
 	  return 0;
 	r = r->next;
      }
+#endif
    return 0;
 }
 /*}}}*/
@@ -201,7 +204,7 @@ static void group_mark_article_as_read (Slrn_Group_Type *g, long num) /*{{{*/
      }
    
    if (g->unread > 0) g->unread -= 1;
-   Slrn_Groups_Dirty |= 1;
+   Slrn_Groups_Dirty = 1;
    g->range.next = slrn_ranges_add (g->range.next, num, num);   
 }
 
@@ -259,7 +262,7 @@ static int group_update_range (Slrn_Group_Type *g, int min, int max) /*{{{*/
 	
 	/* g->unread = 0; */
 	Slrn_Full_Screen_Update = 1;
-	Slrn_Groups_Dirty |= 1;
+	Slrn_Groups_Dirty = 1;
 	return -1;
      }
    
@@ -365,21 +368,13 @@ static int group_sync_group_with_server (Slrn_Group_Type *g, int *minp, int *max
 
 /*}}}*/
 
-static void free_group_requests (Slrn_Group_Type *g) /*{{{*/
-{
-   slrn_ranges_free (g->requests);
-   g->requests = NULL;
-}
-/*}}}*/
-
 static void free_newsgroup_type (Slrn_Group_Type *g)
 {
    if (g == NULL)
      return;
    slrn_free (g->descript);
    slrn_ranges_free (g->range.next);
-   g->range.next = NULL;
-   free_group_requests (g);
+   slrn_ranges_free (g->requests);
    slrn_free (g->group_name);
    slrn_free ((char *) g);
 }
@@ -402,7 +397,7 @@ void slrn_catchup_group (void) /*{{{*/
      slrn_ranges_add(Slrn_Group_Current_Group->range.next, 1,
 		     Slrn_Group_Current_Group->range.max);
    Slrn_Group_Current_Group->unread = 0;
-   Slrn_Groups_Dirty |= 1;
+   Slrn_Groups_Dirty = 1;
    Slrn_Group_Current_Group->flags |= GROUP_TOUCHED;
 }
 
@@ -415,7 +410,7 @@ void slrn_uncatchup_group (void) /*{{{*/
    slrn_ranges_free (Slrn_Group_Current_Group->range.next);
    Slrn_Group_Current_Group->range.next = NULL;
    slrn_group_recount_unread (Slrn_Group_Current_Group);
-   Slrn_Groups_Dirty |= 1;
+   Slrn_Groups_Dirty = 1;
    Slrn_Group_Current_Group->flags |= GROUP_TOUCHED;
 }
 
@@ -472,6 +467,9 @@ static Slrn_Group_Type *create_group_entry (char *name, unsigned int len, /*{{{*
      }
    
    g = (Slrn_Group_Type *) slrn_safe_malloc (sizeof (Slrn_Group_Type));
+   g->requests = NULL;
+   g->requests_loaded = 0;
+   
    g->group_name = slrn_safe_malloc (len + 1);
    strncpy (g->group_name, name, len);
    g->group_name [len] = 0;
@@ -487,7 +485,7 @@ static Slrn_Group_Type *create_group_entry (char *name, unsigned int len, /*{{{*
 			 Slrn_Drop_Bogus_Groups ? _(" - ignoring it") : "");
 	     if (Slrn_Drop_Bogus_Groups)
 	       {
-		  Slrn_Groups_Dirty |= 1;
+		  Slrn_Groups_Dirty = 1;
 		  free_newsgroup_type (g);
 		  return NULL;
 	       }
@@ -559,14 +557,13 @@ static void remove_group_entry (Slrn_Group_Type *g) /*{{{*/
      }
    free_newsgroup_type (g);
    find_line_num ();
-   Slrn_Groups_Dirty |= 1;
+   Slrn_Groups_Dirty = 1;
 }
 /*}}}*/
 static int add_group (char *name, unsigned int len, /*{{{*/
 		      unsigned int subscribe_flag, int query_server,
 		      int create_flag)
 {
-   char ch;
    Slrn_Group_Type *g;
    
    g = find_group_entry (name, len);
@@ -588,7 +585,7 @@ static int add_group (char *name, unsigned int len, /*{{{*/
 				     0);
 	if (g == NULL) return -1;
      }
-   Slrn_Groups_Dirty |= 1;
+   Slrn_Groups_Dirty = 1;
    
    /* If we have already processed this, then the group is duplicated in
     * the newsrc file.  Throw it out now.
@@ -990,7 +987,7 @@ void slrn_group_quit (void) /*{{{*/
        && (Slrn_Batch == 0)
        && (slrn_get_yesno (1, _("Do you really want to quit")) <= 0)) return;
 
-   if ((Slrn_Groups_Dirty & 1) && (-1 == slrn_write_newsrc (0)))
+   if ((Slrn_Groups_Dirty) && (-1 == slrn_write_newsrc (0)))
      {
 	if (Slrn_Batch)
 	  slrn_quit (1);
@@ -1235,7 +1232,7 @@ int slrn_add_group (char *group) /*{{{*/
 	     retval = -1;
 	  }
      }
-   Slrn_Groups_Dirty |= 1;
+   Slrn_Groups_Dirty = 1;
    Slrn_Full_Screen_Update = 1;
    find_line_num ();
    return retval;
@@ -1297,7 +1294,7 @@ static void transpose_groups (void) /*{{{*/
    (void) slrn_group_down_n (1);
    
    Slrn_Full_Screen_Update = 1;
-   Slrn_Groups_Dirty |= 1;
+   Slrn_Groups_Dirty = 1;
 }
 
 /*}}}*/
@@ -1338,7 +1335,7 @@ static void move_group_cmd (void) /*{{{*/
 	     if (from == to) break;
 	     
 	     Slrn_Full_Screen_Update = 1;
-	     Slrn_Groups_Dirty |= 1;
+	     Slrn_Groups_Dirty = 1;
 	     
 	     if (NULL != from->next)
 	       from->next->prev = from->prev;
@@ -1394,7 +1391,7 @@ static void subscribe (void) /*{{{*/
 	     Slrn_Group_Current_Group->flags &= ~GROUP_UNSUBSCRIBED;
 	     Slrn_Group_Current_Group->flags |= GROUP_TOUCHED;
 	     slrn_group_down_n (1);
-	     Slrn_Groups_Dirty |= 1;
+	     Slrn_Groups_Dirty = 1;
 	  }
 	return;
      }
@@ -1414,7 +1411,7 @@ static void subscribe (void) /*{{{*/
 		  g->flags &= ~GROUP_HIDDEN;
 		  g->flags &= ~GROUP_UNSUBSCRIBED;
 		  g->flags |= GROUP_TOUCHED;
-		  Slrn_Groups_Dirty |= 1;
+		  Slrn_Groups_Dirty = 1;
 	       }
 	  }
 	g = g->next;
@@ -1466,7 +1463,7 @@ static void unsubscribe (void) /*{{{*/
      {
 	Slrn_Group_Current_Group->flags |= GROUP_UNSUBSCRIBED | GROUP_TOUCHED;
 	slrn_group_down_n (1);
-	Slrn_Groups_Dirty |= 1;
+	Slrn_Groups_Dirty = 1;
 	return;
      }
    
@@ -1781,7 +1778,7 @@ static void toggle_scoring (void) /*{{{*/
 /*}}}*/
 static void save_newsrc_cmd (void) /*{{{*/
 {
-   if (Slrn_Groups_Dirty & 1)
+   if (Slrn_Groups_Dirty)
      {
 	slrn_write_newsrc (0);
      }
@@ -2551,7 +2548,7 @@ static void read_and_parse_active (int create_flag) /*{{{*/
 	  }
 	
 	Slrn_Group_Current_Group = save;
-	Slrn_Groups_Dirty |= 1;
+	Slrn_Groups_Dirty = 1;
 	Slrn_Write_Newsrc_Flags = 0;
      }
 
@@ -2715,7 +2712,7 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
 
    slrn_init_hangup_signals (0);
    
-   if ((Slrn_Groups_Dirty & 1) == 0) 
+   if (Slrn_Groups_Dirty == 0) 
      {
 	slrn_init_hangup_signals (1);
 	return 0;
@@ -2864,7 +2861,7 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
    
    if (newsrc_filename == Slrn_Newsrc_File)
      {
-	Slrn_Groups_Dirty &= ~1;
+	Slrn_Groups_Dirty = 0;
 	if (Slrn_No_Autosave == 0)
 	  slrn_delete_file (autosave_file);
      }
@@ -2996,7 +2993,7 @@ static char *group_status_line_cb (char ch, void *data, int *len, int *color) /*
 	retval = slrn_print_percent (buf, &Group_Window, 0);
 	break;
       case 'D':
-	retval = (Slrn_Groups_Dirty & 1) ? "*" : "-";
+	retval = Slrn_Groups_Dirty ? "*" : "-";
 	*len = 1;
 	break;
       case 's':
@@ -3188,7 +3185,7 @@ void slrn_intr_set_group_order (void) /*{{{*/
    
    find_line_num ();
    Slrn_Full_Screen_Update = 1;
-   Slrn_Groups_Dirty |= 1;
+   Slrn_Groups_Dirty = 1;
 # endif /* SLANG_VERSION */
 }
 /*}}}*/

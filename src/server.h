@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -21,6 +21,7 @@
 #ifndef _SLRN_SERVER_H
 #define _SLRN_SERVER_H
 #include "nntpcodes.h"
+#include "ranges.h"
 
 typedef struct 
 {
@@ -116,6 +117,10 @@ extern char *Slrn_ActiveTimes_File;
 extern char *Slrn_Newsgroups_File;
 extern char *Slrn_Overviewfmt_File;
 extern int Slrn_Spool_Check_Up_On_Nov;
+
+extern Slrn_Range_Type *slrn_spool_get_no_body_ranges (char *);
+extern Slrn_Range_Type *slrn_spool_get_requested_ranges (char *);
+extern int slrn_spool_set_requested_ranges (char*, Slrn_Range_Type*);
 #endif
 
 #if SLRN_HAS_PULL_SUPPORT

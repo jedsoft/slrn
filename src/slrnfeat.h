@@ -83,6 +83,7 @@
    */
 # define SLRN_SPOOL_ACTIVE	"data/active"
 # define SLRN_SPOOL_ACTIVETIMES	"data/active.times"
+# define SLRN_SPOOL_HEADERS	"data/headers"
 # define SLRN_SPOOL_NEWSGROUPS	"data/newsgroups"
 # define SLRN_SPOOL_OVERVIEWFMT "data/overview.fmt"
 

@@ -71,6 +71,8 @@ typedef struct Slrn_Group_Type
 						*/
    Slrn_Range_Type *requests; /* body requests for true offline mode
 			       * note that the first one is also malloced here! */
+   int requests_loaded;	/* We load these each time we enter article mode in case
+			 * slrnpull ran in the background */
    
    int unread;
    char *descript;		       /* description of the group */
@@ -79,7 +81,6 @@ Slrn_Group_Type;
 
 extern Slrn_Group_Type *Slrn_Group_Current_Group;
 extern void slrn_group_recount_unread (Slrn_Group_Type *);
-extern void slrn_add_group_requests (Slrn_Group_Type *, int, int);
 
 extern char *Slrn_Group_Help_Line;
 extern char *Slrn_Group_Status_Line;

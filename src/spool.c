@@ -1,5 +1,8 @@
+/* -*- mode: C; mode: fold; -*- */
 /* Local spool support for slrn added by Olly Betts <olly@mantis.co.uk> */
-/* Modified by Thomas Schultz <tststs@gmx.de> */
+/* Modified by Thomas Schultz:
+ * Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ */
 #include "config.h"
 #include "slrnfeat.h"
 
@@ -36,6 +39,7 @@
 #include "slrn.h"
 #include "slrndir.h"
 #include "snprintf.h"
+#include "vfile.h"
 
 #ifndef SLRN_SPOOL_ROOT
 # define SLRN_SPOOL_ROOT "/var/spool/news" /* a common place for the newsspool */
@@ -58,6 +62,8 @@
 
 extern int Slrn_Prefer_Head;
 char *Slrn_Overviewfmt_File;
+char *Slrn_Headers_File;
+char *Slrn_Requests_File;
 
 static int spool_put_server_cmd (char *, char *, unsigned int );
 static int spool_select_group (char *, int *, int *);
@@ -1645,6 +1651,7 @@ int Slrn_Spool_Check_Up_On_Nov;
 
 static int spool_init_objects (void)
 {
+   char *login;
    Spool_Server_Obj.sv_select_group = spool_select_group;
    Spool_Server_Obj.sv_refresh_groups = spool_refresh_groups;
    Spool_Server_Obj.sv_current_group = spool_current_group;
@@ -1679,6 +1686,12 @@ static int spool_init_objects (void)
    Slrn_ActiveTimes_File = slrn_safe_strmalloc (SLRN_SPOOL_ACTIVETIMES);
    Slrn_Newsgroups_File = slrn_safe_strmalloc (SLRN_SPOOL_NEWSGROUPS);
    Slrn_Overviewfmt_File = slrn_safe_strmalloc (SLRN_SPOOL_OVERVIEWFMT);
+   Slrn_Headers_File = slrn_safe_strmalloc (SLRN_SPOOL_HEADERS);
+   if ((NULL == (login = Slrn_User_Info.login_name)) ||
+       (*login == 0))
+     login = "$unknown";
+   Slrn_Requests_File = slrn_strdup_printf ("requests/%s", login);
+   
 #if defined(IBMPC_SYSTEM)
    slrn_os2_convert_path (Slrn_Inn_Root);
    slrn_os2_convert_path (Slrn_Spool_Root);
@@ -1688,6 +1701,8 @@ static int spool_init_objects (void)
    slrn_os2_convert_path (Slrn_ActiveTimes_File);
    slrn_os2_convert_path (Slrn_Newsgroups_File);
    slrn_os2_convert_path (Slrn_Overviewfmt_File);
+   slrn_os2_convert_path (Slrn_Headers_File);
+   slrn_os2_convert_path (Slrn_Requests_File);
 #endif   
    return 0;
 }
@@ -1712,9 +1727,171 @@ static int spool_select_server_object (void)
    Slrn_ActiveTimes_File = spool_root_dircat (Slrn_ActiveTimes_File);
    Slrn_Newsgroups_File = spool_root_dircat (Slrn_Newsgroups_File);
    Slrn_Overviewfmt_File = spool_root_dircat (Slrn_Overviewfmt_File);
+   Slrn_Headers_File = spool_root_dircat (Slrn_Headers_File);
+   Slrn_Requests_File = spool_root_dircat (Slrn_Requests_File);
    
    slrn_free (Spool_Server_Obj.sv_name);
    Spool_Server_Obj.sv_name = slrn_safe_strmalloc (Slrn_Spool_Root);
    
    return 0;
 }
+
+
+/* Handling of the additional newsrc-style files in true offline mode: */
+static Slrn_Range_Type *get_ranges_for_group (char *file, char *group) /*{{{*/
+{
+   VFILE *vp;
+   char *vline;
+   unsigned int vlen;
+   Slrn_Range_Type *retval = NULL;
+
+   if (NULL == (vp = vopen (file, 4096, 0)))
+     return NULL;
+   
+   while (NULL != (vline = vgets (vp, &vlen)))
+     {
+	char *p = vline;
+	char *pmax = p + vlen;
+
+	while ((p < pmax) && (*p != ':'))
+	  p++;
+
+	if ((p == pmax) || (p == vline) ||
+	    (strncmp(vline, group, (p-vline))))
+	  continue;
+     
+	vline[vlen-1] = 0;	       /* kill \n and NULL terminate */
+	
+	retval = slrn_ranges_from_newsrc_line (p+1);
+	break;
+     }
+   vclose (vp);
+   return retval;
+}
+/*}}}*/
+
+Slrn_Range_Type *slrn_spool_get_no_body_ranges (char *group)
+{
+   return get_ranges_for_group (Slrn_Headers_File, group);
+}
+
+Slrn_Range_Type *slrn_spool_get_requested_ranges (char *group)
+{
+   return get_ranges_for_group (Slrn_Requests_File, group);
+}
+
+/* Updates the request file with the new ranges
+ * returns 0 on success, -1 otherwise */
+int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
+{
+   char old_file[SLRN_MAX_PATH_LEN];
+   FILE *fp;
+   VFILE *vp;
+   char *vline;
+   unsigned int vlen;
+   struct stat filestat;
+   int stat_worked = 0;
+   int have_old = 0;
+
+   slrn_init_hangup_signals (0);
+
+#ifdef VMS
+   slrn_snprintf (old_file, sizeof (old_file), "%s-bak",
+		  Slrn_Requests_File);
+#else
+# ifdef SLRN_USE_OS2_FAT
+   slrn_os2_make_fat (old_file, sizeof (old_file), Slrn_Requests_File,
+		      ".bak");
+# else
+   slrn_snprintf (old_file, sizeof (old_file), "%s~", Slrn_Requests_File);
+# endif
+#endif
+
+   /* Try to preserve file permissions and owner/group. */
+   stat_worked = (-1 != stat (Slrn_Requests_File, &filestat));
+   
+   /* Save old file (we'll copy most of it; then, it gets deleted) */
+   have_old = 1;
+   if (-1 == rename (Slrn_Requests_File, old_file))
+     have_old = 0;
+
+   if (NULL == (fp = fopen (Slrn_Requests_File, "w")))
+     {
+	if (have_old) (void) rename (old_file, Slrn_Requests_File);
+	slrn_init_hangup_signals (1);
+	return -1;
+     }
+   
+#ifdef __unix__
+# if !defined(IBMPC_SYSTEM)
+   /* Try to preserve file permissions and owner/group */
+#  ifndef S_IRUSR
+#   define S_IRUSR 0400
+#   define S_IWUSR 0200
+#   define S_IRGRP 0040
+#   define S_IROTH 0004
+#  endif
+   if (stat_worked)
+     {
+	if (-1 == chmod (Slrn_Requests_File, filestat.st_mode))
+	  (void) chmod (Slrn_Requests_File, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+	
+	(void) chown (Slrn_Requests_File, filestat.st_uid, filestat.st_gid);
+     }
+   else
+     (void) chmod (Slrn_Requests_File, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+# endif
+#endif
+
+   /* Write a line for the current group */
+   if (r != NULL)
+     {
+	if ((EOF == fputs (group, fp)) ||
+	    (EOF == fputs (": ",fp)) ||
+	    (-1 == slrn_ranges_to_newsrc_file (r,0,fp)) ||
+	    (EOF == fputc ('\n',fp)))
+	  goto write_error;
+     }
+   
+   /* Now, open the old file and append the data of all other groups */
+   if (NULL != (vp = vopen (old_file, 4096, 0)))
+     {
+	while (NULL != (vline = vgets (vp, &vlen)))
+	  {
+	     char *p = vline;
+	     char *pmax = p + vlen;
+	     
+	     while ((p < pmax) && (*p != ':'))
+	       p++;
+	     
+	     if ((p != vline) && (strncmp(vline, group, (p-vline))))
+	       {
+		  vline[vlen] = '\0';
+		  if (EOF == fputs (vline, fp))
+		    {
+		       vclose (vp);
+		       goto write_error;
+		    }
+	       }
+	  }
+	vclose (vp);
+     }
+   
+   if (-1 == slrn_fclose (fp))
+     goto write_error;
+
+   if (have_old) slrn_delete_file (old_file);
+
+   slrn_init_hangup_signals (1);
+   return 0;
+   
+   write_error:
+   
+   slrn_fclose (fp);
+   /* Put back orginal file */
+   if (have_old) (void) rename (old_file, Slrn_Requests_File);
+   
+   slrn_init_hangup_signals (1);
+   return -1;
+}
+/*}}}*/

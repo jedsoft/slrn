@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -37,7 +37,6 @@ typedef struct
    char *xref;
    int bytes;
    int lines;
-   int without_body;
    Slrn_Header_Line_Type *add_hdrs;
 }
 Slrn_XOver_Type;

@@ -6184,7 +6184,8 @@ static void toggle_verbatim (void) /*{{{*/
 /*{{{ leave/suspend article mode and support functions */
 static void update_ranges (void) /*{{{*/
 {
-   int bmin, bmax, read;
+   int bmin, bmax;
+   unsigned int is_read;
    Slrn_Range_Type *r_new;
    Slrn_Header_Type *h;
    
@@ -6203,22 +6204,22 @@ static void update_ranges (void) /*{{{*/
    r_new = slrn_ranges_add (r_new, 1, Slrn_Server_Min - 1);
 
    /* Now, mark blocks of articles read / unread */
-   read = h->flags & HEADER_READ;
+   is_read = h->flags & HEADER_READ;
    bmin = bmax = h->number;
    while (h != NULL)
      {
 	h = h->real_next;
 	if ((h==NULL) || (h->number > bmax+1) ||
-	    (read != h->flags & HEADER_READ))
+	    (is_read != (h->flags & HEADER_READ)))
 	  {
-	     if (read)
+	     if (is_read)
 	       r_new = slrn_ranges_add (r_new, bmin, bmax);
 	     else
 	       r_new = slrn_ranges_remove (r_new, bmin, bmax);
 	     if (h!=NULL)
 	       {
 		  bmin = bmax = h->number;
-		  read = h->flags & HEADER_READ;
+		  is_read = h->flags & HEADER_READ;
 	       }
 	  }
 	else
@@ -6226,7 +6227,7 @@ static void update_ranges (void) /*{{{*/
      }
 
    if (slrn_ranges_compare(r_new, Current_Group->range.next))
-     Slrn_Groups_Dirty |= 1;
+     Slrn_Groups_Dirty = 1;
 
    /* Finally delete the old ranges and replace them with the new one */
    slrn_ranges_free (Current_Group->range.next);
@@ -6237,45 +6238,52 @@ static void update_ranges (void) /*{{{*/
 
 static void update_requests (void) /*{{{*/
 {
-   Slrn_Range_Type *rsave;
+#if SLRN_HAS_SPOOL_SUPPORT
+   int bmin, bmax;
+   unsigned int is_req;
+   Slrn_Range_Type *r = Current_Group->requests;
    Slrn_Header_Type *h;
-   int min, max;
    
-   if (User_Aborted_Group_Read) return;
-   
-   /* We want to do a check whether anything has changed later. */
-   rsave = Current_Group->requests;
-   Current_Group->requests = NULL;
-   
+   if ((User_Aborted_Group_Read)||
+       (Slrn_Server_Id != SLRN_SERVER_ID_SPOOL))
+     return;
+
    h = Slrn_First_Header;
    /* skip articles for which the numeric id was not available */
-   while ((h != NULL) && ((h->number < 0) ||
-			  (0 == (h->flags & HEADER_REQUEST_BODY))))
-     h = h->real_next;
-   if (h == NULL) goto free_and_return;
+   while ((h != NULL) && (h->number < 0)) h = h->real_next;
+   if (h == NULL) return;
+
+   /* Mark old (unavailable) articles as unrequested */
+   r = slrn_ranges_remove (r, 1, Slrn_Server_Min - 1);
    
-   /* create current ranges */
+   /* Update the requested article ranges list. */
+   is_req = h->flags & HEADER_REQUEST_BODY;
+   bmin = bmax = h->number;
    while (h != NULL)
      {
-	max = min = h->number;
-	while ((h->next != NULL) && (h->next->number == max+1)
-	       && (h->next->flags & HEADER_REQUEST_BODY))
+	h = h->real_next;
+	if ((h==NULL) || (h->number > bmax+1) ||
+	    (is_req != (h->flags & HEADER_REQUEST_BODY)))
 	  {
-	     max++;
-	     h = h->next;
+	     if (is_req)
+	       r = slrn_ranges_add (r, bmin, bmax);
+	     else
+	       r = slrn_ranges_remove (r, bmin, bmax);
+	     if (h!=NULL)
+	       {
+		  bmin = bmax = h->number;
+		  is_req = h->flags & HEADER_REQUEST_BODY;
+	       }
 	  }
-	slrn_add_group_requests (Current_Group, min, max);
-	while ((h->next != NULL) &&
-	       (0 == (h->next->flags & HEADER_REQUEST_BODY)))
-	  h = h->next;
+	else
+	  bmax++;
      }
-   
-   /* If anything has changed, mark request file as dirty. */
-   if (slrn_ranges_compare (Current_Group->requests, rsave))
-     Slrn_Groups_Dirty |= 2;
-   
-   free_and_return: /* Free the saved ranges */
-   slrn_ranges_free (rsave);
+      
+   if ((-1 == slrn_spool_set_requested_ranges (Slrn_Current_Group_Name, r)) &&
+       (r != NULL)) /* if r == NULL, don't bother user */
+     slrn_error_now (2, _("Warning: Could not save list of requested bodies."));
+   Current_Group->requests = r;
+#endif
 }
 /*}}}*/
 
@@ -7322,8 +7330,10 @@ static void mark_ranges (Slrn_Range_Type *r, int flag) /*{{{*/
 	       {
 		  break;
 	       }
-	     
-	     h->flags |= flag;
+	    
+	     if ((flag != HEADER_REQUEST_BODY) ||
+		 (h->flags & HEADER_WITHOUT_BODY))
+	       h->flags |= flag;
 	     if (flag == HEADER_READ)
 	       Number_Read++;
 	     h = h->real_next;
@@ -7495,7 +7505,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 		  
 		  if (status == 0)
 		    {
-		       Slrn_Groups_Dirty |= 1;
+		       Slrn_Groups_Dirty = 1;
 		       r->min = min;
 		    }
 		  
@@ -7515,7 +7525,21 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
      }
    
    slrn_close_add_xover (1);
-   mark_ranges (g->requests, HEADER_REQUEST_BODY);
+
+#if SLRN_HAS_SPOOL_SUPPORT
+   if (Slrn_Server_Id == SLRN_SERVER_ID_SPOOL)
+     {
+	r = slrn_spool_get_no_body_ranges (Slrn_Current_Group_Name);
+	mark_ranges (r, HEADER_WITHOUT_BODY);
+	slrn_ranges_free (r);
+	
+	slrn_ranges_free (g->requests);
+	r = slrn_spool_get_requested_ranges (Slrn_Current_Group_Name);
+	mark_ranges (r, HEADER_REQUEST_BODY);
+	g->requests = r;
+	g->requests_loaded = 1;
+     }
+#endif
    
    if ((status == -1) || SLKeyBoard_Quit)
      {
@@ -8222,10 +8246,17 @@ static char *display_header_cb (char ch, void *data, int *len, int *color) /*{{{
    switch (ch)
      {
       case 'B':
-	retval = buf;
-	retval[0] = get_body_status (h);
-	retval[1] = 0;
-	*len = 1;
+#if SLRN_HAS_SPOOL_SUPPORT
+	if (Slrn_Server_Id == SLRN_SERVER_ID_SPOOL)
+	  {
+	     retval = buf;
+	     retval[0] = get_body_status (h);
+	     retval[1] = 0;
+	     *len = 1;
+	  }
+	else
+#endif
+	  retval = "";
 	break;
 	
       case 'C':
@@ -8460,7 +8491,7 @@ static void display_header_line (Slrn_Header_Type *h, int row)
    char *fmt = Header_Display_Formats[Header_Format_Number];
    
    if ((fmt == NULL) || (*fmt == 0))
-     fmt = "%F%-5S%G%-5l:[%12r]%t%s";
+     fmt = "%F%B%-5S%G%-5l:[%12r]%t%s";
    
    slrn_custom_printf (fmt, display_header_cb, (void *) h, row, 0);
 }

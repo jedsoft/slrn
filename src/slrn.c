@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -891,7 +891,7 @@ void slrn_va_exit_error (char *fmt, va_list ap)
 	     fputc ('\n', stderr);
 	     vfprintf (stderr, fmt, ap);
 	  }   
-	if (Slrn_Groups_Dirty&1) slrn_write_newsrc (0);
+	if (Slrn_Groups_Dirty) slrn_write_newsrc (0);
 	perform_cleanup ();
      }
 
@@ -1156,6 +1156,10 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
 
    slrn_startup_initialize ();
 
+   /* We need to get user info first, because the request file in true offline
+    * reading mode is chosen based on login name */
+   slrn_get_user_info ();   
+   
    /* The next function call will also define slang preprocessing tokens 
     * for the appropriate objects.  For that reason, it is called after 
     * startup initialize.
@@ -1164,8 +1168,6 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
      {
 	slrn_exit_error (_("Error configuring server objects."));
      }
-
-   slrn_get_user_info ();
 
    slrn_init_hangup_signals (1);
 

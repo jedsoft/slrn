@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -1624,11 +1624,11 @@ void slrn_startup_initialize (void) /*{{{*/
    /* The following are required by GNKSA */
    (void) slrn_set_visible_headers ("From:,Subject:,Newsgroups:,Followup-To:,Reply-To:");
    
-   (void) slrn_set_header_format (0, "%F%-5S%G%-5l:[%12r]%t%s");
-   (void) slrn_set_header_format (1, "%F%G%-5l:[%12r]%t%s");
-   (void) slrn_set_header_format (2, "%F%-5l:%t%s");
-   (void) slrn_set_header_format (3, "%F%-5S%-5l:%t%50s %r");
-   (void) slrn_set_header_format (4, "%F%-5S [%10r]:%t%49s %-19g[%17d]");
+   (void) slrn_set_header_format (0, "%F%B%-5S%G%-5l:[%12r]%t%s");
+   (void) slrn_set_header_format (1, "%F%B%G%-5l:[%12r]%t%s");
+   (void) slrn_set_header_format (2, "%F%B%-5l:%t%s");
+   (void) slrn_set_header_format (3, "%F%B%-5S%-5l:%t%50s %r");
+   (void) slrn_set_header_format (4, "%F%B%-5S [%10r]:%t%49s %-19g[%17d]");
    
    (void) slrn_set_group_format (0, "  %F%-5u  %n%45g%d");
    (void) slrn_set_group_format (1, "  %F%-5u  %n%50g%-8l-%h");
