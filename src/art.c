@@ -2259,9 +2259,10 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 }
 /*}}}*/
 
-/* returns -1 on errors */
+/* On errors, free a and return -1 */
 static int art_undo_modifications (Slrn_Article_Type *a)
 {
+   unsigned int linenum = Slrn_Article_Window.line_num;
    if (a == NULL) return 0;
    
    a->is_modified = 0;
@@ -2288,6 +2289,8 @@ static int art_undo_modifications (Slrn_Article_Type *a)
    slrn_chmap_fix_body (a, 0);
    prepare_article (a);
    init_article_window_struct();
+   slrn_art_linedn_n (linenum-1); /* find initial line */
+
    return 0;
 }
 
@@ -3913,9 +3916,11 @@ int slrn_save_current_article (char *file) /*{{{*/
    Slrn_Article_Line_Type *lines;
    int retval = 0;
    
+   /* We're setting MIME_DISPLAY here and use orig_lines if
+    * MIME_SAVE is 0; this saves the re-encoding later */
    if (NULL == (h = affected_header ()) ||
        select_header (h, Slrn_Del_Article_Upon_Read,
-		      Slrn_Use_Mime & MIME_SAVE) < 0)
+		      Slrn_Use_Mime & MIME_DISPLAY) < 0)
      return -1;
    
    lines = Slrn_Current_Article->lines;
@@ -3937,10 +3942,6 @@ int slrn_save_current_article (char *file) /*{{{*/
 	  slrn_error (_("Error writing to %s."), file);
 	fclose (fp);
      }
-   
-#if SLRN_HAS_MIME
-   select_header (h, 0, Slrn_Use_Mime & MIME_DISPLAY);
-#endif
    
    return retval;
 }
@@ -4334,11 +4335,13 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
    int retval;
    Slrn_Article_Line_Type *lines;
 
-   if (-1 == (retval = select_affected_article (MIME_PIPE)))
+   /* We're setting MIME_DISPLAY here and use orig_lines if
+    * MIME_PIPE is 0; this saves the re-encoding later */   
+   if (-1 == (retval = select_affected_article (MIME_DISPLAY)))
      return -1;
 #if SLRN_HAS_MIME
    else if (retval == 1)
-     select_header (Header_Showing, 0, Slrn_Use_Mime & MIME_PIPE);
+     select_header (Header_Showing, 0, Slrn_Use_Mime & MIME_DISPLAY);
 #endif
    lines = Slrn_Current_Article->lines;
 #if SLRN_HAS_MIME
@@ -4356,10 +4359,6 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
 	retval = write_article_line (lines, fp);
 	slrn_pclose (fp);
      }
-   
-#if SLRN_HAS_MIME
-   select_header (Header_Showing, 0, Slrn_Use_Mime & MIME_DISPLAY);
-#endif
    
    return retval;
 #else
