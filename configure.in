@@ -56,20 +56,8 @@ CF_TERMCAP
 CF_PATH_SLANG_LIB
 CF_PATH_SLANG_INC
 CF_SSL
+CF_MTA
 CF_UUDEVIEW
-
-dnl find sendmail
-AC_PATH_PROG(SENDMAIL, sendmail, no,
-    $PATH:/usr/local/sbin:/usr/sbin:/usr/local/lib:/usr/lib)
-if test "x$ac_cv_path_SENDMAIL" != xno; then
-    AC_DEFINE_UNQUOTED(SLRN_SENDMAIL_COMMAND, "$ac_cv_path_SENDMAIL -oi -t -oem -odb")
-else
-    AC_MSG_ERROR([
-
-I can't find a sendmail executable.  sendmail is required by slrn for sending
-e-mail.  Please make sure it can be found in your \$PATH.
-])
-fi
 
 dnl SLRN_LIB_DIR: directory for the global newsgroups.dsc
 AC_ARG_WITH(libdir,

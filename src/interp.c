@@ -1512,6 +1512,7 @@ int slrn_init_slang (void) /*{{{*/
        || (-1 == SLang_init_slunix ())
 #endif
        || (-1 == SLang_init_slfile ())
+       || (-1 == SLang_init_import ()) /* enable dynamic linking */
        
        /* Now add intrinsics for this application */
        || (-1 == SLadd_intrin_fun_table(Slrn_Intrinsics, NULL))

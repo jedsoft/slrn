@@ -36,11 +36,17 @@ Changes since 0.9.7.3
    set_strip_was_regexp. Added a return value to register_hook (hopefully,
    you'll find it backwards compatible).
 
+   Added support for dynamically linking slang modules using the import
+   intrinsic function (where available).
+
+   Added --with-mta option to the configure script to easily allow the use
+   of alternate mail transport agents (MTAs).
+
    More translations:
   * es.po (Spanish; Walter Echarri)
   * fr.po (French; slrn-fr project)
   * ko.po (Korean; Im Eunjea)
-   
+
 Changes since 0.9.7.2
 
 0. Bug fixes include:

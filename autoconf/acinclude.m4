@@ -1,5 +1,5 @@
 dnl -*- sh -*-
-dnl Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+dnl Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 dnl partly based on code by N. D. Bellamy
 
 dnl Wrapper around AC_ARG_ENABLE to set compile time options.
@@ -453,6 +453,34 @@ script to the right directory with the --with-ssl-includes=DIR option.
   
     AC_SUBST(SSLINC)
     AC_SUBST(SSLLIB)dnl
+])
+
+AC_DEFUN(CF_MTA,
+[
+  AC_ARG_WITH(mta,
+    [  --with-mta[=PATHNAME]   To use an alternate mail transport agent],
+    [  ac_mta_path="$withval" ], [ ac_mta_path=no ])
+  
+  if test "x$ac_mta_path" == xno || test "x$ac_mta_path" == xyes || \
+     test "x$ac_mta_path" == "x"; then
+    dnl We need to find sendmail ourself
+    
+    AC_PATH_PROG(SENDMAIL, sendmail, no,
+      $PATH:/usr/local/sbin:/usr/sbin:/usr/local/lib:/usr/lib)
+    if test "x$ac_cv_path_SENDMAIL" != xno; then
+      AC_DEFINE_UNQUOTED(SLRN_SENDMAIL_COMMAND, "$ac_cv_path_SENDMAIL -oi -t -oem -odb")
+    else
+      AC_MSG_ERROR([
+
+I can't find a sendmail executable.  slrn requires a mail transport agent
+for sending e-mail.  Please make sure sendmail is in your \$PATH or use
+the --with-mta option to point configure to a different MTA (giving the full
+pathname and all needed command line arguments).
+])
+    fi
+  else
+    AC_DEFINE_UNQUOTED(SLRN_SENDMAIL_COMMAND, "$ac_mta_path")
+  fi
 ])
 
 AC_DEFUN(CF_UUDEVIEW,
