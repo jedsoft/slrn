@@ -5562,10 +5562,7 @@ static int get_header_by_message_id (char *msgid,
      return 1;
    
    ref = process_xover (&xov);
-   ref = apply_score (ref, 0);
-
-   if (ref == NULL) return -1;
-
+   
    if ((ref->number!=0) &&
        (slrn_ranges_is_member (no_body, ref->number)))
      {
@@ -5574,6 +5571,10 @@ static int get_header_by_message_id (char *msgid,
 	  ref->flags |= HEADER_REQUEST_BODY;
      }
    
+   ref = apply_score (ref, 0);
+
+   if (ref == NULL) return -1;
+
    insert_header (ref);
    
    Slrn_Current_Header = ref;
@@ -5589,7 +5590,8 @@ static int get_header_by_message_id (char *msgid,
 /* returns -1 if not implemented or the number of children returned from
  * the server.  It does not sync line number. 
  */  
-static int find_children_headers (Slrn_Header_Type *parent) /*{{{*/
+static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
+				  Slrn_Range_Type *no_body)
 {
    char buf[NNTP_BUFFER_SIZE];
    int id_array[1000];
@@ -5658,6 +5660,15 @@ static int find_children_headers (Slrn_Header_Type *parent) /*{{{*/
 	     Slrn_Header_Type *bad_h;
 	     
 	     h = process_xover (&xov);
+	     
+	     if ((h->number!=0) &&
+		 (slrn_ranges_is_member (no_body, h->number)))
+	       {
+		  h->flags |= HEADER_WITHOUT_BODY;
+		  if (slrn_ranges_is_member (Current_Group->requests, h->number))
+		    h->flags |= HEADER_REQUEST_BODY;
+	       }
+	     	     
 	     h = apply_score (h, 0);
 	     if (h == NULL) continue;
 	     
@@ -5700,14 +5711,15 @@ static int find_children_headers (Slrn_Header_Type *parent) /*{{{*/
 /*}}}*/
 
 /* Line number not synced. */
-static void get_children_headers_1 (Slrn_Header_Type *h) /*{{{*/
+static void get_children_headers_1 (Slrn_Header_Type *h, /*{{{*/
+				    Slrn_Range_Type *no_body)
 {
    while (h != NULL)
      {
-	(void) find_children_headers (h);
+	(void) find_children_headers (h, no_body);
 	if (h->child != NULL)
 	  {
-	     get_children_headers_1 (h->child);
+	     get_children_headers_1 (h->child, no_body);
 	  }
 	h = h->sister;
      }
@@ -5719,7 +5731,13 @@ static void get_children_headers (void) /*{{{*/
 {
    Slrn_Header_Type *h;
    int thorough_search;
-   
+   Slrn_Range_Type *no_body = NULL;
+
+#if SLRN_HAS_SPOOL_SUPPORT
+   if (Slrn_Server_Id == SLRN_SERVER_ID_SPOOL)
+     no_body = slrn_spool_get_no_body_ranges (Slrn_Current_Group_Name);
+#endif
+
    if (Slrn_Prefix_Arg_Ptr == NULL) thorough_search = 1;
    else 
      {
@@ -5729,9 +5747,10 @@ static void get_children_headers (void) /*{{{*/
    
    /* slrn_set_suspension (1); */
    
-   if (find_children_headers (Slrn_Current_Header) < 0)
+   if (find_children_headers (Slrn_Current_Header, no_body) < 0)
      {
 	/* slrn_set_suspension (0); */
+	slrn_ranges_free (no_body);	
 	return;
      }
    
@@ -5745,10 +5764,11 @@ static void get_children_headers (void) /*{{{*/
 	 * above attempt got everything.  If other newsreaders did not chop off
 	 * headers, this would be unnecessary!
 	 */
-	get_children_headers_1 (h);
+	get_children_headers_1 (h, no_body);
 	slrn_sort_headers ();
      }
    slrn_uncollapse_this_thread (Slrn_Current_Header, 1);
+   slrn_ranges_free (no_body);
    
    /* slrn_set_suspension (0); */
 }
@@ -5847,7 +5867,7 @@ static void get_parent_header (void) /*{{{*/
 	else Slrn_Prefix_Arg_Ptr = NULL;
      }
    else (void) slrn_locate_header_by_msgid (buf, 0, 1); /* syncs the line */
-   
+
    slrn_uncollapse_this_thread (Slrn_Current_Header, 1);
 }
 
