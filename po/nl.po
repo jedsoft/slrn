@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Slrn 0.9.7.2\n"
-"POT-Creation-Date: 2001-11-05 12:24+0100\n"
+"POT-Creation-Date: 2001-10-29 15:48+0100\n"
 "PO-Revision-Date: 2001-10-02 20:08+0200\n"
 "Last-Translator: Jelmer Vernooij <jelmer@nl.linux.org>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -85,7 +85,7 @@ msgstr "Geen URL's gevonden."
 msgid "Search: "
 msgstr "Zoek: "
 
-#: src/art.c:1225 src/art.c:5529 src/group.c:1232
+#: src/art.c:1225 src/art.c:5526 src/group.c:1232
 msgid "Not found."
 msgstr "Niet gevonden."
 
@@ -225,7 +225,7 @@ msgstr "%s lijkt ongeldig. Toch een kopie versturen"
 msgid "Are you sure you want to supersede"
 msgstr "Weet U zeker dat U wilt vervangen"
 
-#: src/art.c:3354 src/art.c:7259
+#: src/art.c:3354 src/art.c:7256
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "Mislukt: Uw naam: '%s' is niet '%s'"
@@ -408,39 +408,41 @@ msgstr "Artikel %d is onderdeel van verwijzingslus"
 msgid "Linking \"lost relatives\" ..."
 msgstr "Verbinden \"verloren verwanten\" ..."
 
-#: src/art.c:5393
+#. Now perform sort on subject to catch those that have fallen through the
+#. * cracks, i.e., no references
+#: src/art.c:5391
 msgid "Linking articles with identical subjects ..."
 msgstr "Artikelen met gelijke onderwerpen verbinden ..."
 
-#: src/art.c:5461
+#: src/art.c:5458
 msgid "Mark set."
 msgstr "Gemarkeerd."
 
-#: src/art.c:5473
+#: src/art.c:5470
 msgid "Mark not set."
 msgstr "Niet gemarkeerd."
 
-#: src/art.c:5494
+#: src/art.c:5491
 msgid "Subject"
 msgstr "Onderwerp"
 
-#: src/art.c:5494
+#: src/art.c:5491
 msgid "Author"
 msgstr "Auteur"
 
-#: src/art.c:5495
+#: src/art.c:5492
 msgid " Search "
 msgstr " Zoeken "
 
-#: src/art.c:5496 src/group.c:1223
+#: src/art.c:5493 src/group.c:1223
 msgid "Forward"
 msgstr "Doorsturen"
 
-#: src/art.c:5496 src/group.c:1223
+#: src/art.c:5493 src/group.c:1223
 msgid "Backward"
 msgstr "Terugwaarts"
 
-#: src/art.c:5680
+#: src/art.c:5677
 #, c-format
 msgid ""
 "Score %d killed article %s\n"
@@ -455,159 +457,159 @@ msgstr ""
 "Onderwerp: %s\n"
 "\n"
 
-#: src/art.c:5732
+#: src/art.c:5729
 msgid "Scoring articles ..."
 msgstr "Scores toepassen op artikelen ..."
 
-#: src/art.c:5745
+#: src/art.c:5742
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr ""
 "Scores toepassen op artikelen: %2d%%, Verwijderd: %u, Hoog: %u, Laag: %u"
 
-#: src/art.c:5780
+#: src/art.c:5777
 msgid "Apply scorefile now"
 msgstr "Scorebestand nu toepassen"
 
-#: src/art.c:5827
+#: src/art.c:5824
 msgid "This article is not matched by any scorefile entries."
 msgstr "Dit artikel voldoet niet aan een van de scores in het scorebestand."
 
-#: src/art.c:5874
+#: src/art.c:5871
 msgid "This article is matched by the following scores"
 msgstr "Dit artikel voldoet aan de volgende scores"
 
-#: src/art.c:5974
+#: src/art.c:5971
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: ontvangen van toegevoegde berichtkoppen...[%c]"
 
-#: src/art.c:6057
+#: src/art.c:6054
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: berichtkoppen ontvangen: %2d/%d"
 
-#: src/art.c:6220
+#: src/art.c:6217
 #, c-format
 msgid "Finding %s from server..."
 msgstr "Vinden %s van server..."
 
-#: src/art.c:6251
+#: src/art.c:6248
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "Vinden van kinderen van server...[%c]"
 
-#: src/art.c:6259
+#: src/art.c:6256
 msgid "Your server does not provide support for this feature."
 msgstr "Uw server biedt geen ondersteuning voor deze optie."
 
-#: src/art.c:6425
+#: src/art.c:6422
 msgid "Header is part of a reference loop"
 msgstr "Berichtkip is onderdeel van verwijzingslus"
 
-#: src/art.c:6473
+#: src/art.c:6470
 msgid "Article has no parent reference."
 msgstr "Artikel heeft geen verwijzing naar ouder."
 
-#: src/art.c:6521
+#: src/art.c:6518
 #, c-format
 msgid "Article %s not available."
 msgstr "Artikel %s niet beschikbaar."
 
-#: src/art.c:6533
+#: src/art.c:6530
 msgid "Enter Message-Id: "
 msgstr "Voer Bericht-Nummer in:"
 
-#: src/art.c:7236
+#: src/art.c:7233
 msgid "Are you sure that you want to cancel this article"
 msgstr "Weet U zeker dat U dit artikel wilt annuleren"
 
-#: src/art.c:7239
+#: src/art.c:7236
 msgid "Cancelling..."
 msgstr "Annuleren..."
 
-#: src/art.c:7274
+#: src/art.c:7271
 msgid "No message id."
 msgstr "Geen bericht-nummer."
 
-#: src/art.c:7295
+#: src/art.c:7292
 msgid "Done."
 msgstr "Klaar."
 
-#: src/art.c:7332
+#: src/art.c:7329
 msgid "Mark all articles as read"
 msgstr "Markeer alle artikelen als gelezen"
 
-#: src/art.c:7342
+#: src/art.c:7339
 msgid "Mark all articles as unread"
 msgstr "Markeer alle artikelen als ongelezen"
 
-#: src/art.c:7352
+#: src/art.c:7349
 msgid "Mark all articles up to here as read"
 msgstr "Markeer alle artikelen tot aan de huidige positie als gelezen."
 
-#: src/art.c:7362
+#: src/art.c:7359
 msgid "Mark all articles up to here as unread"
 msgstr "Markeer alle artikelen tot aan de huidige positie als ongelezen."
 
-#: src/art.c:7429
+#: src/art.c:7426
 msgid "Rate article (1-5):"
 msgstr "Waardeer artikel (1-5):"
 
-#: src/art.c:7434
+#: src/art.c:7431
 msgid "Rating must be in range 1 to 5."
 msgstr "Waardering moet tussen 1 en 5 zijn."
 
-#: src/art.c:7727
+#: src/art.c:7724
 msgid "Unable to create Article keymap!"
 msgstr "Kan geen Artikel keymap maken!"
 
-#: src/art.c:8172
+#: src/art.c:8169
 msgid "Group transfer aborted."
 msgstr "Versturen van groep gestopt."
 
-#: src/art.c:8174
+#: src/art.c:8171
 msgid "Server read failed."
 msgstr "Lezen van server mislukt."
 
-#: src/art.c:8191
+#: src/art.c:8188
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Geen ongelezen berichten gevonden. (%d verwijderd)"
 
-#: src/art.c:8193
+#: src/art.c:8190
 msgid "No unread articles found."
 msgstr "Geen ongelezen berichten gevonden."
 
-#: src/art.c:8249
+#: src/art.c:8246
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr ""
 "Aantl Gewist: %u, Aantl Hoog: %u, Aantl Laag: %u, Aantl GroepLens Gewrdeerd: "
 "%d"
 
-#: src/art.c:8255
+#: src/art.c:8252
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "Aantal Gewist: %u, Aantl Hoog: %u, Aantl Laag: %u"
 
-#: src/art.c:8456
+#: src/art.c:8453
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPT:Kies Ctrl-D:PgDn Ctrl-U:PgUp d:Zet-als-gelezen n:Volgende p:Vorige q:Stop"
 
-#: src/art.c:8461
+#: src/art.c:8458
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:Pgdn B:PgUp u:Zet-As-OnGelezen f:Reactie n:Volgende p:Vorige q:Stop"
 
-#: src/art.c:8653
+#: src/art.c:8650
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Einde van Thread.  Volgende: %s"
 
-#: src/art.c:8655
+#: src/art.c:8652
 msgid "End of Thread."
 msgstr "Einde van Thread."
 
@@ -615,15 +617,15 @@ msgstr "Einde van Thread."
 #. * sisters except that one can have a fake parent.  If this is the
 #. * case, we are at the end of a subthread.
 #.
-#: src/art.c:8667
+#: src/art.c:8664
 msgid "End of Sub-Thread"
 msgstr "Einde van Sub-Thread"
 
-#: src/art.c:9224
+#: src/art.c:9221
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t ongelezen] Groep: %n%-20g -- %L (%P)"
 
-#: src/art.c:9412
+#: src/art.c:9409
 msgid "Spoilers visible!"
 msgstr "'Bedorven' berichten zichtbaar!"
 
@@ -875,7 +877,7 @@ msgstr "Groep %s bestaat niet."
 
 #: src/group.c:1283
 msgid "Add group: "
-msgstr "Voeg groept toe: "
+msgstr "Voeg groep toe: "
 
 #: src/group.c:1354
 #, c-format
@@ -1231,7 +1233,7 @@ msgstr "Versturen GroupLens waarderingen naar %s:%d..."
 
 #: src/help.c:41
 msgid " More information about slrn can be found on its home page:"
-msgstr " Meer informatie over slrn kan gevonden worden op zijn homepage:"
+msgstr " Meer informatie over slrn kan gevonden worden op de homepage:"
 
 #: src/help.c:42
 msgid "   http://slrn.sourceforge.net/"
@@ -1239,24 +1241,21 @@ msgstr "   http://slrn.sourceforge.net/"
 
 #: src/help.c:43
 msgid " Questions not covered by the documentation can be posted to"
-msgstr ""
-" Vragen die niet behandeld zijn door de documentatie kunnen geplaats worden "
-"op"
+msgstr "Vragen die niet beantwoord worden door de documentatie kunnen" 
 
 #: src/help.c:44
 msgid "   news.software.readers"
-msgstr "   news.software.readers"
+msgstr "   geplaatst worden op news.software.readers"
 
 #: src/help.c:46
 msgid ""
 " Please email bug reports, suggestions or comments to the current maintainer,"
 msgstr ""
 " Stuur alstublieft email bug verslagen, suggesties of commentaar naar de "
-"huidige beheerder,"
 
 #: src/help.c:47
 msgid "   Thomas Schultz <tststs@gmx.de>"
-msgstr "   Thomas Schultz <tststs@gmx.de>"
+msgstr "   huidige beheerder, Thomas Schultz <tststs@gmx.de>"
 
 #: src/help.c:48
 msgid ""
@@ -1269,8 +1268,7 @@ msgstr ""
 msgid ""
 " Note: The keys are case sensitive!  That is, 's' and 'S' are not the same."
 msgstr ""
-" N.B.: De sleutels zijn hoofdlettergevoelig!  's' is dus niet hetzelfde als "
-"'S'!"
+" NB: De sleutels zijn hoofdlettergevoelig! 's' is dus niet hetzelfde als 'S'!"
 
 #: src/help.c:56
 msgid "General movement:"
