@@ -2254,7 +2254,7 @@ char slrn_get_response (char *valid_chars, char *translated_chars, /*{{{*/
 		  slrn_clear_message ();
 		  
 		  va_start(ap, str);
-		  vmessage_1 (0, str, ap);
+		  vmessage_1 (MESSAGE_COLOR, str, ap);
 		  va_end(ap);
 		  
 		  slrn_smg_refresh ();

@@ -5,6 +5,7 @@ Changes since 0.9.7.3
   * Sometimes headers were cut off during MIME encoding (Andreas Ferber)
   * Mouse support did not work correctly when using a translation.
   * Fixed rare segfault caused by broken "References:" lines. (Felix Schueller)
+  * Use color object "message" for all prompts.
 
    The output of --kill-log now also shows which scorefile entries match
    the killed article (like view_scores; based on patch by Jurriaan W Kalkman)

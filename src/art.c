@@ -5743,7 +5743,7 @@ static void score_headers (int apply_kill) /*{{{*/
    
    slrn_message_now (_("Scoring articles ..."));
    
-   while (h != NULL)
+   while ((h != NULL) && (SLang_Error != USER_BREAK))
      {
 	Slrn_Header_Type *prev, *next;
 	prev = h->real_prev;
@@ -5771,6 +5771,11 @@ static void score_headers (int apply_kill) /*{{{*/
 	       next->prev = next->real_prev = prev;
 	  }
 	h = next;
+     }
+   if (SLang_Error == USER_BREAK)
+     {
+	slrn_error ("Scoring aborted.");
+	SLang_Error = 0;
      }
    if (apply_kill)
      Slrn_Current_Header = Headers = Slrn_First_Header;
