@@ -413,12 +413,12 @@ to the right directory with the --with-gnutls-library=DIR option.
       fi
     else
       if test "x$ac_ssl_library" = "x/usr/lib" ; then
-        SSLLIB="-lgnutls-extra -lgnutls -ltasn1 -lgcrypt"
+        SSLLIB="-lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
       else
         if test "x$enable_hardcode_libs" = "xyes" ; then
-            SSLLIB="-L$ac_ssl_library $cf_rpath_option$ac_ssl_library -lgnutls-extra -lgnutls -ltasn1 -lgcrypt"
+            SSLLIB="-L$ac_ssl_library $cf_rpath_option$ac_ssl_library -lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
         else
-            SSLLIB="-L$ac_ssl_library -lgnutls-extra -lgnutls -ltasn1 -lgcrypt"
+            SSLLIB="-L$ac_ssl_library -lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
         fi
       fi
     fi

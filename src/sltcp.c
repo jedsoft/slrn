@@ -226,6 +226,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 	 * to get a socket connection */
       if (TCP_Verbose_Reporting) {
 	 struct sockaddr *a = ai->ai_addr;
+# ifdef HAVE_GETNAMEINFO
 	 static char buf[NI_MAXHOST];
 	 int l;
 	 if (a->sa_family == AF_INET) {
@@ -236,11 +237,17 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 	    l = sizeof(struct sockaddr_in6);
 	    fprintf (stderr, "Address family: AF_INET6\n");
 	 }
-# ifdef HAVE_GETNAMEINFO
 	 if (!getnameinfo(a, l, buf, NI_MAXHOST-1, NULL, 0, NI_NUMERICHOST)) {
 	    fprintf (stderr, "Will try with address %s", buf);
 	 } else {
 	    fprintf (stderr, "getnameinfo failed: %s\n", strerror(errno));
+	 }
+# else
+	 if (a->sa_family == AF_INET) {
+	    fprintf (stderr, "Address family: AF_INET\n");
+	 } else {
+	    assert(a->sa_family == AF_INET6);
+	    fprintf (stderr, "Address family: AF_INET6\n");
 	 }
 # endif /* HAVE_GETNAMEINFO */
       }

@@ -86,6 +86,10 @@ mode.
    This function may be used to select the current group.  It returns
    0 upon success or -1 upon failure.  It can fail if the group has no
    articles.
+   
+   Note that in some situations, this function will set an slang error
+   condition. This includes cases in which the user interrupted transfer of
+   article headers or all articles got killed by the scorefile.   
 \seealso{current_newsgroup}
 \done
 
