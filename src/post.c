@@ -1221,7 +1221,10 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	     linep[len - 1] = 0;
 #if SLRN_HAS_MIME
 	     if (Slrn_Use_Mime & MIME_DISPLAY)
-	       slrn_mime_header_encode (linep, sizeof (line) - 1);
+	       {
+		  slrn_mime_header_encode (linep, sizeof (line) - 1);
+		  len = strlen (linep);
+	       }
 #endif
 	  }
 
