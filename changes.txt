@@ -18,6 +18,7 @@ Changes since 0.9.7.3
     group by Message-Id.
   * Recognize SN's timeout messages.
   * TABs in the text of popup_window()s are now expanded correctly.
+  * Don't turn off scoring when scorefile contains a single invalid regexp.
 1. New algorithm for article sorting (based on a patch by Felix Schueller).
    This adds a highly configurable custom sorting interface (which will
    completely replace the choice in sorting_method at some point). See

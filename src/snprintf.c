@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  Based on code from glib 1.2.8; original copyright notice:
  Copyright (C) 1995-1998  Peter Mattis, Spencer Kimball and Josh MacDonald

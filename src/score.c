@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -530,21 +530,18 @@ static int chain_group_regexp (PScore_Type *pst, int *generic)
 	if (st == NULL)
 	  return -1;
 	
-	if (Score_Root == NULL)
-	  {
-	     Score_Root = st;
-	  }
-	else Score_Tail->next = st;
-	
-	Score_Tail = st;
-	
 	st->pscore = pst;
-	
 	psrt = pst->pregexp_list;
 	srt = &st->regexp_list;
 	
 	if (compile_psrt(psrt, srt, generic) != 0)
-	  return -1;
+	  slrn_free ((char*)st);
+	else
+	  {
+	     if (Score_Root == NULL) Score_Root = st;
+	     else Score_Tail->next = st;
+	     Score_Tail = st;
+	  }
 	
 	pst = pst->next;
      } /* while (pst != NULL) */

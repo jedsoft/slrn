@@ -1,12 +1,14 @@
-Last-Modified: 2001-11-03
+Last-Modified: 2002-03-13
 
 This is the slrn FAQ.  Send comments, suggestions, or corrections to
-tststs@gmx.de.
+tststs@gmx.de.  Please note that we are currently working on a completely
+revised version of the FAQ - if you want to contribute, please contact us
+first.
 
-   The latest version of slrn is 0.9.7.3. It is available via HTTP from
+   The latest version of slrn is 0.9.7.4. It is available via HTTP from
    http://sourceforge.net/project/showfiles.php?group_id=7768 or
-   anonymous FTP from ftp://slrn.sourceforge.net/pub/slrn/. In addition,
-   it may be obtained from the European mirror
+   anonymous FTP from ftp://ftp.fh-heilbronn.de/pub/mirrors/slrn/.
+   In addition, it may be obtained from the European mirror
    ftp://ftp.fu-berlin.de/pub/unix/news/slrn/.
    
    Questions:

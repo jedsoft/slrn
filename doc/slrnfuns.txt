@@ -1,7 +1,7 @@
   Slrn Intrinsic Function Reference Manual
   John E. Davis, davis@space.mit.edu
   Thomas Schultz, tststs@gmx.de
-  Tue Mar  5 17:41:21 2002
+  Wed Mar 13 14:05:50 2002
   ____________________________________________________________
 
   Table of Contents
@@ -102,18 +102,20 @@
 
      2.1 is_article_visible
      2.2 article_as_string
-     2.3 get_article_window_size
-     2.4 get_next_art_pgdn_action
-     2.5 is_article_visible
-     2.6 is_article_window_zoomed
-     2.7 pipe_article
-     2.8 re_search_article
-     2.9 re_search_article_first
-     2.10 replace_article
-     2.11 save_current_article
-     2.12 search_article
-     2.13 search_article_first
-     2.14 set_article_window_size
+     2.3 bsearch_article
+     2.4 get_article_window_size
+     2.5 get_next_art_pgdn_action
+     2.6 is_article_visible
+     2.7 is_article_window_zoomed
+     2.8 pipe_article
+     2.9 re_bsearch_article
+     2.10 re_search_article
+     2.11 re_search_article_first
+     2.12 replace_article
+     2.13 save_current_article
+     2.14 search_article
+     2.15 search_article_first
+     2.16 set_article_window_size
 
   3. Group Functions
 
@@ -130,6 +132,7 @@
      3.11 set_group_display_format
      3.12 set_group_flags
      3.13 set_group_order
+
   4. Dialog and Message Functions
 
      4.1 get_response
@@ -258,6 +261,7 @@
       Usage
         String_Type extract_article_header (String h)
 
+
       Description
         This function returns the article header line specified by the
         header keyword h of the currently selected header.  The
@@ -323,10 +327,6 @@
                 HEADER_TAGGED : set if header has `*' tag
                 HEADER_HIGH_SCORE : set if header has high score
                 HEADER_LOW_SCORE : set if header has low score
-
-
-
-
 
       See Also
         set_header_flags
@@ -867,7 +867,22 @@
 
 
 
-  2.3.  get_article_window_size
+  2.3.  bsearch_article
+
+
+      Usage
+        Integer bsearch_article (String_Type pat)
+
+      Description
+        This function works like search_article, but does a backward
+        search.
+
+      See Also
+        search_article
+
+
+
+  2.4.  get_article_window_size
 
 
       Usage
@@ -882,7 +897,7 @@
 
 
 
-  2.4.  get_next_art_pgdn_action
+  2.5.  get_next_art_pgdn_action
 
 
       Usage
@@ -905,7 +920,9 @@
 
 
 
-  2.5.  is_article_visible
+
+
+  2.6.  is_article_visible
 
 
       Usage
@@ -921,6 +938,9 @@
                 1  : if the article window is showing but the current header
                        does not refer to the article
                 3  : if the article window contains the current header article
+
+
+
 
       Notes
         For some purposes, it may be more useful to the the
@@ -944,7 +964,7 @@
 
 
 
-  2.6.  is_article_window_zoomed
+  2.7.  is_article_window_zoomed
 
 
       Usage
@@ -959,7 +979,7 @@
 
 
 
-  2.7.  pipe_article
+  2.8.  pipe_article
 
 
       Usage
@@ -976,7 +996,22 @@
 
 
 
-  2.8.  re_search_article
+  2.9.  re_bsearch_article
+
+
+      Usage
+        Integer re_bsearch_article (String_Type pat)
+
+      Description
+        This function works like re_search_article, but does a backward
+        search.
+
+      See Also
+        re_search_article
+
+
+
+  2.10.  re_search_article
 
 
       Usage
@@ -988,6 +1023,7 @@
         pat.  It returns 0 if no matching line is found.  Otherwise, it
         returns 1 and the matching line will be left on the stack as a
         string.
+
       See Also
         re_search_article_first
 
@@ -996,7 +1032,7 @@
 
 
 
-  2.9.  re_search_article_first
+  2.11.  re_search_article_first
 
 
       Usage
@@ -1012,7 +1048,7 @@
 
 
 
-  2.10.  replace_article
+  2.12.  replace_article
 
 
       Usage
@@ -1037,7 +1073,7 @@
 
 
 
-  2.11.  save_current_article
+  2.13.  save_current_article
 
 
       Usage
@@ -1059,7 +1095,7 @@
 
 
 
-  2.12.  search_article
+  2.14.  search_article
 
 
       Usage
@@ -1080,7 +1116,8 @@
 
 
 
-  2.13.  search_article_first
+  2.15.  search_article_first
+
 
 
       Usage
@@ -1098,7 +1135,7 @@
 
 
 
-  2.14.  set_article_window_size
+  2.16.  set_article_window_size
 
 
       Usage
@@ -1148,9 +1185,6 @@
 
                GROUP_UNSUBSCRIBED   : set if the group is unsubscribed
                GROUP_NEW_GROUP_FLAG : set if the group is new
-
-
-
 
       See Also
         get_header_flags, set_group_flags, current_newsgroup
@@ -1283,6 +1317,7 @@
 
 
 
+
   3.11.  set_group_display_format
 
 
@@ -1318,6 +1353,7 @@
 
       Usage
         Void set_group_flags (Integer flags)
+
       Description
         This function may be used to set the flags associated with the
         current newsgroup.
@@ -1346,8 +1382,6 @@
 
 
                 set_group_order ("news.software.readers");
-
-
 
 
      Moving a group to the end of the list can be done by removing it
@@ -1384,6 +1418,7 @@
         parameter, choices, specified the characters that will be
         accepted.  Any character in the prompt string that is preceeded
         by \001 will be given the `response_char' color.
+
       Example
         The following:
 
@@ -1415,11 +1450,11 @@
       Example
 
 
-                 variable rsp = get_select_box_response (
-                                   "Pick a number:",
-                                   "one", "two", "three", "four",
-                                   4);
-                 message (sprintf ("You chose %d", rsp));
+            variable rsp = get_select_box_response (
+                              "Pick a number:",
+                              "one", "two", "three", "four",
+                              4);
+            message (sprintf ("You chose %d", rsp));
 
 
 
@@ -1445,7 +1480,6 @@
                   1 if yes
                   0 if no
                  -1 if cancel
-
 
 
 
@@ -1484,6 +1518,10 @@
         text and uses title as its title. It returns the key that was
         used to exit the window.
 
+      Notes
+        Since slrn 0.9.7.4, this function expands TABs in the text
+        correctly. TABs in title are not expanded and should be avoided.
+
       See Also
         select_list_box
 
@@ -1516,6 +1554,7 @@
       Description
         This function works like read_mini, but allows the user to tab
         complete filenames.
+
       See Also
         read_mini, read_mini_variable, getkey, set_input_string,
         set_input_chars
@@ -1581,7 +1620,6 @@
 
 
 
-
       Description
         This purpose of this function is to present a list of n strings,
         specified by the s_1, ... s_n parameters to the user and have
@@ -1610,10 +1648,9 @@
 
       Example
 
-
-                 set_input_chars ("y");
-                 if ('y' == get_yes_no_cancel ("Really Quit"))
-                   quit (0);
+            set_input_chars ("y");
+            if ('y' == get_yes_no_cancel ("Really Quit"))
+              quit (0);
 
 
 
@@ -1675,7 +1712,6 @@
 
       See Also
         definekey, undefinekey, set_prefix_argument
-
 
 
   5.2.  definekey
@@ -1744,7 +1780,6 @@
         This function checks for keyboard input.  Its argument specifies
         the number of tenths of a second to wait.  It returns 0 if no
         input is available or a non-sero value if input is available.
-
       See Also
         getkey, ungetkey
 
@@ -1780,6 +1815,8 @@
       See Also
         call
 
+
+
   5.8.  undefinekey
 
 
@@ -1808,9 +1845,6 @@
 
       See Also
         getkey
-
-
-
 
   6.  File I/O Functions
 
@@ -1846,6 +1880,7 @@
         The log_message function may be used to write a string to the
         log file.  If no log file has been opened via open_log_file, the
         message will be written to stderr.
+
       See Also
         open_log_file, close_log_file, message
 
@@ -1911,7 +1946,6 @@
   7.1.  _.ds h slrn_version Miscellaneous Functions
 
 
-
       Usage
         Integer _slrn_version
 
@@ -1942,7 +1976,6 @@
 
       See Also
         _slrn_version
-
 
 
   7.3.  datestring_to_unixtime
@@ -1978,6 +2011,9 @@
 
       Notes
         Due to a limitation in S-Lang, this function only works on Unix.
+
+
+
   7.5.  get_fg_color
 
 
@@ -2007,8 +2043,6 @@
 
       See Also
         set_integer_variable, set_string_variable
-
-
 
   7.7.  quit
 
@@ -2044,6 +2078,7 @@
 
 
 
+
      If you register multiple functions for the same hook, they will be
      called in the order in which they were registered. If a function
      with the name of a hook is defined, it gets called after those that
@@ -2075,9 +2110,6 @@
 
       Notes
         Outside article mode, apply_now has no effect.
-
-
-
   7.10.  server_name
 
 
@@ -2107,7 +2139,6 @@
 
 
   7.12.  set_ignore_quotes
-
 
 
       Usage
@@ -2145,7 +2176,6 @@
         set_string_variable, get_variable_value
 
 
-
   7.14.  set_string_variable
 
 
@@ -2176,6 +2206,7 @@
       Notes
         This function is only available if slrn was compiled with S-Lang
         1.4.x.
+
       See Also
         set_ignore_quotes, set_strip_sig_regexp, set_strip_was_regexp
 
@@ -2242,7 +2273,8 @@
         default if this function is not called. Thus, you can reset the
         default using
 
-        set_utf8_conversion_table (Integer_Type[2,0]);
+
+             set_utf8_conversion_table (Integer_Type[2,0]);
 
 
 
@@ -2342,7 +2374,6 @@
   This chapter is special. Rather than describing intrinsic functions,
   it gives you a list of hooks that can be used to execute arbitrary S-
   lang code on certain events (e.g. whenever entering article mode).
-
   You can define code for a hook by putting it into a function that has
   exactly the same name as the hook. However, the preferred way to add
   code to a hook is now using the register_hook () intrinsic function on
@@ -2369,28 +2400,23 @@
         comp.*:
 
 
+             define make_group_specific_settings ()
+             {
+               variable sorting_method = 7;
+               variable signature_file = ".signature";
 
+               if (is_substr (current_newsgroup (), "binaries")
+                   or is_substr (current_newsgroup (), "pictures"))
+                sorting_method = 3;
 
+               if (0 == strncmp (current_newsgroup (), "comp.", 5))
+                 signature_file = ".nerd-signature";
 
-
-
-        define make_group_specific_settings ()
-        {
-          variable sorting_method = 7;
-          variable signature_file = ".signature";
-
-          if (is_substr (current_newsgroup (), "binaries")
-              or is_substr (current_newsgroup (), "pictures"))
-           sorting_method = 3;
-
-          if (0 == strncmp (current_newsgroup (), "comp.", 5))
-            signature_file = ".nerd-signature";
-
-          set_integer_variable ("sorting_method", sorting_method);
-          set_string_variable ("signature", signature_file);
-        }
-        () = register_hook ("article_mode_hook",
-                            "make_group_specific_settings");
+               set_integer_variable ("sorting_method", sorting_method);
+               set_string_variable ("signature", signature_file);
+             }
+             () = register_hook ("article_mode_hook",
+                                 "make_group_specific_settings");
 
 
 
@@ -2411,6 +2437,7 @@
 
 
   8.3.  article_mode_startup_hook
+
 
 
       Usage
@@ -2438,6 +2465,7 @@
       Notes
         As this hook returns a value, you cannot bind multiple macros to
         it.
+
 
 
   8.5.  followup_hook
@@ -2472,6 +2500,9 @@
         This hook will be called whenever group mode is entered.  This
         includes the times when one exists article mode back to group
         mode.
+
+
+
 
 
 
@@ -2572,6 +2603,7 @@
 
       Usage
         Void post_hook ()
+
       Description
         Function called when posting an article.
 
@@ -2606,7 +2638,6 @@
 
       Usage
         Void reply_hook ()
-
       Description
         Function called when replying to poster.
 
@@ -2638,6 +2669,8 @@
         The following example sets the `lines_per_update' variable to 20
         and turns off reading of the active file if the servername is
         `uhog' (it is a slow server):
+
+
              define make_server_specific_settings ()
              {
                !if (strcmp (server_name (), "uhog"))
@@ -2669,6 +2702,8 @@
 
 
 
+
+
   8.20.  supersede_hook
 
 
@@ -2677,6 +2712,37 @@
 
       Description
         Function called when superseding an article.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

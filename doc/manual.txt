@@ -1,7 +1,7 @@
   The slrn reference manual
   Matthias Friedrich <matt@mafr.de>
   Thomas Schultz <tststs@gmx.de>
-  version 0.9.7.3pl1
+  version 0.9.7.4
 
   Using and customizing the slrn newsreader
   ______________________________________________________________________
@@ -150,99 +150,100 @@
         4.2.44 header_help_line
         4.2.45 header_status_line
         4.2.46 hide_pgpsignature
-        4.2.47 hide_signature
-        4.2.48 hide_verbatim_marks
-        4.2.49 highlight_unread_subjects
-        4.2.50 highlight_urls
-        4.2.51 hostname
-        4.2.52 ignore_signature
-        4.2.53 inews_program
-        4.2.54 kill_score
-        4.2.55 lines_per_update
-        4.2.56 macro_directory
-        4.2.57 mail_editor_command
-        4.2.58 mail_editor_is_mua
-        4.2.59 max_low_score
-        4.2.60 max_queued_groups
-        4.2.61 metamail_command
-        4.2.62 mime_charset
-        4.2.63 min_high_score
-        4.2.64 mouse
-        4.2.65 netiquette_warnings
-        4.2.66 new_subject_breaks_threads
-        4.2.67 no_autosave
-        4.2.68 no_backups
-        4.2.69 non_Xbrowser
-        4.2.70 organization
-        4.2.71 overview_date_format
-        4.2.72 post_editor_command
-        4.2.73 post_object
-        4.2.74 postpone_directory
-        4.2.75 prefer_head
-        4.2.76 printer_name
-        4.2.77 process_verbatim_marks
-        4.2.78 process_verbatum_marks
-        4.2.79 prompt_next_group
-        4.2.80 query_next_article
-        4.2.81 query_next_group
-        4.2.82 query_read_group_cutoff
-        4.2.83 query_reconnect
-        4.2.84 quote_string
-        4.2.85 read_active
-        4.2.86 realname
-        4.2.87 reject_long_lines
-        4.2.88 reply_custom_headers
-        4.2.89 reply_string
-        4.2.90 replyto
-        4.2.91 save_directory
-        4.2.92 save_posts
-        4.2.93 save_replies
-        4.2.94 score_editor_command
-        4.2.95 scorefile
-        4.2.96 scroll_by_page
-        4.2.97 sendmail_command
-        4.2.98 server_object
-        4.2.99 show_article
-        4.2.100 show_descriptions
-        4.2.101 show_thread_subject
-        4.2.102 signature
-        4.2.103 signoff_string
-        4.2.104 simulate_graphic_chars
-        4.2.105 smart_quote
-        4.2.106 sorting_method
-        4.2.107 spoiler_char
-        4.2.108 spoiler_display_mode
-        4.2.109 spool_active_file
-        4.2.110 spool_activetimes_file
-        4.2.111 spool_check_up_on_nov
-        4.2.112 spool_inn_root
-        4.2.113 spool_newsgroups_file
-        4.2.114 spool_nov_file
-        4.2.115 spool_nov_root
-        4.2.116 spool_root
-        4.2.117 supersedes_custom_headers
-        4.2.118 top_status_line
-        4.2.119 uncollapse_threads
-        4.2.120 unsubscribe_new_groups
-        4.2.121 use_blink
-        4.2.122 use_color
-        4.2.123 use_flow_control
-        4.2.124 use_grouplens
-        4.2.125 use_header_numbers
-        4.2.126 use_localtime
-        4.2.127 use_metamail
-        4.2.128 use_mime
-        4.2.129 use_slrnpull
-        4.2.130 use_tilde
-        4.2.131 use_tmpdir
-        4.2.132 use_uudeview
-        4.2.133 use_xgtitle
-        4.2.134 username
-        4.2.135 warn_followup_to
-        4.2.136 wrap_flags
-        4.2.137 wrap_method
-        4.2.138 write_newsrc_flags
-        4.2.139 Xbrowser
+        4.2.47 hide_quotes
+        4.2.48 hide_signature
+        4.2.49 hide_verbatim_marks
+        4.2.50 highlight_unread_subjects
+        4.2.51 highlight_urls
+        4.2.52 hostname
+        4.2.53 ignore_signature
+        4.2.54 inews_program
+        4.2.55 kill_score
+        4.2.56 lines_per_update
+        4.2.57 macro_directory
+        4.2.58 mail_editor_command
+        4.2.59 mail_editor_is_mua
+        4.2.60 max_low_score
+        4.2.61 max_queued_groups
+        4.2.62 metamail_command
+        4.2.63 mime_charset
+        4.2.64 min_high_score
+        4.2.65 mouse
+        4.2.66 netiquette_warnings
+        4.2.67 new_subject_breaks_threads
+        4.2.68 no_autosave
+        4.2.69 no_backups
+        4.2.70 non_Xbrowser
+        4.2.71 organization
+        4.2.72 overview_date_format
+        4.2.73 post_editor_command
+        4.2.74 post_object
+        4.2.75 postpone_directory
+        4.2.76 prefer_head
+        4.2.77 printer_name
+        4.2.78 process_verbatim_marks
+        4.2.79 process_verbatum_marks
+        4.2.80 prompt_next_group
+        4.2.81 query_next_article
+        4.2.82 query_next_group
+        4.2.83 query_read_group_cutoff
+        4.2.84 query_reconnect
+        4.2.85 quote_string
+        4.2.86 read_active
+        4.2.87 realname
+        4.2.88 reject_long_lines
+        4.2.89 reply_custom_headers
+        4.2.90 reply_string
+        4.2.91 replyto
+        4.2.92 save_directory
+        4.2.93 save_posts
+        4.2.94 save_replies
+        4.2.95 score_editor_command
+        4.2.96 scorefile
+        4.2.97 scroll_by_page
+        4.2.98 sendmail_command
+        4.2.99 server_object
+        4.2.100 show_article
+        4.2.101 show_descriptions
+        4.2.102 show_thread_subject
+        4.2.103 signature
+        4.2.104 signoff_string
+        4.2.105 simulate_graphic_chars
+        4.2.106 smart_quote
+        4.2.107 sorting_method
+        4.2.108 spoiler_char
+        4.2.109 spoiler_display_mode
+        4.2.110 spool_active_file
+        4.2.111 spool_activetimes_file
+        4.2.112 spool_check_up_on_nov
+        4.2.113 spool_inn_root
+        4.2.114 spool_newsgroups_file
+        4.2.115 spool_nov_file
+        4.2.116 spool_nov_root
+        4.2.117 spool_root
+        4.2.118 supersedes_custom_headers
+        4.2.119 top_status_line
+        4.2.120 uncollapse_threads
+        4.2.121 unsubscribe_new_groups
+        4.2.122 use_blink
+        4.2.123 use_color
+        4.2.124 use_flow_control
+        4.2.125 use_grouplens
+        4.2.126 use_header_numbers
+        4.2.127 use_localtime
+        4.2.128 use_metamail
+        4.2.129 use_mime
+        4.2.130 use_slrnpull
+        4.2.131 use_tilde
+        4.2.132 use_tmpdir
+        4.2.133 use_uudeview
+        4.2.134 use_xgtitle
+        4.2.135 username
+        4.2.136 warn_followup_to
+        4.2.137 wrap_flags
+        4.2.138 wrap_method
+        4.2.139 write_newsrc_flags
+        4.2.140 Xbrowser
 
   5. Interactive functions
 
@@ -456,9 +457,14 @@
   user>. Of course, you still can email us privately if you want.
 
 
+
+
+
   1.3.1.  History
 
 
+     2002-03-13: Revision 2.3
+        Updated the manual for version 0.9.7.4.
 
      2001-11-05: Revision 2.2
         Updated the manual for version 0.9.7.3.
@@ -525,7 +531,6 @@
 
 
 
-
   If you set the same variable more than once in your configuration
   file, the last setting will take effect.
 
@@ -585,6 +590,7 @@
 
 
      Similarly, you can test if a given environment variable is set:
+
 
      #if$DISPLAY
        set editor_command "xjed '%s' -g %d -tmp"
@@ -652,7 +658,6 @@
      --kill-log file
         Keep a log of all articles that were killed by the scorefile in
         file.
-
      --nntp
         Use builtin NNTP support for reading and posting (an external
         program is used to post if the ``force inews'' compile time
@@ -718,7 +723,6 @@
         If you did not set ``realname'', slrn tries to get a value from
         $NAME. On Unix systems, it also queries the /etc/passwd gecos
         field.
-
 
      NNTPSERVER
 
@@ -786,7 +790,6 @@
         slrn uses this variable to find out what your home directory is.
         If $SLRNHOME is unset, $HOME is used instead.
 
-
      SLRNPULL_ROOT
 
         If you want to use slrnpull, you need to define a directory
@@ -851,8 +854,9 @@
   compatibility and will be removed before version 1.0 is released.
 
 
-  4.1.  Configuration commands
 
+
+  4.1.  Configuration commands
 
 
 
@@ -917,11 +921,13 @@
      header_name
         The name of header lines in the pager (e.g. ``From:'').
 
+
      header_number
         The header number in header overview.
 
      headers
         The content of header lines in the pager.
+
      high_score
         The exclamation mark (``!'') used to denote ``high scoring''
         articles in header overview.
@@ -981,12 +987,12 @@
      tilde
         The ``tilde'' displayed at the end of the article body.
 
+
      tree
         The thread tree drawn in the header overview.
 
      underlinetext
         Text in the article body that is interpreted as _underlined_.
-
 
      unread_subject
         Color for unread subjects. Please see the entry on
@@ -1051,8 +1057,6 @@
   a).
 
   The default settings are:
-
-
 
           group_display_format 0 "  %F%-5u  %n%45g%d"
           group_display_format 1 "  %F%-5u  %n%50g%-8l-%h"
@@ -1181,11 +1185,13 @@
 
 
 
+
   Note: The descriptors %t and %T write directly to the screen, so they
   cannot be ``tested'' with the %? operator and ignore the requested
   field width (i.e. "%10t" is the same as "%t"; the ``10'' is ignored).
   The descriptor %t is included for backwards compatibility and
   equivalent to "%?C?%-3c&   ? %T".
+
   See also: ``group_display_format'', ``overview_date_format''
 
 
@@ -1246,8 +1252,6 @@
   You can use this command to customize slrn's appearence on monochrome
   displays. See section ``color'' for a description of display_element.
   attributes can be one of
-
-
   o  bold
 
   o  blink
@@ -1311,6 +1315,9 @@
   variable instead.
 
 
+
+
+
   4.1.15.  server
 
   Usage: server nntp-server[:port] newsrc-file
@@ -1368,6 +1375,9 @@
        \\    backslash
        ^C    control and character C
        \NNN  the key sending keycode (octal) NNN
+
+
+
 
 
 
@@ -1440,7 +1450,6 @@
   header_lines that should still be visible in the article pager when
   the display of all headers is turned off (this is toggled via
   ``toggle_headers'', by default bound to `t').
-
   Note that the strings are not regular expressions. However, substrings
   can be used; e.g. "X-" matches all headers beginning with ``X-''. It's
   also possible to exclude certain headers by preceding them with a bang
@@ -1450,6 +1459,8 @@
 
   Headers mentioned in visible_headers that don't occur in the article
   are silently ignored.
+
+
   Example:
   visible_headers "From:,Subject:,Newsgroups:,Followup-To:,Reply-To:"
 
@@ -1499,6 +1510,10 @@
   This variable can be used to customize the status line of the article
   pager.  It accepts all % escapes that work for
   ``header_display_format'' plus the ones listed here:
+
+
+
+
 
 
            H   Prints `H' unless headers are hidden
@@ -1567,7 +1582,6 @@
   servers with broken ``Xref:'' headers and should otherwise be left
   untouched.
 
-
   4.2.8.  cc_followup
 
   Type: integer
@@ -1578,15 +1592,11 @@
 
 
 
-
-
-
-
-  0     Never send email copies automatically
-  1     Prompt if original poster requested a copy
-  2     Send email copy if original poster requested it
-  3     Always prompt
-  4     Send copy if poster requested it; prompt otherwise
+       0     Never send email copies automatically
+       1     Prompt if original poster requested a copy
+       2     Send email copy if original poster requested it
+       3     Always prompt
+       4     Send copy if poster requested it; prompt otherwise
 
 
 
@@ -1634,6 +1644,8 @@
   send. In followups, ``cc_followup_string'' is used instead. As opposed
   to this variable, cc_post_string currently does not expand any
   printf(3)-style % sequences.
+
+
 
 
   4.2.11.  charset
@@ -1702,7 +1714,6 @@
 
 
 
-
   If this feature is enabled, slrn uses the color objects neg_score,
   pos_score and high_score when printing the score / subject of articles
   with a non-zero score value.
@@ -1712,7 +1723,6 @@
 
   Type: integer
   Default: 31
-
 
   This variable decides in which situations slrn will ask you to confirm
   an action. It has a bitmapped value which can be the sum of any
@@ -1770,7 +1780,6 @@
   If ``sorting_method'' is set to 12 (custom sorting), this variable is
   used to decide whether or not to thread headers. In this case, any
   non-zero value activates threading.
-
   See also: ``custom_sort_order''
 
 
@@ -1778,7 +1787,6 @@
 
   Type: string
   Default: (unset)
-
 
   If custom sorting is enabled by setting ``sorting_method'' to 12, this
   variable defines the sort order you want to use. It is a comma-
@@ -1792,14 +1800,16 @@
          id          Sort alphabetically (A-z) by Message-Id
          lines       Sort by number of article lines, lowest number first
          number      Sort by server number, lowest first
+         score       Sort by score, lower numbers first
          subject     Sort alphabetically (a-z) by subject, ignoring case
 
 
 
 
-  Additionally, you can capitalize each keyword to reverse its order
-  (i.e. Highscore would sort high scoring articles first, which is
-  usually what you expect).
+  As you can see, all keywords use an ascending sort order by default.
+  You can however capitalize each keyword to reverse its order (i.e.
+  Highscore would sort high scoring articles first, which is usually
+  what you expect).
 
   When comparing two articles, slrn steps through this list, starting
   with the first keyword, until it finds an entry for which the articles
@@ -1834,6 +1844,8 @@
   decode_directory is unset, ``save_directory'' is used.
 
 
+
+
   4.2.19.  display_author_realname
 
   Type: integer
@@ -1841,9 +1853,6 @@
 
   This variable is obsolete. You can now use the much more powerful
   approach of having up to 10 user-defined ``header display formats''.
-
-
-
 
 
   4.2.20.  display_cursor_bar
@@ -1903,14 +1912,15 @@
   The following % escapes can be used:
 
 
-       %s    name of the file to edit
-       %d    number of the first line of the message body
+  %s    name of the file to edit
+  %d    number of the first line of the message body
 
 
 
 
   If no escapes are found, the filename is simply appended to the
   specified command.
+
 
   Example: set editor_command "jed '%s' -g %d -tmp"
 
@@ -2043,7 +2053,6 @@
   See also: ``use_localtime''
 
 
-
   4.2.32.  followup_string
 
   Type: string
@@ -2105,9 +2114,6 @@
 
   Note: If you need to set this variable on a per-server basis, use a
   startup_hook():
-
-
-
 
 
   Example:
@@ -2175,7 +2181,6 @@
   See also: ``posting_host'', ``username''
 
 
-
   4.2.38.  group_dsc_start_column
 
   Type: integer
@@ -2238,8 +2243,6 @@
   disabled; see ``use_grouplens'' for details.
 
   See also: ``grouplens_port'', ``grouplens_pseudoname''
-
-
 
 
   4.2.42.  grouplens_port
@@ -2305,9 +2308,9 @@
 
   The special descriptors ``%g'' and ``%?'' work like in
   ``header_display_format''.
-
   When unset, the default is (the localized form of)
   "%p[%u/%t unread] Group: %n%-20g -- %L (%P)".
+
   See also: ``art_status_line'', ``group_status_line'',
   ``top_status_line''
 
@@ -2324,7 +2327,20 @@
   See also: ``hide_signature''
 
 
-  4.2.47.  hide_signature
+  4.2.47.  hide_quotes
+
+  Type: integer
+  Default: 0
+
+  This variable can be used to hide quoted text. If it is non-zero,
+  quoted text from the nth level on is hidden in the article pager
+  (where n is the value of hide_quotes).
+
+  To toggle the value at runtime, you can use the ``toggle_quotes''
+  command.
+
+
+  4.2.48.  hide_signature
 
   Type: integer
   Default: 0
@@ -2338,7 +2354,7 @@
   ``ignore_signature''
 
 
-  4.2.48.  hide_verbatim_marks
+  4.2.49.  hide_verbatim_marks
 
   Type: integer
   Default: 0
@@ -2349,13 +2365,14 @@
   while slrn is running.
 
 
-  4.2.49.  highlight_unread_subjects
+  4.2.50.  highlight_unread_subjects
 
   Type: integer
   Default: 1
 
   If non-zero, the subjects of unread articles are highlighted. There
   are two possible ways of doing this:
+
 
   When set to one, unread subjects are printed bright (when using
   colors) or bold (in monochrome mode). This will obviously not have any
@@ -2368,11 +2385,10 @@
   be ``colored by score''.
 
 
-  4.2.50.  highlight_urls
+  4.2.51.  highlight_urls
 
   Type: integer
   Default: 1
-
 
   If non-zero, URLs are highlighted in the article pager using the
   ``url'' color object. This affects all portions of the message that
@@ -2385,7 +2401,7 @@
   See also: ``emphasized_text_mask'', ``mouse''
 
 
-  4.2.51.  hostname
+  4.2.52.  hostname
 
   Type: string
   Default: (unset)
@@ -2407,7 +2423,7 @@
   See also: ``realname'', ``username''
 
 
-  4.2.52.  ignore_signature
+  4.2.53.  ignore_signature
 
   Type: integer
   Default: 0
@@ -2421,7 +2437,10 @@
   See also: ``hide_signature'', ``strip_sig_regexp''
 
 
-  4.2.53.  inews_program
+
+
+
+  4.2.54.  inews_program
 
   Type: string
   Default: (compile time setting)
@@ -2436,10 +2455,11 @@
   inews support is not compiled in.
 
 
-  4.2.54.  kill_score
+  4.2.55.  kill_score
 
   Type: integer
   Default: -9999
+
   When the score of an article is equal or less than kill_score points,
   it will be killed. This means that it will not be displayed in article
   mode at all, so you won't be bothered with it.
@@ -2447,7 +2467,7 @@
   See also:  ``max_low_score'', ``min_high_score''
 
 
-  4.2.55.  lines_per_update
+  4.2.56.  lines_per_update
 
   Type: integer
   Default: 50
@@ -2464,7 +2484,7 @@
   contain less than 200 lines).
 
 
-  4.2.56.  macro_directory
+  4.2.57.  macro_directory
 
   Type: string
   Default: (compile time setting)
@@ -2482,6 +2502,10 @@
   ($HOME).
 
 
+
+
+
+
   Example:
 
   interpret "/usr/share/slrn/macros/util.sl"
@@ -2496,7 +2520,7 @@
 
 
 
-  4.2.57.  mail_editor_command
+  4.2.58.  mail_editor_command
 
   Type: string
   Default: (unset)
@@ -2505,14 +2529,13 @@
   invoke your editor of choice when you want to reply by email. If it is
   unset, slrn will use the editor defined by ``editor_command''.
 
-
   Note: The variable may contain % escapes. A list of them can be found
   in the section on ``editor_command''.
 
   See also: ``post_editor_command'', ``score_editor_command''
 
 
-  4.2.58.  mail_editor_is_mua
+  4.2.59.  mail_editor_is_mua
 
   Type: integer
   Default: 0
@@ -2530,7 +2553,7 @@
 
 
 
-  4.2.59.  max_low_score
+  4.2.60.  max_low_score
 
   Type: integer
   Default: 0
@@ -2542,7 +2565,7 @@
   See also: ``kill_score'', ``min_high_score''
 
 
-  4.2.60.  max_queued_groups
+  4.2.61.  max_queued_groups
 
   Type: integer
   Default: 20
@@ -2557,7 +2580,7 @@
   1 automatically.
 
 
-  4.2.61.  metamail_command
+  4.2.62.  metamail_command
 
   Type: string
   Default: (unset)
@@ -2571,11 +2594,10 @@
   If this variable is unset, slrn will try to invoke metamail. Setting
   this variable has no effect if MIME support has not been compiled in.
 
-
   See also: ``use_metamail''
 
 
-  4.2.62.  mime_charset
+  4.2.63.  mime_charset
 
   Type: string
   Default: (automatically chosen)
@@ -2594,7 +2616,7 @@
   See also: ``use_mime''
 
 
-  4.2.63.  min_high_score
+  4.2.64.  min_high_score
 
   Type: integer
   Default: 1
@@ -2609,20 +2631,19 @@
   See also: ``kill_score'', ``max_low_score'', ``sorting_method''
 
 
-  4.2.64.  mouse
+  4.2.65.  mouse
 
   Type: integer
   Default: 0
 
   If this variable is non-zero and you run slrn inside an X terminal
   emulator, some basic mouse support will be activated.
-
   Note: Setting this variable to -1 will always activate mouse support,
   even if it does not work (and is therefore useless) on the current
   terminal.
 
 
-  4.2.65.  netiquette_warnings
+  4.2.66.  netiquette_warnings
 
   Type: integer
   Default: 1
@@ -2637,11 +2658,10 @@
   ``Followup-To:'' header line contains multiple groups.  Additionally,
   you are notified if your signature has more than four lines.
 
-
   See also: ``reject_long_lines''
 
 
-  4.2.66.  new_subject_breaks_threads
+  4.2.67.  new_subject_breaks_threads
 
   Type: integer
   Default: 0
@@ -2663,7 +2683,7 @@
   ``strip_re_regexp'' and ``strip_was_regexp'' are not used.
 
 
-  4.2.67.  no_autosave
+  4.2.68.  no_autosave
 
   Type: integer
   Default: 0
@@ -2679,7 +2699,7 @@
   See also: ``no_backups''
 
 
-  4.2.68.  no_backups
+  4.2.69.  no_backups
 
   Type: integer
   Default: 0
@@ -2689,7 +2709,7 @@
   See also: ``no_autosave''
 
 
-  4.2.69.  non_Xbrowser
+  4.2.70.  non_Xbrowser
 
   Type: string
   Default: (unset)
@@ -2700,16 +2720,17 @@
   command could be found in ``Xbrowser''.
 
 
-  4.2.70.  organization
+  4.2.71.  organization
 
   Type: string
   Default: (compile time setting)
+
   Using this variable, you can set the ``Organization:'' header line to
   an arbitrary string. A discussion on how slrn obtains the default
   value can be found in the entry on ``$ORGANIZATION''.
 
 
-  4.2.71.  overview_date_format
+  4.2.72.  overview_date_format
 
   Type: string
   Default: (unset)
@@ -2723,7 +2744,7 @@
   See also: ``use_localtime''
 
 
-  4.2.72.  post_editor_command
+  4.2.73.  post_editor_command
 
   Type: string
   Default: (unset)
@@ -2739,7 +2760,7 @@
   See also: ``mail_editor_command'', ``score_editor_command''
 
 
-  4.2.73.  post_object
+  4.2.74.  post_object
 
   Type: string
   Default: (unset)
@@ -2749,11 +2770,10 @@
   external program) or "slrnpull" (spool messages for slrnpull to send).
   If the variable is unset, the default depends on the compile time
   setting of SLRN_DEFAULT_POST_OBJ in slrnfeat.h.
-
   See also: ``server_object'', ``use_slrnpull''
 
 
-  4.2.74.  postpone_directory
+  4.2.75.  postpone_directory
 
   Type: string
   Default: (unset)
@@ -2763,7 +2783,7 @@
   purpose.
 
 
-  4.2.75.  prefer_head
+  4.2.76.  prefer_head
 
   Type: integer
   Default: 0
@@ -2780,7 +2800,7 @@
   servers with broken XOVER implementations.
 
 
-  4.2.76.  printer_name
+  4.2.77.  printer_name
 
   Type: string
   Default: (unset)
@@ -2802,7 +2822,7 @@
   print is not yet implemented for VMS.
 
 
-  4.2.77.  process_verbatim_marks
+  4.2.78.  process_verbatim_marks
 
   Type: integer
   Default: 1
@@ -2816,12 +2836,11 @@
   Note: slrn is currently the only program that interprets these
   verbatim marks. This is due to the lack of a standard that would
   describe a way to mark text as ``verbatim'' in usenet articles.
-
   See also: ``emphasized_text_mask'', ``emphasized_text_mode'',
   ``hide_verbatim_marks''
 
 
-  4.2.78.  process_verbatum_marks
+  4.2.79.  process_verbatum_marks
 
   Type: integer
   Default: 1
@@ -2829,14 +2848,15 @@
   Obsolete spelling of ``process_verbatim_marks''.
 
 
-  4.2.79.  prompt_next_group
+  4.2.80.  prompt_next_group
 
   Type: integer
   Default: 1
 
   This variable is obsolete.
 
-  4.2.80.  query_next_article
+
+  4.2.81.  query_next_article
 
   Type: integer
   Default: 1
@@ -2850,7 +2870,7 @@
   See also: ``query_next_group''
 
 
-  4.2.81.  query_next_group
+  4.2.82.  query_next_group
 
   Type: integer
   Default: 1
@@ -2864,7 +2884,7 @@
   See also: ``query_next_article''
 
 
-  4.2.82.  query_read_group_cutoff
+  4.2.83.  query_read_group_cutoff
 
   Type: integer
   Default: 100
@@ -2875,15 +2895,14 @@
   if you set this variable to 0.
 
 
-  4.2.83.  query_reconnect
+  4.2.84.  query_reconnect
 
   Type: integer
   Default: (unset)
 
   This variable is obsolete.
 
-
-  4.2.84.  quote_string
+  4.2.85.  quote_string
 
   Type: string
   Default: (unset)
@@ -2898,10 +2917,11 @@
   See Also: ``smart_quote''
 
 
-  4.2.85.  read_active
+  4.2.86.  read_active
 
   Type: integer
   Default: 0
+
   If this variable is non-zero, slrn will read the active file from the
   server when starting. If your server carries few groups or your
   network connection is fast (e.g. because you are using a local
@@ -2909,7 +2929,7 @@
   should leave the default setting untouched.
 
 
-  4.2.86.  realname
+  4.2.87.  realname
 
   Type: string
   Default: (unset)
@@ -2922,7 +2942,7 @@
   See also: ``hostname'', ``username''
 
 
-  4.2.87.  reject_long_lines
+  4.2.88.  reject_long_lines
 
   Type: integer
   Default: 2
@@ -2937,7 +2957,7 @@
   See also: ``netiquette_warnings''
 
 
-  4.2.88.  reply_custom_headers
+  4.2.89.  reply_custom_headers
 
   Type: string
   Default: (unset)
@@ -2947,6 +2967,7 @@
   ``followup_string''. The headers you add this way will also show up in
   your editor and can be modified.
 
+
   Note: It is not possible to override existing headers using
   reply_custom_headers.
 
@@ -2954,7 +2975,7 @@
   ``supersedes_custom_headers''
 
 
-  4.2.89.  reply_string
+  4.2.90.  reply_string
 
   Type: string
   Default: "In %n, you wrote:" (localized)
@@ -2963,7 +2984,7 @@
   via email. You can use the same % escapes as in ``followup_string''.
 
 
-  4.2.90.  replyto
+  4.2.91.  replyto
 
   Type: string
   Default: (unset)
@@ -2977,7 +2998,7 @@
   See also: ``hostname'', ``username''
 
 
-  4.2.91.  save_directory
+  4.2.92.  save_directory
 
   Type: string
   Default: (unset)
@@ -2992,7 +3013,7 @@
   See also:  ``decode_directory'', ``postpone_directory''
 
 
-  4.2.92.  save_posts
+  4.2.93.  save_posts
 
   Type: string
   Default: (unset)
@@ -3009,11 +3030,10 @@
   See also:  ``save_replies''
 
 
-  4.2.93.  save_replies
+  4.2.94.  save_replies
 
   Type: string
   Default: (unset)
-
   Specifies a file to which every reply you send by email should be
   appended (in standard mailbox format). The same rules apply as for
   ``save_posts''.
@@ -3023,7 +3043,7 @@
   save_replies.
 
 
-  4.2.94.  score_editor_command
+  4.2.95.  score_editor_command
 
   Type: string
   Default: (unset)
@@ -3037,7 +3057,7 @@
   See also: ``mail_editor_command'', ``post_editor_command''
 
 
-  4.2.95.  scorefile
+  4.2.96.  scorefile
 
   Type: string
   Default: (unset)
@@ -3056,17 +3076,21 @@
   about the concept of ``scoring''.
 
 
-  4.2.96.  scroll_by_page
+  4.2.97.  scroll_by_page
 
   Type: integer
   Default: 0
 
   If set to non-zero, both group window and header window will scroll by
   a full page instead of a single line. This does not affect the article
-  window.
+  window, as it has separate commands for scrolling by ``lines'' and by
+  ``full pages''.
+
+  Note: If you change this variable at runtime, the change will take
+  effect as soon as you select a group or enter group mode.
 
 
-  4.2.97.  sendmail_command
+  4.2.98.  sendmail_command
 
   Type: string
   Default: (compile time setting)
@@ -3076,13 +3100,12 @@
   it.  On systems without pipes, sendmail_command will be given the name
   of a temporary file containing the email as the last command line
   argument.
-
   The default is set at compile time. On Unix, the configure script
   tries to find the sendmail binary; otherwise, you can set
   SLRN_SENDMAIL_COMMAND in slrnfeat.h.
 
 
-  4.2.98.  server_object
+  4.2.99.  server_object
 
   Type: string
   Default: (unset)
@@ -3097,10 +3120,7 @@
   See also: ``post_object'', ``use_slrnpull''
 
 
-
-
-
-  4.2.99.  show_article
+  4.2.100.  show_article
 
   Type: integer
   Default: 0
@@ -3109,7 +3129,7 @@
   entering a group.
 
 
-  4.2.100.  show_descriptions
+  4.2.101.  show_descriptions
 
   Type: integer
   Default: (unset)
@@ -3118,7 +3138,7 @@
   window by setting ``group_display_format''.
 
 
-  4.2.101.  show_thread_subject
+  4.2.102.  show_thread_subject
 
   Type: integer
   Default: 0
@@ -3130,7 +3150,7 @@
   this variable to a non-zero value.
 
 
-  4.2.102.  signature
+  4.2.103.  signature
 
   Type: string
   Default: (compile time setting)
@@ -3146,11 +3166,10 @@
 
   Note: If your signature file doesn't start with sig dashes ("-- \n"),
   slrn will add them automatically.
-
   See also: ``signoff_string''
 
 
-  4.2.103.  signoff_string
+  4.2.104.  signoff_string
 
   Type: string
   Default: (unset)
@@ -3165,8 +3184,7 @@
   put it in your ``signature file''.
 
 
-
-  4.2.104.  simulate_graphic_chars
+  4.2.105.  simulate_graphic_chars
 
   Type: integer
   Default: 0
@@ -3182,7 +3200,7 @@
   details.
 
 
-  4.2.105.  smart_quote
+  4.2.106.  smart_quote
 
   Type: integer
   Default: 1
@@ -3193,7 +3211,7 @@
   kept unquoted.
 
 
-  4.2.106.  sorting_method
+  4.2.107.  sorting_method
 
   Type: integer
   Default: 3
@@ -3203,19 +3221,30 @@
 
 
 
-        0     do not sort
-        1     perform threading
-        2     sort by subject
-        3     thread, then sort by subject
-        4     sort by score
-        5     thread, then sort by score
-        6     sort by score, then by subject
-        7     thread, then sort by score and subject
-        8     sort by date with most recent first
-        9     thread, then sort by date with most recent first
-       10     sort by date with most recent last
-       11     thread, then sort by date with most recent last
-       12     custom sorting
+
+
+
+
+
+
+
+
+
+
+
+   0     do not sort
+   1     perform threading
+   2     sort by subject
+   3     thread, then sort by subject
+   4     sort by score
+   5     thread, then sort by score
+   6     sort by score, then by subject
+   7     thread, then sort by score and subject
+   8     sort by date with most recent first
+   9     thread, then sort by date with most recent first
+  10     sort by date with most recent last
+  11     thread, then sort by date with most recent last
+  12     custom sorting
 
 
 
@@ -3229,10 +3258,7 @@
   ``custom_sort_by_threads''.
 
 
-
-
-
-  4.2.107.  spoiler_char
+  4.2.108.  spoiler_char
 
   Type: character
   Default: '*'
@@ -3244,7 +3270,7 @@
   See also: ``spoiler_display_mode''
 
 
-  4.2.108.  spoiler_display_mode
+  4.2.109.  spoiler_display_mode
 
   Type: integer
   Default: 1
@@ -3266,10 +3292,11 @@
   See also: ``spoiler_char''
 
 
-  4.2.109.  spool_active_file
+  4.2.110.  spool_active_file
 
   Type: string
   Default: "data/active"
+
 
   Sets the location of the active file that lists all available
   newsgroups.  The filename is relative to ``spool_inn_root'', unless it
@@ -3286,7 +3313,7 @@
   ``use_slrnpull''
 
 
-  4.2.110.  spool_activetimes_file
+  4.2.111.  spool_activetimes_file
 
   Type: string
   Default: "data/active.times"
@@ -3297,11 +3324,10 @@
   The notes that can be found in the entry for ``spool_active_file''
   also apply to this variable.
 
-
   See also: ``spool_inn_root''
 
 
-  4.2.111.  spool_check_up_on_nov
+  4.2.112.  spool_check_up_on_nov
 
   Type: integer
   Default: 0
@@ -3315,7 +3341,7 @@
   See also: ``spool_active_file'', ``spool_nov_file''
 
 
-  4.2.112.  spool_inn_root
+  4.2.113.  spool_inn_root
 
   Type: string
   Default: "/var/lib/news"
@@ -3330,7 +3356,7 @@
   ``spool_newsgroups_file''
 
 
-  4.2.113.  spool_newsgroups_file
+  4.2.114.  spool_newsgroups_file
 
   Type: string
   Default: "data/newsgroups"
@@ -3338,14 +3364,13 @@
   This variable provides the name of your news server's newsgroups file.
   The file contains a list of newsgroups with short descriptions
   (taglines).
-
   The notes that can be found in the entry for ``spool_active_file''
   also apply to this variable.
 
   See also: ``spool_inn_root''
 
 
-  4.2.114.  spool_nov_file
+  4.2.115.  spool_nov_file
 
   Type: string
   Default: ".overview"
@@ -3355,7 +3380,7 @@
   See also: ``spool_nov_root''
 
 
-  4.2.115.  spool_nov_root
+  4.2.116.  spool_nov_root
 
   Type: string
   Default: "/var/spool/news"
@@ -3363,11 +3388,10 @@
   The root directory of the news overview database. Often, this is the
   same as ``spool_root''.
 
-
   See also: ``spool_nov_file''
 
 
-  4.2.116.  spool_root
+  4.2.117.  spool_root
 
   Type: string
   Default: "/var/spool/news"
@@ -3377,7 +3401,7 @@
   See also: ``spool_inn_root'', ``spool_nov_root''
 
 
-  4.2.117.  supersedes_custom_headers
+  4.2.118.  supersedes_custom_headers
 
   Type: string
   Default: (unset)
@@ -3388,7 +3412,7 @@
   See also: ``custom_headers'', ``reply_custom_headers''
 
 
-  4.2.118.  top_status_line
+  4.2.119.  top_status_line
 
   Type: string
   Default: (unset)
@@ -3406,8 +3430,6 @@
            t   current time
            v   version of slrn
 
-
-
   The special sequences `%g' and `%?' work as described in
   ``header_display_format''.
 
@@ -3420,7 +3442,7 @@
   automatically redrawn every second.
 
 
-  4.2.119.  uncollapse_threads
+  4.2.120.  uncollapse_threads
 
   Type: integer
   Default: 0
@@ -3428,9 +3450,7 @@
   If non-zero, all threads will be uncollapsed when entering a group.
 
 
-
-
-  4.2.120.  unsubscribe_new_groups
+  4.2.121.  unsubscribe_new_groups
 
   Type: integer
   Default: 0
@@ -3438,7 +3458,7 @@
   If non-zero, new newsgroups won't be subscribed automatically.
 
 
-  4.2.121.  use_blink
+  4.2.122.  use_blink
 
   Type: integer
   Default: (system dependent)
@@ -3452,7 +3472,7 @@
   details.
 
 
-  4.2.122.  use_color
+  4.2.123.  use_color
 
   Type: integer
   Default: (system dependent)
@@ -3462,7 +3482,7 @@
   terminal supports it according to its termcap entry.
 
 
-  4.2.123.  use_flow_control
+  4.2.124.  use_flow_control
 
   Type: integer
   Default: 0
@@ -3472,11 +3492,10 @@
   using Control-S and ``thaw'' it by pressing Control-Q.
 
 
-  4.2.124.  use_grouplens
+  4.2.125.  use_grouplens
 
   Type: integer
   Default: 0
-
   If non-zero, slrn will try to contact your ``grouplens server'' to
   exchange GroupLens scores.
 
@@ -3488,7 +3507,7 @@
   information on it.
 
 
-  4.2.125.  use_header_numbers
+  4.2.126.  use_header_numbers
 
   Type: integer
   Default: 1
@@ -3496,7 +3515,8 @@
   If non-zero, header numbers are displayed at the left margin to make
   article selection more efficient.
 
-  4.2.126.  use_localtime
+
+  4.2.127.  use_localtime
 
   Type: integer
   Default: 1
@@ -3520,7 +3540,7 @@
   ``generate_date_header''. VMS and BeOS do not support using GMT.
 
 
-  4.2.127.  use_metamail
+  4.2.128.  use_metamail
 
   Type: integer
   Default: 1
@@ -3529,7 +3549,7 @@
   processes MIME articles it cannot handle.
 
 
-  4.2.128.  use_mime
+  4.2.129.  use_mime
 
   Type: integer
   Default: 5
@@ -3540,10 +3560,12 @@
 
 
 
-       1    decode MIME in the article pager; encode outgoing messages
-       2    decode MIME when saving articles
-       4    MIME-encode the local copy of your own articles
-       8    decode MIME when piping an article
+
+
+  1    decode MIME in the article pager; encode outgoing messages
+  2    decode MIME when saving articles
+  4    MIME-encode the local copy of your own articles
+  8    decode MIME when piping an article
 
 
 
@@ -3561,11 +3583,10 @@
   Setting this variable has no effect if MIME support has been
   deactivated at compile time.
 
-
   See also: ``mime_charset''
 
 
-  4.2.129.  use_slrnpull
+  4.2.130.  use_slrnpull
 
   Type: integer
   Default: 0
@@ -3577,7 +3598,7 @@
   See also: ``server_object''
 
 
-  4.2.130.  use_tilde
+  4.2.131.  use_tilde
 
   Type: integer
   Default: 1
@@ -3586,7 +3607,7 @@
   like it is done in the vi editor.
 
 
-  4.2.131.  use_tmpdir
+  4.2.132.  use_tmpdir
 
   Type: integer
   Default: 0
@@ -3596,7 +3617,7 @@
   explains what will happen if $TMP is unset).
 
 
-  4.2.132.  use_uudeview
+  4.2.133.  use_uudeview
 
   Type: integer
   Default: (compile time setting)
@@ -3607,7 +3628,7 @@
   variable to 0. Otherwise, it has no effect.
 
 
-  4.2.133.  use_xgtitle
+  4.2.134.  use_xgtitle
 
   Type: integer
   Default: (unset)
@@ -3615,7 +3636,7 @@
   This variable is obsolete.
 
 
-  4.2.134.  username
+  4.2.135.  username
 
   Type: string
   Default: (system specific)
@@ -3628,12 +3649,13 @@
   first. If this fails, it looks at ``$USER'' and ``$LOGNAME''. If it
   cannot find a valid user name, an error message is issued and the
   program is aborted.
+
   Note: Do not confuse your user name  with your real name!
 
   See also: ``hostname'', ``realname''
 
 
-  4.2.135.  warn_followup_to
+  4.2.136.  warn_followup_to
 
   Type: integer
   Default: 1
@@ -3646,7 +3668,7 @@
   completely.
 
 
-  4.2.136.  wrap_flags
+  4.2.137.  wrap_flags
 
   Type: integer
   Default: 3
@@ -3669,10 +3691,13 @@
 
 
 
-       4     wrap body only
-       5     wrap headers and body
-       6     wrap quoted material and body
-       7     wrap headers, quoted material and body
+
+
+
+  4     wrap body only
+  5     wrap headers and body
+  6     wrap quoted material and body
+  7     wrap headers, quoted material and body
 
 
 
@@ -3680,7 +3705,7 @@
   See also: ``wrap_method'', ``wrap_article''
 
 
-  4.2.137.  wrap_method
+  4.2.138.  wrap_method
 
   Type: integer
   Default: 2
@@ -3694,7 +3719,7 @@
   See also: ``wrap_flags''
 
 
-  4.2.138.  write_newsrc_flags
+  4.2.139.  write_newsrc_flags
 
   Type: integer
   Default: 0
@@ -3705,7 +3730,7 @@
   in them.
 
 
-  4.2.139.  Xbrowser
+  4.2.140.  Xbrowser
 
   Type: string
   Default: (unset)
@@ -3801,7 +3826,6 @@
   Reads a line and interprets it as S-Lang.
 
 
-
   5.1.6.  group_search
 
   Default: "/"
@@ -3826,6 +3850,7 @@
   lines''), starting at the current cursor position and wrapping around
   the list if necessary. Hidden and unsubscribed groups are not taken
   into account.
+
   See also: ``group_search_backward''
 
 
@@ -3867,9 +3892,6 @@
   the current group is placed directly before the next visible group
   when moving it towards the top or directly after it when moving to the
   bottom, which may or may not be where you really wanted it to be.
-
-
-
   5.1.13.  page_down
 
   Default: "PAGEDN" "CTRL-D" "CTRL-V"
@@ -3933,6 +3955,9 @@
 
 
 
+
+
+
   5.1.20.  repeat_last_key
 
   Default: "."
@@ -3958,6 +3983,8 @@
 
   Enters the current group for reading. When using a prefix argument,
   this function also downloads previously read articles:
+
+
     1 Select group with article number query.
     2 Select group, but do not apply scores.
     3 Select group with query, but do not apply scores.
@@ -4060,6 +4087,9 @@
 
 
 
+
+
+
   5.1.31.  uncatchup
 
   Default: "ESC u"
@@ -4088,7 +4118,6 @@
   5.2.1.  article_bob
 
   Default: "<"
-
 
   Shows the first page (``beginning of buffer'') of the current article.
 
@@ -4123,6 +4152,7 @@
   Default: "ESC DOWN"
 
   Scrolls the article up one line.
+
 
 
 
@@ -4187,6 +4217,8 @@
 
   Searches the ``From:'' header lines in the current group for a given
   substring, starting at the cursor position.
+
+
 
 
 
@@ -4287,7 +4319,6 @@
   See also: ``shrink_article_window''
 
 
-
   5.2.21.  evaluate_cmd
 
   Default: "CTRL-X ESC"
@@ -4323,7 +4354,6 @@
   Quit slrn immediately (without returning to group mode first).
 
 
-
   5.2.25.  followup
 
   Default: "f"
@@ -4348,9 +4378,6 @@
   included and the subject is prepended with ``Fwd:''. If you want, you
   can edit the e-mail before it is sent (to add a comment or cut down
   the article to the relevant part).
-
-
-
 
 
 
@@ -4459,7 +4486,6 @@
   Goes to the previous visible article in this group.
 
 
-
   5.2.37.  header_page_down
 
   Default: "PAGEDN" "CTRL-D" "CTRL-V"
@@ -4481,8 +4507,6 @@
   Default: "?"
 
   Displays the online help for article mode.
-
-
 
 
 
@@ -4526,6 +4550,7 @@
   5.2.44.  next_high_score
 
   Default: "!"
+
 
   Goes to the next article with a ``high score''.
 
@@ -4593,8 +4618,6 @@
 
   Returns to group mode.
 
-
-
   5.2.52.  redraw
 
   Default: "CTRL-L" "CTRL-R"
@@ -4616,6 +4639,7 @@
   Default: "r"
 
   Reply to the selected article via email.
+
 
 
   5.2.55.  save
@@ -4660,7 +4684,6 @@
   ``ignore_quotes''.
 
 
-
   5.2.59.  skip_to_next_group
 
   Default: "N" "ESC RIGHT"
@@ -4682,7 +4705,6 @@
   5.2.61.  subject_search_backward
 
   Default: "S"
-
 
   Like ``subject_search_backward'', but searching backwards.
 
@@ -4748,8 +4770,6 @@
 
 
 
-
-
   5.2.68.  toggle_header_tag
 
   Default: "*"
@@ -4792,6 +4812,11 @@
   ``ignore_quotes''. When n is set as a prefix arguments, the first n
   quote levels remain untouched.
 
+  This function also sets the value of ``hide_quotes'' to match the new
+  state. This means that if the quotes get shown again, it is set to 0;
+  if a prefix argument is given, it is set to prefix argument + 1;
+  otherwise, it is restored to the value it got when you last used a
+  prefix argument (or, if you never did this, to 1).
 
 
   5.2.72.  toggle_rot13
@@ -4856,6 +4881,7 @@
 
 
 
+
   5.2.79.  untag_headers
 
   Default: "ESC #"
@@ -4880,7 +4906,6 @@
   ``score_editor_command'', the cursor is moved to the selected entry,
   which makes this function especially useful for finding and fixing
   ``broken'' scorefile entries.
-
 
   See also: ``create_score''
 
@@ -4948,6 +4973,8 @@
   When no completions are found, this command works like
   ``self_insert''; if you need a literal space character although a
   completion exists, use ``quoted_insert''.
+
+
   5.3.5.  del
 
   Default: "DELETE" "CTRL-D" "CTRL-V"
@@ -4985,6 +5012,8 @@
   Jumps to the next (later) command line history entry.
 
 
+
+
   5.3.10.  enter
 
   Default: "RETURN"
@@ -5014,6 +5043,7 @@
   Inserts the next key into the buffer, even if it is usually bound to a
   function.
 
+
   5.3.14.  right
 
   Default: "RIGHT" "CTRL-F"
@@ -5041,36 +5071,6 @@
   Default: "UP" "CTRL-P"
 
   Jumps to the previous (older) command line history entry.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
