@@ -486,7 +486,7 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
    
    while ((ch = *fmt) != 0)
      {
-	char *s;
+	char *s, *p;
 	int color = def_color;
 	int len = -1, field_len = -1;
 	int justify, spaces = 0;
@@ -600,6 +600,8 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	  slrn_set_color (color);
 
 	if (len == -1) len = strlen (s);
+	if (NULL != (p = slrn_strchr (s, '\n')))
+	  len -= strlen (p);
 	if (field_len != -1)
 	  {
 	     int i;
