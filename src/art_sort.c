@@ -92,7 +92,7 @@ typedef struct sort_function_type
 }
 sort_function_type;
 
-static sort_function_type *Sort_Functions=NULL;
+static sort_function_type *Sort_Functions=NULL, *Sort_Thread_Functions=NULL;
 
 #define ALL_THREAD_FLAGS (FAKE_PARENT | FAKE_CHILDREN | FAKE_HEADER_HIGH_SCORE)
 /*}}}*/
@@ -101,7 +101,10 @@ static sort_function_type *Sort_Functions=NULL;
 static char *get_current_sort_order (int*);
 static void recompile_sortorder (char*);
 static void sort_by_threads (void);
-static int header_cmp (Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted);
+static int header_cmp (sort_function_type *sort_function, Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted);
+static int header_initial_cmp(Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted);
+static int header_thread_cmp(Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted);
+
 /*}}}*/
 
 void _art_toggle_sort (void) /*{{{*/
@@ -267,10 +270,9 @@ static int header_msgid_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*/
 /* This functions looks at the user-defined Sort_Functions and calls the
  * appropriate functions above to compare the headers.
  */
-static int header_cmp (Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted) /*{{{*/
+static int header_cmp (sort_function_type *sort_function, Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted) /*{{{*/
 {
    int result=0;
-   sort_function_type *sort_function=Sort_Functions;
    
    while (sort_function != NULL)
      {
@@ -285,6 +287,16 @@ static int header_cmp (Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted) /
 }
 /*}}}*/
 
+static int header_initial_cmp (Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted) /*{{{*/
+{
+    return header_cmp(Sort_Functions, unsorted, sorted);
+}
+/*}}}*/
+
+static int header_thread_cmp (Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted) /*{{{*/
+{
+    return header_cmp(Sort_Thread_Functions, unsorted, sorted);
+}
 /*}}}*/
 
 /*{{{ Functions that do the actual sorting */
@@ -343,7 +355,7 @@ void slrn_sort_headers (void) /*{{{*/
 	goto cleanup_screen_and_return;
      }
    
-   /* Now, fill the array and call qsort on it; use our header_cmp function
+   /* Now, fill the array and call qsort on it; use our header_initial_cmp function
     * to do the comparison. */
    h = Slrn_First_Header;
    nheaders = 0;
@@ -355,7 +367,7 @@ void slrn_sort_headers (void) /*{{{*/
      }
    header_list[nheaders] = NULL;
    
-   (*qsort_fun) ((char *) header_list, nheaders, sizeof (Slrn_Header_Type *), header_cmp);
+   (*qsort_fun) ((char *) header_list, nheaders, sizeof (Slrn_Header_Type *), header_initial_cmp);
    
    /* What we do now depends on the threading state. If the headers are
     * unthreaded, simply link them in the order returned by qsort. */
@@ -443,7 +455,7 @@ static void insert_fake_child (Slrn_Header_Type *parent, Slrn_Header_Type *new_c
     * children that sort higher than new_child */
    while ((child != NULL) &&
 	  (((child->flags & FAKE_PARENT) == 0) ||
-	   (header_cmp (&new_child, &child) >= 0)))
+	   (header_thread_cmp (&new_child, &child) >= 0)))
      {
 	last_child = child;
 	child = child->sister;
@@ -907,7 +919,7 @@ static void sort_by_threads (void) /*{{{*/
 		       child = ref->child;
 		       last_child = NULL;
 		       /* skip all children that sort higher than this one */
-		       while ((child != NULL) && (header_cmp (&h, &child) >= 0))
+		       while ((child != NULL) && (header_thread_cmp (&h, &child) >= 0))
 			 {
 			    last_child = child;
 			    child = child->sister;
@@ -969,7 +981,7 @@ static void sort_by_threads (void) /*{{{*/
 /*{{{ Functions for Sort_Functions */
 
 /* Allocate memory for a new comparing function and append it. */
-static void add_sort_function(Header_Cmp_Func_Type fun, int inverse) /*{{{*/
+static void add_sort_function(sort_function_type **Functions, Header_Cmp_Func_Type fun, int inverse) /*{{{*/
 {
    sort_function_type *ptr, *newfnc;
    
@@ -978,11 +990,11 @@ static void add_sort_function(Header_Cmp_Func_Type fun, int inverse) /*{{{*/
    newfnc->inverse = inverse;
    newfnc->next = NULL;
    
-   if (Sort_Functions == NULL)
-     Sort_Functions = newfnc;
+   if (*Functions == NULL)
+     *Functions = newfnc;
    else
      {
-	ptr = Sort_Functions;
+	ptr = *Functions;
 	while (ptr->next != NULL) ptr = ptr->next;
 	ptr->next = newfnc;
      }
@@ -1008,42 +1020,41 @@ static char *get_current_sort_order (int *do_threading) /*{{{*/
    return "number";
 }
 /*}}}*/
-	
-/* Use the given sort_order to generate a Sort_Functions list. */
-static void recompile_sortorder(char *sort_order) /*{{{*/
+
+static void compile_function_list(char *order, sort_function_type **Functions) /*{{{*/
 {
    char buf[256];
    unsigned int nth=0;
    
-   while (Sort_Functions != NULL)
+   while (*Functions != NULL)
      {
-	sort_function_type *next = Sort_Functions->next;
-	SLFREE (Sort_Functions);
-	Sort_Functions = next;
+	sort_function_type *next = (*Functions)->next;
+	SLFREE (*Functions);
+	*Functions = next;
      }
    
-   if ((sort_order == NULL) || !(*sort_order)) return;
+   if ((order == NULL) || !(*order)) return;
    
-   while (-1 != SLextract_list_element (sort_order, nth, ',', buf, sizeof(buf)))
+   while (-1 != SLextract_list_element (order, nth, ',', buf, sizeof(buf)))
      {
 	if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Subject"))
-	  add_sort_function(header_subject_cmp, isupper(buf[0]));
+	  add_sort_function(Functions, header_subject_cmp, isupper(buf[0]));
 	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Score"))
-	  add_sort_function(header_score_cmp, isupper(buf[0]));
+	  add_sort_function(Functions, header_score_cmp, isupper(buf[0]));
 	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Highscore"))
-	  add_sort_function(header_highscore_cmp, isupper(buf[0]));
+	  add_sort_function(Functions, header_highscore_cmp, isupper(buf[0]));
 	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Date"))
-	  add_sort_function(header_date_cmp, isupper(buf[0]));
+	  add_sort_function(Functions, header_date_cmp, isupper(buf[0]));
 	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Author"))
-	  add_sort_function(header_author_cmp, isupper(buf[0]));
+	  add_sort_function(Functions, header_author_cmp, isupper(buf[0]));
 	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Lines"))
-	  add_sort_function(header_lines_cmp, isupper(buf[0]));
+	  add_sort_function(Functions, header_lines_cmp, isupper(buf[0]));
 	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Number"))
-	  add_sort_function(header_num_cmp, isupper(buf[0]));
+	  add_sort_function(Functions, header_num_cmp, isupper(buf[0]));
 	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Id"))
-	  add_sort_function(header_msgid_cmp, isupper(buf[0]));
+	  add_sort_function(Functions, header_msgid_cmp, isupper(buf[0]));
 	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Body"))
-	  add_sort_function(header_has_body_cmp, isupper(buf[0]));
+	  add_sort_function(Functions, header_has_body_cmp, isupper(buf[0]));
 	else /* Nonexistant sorting method */
 	  {
 	     slrn_error(_("Can't sort according to `%s'"), buf);
@@ -1051,6 +1062,26 @@ static void recompile_sortorder(char *sort_order) /*{{{*/
 	
 	nth++;
      } /* while (...) */
+}
+/*}}}*/
+
+/* Use the given sort_order to generate a Sort_Functions list.
+ * If sort_order contains a '|' char, it needs to be writeable */
+static void recompile_sortorder(char *sort_order) /*{{{*/
+{
+    char *separator;
+
+    separator=strchr(sort_order, '|');
+    if (separator) {
+        *separator='\0';
+        compile_function_list(sort_order, &Sort_Functions);
+        *separator='|';
+        compile_function_list(separator+1, &Sort_Thread_Functions);
+    }
+    else {
+        compile_function_list(sort_order, &Sort_Functions);
+        compile_function_list(sort_order, &Sort_Thread_Functions);
+    }
 }
 /*}}}*/
 

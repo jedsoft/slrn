@@ -1733,7 +1733,7 @@ static void kill_cross_references (Slrn_Header_Type *h) /*{{{*/
 	/* now we are looking at the groupname */
 	g = b;
 	while (*b && (*b != ':')) b++;
-	if ((*b++ == 0) || (g == b) ||
+	if ((g == b) || (*b++ == 0) || (*b == 0) ||
 	    (NULL == (group = slrn_strnmalloc (g, b-g-1, 0))))
 	  break;
 	num = atoi (b);
