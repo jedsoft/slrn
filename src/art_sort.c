@@ -322,7 +322,12 @@ void slrn_sort_headers (void) /*{{{*/
 	if (h->parent == NULL) nheaders++;
 	h = h->real_next;
      }
-   if (nheaders < 2) return;
+   if (nheaders < 2)
+     {
+	if (!Slrn_Uncollapse_Threads)
+	  slrn_collapse_threads (1);	
+	return;
+     }
    
    if (NULL == (header_list = (Slrn_Header_Type **) SLCALLOC (sizeof (Slrn_Header_Type *), nheaders + 1)))
      {
