@@ -42,6 +42,8 @@ extern Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *, int, int);
 extern Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *, Slrn_Range_Type *);
 extern Slrn_Range_Type *slrn_ranges_merge (Slrn_Range_Type *, Slrn_Range_Type *);
 
+extern int slrn_ranges_is_member (Slrn_Range_Type *, int);
+
 extern Slrn_Range_Type *slrn_ranges_clone (Slrn_Range_Type *);
 extern int slrn_ranges_compare (Slrn_Range_Type *, Slrn_Range_Type *);
 extern void slrn_ranges_free (Slrn_Range_Type *);

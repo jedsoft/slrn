@@ -155,8 +155,6 @@ void slrn_group_recount_unread (Slrn_Group_Type *g)
 static int is_article_requested (Slrn_Group_Type *g, long num) /*{{{*/
 {
 #if SLRN_HAS_SPOOL_SUPPORT
-   Slrn_Range_Type *r;
-   
    if (Slrn_Server_Id != SLRN_SERVER_ID_SPOOL) return 0;
    
    if (g->requests_loaded == 0)
@@ -164,18 +162,11 @@ static int is_article_requested (Slrn_Group_Type *g, long num) /*{{{*/
 	g->requests = slrn_spool_get_requested_ranges (g->group_name);
 	g->requests_loaded = 1;
      }
-   r = g->requests;
-   
-   while (r != NULL)
-     {
-	if ((r->min <= num) && (r->max >= num))
-	  return 1;
-	if (num <= r->max)
-	  return 0;
-	r = r->next;
-     }
-#endif
+
+   return slrn_ranges_is_member (g->requests, num);
+#else
    return 0;
+#endif
 }
 /*}}}*/
 

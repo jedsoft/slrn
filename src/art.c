@@ -5503,24 +5503,22 @@ static void insert_header (Slrn_Header_Type *ref) /*{{{*/
      }
    
    if ((id = ref->number) <= 0) return;
-   
+
    /* Set the flags for this guy. */
-   r = Current_Group->range.next;
-   while (r != NULL)
+   if (!(ref->flags & HEADER_REQUEST_BODY) &&
+       slrn_ranges_is_member (Current_Group->range.next, id))
      {
-	if (r->min > id) break;
-	if (r->max >= id)
+	if (!(ref->flags & HEADER_READ))
 	  {
-	     if (0 == (ref->flags & HEADER_READ))
-	       {
-		  ref->flags |= HEADER_READ;
-		  Number_Read++;
-	       }
-	     return;
+	     ref->flags |= HEADER_READ;
+	     Number_Read++;
 	  }
-	r = r->next;
      }
-   ref->flags &= ~HEADER_READ;
+   else if (ref->flags & HEADER_READ)
+     {
+	ref->flags &= ~HEADER_READ;
+	Number_Read--;
+     }
 }
 
 /*}}}*/
@@ -5528,7 +5526,8 @@ static void insert_header (Slrn_Header_Type *ref) /*{{{*/
 /* line number is not synced. */
 static int get_header_by_message_id (char *msgid, 
 				     int reconstruct_thread,
-				     int query_server) /*{{{*/
+				     int query_server,
+				     Slrn_Range_Type *no_body) /*{{{*/
 {
    Slrn_Header_Type *ref;
    Slrn_XOver_Type xov;
@@ -5558,6 +5557,14 @@ static int get_header_by_message_id (char *msgid,
    ref = apply_score (ref, 0);
 
    if (ref == NULL) return -1;
+
+   if ((ref->number!=0) &&
+       (slrn_ranges_is_member (no_body, ref->number)))
+     {
+	ref->flags |= HEADER_WITHOUT_BODY;
+	if (slrn_ranges_is_member (Current_Group->requests, ref->number))
+	  ref->flags |= HEADER_REQUEST_BODY;
+     }
    
    insert_header (ref);
    
@@ -5764,6 +5771,7 @@ static void get_parent_header (void) /*{{{*/
    char buf[512];
    int no_error_no_thread;
    Slrn_Header_Type *last_header;
+   Slrn_Range_Type *no_body = NULL;
    
    if (Slrn_Current_Header == NULL) return;
    
@@ -5777,6 +5785,10 @@ static void get_parent_header (void) /*{{{*/
    
    last_header = NULL;
    r1 = rmin = NULL;
+#if SLRN_HAS_SPOOL_SUPPORT
+   if (Slrn_Server_Id == SLRN_SERVER_ID_SPOOL)
+     no_body = slrn_spool_get_no_body_ranges (Slrn_Current_Group_Name);
+#endif
    do
      {
 	rmin = Slrn_Current_Header->refs;
@@ -5787,6 +5799,7 @@ static void get_parent_header (void) /*{{{*/
 	     if (Slrn_Current_Header->flags & HEADER_PROCESSED)
 	       {
 		  reference_loop_error ();
+		  slrn_ranges_free (no_body);
 		  return;
 	       }
 	     last_header = Slrn_Current_Header;
@@ -5803,6 +5816,7 @@ static void get_parent_header (void) /*{{{*/
 	     if (no_error_no_thread) break;
 	     slrn_error (_("Article has no parent reference."));
 	     mark_headers_unprocessed ();
+	     slrn_ranges_free (no_body);
 	     return;
 	  }
 	
@@ -5813,9 +5827,10 @@ static void get_parent_header (void) /*{{{*/
 	r1 = r0;
      }
    while (no_error_no_thread
-	  && (get_header_by_message_id (buf, 1, 1) >= 0));
+	  && (get_header_by_message_id (buf, 1, 1, no_body) >= 0));
    
    mark_headers_unprocessed ();
+   slrn_ranges_free (no_body);
 
    if (no_error_no_thread)
      {
@@ -5832,7 +5847,13 @@ static void get_parent_header (void) /*{{{*/
 
 int slrn_locate_header_by_msgid (char *msgid, int no_error, int query_server)
 {
-   if (0 == get_header_by_message_id (msgid, 0, query_server))
+   Slrn_Range_Type *no_body = NULL;
+#if SLRN_HAS_SPOOL_SUPPORT
+   if (Slrn_Server_Id == SLRN_SERVER_ID_SPOOL)
+     no_body = slrn_spool_get_no_body_ranges (Slrn_Current_Group_Name);
+#endif
+   
+   if (0 == get_header_by_message_id (msgid, 0, query_server, no_body))
      {
 	/* The actual header might be part of a collapsed thread.  If so, then
 	 * the current header may not be the one we are seeking.
@@ -5843,10 +5864,12 @@ int slrn_locate_header_by_msgid (char *msgid, int no_error, int query_server)
 	    || (0 != strcmp (Slrn_Current_Header->msgid, msgid)))
 	  {
 	     slrn_uncollapse_this_thread (Slrn_Current_Header, 1);
-	     (void) get_header_by_message_id (msgid, 0, 0);
+	     (void) get_header_by_message_id (msgid, 0, 0, no_body);
 	  }
+	slrn_ranges_free (no_body);
 	return 0;
      }
+   slrn_ranges_free (no_body);
    if (0 == no_error)
      slrn_error (_("Article %s not available."), msgid);
    return -1;

@@ -302,6 +302,21 @@ Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *a, Slrn_Range_Type *b) 
 }
 /*}}}*/
 
+/* Checks if n is in r; returns 1 if true, 0 if false. */
+int slrn_ranges_is_member (Slrn_Range_Type *r, int n) /*{{{*/
+{
+   while (r != NULL)
+     {
+	if ((r->min <= n) && (r->max >= n))
+	  return 1;
+	if (n <= r->max)
+	  return 0;
+	r = r->next;
+     }
+   return 0;
+}
+/*}}}*/
+
 /* Makes a copy of the range list r and returns it (exits if out of memory!) */
 Slrn_Range_Type *slrn_ranges_clone (Slrn_Range_Type *r) /*{{{*/
 {
