@@ -29,18 +29,19 @@
 #define HOOK_GROUP_MODE_STARTUP     7
 #define HOOK_HEADER_NUMBER          8
 #define HOOK_MAKE_FROM_STRING       9
-#define HOOK_POST_FILE             10
-#define HOOK_POST_FILTER           11
-#define HOOK_POST                  12
-#define HOOK_PRE_ARTICLE_MODE      13
-#define HOOK_RESIZE_SCREEN         14
-#define HOOK_READ_ARTICLE          15
-#define HOOK_REPLY		   16
-#define HOOK_STARTUP               17
-#define HOOK_SUBJECT_COMPARE       18
-#define HOOK_SUPERSEDE             19
+#define HOOK_MAKE_SAVE_FILENAME    10
+#define HOOK_POST_FILE             11
+#define HOOK_POST_FILTER           12
+#define HOOK_POST                  13
+#define HOOK_PRE_ARTICLE_MODE      14
+#define HOOK_RESIZE_SCREEN         15
+#define HOOK_READ_ARTICLE          16
+#define HOOK_REPLY		   17
+#define HOOK_STARTUP               18
+#define HOOK_SUBJECT_COMPARE       19
+#define HOOK_SUPERSEDE             20
 /* Number of different hooks */
-#define HOOK_NUMBER                20
+#define HOOK_NUMBER                21
 
 extern int slrn_run_hooks( unsigned int hook, unsigned int num_args, ... );
 extern int slrn_is_hook_defined( unsigned int hook );

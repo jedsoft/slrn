@@ -3927,10 +3927,12 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 #ifdef VMS 
 	char *p;
 #endif
+	char *filename = Slrn_Current_Group_Name;
 	unsigned int defdir_len;
 	if (defdir == NULL) defdir = "News";
 	
 	defdir_len = strlen (defdir);
+	
 #ifdef VMS
 	slrn_snprintf (name, sizeof (name) - 5, "%s/%s", defdir,
 		       Slrn_Current_Group_Name);
@@ -3942,24 +3944,42 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	  }
 	strcpy (p, ".txt"); /* safe */
 #else
-	slrn_snprintf (name, sizeof (name), "%s/%s", defdir,
-		       Slrn_Current_Group_Name);
+# if SLRN_HAS_SLANG
+	if ((1 != slrn_run_hooks (HOOK_MAKE_SAVE_FILENAME, 0))
+	    || (0 != SLang_pop_slstring (&filename))
+	    || (*filename == 0))
+	  filename = Slrn_Current_Group_Name;
+# endif
+	if ((filename == Slrn_Current_Group_Name) ||
+	    (0 == slrn_is_absolute_path(filename)))
+	  slrn_snprintf (name, sizeof (name), "%s/%s", defdir,
+			 filename);
+	else
+	  slrn_strncpy (file, filename, sizeof (file));
 #endif
 	
 #if !defined(VMS) && !defined(IBMPC_SYSTEM)
-	/* Lowercase first letter and see if it exists. */
-	name[defdir_len + 1] = LOWER_CASE(name[defdir_len + 1]);
+	if (filename == Slrn_Current_Group_Name)
+	  {
+	     /* Uppercase first letter and see if it exists. */
+	     name[defdir_len + 1] = UPPER_CASE(name[defdir_len + 1]);
+	  }
 #endif
 	slrn_make_home_filename (name, file, sizeof (file));
 
-#if !defined(VMS) && !defined(IBMPC_SYSTEM)
-	if (1 != slrn_file_exists (file))
+	if (filename == Slrn_Current_Group_Name)
 	  {
-	     /* Lowercase version does not exist so user uppercase form. */
-	     name[defdir_len + 1] = UPPER_CASE(name[defdir_len + 1]);
-	     slrn_make_home_filename (name, file, sizeof (file));
-	  }
+#if !defined(VMS) && !defined(IBMPC_SYSTEM)
+	     if (1 != slrn_file_exists (file))
+	       {
+		  /* Uppercase version does not exist so use lowercase form. */
+		  name[defdir_len + 1] = LOWER_CASE(name[defdir_len + 1]);
+		  slrn_make_home_filename (name, file, sizeof (file));
+	       }
 #endif
+	  }
+	else
+	  SLang_free_slstring (filename);
      }
    else slrn_strncpy (file, Output_Filename, sizeof (file));
    

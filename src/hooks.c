@@ -38,7 +38,8 @@ typedef struct Slrn_Hook_Type {
 
 typedef Slrn_Hook_Type Slrn_Hook_Table_Type[HOOK_NUMBER];
 
-/* Order as given by constants HOOK_* */
+/* Order as given by constants HOOK_*
+ * Define whether or not multiple registration is allowed: */
 
 static Slrn_Hook_Table_Type Hooks = {
    { "article_mode_hook", 1, NULL },
@@ -51,6 +52,7 @@ static Slrn_Hook_Table_Type Hooks = {
    { "group_mode_startup_hook", 1, NULL },
    { "header_number_hook", 1, NULL },
    { "make_from_string_hook", 0, NULL },
+   { "make_save_filename_hook", 0, NULL },
    { "post_file_hook", 1, NULL },
    { "post_filter_hook", 1, NULL },
    { "post_hook", 1, NULL },

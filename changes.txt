@@ -9,16 +9,21 @@ Changes since 0.9.7.4
 
    Changes to the user interface:
   * view_scores uncollapses threads (suggested by Jurriaan W Kalkman).
+  * By default, articles are now saved to folders with lower case names;
+    upper case filenames are still used when the file already exists. The
+    new hook make_save_filename allows overriding these defaults.
   
    slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still
    need to rebuild the overview, you can use the new --rebuild option (based
    on a patch by Jurriaan W Kalkman).
-   
+
    locate_article ignores leading "news:" (Jarek Baczynski)
    
    configure script accepts new options --with-server-name and
    --with-server-file (Matthias Friedrich).
+
+   Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
 
 Changes since 0.9.7.3
 

@@ -115,6 +115,28 @@ comes in handy if you want to use pre-written macro sets.
 #v-
 \done
 
+\function{make_save_filename_hook}
+\usage{String make_save_filename_hook ()}
+\description
+   This function is expected to leave a string on the stack that will be
+   used to decide what folder an article should be saved to. If the returned
+   filename is not absolute, it is interpreted as relative to
+   save_directory.
+\notes
+   As this hook returns a value, you cannot bind multiple macros to it.
+\example
+   Here is a simple example:
+#v+
+   define make_save_filename_hook ()
+   {
+     if (string_match (extract_article_header ("Subject"), "slrn", 1) != 0)
+       return "slrn-related";
+     else
+       return current_newsgroup();
+   }
+#v-
+\done
+
 \function{post_file_hook}
 \usage{Void post_file_hook ()}
 \description

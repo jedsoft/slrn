@@ -1,7 +1,20 @@
 =============================================================================
                          Cleanscore - changes.txt
 =============================================================================
-			   
+
+0.9.8.0 -> 0.9.8.1 [2002-04-09]
+
+* Complete code-cleanup (e.g. setting 'use strict').
+
+* the '-e' option now works better, but a little slower.
+
+* New, improved README.
+
+* New file INDEX.TXT
+
+
+-----------------------------------------------------------------------------
+
 0.9.7.4 -> 0.9.8.0 [2001-09-14]
 
 * Added an option to cut multiple empty lines down.
