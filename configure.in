@@ -218,7 +218,8 @@ sys/time.h \
 locale.h \
 )
 
-dnl AC_CHECK_LIB(socket, socket, [LIBSOCKET="-lnsl -lsocket"]) dnl for Solaris
+AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
+AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
 dnl AC_CHECK_LIB(bsd, gethostbyname, [LIBSOCKET="-lbsd"]) dnl for LynxOS
 dnl AC_SUBST(LIBSOCKET)
 
