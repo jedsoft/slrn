@@ -103,6 +103,13 @@ mode and allow you to manipulate the header window.
 \seealso{header_down, get_header_flags, call}
 \done
 
+\function{has_parent}
+\usage{Integer has_parent ()}
+\description
+   Returns 1 if the current header has a parent (within a thread tree), 0
+   otherwise.
+\done
+
 \function{header_down}
 \usage{Integer header_down (Integer n)}
 \description

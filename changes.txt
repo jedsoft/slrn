@@ -1,5 +1,9 @@
 Changes since 0.9.7.4
 
+-1. Changes when building on Un*x:
+   configure script accepts new options --with-server-name and
+   --with-server-file (Matthias Friedrich).
+
 0. Bug fixes include:
   * Setting new_subject_breaks_threads to 2 has an effect again.
   * Some translations (fr/ko/nl/ru) were broken and could cause segfaults.
@@ -23,11 +27,14 @@ Changes since 0.9.7.4
     understandable and can now be turned off via "netiquette_warnings". When
     selecting "set Followup-To", this is announced in the message body; this
     can be configured with the new variable "followupto_string".
+  * toggle_quotes now tries to find a non-blank line to leave on screen.
   
    slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still
    need to rebuild the overview, you can use the new --rebuild option (based
    on a patch by Jurriaan W Kalkman).
+
+   Added intrinsic functions has_parent (see doc/slrnfuns.txt).
 
    locate_article ignores leading "news:" (Jarek Baczynski)
    
@@ -37,9 +44,6 @@ Changes since 0.9.7.4
 
    New command-line option "-w0" that waits on startup, but only if a
    warning or error is displayed.
-
-   configure script accepts new options --with-server-name and
-   --with-server-file (Matthias Friedrich).
 
    Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
 

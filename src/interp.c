@@ -984,7 +984,13 @@ static int thread_size (void)
    if (check_article_mode ()) return -1;
    return (int) slrn_thread_size (Slrn_Current_Header);
 }
-   
+
+static int has_parent (void)
+{
+   if (check_article_mode ()) return -1;
+   return (Slrn_Current_Header->parent == NULL) ? 0 : 1;
+}
+
 static int is_thread_collapsed (void)
 {
    if (check_article_mode ()) return -1;
@@ -1439,6 +1445,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_S("group_search", group_search, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("group_unread", get_group_unread_count, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("group_up_n", group_up_n, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_0("has_parent", has_parent, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("header_down", header_down, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("header_next_unread", header_next_unread, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("header_up", header_up, SLANG_INT_TYPE),

@@ -460,17 +460,17 @@ static int slrn_cc_file (char *file, char *to, char *msgid)  /*{{{*/
 
 /* Returns -1 upon error, 0, if ok, 1 if needs repair, 2 is warning is issued */
 #define MAX_WARNINGS 10
-static int check_file_for_posting (char *file) /*{{{*/
+static int check_file_for_posting (char *file, int *linenum) /*{{{*/
 {
    char line[MAX_LINE_BUFLEN], buf[MAX_LINE_BUFLEN], *the_line;
    FILE *fp;
-   unsigned int num=0;
+   int num=0;
    char *err, *warnings[MAX_WARNINGS];
    int newsgroups_found, subject_found, followupto_found, warn;
    char ch;
    char *colon;
    /* for detecting overly long lines: */
-   unsigned int last_num = 0, long_lines = 0;
+   int last_num = 0, long_lines = 0;
 
    for (warn = 0; warn < MAX_WARNINGS; warn++)
      warnings[warn] = NULL;
@@ -604,7 +604,7 @@ static int check_file_for_posting (char *file) /*{{{*/
    if (err == NULL)
      {
 	char *qs = Slrn_Quote_String;
-	unsigned int qlen, cline=num;
+	int qlen, cline=num;
 	int sig_lines = -1;
 	int is_verbatim = 0;
 	if (qs == NULL) qs = ">";
@@ -691,6 +691,7 @@ static int check_file_for_posting (char *file) /*{{{*/
    SLsmg_cls ();
    SLsmg_gotorc (2,0);
    slrn_set_color (SUBJECT_COLOR);
+   if (num) *linenum = num;
    if (err != NULL)
      {
 	SLsmg_write_string (_("Your message is not acceptable for the following reason:"));
@@ -735,7 +736,7 @@ static int check_file_for_posting (char *file) /*{{{*/
 	     slrn_set_color (SUBJECT_COLOR);
 	     row += 2; SLsmg_gotorc (row, 0);
 	     if (long_lines == 1)
-	       SLsmg_printf (_("This affects at line %d:"), num);
+	       SLsmg_printf (_("This affects at least line %d:"), num);
 	     else
 	       SLsmg_printf (_("This affects %d lines between line %d and %d. First one:"),
 			     long_lines, num, last_num);
@@ -997,6 +998,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 
    if (Slrn_Batch == 0) while (once_more)
      {
+	int linenum = 1;
 #if SLRN_HAS_SLANG
 	if (filter_hook != 0)
 	  {
@@ -1070,7 +1072,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	     return 0;
 
 	   case 'y':
-	     if (0 == (rsp = check_file_for_posting (file)))
+	     if (0 == (rsp = check_file_for_posting (file, &linenum)))
 	       {
 		  once_more = 0;
 		  break;
@@ -1118,7 +1120,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	     /* Drop */
 
 	   case 'e':
-	     if (slrn_edit_file (Slrn_Editor_Post, file, 1, 0) < 0)
+	     if (slrn_edit_file (Slrn_Editor_Post, file, linenum, 0) < 0)
 	       return -1;
 	     break;
 
