@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: slrn 0.9.7.2pl2\n"
 "POT-Creation-Date: 2001-10-29 15:48+0100\n"
-"PO-Revision-Date: 2001-10-24 23:25+02:00\n"
+"PO-Revision-Date: 2001-11-04 14:47+01:00\n"
 "Last-Translator: Byrial Ole Jensen <byrial@image.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -538,7 +538,7 @@ msgstr "Indlæg %s er ikke tilgængelig."
 
 #: src/art.c:6530
 msgid "Enter Message-Id: "
-msgstr "Angiv indlægsidentifikation: "
+msgstr "Angiv id for indlæg (Message-Id): "
 
 #: src/art.c:7233
 msgid "Are you sure that you want to cancel this article"
@@ -1647,7 +1647,7 @@ msgstr ""
 
 #: src/help.c:146
 msgid "  ESC l              Locate article by its Message-ID."
-msgstr "  ESC l              Find indlæg efter indlægsidentifikation."
+msgstr "  ESC l              Find indlæg efter dets id (Message-Id)"
 
 #: src/help.c:147
 msgid "  ESC Ctrl-P         Find all children of current article."
@@ -2509,7 +2509,7 @@ msgstr "Ingen tekst sendt for \"stat\", \"next\", \"last\""
 #. 230
 #: src/nntplib.c:1147
 msgid "New articles by message-id follow"
-msgstr "Indlægsidentifikation for nye indlæg følger"
+msgstr "Id'er for nye indlæg (Message-Id) følger"
 
 #. 231
 #: src/nntplib.c:1149
@@ -2686,11 +2686,11 @@ msgstr "Forventede et hoved. Dette er ikke en hoved-linje."
 
 #: src/post.c:463
 msgid "The subject header is not allowed be to empty."
-msgstr "Emne-hovedet må ikke være tomt."
+msgstr "Emne-hovedet (Subject) må ikke være tomt."
 
 #: src/post.c:475
 msgid "The Newsgroups header is not allowed be to empty."
-msgstr "Nyhedsgruppe-hovedet må ikke være tomt."
+msgstr "Nyhedsgruppe-hovedet (Newsgroups) må ikke være tomt."
 
 #: src/post.c:503
 msgid "A space must follow the ':' in a header"
@@ -2698,7 +2698,7 @@ msgstr "Der skal være mellemrum efter kolonet i et hoved."
 
 #: src/post.c:510
 msgid "This news reader will not accept user generated From lines."
-msgstr "Denne nyhedslæser accepterer ikke bruger-genererede From-linjer."
+msgstr "Denne nyhedslæser accepterer ikke brugerens egne id'er for indlæg (Message-Id)."
 
 #: src/post.c:517
 msgid "This news reader will not accept user generated Message-Ids."
@@ -2707,11 +2707,11 @@ msgstr ""
 
 #: src/post.c:527
 msgid "Subject header is required."
-msgstr "Der skal være et emme-hoved."
+msgstr "Der skal være et emne-hoved (Subject)."
 
 #: src/post.c:532
 msgid "Newsgroups header is required."
-msgstr "Der skal være et nyhedsgruppe-hoved."
+msgstr "Der skal være et nyhedsgruppe-hoved (Newsgroups)."
 
 #: src/post.c:539
 msgid "Please re-consider if posting to a large number of groups is necessary."
@@ -2741,11 +2741,11 @@ msgstr ""
 
 #: src/post.c:619
 msgid "Message is not acceptable."
-msgstr "Indlægget er ikke acceptabel."
+msgstr "Indlægget er ikke acceptabelt."
 
 #: src/post.c:636
 msgid "Your message is not acceptable for the following reason:"
-msgstr "Dit indlæg er ikke acceptabel af følgende grund:"
+msgstr "Dit indlæg er ikke acceptabelt af følgende grund:"
 
 #: src/post.c:643
 #, c-format
@@ -3274,11 +3274,11 @@ msgstr ""
 
 #: src/slrn.c:1226
 msgid "***Warning: Unable to find a unique fully-qualified host name."
-msgstr "***Advarsel: Kan ikke finde et enestående fuldtkvalificeret værtsnavn."
+msgstr "***Advarsel: Kan ikke finde et unikt fuldtkvalificeret værtsnavn."
 
 #: src/slrn.c:1227
 msgid "            slrn will not generate any Message-IDs."
-msgstr "             slrn vil ikke lave indlægsidentifikationer"
+msgstr "             slrn vil ikke selv lave id'er for indlæg (Message-Id)."
 
 #: src/slrn.c:1228
 msgid ""
