@@ -42,15 +42,15 @@ AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEDIR")
 dnl BeOS neither needs nor supports "-lm"
 AC_MSG_CHECKING(for BeOS)
 case `uname` in
-  BeOS)	LM=""; AC_MSG_RESULT(yes);;
-  *)	LM="-lm"; AC_MSG_RESULT(no);;
+  BeOS)	AC_MSG_RESULT(yes);;
+  *)	LIBS="$LIBS -lm"; AC_MSG_RESULT(no);;
 esac
-AC_SUBST(LM)
 
 dnl List of all translations.
 ALL_LINGUAS="da de es fr it ko nl pl ru"
 AM_GNU_GETTEXT
 
+AC_CHECK_LIB(dl,dlopen,[LIBS="$LIBS -ldl"])
 CF_HARDCODE_LIBS
 CF_TERMCAP
 CF_PATH_SLANG_LIB
@@ -171,11 +171,6 @@ dnl disable emphasized text support
 CF_COMPILE_OPTION(emph-text,
     [  --disable-emph-text     Disable emphasized text support],
     [ SLRN_HAS_EMPHASIZED_TEXT])
-
-dnl disable verbatim marks support
-CF_COMPILE_OPTION(verb-marks,
-    [  --disable-verb-marks    Disable verbatim marks support],
-    [ SLRN_HAS_VERBATIM_MARKS])
 
 dnl disable the generation of Message-IDs
 CF_COMPILE_OPTION(gen-mid,

@@ -1066,7 +1066,6 @@ void _slrn_art_unhide_pgp_signature (Slrn_Article_Type *a) /*{{{*/
 
 /*}}}*/
 
-#if SLRN_HAS_VERBATIM_MARKS
 void slrn_art_mark_verbatim (Slrn_Article_Type *a)
 {
    Slrn_Article_Line_Type *l;
@@ -1137,5 +1136,3 @@ void _slrn_art_hide_verbatim (Slrn_Article_Type *a) /*{{{*/
 }
 
 /*}}}*/
-
-#endif

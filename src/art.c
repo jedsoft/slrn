@@ -212,6 +212,7 @@ int Slrn_Quotes_Hidden_Mode = 0;
 int Slrn_Signature_Hidden = 0;
 int Slrn_Pgp_Signature_Hidden = 0;
 int Slrn_Verbatim_Marks_Hidden = 0;
+int Slrn_Verbatim_Hidden = 0;
 
 /*}}}*/
 /*{{{ static function declarations */
@@ -2035,10 +2036,8 @@ static int prepare_article (Slrn_Article_Type *a)
    slrn_art_mark_signature (a);
    slrn_art_mark_pgp_signature (a);
 
-#if SLRN_HAS_VERBATIM_MARKS
    if (Slrn_Process_Verbatim_Marks) 
      slrn_art_mark_verbatim (a);
-#endif
 
    /* The actual wrapping is done elsewhere. */
    if (Slrn_Wrap_Mode & 0x4)
@@ -2051,6 +2050,8 @@ static int prepare_article (Slrn_Article_Type *a)
      _slrn_art_hide_signature (a);
    if (Slrn_Pgp_Signature_Hidden)
      _slrn_art_hide_pgp_signature (a);
+   if (Slrn_Verbatim_Hidden)
+     _slrn_art_hide_verbatim (a);
    return 0;
 }
 
@@ -2318,7 +2319,7 @@ int slrn_string_to_article (char *str)
    Slrn_Article_Line_Type *l, *cline = NULL;
    Slrn_Article_Type *a;
 
-   if (str == NULL)
+   if ((str == NULL) || (*str == 0))
      return -1;
    
    if (NULL == (a = Slrn_Current_Article))
@@ -5975,7 +5976,6 @@ static void toggle_pgp_signature (void) /*{{{*/
 
 /*}}}*/
 
-#if SLRN_HAS_VERBATIM_MARKS
 static void toggle_verbatim_marks (void) /*{{{*/
 {
    Slrn_Article_Type *a = Slrn_Current_Article;
@@ -5986,9 +5986,24 @@ static void toggle_verbatim_marks (void) /*{{{*/
    a->verbatim_marks_hidden = !a->verbatim_marks_hidden;
    Slrn_Verbatim_Marks_Hidden = a->verbatim_marks_hidden;
 }
-
 /*}}}*/
-#endif				       /* SLRN_HAS_VERBATIM_MARKS */
+
+static void toggle_verbatim (void) /*{{{*/
+{
+   Slrn_Article_Type *a = Slrn_Current_Article;
+   
+   if (a == NULL)
+     return;
+   
+   if (a->verbatim_hidden)
+     _slrn_art_unhide_verbatim (a);
+   else
+     _slrn_art_hide_verbatim (a);
+   
+   find_article_line_num();
+   Slrn_Verbatim_Hidden = a->verbatim_hidden;
+}
+/*}}}*/
 /*}}}*/
 
 /*{{{ leave/suspend article mode and support functions */
@@ -6831,9 +6846,8 @@ static SLKeymap_Function_Type Art_Functions [] = /*{{{*/
    A_KEY("toggle_quotes", toggle_quotes),
    A_KEY("toggle_rot13", toggle_rot13),
    A_KEY("toggle_signature", toggle_signature),
-#if SLRN_HAS_VERBATIM_MARKS
+   A_KEY("toggle_verbatim_text", toggle_verbatim),
    A_KEY("toggle_verbatim_marks", toggle_verbatim_marks),
-#endif
    A_KEY("uncatchup", un_catch_up_to_here),
    A_KEY("uncatchup_all", un_catch_up_all),
    A_KEY("undelete", undelete_header_cmd),
@@ -6937,6 +6951,7 @@ void slrn_init_article_mode (void) /*{{{*/
    SLkm_define_key  (".", (FVOID_STAR) slrn_repeat_last_key, Slrn_Article_Keymap);
    SLkm_define_key  ("/", (FVOID_STAR) article_search, Slrn_Article_Keymap);
    SLkm_define_key  ("\\", (FVOID_STAR) toggle_signature, Slrn_Article_Keymap);
+   SLkm_define_key  ("{", (FVOID_STAR) toggle_verbatim, Slrn_Article_Keymap);
    SLkm_define_key  ("[", (FVOID_STAR) toggle_verbatim_marks, Slrn_Article_Keymap);
    SLkm_define_key  ("]", (FVOID_STAR) toggle_pgp_signature, Slrn_Article_Keymap);
    SLkm_define_key  (";", (FVOID_STAR) mark_spot, Slrn_Article_Keymap);
@@ -8232,7 +8247,6 @@ static void display_article_line (Slrn_Article_Line_Type *l)
       case PGP_SIGNATURE_LINE:
 	color = PGP_SIGNATURE_COLOR;
 	break;
-#if SLRN_HAS_VERBATIM_MARKS
       case VERBATIM_MARK_LINE|VERBATIM_LINE:
 	if (Slrn_Verbatim_Marks_Hidden)
 	  lbuf = "";
@@ -8240,7 +8254,6 @@ static void display_article_line (Slrn_Article_Line_Type *l)
       case VERBATIM_LINE:
 	color = VERBATIM_COLOR;
 	break;
-#endif
       default:
 	color = ARTICLE_COLOR;
 	use_emph_mask = EMPHASIZE_ARTICLE;

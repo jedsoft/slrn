@@ -1339,7 +1339,8 @@ static void replace_article_cmd (char *str)
        || (Slrn_Current_Header == NULL))
      return;
 
-   (void) slrn_string_to_article (str);
+   if (-1 == slrn_string_to_article (str))
+     slrn_error (_("Could not replace article with given string."));
 }
 
 static int is_article_visible (void)

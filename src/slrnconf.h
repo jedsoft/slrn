@@ -49,9 +49,6 @@
 /* define if you want emphasized text support */
 #define SLRN_HAS_EMPHASIZED_TEXT	1
 
-/* define if you want verbatim marks */
-#define SLRN_HAS_VERBATIM_MARKS		1
-
 /* define if you want grouplens (R.I.P.) support */
 #define SLRN_HAS_GROUPLENS		0
 

@@ -59,6 +59,7 @@ extern int Slrn_Signature_Hidden;
 extern int Slrn_Pgp_Signature_Hidden;
 extern int Slrn_Quotes_Hidden_Mode;
 extern int Slrn_Verbatim_Marks_Hidden;
+extern int Slrn_Verbatim_Hidden;
 extern int Slrn_Warn_Followup_To;
 
 extern char *Slrn_X_Browser;
@@ -181,10 +182,8 @@ typedef struct
    int headers_hidden;
    int signature_hidden;
    int pgp_signature_hidden;
-#if SLRN_HAS_VERBATIM_MARKS
    int verbatim_hidden;
    int verbatim_marks_hidden;
-#endif
 #if SLRN_HAS_MIME
    int mime_was_modified;
    int mime_was_parsed;
@@ -289,10 +288,8 @@ extern void _slrn_art_hide_pgp_signature (Slrn_Article_Type *a);
 extern void _slrn_art_unhide_pgp_signature (Slrn_Article_Type *a);
 extern void slrn_art_mark_pgp_signature (Slrn_Article_Type *a);
 
-#if SLRN_HAS_VERBATIM_MARKS
 extern void _slrn_art_hide_verbatim (Slrn_Article_Type *a);
 extern void _slrn_art_unhide_verbatim (Slrn_Article_Type *a);
 extern void slrn_art_mark_verbatim (Slrn_Article_Type *a);
-#endif
 
 #endif				       /* _SLRN_ART_H */

@@ -78,7 +78,6 @@ static Compile_Option_Type Compile_Options [] =
      {"slang",		     	SLRN_HAS_SLANG},
      {"spoilers",    		SLRN_HAS_SPOILERS},
      {"strict_from",		SLRN_HAS_STRICT_FROM},
-     {"verbatim_marks",		SLRN_HAS_VERBATIM_MARKS},
      {NULL, 0}
 };
 

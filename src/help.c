@@ -125,9 +125,7 @@ static char *Art_Help[] =
    N_("  ESC ?              Reveal spoilers (on/off)."),
 #endif
    N_("  ]                  Show PGP signature (on/off)."),
-#if SLRN_HAS_VERBATIM_MARKS
    N_("  [                  Show verbatim marks (on/off)."),
-#endif
    N_("  Ctrl-^             Enlarge the article window."),
    N_("  ^                  Shrink the article window."),
    N_("  z                  Maximize / Unmaximize the article window."),

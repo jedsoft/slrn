@@ -7,6 +7,7 @@ Changes since 0.9.7.4
   * No more rubbish at the end of popup window lines (Jurriaan).
   * subject_compare_hook leads to the expected result again (Jurriaan).
   * Ignore "no data found" errors when using uudeview (Chris Hanson).
+  * Don't segfault when toggling past the 10th header_display_format.
 
    Changes to the user interface:
   * view_scores uncollapses threads (suggested by Jurriaan W Kalkman).
@@ -30,6 +31,9 @@ Changes since 0.9.7.4
    --with-server-file (Matthias Friedrich).
 
    Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
+
+   Verbatim text can be hidden using toggle_verbatim_text (default binding
+   '{') or hide_verbatim_text in the config file. (Arek Sochala)
 
 Changes since 0.9.7.3
 

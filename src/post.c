@@ -552,9 +552,7 @@ static int check_file_for_posting (char *file)
 	char *qs = Slrn_Quote_String;
 	unsigned int qlen;
 	int sig_lines = -1;
-#if SLRN_HAS_VERBATIM_MARKS
 	int is_verbatim = 0;
-#endif
 	if (qs == NULL) qs = ">";
 	qlen = strlen (qs);
 	
@@ -567,7 +565,6 @@ static int check_file_for_posting (char *file)
 	     
 	     if (!strncmp (line, qs, qlen))
 	       continue;
-#if SLRN_HAS_VERBATIM_MARKS
 	     if (0 == strncmp (line, "#v", 2))
 	       {
 		  if (is_verbatim && (line[2] == '-'))
@@ -585,7 +582,6 @@ static int check_file_for_posting (char *file)
 	     
 	     if (is_verbatim)
 	       continue;
-#endif
 	     if (0 == strcmp (line, "-- \n"))
 	       {
 		  sig_lines = 0;

@@ -15,10 +15,10 @@ slrnpull_DEPENDENCIES = stamp2
 DEFS=-Dunix -DSLRN_LIB_DIR=\"$(slrn_libdir)\" -DSHAREDIR=\"$(pkgdatadir)\" \
  -DSYSCONFDIR=\"$(sysconfdir)\"
 INCLUDES=-I. -I$(top_srcdir)/intl @SLANG_INC@ @SSLINC@ @UUINC@
-LDADD=@INTLLIBS@ @SLANG_LIB@ -lslang @TERMCAP@ @SSLLIB@ @UULIB@ @LM@
+LDADD=@INTLLIBS@ @SLANG_LIB@ -lslang @TERMCAP@ @SSLLIB@ @UULIB@
 
 uudecode_SOURCES = slrndir.c snprintf.c ttymsg.c util.c
-uudecode_LDADD=uudecode.o @INTLLIBS@ @SLANG_LIB@ -lslang @LM@
+uudecode_LDADD=uudecode.o @INTLLIBS@ @SLANG_LIB@ -lslang
 
 EXTRA_DIST = art.h charmaps.h chmap.h clientlib.c clientlib.h group.h \
  grplens.h hash.h hooks.h interp.h jdmacros.h menu.h mime.h misc.h \

@@ -675,7 +675,7 @@ unsigned int slrn_toggle_format (char **formats, unsigned int cur) /*{{{*/
 	retval = (unsigned int) *Slrn_Prefix_Arg_Ptr % SLRN_MAX_DISPLAY_FORMATS;
 	Slrn_Prefix_Arg_Ptr = NULL;
      }
-   else retval++;
+   else retval = (retval + 1) % SLRN_MAX_DISPLAY_FORMATS;
    
    while ((retval != cur) && (formats[retval] == NULL))
      retval = (retval + 1) % SLRN_MAX_DISPLAY_FORMATS;

@@ -465,6 +465,7 @@ static int set_comp_charsets_fun (int argc, SLcmd_Cmd_Table_Type *table)
 Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
 {
      {"hide_verbatim_marks",	&Slrn_Verbatim_Marks_Hidden},
+     {"hide_verbatim_text",	&Slrn_Verbatim_Hidden},
      {"hide_signature",	&Slrn_Signature_Hidden},
      {"hide_pgpsignature",	&Slrn_Pgp_Signature_Hidden},
      {"hide_quotes",            &Slrn_Quotes_Hidden_Mode},

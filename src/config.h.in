@@ -110,9 +110,6 @@
 /* define if you want uudeview support */
 #define SLRN_HAS_UUDEVIEW  0
 
-/* define if you want verbatim marks */
-#define SLRN_HAS_VERBATIM_MARKS  1
-
 /* inews command */
 #undef SLRN_INEWS_COMMAND
 
