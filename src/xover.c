@@ -190,7 +190,7 @@ static void parse_headers (void) /*{{{*/
 	       }
 	     
 	     if (ch == '\t') *h = ' ';
-
+	     
 	     h++;
 	  }
      }

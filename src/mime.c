@@ -359,6 +359,8 @@ static char *decode_quoted_printable (char *dest,
 #ifndef SLRNPULL_CODE
    if (strip_8bit && (NULL == Char_Set))
      mask = 0x80;
+#else
+   (void) strip_8bit;
 #endif
    while (src < srcmax)
      {

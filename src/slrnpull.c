@@ -1159,6 +1159,8 @@ static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov
    slrn_map_xover_to_header (xov, &h);
 
 #if SLRN_HAS_MIME
+   h.subject = slrn_safe_strmalloc (xov->subject_malloced);
+   h.from = slrn_safe_strmalloc (xov->from_malloced);
    if (Slrn_Use_Mime)
      {
 	slrn_rfc1522_decode_string (h.subject);
@@ -1203,6 +1205,12 @@ static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov
 	slrn_free ((char *)sdi);
 	sdi = hlp;
      }
+#if SLRN_HAS_MIME
+   slrn_free (h.subject);
+   h.subject = xov->subject_malloced;
+   slrn_free (h.from);
+   h.from = xov->from_malloced;
+#endif
 #if 0
    /* This next call should add the message id to the cache. */
    (void) is_msgid_cached (h.msgid, Current_Newsgroup, (unsigned int) n, 1);

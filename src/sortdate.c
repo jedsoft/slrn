@@ -29,6 +29,9 @@
 #ifndef SLRNPULL_CODE
 # include "slrn.h"
 # include "util.h"
+#else
+extern long slrn_date_to_order_parm (char *);
+extern void slrn_strftime (char *, size_t, const char *, char *, int);
 #endif
 
 #include "jdmacros.h"

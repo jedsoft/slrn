@@ -38,13 +38,16 @@ AC_TRY_COMPILE([ ],[
  ])dnl
 ])dnl
 
-dnl Originally called JD_TERMCAP and written by John E. Davis:
+dnl Originally called JD_TERMCAP and written by John E. Davis
 AC_DEFUN(CF_TERMCAP,
 [
+AC_MSG_CHECKING(for Terminfo)
+
 JD_Terminfo_Dirs="/usr/lib/terminfo \
                  /usr/share/terminfo \
                  /usr/share/lib/terminfo \
-		 /usr/local/lib/terminfo"
+		 /usr/local/lib/terminfo \
+		 $FINKPREFIX/share/terminfo"
 
 TERMCAP=-ltermcap
 

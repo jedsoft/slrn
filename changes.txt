@@ -10,6 +10,7 @@ Changes since 0.9.7.3
   * Use color object "message" for all prompts.
   * The high / low scoring article counters work correctly.
   * Don't remove _^H combinations in articles (corrupted yenc-encoded data).
+  * Don't decode headers when writing them into the overview file (slrnpull).
 
    New algorithm for article sorting (based on a patch by Felix Schueller).
    This adds a highly configurable custom sorting interface (which will
