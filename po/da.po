@@ -23,7 +23,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: slrn 0.9.7.3 (cvs 2002-03-03)\n"
-"POT-Creation-Date: 2002-03-03 10:54+0100\n"
+"POT-Creation-Date: 2002-03-05 17:41+0100\n"
 "PO-Revision-Date: 2002-03-03 12:01+0100\n"
 "Last-Translator: Byrial Ole Jensen <byrial@image.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -642,6 +642,46 @@ msgstr "%p[%u/%t ulæste] Gruppe: %n%-20g -- %L (%P)"
 msgid "Spoilers visible!"
 msgstr "Afsløringer synlige!"
 
+#: src/art_sort.c:329
+#, fuzzy
+msgid "slrn_sort_headers(): memory allocation failure."
+msgstr "Tildeling af hukommelse mislykkedes."
+
+#: src/art_sort.c:586
+#, fuzzy
+msgid "link_same_subjects: memory allocation failure."
+msgstr "Tildeling af hukommelse mislykkedes."
+
+#: src/art_sort.c:797
+msgid "Internal Error in fixup_threads()."
+msgstr ""
+
+#: src/art_sort.c:851
+msgid "Threading by references ..."
+msgstr ""
+
+#: src/art_sort.c:888
+#, fuzzy, c-format
+msgid "Article %d is part of reference loop!"
+msgstr "Hoved er i en referenceløkke"
+
+#. Now perform a re-arrangement such that those without parents but that
+#. * share the same reference are placed side-by-side as sisters.
+#: src/art_sort.c:917
+msgid "Linking \"lost relatives\" ..."
+msgstr ""
+
+#. Now perform sort on subject to catch those that have fallen through the
+#. * cracks, i.e., no references
+#: src/art_sort.c:922
+msgid "Linking articles with identical subjects ..."
+msgstr ""
+
+#: src/art_sort.c:1022
+#, c-format
+msgid "Can't sort according to `%s'"
+msgstr ""
+
 #: src/chkslang.c:58
 #, c-format
 msgid "Usage: %s <PGM> <SLANG-VERSION> <SUGG VERSION>\n"
@@ -941,7 +981,7 @@ msgstr "List grupper (f.eks. comp*unix): "
 msgid "No unread articles."
 msgstr "Ingen ulæste indlæg."
 
-#: src/group.c:1743 src/post.c:1126
+#: src/group.c:1743 src/post.c:881 src/post.c:1125
 msgid "Posting not allowed."
 msgstr "Sending til nyhedsgruppe ikke tilladt."
 
@@ -2791,7 +2831,7 @@ msgstr "Linjer med mere end 80 tegn bør normalt ombrydes."
 msgid "This affects at least line %d:"
 msgstr "Det berører linje %d og måske flere."
 
-#: src/post.c:704 src/post.c:1086 src/post.c:1110
+#: src/post.c:704 src/post.c:1087 src/post.c:1110
 #, c-format
 msgid "File not found: %s--- message not posted."
 msgstr "Fil ikke fundet: %s -- indlægget er ikke sendt."
@@ -2807,8 +2847,8 @@ msgid "***Warning: error writing to %s"
 msgstr "*** Advarsel: fejl ved skrivning til %s"
 
 #: src/post.c:880
-#, c-format
-msgid "Failed post saved in %s"
+#, fuzzy, c-format
+msgid "%s Failed post saved in %s"
 msgstr "Mislykket sending gemt i %s"
 
 #. Note to translators:
@@ -2819,39 +2859,39 @@ msgstr "Mislykket sending gemt i %s"
 #. * default letters for other fields than those they originally stood for.
 #. * Be careful not to change the length of these strings!
 #.
-#: src/post.c:943 src/post.c:976
+#: src/post.c:944 src/post.c:977
 msgid "yYnNeEsSdDfF"
 msgstr "jJnNrRuUlLfF"
 
-#: src/post.c:946
+#: src/post.c:947
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt, Slet, Filtrér"
 
-#: src/post.c:950
+#: src/post.c:951
 msgid "yYnNeEsSfF"
 msgstr "jJnNrRuUfF"
 
-#: src/post.c:953
+#: src/post.c:954
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt, Filtrér"
 
-#: src/post.c:961
+#: src/post.c:962
 msgid "yYnNeEsSdD"
 msgstr "jJnNrRuUlL"
 
-#: src/post.c:964
+#: src/post.c:965
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt, Slet"
 
-#: src/post.c:968
+#: src/post.c:969
 msgid "yYnNeEsS"
 msgstr "jJnNrRuU"
 
-#: src/post.c:971
+#: src/post.c:972
 msgid "Post the message? Yes, No, Edit, poStpone"
 msgstr "Send indlægget? Ja, Nej, Redigér, Udsæt"
 
-#: src/post.c:994
+#: src/post.c:995
 msgid "Sure you want to delete it"
 msgstr "Er du sikker på at du vil slette den"
 
@@ -2859,11 +2899,11 @@ msgstr "Er du sikker på at du vil slette den"
 #. * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
 #. * "cC" is "cancel" and "fF" means "force". The usual rules apply.
 #.
-#: src/post.c:1018
+#: src/post.c:1019
 msgid "yYeEnNcC"
 msgstr "jJrRnNaA"
 
-#: src/post.c:1021
+#: src/post.c:1022
 msgid "re-Edit,  or Cancel"
 msgstr "Omredigér eller Annullér"
 
@@ -2873,22 +2913,27 @@ msgstr "Omredigér eller Annullér"
 # menu, men jeg vil alligevel gerne godt undgå at samme bogstav bruges
 # forskelligt i 2 meget beslægtede menuer. 'e', 'n', 'd', 'a', 'l' og
 # 'i' er også i brug til hhv. Edit/Nej/Delete/Annullér/sLet/Ignorér.
-#: src/post.c:1025 src/post.c:1031
+#: src/post.c:1026 src/post.c:1032
 msgid "yYeEnNcCfF"
 msgstr "jJrRnNaAgG"
 
-#: src/post.c:1028
+#: src/post.c:1029
 msgid "re-Edit, Cancel, or Force the posting (not recommended)"
 msgstr "Omredigér, Annullér eller Send alligevel (anbefales ikke)"
 
-#: src/post.c:1067 src/post.c:1113
+#: src/post.c:1068 src/post.c:1113
 msgid "Posting ..."
 msgstr "Sender ..."
 
-#: src/post.c:1101
-#, c-format
-msgid "post_file_hook returned error.  %s not posted."
+#: src/post.c:1104
+#, fuzzy
+msgid "post_file_hook returned error."
 msgstr "\"post_file_hook\" returnerede fejl. %s er ikke sendt."
+
+#: src/post.c:1126
+#, fuzzy
+msgid "Could not reach server."
+msgstr "Kunne ikke gå til gruppen %s."
 
 #: src/post.c:1254
 msgid "Posting...done."
@@ -4000,54 +4045,54 @@ msgstr ""
 "%s: Forældet stavemåde på linje %d\n"
 "Brug \"verbatim\" i stedet for \"verbatum\"."
 
-#: src/startup.c:1043 src/startup.c:1088
+#: src/startup.c:1043 src/startup.c:1090
 #, c-format
 msgid "%s is not a color object"
 msgstr "%s er ikke et farveobjekt."
 
-#: src/startup.c:1064
+#: src/startup.c:1066
 msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
 msgstr ""
 "På grund af en begrænsning i S-Lang er denne funktion kun tilgængelig på "
 "Unix."
 
-#: src/startup.c:1180
+#: src/startup.c:1182
 #, c-format
 msgid "%s is not a valid fully-qualified host name."
 msgstr "%s er ikke et gyldigt fuldtkvalificeret værtsnavn."
 
-#: src/startup.c:1470
+#: src/startup.c:1472
 msgid "Username: "
 msgstr "Brugernavn: "
 
-#: src/startup.c:1485
+#: src/startup.c:1487
 msgid "Password: "
 msgstr "Adgangskode: "
 
-#: src/startup.c:1577
+#: src/startup.c:1579
 msgid "Unable to initialize S-Lang readline library."
 msgstr "Kan ikke klargøre S-Lang readline-bibliotek."
 
-#: src/startup.c:1582
+#: src/startup.c:1584
 msgid "Error initializing S-Lang preprocessor."
 msgstr "Fejl ved klargøring af S-Lang-forbehandler."
 
-#: src/startup.c:1588
+#: src/startup.c:1590
 #, c-format
 msgid "Reading startup file %s."
 msgstr "Læser opstartsfil %s."
 
-#: src/startup.c:1614
+#: src/startup.c:1616
 #, c-format
 msgid "Server object '%s' is not supported."
 msgstr "Servertype '%s' er ikke understøttet."
 
-#: src/startup.c:1618
+#: src/startup.c:1620
 #, c-format
 msgid "Post object '%s' is not supported."
 msgstr "Sendetype '%s' er ikke understøttet."
 
-#: src/startup.c:1637
+#: src/startup.c:1639
 #, c-format
 msgid ""
 "%s: line %d:\n"

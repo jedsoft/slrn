@@ -23,7 +23,7 @@
 extern int slrn_set_charset (char *);
 extern int slrn_chmap_fix_file (char *, int);
 extern void slrn_chmap_fix_body (Slrn_Article_Type *, int);
-extern void slrn_chmap_fix_headerss (Slrn_Header_Type *);
+extern void slrn_chmap_fix_header (Slrn_Header_Type *);
 
 #if SLRN_HAS_CHARACTER_MAP
 extern char *Slrn_Charset;

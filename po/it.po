@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Slrn 0.9.7.3\n"
-"POT-Creation-Date: 2001-11-05 12:24+0100\n"
+"POT-Creation-Date: 2002-03-05 17:41+0100\n"
 "PO-Revision-Date: 2001-10-31 14:56+0100\n"
 "Last-Translator: Emmanuele Bassi <emmanuele.bassi@iol.it>\n"
 "Language-Team: ITALIAN <it@li.org>\n"
@@ -15,177 +15,197 @@ msgstr ""
 
 #. Note to translators:
 #. * Make sure your translation is shorter than 16 characters.
-#: src/art.c:335
+#: src/art.c:298
 #, c-format
 msgid "Ctrl-%c"
 msgstr "Ctrl-%c"
 
-#: src/art.c:339
+#: src/art.c:302
 msgid "SPACE"
 msgstr "SPAZIO"
 
-#: src/art.c:340
+#: src/art.c:303
 msgid "TAB"
 msgstr "TAB"
 
-#: src/art.c:341
+#: src/art.c:304
 msgid "RETURN"
 msgstr "INVIO"
 
-#: src/art.c:342
+#: src/art.c:305
 msgid "ESCAPE"
 msgstr "ESCAPE"
 
-#: src/art.c:343
+#: src/art.c:306
 msgid "DELETE"
 msgstr "CANCELLA"
 
-#: src/art.c:344
+#: src/art.c:307
 msgid "BACKSPACE"
 msgstr "BACKSPACE"
 
-#: src/art.c:700
+#: src/art.c:667
 msgid "No next digest."
 msgstr "Nessun archivio successivo."
 
-#: src/art.c:1049
+#: src/art.c:1021
 msgid "Invalid Browser definition."
 msgstr "Definizione invalida del browser."
 
-#: src/art.c:1083
+#: src/art.c:1055
 msgid "Browse (^G aborts): "
 msgstr "Visualizza (^G annulla): "
 
-#: src/art.c:1085 src/art.c:4021
+#: src/art.c:1057 src/art.c:3969
 msgid "Aborted."
 msgstr "Annullato."
 
-#: src/art.c:1108
+#: src/art.c:1080
 msgid "Show all available groups"
 msgstr "Mostra tutti i gruppi disponibili"
 
-#: src/art.c:1118
+#: src/art.c:1090
 #, c-format
 msgid "Try switching to %s"
 msgstr "Provare usando %s"
 
-#: src/art.c:1124
+#: src/art.c:1096
 msgid "Group contains no articles."
 msgstr "Il gruppo non contiene articoli."
 
-#: src/art.c:1139
+#: src/art.c:1111
 msgid "No Web Browser has been defined."
 msgstr "Non è stato definito alcun Browser Web."
 
-#: src/art.c:1190
+#: src/art.c:1162
 msgid "No URLs found."
 msgstr "Nessuna URL trovata."
 
-#: src/art.c:1221
+#: src/art.c:1193
 msgid "Search: "
 msgstr "Cerca: "
 
-#: src/art.c:1225 src/art.c:5529 src/group.c:1232
+#: src/art.c:1197 src/art.c:4623 src/group.c:1239
 msgid "Not found."
 msgstr "Non trovato."
 
-#: src/art.c:1325
+#: src/art.c:1297
 #, c-format
 msgid "At end of article, press %s for next group."
 msgstr "Alla fine dell'articolo, premi %s per il prossimo gruppo."
 
-#: src/art.c:1328
+#: src/art.c:1300
 #, c-format
 msgid "At end of article, press %s for next unread article."
 msgstr "Alla fine dell'articolo, premi %s per il prossimo articolo non letto."
 
-#: src/art.c:2010
+#: src/art.c:1982
 msgid "Goto article: "
 msgstr "Vai all'articolo: "
 
-#: src/art.c:2027
+#: src/art.c:1999
 msgid "Article not found."
 msgstr "Articolo non trovato."
 
-#: src/art.c:2098
+#: src/art.c:2070
 #, c-format
 msgid "#%2d/%-2d: Retrieving... %s"
 msgstr "#%2d/%-2d: In recupero... %s\""
 
-#: src/art.c:2101
+#: src/art.c:2073
 #, c-format
 msgid "[%d] Reading..."
 msgstr "[%d] In lettura..."
 
-#: src/art.c:2108
+#: src/art.c:2080
 msgid "Server failed to return article."
 msgstr "Il server non ha restituito l'articolo."
 
-#: src/art.c:2112
+#: src/art.c:2084
 #, c-format
 msgid "Article %d unavailable."
 msgstr "Articolo %d non disponibile."
 
-#: src/art.c:2151
+#: src/art.c:2123
 msgid "Article transfer aborted or connection lost."
 msgstr "Trasferimento dell'articolo annullato o connessione persa."
 
-#: src/art.c:2234
+#: src/art.c:2141
+#, c-format
+msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
+msgstr ""
+
+#: src/art.c:2145
+#, c-format
+msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
+msgstr ""
+
+#: src/art.c:2151
+#, c-format
+msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
+msgstr ""
+
+#: src/art.c:2154
+#, c-format
+msgid "[%d] Read %d/%d lines so far"
+msgstr ""
+
+#: src/art.c:2194
 msgid "Server sent empty article."
 msgstr "Il server non ha restituito l'articolo."
 
-#: src/art.c:2500
+#: src/art.c:2460
 msgid "%a, %d %b %Y at %H:%M GMT"
 msgstr "%a, %d %b %Y alle %H:%M GMT"
 
-#: src/art.c:2543
+#: src/art.c:2503
 msgid "This operation requires an article"
 msgstr "Questa operazione richiede un articolo"
 
-#: src/art.c:2651
+#: src/art.c:2611
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
 msgstr "%s non è valido.  Continua comunque"
 
-#: src/art.c:2652
+#: src/art.c:2612
 msgid "Email address"
 msgstr "Indirizzo Email"
 
-#: src/art.c:2663 src/art.c:2838 src/art.c:3177 src/art.c:3375
+#: src/art.c:2623 src/art.c:2798 src/art.c:3137 src/art.c:3335
 #: src/slrnpull.c:395 src/slrnpull.c:1031
 #, c-format
 msgid "Unable to open %s for writing."
 msgstr "Impossibile aprire %s in scrittura."
 
-#: src/art.c:2788
+#: src/art.c:2748
 msgid "Are you sure you want to reply"
 msgstr "Sei sicuro di voler rispondere"
 
-#: src/art.c:2815
+#: src/art.c:2775
 msgid "Forward to (^G aborts): "
 msgstr "Inoltra a (^G annulla): "
 
-#: src/art.c:2817
+#: src/art.c:2777
 msgid "Aborted.  An email address is required."
 msgstr "Annullato. E' richiesto un indirizzo email."
 
-#: src/art.c:2821
+#: src/art.c:2781
 msgid "Edit the message before sending"
 msgstr "Modifica il messaggio prima di inviarlo"
 
-#: src/art.c:2925 src/art.c:3330
+#: src/art.c:2885 src/art.c:3290
 msgid "Posting not allowed by server"
 msgstr "Il server non ammette l'invio"
 
-#: src/art.c:2932
+#: src/art.c:2892
 msgid "Are you sure you want to followup"
 msgstr "Sei sicuro di voler rispondere"
 
-#: src/art.c:2973
+#: src/art.c:2933
 msgid "Do you want to reply to POSTER as poster prefers"
 msgstr "Vuoi rispondere a POSTER come l'autore preferisce"
 
-#: src/art.c:3011
+#: src/art.c:2971
 #, c-format
 msgid "Followup to %s as poster prefers"
 msgstr "Risposta a %s come preferisce l'autore"
@@ -195,255 +215,244 @@ msgstr "Risposta a %s come preferisce l'autore"
 #. * Do not change the length of the string! You cannot use any of the
 #. * default characters for other fields than they originally stood for.
 #.
-#: src/art.c:3053
+#: src/art.c:3013
 msgid "fFpPiIcC"
 msgstr "fFpPiIcC"
 
-#: src/art.c:3056
+#: src/art.c:3016
 msgid ""
 "Crossposting. Followup-To this group, Post to this group only, Ignore,"
 " Cancel?"
 msgstr ""
 "Crosspost. Followup sul gruppo, Posta solo a questo gruppo, Ignora, Cancella?"
 
-#: src/art.c:3138
+#: src/art.c:3098
 msgid "Cc message as requested by poster"
 msgstr "Messaggio in Cc all'autore come da lui richiesto"
 
-#: src/art.c:3144
+#: src/art.c:3104
 msgid "Cc message to poster"
 msgstr "Messaggio in Cc all'autore"
 
-#: src/art.c:3157
+#: src/art.c:3117
 #, c-format
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s è invalido.  Invia una copia comunque"
 
-#: src/art.c:3335
+#: src/art.c:3295
 msgid "Are you sure you want to supersede"
 msgstr "Sei sicuro di voler modificare l'articolo"
 
-#: src/art.c:3354 src/art.c:7259
+#: src/art.c:3314 src/art.c:6388
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "Errore: Il tuo nome: '%s' non è '%s'"
 
-#: src/art.c:3457 src/art.c:3506
+#: src/art.c:3417 src/art.c:3466
 msgid "End of buffer."
 msgstr "Fine del buffer."
 
-#: src/art.c:3478 src/art.c:3496 src/group.c:1078
+#: src/art.c:3438 src/art.c:3456 src/group.c:1079
 msgid "Top of buffer."
 msgstr "Inizio del buffer."
 
-#: src/art.c:3541
+#: src/art.c:3501
 msgid "No previous unread articles."
 msgstr "Non ci sono precedenti articoli non letti."
 
-#: src/art.c:3585
+#: src/art.c:3545
 msgid "No following unread articles."
 msgstr "Non ci sono successivi articoli non letti."
 
-#: src/art.c:3621
+#: src/art.c:3581
 #, c-format
 msgid "No following unread articles.  Press %s for next group."
 msgstr "Non ci sono altri articoli non letti. Premi %s per il prossimo gruppo."
 
-#: src/art.c:3652
+#: src/art.c:3612
 msgid "No more high scoring articles."
 msgstr "Non ci sono altri articoli ad alto punteggio."
 
-#: src/art.c:3706
+#: src/art.c:3641 src/group.c:1773
+msgid "Subject: "
+msgstr "Oggetto: "
+
+#: src/art.c:3666
 msgid "No more articles on that subject."
 msgstr "Non ci sono altri articoli con questo oggetto."
 
-#: src/art.c:3739
+#: src/art.c:3699
 #, c-format
 msgid "Goto Header: %d"
 msgstr "Vai all'Header: %d"
 
-#: src/art.c:3824 src/group.c:2633 src/post.c:262
+#: src/art.c:3784 src/group.c:2640 src/post.c:262
 #, c-format
 msgid "Unable to open %s."
 msgstr "Impossibile aprire %s."
 
-#: src/art.c:3830 src/slrnpull.c:1039 src/slrnpull.c:1047
+#: src/art.c:3790 src/slrnpull.c:1039 src/slrnpull.c:1047
 #, c-format
 msgid "Error writing to %s."
 msgstr "Errore in scrittura su %s."
 
-#: src/art.c:3962
+#: src/art.c:3910
 msgid "Save tagged articles"
 msgstr "Salva articoli segnati"
 
-#: src/art.c:3970
+#: src/art.c:3918
 msgid "Save this thread"
 msgstr "Salva questo thread"
 
-#: src/art.c:4017
+#: src/art.c:3965
 msgid "Temporary file (^G aborts): "
 msgstr "File temporaneo (^G annulla): "
 
-#: src/art.c:4018
+#: src/art.c:3966
 msgid "Save to file (^G aborts): "
 msgstr "Salva sul file (^G annulla): "
 
-#: src/art.c:4027 src/editscore.c:153 src/post.c:429
+#: src/art.c:3975 src/editscore.c:153 src/post.c:429
 #, c-format
 msgid "Unable to open %s"
 msgstr "Impossibile apire %s"
 
-#: src/art.c:4118
+#: src/art.c:4065
 #, c-format
 msgid "decoding %10s (%3d/%3d) %s"
 msgstr "decodifica di %10s (%3d/%3d) %s"
 
-#: src/art.c:4134
+#: src/art.c:4081
 msgid "Filename buffer not large enough."
 msgstr "Il buffer del nome file non è grande abbastanza."
 
 #. safe
-#: src/art.c:4138
+#: src/art.c:4085
 msgid "Calling uudeview ..."
 msgstr "Richiamo uudeview ..."
 
-#: src/art.c:4147
+#: src/art.c:4094
 #, c-format
 msgid "could not load %s: errno = %d"
 msgstr "impossibile caricare %s: errore numero = %d"
 
-#: src/art.c:4150
+#: src/art.c:4097
 #, c-format
 msgid "could not load %s: %s"
 msgstr "impossibile caricare %s: %s"
 
-#: src/art.c:4165
+#: src/art.c:4112
 msgid "I/O error."
 msgstr "Errore di I/O."
 
-#: src/art.c:4168
+#: src/art.c:4115
 #, c-format
 msgid "error decoding %s: %s"
 msgstr "errore nella decodifica di %s: %s"
 
-#: src/art.c:4192
+#: src/art.c:4139
 #, c-format
 msgid "Decode %s"
 msgstr "Decodifica %s"
 
-#: src/art.c:4203
+#: src/art.c:4150
 #, c-format
 msgid "Delete %s"
 msgstr "Cancella %s"
 
-#: src/art.c:4206
+#: src/art.c:4153
 #, c-format
 msgid "Unable to delete %s"
 msgstr "Impossibile cancellare %s"
 
-#: src/art.c:4238
+#: src/art.c:4185
 #, c-format
 msgid "Unable to open pipe to %s"
 msgstr "Impossibile aprire una pipe verso %s"
 
-#: src/art.c:4255 src/art.c:4276 src/decode.c:65
+#: src/art.c:4202 src/art.c:4223 src/decode.c:65
 msgid "Piping not implemented on this system."
 msgstr "Piping non implementato su questo sistema."
 
-#: src/art.c:4267
+#: src/art.c:4214
 msgid "Pipe to command: "
 msgstr "In pipe con il comando: "
 
-#: src/art.c:4269
+#: src/art.c:4216
 msgid "Aborted.  Command name is required."
 msgstr "Annullato.  E' richiesto il nome del comando."
 
-#: src/art.c:4274
+#: src/art.c:4221
 #, c-format
 msgid "Error piping to %s."
 msgstr "Errore nella pipe verso %s."
 
-#: src/art.c:4290
+#: src/art.c:4237
 msgid "Printing article..."
 msgstr "Stampa articolo..."
 
-#: src/art.c:4321
+#: src/art.c:4268
 msgid "Printing article...done"
 msgstr "Stampa articolo...completata"
 
-#: src/art.c:4337
+#: src/art.c:4284
 msgid "Are you sure you want to print the article"
 msgstr "Sei sicuro di voler stampare l'articolo"
 
-#: src/art.c:4490
-msgid "sort_headers(): memory allocation failure."
-msgstr "sort_headers(): allocazione di memoria fallita."
-
-#: src/art.c:5031
-msgid "Internal Error."
-msgstr "Errore Interno."
-
-#: src/art.c:5092
-msgid "link_same_subjects: memory allocation failure."
-msgstr "link_same_subjects: fallita allocazione di memoria."
-
-#. SLMEMSET ((char *) Lost_Ancestors, 0, sizeof (Lost_Ancestors));
-#: src/art.c:5325
-msgid "Threading by references ..."
-msgstr "Threading per riferimenti ..."
-
-#. self referencing!!!
-#: src/art.c:5362
-#, c-format
-msgid "Article %d is part of reference loop!"
-msgstr "L'articolo %d è parte di un loop di riferimenti!"
-
-#. No perform a re-arrangement such that those with the no parents but
-#. * share the same reference are placed side-by-side as sisters.
-#.
-#: src/art.c:5386
-msgid "Linking \"lost relatives\" ..."
-msgstr "Collegamento dei \"riferimenti persi\" ..."
-
-#: src/art.c:5393
-msgid "Linking articles with identical subjects ..."
-msgstr "Collegamento articoli con un identico oggetto ..."
-
-#: src/art.c:5461
+#: src/art.c:4556
 msgid "Mark set."
 msgstr "Segno impostato."
 
-#: src/art.c:5473
+#: src/art.c:4568
 msgid "Mark not set."
 msgstr "Segno non impostato."
 
-#: src/art.c:5494
-msgid "Subject"
-msgstr "Oggetto"
+#: src/art.c:4589
+#, fuzzy
+msgid "Subject search "
+msgstr "Oggetto: "
 
-#: src/art.c:5494
-msgid "Author"
-msgstr "Autore"
-
-#: src/art.c:5495
-msgid " Search "
+#: src/art.c:4589
+#, fuzzy
+msgid "Author search "
 msgstr " Cerca "
 
-#: src/art.c:5496 src/group.c:1223
-msgid "Forward"
+#: src/art.c:4590
+#, fuzzy
+msgid "(forward)"
 msgstr "Avanti"
 
-#: src/art.c:5496 src/group.c:1223
-msgid "Backward"
+#: src/art.c:4590
+#, fuzzy
+msgid "(backward)"
 msgstr "Indietro"
 
-#: src/art.c:5680
-#, c-format
-msgid ""
-"Score %d killed article %s\n"
+#: src/art.c:4776 src/slrnpull.c:1182
+#, fuzzy, c-format
+msgid "Score %d killed article %s\n"
+msgstr ""
+"Punteggio %d articoli eliminati %s\n"
 "Newsgroup: %s\n"
-"From: %s\n"
-"Subject: %s\n"
+"Da: %s\n"
+"Oggetto: %s\n"
+"\n"
+
+#: src/art.c:4780 src/slrnpull.c:1186
+#, fuzzy, c-format
+msgid " Score %c%5i: %s (%s:%i)\n"
+msgstr "creazione di %s (%s)\n"
+
+#: src/art.c:4784 src/slrnpull.c:1190
+#, c-format
+msgid " Score %c%5i: %s:%i\n"
+msgstr ""
+
+#: src/art.c:4789 src/slrnpull.c:1195
+#, fuzzy, c-format
+msgid ""
+"  Newsgroup: %s\n"
+"  From: %s\n"
+"  Subject: %s\n"
 "\n"
 msgstr ""
 "Punteggio %d articoli eliminati %s\n"
@@ -452,156 +461,156 @@ msgstr ""
 "Oggetto: %s\n"
 "\n"
 
-#: src/art.c:5732
+#: src/art.c:4854
 msgid "Scoring articles ..."
 msgstr "Assegnazione punteggio articoli ..."
 
-#: src/art.c:5745
+#: src/art.c:4867
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr "Assegnazione punteggio: %2d%%, Eliminati: %u, Alto: %u, Basso: %u"
 
-#: src/art.c:5780
+#: src/art.c:4907
 msgid "Apply scorefile now"
 msgstr "Applica scorefile adesso"
 
-#: src/art.c:5827
+#: src/art.c:4955
 msgid "This article is not matched by any scorefile entries."
 msgstr "Questo articolo non corrisponde ad alcuna regola nello scorefile."
 
-#: src/art.c:5874
+#: src/art.c:5002
 msgid "This article is matched by the following scores"
 msgstr "Questo articolo corrisponde alle seguenti definizioni"
 
-#: src/art.c:5974
+#: src/art.c:5103
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: ricezione ulteriori header...[%c]"
 
-#: src/art.c:6057
+#: src/art.c:5186
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: header ricevuti: %2d/%d"
 
-#: src/art.c:6220
+#: src/art.c:5349
 #, c-format
 msgid "Finding %s from server..."
 msgstr "Ricerca di %s sul server..."
 
-#: src/art.c:6251
+#: src/art.c:5380
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "Recupero articoli figli dal server...[%c]"
 
-#: src/art.c:6259
+#: src/art.c:5388
 msgid "Your server does not provide support for this feature."
 msgstr "Il tuo server non supporta questa feature."
 
-#: src/art.c:6425
+#: src/art.c:5554
 msgid "Header is part of a reference loop"
 msgstr "L'Header è parte di un loop di riferimenti"
 
-#: src/art.c:6473
+#: src/art.c:5602
 msgid "Article has no parent reference."
 msgstr "L'articolo non ha riferimenti precedenti."
 
-#: src/art.c:6521
+#: src/art.c:5649
 #, c-format
 msgid "Article %s not available."
 msgstr "L'articolo %s non è disponibile."
 
-#: src/art.c:6533
+#: src/art.c:5661
 msgid "Enter Message-Id: "
 msgstr "Inserisci il Message-ID: "
 
-#: src/art.c:7236
+#: src/art.c:6365
 msgid "Are you sure that you want to cancel this article"
 msgstr "Sei sicuro di voler cancellare questo articolo"
 
-#: src/art.c:7239
+#: src/art.c:6368
 msgid "Cancelling..."
 msgstr "Cancellazione in corso..."
 
-#: src/art.c:7274
+#: src/art.c:6403
 msgid "No message id."
 msgstr "Nessun Message-ID."
 
-#: src/art.c:7295
+#: src/art.c:6424
 msgid "Done."
 msgstr "Fatto."
 
-#: src/art.c:7332
+#: src/art.c:6461
 msgid "Mark all articles as read"
 msgstr "Segna tutti gli articoli come già letti"
 
-#: src/art.c:7342
+#: src/art.c:6471
 msgid "Mark all articles as unread"
 msgstr "Segna tutti gli articoli come non letti"
 
-#: src/art.c:7352
+#: src/art.c:6481
 msgid "Mark all articles up to here as read"
 msgstr "Segna tutti gli articoli fino alla pos. corrente come letti."
 
-#: src/art.c:7362
+#: src/art.c:6491
 msgid "Mark all articles up to here as unread"
 msgstr "Segna tutti gli articoli fino alla pos. corrente come non letti."
 
-#: src/art.c:7429
+#: src/art.c:6558
 msgid "Rate article (1-5):"
 msgstr "Valuta articolo (1-5):"
 
-#: src/art.c:7434
+#: src/art.c:6563
 msgid "Rating must be in range 1 to 5."
 msgstr "La valutazione deve essere compresa tra 1 e 5."
 
-#: src/art.c:7727
+#: src/art.c:6856
 msgid "Unable to create Article keymap!"
 msgstr "Impossibile creare la mappa dell'articolo!"
 
-#: src/art.c:8172
+#: src/art.c:7270
 msgid "Group transfer aborted."
 msgstr "Trasferimento del gruppo interrotto."
 
-#: src/art.c:8174
+#: src/art.c:7272
 msgid "Server read failed."
 msgstr "Fallita la lettura dal server."
 
-#: src/art.c:8191
+#: src/art.c:7289
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "Nessun nuovo articolo trovato. (%d eliminati)"
 
-#: src/art.c:8193
+#: src/art.c:7291
 msgid "No unread articles found."
 msgstr "Nessun nuovo articolo trovato."
 
-#: src/art.c:8249
+#: src/art.c:7345
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr "Eliminati: %u, Num Alti: %u, Num Bassi: %u, val. GroupLens: %d"
 
-#: src/art.c:8255
+#: src/art.c:7351
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "Eliminati: %u, Num Alti: %u, Num Bassi: %u"
 
-#: src/art.c:8456
+#: src/art.c:7552
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:Selez.  Ctrl-D:PgGiù  Ctrl-U:PgSu  d:Letto  n:Succ.  p:Prec.  q:Esci"
 
-#: src/art.c:8461
+#: src/art.c:7557
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:PgGiù  B:PgSu  u:Da-Leggere  f:Risp. gruppo  n:Succ.  p:Prec.  q:Esci"
 
-#: src/art.c:8653
+#: src/art.c:7749
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "Fine del Thread.  Successivo: %s"
 
-#: src/art.c:8655
+#: src/art.c:7751
 msgid "End of Thread."
 msgstr "Fine del Thread."
 
@@ -609,17 +618,57 @@ msgstr "Fine del Thread."
 #. * sisters except that one can have a fake parent.  If this is the
 #. * case, we are at the end of a subthread.
 #.
-#: src/art.c:8667
+#: src/art.c:7763
 msgid "End of Sub-Thread"
 msgstr "Fine del sotto-Thread."
 
-#: src/art.c:9224
+#: src/art.c:8320
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t non letti] Gruppo: %n%-20g -- %L (%P)"
 
-#: src/art.c:9412
+#: src/art.c:8508
 msgid "Spoilers visible!"
 msgstr "Spoiler svelati!"
+
+#: src/art_sort.c:329
+#, fuzzy
+msgid "slrn_sort_headers(): memory allocation failure."
+msgstr "sort_headers(): allocazione di memoria fallita."
+
+#: src/art_sort.c:586
+msgid "link_same_subjects: memory allocation failure."
+msgstr "link_same_subjects: fallita allocazione di memoria."
+
+#: src/art_sort.c:797
+#, fuzzy
+msgid "Internal Error in fixup_threads()."
+msgstr "Errore Interno."
+
+#: src/art_sort.c:851
+msgid "Threading by references ..."
+msgstr "Threading per riferimenti ..."
+
+#: src/art_sort.c:888
+#, c-format
+msgid "Article %d is part of reference loop!"
+msgstr "L'articolo %d è parte di un loop di riferimenti!"
+
+#. Now perform a re-arrangement such that those without parents but that
+#. * share the same reference are placed side-by-side as sisters.
+#: src/art_sort.c:917
+msgid "Linking \"lost relatives\" ..."
+msgstr "Collegamento dei \"riferimenti persi\" ..."
+
+#. Now perform sort on subject to catch those that have fallen through the
+#. * cracks, i.e., no references
+#: src/art_sort.c:922
+msgid "Linking articles with identical subjects ..."
+msgstr "Collegamento articoli con un identico oggetto ..."
+
+#: src/art_sort.c:1022
+#, c-format
+msgid "Can't sort according to `%s'"
+msgstr ""
 
 #: src/chkslang.c:58
 #, c-format
@@ -678,25 +727,25 @@ msgstr ""
 "Questa libreria è disponibile via ftp anonimo su\n"
 "space.mit.edu nella directory pub/davis/slang.\n"
 
-#: src/chmap.c:152 src/chmap.c:159
+#: src/chmap.c:147 src/chmap.c:154
 #, c-format
 msgid "File error: %s --- message not posted."
 msgstr "Errore sul file: %s --- messaggio non inviato."
 
-#: src/chmap.c:171
+#: src/chmap.c:166
 msgid "Write Error. Disk Full? --- message not posted."
 msgstr "Errore di scrittura. Disco Pieno? --- messaggio non inviato."
 
-#: src/chmap.c:201
+#: src/chmap.c:196
 #, c-format
 msgid "  Default character set:     %s\n"
 msgstr "  Set di caratteri di default: %s\n"
 
-#: src/chmap.c:203
+#: src/chmap.c:198
 msgid " SUPPORTED CHARACTER SETS:\n"
 msgstr " SET DI CARATTERI SUPPORTATI:\n"
 
-#: src/chmap.c:244
+#: src/chmap.c:239
 #, c-format
 msgid "Unsupport character set: %s"
 msgstr "Set di caratteri non supportato: %s"
@@ -790,182 +839,186 @@ msgstr "Quale newsgroup: Questo gruppo, Tutti i gruppi"
 msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
 msgstr "Scade (MM/GG/AAAA, GG-MM-AAAA, +NN (giorni) o lascia bianco): "
 
-#: src/group.c:374
+#: src/group.c:375
 #, c-format
 msgid "Selecting %s ..."
 msgstr "Selezionando %s ..."
 
-#: src/group.c:386 src/group.c:524 src/group.c:1141
+#: src/group.c:387 src/group.c:525 src/group.c:1146
 #, c-format
 msgid "Group %s is bogus%s."
 msgstr "Il gruppo %s è fasullo%s."
 
-#: src/group.c:387 src/group.c:1142
+#: src/group.c:388 src/group.c:1147
 msgid " - dropping it"
 msgstr " - lo sto eliminando"
 
-#: src/group.c:394
+#: src/group.c:395
 #, c-format
 msgid "Could not enter group %s."
 msgstr "Non posso entrare nel gruppo %s."
 
-#: src/group.c:525
+#: src/group.c:526
 msgid " - ignoring it"
 msgstr " - lo sto ignorando"
 
-#: src/group.c:619
+#: src/group.c:620
 #, c-format
 msgid "Group %s is bogus - ignoring it."
 msgstr "Il gruppo %s è fasullo - lo sto ignorando."
 
-#: src/group.c:927
+#: src/group.c:928
 msgid "No articles to read."
 msgstr "Nessun articolo da leggere."
 
-#: src/group.c:949
+#: src/group.c:950
 #, c-format
 msgid "%s: Read how many? "
 msgstr "%s: Quanti da leggere? "
 
-#: src/group.c:1034
+#: src/group.c:1035
 msgid "Do you really want to quit"
 msgstr "Vuoi davvero uscire"
 
-#: src/group.c:1043
+#: src/group.c:1044
 msgid "Write to newsrc file failed.  Quit anyway"
 msgstr "Impossibile scrivere sul file newsrc.  Sto uscendo comunque"
 
-#: src/group.c:1056 src/group.c:1293
+#: src/group.c:1057 src/group.c:1300
 msgid "End of Buffer."
 msgstr "Fine del Buffer."
 
-#: src/group.c:1067
+#: src/group.c:1068
 msgid "Top of Buffer."
 msgstr "Inizio del Buffer."
 
-#: src/group.c:1128
+#: src/group.c:1133
 msgid "Server connection dropped."
 msgstr "Connesione al server caduta."
 
-#: src/group.c:1169 src/group.c:2668
+#: src/group.c:1176 src/group.c:2675
 #, c-format
 msgid "Checking news%s ..."
 msgstr "Controllo news%s ..."
 
-#: src/group.c:1170 src/group.c:2669
+#: src/group.c:1177 src/group.c:2676
 msgid " via active file"
 msgstr " attraverso il file active"
 
-#: src/group.c:1224
+#: src/group.c:1230
+msgid "Forward"
+msgstr "Avanti"
+
+#: src/group.c:1230
+msgid "Backward"
+msgstr "Indietro"
+
+#: src/group.c:1231
 msgid " Search: "
 msgstr " Cerca: "
 
-#: src/group.c:1238
+#: src/group.c:1245
 msgid "Search wrapped."
 msgstr "Ricerca compressa."
 
-#: src/group.c:1267
+#: src/group.c:1274
 #, c-format
 msgid "Group %s does not exist."
 msgstr "Il gruppo %s non esiste."
 
-#: src/group.c:1283
+#: src/group.c:1290
 msgid "Add group: "
 msgstr "Aggiungi gruppo: "
 
-#: src/group.c:1354
+#: src/group.c:1361
 #, c-format
 msgid "Moving %s. Press RETURN when finished."
 msgstr "Sto muovendo %s. Premi INVIO quando hai finito."
 
-#: src/group.c:1437
+#: src/group.c:1444
 msgid "Subscribe pattern: "
 msgstr "Sottoscrivi campione: "
 
-#: src/group.c:1466
+#: src/group.c:1473
 #, c-format
 msgid "Mark %s as read"
 msgstr "Segna %s come già letto"
 
-#: src/group.c:1470
+#: src/group.c:1477
 msgid "Group marked as read."
 msgstr "Gruppo segnato come letto."
 
-#: src/group.c:1481
+#: src/group.c:1488
 #, c-format
 msgid "Mark %s as un-read"
 msgstr "Segna %s come non letto"
 
-#: src/group.c:1485
+#: src/group.c:1492
 msgid "Group marked as un-read."
 msgstr "Gruppo segnato come non letto."
 
-#: src/group.c:1508
+#: src/group.c:1515
 msgid "Un-Subscribe pattern: "
 msgstr "De-sottoscrivi campione: "
 
-#: src/group.c:1575
+#: src/group.c:1582
 msgid "List Groups (e.g., comp*unix*): "
 msgstr "Mostra Gruppi (es., it*linux*): "
 
-#: src/group.c:1724
+#: src/group.c:1731
 msgid "No unread articles."
 msgstr "Nessun articolo da leggere."
 
-#: src/group.c:1736 src/post.c:1114
+#: src/group.c:1743 src/post.c:881 src/post.c:1125
 msgid "Posting not allowed."
 msgstr "Invio non permesso."
 
-#: src/group.c:1747
+#: src/group.c:1754
 msgid "Are you sure that you want to post"
 msgstr "Sei sicuro di volere postare"
 
-#: src/group.c:1757
+#: src/group.c:1764
 msgid "Newsgroup: "
 msgstr "Newsgroup: "
 
-#: src/group.c:1761
+#: src/group.c:1768
 msgid "Followup-To: "
 msgstr "Followup-To: "
-
-#: src/group.c:1766
-msgid "Subject: "
-msgstr "Oggetto: "
 
 #. Note to translators: Here, "fF" means "full", "sS" is "simple",
 #. * "nN" means "none" and "cC" is "cancel".
 #. * As always, don't change the length of the string; you cannot use
 #. * the default characters for different fields.
 #.
-#: src/group.c:1780
+#: src/group.c:1787
 msgid "fFsSnNcC"
 msgstr "tTsSnNcC"
 
-#: src/group.c:1787
+#: src/group.c:1794
 msgid "Select scoring mode: Full, Simple, None, Cancel"
 msgstr "Seleziona lo scoring: Totale, Semplice, Nessuno, Cancella"
 
-#: src/group.c:1795
+#: src/group.c:1802
 msgid "Full Header Scoring enabled."
 msgstr "Scoring completo sugli header."
 
-#: src/group.c:1800
+#: src/group.c:1807
 msgid "Expensive Scoring disabled."
 msgstr "Expensive Scoring disabilitato."
 
-#: src/group.c:1805
+#: src/group.c:1812
 msgid "Scoring disabled."
 msgstr "Scoring disabilitato."
 
-#: src/group.c:1823
+#: src/group.c:1830
 msgid "No changes need to be saved."
 msgstr "Nessuna modifica da salvare."
 
-#: src/group.c:2014
+#: src/group.c:2021
 msgid "Unable to create group keymap!"
 msgstr "Impossibile creare la mappa del gruppo!"
 
-#: src/group.c:2172
+#: src/group.c:2179
 #, c-format
 msgid ""
 "Unable to create newsgroup description file:\n"
@@ -974,7 +1027,7 @@ msgstr ""
 "Impossibile creare il file di descrizione del newsgroup:\n"
 "%s\n"
 
-#: src/group.c:2176
+#: src/group.c:2183
 #, c-format
 msgid ""
 "\n"
@@ -983,7 +1036,7 @@ msgstr ""
 "\n"
 "Creazione file delle descrizioni %s.\n"
 
-#: src/group.c:2177
+#: src/group.c:2184
 msgid ""
 "Getting newsgroup descriptions from server.\n"
 "Note: This step may take some time if you have a slow connection!!!\n"
@@ -992,24 +1045,24 @@ msgstr ""
 "Nota: Questo passo potrebbe richiedere del tempo se hai una connessione "
 "lenta!!!\n"
 
-#: src/group.c:2184
+#: src/group.c:2191
 msgid "Server failed on list newsgroups command."
 msgstr ""
 "Il server non è riuscito a rispondere al comando di lista dei newsgroup."
 
-#: src/group.c:2199
+#: src/group.c:2206
 msgid "Error reading line from server"
 msgstr "Errore in lettura dal server"
 
-#: src/group.c:2330
+#: src/group.c:2337
 msgid "Checking for new groups ..."
 msgstr "Controllo nuovi gruppi ..."
 
-#: src/group.c:2388 src/slrnpull.c:2092
+#: src/group.c:2395 src/slrnpull.c:2123
 msgid "Server does not implement NEWGROUPS command."
 msgstr "Il server non implementa il comando NEWGROUPS."
 
-#: src/group.c:2392 src/slrnpull.c:2096
+#: src/group.c:2399 src/slrnpull.c:2127
 #, c-format
 msgid ""
 "Server failed to return proper response to NEWGROUPS:\n"
@@ -1018,16 +1071,16 @@ msgstr ""
 "Il server non ha restituito una risposta corretta a NEWGROUPS:\n"
 "%s\n"
 
-#: src/group.c:2406 src/group.c:2519
+#: src/group.c:2413 src/group.c:2526
 msgid "Read from server failed"
 msgstr "Lettura dal server fallita"
 
-#: src/group.c:2417
+#: src/group.c:2424
 #, c-format
 msgid "%d new newsgroup(s) found."
 msgstr "%d nuovo/i gruppo/i trovati."
 
-#: src/group.c:2425
+#: src/group.c:2432
 #, c-format
 msgid ""
 "%s appears corrupt.\n"
@@ -1038,20 +1091,20 @@ msgstr ""
 "Mi aspettavo di trovare: NEWGROUPS aammgg hhmmss GMT\n"
 "Correggerò il file per te.\n"
 
-#: src/group.c:2437
+#: src/group.c:2444
 #, c-format
 msgid "Unable to open %s to record date."
 msgstr "Impossibile aprire %s per registrare la data."
 
-#: src/group.c:2505
+#: src/group.c:2512
 msgid "Server failed LIST ACTIVE - authorization missing."
 msgstr "Il server ha fallito il comando LIST ACTIVE - manca l'autorizzazione."
 
-#: src/group.c:2506
+#: src/group.c:2513
 msgid "Server failed LIST ACTIVE."
 msgstr "Il server ha fallito il comando LIST ACTIVE."
 
-#: src/group.c:2619
+#: src/group.c:2626
 #, c-format
 msgid ""
 "\n"
@@ -1060,16 +1113,16 @@ msgstr ""
 "\n"
 "* La copia automatica di %s è più nuova dello stesso file.\n"
 
-#: src/group.c:2621
+#: src/group.c:2628
 msgid "Do you want to restore your newsrc from the autosave version"
 msgstr "Vuoi recuperare il tuo file newsrc dalla copia automatica"
 
-#: src/group.c:2682 src/post.c:1298 src/slrnpull.c:1528
+#: src/group.c:2689 src/post.c:1313 src/slrnpull.c:1559
 #, c-format
 msgid "Unable to create %s."
 msgstr "Impossibile creare %s."
 
-#: src/group.c:2685
+#: src/group.c:2692
 msgid ""
 "\n"
 "--The next step may take a while if the NNTP connection is slow.--\n"
@@ -1080,55 +1133,55 @@ msgstr ""
 "lenta.--\n"
 "\n"
 
-#: src/group.c:2686
+#: src/group.c:2693
 #, c-format
 msgid "Creating %s."
 msgstr "Sto creando %s."
 
-#: src/group.c:2697
+#: src/group.c:2704
 msgid "Unable to read newsrc file"
 msgstr "Impossibile leggere il file newsrc"
 
-#: src/group.c:2790
+#: src/group.c:2797
 #, c-format
 msgid "Writing %s ..."
 msgstr "Sto scrivendo %s ..."
 
-#: src/group.c:2812
+#: src/group.c:2819
 #, c-format
 msgid "Unable to open file %s for writing."
 msgstr "Impossibile aprire il file %s per la scrittura."
 
-#: src/group.c:2916
+#: src/group.c:2923
 #, c-format
 msgid "Writing %s ... done."
 msgstr "Scrittura di %s ... completata."
 
-#: src/group.c:2924
+#: src/group.c:2931
 #, c-format
 msgid "Write to %s failed! Disk Full?"
 msgstr "Impossibile scrivere %s! Il disco è pieno?"
 
-#: src/group.c:2939
+#: src/group.c:2946
 msgid ""
 "SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
 msgstr ""
 "SPC:Selez.  p:Invia c:Letto  l:Lista  q:Esci  ^R:Ridisegna (u)s:(Un)Subscribe"
 
-#: src/group.c:3111
+#: src/group.c:3118
 msgid "-%D-News Groups: %s %-20g -- %L (%P)"
 msgstr "-%D-Newsgroup: %s %-20g -- %L (%P)"
 
-#: src/group.c:3143 src/group.c:3181 src/interp.c:360
+#: src/group.c:3150 src/group.c:3188 src/interp.c:360 src/interp.c:430
 msgid "To use this feature, please update s-lang and recompile slrn."
 msgstr ""
 "Per utilizzare questa opzione, per favore aggiorna le s-lang e ricompila slrn"
 
-#: src/group.c:3189
+#: src/group.c:3196 src/interp.c:438
 msgid "Array of string expected."
 msgstr "Array di stringhe richiesta."
 
-#: src/group.c:3195
+#: src/group.c:3202 src/interp.c:444
 msgid "One-dimensional array expected."
 msgstr "Vettore monodimensionale richiesto."
 
@@ -1970,35 +2023,45 @@ msgstr "Il valore Unicode nella riga %d è oltre i valori ammessi."
 msgid "Local charset value in row %d out of range."
 msgstr "Il valore del charset locale nella riga %d è oltre i valori ammessi."
 
-#: src/interp.c:457
+#: src/interp.c:452
+#, c-format
+msgid "Array must contain at least one, at most %d elements."
+msgstr ""
+
+#: src/interp.c:460
+#, fuzzy
+msgid "Failed to allocate memory."
+msgstr "Errore nella selezione del set di caratteri."
+
+#: src/interp.c:527
 msgid "definekey: no such keymap."
 msgstr "definekey: non esiste questa keymap."
 
-#: src/interp.c:484
+#: src/interp.c:554
 msgid "undefinekey: no such keymap."
 msgstr "undefinekey: non esiste questa keymap."
 
-#: src/interp.c:521 src/interp.c:559 src/slrn.c:1686
+#: src/interp.c:591 src/interp.c:629 src/slrn.c:1728
 msgid "Quit!"
 msgstr "Uscita!"
 
-#: src/interp.c:594
+#: src/interp.c:664
 msgid "Terminal not initialized."
 msgstr "Terminale non inizializzato."
 
-#: src/interp.c:645
+#: src/interp.c:715
 msgid "Not in article mode."
 msgstr "Non sei nella modalità articolo."
 
-#: src/interp.c:755
+#: src/interp.c:836
 msgid "No article selected"
 msgstr "Nessun articolo selezionato"
 
-#: src/interp.c:1066
+#: src/interp.c:1147
 msgid "Not in group mode."
 msgstr "Non sei nella modalità gruppo."
 
-#: src/interp.c:1190
+#: src/interp.c:1271
 #, c-format
 msgid "Unable to open log file %s"
 msgstr "Impossibile aprire il file di log %s"
@@ -2106,55 +2169,60 @@ msgstr "Ordina per data (più recenti ultimi)"
 msgid "Thread, then Sort by date (most recent last)"
 msgstr "Ordina in thread per data (prima i meno recenti)"
 
-#: src/menu.c:211
+#. 1011
+#: src/menu.c:204
+msgid "Custom sorting (see manual)"
+msgstr ""
+
+#: src/menu.c:212
 msgid "Sorting Method"
 msgstr "Metodo di ordinamento"
 
-#: src/menu.c:295
+#: src/menu.c:296
 msgid "(Select One)"
 msgstr "(Selezionane uno)"
 
-#: src/menu.c:355
+#: src/menu.c:356
 msgid "Cancelled."
 msgstr "Cancella."
 
-#: src/menu.c:432
+#: src/menu.c:433
 msgid "[All]"
 msgstr "[Tutti]"
 
-#: src/menu.c:432
+#: src/menu.c:433
 msgid "[Top]"
 msgstr "[Inizio]"
 
-#: src/menu.c:436
+#: src/menu.c:437
 msgid "[Bot]"
 msgstr "[Fine]"
 
-#: src/menu.c:476
+#: src/menu.c:477
 msgid "Press any key to close the window."
 msgstr "Premi un tasto per chiudere la finestra."
 
-#: src/menu.c:478
+#: src/menu.c:479
 msgid "Use UP/DOWN to move, any other key to close the window."
 msgstr "Usa SU/GIU per muoverti, un tasto per chiudere la finestra."
 
-#: src/menu.c:482
+#: src/menu.c:483
 msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
 msgstr "Usa SU/GIU per muoverti, INVIO per selezionare, Ctrl-G per uscire"
 
-#: src/menu.c:991
+#: src/menu.c:992
 msgid "Creating directory list..."
 msgstr "Creazione lista directory..."
 
-#: src/mime.c:943
+#: src/mime.c:945
 msgid "Process this MIME article with metamail"
 msgstr "Utilizza metamail per vedere questo articolo MIME"
 
-#: src/mime.c:957
+#: src/mime.c:959
 msgid "Unable to open tmp file for metamail."
 msgstr "Impossibile aprire un file tmp per metamail."
 
-#: src/mime.c:985
+#: src/mime.c:987
 msgid "Press return to continue ..."
 msgstr "Premi invio per continuare ..."
 
@@ -2750,7 +2818,7 @@ msgstr "Linee con più di 80 caratteri devono essere spezzate."
 msgid "This affects at least line %d:"
 msgstr "Questo riguarda la linea %d:"
 
-#: src/post.c:704 src/post.c:1074 src/post.c:1098
+#: src/post.c:704 src/post.c:1087 src/post.c:1110
 #, c-format
 msgid "File not found: %s--- message not posted."
 msgstr "File non trovato: %s--- messaggio non inviato."
@@ -2760,14 +2828,14 @@ msgstr "File non trovato: %s--- messaggio non inviato."
 msgid "***Warning: error saving to %s"
 msgstr "***Attenzione: errore nel salvare %s"
 
-#: src/post.c:863
+#: src/post.c:875
 #, c-format
 msgid "***Warning: error writing to %s"
 msgstr "***Attenzione: errore nello scrivere su %s"
 
-#: src/post.c:868
-#, c-format
-msgid "Failed post saved in %s"
+#: src/post.c:880
+#, fuzzy, c-format
+msgid "%s Failed post saved in %s"
 msgstr "Invio fallito salvato in %s"
 
 #. Note to translators:
@@ -2778,39 +2846,39 @@ msgstr "Invio fallito salvato in %s"
 #. * default letters for other fields than those they originally stood for.
 #. * Be careful not to change the length of these strings!
 #.
-#: src/post.c:931 src/post.c:964
+#: src/post.c:944 src/post.c:977
 msgid "yYnNeEsSdDfF"
 msgstr "iInNeEsScCfF"
 
-#: src/post.c:934
+#: src/post.c:947
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
 msgstr "Invio il messaggio? Invia, No, Edita, poStponi, Cancella, Filtra"
 
-#: src/post.c:938
+#: src/post.c:951
 msgid "yYnNeEsSfF"
 msgstr "iInNeEsSfF"
 
-#: src/post.c:941
+#: src/post.c:954
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
 msgstr "Invio il messaggio? Invia, No, Edita, poStponi, Filtra"
 
-#: src/post.c:949
+#: src/post.c:962
 msgid "yYnNeEsSdD"
 msgstr "iInNeEsScC"
 
-#: src/post.c:952
+#: src/post.c:965
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
 msgstr "Invio il messaggio? Invia, No, Edita, poStponi, Cancella"
 
-#: src/post.c:956
+#: src/post.c:969
 msgid "yYnNeEsS"
 msgstr "iInNeEsS"
 
-#: src/post.c:959
+#: src/post.c:972
 msgid "Post the message? Yes, No, Edit, poStpone"
 msgstr "Invio il messaggio? Invia, No, Edita, poStponi"
 
-#: src/post.c:982
+#: src/post.c:995
 msgid "Sure you want to delete it"
 msgstr "Sei sicuro di volerlo cancellare"
 
@@ -2818,32 +2886,37 @@ msgstr "Sei sicuro di volerlo cancellare"
 #. * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
 #. * "cC" is "cancel" and "fF" means "force". The usual rules apply.
 #.
-#: src/post.c:1006
+#: src/post.c:1019
 msgid "yYeEnNcC"
 msgstr "sSeEnNcC"
 
-#: src/post.c:1009
+#: src/post.c:1022
 msgid "re-Edit,  or Cancel"
 msgstr "ri-Edita,  o Cancella"
 
-#: src/post.c:1013 src/post.c:1019
+#: src/post.c:1026 src/post.c:1032
 msgid "yYeEnNcCfF"
 msgstr "sSeEnNcCfF"
 
-#: src/post.c:1016
+#: src/post.c:1029
 msgid "re-Edit, Cancel, or Force the posting (not recommended)"
 msgstr "ri-Edita, Cancella, o Forza il post (non raccomandato)"
 
-#: src/post.c:1055 src/post.c:1101
+#: src/post.c:1068 src/post.c:1113
 msgid "Posting ..."
 msgstr "Invio ..."
 
-#: src/post.c:1089
-#, c-format
-msgid "post_file_hook returned error.  %s not posted."
+#: src/post.c:1104
+#, fuzzy
+msgid "post_file_hook returned error."
 msgstr "post_file_hook ha ritornato un errore.  %s non è stato inviato."
 
-#: src/post.c:1239
+#: src/post.c:1126
+#, fuzzy
+msgid "Could not reach server."
+msgstr "Non posso entrare nel gruppo %s."
+
+#: src/post.c:1254
 msgid "Posting...done."
 msgstr "Invio...completato."
 
@@ -2851,39 +2924,39 @@ msgstr "Invio...completato."
 #. * "cancel". Don't change the length of the string; you cannot re-use any
 #. * of the default characters for different fields.
 #.
-#: src/post.c:1259
+#: src/post.c:1274
 msgid "rReEcC"
 msgstr "rReEcC"
 
-#: src/post.c:1262
+#: src/post.c:1277
 msgid "Select one: Repost, Edit, Cancel"
 msgstr "Seleziona: Ri-invia, Edita, Cancella"
 
-#: src/post.c:1390
+#: src/post.c:1405
 msgid "postpone_directory not specified or does not exist"
 msgstr "postpone_directory non è specificata o non esiste"
 
-#: src/post.c:1401
+#: src/post.c:1416
 msgid "Not implemented yet. Sorry"
 msgstr "Non ancora implementato. Spiacente"
 
-#: src/post.c:1417
+#: src/post.c:1432
 msgid "Save to: "
 msgstr "Salva in: "
 
-#: src/post.c:1423
+#: src/post.c:1438
 msgid "File exists, overwrite"
 msgstr "Il file esiste, sovrascrivo"
 
-#: src/post.c:1435
+#: src/post.c:1450
 msgid "You must specify a name"
 msgstr "Devi specificare un nome"
 
-#: src/post.c:1437
+#: src/post.c:1452
 msgid "Illegal filename. Try again"
 msgstr "Nome file illegale. Prova ancora"
 
-#: src/post.c:1461
+#: src/post.c:1476
 #, c-format
 msgid "%s: not a regular file"
 msgstr "%s: non è un file regolare"
@@ -2938,7 +3011,7 @@ msgstr "Impossibile aprire %s per la stampa"
 msgid "Reloading score file ..."
 msgstr "Ricarico il file di score ..."
 
-#: src/score.c:589 src/slrn.c:946
+#: src/score.c:589 src/slrn.c:988
 #, c-format
 msgid "Error processing score file %s."
 msgstr "Errore nel processare il file di score %s."
@@ -3016,7 +3089,7 @@ msgstr "pclose() fallita -- controlla che l'articolo sia stato inviato"
 msgid "Unable to locate inews program \"%s\""
 msgstr "Impossibile trovare il programma inews \"%s\""
 
-#: src/server.c:220 src/slrn.c:1059
+#: src/server.c:220 src/slrn.c:1101
 #, c-format
 msgid "Unable to add preprocessor name %s."
 msgstr "Impossibile aggiungere il preprocessore %s."
@@ -3058,7 +3131,7 @@ msgstr "Scrittura fallita.  File system pieno?"
 msgid "Posting directory %s does not exist."
 msgstr "La directory di invio %s non esiste."
 
-#: src/slrn.c:171
+#: src/slrn.c:181
 #, c-format
 msgid ""
 "slrn: pid %d is locking the newsrc file. If you're not running another\n"
@@ -3067,43 +3140,43 @@ msgstr ""
 "slrn: il pid %d sta bloccando il file newsrc. Se è in esecuzione un'altra\n"
 "      copia di slrn, rimuovere il file %s"
 
-#: src/slrn.c:176
+#: src/slrn.c:186
 #, c-format
 msgid "slrn: pid %d is locking the newsrc file."
 msgstr "slrn: il pid %d sta bloccando il file newsrc."
 
 #. delete the "normal" lock file
-#: src/slrn.c:247 src/slrn.c:254
+#: src/slrn.c:257 src/slrn.c:264
 #, c-format
 msgid "Unable to create lock file %s."
 msgstr "Impossibile creare il file di blocco %s."
 
-#: src/slrn.c:361
+#: src/slrn.c:371
 msgid "pop_suspension: underflow!"
 msgstr "pop_suspension: underflow!"
 
-#: src/slrn.c:426
+#: src/slrn.c:436
 msgid "Not implemented."
 msgstr "Non implementato."
 
-#: src/slrn.c:439 src/slrn.c:458
+#: src/slrn.c:449 src/slrn.c:468
 msgid "Suspension not allowed by shell."
 msgstr "Sospensione non permessa dalla shell."
 
-#: src/slrn.c:619
+#: src/slrn.c:629
 msgid "Unable to initialize the tty"
 msgstr "Impossibile inizializzare la tty"
 
-#: src/slrn.c:822
+#: src/slrn.c:864
 #, c-format
 msgid "slrn: quiting on signal %d.\n"
 msgstr "slrn: uscita su segnale %d.\n"
 
-#: src/slrn.c:839
+#: src/slrn.c:881
 msgid "slrn fatal error:"
 msgstr "slrn errore fatale:"
 
-#: src/slrn.c:867
+#: src/slrn.c:909
 #, c-format
 msgid ""
 "Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
@@ -3158,48 +3231,48 @@ msgstr ""
 "La modalità NNTP ha opzioni addizionali; usa \"slrn --nntp --help\" per "
 "vederle\n"
 
-#: src/slrn.c:917
+#: src/slrn.c:959
 #, c-format
 msgid "%s is not a supported option."
 msgstr "%s è un'opzione non supportata."
 
-#: src/slrn.c:919
+#: src/slrn.c:961
 #, c-format
 msgid "%s is not supported."
 msgstr "%s non è supportato."
 
-#: src/slrn.c:940
+#: src/slrn.c:982
 #, c-format
 msgid "*** Warning: Score file %s does not exist"
 msgstr "*** Attenzione: il file di score %s non esiste"
 
-#: src/slrn.c:1038
+#: src/slrn.c:1080
 #, c-format
 msgid "Unable to open %s for debugging."
 msgstr "Impossibile aprire %s per il debugging."
 
-#: src/slrn.c:1084
+#: src/slrn.c:1126
 msgid "The -d and --create flags must not be specified together."
 msgstr "Le opzioni -d e --create non possono essere utilizzate insieme."
 
-#: src/slrn.c:1097
+#: src/slrn.c:1139
 msgid "Error initializing SLtcp interface"
 msgstr "Errore nell'inizializzazione dell'interfaccia SLtcp"
 
-#: src/slrn.c:1102
+#: src/slrn.c:1144
 msgid "Error initializing S-Lang interpreter.\n"
 msgstr "Errore nell'inizializzazione dell'interprete S-Lang.\n"
 
-#: src/slrn.c:1113
+#: src/slrn.c:1155
 msgid "Error configuring server objects."
 msgstr "Errore nella configurazione degli oggetti server."
 
-#: src/slrn.c:1139
+#: src/slrn.c:1181
 #, c-format
 msgid "Could not read specified config file %s\n"
 msgstr ""
 
-#: src/slrn.c:1145
+#: src/slrn.c:1187
 msgid ""
 "\n"
 "! Your configuration file contains obsolete commands or function names that\n"
@@ -3218,15 +3291,15 @@ msgstr ""
 "! distribuzione del sorgente o recuperato su\n"
 "! <URL:http://slrn.sourceforge.net/data/>.\n"
 
-#: src/slrn.c:1160
+#: src/slrn.c:1202
 msgid "Failed to select character set."
 msgstr "Errore nella selezione del set di caratteri."
 
-#: src/slrn.c:1194
+#: src/slrn.c:1236
 msgid "Unable to select server/post object."
 msgstr "Impossibile selezionare un oggetto server."
 
-#: src/slrn.c:1210
+#: src/slrn.c:1252
 #, c-format
 msgid ""
 "Unable to find a valid hostname for constructing your e-mail address.\n"
@@ -3236,7 +3309,7 @@ msgstr ""
 "email.\n"
 "Dovrai specificare un hostname nel tuo %s file.\n"
 
-#: src/slrn.c:1219
+#: src/slrn.c:1261
 msgid ""
 "Unable to find your user name.  This means that a valid 'From' header line\n"
 "cannot be constructed.  Try setting the USER environment variable.\n"
@@ -3244,40 +3317,40 @@ msgstr ""
 "Impossibile trovare il tuo username. Questo significa che non è possibile\n"
 "costruire una linea 'From' valida. Imposta la variabile d'ambiente USER.\n"
 
-#: src/slrn.c:1226
+#: src/slrn.c:1268
 msgid "***Warning: Unable to find a unique fully-qualified host name."
 msgstr "***Attenzione: Impossibile trovare un hostname qualificato."
 
-#: src/slrn.c:1227
+#: src/slrn.c:1269
 msgid "            slrn will not generate any Message-IDs."
 msgstr "            slrn non genererà alcun Message-ID."
 
-#: src/slrn.c:1228
+#: src/slrn.c:1270
 msgid ""
 "            Please note that the \"hostname\" setting does not affect this;"
 msgstr ""
 "            Prego notare che l'ozpione \"hostname\" non si applica a questo;"
 
-#: src/slrn.c:1229
+#: src/slrn.c:1271
 msgid "            see the \"slrn reference manual\" for details."
 msgstr ""
 "            controllare il \"manuale di riferimento a slrn\" per i dettagli."
 
-#: src/slrn.c:1258
+#: src/slrn.c:1300
 #, c-format
 msgid "Using newsrc file %s for server %s."
 msgstr "Utilizzo il file newsrc %s per il server %s."
 
-#: src/slrn.c:1270 src/slrnpull.c:1969
+#: src/slrn.c:1312 src/slrnpull.c:2000
 msgid "Unable to initialize server."
 msgstr "Impossibile inizializzare il server."
 
-#: src/slrn.c:1285
+#: src/slrn.c:1327
 #, c-format
 msgid "Unable to open %s.  I will try .newsrc."
 msgstr "Impossibile aprire %s.  Proverò con .newsrc."
 
-#: src/slrn.c:1290
+#: src/slrn.c:1332
 #, c-format
 msgid ""
 "\n"
@@ -3290,44 +3363,44 @@ msgstr ""
 "Se vuoi creare %s, aggiungi le opzioni di comando:\n"
 "   -f %s --create\n"
 
-#: src/slrn.c:1307 src/slrnpull.c:1744 src/slrnpull.c:1756
+#: src/slrn.c:1349 src/slrnpull.c:1775 src/slrnpull.c:1787
 #, c-format
 msgid "Unable to open %s for logging."
 msgstr "Impossibile aprire %s per il log."
 
-#: src/slrn.c:1323
+#: src/slrn.c:1365
 msgid "Initializing GroupLens"
 msgstr "Inizializzazione GroupLens"
 
-#: src/slrn.c:1326
+#: src/slrn.c:1368
 msgid "GroupLens disabled.\n"
 msgstr "GroupLens disabilitato.\n"
 
-#: src/slrn.c:1334
+#: src/slrn.c:1376
 msgid "Failed to initialize server."
 msgstr "Errore nell'inizializzazione del server."
 
-#: src/slrn.c:1340
+#: src/slrn.c:1382
 msgid "OVERVIEW.FMT not RFC 2980 compliant -- XOVER support disabled."
 msgstr "OVERVIEW.FMT non rispetta l'RFC 2980 -- Supporto XOVER disabilitato."
 
-#: src/slrn.c:1353
+#: src/slrn.c:1395
 msgid "* Press Ctrl-C to quit, any other key to continue.\n"
 msgstr "* Premi Ctrl-C per uscire, qualsiasi tasto per continuare.\n"
 
-#: src/slrn.c:1356
+#: src/slrn.c:1398
 msgid "Exit on user request."
 msgstr "Uscita su richiesta utente."
 
-#: src/slrn.c:1383
+#: src/slrn.c:1425
 msgid "Internal Error: Mode_Stack overflow"
 msgstr "Errore Interno: overflow su Mode_Stack"
 
-#: src/slrn.c:1398
+#: src/slrn.c:1440
 msgid "Internal Error: Mode_Stack underflow"
 msgstr "Errore Interno: underflow su Mode_Stack"
 
-#: src/slrn.c:1495
+#: src/slrn.c:1537
 #, c-format
 msgid "call: %s not in current keymap."
 msgstr "call: %s non è nella mappa tasti corrente."
@@ -3365,7 +3438,7 @@ msgstr "Errore in lettura di %s."
 msgid "Error parsing %s."
 msgstr "Errore nel parsing di %s."
 
-#: src/slrnpull.c:400 src/slrnpull.c:2108
+#: src/slrnpull.c:400 src/slrnpull.c:2139
 #, c-format
 msgid "Write to %s failed."
 msgstr "Impossibile scrivere su %s."
@@ -3470,144 +3543,144 @@ msgstr "%s: %u/%u (%u eliminati), Tempo: %02u:%02u:%02u, BPS: %lu"
 msgid "Error writing to overview database: %s:%d."
 msgstr "Errore nella scrittura del database di overview: %s:%d."
 
-#: src/slrnpull.c:1208
+#: src/slrnpull.c:1239
 msgid "Internal error: Buffer in get_heads not large enough!"
 msgstr "Errore Interno: Buffer insufficiente in get_heads!"
 
-#: src/slrnpull.c:1245
+#: src/slrnpull.c:1276
 #, c-format
 msgid "Unable to open overview file %s.\n"
 msgstr "Impossibile aprire il file di overview %s.\n"
 
-#: src/slrnpull.c:1293
+#: src/slrnpull.c:1324
 #, c-format
 msgid "Error closing overview file for %s."
 msgstr "Errore nella chiusura del file di overview per %s."
 
-#: src/slrnpull.c:1329
+#: src/slrnpull.c:1360
 #, c-format
 msgid "%s: no new articles available."
 msgstr "%s: nessun nuovo articolo disponibile."
 
-#: src/slrnpull.c:1336
+#: src/slrnpull.c:1367
 #, c-format
 msgid "%u duplicates removed leaving %u/%u."
 msgstr "%u duplicati rimossi lasciando %u/%u."
 
-#: src/slrnpull.c:1348
+#: src/slrnpull.c:1379
 #, c-format
 msgid "%s: No new articles available."
 msgstr "%s: Nessun nuovo articolo disponibile."
 
-#: src/slrnpull.c:1353
+#: src/slrnpull.c:1384
 #, c-format
 msgid "%s: %u articles available."
 msgstr "%s: %u articoli disponibili."
 
-#: src/slrnpull.c:1360
+#: src/slrnpull.c:1391
 #, c-format
 msgid "%s: Only retrieving last %u articles."
 msgstr "%s: Sto ricevendo solo gli ultimi %u articoli."
 
-#: src/slrnpull.c:1409
+#: src/slrnpull.c:1440
 #, c-format
 msgid "Fetching articles for %s."
 msgstr "Recupero articoli per %s."
 
-#: src/slrnpull.c:1414
+#: src/slrnpull.c:1445
 #, c-format
 msgid "Error selecting group %s.  Code = %d: %s"
 msgstr "Errore nel selezionare il gruppo %s.  Codice = %d: %s"
 
-#: src/slrnpull.c:1447
+#: src/slrnpull.c:1478
 #, c-format
 msgid "Attempting to post %s..."
 msgstr "Invio post %s..."
 
-#: src/slrnpull.c:1452
+#: src/slrnpull.c:1483
 #, c-format
 msgid "Unable to open file %s for posting."
 msgstr "Impossibile aprire il file %s per l'invio."
 
-#: src/slrnpull.c:1459
+#: src/slrnpull.c:1490
 #, c-format
 msgid "Server failed post cmd.  Code = %d: %s"
 msgstr "Il server ha fallito il comando di post.  Codice = %d: %s"
 
-#: src/slrnpull.c:1481 src/slrnpull.c:1492
+#: src/slrnpull.c:1512 src/slrnpull.c:1523
 #, c-format
 msgid "Write to server failed while posting %s."
 msgstr "Scrittura su server fallita mentre postavo %s."
 
-#: src/slrnpull.c:1501
+#: src/slrnpull.c:1532
 #, c-format
 msgid "Article %s rejected. status = %d: %s."
 msgstr "Articolo %s rifiutato. status =%d: %s."
 
-#: src/slrnpull.c:1508
+#: src/slrnpull.c:1539
 #, c-format
 msgid "Saving article in %s..."
 msgstr "Sto salvando l'articolo in %s..."
 
-#: src/slrnpull.c:1510 src/slrnpull.c:1626
+#: src/slrnpull.c:1541 src/slrnpull.c:1657
 #, c-format
 msgid "Failed to rename %s to %s."
 msgstr "Errore nel rinominare %s in %s."
 
-#: src/slrnpull.c:1516
+#: src/slrnpull.c:1547
 #, c-format
 msgid "Unable to delete %s after posting."
 msgstr "Impossibile cancellare %s dopo l'invio."
 
-#: src/slrnpull.c:1525
+#: src/slrnpull.c:1556
 #, c-format
 msgid "%s directory does not exist.  Creating it..."
 msgstr "La directory %s non esiste.  Sto creandola..."
 
-#: src/slrnpull.c:1533
+#: src/slrnpull.c:1564
 #, c-format
 msgid "chmod 0%o failed on %s."
 msgstr "chmod 0%o fallito su %s."
 
-#: src/slrnpull.c:1557
+#: src/slrnpull.c:1588
 msgid "Server does not permit posting at this time."
 msgstr "Il server non permette l'invio al momento."
 
-#: src/slrnpull.c:1578
+#: src/slrnpull.c:1609
 #, c-format
 msgid "Posting of %s failed."
 msgstr "Invio di %s fallito."
 
-#: src/slrnpull.c:1581
+#: src/slrnpull.c:1612
 #, c-format
 msgid "%s posted."
 msgstr "%s inviato."
 
-#: src/slrnpull.c:1603
+#: src/slrnpull.c:1634
 #, c-format
 msgid "Unable to create tmp active file (%s)."
 msgstr "Impossibile creare un active file temporaneo (%s)."
 
-#: src/slrnpull.c:1633
+#: src/slrnpull.c:1664
 #, c-format
 msgid "Write failed to tmp active file (%s)."
 msgstr "Scrittura fallita sull'active file temporaneo (%s)."
 
-#: src/slrnpull.c:1645
+#: src/slrnpull.c:1676
 #, c-format
 msgid "Connection to %s lost. Performing shutdown."
 msgstr "Connessione a %s persa. Chiusura."
 
-#: src/slrnpull.c:1657
+#: src/slrnpull.c:1688
 msgid "Error opening sltcp interface.\n"
 msgstr "Errore nell'apertura dell'interfaccia sltcp.\n"
 
-#: src/slrnpull.c:1698
+#: src/slrnpull.c:1729
 #, c-format
 msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "Un totale di %lu byte ricevuti, %lu byte inviati in %ld secondi."
 
-#: src/slrnpull.c:1780
+#: src/slrnpull.c:1811
 #, c-format
 msgid ""
 "%s usage: %s [options]\n"
@@ -3640,43 +3713,43 @@ msgstr ""
 "  --post-only          Invia, ma non scaricare i nuovi articoli.\n"
 "  --version            Mostra la versione.\n"
 
-#: src/slrnpull.c:1804
+#: src/slrnpull.c:1835
 #, c-format
 msgid "%s version: %s\n"
 msgstr "%s versione: %s\n"
 
-#: src/slrnpull.c:1910
+#: src/slrnpull.c:1941
 #, c-format
 msgid "Unable to create debug file %s\n"
 msgstr "Impossibile creare il file di debug %s\n"
 
-#: src/slrnpull.c:1928
+#: src/slrnpull.c:1959
 msgid "The slrnpull spool directory has not been defined."
 msgstr "La directory di spool per slrnpull non è stata definita."
 
-#: src/slrnpull.c:1935
+#: src/slrnpull.c:1966
 msgid "slrnpull started in expire mode."
 msgstr "slrnpull è partito in modalità expire."
 
-#: src/slrnpull.c:1937
+#: src/slrnpull.c:1968
 msgid "slrnpull started."
 msgstr "slrnpull è partito."
 
-#: src/slrnpull.c:2017
+#: src/slrnpull.c:2048
 msgid "Checking for new groups."
 msgstr "Controllo nuovi gruppi."
 
-#: src/slrnpull.c:2021
+#: src/slrnpull.c:2052
 #, c-format
 msgid "Unable to open new groups file %s.\n"
 msgstr "Impossibile aprire il file per i nuovi gruppi %s.\n"
 
-#: src/slrnpull.c:2118
+#: src/slrnpull.c:2149
 #, c-format
 msgid "%d new groups found."
 msgstr "%d nuovi gruppi trovati."
 
-#: src/slrnpull.c:2125
+#: src/slrnpull.c:2156
 #, c-format
 msgid ""
 "%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
@@ -3685,54 +3758,54 @@ msgstr ""
 "%s sembra corrotto, era atteso: NEWGROUPS aammgg hhmmss GMT, correggerò il "
 "file per te."
 
-#: src/slrnpull.c:2204
+#: src/slrnpull.c:2235
 msgid "Performing shutdown."
 msgstr "Chiusura."
 
-#: src/slrnpull.c:2207
+#: src/slrnpull.c:2238
 msgid "Slrnpull exiting on signal."
 msgstr "Slrn in uscita su segnale."
 
-#: src/slrnpull.c:2326
+#: src/slrnpull.c:2357
 #, c-format
 msgid "Creating Overview file for %s..."
 msgstr "Sto creando un file di Overview per %s..."
 
-#: src/slrnpull.c:2372 src/slrnpull.c:2502
+#: src/slrnpull.c:2403 src/slrnpull.c:2533
 #, c-format
 msgid "Unable to stat %s."
 msgstr "Impossibile verificare %s."
 
-#: src/slrnpull.c:2429
+#: src/slrnpull.c:2460
 #, c-format
 msgid "opendir %s failed."
 msgstr "opendir %s fallita."
 
-#: src/slrnpull.c:2456
+#: src/slrnpull.c:2487
 #, c-format
 msgid "malloc error. Unable to expire group %s."
 msgstr "errore della malloc. Impossibile aggiornare il gruppo %s."
 
-#: src/slrnpull.c:2519
+#: src/slrnpull.c:2550
 #, c-format
 msgid "Unable to expire %s."
 msgstr "Impossibile aggiornare %s."
 
-#: src/slrnpull.c:2524
+#: src/slrnpull.c:2555
 #, c-format
 msgid "%u articles expired in %s."
 msgstr "%u articoli scaduti in %s."
 
-#: src/slrnpull.c:2547
+#: src/slrnpull.c:2578
 msgid "Termination requested.  Shutting down."
 msgstr "Richiesta chiusura.  Uscita in corso."
 
-#: src/slrnpull.c:2595
+#: src/slrnpull.c:2626
 #, c-format
 msgid "Error reading name and password from %s."
 msgstr "Errore nella lettura del nome e della password da %s."
 
-#: src/slrnpull.c:2608
+#: src/slrnpull.c:2639
 msgid "Empty user name.  Please check syntax of the authinfo file."
 msgstr "Nuome utente vuoto.  Prego verificare la sintassi del file authinfo."
 
@@ -3818,11 +3891,11 @@ msgstr "Impossibile aprire la directory %s"
 msgid "Local spool directory '%s' doesn't exist."
 msgstr "Directory di spool locale '%s' non esistente."
 
-#: src/startup.c:164
+#: src/startup.c:162
 msgid "Memory Allocation Failure"
 msgstr "Errore di allocazione di memoria"
 
-#: src/startup.c:166
+#: src/startup.c:164
 #, c-format
 msgid ""
 "%s: Line %d\n"
@@ -3831,7 +3904,7 @@ msgstr ""
 "%s: Linea %d\n"
 "%sErrore di allocazione di memoria"
 
-#: src/startup.c:185
+#: src/startup.c:183
 #, c-format
 msgid ""
 "%s: Error encountered processing line %d\n"
@@ -3840,7 +3913,7 @@ msgstr ""
 "%s: Errore incontrato nel processare la linea %d\n"
 "%s"
 
-#: src/startup.c:194
+#: src/startup.c:192
 #, c-format
 msgid ""
 "%s: Command is obsolete on line %d:\n"
@@ -3849,7 +3922,7 @@ msgstr ""
 "%s: Comando obsoleto alla linea %d:\n"
 "%s"
 
-#: src/startup.c:196
+#: src/startup.c:194
 #, c-format
 msgid ""
 "The new usage is:\n"
@@ -3858,7 +3931,7 @@ msgstr ""
 "Il nuovo utilizzo è:\n"
 "set %s\n"
 
-#: src/startup.c:270 src/startup.c:325
+#: src/startup.c:268 src/startup.c:323
 #, c-format
 msgid ""
 "%s: line %d:\n"
@@ -3867,7 +3940,7 @@ msgstr ""
 "%s: linea %d:\n"
 "%sNon esiste mappa caratteri: %s"
 
-#: src/startup.c:285
+#: src/startup.c:283
 #, c-format
 msgid ""
 "%s: line %d:\n"
@@ -3876,7 +3949,7 @@ msgstr ""
 "%s: linea %d:\n"
 "%serrore nel definire il tasto."
 
-#: src/startup.c:304
+#: src/startup.c:302
 #, c-format
 msgid ""
 "%s: Obsolete function name on line %d: %s\n"
@@ -3885,7 +3958,7 @@ msgstr ""
 "%s: Nome di funzione obsoleto alla linea %d: %s\n"
 "Il nuovo nome è: %s"
 
-#: src/startup.c:360
+#: src/startup.c:358
 #, c-format
 msgid ""
 "%s: line %d:\n"
@@ -3894,7 +3967,7 @@ msgstr ""
 "%s: linea %d:\n"
 "%sEspressione regolare non valida."
 
-#: src/startup.c:376
+#: src/startup.c:374
 #, c-format
 msgid ""
 "%s: line %d:\n"
@@ -3903,7 +3976,7 @@ msgstr ""
 "%s: linea %d:\n"
 "%sTroppe espressioni specificate."
 
-#: src/startup.c:765
+#: src/startup.c:766
 #, c-format
 msgid ""
 "%s: Obsolete variable name on line %d: followup\n"
@@ -3912,7 +3985,7 @@ msgstr ""
 "%s: Nome di variable obsoleto alla linea %d: followup\n"
 "Il nuovo nome è followup_string"
 
-#: src/startup.c:803
+#: src/startup.c:804
 #, c-format
 msgid ""
 "%s: Obsolete variable on line %d: %s\n"
@@ -3921,7 +3994,7 @@ msgstr ""
 "%s: Nome di variabile obsoleto alla linea %d: %s\n"
 "Prego usare il comando header_display_format."
 
-#: src/startup.c:811
+#: src/startup.c:812
 #, c-format
 msgid ""
 "%s: Obsolete variable on line %d: %s\n"
@@ -3930,7 +4003,7 @@ msgstr ""
 "%s: Variabile obsoleta alla linea %d: %s\n"
 "Prego usare la variabile group_display_formay."
 
-#: src/startup.c:818
+#: src/startup.c:819
 #, c-format
 msgid ""
 "%s: Obsolete spelling on line %d:\n"
@@ -3939,12 +4012,12 @@ msgstr ""
 "%s: Nome obsoleto alla linea %d:\n"
 "Utilizzare \"process_verbatim_marks\" al posto di \"process_verbatum_marks\"."
 
-#: src/startup.c:827
+#: src/startup.c:828
 #, c-format
 msgid "%s: Obsolete variable on line %d: %s"
 msgstr "%s: Variabile obsoleta alla linea %d: %s"
 
-#: src/startup.c:998
+#: src/startup.c:999
 #, c-format
 msgid ""
 "%s: Obsolete spelling on line %d:\n"
@@ -3953,54 +4026,54 @@ msgstr ""
 "%s: Nome obsoleto alla linea %d:\n"
 "Utilizzare \"verbatim\" al posto di \"verbatum\""
 
-#: src/startup.c:1038 src/startup.c:1068
+#: src/startup.c:1043 src/startup.c:1090
 #, c-format
 msgid "%s is not a color object"
 msgstr "%s non è un oggetto colore"
 
-#: src/startup.c:1047
+#: src/startup.c:1066
 msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
 msgstr ""
 "Per una limitazione delle S-Lang, questa feature è disponibile solo sotto "
 "Unix."
 
-#: src/startup.c:1160
+#: src/startup.c:1182
 #, c-format
 msgid "%s is not a valid fully-qualified host name."
 msgstr "%s non è un FQDN valido."
 
-#: src/startup.c:1450
+#: src/startup.c:1472
 msgid "Username: "
 msgstr "Username: "
 
-#: src/startup.c:1465
+#: src/startup.c:1487
 msgid "Password: "
 msgstr "Password: "
 
-#: src/startup.c:1557
+#: src/startup.c:1579
 msgid "Unable to initialize S-Lang readline library."
 msgstr "Impossibile inizializzare la libreria di readline S-Lang."
 
-#: src/startup.c:1562
+#: src/startup.c:1584
 msgid "Error initializing S-Lang preprocessor."
 msgstr "Errore nell'inizializzazione del preprocessore S-Lang."
 
-#: src/startup.c:1568
+#: src/startup.c:1590
 #, c-format
 msgid "Reading startup file %s."
 msgstr "Lettura del file di startup %s."
 
-#: src/startup.c:1594
+#: src/startup.c:1616
 #, c-format
 msgid "Server object '%s' is not supported."
 msgstr "L'oggetto server '%s' non supportato."
 
-#: src/startup.c:1598
+#: src/startup.c:1620
 #, c-format
 msgid "Post object '%s' is not supported."
 msgstr "L'oggetto post '%s' non supportato."
 
-#: src/startup.c:1617
+#: src/startup.c:1639
 #, c-format
 msgid ""
 "%s: line %d:\n"
@@ -4122,6 +4195,12 @@ msgstr "Il server ha chiuso la connessione.  Impossibile recuperare."
 #: src/xover.c:999
 msgid "Server does not provide this capability."
 msgstr "Il server non ha questa opzione."
+
+#~ msgid "Subject"
+#~ msgstr "Oggetto"
+
+#~ msgid "Author"
+#~ msgstr "Autore"
 
 #~ msgid ""
 #~ "***Warning: Unable to find a unique fully-qualified host name.\r\n"

@@ -1,5 +1,6 @@
 src/art.c
 src/art_misc.c
+src/art_sort.c
 src/chkslang.c
 src/chmap.c
 src/clientlib.c

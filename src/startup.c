@@ -1045,6 +1045,7 @@ int slrn_set_object_color (char *name, char *fg, char *bg) /*{{{*/
 }
 /*}}}*/
 
+#if defined(__unix__) && !defined(IBMPC_SYSTEM)
 static char *get_name_for_color (SLtt_Char_Type color, int want_bg) /*{{{*/
 {
    /* 0xFF is the internal representation of "default" in S-Lang */
@@ -1056,6 +1057,7 @@ static char *get_name_for_color (SLtt_Char_Type color, int want_bg) /*{{{*/
      color |= 0x8 << 16;
    return Color_Names[(color >> (want_bg ? 16 : 8)) & 0xF];
 }/*}}}*/
+#endif
 
 char *slrn_get_object_color (char *name, int want_bg) /*{{{*/
 {
