@@ -446,24 +446,73 @@ void slrn_error_now (unsigned secs, char *fmt, ...) /*{{{*/
 
 /*}}}*/
 
-/* Wrapper around the SLsmg routine. */
+/* Wrapper around the SLsmg routine.
+ * This writes n screen characters (_not_ bytes).
+ * Assumes that s contains at least n screen characters. If the last
+ * character cannot be fully written, pad with spaces instead.
+ */
 void slrn_write_nchars (char *s, unsigned int n) /*{{{*/
 {
-   unsigned char *s1, *smax;
+   unsigned char *s1;
    unsigned int eight_bit;
+   int len = 0;
+   SLuchar_Type *next = (SLuchar_Type *) s;
+   SLuchar_Type *prev;
 
 #if SLANG_VERSION >= 20000
    if (Slrn_UTF8_Mode)
      {
-	SLsmg_write_nchars (s, n);
+	/* Skip past n characters. */
+	int prevlen;
+	SLwchar_Type w;
+	
+	while (len<n)
+	  {
+	     int consumed;
+	     SLuchar_Type *post = SLutf8_decode (next, next+SLUTF8_MAX_MBLEN,
+						 &w, &consumed);
+	     prev = next;
+	     prevlen = len;
+	     next += consumed;
+	     if (post != NULL)
+	       len += SLwchar_wcwidth (w);
+	     else
+	       len += 1;
+	  }
+	
+	if (len>n) /* We have to truncate the last character */
+	  {
+	     int i;
+	     SLsmg_write_nchars (s, prev-(SLuchar_Type*)s);
+	     for (i = 0; i < (n-prevlen); i++)
+	       SLsmg_write_nchars (" ", 1);
+	  }
+	else
+	  SLsmg_write_nchars (s, next-(SLuchar_Type*)s);
+
 	return;
      }
 #endif
+   /* Skip past n characters. */
+   while (len<n)
+     {
+	if (*next < 0x20)
+	  len += 2;
+	else
+	  len += 1;
+	next++;
+     }
+   
+   if (len>n) /* We have to omit the last character */
+     {
+	next--;
+	len -= 2;
+     }
+      
    s1 = (unsigned char *) s;
-   smax = s1 + n;
    eight_bit = SLsmg_Display_Eight_Bit;
    
-   while (s1 < smax)
+   while (s1 < next)
      {
 	if ((*s1 & 0x80) && (eight_bit > (unsigned int) *s1))
 	  {
@@ -478,6 +527,52 @@ void slrn_write_nchars (char *s, unsigned int n) /*{{{*/
    
    if (s != (char *)s1)
      SLsmg_write_nchars (s, (unsigned int) ((char *)s1 - s));
+   
+   /* If we omitted the last char, pad with a space. */
+   if (len<n)
+     SLsmg_write_nchars (" ", 1);
+}
+/*}}}*/
+
+/* Find out how many characters (columns) a string would use on screen.
+ * If len>=0, only the first len bytes are examined.
+ */
+static int screen_strlen (char *s, int len) /*{{{*/
+{
+   int retval = 0;
+#if SLANG_VERSION >= 20000
+   if (Slrn_UTF8_Mode)
+     {
+	SLwchar_Type w;
+	SLuchar_Type *next = (SLuchar_Type *) s;
+	SLuchar_Type *end = (SLuchar_Type *) (s + ((len<0) ? strlen(s) : len));
+	
+	while (next < end)
+	  {
+	     int consumed;
+	     SLuchar_Type *past = SLutf8_decode (next, end, &w, &consumed);
+	     next += consumed;
+	     if (past != NULL)
+	       retval += SLwchar_wcwidth (w);
+	     else
+	       retval += 1;
+	  }
+     }
+   else
+#endif
+     {
+	int i;
+	if (len<0)
+	  len = strlen(s);
+	retval = len;
+	for (i = 0; i<len; i++)
+	  {
+	     /* S-Lang uses two characters to represent control chars */
+	     if ((unsigned char) s[i] < 0x20)
+	       retval += 1;
+	  }
+     }
+   return retval;
 }
 /*}}}*/
 
@@ -606,9 +701,12 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	if (color != def_color)
 	  slrn_set_color (color);
 
-	if (len == -1) len = strlen (s);
+	/* In case of UTF-8 characters, it is important to distinguish between
+	 * the length in bytes and the length in characters. */
+	len = screen_strlen (s, len);
 	if (NULL != (p = slrn_strchr (s, '\n')))
-	  len -= strlen (p);
+	  len -= screen_strlen (p, -1);
+	
 	if (field_len != -1)
 	  {
 	     int i;
@@ -617,17 +715,6 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	       spaces = field_len - len;
 	     else
 	       len = field_len;
-	     
-	     for (i = 0; i < len; i++)
-	       {
-		  /* S-Lang uses two characters to represent control chars */
-		  if ((unsigned char) s[i] < 0x20)
-		    {
-		       if (spaces) spaces--;
-		       else len--;
-		    }
-	       }
-	     if (i == len + 1) spaces = 1;
 	  }
 	if (justify)
 	  {

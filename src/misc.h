@@ -117,6 +117,7 @@ extern int SLang_set_error (int);
 typedef struct SLKeyMap_List_Type SLkeymap_Type;
 typedef SLang_RLine_Info_Type SLrline_Type;
 extern SLkeymap_Type *SLrline_get_keymap (SLrline_Type *);
+typedef unsigned char SLuchar_Type;
 #endif
 
 extern SLKeyMap_List_Type *Slrn_RLine_Keymap;
