@@ -1262,6 +1262,8 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	     strncpy (line, vline, vlen);
 	     if (line[vlen-1] == '\n')
 	       line[vlen-1] = 0;
+	     else
+	       line[vlen] = 0;
 
 	     if (header)
 	       {
@@ -1980,7 +1982,8 @@ static int SLrline_set_line (SLrline_Type *rli, char *buf)
 
 static int SLrline_save_line (SLrline_Type *rli)
 {
-   return SLang_rline_save_line (rli);
+   (void) SLang_rline_save_line (rli);
+   return 0;
 }
 
 static int SLrline_set_echo (SLrline_Type *rli, int state)

@@ -2647,6 +2647,8 @@ static int read_and_parse_newsrc_file (void)
      
 	if (vline[vlen-1] == '\n')
 	  vline[vlen-1] = 0;
+	else
+	  vline[vlen] = 0;
 
 	if (-1 == add_group (vline, (unsigned int) (p - vline),
 			     ((ch == '!') ? GROUP_UNSUBSCRIBED : 0), 0, 0))

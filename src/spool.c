@@ -1774,6 +1774,8 @@ Slrn_Range_Type *slrn_spool_get_no_body_ranges (char *group)
      {
 	if (vline[vlen-1] == '\n')
 	  vline[vlen-1] = 0; /* make sure line is NULL terminated */
+	else
+	  vline[vlen] = 0;
 	retval = slrn_ranges_from_newsrc_line (vline);
      }
    
@@ -1806,6 +1808,8 @@ Slrn_Range_Type *slrn_spool_get_requested_ranges (char *group) /*{{{*/
 
 	if (vline[vlen-1] == '\n')
 	  vline[vlen-1] = 0;
+	else
+	  vline[vlen] = 0;
 	
 	retval = slrn_ranges_from_newsrc_line (p+1);
 	break;

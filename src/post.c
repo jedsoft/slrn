@@ -469,6 +469,8 @@ static int cc_file (char *file, char *to) /*{{{*/
      {
 	if (vline[vlen-1] == '\n')
 	  vline[vlen-1] = 0;
+	else
+	  vline[vlen] = 0;
 	linenum++;
 	if (0 == slrn_case_strncmp ((unsigned char *)vline,
 				    (unsigned char *) "Cc: ", 4))
@@ -543,6 +545,8 @@ static int cc_file (char *file, char *to) /*{{{*/
      {
 	if (vline[vlen-1] == '\n')
 	  vline[vlen-1] = 0;
+	else
+	  vline[vlen] = 0;	
 	linenum++;
 	if (linenum == cc_line) continue;
 	if (is_empty_header (vline)) continue;
@@ -597,6 +601,8 @@ static int cc_file (char *file, char *to) /*{{{*/
      {
 	if (vline[vlen-1] == '\n')
 	  vline[vlen-1] = 0;
+	else
+	  vline[vlen] = 0;	
 	fputs (vline, pp);
 	fputs ("\n", pp);
      }
@@ -1417,6 +1423,8 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	strncpy (linep, vline, vlen);
 	if (linep[vlen-1] == '\n')
 	  linep[vlen-1] = 0;	/* kill \n and NULL terminate */
+	else
+	  linep[vlen] = 0;
 	
 	if (header)
 	  {

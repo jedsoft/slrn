@@ -3287,6 +3287,8 @@ static int read_headers_files (void)
 	  {
 	     if (vline[vlen-1] == '\n')
 	       vline[vlen-1] = 0; /* make sure line is NULL terminated */
+	     else
+	       vline[vlen] = 0;
 	     group->headers = slrn_ranges_from_newsrc_line (vline);
 	  }
 	
@@ -3397,6 +3399,8 @@ static void read_requests_files (void)
 	     
 	     if (vline[vlen-1] == '\n')
 	       vline[vlen-1] = 0;
+	     else
+	       vline[vlen] = 0;
 	     
 	     r = slrn_ranges_from_newsrc_line (p+1);
 	     group->requests = slrn_ranges_merge (group->requests, r);
