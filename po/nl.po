@@ -323,9 +323,9 @@ msgid "Unable to create directory. (errno = %d)"
 msgstr "Kan directory niet maken. (errno = %d)"
 
 #: src/art.c:4105
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: %s is a regular file."
-msgstr "%s: geen regulier bestand"
+msgstr "Waarschuwing: %s: geen regulier bestand"
 
 #: src/art.c:4159
 msgid "Temporary file (^G aborts): "
@@ -1556,7 +1556,7 @@ msgstr "Markeren als (on)gelezen:"
 #: src/help.c:111
 msgid "  d                  Mark article or collapsed thread as read."
 msgstr ""
-"  d                  Markeer artikeld of ingeklapte thread als gelezen."
+"  d                  Markeer artikel of ingeklapte thread als gelezen."
 
 #: src/help.c:112
 msgid "  u                  Mark article or collapsed thread as unread."
@@ -1684,10 +1684,9 @@ msgid "      ESC 1 K        Edit scorefile."
 msgstr "      ESC 1 K        Bewerk score bestand."
 
 #: src/help.c:144
-#, fuzzy
 msgid "  m                  (Un-)mark article body for download by slrnpull."
 msgstr ""
-"  d                  Markeer artikeld of ingeklapte thread als gelezen."
+"  m                  (On-)Markeer artikel inhoud voor ophalen door slrnpull."
 
 #: src/help.c:146
 msgid ""
@@ -1791,14 +1790,12 @@ msgid "  ESC V, Ctrl-U           Scroll to the previous page."
 msgstr "  ESC V, Ctrl-U           Ga een pagina omhoog."
 
 #: src/help.c:179
-#, fuzzy
 msgid "  ESC >                   Go to the bottom of the list."
-msgstr "  ESC <                   Ga naar onderkant van lijst."
+msgstr "  ESC >                   Ga naar onderkant van lijst."
 
 #: src/help.c:180
-#, fuzzy
 msgid "  ESC <                   Go to the top of the list."
-msgstr "  ESC >                   Ga naar bovenkant lijst."
+msgstr "  ESC <                   Ga naar bovenkant lijst."
 
 #: src/help.c:181
 msgid "  /                       Group keyword search."
@@ -2472,10 +2469,8 @@ msgid "Failed to initialize server"
 msgstr "Kan server niet initialiseren"
 
 #: src/nntplib.c:567
-#, fuzzy
 msgid "You should set the NNTPSERVER environment variable to your server name."
-msgstr ""
-"U moet de omgevingsvariabele NNTPSERVER naar uw servernaam laten wijzen."
+msgstr "U moet de omgevingsvariabele NNTPSERVER naar uw servernaam laten wijzen."
 
 #: src/nntplib.c:569
 msgid "Example: $ define/job NNTPSERVER my.news.server"
@@ -3446,9 +3441,9 @@ msgid "%s: line %u: expecting positive integer in third field."
 msgstr "%s: regel %u: positief geheel getal verwacht in derde veld."
 
 #: src/slrnpull.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "%s: line %u: expecting 0 or 1 in fourth field."
-msgstr "%s: regel %u: positief geheel getal verwacht in derde veld."
+msgstr "%s: regel %u: 0 of 1 verwacht in vierde veld."
 
 #: src/slrnpull.c:719
 #, c-format
@@ -3498,19 +3493,17 @@ msgid "Server failed XHDR command: %s"
 msgstr "XHDR commando server mislukt: %s"
 
 #: src/slrnpull.c:992
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving %s %d-%d."
-msgstr "%s: Ophalen artikelen %d-%d."
+msgstr "%s: Ophalen %s %d-%d."
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "headers"
-msgstr "Thread Koppen"
+msgstr "koppen"
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "articles"
-msgstr "Ga naar artikel: "
+msgstr "artikelen"
 
 #: src/slrnpull.c:1017
 #, c-format
@@ -3542,9 +3535,9 @@ msgid "Unable to open overview file %s.\n"
 msgstr "Kan overzichtsbestand %s niet openen.\n"
 
 #: src/slrnpull.c:1466
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving requested article bodies."
-msgstr "%s: Ophalen artikelen %d-%d."
+msgstr "%s: Ophalen inhoud opgevraagde artikelen."
 
 #: src/slrnpull.c:1574
 #, c-format
@@ -3675,7 +3668,7 @@ msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "%lu bytes ontvangen, %lu bytes verstuurd in %ld seconden."
 
 #: src/slrnpull.c:2096
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s usage: %s [options]\n"
 " Options:\n"
@@ -3704,6 +3697,7 @@ msgstr ""
 "  --kill-log BESTAND   Log alle verwijderde berichten in BESTAND\n"
 "  --kill-score SCORE   Verwijder artikelen met een score lager dan SCORE.\n"
 "  --logfile BESTAND    Gebruik BESTAND als het log bestand.\n"
+"  --marked-bodies      Haal alleen inhoud op van gemarkeerde artikelen.\n"
 "  --new-groups         Haal een lijst op met nieuwe groepen.\n"
 "  --no-post            Plaats geen nieuws.\n"
 "  --post-only          Plaats alleen berichten, maar haal geen nieuwe "
@@ -3861,29 +3855,29 @@ msgid "Empty user name.  Please check syntax of the authinfo file."
 msgstr "Lege gebruiksnaam. Controleer de syntax van het authinfo bestand."
 
 #: src/slrnpull.c:3239
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read headers file for group %s.\n"
-msgstr "Kan header %d in %s niet lezen."
+msgstr "Kan header bestand voor groep %s niet lezen.\n"
 
 #: src/slrnpull.c:3251
-#, fuzzy, c-format
+#, c-format
 msgid "File %s exists, but could not be read."
-msgstr "De editor was gevonden, maar kan niet uitgevoerd worden."
+msgstr "Bestand %s bestaat, maar kan niet gelezen worden."
 
 #: src/slrnpull.c:3283 src/slrnpull.c:3310
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write headers file for group %s.\n"
-msgstr "Kan geen debug bestand %s maken\n"
+msgstr "Kan geen koppenbestand schrijven voor groep %s.\n"
 
 #: src/slrnpull.c:3318
-#, fuzzy, c-format
+#, c-format
 msgid "Error while writing headers file for group %s.\n"
-msgstr "Fout tijdens sluiten overzichtsbestand voor %s."
+msgstr "Fout tijdens schrijven overzichtsbestand voor %s.\n"
 
 #: src/sltcp.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to resolve %s\n"
-msgstr "Naam wijzigen van %s in %s mislukt."
+msgstr "Kan %s niet opzoeken.\n"
 
 #: src/sltcp.c:273 src/sltcp.c:376
 msgid "Unable to make connection. Giving up.\n"
