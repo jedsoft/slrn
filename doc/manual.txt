@@ -1,7 +1,7 @@
   The slrn reference manual
   Matthias Friedrich <matt@mafr.de>
   Thomas Schultz <tststs@gmx.de>
-  version 0.9.8.0
+  version 0.9.8.1
 
   Using and customizing the slrn newsreader
   ______________________________________________________________________
@@ -426,7 +426,9 @@
   following revisions:
 
 
-     Added a brief introduction to the s-lang prompt within slrn.
+     2004-10-04: Revision 2.6
+        Added a brief introduction to the s-lang prompt within slrn and
+        updated the manual for version 0.9.8.1.
 
      2003-08-25: Revision 2.5
         Updated the manual for version 0.9.8.0.
@@ -469,8 +471,8 @@
 
   o  ``a global configuration file''
 
-  o  ``a personal configuration file''
 
+  o  ``a personal configuration file''
 
   o  ``command line options''
 
@@ -535,8 +537,6 @@
   o  You can also load macros dynamically using a line like
 
      () = evalfile("my-macro.sl")
-
-
 
   Note that you need those funny leading brackets and the equals sign in
   this case, because evalfile returns 1 on success. Using the given

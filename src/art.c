@@ -1802,81 +1802,124 @@ static char *read_comment (char *start, char *dest, size_t max) /*{{{*/
 }
 /*}}}*/
 
-static char *read_token (char *start, char *dest, size_t max) /*{{{*/
+/* Copy a quoted string from start to dest.
+ * Assumptions: start is the beginning of a quoted string
+ *              dest can hold at least max characters
+ * Returns: Length of the quoted string; if it is > max, it has not been
+ *          fully copied to dest
+ */
+static size_t read_quotedstring (char *start, char *dest, size_t max) /*{{{*/
 {
-   size_t len = 1;
+   size_t len = 0;
+
+   if (len < max)
+      *dest++ = '"';
+   len++;
+   start++;
+   
+   while (*start && (*start != '"'))
+     {
+	int backslash = 0;
+	if (*start == '\\')
+	  {
+	     backslash = 1;
+	     if (*(++start) == '\0')
+		break;
+	  }
+	if (len + backslash < max)
+	  {
+	     if (backslash) *dest++ = '\\';
+	     *dest++ = *start;
+	  }
+	len += 1 + backslash;
+	start++;
+     }
+   if (*start == '"')
+     {
+	if (len < max)
+	   *dest++ = '"';
+	len++;
+	start++;
+     }
+   return len;
+}
+/*}}}*/
+
+/* Copy a dot-atom from start to dest (which can hold at least max chars).
+ * Returns: Length of the dot-atom; if it is > max, it has not been fully
+ * copied to dest
+ */
+static size_t read_dotatom (char *start, char *dest, size_t max) /*{{{*/
+{
+   size_t len = 0;
+
+   if (len < max)
+      *dest++ = *start;
+   len++;
+   start++;
+
+   while (1)
+     {
+	int dot = 0;
+	if (*start == '.')
+	  {
+	     dot = 1;
+	     start++;
+	  }
+	if ((*start == '\0') ||
+	    (NULL != strchr ("\t \"(),.:;<>@[\\]", *start)))
+	   break;
+	if (len + dot < max)
+	  {
+	     if (dot) *dest++ = '.';
+	     *dest++ = *start;
+	  }
+	len += 1 + dot;
+	start++;
+     }
+   return len;
+}
+/*}}}*/
+
+/* Copy the localpart of an email address from start to dest.
+ * The result will be NUL-terminated.
+ * Returns a pointer to the char behind the localpart (or NULL, if nothing
+ * is left behind the localpart).
+ */
+static char *read_localpart (char *start, char *dest, size_t max) /*{{{*/
+{
+   size_t len = 0; /* Can become larger than max! */
+
+   if (max) *dest = '\0';
    
    while ((*start == ' ') || (*start == '\t')) start++;
    while (*start == '(')
      {
 	if (NULL == (start = read_comment (start, NULL, 0)))
-	  return NULL;
+	   return NULL;
      }
    
    if (*start == '"')
      {
-	if (len < max)
-	  {
-	    *dest++ = '"';
-	    len++;
-	  }
-	start++;
-	while (*start && (*start != '"'))
-	  {
-	     if ((*start == '\\') && (*(++start) == '\0'))
-	       break;
-	     if (len < max)
-	       {
-		  *dest++ = *start;
-		  len++;
-	       }
-	     start++;
-	  }
-	if (*start == '"')
-	  {
-	     if (len < max)
-	       {
-		  *dest++ = '"';
-		  len++;
-	       }
-	     start++;
-	  }
+	len = read_quotedstring (start, dest, max ? max-1 : 0);
      }
    else if (*start && (NULL == strchr ("\t \"(),.:;<>@[\\]", *start)))
      {
-	if (len < max)
-	  {
-	     *dest++ = *start;
-	     len++;
-	  }
-	start++;
-	while (1)
-	  {
-	     int dot = 0;
-	     if (*start == '.')
-	       {
-		  dot = 1;
-		  start++;
-	       }
-	     if ((*start == '\0') ||
-		 (NULL != strchr ("\t \"(),.:;<>@[\\]", *start)))
-	       break;
-	     if (len + dot < max)
-	       {
-		  if (dot) *dest++ = '.';
-		  *dest++ = *start;
-		  len += 1 + dot;
-	       }
-	     start++;
-	  }
+	len = read_dotatom (start, dest, max ? max-1 : 0);
      }
    else
      {
-	if (max > 1) *dest++ = *start;
-	start++;
+	if (max) *dest = '\0';
+	len = 1;
      }
-   
-   if (max) *dest = '\0';
+   start += len;
+   if (max)
+     {
+	if (len <= max-1)
+	   dest[len] = '\0';
+	else
+	   dest[max-1] = '\0';
+     }
    
    while ((*start == ' ') || (*start == '\t')) start++;
    while ((start != NULL) && (*start == '('))
@@ -1885,15 +1928,89 @@ static char *read_token (char *start, char *dest, size_t max) /*{{{*/
      }
    
    if ((start != NULL) && (*start == '\0'))
-     return NULL;
+      return NULL;
+   return start;   
+}
+/*}}}*/
+
+/* Copy the domain part of an email address from start to dest.  The result
+ * will be NUL-terminated (which means that max is expected to be at least 1).
+ * Returns a pointer to the char behind the domain (in start) or NULL if no
+ * valid domain name is found or it did not fit.
+ */
+static char *read_domain (char *start, char *dest, size_t max) /*{{{*/
+{
+   size_t len = 0; /* Can become larger than max! */
+
+   *dest = '\0';
+   while ((*start == ' ') || (*start == '\t')) start++;
+   while (*start == '(')
+     {
+	if (NULL == (start = read_comment (start, NULL, 0)))
+	   return NULL;
+     }
+   
+   if (*start == '[') /* read domain literal */
+     {
+	while ((*start == ' ') || (*start == '\t')) start++;
+	while (*start && (*start != ']'))
+	  {
+	     int dotatom_len = read_dotatom (start, dest, max-len-1);
+	     if (dotatom_len >= max-len)
+	       {
+		  dest[max-1] = '\0';
+		  if (start[max-2] == '.')
+		     dest[max-2] = '\0';
+		  return NULL;
+	       }
+	     start += dotatom_len;
+	     dest += dotatom_len;
+	     len += dotatom_len;
+
+	     while ((*start == ' ') || (*start == '\t'))
+	       {
+		  if (len >= max-1)
+		    {
+		       dest[max-1] = '\0';
+		       return NULL;
+		    }
+		  *dest++ = *start++;
+		  len++;
+	       }
+	  }
+	if ((*start != ']') || (len >= max-1))
+	  {
+	     dest[max-1] = '\0';
+	     return NULL;
+	  }
+	*dest++ = ']';
+	len++;
+	start++;
+     }
+   else if (*start && (NULL == strchr ("\t \"(),.:;<>@\\]", *start)))
+     {
+	len = read_dotatom (start, dest, max);
+	start += len;
+	dest += len;
+     }
+   else
+      return NULL;
+   
+   if (len>=max)
+      return NULL;
+   *dest = '\0';
+   
    return start;
 }
-   
 /*}}}*/
-   
-static char *parse_from (char *from) /*{{{*/
+
+/* Parse an address line and try to copy the first email address to dest.
+ * dest must be able to hold at least max characters
+ * max must be at least 1, result is always NUL-terminated
+ * Returns pointer to the first character behind the address in from or
+ * NULL if no (valid) address could be found (or it did not fit). */
+static char *parse_from (char *from, char *dest, size_t max) /*{{{*/
 {
-   static char buf[256];
    unsigned int len;
    char *p;
    
@@ -1901,26 +2018,27 @@ static char *parse_from (char *from) /*{{{*/
     * else, assume simple form (read from beginning) */
    
    if (from == NULL) return NULL;
-   *buf = '\0';
+   *dest = '\0';
    from = slrn_skip_whitespace (from);
    p = from;
-   
+
+   /* The allowed syntax before the address in <> is similar to
+    * the one of the local part. */
    while ((p != NULL) && (*p != '<'))
      {
-	p = read_token (p, NULL, 0);
+	p = read_localpart (p, NULL, 0);
      }
    
    if (p != NULL) from = p + 1;
    
-   p = read_token (from, buf, sizeof (buf));
-   len = strlen (buf);
-   
-   if ((p == NULL) || (*p != '@') || (len >= sizeof (buf) - 3))
+   if (NULL == (p = read_localpart (from, dest, max)))
+      return NULL;
+   len = strlen (dest);
+   if ((*p != '@') || (len >= max - 3) || (len == 0))
      return NULL;
    
-   buf[len] = '@';
-   read_token (p + 1, buf + len + 1, sizeof (buf) - len - 1);
-   return buf;
+   dest[len] = '@';
+   return read_domain (p + 1, dest + len + 1, max - len - 1);
 }
 
 /*}}}*/
@@ -1931,6 +2049,25 @@ static char *parse_from (char *from) /*{{{*/
 /*}}}*/
 
 /*{{{ get_header_real_name */
+
+static void unquote_string (char *str)
+{
+   int offset = 1;
+   if (*str == '"')
+     {
+	while (str[offset] &&
+	       ((str[offset]!='"') || str[offset+1]))
+	  {
+	     str[0] = str[offset];
+	     str++;
+	     if (str[offset] == '\\')
+	       {
+		  offset++;
+	       }
+	  }
+	*str = '\0';
+     }
+}
 
 static void get_header_real_name (Slrn_Header_Type *h) /*{{{*/
 {
@@ -1945,7 +2082,8 @@ static void get_header_real_name (Slrn_Header_Type *h) /*{{{*/
    
    while ((f != NULL) && (*f != '<'))
      {
-	f = read_token (f, p, sizeof (buf) - (p - buf));
+	f = read_localpart (f, p, sizeof (buf) - (p - buf));
+	unquote_string(p); /* the name may have been quoted */
 	p += strlen (p);
 	if ((f != NULL) && (p + 1 < buf + sizeof (buf)))
 	  {
@@ -1955,11 +2093,13 @@ static void get_header_real_name (Slrn_Header_Type *h) /*{{{*/
    
    if (f == NULL)
      {
+	char dummy[256];
+	
 	*buf = '\0';
-	f = read_token (from, NULL, 0);
-	if ((f != NULL) && (*f == '@'))
+        /* This will give us a pointer behind the address */
+	f = parse_from (from, dummy, sizeof(dummy));
+	if (f != NULL)
 	  {
-	     while (*f && (*f != ' ') && (*f != '\t') && (*f != '(')) f++;
 	     while (*f && ((*f == ' ') || (*f == '\t'))) f++;
 	     if (*f == '(')
 	       read_comment (f, buf, sizeof (buf));
@@ -2504,7 +2644,7 @@ int slrn_string_to_article (char *str)
 static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 {
    char ch, *s, *smax, *c;
-   char buf[128];
+   char buf[256];
    
    if ((f == NULL) || (*f == 0))
      return -1;
@@ -2545,7 +2685,8 @@ static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 		 }
 	     break;
 	   case 'f':
-	     s = parse_from (Header_Showing->from);
+	     (void) parse_from (Header_Showing->from, buf, sizeof(buf));
+	     s = buf;
 	     break;
 	   case 'n':
 	     s = Slrn_Current_Group_Name;
@@ -2690,6 +2831,7 @@ static void reply (char *from) /*{{{*/
    Slrn_Article_Line_Type *l;
    FILE *fp;
    char file[256];
+   char from_buf[256];
    unsigned int n, wrap;
    char *quote_str;
 
@@ -2703,18 +2845,15 @@ static void reply (char *from) /*{{{*/
    
    /* Check for FQDN.  If it appear bogus, warn user */
    if (from == NULL) from = extract_reply_address ();
-   from_t = parse_from (from);
+   from_t = parse_from (from, from_buf, sizeof(from_buf));
    
    if ((from_t == NULL) 
-       || (NULL == (f = slrn_strchr (from_t, '@')))
-       || (f == from_t)
-       || (0 == slrn_is_fqdn (f + 1))
-       || ((strlen(f) > 8) &&
+       || ((strlen(from_buf) > 8) &&
 	   !(slrn_case_strcmp((unsigned char*)".invalid",
-			      (unsigned char*)f+strlen(f)-8))))
+			      (unsigned char*)from_buf+strlen(from_buf)-8))))
      {
 	if (0 == slrn_get_yesno (1, _("%s appears invalid.  Continue anyway"),
-				 ((from_t == NULL) ? _("Email address") : from_t)))
+				 (*from_buf) ? from_buf : _("Email address")))
 	  return;
      }
    
@@ -2835,7 +2974,7 @@ static void reply (char *from) /*{{{*/
    if (Slrn_Editor_Uses_Mime_Charset)
      slrn_chmap_fix_file (file, 0);
    
-   slrn_mail_file (file, 1, n, from_t, subject);
+   slrn_mail_file (file, 1, n, from_buf, subject);
    slrn_free (subject);
    if (Slrn_Use_Tmpdir) (void) slrn_delete_file (file);
 }
@@ -2960,6 +3099,7 @@ static void followup (void) /*{{{*/
 {
    char *msgid, *newsgroups, *subject, *from, *xref, *quote_str;
    char *cc_address, *cc_address_t;
+   char cc_address_buf[256];
    char *followupto = NULL;
    Slrn_Article_Line_Type *l;
    FILE *fp;
@@ -3020,7 +3160,8 @@ static void followup (void) /*{{{*/
      {
 	newsgroups = slrn_skip_whitespace (newsgroups);
 	cc_address = newsgroups;
-	cc_address_t = parse_from (cc_address);
+	cc_address_t = parse_from (cc_address, cc_address_buf,
+				   sizeof(cc_address_buf));
 	if (cc_address != NULL)
 	  {
 	     int is_poster;
@@ -3163,7 +3304,9 @@ static void followup (void) /*{{{*/
 		  perform_cc = 0;
 		  cc_address = NULL;
 	       }
-	     else if (NULL == (cc_address_t = parse_from (cc_address)))
+	     else if (NULL == (cc_address_t = parse_from (cc_address,
+							  cc_address_buf,
+							  sizeof(cc_address_buf))))
 	       cc_address = NULL; /* do CC, but use "From" / "Reply-To:" address */
 
 	  }
@@ -3175,7 +3318,8 @@ static void followup (void) /*{{{*/
    if (cc_address == NULL)
      {
 	cc_address = extract_reply_address ();
-	cc_address_t = parse_from (cc_address);
+	cc_address_t = parse_from (cc_address, cc_address_buf,
+				   sizeof(cc_address_buf));
      }
 
    if ((perform_cc != 0)
@@ -3192,7 +3336,8 @@ static void followup (void) /*{{{*/
 	  {
 	     if (-1 == SLang_pop_slstring (&cc_address))
 	       return;
-	     cc_address_t = parse_from (cc_address);
+	     cc_address_t = parse_from (cc_address, cc_address_buf,
+					sizeof(cc_address_buf));
 	     free_cc_string = 1;
 	     if (*cc_address == 0)
 	       perform_cc = 0;
@@ -3214,14 +3359,15 @@ static void followup (void) /*{{{*/
 	  {
 	     char *ff;
 	     
-	     if ((NULL == (ff = slrn_strchr (cc_address_t, '@')))
-		 || (ff == cc_address_t)
-		 || (0 == slrn_is_fqdn (ff + 1))
-		 || (strlen (ff + 1) < 5))
+	     if ((NULL == cc_address_t)
+		 || ((strlen(cc_address_buf) > 8) &&
+		     !(slrn_case_strcmp((unsigned char*)".invalid",
+					(unsigned char*)cc_address_buf+
+					strlen(cc_address_buf)-8))))
 	       {
-		  perform_cc = slrn_get_yesno_cancel (_("%s appears invalid.  CC anyway"), cc_address_t);
+		  perform_cc = slrn_get_yesno_cancel (_("%s appears invalid.  CC anyway"), *cc_address_buf ? cc_address_buf : _("Email address"));
 		  if (perform_cc < 0)
-		    goto free_and_return;
+		     goto free_and_return;
 	       }
 	  }
      }
@@ -3436,8 +3582,9 @@ static void supersede (void) /*{{{*/
    char file[SLRN_MAX_PATH_LEN], from[512];
    unsigned int n;
    int wrap;
-   char *me, *me_t;
-
+   char *me;
+   char me_buf[512];
+   
    if ((-1 == slrn_check_batch ()) ||
        (-1 == select_affected_article (MIME_DISPLAY)))
      return;
@@ -3457,18 +3604,17 @@ static void supersede (void) /*{{{*/
      return;
 #endif
    
-   me_t = slrn_extract_header ("From: ", 6);
-   if (me_t != NULL) me_t = parse_from (me_t);
-   if (me_t == NULL) me_t = "";
-   strncpy (from, me_t, sizeof (from));
-   from[sizeof (from) - 1] = 0;
+   me = slrn_extract_header ("From: ", 6);
+   if (me != NULL)
+      (void) parse_from (me, from, sizeof(from));
+   else
+      from[0] = '\0';
    if (NULL == (me = slrn_make_from_string())) return;
-   me_t = parse_from (me);
-   if (me_t == NULL) me_t = "";
+   (void) parse_from (me, me_buf, sizeof(me_buf));
    
-   if (slrn_case_strcmp ((unsigned char *) from, (unsigned char *) me_t))
+   if (slrn_case_strcmp ((unsigned char *) from, (unsigned char *) me_buf))
      {
-        slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_t, from);
+        slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from);
         return;
      }
    
@@ -3990,6 +4136,7 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
    Slrn_Article_Line_Type *l = NULL;
    Slrn_Article_Type *a = Slrn_Current_Article;
    char *from;
+   char from_buf[256];
    time_t now;
    
    if ((Header_Showing != h) || (a == NULL))
@@ -4027,11 +4174,13 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
      }
    
    from = h->from;
-   if (from != NULL) from = parse_from (from);
-   if ((from == NULL) || (*from == 0)) from = "nobody@nowhere";
+   if (from != NULL) from = parse_from (from, from_buf, sizeof(from_buf));
+   else from_buf[0] = '\0';
+   if ((from == NULL) || (*from_buf == 0))
+      strcpy (from_buf, "nobody@nowhere"); /* safe */
    
    time (&now);
-   fprintf (fp, "From %s %s", from, ctime(&now));
+   fprintf (fp, "From %s %s", from_buf, ctime(&now));
    
    while (l != NULL)
      {
@@ -6611,8 +6760,8 @@ static void art_xpunge (void) /*{{{*/
 
 static void cancel_article (void) /*{{{*/
 {
-   char *me_t, *msgid, *newsgroups, *dist, *fromstr;
-   char from[512], me[512];
+   char *me, *msgid, *newsgroups, *dist;
+   char from[512], me_buf[512];
    
    if ((-1 == slrn_check_batch ()) ||
        (-1 == select_affected_article (MIME_DISPLAY)))
@@ -6628,27 +6777,26 @@ static void cancel_article (void) /*{{{*/
     * see if this is really the owner of the message.
     */
    
-   me_t = slrn_extract_header ("From: ", 6);
-   if (me_t != NULL) me_t = parse_from (me_t);
-   if (me_t == NULL) me_t = "";
-   strncpy (from, me_t, sizeof (from));
-   from[sizeof (from) - 1] = 0;
+   me = slrn_extract_header ("From: ", 6);
+   if (me != NULL) (void) parse_from (me, from, sizeof(from));
+   else from[0] = '\0';
    
-   if (NULL == (fromstr = slrn_make_from_string ())) return;
-   strncpy (me, fromstr, sizeof(me));
-   me[sizeof (me) - 1] = 0;
-   me_t = parse_from (me);
-   if (me_t == NULL) me_t = "";
+   if (NULL == (me = slrn_make_from_string ())) return;
+   if (me != NULL) (void) parse_from (me, me_buf, sizeof(me_buf));
+   else me_buf[0] = '\0';
    
-   if (slrn_case_strcmp ((unsigned char *) from, (unsigned char *) me_t))
+   if (slrn_case_strcmp ((unsigned char *) from, (unsigned char *) me_buf))
      {
-        slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_t, from);
+        slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from);
         return;
      }
    
 #if SLRN_HAS_MIME
+   strncpy(from, me, sizeof(from));
+   from[sizeof(from)-1] = '\0';
+
    if (Slrn_Use_Mime & MIME_DISPLAY)
-     slrn_mime_header_encode(me, sizeof(me));
+     slrn_mime_header_encode(from, sizeof(from));
 #endif
    
    if (NULL == (newsgroups = slrn_extract_header ("Newsgroups: ", 12)))
@@ -6667,7 +6815,7 @@ static void cancel_article (void) /*{{{*/
    if (Slrn_Post_Obj->po_start () < 0) return;
    
    Slrn_Post_Obj->po_printf ("From: %s\nNewsgroups: %s\nSubject: cmsg cancel %s\nControl: cancel %s\n",
-			     me, newsgroups, msgid, msgid);
+			     from, newsgroups, msgid, msgid);
    
    if ((dist != NULL) && (*dist != 0))
      {
@@ -6675,11 +6823,11 @@ static void cancel_article (void) /*{{{*/
      }
    
 #if SLRN_HAS_CANLOCK
-   /* Abuse me_t, not needed anymore */
-   if (NULL != (me_t = gen_cancel_key(msgid)))
+   /* Abuse me, not needed anymore */
+   if (NULL != (me = gen_cancel_key(msgid)))
      {
-	Slrn_Post_Obj->po_printf ("Cancel-Key: %s\n", me_t);
-	SLFREE (me_t);
+	Slrn_Post_Obj->po_printf ("Cancel-Key: %s\n", me);
+	SLFREE (me);
      }
 #endif
    

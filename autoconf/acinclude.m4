@@ -782,7 +782,7 @@ echo "System-wide configuration is read from $ev_sysconfdir"
 if test "x$enable_hardcode_libs" != xyes && test ! -x /sbin/ldconfig ; then
 AC_MSG_WARN([
 /sbin/ldconfig not found.
-It\'s probably a good idea to specify --enable-hardcode-libs])
+It's probably a good idea to specify --enable-hardcode-libs])
 fi
 
 dnl There seems to be (currently unused) free software for this ...

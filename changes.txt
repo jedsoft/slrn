@@ -18,6 +18,7 @@ Changes since 0.9.8.0
   * A workaround for a bug in INN caused problems with leafnode; only use it
     when the server was recognized as INN from the logon message.
   * Fixed crash when running in wide terminals (John E. Davis)
+  * Email address parser is more RFC2822 compliant
 1. In the config file (and the corresponding intrinsic functions), the
    following names now denote special function keys: <PageUp> <PageDown>
    <Up> <Down> <Right> <Left> <Delete> <BackSpace> <Insert> <Home> <End>

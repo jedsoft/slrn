@@ -2,7 +2,7 @@
   John E. Davis <davis@space.mit.edu>
   Matthias Friedrich <matt@mafr.de>
   Thomas Schultz <tststs@gmx.de>
-  Version 0.9.8.0
+  Version 0.9.8.1
 
   Frequently asked questions about the slrn newsreader.
   ______________________________________________________________________
@@ -16,6 +16,7 @@
      1.2 Where can I download slrn?
      1.3 Where is slrn's documentation?
      1.4 Are there any mailing lists and/or newsgroups about slrn?
+     1.5 slrn appears quite stable. Why don't you call it version 1.0?
 
   2. Configuration
      2.1 Is it possible to set my ``From'' header line for postings?
@@ -76,7 +77,6 @@
      6.1 slrn hangs infinitely when I press the delete key
      6.2 The bug I found is not listed here. What do I do now?
         6.2.1 Some additional notes for the advanced user
-
   7. About this document
      7.1 History
 
@@ -156,6 +156,16 @@
   read both lists.
 
 
+  1.5.  slrn appears quite stable. Why don't you call it version 1.0?
+
+  The main reason for the sub-1.0 version number is the poor handling of
+  different character sets. I think that a modern newsreader should
+  support Unicode, but we have to wait for slang 2 until we can really
+  include this. So, you'll see slrn 1.0 as soon as the new version of
+  the slang library is out, slrn is ported to it and running reasonably
+  stable.
+
+
   2.  Configuration
 
   2.1.  Is it possible to set my ``From'' header line for postings?
@@ -199,8 +209,6 @@
   your Message-IDs via the posting_host command. If you think you need
   this feature, please read the corresponding entry in the reference
   manual carefully.
-
-
   2.3.  How can I set the size of the article pager?
 
 
@@ -274,7 +282,6 @@
   following example will use mutt as an external e-mail program for
   replies:
 
-
   set mail_editor_command "/usr/bin/mutt -H '%s'"
   set mail_editor_is_mua 1
 
@@ -330,6 +337,8 @@
   vt100 or vt220. Then create a new termcap entry based on that terminal
   with additional color capabilities and save it to ~/.termcap.  It
   might look like this:
+
+
 
   myterm:\
           :Co#8:NC#3:pa#64:\
@@ -394,8 +403,6 @@
       signature_file = ".signature.german";
     set_string_variable ("signature", signature_file);
   }
-
-
 
   If you want more sophisticated per-group settings, I recommend the
   macro identity.sl from Emanuele Bassi's slrn page.
@@ -533,7 +540,6 @@
   make handling them a bit more convenient:
 
 
-
   3.3.1.  How do I uudecode articles?
 
 
@@ -662,7 +668,6 @@
   the source distribution.
 
 
-
   3.4.  How can I mark cross-posts as read in other groups as well?
 
 
@@ -729,6 +734,7 @@
 
   1. When slrn prompts for a newsgroup, simply specify a comma-separated
      list of newsgroups. Do not use spaces!
+
   2. Edit the ``Newsgroups'' header line when editing the message.
      Again, the list of newsgroups must be comma separated with no
      whitespace.  Also make sure that you do not wrap this line.
@@ -787,14 +793,13 @@
   In the end, threads with high-score articles appear at the top of your
   screen and can be read before other, possibly less interesting,
   articles.
-
-
-
   4.2.  How can I killfile with Slrn?
 
 
   Slrn has no killfile. The same effect can be achieved with its score
   file, however. Assigning a particularly low score will do the trick:
+
+
   [news.software.readers]
           Score: =-9999   % I'm not interested in articles on gnus
           Subject: gnus
@@ -920,11 +925,8 @@
   Subject: ^test$
 
 
-
   Finally, a score entry that filters all test-postings to non-test
   groups:
-
-
 
   [~*.test]
           Score: -9999
@@ -986,9 +988,12 @@
   ``References'' header, use the single colon form:
 
 
+
   Score: -9999
   Subject: ^Re:
   References: .
+
+
 
   Single colon forms are AND expressions.
 
@@ -1055,6 +1060,8 @@
   header (preferred) or the ``Newsgroups'' header. The first choice uses
   the fact that a cross-posted article will have two colons in the
   ``Xref'' header field. So, use a score of the form:
+
+
   Score: -9999
   Xref: :.*:
 
@@ -1111,13 +1118,11 @@
   Subject: ^Re:
 
 
-
   Here the ``References'' line simply says that the article must not
   have a ``References'' header. The subject header uses a regular
   expression that says ``Re:'' must occur at the beginning of the
   subject. This will match the strings "Re:", "re:", "rE:", and "RE:".
   To match only "Re:", use the regular expression
-
 
 
   Subject: ^\cRe:
@@ -1175,6 +1180,7 @@
   the 'From:' header to contain at least two spaces (one inside the name
   and one between the name and the address), separated by non-blank
   characters:
+
 
 
   [*]
@@ -1241,13 +1247,14 @@
   slrn --nntp -h YOUR.NEWS.SERVER -a -f groups.dat --create
 
 
-
   This will start slrn and download the groups and put them in the file
   groups.dat.  Before actually doing this, modify your slrnrc file to
   make sure write_newsrc_flags has its default setting
 
 
   set write_newsrc_flags 0
+
+
 
   so that all groups will be written out to groups.dat.
 
@@ -1305,7 +1312,6 @@
   <http://slrn.sourceforge.net/patches/>, so you should look at that
   page, too. If you find that the bug is still unreported, send me a bug
   report (tststs@gmx.de).
-
   Please give a detailed description of what you did, how you expected
   slrn to behave and what slrn did instead; also include the exact error
   messages (in case you got any) and information I might need to
@@ -1369,8 +1375,12 @@
   <http://slrn.sourceforge.net/manual/>.
 
 
+
   7.1.  History
 
+
+     2004-10-04: Revision 1.2
+        Added a note on the version numbering.
 
      2003-08-25: Revision 1.1
         Minor corrections before the release of 0.9.8.0.
