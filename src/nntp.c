@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -376,9 +376,8 @@ static char * _nntp_get_recom_id (void)
 				    strlen(post_rsp), &re);
 	if (t != NULL)
 	  {
-	     if ((msgid=slrn_strnmalloc(t, re.end_matches[0]+1,1)) == NULL)
+	     if ((msgid=slrn_strnmalloc(t, re.end_matches[0],1)) == NULL)
 	       return NULL;
-	     msgid[re.end_matches[0]] ='\0';
 	     return msgid;
 	  }
      }
