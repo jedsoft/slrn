@@ -336,6 +336,8 @@ static int spool_read_xover (char *the_buf, unsigned int len)
 	     break;
 	  }
 	debug_output (NULL, -1, "Nov entry %ld skipped!", Spool_XOver_Next);
+#else
+	break;
 #endif
      }
 
