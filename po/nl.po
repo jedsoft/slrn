@@ -2867,24 +2867,22 @@ msgid "Select one: Repost, Edit, Cancel"
 msgstr "Kies: Opnieuw posten, Bewerken, Annuleren"
 
 #: src/post.c:1547
-#, fuzzy, c-format
+#, c-format
 msgid "Do you want to create directory %s"
-msgstr "Weet U zeker dat U het wilt verwijderen"
+msgstr "Directory %s aanmaken"
 
 #: src/post.c:1551
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create directory. (errno = %d)"
-msgstr "Kan directory %s niet maken. (errno = %d)"
+msgstr "Kan directory niet maken. (errno = %d)"
 
 #: src/post.c:1557
-#, fuzzy
 msgid "Aborted on user request."
-msgstr "Afsluiten op verzoek gebruiker."
+msgstr "Afgebroken op verzoek gebruiker."
 
 #: src/post.c:1562
-#, fuzzy
 msgid "postpone_directory points to a regular file (not a directory)"
-msgstr "postpone_directory (uitstel_map) niet opgegeven of niet bestaand"
+msgstr "postpone_directory (uitstel_map) is een gewoon bestand (geen map)"
 
 #: src/post.c:1573
 msgid "Not implemented yet. Sorry"
@@ -3998,6 +3996,8 @@ msgid ""
 "%s: In this version of slrn, setting variable\n"
 "%s has no effect. Please refer to the manual for details."
 msgstr ""
+"%s: In deze versie van slrn heeft het veranderen van de variabele\n"
+"%s geen effect. Zie de handleiding voor details."
 
 #: src/startup.c:828
 #, c-format
