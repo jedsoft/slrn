@@ -281,12 +281,18 @@ static int parsed_headers_to_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
    if (NULL == (bytes = Xover_Headers[BYTES_OFFSET].value))
      bytes = "";
    
-   xov->subject_malloced = slrn_strmalloc (subj, 0);
-   if (xov->subject_malloced == NULL)
-     return -1;
+   len = strlen (subj) + strlen (from) + 2;
+   buf = slrn_malloc (len, 0, 1);
+   if (buf == NULL) return -1;
    
-   len = strlen (from) + strlen (date) + strlen (msgid) + strlen (refs) +
-     strlen (xref) + 5;
+   xov->subject_malloced = buf;
+   strcpy (buf, subj); /* safe */
+   buf += strlen (subj) + 1;
+   
+   xov->from = buf;
+   strcpy (buf, from); /* safe */
+   
+   len = strlen (date) + strlen (msgid) + strlen (refs) + strlen (xref) + 4;
    
    buf = slrn_malloc (len, 0, 1);
    if (buf == NULL)
@@ -295,11 +301,7 @@ static int parsed_headers_to_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
 	return -1;
      }
    
-   xov->from_malloced = buf;
-   strcpy (buf, from); /* safe */
-   buf += strlen (from) + 1;
-
-   xov->date = buf;
+   xov->date_malloced = buf;
    strcpy (buf, date); /* safe */
    buf += strlen (date) + 1;
    
@@ -313,7 +315,6 @@ static int parsed_headers_to_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
    
    xov->xref = buf;
    strcpy (buf, xref); /* safe */
-   buf += strlen (xref) + 1;
 
    xov->bytes = atoi (bytes);
    xov->lines = atoi (lines);
@@ -381,8 +382,8 @@ void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h)
    
    h->subject = xov->subject_malloced;
    h->number = xov->id;
-   h->from = xov->from_malloced;
-   h->date = xov->date;
+   h->from = xov->from;
+   h->date = xov->date_malloced;
    h->refs = xov->references;
    h->lines = xov->lines;
    h->bytes = xov->bytes;
@@ -1122,7 +1123,7 @@ int slrn_read_add_xover (Slrn_Header_Line_Type **l) /*{{{*/
    if (status == 1)
      {
 	slrn_free (xov.subject_malloced);
-	slrn_free (xov.from_malloced);
+	slrn_free (xov.date_malloced);
 	slrn_free_additional_headers (xov.add_hdrs);
 	return xov.id;
      }

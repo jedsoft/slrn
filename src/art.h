@@ -120,9 +120,9 @@ typedef struct Slrn_Header_Type
    int lines;
    int bytes;
    char *subject;		       /* malloced separately */
-   char *from;			       /* malloced */
-   char *date;			       /* pointers to above space */
-   char *msgid;
+   char *from;
+   char *date;			       /* malloced */
+   char *msgid;			       /* pointers to above space */
    char *refs;
    char *xref;
    char *realname;		       /* malloced */

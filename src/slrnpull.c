@@ -981,7 +981,7 @@ static int write_xover_line (FILE *fp, Slrn_XOver_Type *xov) /*{{{*/
    if ((EOF == fprintf (fp,
 			"%d\t%s\t%s\t%s\t%s\t%s\t%d\t%d",
 			xov->id, xov->subject_malloced, 
-			xov->from_malloced, xov->date, xov->message_id,
+			xov->from, xov->date_malloced, xov->message_id,
 			xov->references, xov->bytes, xov->lines))
        || ((xov->xref != NULL) && (xov->xref[0] != 0)
 	   && (EOF == fprintf (fp, "\tXref: %s", xov->xref)))
@@ -1160,7 +1160,7 @@ static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov
 
 #if SLRN_HAS_MIME
    h.subject = slrn_safe_strmalloc (xov->subject_malloced);
-   h.from = slrn_safe_strmalloc (xov->from_malloced);
+   h.from = slrn_safe_strmalloc (xov->from);
    if (Slrn_Use_Mime)
      {
 	slrn_rfc1522_decode_string (h.subject);
@@ -1209,7 +1209,7 @@ static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov
    slrn_free (h.subject);
    h.subject = xov->subject_malloced;
    slrn_free (h.from);
-   h.from = xov->from_malloced;
+   h.from = xov->from;
 #endif
 #if 0
    /* This next call should add the message id to the cache. */
@@ -1332,7 +1332,7 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 	slrn_free (bodies[i]);
 	slrn_free (heads[i]);
 	slrn_free (xovs[i].subject_malloced);
-	slrn_free (xovs[i].from_malloced);
+	slrn_free (xovs[i].date_malloced);
 	slrn_free_additional_headers (xovs[i].add_hdrs);
      }
    return ret;
@@ -2395,12 +2395,12 @@ static int write_overview_entry(FILE *xov_fp, int id, char *dir)
      {
         slrn_free (header);
         slrn_free (xov.subject_malloced);
-        slrn_free (xov.from_malloced);
+        slrn_free (xov.date_malloced);
         return -1;
      }
    slrn_free (header);
    slrn_free (xov.subject_malloced);
-   slrn_free (xov.from_malloced);
+   slrn_free (xov.date_malloced);
    return 0;
 }
 

@@ -29,9 +29,9 @@
 typedef struct
 {
    int id;
-   char *subject_malloced; /* keep this separate from the rest */
-   char *from_malloced;
-   char *date;
+   char *subject_malloced; /* keep these separate from the rest */
+   char *from;
+   char *date_malloced;
    char *message_id;
    char *references;
    char *xref;

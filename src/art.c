@@ -486,7 +486,7 @@ static void free_header (Slrn_Header_Type *h)
    remove_from_hash_table (h);
    slrn_free (h->tree_ptr);
    slrn_free (h->subject);
-   slrn_free (h->from);
+   slrn_free (h->date);
    slrn_free (h->realname);
    slrn_free_additional_headers (h->add_hdrs);
    slrn_free ((char *) h);
@@ -501,7 +501,7 @@ static void free_headers (void)
 	next = h->next;
 	slrn_free (h->tree_ptr);
 	slrn_free (h->subject);
-	slrn_free (h->from);
+	slrn_free (h->date);
 	slrn_free (h->realname);
 	slrn_free_additional_headers (h->add_hdrs);
 	slrn_free ((char *) h);
@@ -2222,7 +2222,7 @@ static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{
 {
    Slrn_Article_Type *a;
    Slrn_Header_Type *last_header_showing;
-   char *subj;
+   char *subj, *from;
    
    last_header_showing = Header_Showing;
    
@@ -2277,17 +2277,28 @@ static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{
    Slrn_Current_Article = a;
 
    /* RFC 2980 says not to unfold headers when writing them to the overview.
-    * Work around this by taking the subject from the article. */
-   if ((NULL != (subj = slrn_art_extract_header ("Subject: ", 9))) &&
-       (strcmp (subj, h->subject)))
+    * Work around this by taking Subject and From out of the article. */
+   subj = slrn_art_extract_header ("Subject: ", 9);
+   from = slrn_art_extract_header ("From: ", 6);
+   
+   if ((NULL != subj) && (NULL != from) &&
+       (strcmp (subj, h->subject) || strcmp (from, h->from)))
      {
-	char *tmp = slrn_realloc (h->subject, strlen (subj) + 1, 0);
+	char *tmp = slrn_realloc (h->subject, strlen (subj) +
+				  strlen (from) + 2, 0);
 	if (tmp != NULL)
 	  {
-	     strcpy (tmp, subj); /* safe */
-	     if ((do_mime == 0) && (Slrn_Use_Mime & MIME_DISPLAY))
-	       slrn_rfc1522_decode_string (tmp);
 	     h->subject = tmp;
+	     strcpy (tmp, subj); /* safe */
+	     h->from = tmp + strlen (tmp) + 1;
+	     strcpy (h->from, from); /* safe */
+	     if ((do_mime == 0) && (Slrn_Use_Mime & MIME_DISPLAY))
+	       {
+		  slrn_rfc1522_decode_string (tmp);
+		  slrn_rfc1522_decode_string (h->from);
+	       }
+	     slrn_free (h->realname);
+	     get_header_real_name (h);
 	  }
      }
    
