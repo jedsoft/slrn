@@ -102,7 +102,10 @@ typedef struct Slrn_Header_Type
 #define HEADER_TAGGED			0x0004
 #define HEADER_HIGH_SCORE		0x0008
 #define HEADER_LOW_SCORE		0x0010
-#define HEADER_HARMLESS_FLAGS_MASK	0x00FF 
+#define HEADER_HARMLESS_FLAGS_MASK	0x001F
+#define HEADER_REQUEST_BODY		0x0020
+#define HEADER_DONT_DELETE_MASK		0x0024
+#define HEADER_WITHOUT_BODY		0x0040
 #define HEADER_HIDDEN			0x0100
 #define HEADER_NTAGGED			0x0200
 #define FAKE_PARENT			0x0400
@@ -143,6 +146,8 @@ extern Slrn_Header_Type *Slrn_Current_Header;
 
 extern int slrn_goto_header (Slrn_Header_Type *, int);
 extern void slrn_set_header_flags (Slrn_Header_Type *, unsigned int);
+extern void slrn_request_header (Slrn_Header_Type *);
+extern void slrn_unrequest_header (Slrn_Header_Type *);
 extern int slrn_locate_header_by_msgid (char *, int, int);
 
 typedef struct Slrn_Article_Line_Type

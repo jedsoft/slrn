@@ -37,6 +37,7 @@ typedef struct
    char *xref;
    int bytes;
    int lines;
+   int without_body;
    Slrn_Header_Line_Type *add_hdrs;
 }
 Slrn_XOver_Type;

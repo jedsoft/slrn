@@ -2089,7 +2089,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	slrn_error (_("Article %d unavailable."), h->number);
 	
 	if (kill_refs && ((h->flags & HEADER_READ) == 0) &&
-	    ((h->flags & HEADER_TAGGED) == 0))
+	    ((h->flags & HEADER_DONT_DELETE_MASK) == 0))
 	  {
 	     kill_cross_references (h);
 	     h->flags |= HEADER_READ;
@@ -2205,7 +2205,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
    retval->needs_sync = 1;
    
    if (kill_refs && ((h->flags & HEADER_READ) == 0) &&
-       ((h->flags & HEADER_TAGGED) == 0))
+       ((h->flags & HEADER_DONT_DELETE_MASK) == 0))
      {
 	kill_cross_references (h);
 	h->flags |= HEADER_READ;
@@ -6033,6 +6033,32 @@ static void toggle_verbatim (void) /*{{{*/
 /*}}}*/
 /*}}}*/
 
+static void free_ranges (Slrn_Range_Type *r) /*{{{*/
+{
+   while (r != NULL)
+     {
+	Slrn_Range_Type *r_next = r->next;
+	SLFREE (r);
+	r = r_next;
+     }
+}
+/*}}}*/
+
+/* Returns 0 if the given ranges are equal */
+static int compare_ranges (Slrn_Range_Type *a, Slrn_Range_Type *b) /*{{{*/
+{
+   while ((a != NULL) && (b != NULL)
+	  && (a->min == b->min)
+	  && (a->max == b->max))
+     {
+	a = a->next;
+	b = b->next;
+     }
+   
+   return ((a == NULL) && (b == NULL)) ? 0 : 1;
+}
+/*}}}*/
+
 /*{{{ leave/suspend article mode and support functions */
 static void update_ranges (void) /*{{{*/
 {
@@ -6139,9 +6165,9 @@ static void update_ranges (void) /*{{{*/
 	i = imax;
      }
    
-   Slrn_Groups_Dirty = 1;
+   Slrn_Groups_Dirty |= 1;
    
-   if ((save_dirty == 0) 
+   if (((save_dirty&1) == 0) 
        && (Current_Group->range.min == save_min) 
        && (Current_Group->range.max == save_max)
        && (Current_Group->range.next != NULL))
@@ -6149,35 +6175,59 @@ static void update_ranges (void) /*{{{*/
 	/* Compare the newly constructed ranges to the old.  If they differ
 	 * then things were changed.
 	 */
-	Slrn_Range_Type *new_r;
-	
-	new_r = Current_Group->range.next;
-	r = r_save;
-
-	while ((new_r != NULL) && (r != NULL)
-	       && (new_r->min == r->min)
-	       && (new_r->max == r->max))
-	  {
-	     new_r = new_r->next;
-	     r = r->next;
-	  }
-	
-	if ((new_r == NULL) && (r == NULL))
+	if (!compare_ranges(Current_Group->range.next, r_save))
 	  Slrn_Groups_Dirty = save_dirty;
      }
 
    /* Finally delete the saved ranges */
-   r = r_save;
-   while (r != NULL)
-     {
-	r_save = r->next;
-	slrn_free ((char *) r);
-	r = r_save;
-     }
+   free_ranges (r_save);
    slrn_free (list);
 }
 /*}}}*/
 
+static void update_requests (void) /*{{{*/
+{
+   Slrn_Range_Type *rsave;
+   Slrn_Header_Type *h;
+   int min, max;
+   
+   if (User_Aborted_Group_Read) return;
+   
+   /* We want to do a check whether anything has changed later. */
+   rsave = Current_Group->requests;
+   Current_Group->requests = NULL;
+   
+   h = Slrn_First_Header;
+   /* skip articles for which the numeric id was not available */
+   while ((h != NULL) && ((h->number < 0) ||
+			  (0 == (h->flags & HEADER_REQUEST_BODY))))
+     h = h->real_next;
+   if (h == NULL) goto free_and_return;
+   
+   /* create current ranges */
+   while (h != NULL)
+     {
+	max = min = h->number;
+	while ((h->next != NULL) && (h->next->number == max+1)
+	       && (h->next->flags & HEADER_REQUEST_BODY))
+	  {
+	     max++;
+	     h = h->next;
+	  }
+	slrn_add_group_requests (Current_Group, min, max);
+	while ((h->next != NULL) &&
+	       (0 == (h->next->flags & HEADER_REQUEST_BODY)))
+	  h = h->next;
+     }
+   
+   /* If anything has changed, mark request file as dirty. */
+   if (compare_ranges (Current_Group->requests, rsave))
+     Slrn_Groups_Dirty |= 2;
+   
+   free_and_return: /* Free the saved ranges */
+   free_ranges (rsave);
+}
+/*}}}*/
 
 /*{{{ art_quit */
 static void art_quit (void) /*{{{*/
@@ -6205,6 +6255,7 @@ static void art_quit (void) /*{{{*/
    if (h != NULL)
      {
 	update_ranges ();
+	update_requests ();
 	free_headers ();
      }
    
@@ -6306,7 +6357,7 @@ static void art_xpunge (void) /*{{{*/
    while (_art_Headers != NULL)
      {
 	if ((0 == (_art_Headers->flags & HEADER_READ)) ||
-	    (_art_Headers->flags & HEADER_TAGGED))
+	    (_art_Headers->flags & HEADER_DONT_DELETE_MASK))
 	  break;
 	_art_Headers = _art_Headers->next;
      }
@@ -6330,7 +6381,7 @@ static void art_xpunge (void) /*{{{*/
 	  {
 	     th = Num_Tag_List.headers[i];
 	     if ((th->flags & HEADER_READ) &&
-		 (0 == (th->flags & HEADER_TAGGED)))
+		 (0 == (th->flags & HEADER_DONT_DELETE_MASK)))
 	       {
 		  th->tag_number = 0;
 		  th->flags &= ~HEADER_NTAGGED;
@@ -6350,7 +6401,7 @@ static void art_xpunge (void) /*{{{*/
    while (next != NULL)
      {
 	if ((0 == (next->flags & HEADER_READ)) ||
-	    (next->flags & HEADER_TAGGED))
+	    (next->flags & HEADER_DONT_DELETE_MASK))
 	  break;
 	next = next->next;
      }
@@ -6361,7 +6412,7 @@ static void art_xpunge (void) /*{{{*/
 	while (next != NULL)
 	  {
 	     if ((0 == (next->flags & HEADER_READ)) ||
-		 (next->flags & HEADER_TAGGED))
+		 (next->flags & HEADER_DONT_DELETE_MASK))
 	       break;
 	     next = next->prev;
 	  }
@@ -6376,7 +6427,7 @@ static void art_xpunge (void) /*{{{*/
      {
 	next = h->real_next;
 	if ((0 == (h->flags & HEADER_READ)) ||
-	    (h->flags & HEADER_TAGGED))
+	    (h->flags & HEADER_DONT_DELETE_MASK))
 	  break;
 	free_header (h);
 	h = next;
@@ -6394,7 +6445,7 @@ static void art_xpunge (void) /*{{{*/
 	  {
 	     next_next = next->real_next;
 	     if ((0 == (next->flags & HEADER_READ)) ||
-		 (next->flags & HEADER_TAGGED))
+		 (next->flags & HEADER_DONT_DELETE_MASK))
 	       break;
 	     free_header (next);
 	     next = next_next;
@@ -6512,7 +6563,7 @@ static void cancel_article (void) /*{{{*/
 /*{{{ header/thread (un)deletion/(un)catchup */
 static void delete_header (Slrn_Header_Type *h) /*{{{*/
 {
-   if (h->flags & HEADER_TAGGED) return;
+   if (h->flags & HEADER_DONT_DELETE_MASK) return;
    if (0 == (h->flags & HEADER_READ))
      {
 	kill_cross_references (h);
@@ -6532,6 +6583,25 @@ static void undelete_header (Slrn_Header_Type *h) /*{{{*/
      }
 }
 
+/*}}}*/
+
+void slrn_request_header (Slrn_Header_Type *h) /*{{{*/
+{
+   if (0 == (h->flags & HEADER_WITHOUT_BODY)) return;
+   if (h->number < 0)
+     {
+	slrn_error (_("Warning: Can only request article bodies from this group."));
+	return;
+     }
+   h->flags |= HEADER_REQUEST_BODY;
+   undelete_header (h);
+}
+/*}}}*/
+
+void slrn_unrequest_header (Slrn_Header_Type *h) /*{{{*/
+{
+   h->flags &= ~HEADER_REQUEST_BODY;
+}
 /*}}}*/
 
 static void catch_up_all (void) /*{{{*/
@@ -6574,7 +6644,6 @@ static void un_catch_up_to_here (void) /*{{{*/
 
 /*}}}*/
 
-
 static void undelete_header_cmd (void) /*{{{*/
 {
    if ((Slrn_Current_Header->parent != NULL)/* in middle of thread */
@@ -6611,6 +6680,42 @@ static void delete_header_cmd (void) /*{{{*/
    Slrn_Full_Screen_Update = 1;
 }
 
+/*}}}*/
+
+static void request_header_cmd (void) /*{{{*/
+{
+   if ((Slrn_Current_Header->parent != NULL)/* in middle of thread */
+       || (Slrn_Current_Header->child == NULL)/* At top with no child */
+       /* or at top with child showing */
+       || (0 == (Slrn_Current_Header->child->flags & HEADER_HIDDEN)))
+     {
+	slrn_request_header (Slrn_Current_Header);
+     }
+   else
+     {
+	for_this_tree (Slrn_Current_Header, slrn_request_header);
+     }
+   slrn_header_down_n (1, 0);
+   Slrn_Full_Screen_Update = 1;
+}
+/*}}}*/
+
+static void unrequest_header_cmd (void) /*{{{*/
+{
+   if ((Slrn_Current_Header->parent != NULL)/* in middle of thread */
+       || (Slrn_Current_Header->child == NULL)/* At top with no child */
+       /* or at top with child showing */
+       || (0 == (Slrn_Current_Header->child->flags & HEADER_HIDDEN)))
+     {
+	slrn_unrequest_header (Slrn_Current_Header);
+     }
+   else
+     {
+	for_this_tree (Slrn_Current_Header, slrn_unrequest_header);
+     }
+   slrn_header_down_n (1, 0);
+   Slrn_Full_Screen_Update = 1;
+}
 /*}}}*/
 
 static void thread_delete_cmd (void) /*{{{*/
@@ -6852,6 +6957,7 @@ static SLKeymap_Function_Type Art_Functions [] = /*{{{*/
    A_KEY("redraw", slrn_redraw),
    A_KEY("repeat_last_key", slrn_repeat_last_key),
    A_KEY("reply", reply_cmd),
+   A_KEY("request", request_header_cmd),
    A_KEY("save", save_article),
 #if SLRN_HAS_SPOILERS
    A_KEY("show_spoilers", show_spoilers),
@@ -6878,6 +6984,7 @@ static SLKeymap_Function_Type Art_Functions [] = /*{{{*/
    A_KEY("uncatchup", un_catch_up_to_here),
    A_KEY("uncatchup_all", un_catch_up_all),
    A_KEY("undelete", undelete_header_cmd),
+   A_KEY("unrequest", unrequest_header_cmd),
    A_KEY("untag_headers", num_untag_headers),
    A_KEY("wrap_article", toggle_wrap_article),
    A_KEY("zoom_article_window", zoom_article_window),
@@ -7003,6 +7110,7 @@ void slrn_init_article_mode (void) /*{{{*/
    SLkm_define_key  ("\033^S", (FVOID_STAR) supersede, Slrn_Article_Keymap);
    SLkm_define_key  ("\033a", (FVOID_STAR) toggle_header_formats, Slrn_Article_Keymap);
    SLkm_define_key  ("\033d", (FVOID_STAR) thread_delete_cmd, Slrn_Article_Keymap);
+   SLkm_define_key  ("\033m", (FVOID_STAR) unrequest_header_cmd, Slrn_Article_Keymap);
    SLkm_define_key  ("\033p", (FVOID_STAR) get_parent_header, Slrn_Article_Keymap);
    SLkm_define_key  ("\033S", (FVOID_STAR) _art_toggle_sort, Slrn_Article_Keymap);
    SLkm_define_key  ("\033t", (FVOID_STAR) toggle_collapse_threads, Slrn_Article_Keymap);
@@ -7019,6 +7127,7 @@ void slrn_init_article_mode (void) /*{{{*/
    SLkm_define_key  ("f", (FVOID_STAR) followup, Slrn_Article_Keymap);
    SLkm_define_key  ("g", (FVOID_STAR) skip_digest_forward, Slrn_Article_Keymap);
    SLkm_define_key  ("j", (FVOID_STAR) goto_article, Slrn_Article_Keymap);
+   SLkm_define_key  ("m", (FVOID_STAR) request_header_cmd, Slrn_Article_Keymap);
    SLkm_define_key  ("n", (FVOID_STAR) art_next_unread, Slrn_Article_Keymap);
    SLkm_define_key  ("o", (FVOID_STAR) save_article, Slrn_Article_Keymap);
    SLkm_define_key  ("p", (FVOID_STAR) art_prev_unread, Slrn_Article_Keymap);
@@ -7321,7 +7430,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 		  
 		  if (status == 0)
 		    {
-		       Slrn_Groups_Dirty = 1;
+		       Slrn_Groups_Dirty |= 1;
 		       r->min = min;
 		    }
 		  
@@ -7940,7 +8049,38 @@ static void disp_write_flags (Slrn_Header_Type *h)
       }
     else SLsmg_write_char ((flags & HEADER_READ) ? 'D': '-');
 }
-   
+
+static char get_body_status (Slrn_Header_Type *h) /*{{{*/
+{
+   if ((h->parent == NULL) && (h->child != NULL)
+       && (h->child->flags & HEADER_HIDDEN))
+     {
+	Slrn_Header_Type *next;
+	unsigned int num=0, num_without=0, num_request=0;
+	
+	next = h->sister;
+	while (h != next)
+	  {
+	     num++;
+	     if (h->flags & HEADER_WITHOUT_BODY)
+	       num_without++;
+	     if (h->flags & HEADER_REQUEST_BODY)
+	       num_request++;
+	     h = h->next;
+	  }
+	
+	if (num == num_request) return 'M';
+	if (num_request) return 'm';
+	if (num == num_without) return 'H';
+	if (num_without) return 'h';
+	return ' ';
+     }
+   if (h->flags & HEADER_REQUEST_BODY) return 'M';
+   if (h->flags & HEADER_WITHOUT_BODY) return 'H';
+   return ' ';
+}
+/*}}}*/
+
 #if SLRN_HAS_GROUPLENS
 # define SLRN_GROUPLENS_DISPLAY_WIDTH 5
 static void disp_write_grplens (Slrn_Header_Type *h)
@@ -8014,6 +8154,13 @@ static char *display_header_cb (char ch, void *data, int *len, int *color) /*{{{
    
    switch (ch)
      {
+      case 'B':
+	retval = buf;
+	retval[0] = get_body_status (h);
+	retval[1] = 0;
+	*len = 1;
+	break;
+	
       case 'C':
 	if ((h->next != NULL) && (h->next->flags & HEADER_HIDDEN))
 	  retval = "C";

@@ -34,7 +34,10 @@ Changes since 0.9.7.4
    When reading in spool mode with spool_check_up_on_nov set, slrn now finds
    out the number of bytes of each article, even if it is not included in
    the news overview file (based on a patch by Jurriaan W Kalkman).
-   
+
+   New command-line option "-w0" that waits on startup, but only if a
+   warning or error is displayed.
+
    configure script accepts new options --with-server-name and
    --with-server-file (Matthias Friedrich).
 

@@ -1042,6 +1042,29 @@ static void set_header_flags (int *flagsp) /*{{{*/
 
 /*}}}*/
 
+static int get_body_status (void) /*{{{*/
+{
+   if ((-1 == check_article_mode ())
+       || (Slrn_Current_Header == NULL))
+     return -1;
+   if (Slrn_Current_Header->flags & HEADER_REQUEST_BODY)
+     return 2;
+   return (Slrn_Current_Header->flags & HEADER_WITHOUT_BODY) ? 1 : 0;
+}
+/*}}}*/
+
+static void request_body (int *mode) /*{{{*/
+{
+   if ((-1 == check_article_mode ())
+       || (Slrn_Current_Header == NULL))
+     return;
+   if (*mode)
+     slrn_request_header (Slrn_Current_Header);
+   else
+     slrn_unrequest_header (Slrn_Current_Header);
+}
+/*}}}*/
+
 static int get_header_number (void)
 {
    if ((-1 == check_article_mode ())
@@ -1397,6 +1420,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_S("extract_article_header", extract_article_header, SLANG_STRING_TYPE),
    MAKE_INTRINSIC_S("extract_displayed_article_header", extract_current_article_header, SLANG_STRING_TYPE),
    MAKE_INTRINSIC_S("get_bg_color", get_bg_color, SLANG_STRING_TYPE),
+   MAKE_INTRINSIC_0("get_body_status", get_body_status, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("get_fg_color", get_fg_color, SLANG_STRING_TYPE),
    MAKE_INTRINSIC_0("get_group_flags", get_group_flags, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("get_grouplens_score", get_grouplens_score, SLANG_INT_TYPE),
@@ -1444,6 +1468,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_SI("read_mini_integer", read_mini_integer, SLANG_INT_TYPE),
    MAKE_INTRINSIC_SS("register_hook", slrn_register_hook_by_name, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("reload_scorefile", reload_scorefile, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_I("request_body", request_body, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_S("save_current_article", save_current_article, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("search_article", search_article, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("search_article_first", search_article_first, SLANG_INT_TYPE),

@@ -186,6 +186,7 @@ int _art_subject_cmp (char *sa, char *sb) /*{{{*/
  * Default sorting order:
  * header_subject_cmp	=> Subjects alphabetically a-z, case insensitive
  * header_date_cmp	=> Oldest articles first
+ * header_has_body_cmp  => Articles without body first
  * header_highscore_cmp	=> Articles without high scores first
  * header_score_cmp	=> Lowest scores first
  * header_author_cmp	=> Realnames alphabetically A-z
@@ -208,6 +209,17 @@ static int header_date_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*/
    bsec = slrn_date_to_order_parm (b->date);
    
    return (int) (asec - bsec);
+}
+/*}}}*/
+
+static int header_has_body_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*/
+{
+   int abody, bbody;
+   
+   abody = (0 != (a->flags & HEADER_WITHOUT_BODY));
+   bbody = (0 != (b->flags & HEADER_WITHOUT_BODY));
+   
+   return bbody - abody;
 }
 /*}}}*/
 
@@ -1030,6 +1042,8 @@ static void recompile_sortorder(char *sort_order) /*{{{*/
 	  add_sort_function(header_num_cmp, isupper(buf[0]));
 	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Id"))
 	  add_sort_function(header_msgid_cmp, isupper(buf[0]));
+	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Body"))
+	  add_sort_function(header_has_body_cmp, isupper(buf[0]));
 	else /* Nonexistant sorting method */
 	  {
 	     slrn_error(_("Can't sort according to `%s'"), buf);

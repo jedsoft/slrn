@@ -57,6 +57,21 @@ mode and allow you to manipulate the article window.
 \seealso{set_article_window_size}
 \done
 
+\function{get_body_status}
+\usage{Integer get_body_status ()}
+\description
+   When reading from an slrnpull spool in "true offline" mode, the body that
+   belongs to an article header might not yet be on disk. This function
+   returns one of the following values:
+#v+
+   -1  : currently, no header is selected
+    0  : the body of the current article is present
+    1  : the body of the article is missing
+    2  : the body of the article is missing, but requested for download
+#v-
+\seealso{request_body}
+\done
+
 \function{get_next_art_pgdn_action}
 \usage{Integer get_next_art_pgdn_action ()}
 \description
@@ -155,6 +170,15 @@ mode and allow you to manipulate the article window.
      replace_article (strlow (article_as_string ()));
 #v-
 \seealso{article_as_string, is_article_visible}
+\done
+
+\function{request_body}
+\usage{request_body (Integer mode)}
+\description
+  If an article does not yet have a body, you can request it for download
+  using this function. Setting \var{mode} to 1 requests the body, setting it
+  to 0 un-requests it.
+\seealso{get_body_status}
 \done
 
 \function{save_current_article}

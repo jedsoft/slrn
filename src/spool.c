@@ -57,6 +57,7 @@
 #include <limits.h>
 
 extern int Slrn_Prefer_Head;
+char *Slrn_Overviewfmt_File;
 
 static int spool_put_server_cmd (char *, char *, unsigned int );
 static int spool_select_group (char *, int *, int *);
@@ -84,6 +85,7 @@ static Slrn_Server_Obj_Type Spool_Server_Obj;
 
 /* some state that the NNTP server would take care of if we were using one */
 static FILE *Spool_fh_local=NULL;
+static int Spool_Ignore_Comments=0;	/* ignore comments while reading */
 static SLRegexp_Type *Spool_Output_Regexp=NULL;
 static char *Spool_Group=NULL;
 static char *Spool_Group_Name;
@@ -152,6 +154,7 @@ static int spool_fclose_local (void)
    Spool_fhead=0;
    Spool_fFakingActive=0;
    Spool_Output_Regexp = NULL;
+   Spool_Ignore_Comments=0;
 
    if (Spool_fh_local != NULL)
      {
@@ -1059,8 +1062,9 @@ static int spool_read_fhlocal (char *line, unsigned int len)
 	     return 0;
 	  }
      }
-   while ((Spool_Output_Regexp != NULL) &&
-	  (NULL == slrn_regexp_match (Spool_Output_Regexp, line)));
+   while (((Spool_Output_Regexp != NULL) &&
+	   (NULL == slrn_regexp_match (Spool_Output_Regexp, line))) ||
+	  (Spool_Ignore_Comments && (*line == '#')));
 
    len = strlen(line);
 
@@ -1380,7 +1384,16 @@ static int spool_read_xhdr (char *the_buf, unsigned int len)
 
 static int spool_list (char *what)
 {
-   (void) what;
+   if (!slrn_case_strcmp ((unsigned char*)what,(unsigned char*)"overview.fmt"))
+     {
+	spool_fclose_local();
+	Spool_fh_local=fopen(Slrn_Overviewfmt_File,"r");
+	if (Spool_fh_local)
+	  {
+	     Spool_Ignore_Comments = 1;
+	     return OK_GROUPS;
+	  }
+     }
    return ERR_FAULT;
 }
 
@@ -1663,6 +1676,7 @@ static int spool_init_objects (void)
    Slrn_Active_File = slrn_safe_strmalloc (SLRN_SPOOL_ACTIVE);
    Slrn_ActiveTimes_File = slrn_safe_strmalloc (SLRN_SPOOL_ACTIVETIMES);
    Slrn_Newsgroups_File = slrn_safe_strmalloc (SLRN_SPOOL_NEWSGROUPS);
+   Slrn_Overviewfmt_File = slrn_safe_strmalloc (SLRN_SPOOL_OVERVIEWFMT);
 #if defined(IBMPC_SYSTEM)
    slrn_os2_convert_path (Slrn_Inn_Root);
    slrn_os2_convert_path (Slrn_Spool_Root);
@@ -1671,6 +1685,7 @@ static int spool_init_objects (void)
    slrn_os2_convert_path (Slrn_Active_File);
    slrn_os2_convert_path (Slrn_ActiveTimes_File);
    slrn_os2_convert_path (Slrn_Newsgroups_File);
+   slrn_os2_convert_path (Slrn_Overviewfmt_File);
 #endif   
    return 0;
 }
@@ -1694,6 +1709,7 @@ static int spool_select_server_object (void)
    Slrn_Active_File = spool_root_dircat (Slrn_Active_File);
    Slrn_ActiveTimes_File = spool_root_dircat (Slrn_ActiveTimes_File);
    Slrn_Newsgroups_File = spool_root_dircat (Slrn_Newsgroups_File);
+   Slrn_Overviewfmt_File = spool_root_dircat (Slrn_Overviewfmt_File);
    
    slrn_free (Spool_Server_Obj.sv_name);
    Spool_Server_Obj.sv_name = slrn_safe_strmalloc (Slrn_Spool_Root);

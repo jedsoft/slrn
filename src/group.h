@@ -73,14 +73,18 @@ typedef struct Slrn_Group_Type
 						* what the server has.  next ranges
 						* correspond to what has been read.
 						*/
+   Slrn_Range_Type *requests; /* body requests for true offline mode
+			       * note that the first one is also malloced here! */
+   
    int unread;
    char *descript;		       /* description of the group */
 }
 Slrn_Group_Type;
 
 extern Slrn_Group_Type *Slrn_Group_Current_Group;
-/* See important comment in group.c about this. */
+/* See important comment in group.c about these. */
 extern void slrn_add_group_ranges (Slrn_Group_Type *, int, int);
+extern void slrn_add_group_requests (Slrn_Group_Type *, int, int);
 
 extern char *Slrn_Group_Help_Line;
 extern char *Slrn_Group_Status_Line;

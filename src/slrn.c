@@ -890,7 +890,7 @@ void slrn_va_exit_error (char *fmt, va_list ap)
 	     fputc ('\n', stderr);
 	     vfprintf (stderr, fmt, ap);
 	  }   
-	if (Slrn_Groups_Dirty) slrn_write_newsrc (0);
+	if (Slrn_Groups_Dirty&1) slrn_write_newsrc (0);
 	perform_cleanup ();
      }
 

@@ -84,6 +84,7 @@ static Slrn_Header_Line_Type Xover_Headers [] = /*{{{*/
 /*}}}*/
 
 static char *Xref;
+static char *XHasBody;
 
 /* The pointers in the above structure will point to the following buffer. */
 static char *Malloced_Headers;
@@ -99,6 +100,7 @@ static void parse_headers (void) /*{{{*/
    for (i = 0; i < 7; i++)
      Xover_Headers[i].value = NULL;
    Xref = NULL;
+   XHasBody = NULL;
    
    for (addh = Additional_Headers; addh != NULL; addh = addh->next)
      addh->value = "";
@@ -334,6 +336,9 @@ static int parsed_headers_to_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
    xov->add_hdrs = copy_add_headers (Additional_Headers, 0);
 
    xov->id = id;
+
+   xov->without_body = (NULL != XHasBody) &&
+     (!slrn_case_strcmp ((unsigned char*)XHasBody, (unsigned char*)"no"));
    
    return 0;
 }
@@ -389,6 +394,11 @@ void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h)
    h->bytes = xov->bytes;
    h->xref = xov->xref;
    h->add_hdrs = xov->add_hdrs;
+
+#ifndef SLRNPULL_CODE
+   if (xov->without_body)
+     h->flags |= HEADER_WITHOUT_BODY;
+#endif
    
    /* Since the strings have been malloced, the message_id pointer can be changed.
     */
@@ -481,6 +491,8 @@ int slrn_read_overview_fmt (void) /*{{{*/
 	     
 	     if (!slrn_case_strcmp ((unsigned char*) line, (unsigned char*)"Xref"))
 	       new_entry->value = &Xref;
+	     else if (!slrn_case_strcmp ((unsigned char*) line, (unsigned char*)"X-Has-Body"))
+	       new_entry->value = &XHasBody;
 	     if (!strcmp (p, "full"))
 	       new_entry->full = 1;
 	     
@@ -521,7 +533,7 @@ void slrn_clear_requested_headers (void) /*{{{*/
    
    for (o = Overview_Fmt; o != NULL; o = o->next)
      {
-	if (o->value != &Xref)
+	if ((o->value != &Xref) && (o->value != &XHasBody))
 	  o->value = NULL;
      }
 }

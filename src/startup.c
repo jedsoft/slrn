@@ -735,6 +735,13 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      NULL
 #endif
      },
+     {"spool_overviewfmt_file",
+#if SLRN_HAS_SPOOL_SUPPORT
+     &Slrn_Overviewfmt_File
+#else
+     NULL
+#endif
+     },
      {"macro_directory",
 #if SLRN_HAS_SLANG
 	&Slrn_Macro_Dir

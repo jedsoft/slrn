@@ -84,6 +84,7 @@
 # define SLRN_SPOOL_ACTIVE	"data/active"
 # define SLRN_SPOOL_ACTIVETIMES	"data/active.times"
 # define SLRN_SPOOL_NEWSGROUPS	"data/newsgroups"
+# define SLRN_SPOOL_OVERVIEWFMT "data/overview.fmt"
 
   /* set to 1 to allow scanning the active file for article ranges if there's
    * no .overview file -- if 0 or no active file, then look at filenames in

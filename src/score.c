@@ -1118,7 +1118,9 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 			 {
 			    slrn_message (_("%s has expired score on line %d"),
 					  file, *linenum);
+#ifndef SLRNPULL_CODE
 			    Slrn_Saw_Warning = 1;
+#endif
 			    c->start_new_score = 0;
 			    c->score_has_expired = 1;
 			 }

@@ -112,6 +112,7 @@ extern char *Slrn_Nov_File;
 extern char *Slrn_Active_File;
 extern char *Slrn_ActiveTimes_File;
 extern char *Slrn_Newsgroups_File;
+extern char *Slrn_Overviewfmt_File;
 extern int Slrn_Spool_Check_Up_On_Nov;
 #endif
 
