@@ -10,7 +10,7 @@ slrn_SOURCES = art.c chmap.c editscore.c group.c grplens.c hash.c help.c \
  print.c art_misc.c vfile.c snprintf.c
 
 slrnpull_SOURCES = nntplib.c slrndir.c slrnpull.c snprintf.c ttymsg.c util.c
-slrnpull_DEPENDENCIES = pullsupport
+slrnpull_DEPENDENCIES = stamp2
 
 DEFS=-Dunix -DSHAREDIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\"
 INCLUDES=-I. -I$(top_srcdir)/intl @SLANG_INC@ @SSLINC@ @UUINC@
@@ -27,7 +27,7 @@ EXTRA_DIST = art.h charmaps.h chmap.h clientlib.c clientlib.h group.h \
  Makefile.g32 Makefile.os2 Makefile.w32 VMSMAKE.COM nntp.c sltcp.c spool.c \
  vms.c vmsmail.c
 
-MOSTLYCLEANFILES = *~ config.h chkslang slrnpull uudecode
+MOSTLYCLEANFILES = *~ config.h chkslang slrnpull stamp2 uudecode
 
 uudecode.o: decode.c
 	$(COMPILE) -DSTANDALONE -o uudecode.o -c decode.c
@@ -37,7 +37,8 @@ slangversion_SOURCES =
 slangversion: chkslang
 	./chkslang slrn 10003 10400
 
-pullsupport:
+## Another hack: Find out whether slrnpull support gets compiled in
+stamp2: config.h
 	@if test "x$(SLRNPULL)" != "xslrnpull"; then \
 	echo ""; \
 	echo "*** WARNING ***"; \
@@ -46,4 +47,6 @@ pullsupport:
 	echo "You most probably do not want to do this."; \
 	echo "Please call ./configure --with-slrnpull and compile again."; \
 	echo ""; \
+	else \
+	touch stamp2; \
 	fi;
