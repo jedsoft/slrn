@@ -13,6 +13,8 @@ Changes since 0.9.7.3
   * Don't remove _^H combinations in articles (corrupted yenc-encoded data).
   * Don't decode headers when writing them into the overview file (slrnpull).
   * The --with-libdir config option was ignored.
+  * Work around a problem with leafnode when getting articles from a different
+    group by Message-Id.
 
    New algorithm for article sorting (based on a patch by Felix Schueller).
    This adds a highly configurable custom sorting interface (which will

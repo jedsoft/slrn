@@ -107,7 +107,7 @@ static int Spool_fakeactive_newsgroups=0;
 static unsigned int bytes_read=0;
 
 /* Note: Please leave debugging output untranslated.
- *       It cannot be interpreted by the end user anyways. */
+ *       It cannot be interpreted by the end user anyway. */
 static void debug_output (char *file, int line, char *fmt, ...)
 {
    va_list ap;

@@ -1000,7 +1000,9 @@ int slrn_xover_for_msgid (char *msgid, Slrn_XOver_Type *xov) /*{{{*/
 	return -1;
      }
    
-   if (id == 0) id = -1;
+   /* As Leafnode sends article numbers from different groups,
+    * we always need to set this to -1. Sigh. */
+   /*if (id == 0)*/ id = -1;
    retval = read_head_into_xover (id, xov);
    
    return retval;

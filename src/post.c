@@ -854,7 +854,7 @@ static int post_references_header (char *line)
    return 0;
 }
 
-static int saved_failed_post (char *file)
+static int saved_failed_post (char *file, char *msg)
 {
    FILE *fp, *outfp;
    char filebuf[SLRN_MAX_PATH_LEN];
@@ -877,8 +877,9 @@ static int saved_failed_post (char *file)
 	return -1;
      }
 
-   slrn_message (_("Failed post saved in %s"), filebuf);
-
+   slrn_error (_("%s Failed post saved in %s"),
+	       (msg != NULL) ? msg : _("Posting not allowed."), filebuf);
+   
    (void) fputs ("\n\n", outfp);
 
    while (NULL != (fgets (line, sizeof (line), fp)))
@@ -1098,10 +1099,9 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	(void) slrn_run_hooks (HOOK_POST_FILE, 1, file);
 	if (SLang_Error)
 	  {
-	     slrn_error (_("post_file_hook returned error.  %s not posted."), file);
 	     if (!Slrn_Editor_Uses_Mime_Charset)
 	       slrn_chmap_fix_file (file, 1);
-	     (void) saved_failed_post (file);
+	     (void) saved_failed_post (file, _("post_file_hook returned error."));
 	     return -1;
 	  }
 
@@ -1121,9 +1121,9 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	fclose (fp);
 	if (!Slrn_Editor_Uses_Mime_Charset)
 	  slrn_chmap_fix_file (file, 1);
-	(void) saved_failed_post (file);
-	if (status != -1)
-	  slrn_error (_("Posting not allowed."));
+	(void) saved_failed_post (file, (status != -1) ?
+				  _("Posting not allowed.") :
+				  _("Could not reach server."));
 	return -1;
      }
 
@@ -1259,7 +1259,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	  slrn_chmap_fix_file (file, 1); 
 	if (Slrn_Batch) 
 	  {
-	     saved_failed_post (file);
+	     saved_failed_post (file, NULL);
 	     return -1;
 	  }
 
@@ -1282,7 +1282,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	    || ((rsp == 'e')
 		&& (slrn_edit_file (Slrn_Editor_Post, file, 1, 0) < 0)))
 	  {
-	     (void) saved_failed_post (file);
+	     (void) saved_failed_post (file, NULL);
 	     return -1;
 	  }
 	goto try_again;
