@@ -921,8 +921,11 @@ static void sort_by_threads (void) /*{{{*/
    
    /* Now perform sort on subject to catch those that have fallen through the
     * cracks, i.e., no references */
-   slrn_message_now (_("Linking articles with identical subjects ..."));
-   link_same_subjects ();
+   if (!(Slrn_New_Subject_Breaks_Threads & 2))
+     {
+	slrn_message_now (_("Linking articles with identical subjects ..."));
+	link_same_subjects ();
+     }
    
    /* Now link up others as sisters */
    h = Slrn_First_Header;
@@ -1011,14 +1014,22 @@ static void recompile_sortorder(char *sort_order) /*{{{*/
    
    while (-1 != SLextract_list_element (sort_order, nth, ',', buf, sizeof(buf)))
      {
-	if (! strcasecmp(buf, "Subject")) add_sort_function(header_subject_cmp, isupper(buf[0]));
-	else if (! strcasecmp(buf, "Score")) add_sort_function(header_score_cmp, isupper(buf[0]));
-	else if (! strcasecmp(buf, "Highscore")) add_sort_function(header_highscore_cmp, isupper(buf[0]));
-	else if (! strcasecmp(buf, "Date")) add_sort_function(header_date_cmp, isupper(buf[0]));
-	else if (! strcasecmp(buf, "Author")) add_sort_function(header_author_cmp, isupper(buf[0]));
-	else if (! strcasecmp(buf, "Lines")) add_sort_function(header_lines_cmp, isupper(buf[0]));
-	else if (! strcasecmp(buf, "Number")) add_sort_function(header_num_cmp, isupper(buf[0]));
-	else if (! strcasecmp(buf, "Id")) add_sort_function(header_msgid_cmp, isupper(buf[0]));
+	if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Subject"))
+	  add_sort_function(header_subject_cmp, isupper(buf[0]));
+	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Score"))
+	  add_sort_function(header_score_cmp, isupper(buf[0]));
+	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Highscore"))
+	  add_sort_function(header_highscore_cmp, isupper(buf[0]));
+	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Date"))
+	  add_sort_function(header_date_cmp, isupper(buf[0]));
+	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Author"))
+	  add_sort_function(header_author_cmp, isupper(buf[0]));
+	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Lines"))
+	  add_sort_function(header_lines_cmp, isupper(buf[0]));
+	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Number"))
+	  add_sort_function(header_num_cmp, isupper(buf[0]));
+	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Id"))
+	  add_sort_function(header_msgid_cmp, isupper(buf[0]));
 	else /* Nonexistant sorting method */
 	  {
 	     slrn_error(_("Can't sort according to `%s'"), buf);
