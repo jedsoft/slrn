@@ -1,18 +1,19 @@
 # Polish translation of slrn.
-# Copyright (C) 2001
+# Copyright (C) 2001-2002
 # Arkadiusz Sochala <jojoro@wp.pl>, 2001.
 # Jarek Baczynski <jarek@fanthom.irc.pl>, 2001.
 #
 # Zmiany:
+# 2002-03-12: Uaktualnienie do wersji 0974,
 # 2001-11-11: Wiele poprawek zgloszonych przez:
 #   Tomasz Sienicki <tsca@mailserver.dk>,
 #   Jerzy Klejnowski <ksionrze@poczta.wp.pl>.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: slrn 0.9.7.3\n"
+"Project-Id-Version: slrn 0.9.7.4\n"
 "POT-Creation-Date: 2002-03-05 17:41+0100\n"
-"PO-Revision-Date: 2001-11-15 17:20+0100\n"
+"PO-Revision-Date: 2002-03-12 18:20+0100\n"
 "Last-Translator: Slrn-pl developers <slrn-pl-devel@yahoogroups.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +25,7 @@ msgstr ""
 #: src/art.c:298
 #, c-format
 msgid "Ctrl-%c"
-msgstr ""
+msgstr "Ctrl-%c"
 
 #: src/art.c:302
 msgid "SPACE"
@@ -32,7 +33,7 @@ msgstr "SPACJA"
 
 #: src/art.c:303
 msgid "TAB"
-msgstr ""
+msgstr "TAB"
 
 #: src/art.c:304
 msgid "RETURN"
@@ -40,15 +41,15 @@ msgstr "ENTER"
 
 #: src/art.c:305
 msgid "ESCAPE"
-msgstr ""
+msgstr "ESC"
 
 #: src/art.c:306
 msgid "DELETE"
-msgstr ""
+msgstr "DELETE"
 
 #: src/art.c:307
 msgid "BACKSPACE"
-msgstr ""
+msgstr "BACKSPACE"
 
 #: src/art.c:667
 msgid "No next digest."
@@ -141,22 +142,22 @@ msgstr "Przerwano przesy³anie artyku³u lub po³±czenie zosta³o zerwane."
 #: src/art.c:2141
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
-msgstr ""
+msgstr "#%2d/%-2d: Odczytano %4d/%-4d linii (%s) przy %.2fkB/sek"
 
 #: src/art.c:2145
 #, c-format
 msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
-msgstr ""
+msgstr "#%2d/%-2d: Odczytano %4d/%-4d linii (%s)"
 
 #: src/art.c:2151
 #, c-format
 msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
-msgstr ""
+msgstr "[%d] Odczytano dot±d %d/%d linii przy %.2fkB/sek"
 
 #: src/art.c:2154
 #, c-format
 msgid "[%d] Read %d/%d lines so far"
-msgstr ""
+msgstr "[%d] Odczytano dot±d %d/%d linii"
 
 #: src/art.c:2194
 msgid "Server sent empty article."
@@ -417,57 +418,47 @@ msgid "Mark not set."
 msgstr "Znacznik nie ustawiony."
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Subject search "
-msgstr "Temat: "
+msgstr "Szukaj tematu "
 
 #: src/art.c:4589
-#, fuzzy
 msgid "Author search "
-msgstr " Szukaj "
+msgstr "Szukaj autora "
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(forward)"
-msgstr "W przód"
+msgstr "(w przód)"
 
 #: src/art.c:4590
-#, fuzzy
 msgid "(backward)"
-msgstr "W ty³"
+msgstr "(w ty³)"
 
 #: src/art.c:4776 src/slrnpull.c:1182
-#, fuzzy, c-format
+#, c-format
 msgid "Score %d killed article %s\n"
-msgstr ""
-"Punktacja %d zabitego artyku³u %s\n"
-"Grupa: %s\n"
-"Od: %s\n"
-"Temat: %s\n"
-"\n"
+msgstr "Punktacja %d zabitego artyku³u %s\n"
 
 #: src/art.c:4780 src/slrnpull.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
-msgstr "tworzenie %s (%s)\n"
+msgstr " Punktacja %c%5i: %s (%s:%i)\n"
 
 #: src/art.c:4784 src/slrnpull.c:1190
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
-msgstr ""
+msgstr " Punktacja %c%5i: %s:%i\n"
 
 #: src/art.c:4789 src/slrnpull.c:1195
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "  Newsgroup: %s\n"
 "  From: %s\n"
 "  Subject: %s\n"
 "\n"
 msgstr ""
-"Punktacja %d zabitego artyku³u %s\n"
-"Grupa: %s\n"
-"Od: %s\n"
-"Temat: %s\n"
+"  Grupa: %s\n"
+"  Od: %s\n"
+"  Temat: %s\n"
 "\n"
 
 #: src/art.c:4854
@@ -641,18 +632,16 @@ msgid "Spoilers visible!"
 msgstr "Spoilery widoczne!"
 
 #: src/art_sort.c:329
-#, fuzzy
 msgid "slrn_sort_headers(): memory allocation failure."
-msgstr "sort_headers(): b³±d alokacji pamiêci."
+msgstr "slrn_sort_headers(): b³±d alokacji pamiêci."
 
 #: src/art_sort.c:586
 msgid "link_same_subjects: memory allocation failure."
 msgstr "link_same_subjects: b³±d alokacji pamiêci."
 
 #: src/art_sort.c:797
-#, fuzzy
 msgid "Internal Error in fixup_threads()."
-msgstr "B³±d wewnêtrzny."
+msgstr "B³±d wewnêtrzny w fixup_threads()."
 
 #: src/art_sort.c:851
 msgid "Threading by references ..."
@@ -678,7 +667,7 @@ msgstr "£±czenie artyku³ów o takich samych tematach..."
 #: src/art_sort.c:1022
 #, c-format
 msgid "Can't sort according to `%s'"
-msgstr ""
+msgstr "Nie mo¿na posortowaæ wed³ug `%s'"
 
 #: src/chkslang.c:58
 #, c-format
@@ -1121,7 +1110,7 @@ msgstr ""
 
 #: src/group.c:2628
 msgid "Do you want to restore your newsrc from the autosave version"
-msgstr "Czy na pewno odtworzyæ plik newsrc z pliku autozapisu"
+msgstr "Czy chcesz odtworzyæ plik newsrc z pliku autozapisu"
 
 #: src/group.c:2689 src/post.c:1313 src/slrnpull.c:1559
 #, c-format
@@ -2012,12 +2001,11 @@ msgstr "Warto¶æ lokalnego zestawu znaków w wierszu %d poza zakresem."
 #: src/interp.c:452
 #, c-format
 msgid "Array must contain at least one, at most %d elements."
-msgstr ""
+msgstr "Tablica powinna zawieraæ co najmniej 1 i co najwy¿ej %d elementów."
 
 #: src/interp.c:460
-#, fuzzy
 msgid "Failed to allocate memory."
-msgstr "B³±d wyboru zestawu znaków."
+msgstr "B³±d alokacji pamiêci."
 
 #: src/interp.c:527
 msgid "definekey: no such keymap."
@@ -2158,7 +2146,7 @@ msgstr "W±tkuj, potem sortuj wg daty (od najstarszych)"
 #. 1011
 #: src/menu.c:204
 msgid "Custom sorting (see manual)"
-msgstr ""
+msgstr "Sortowanie u¿ytkownika (zobacz podrêcznik)"
 
 #: src/menu.c:212
 msgid "Sorting Method"
@@ -2402,7 +2390,7 @@ msgid ""
 "                 Note: This option has no effect on some systems.\n"
 msgstr ""
 "--nntp opcje:\n"
-"-h nntp-host    Serwer z którym chcesz siê po³±czyæ. Przeci±¿a zmienn± "
+"-h nntp-host    Serwer z którym chcesz siê po³±czyæ. Zastêpuje zmienn± "
 "NNTPSERVER.\n"
 "-p NNTP-PORT    Ustaw port NNTP jako NNTP-PORT. Domy¶ln± warto¶ci± jest "
 "119.\n"
@@ -2439,7 +2427,7 @@ msgstr "£±czenie z serwerem %s ..."
 #: src/nntplib.c:493
 #, c-format
 msgid "Connected to host.  %s"
-msgstr "Po³±czono z serwerem.  %s"
+msgstr "Po³±czono z serwerem. %s"
 
 #: src/nntplib.c:494
 msgid "Posting ok."
@@ -2487,7 +2475,7 @@ msgstr "Mo¿liwo¶ci autoryzacji"
 #. 199
 #: src/nntplib.c:1125
 msgid "Debug output"
-msgstr ""
+msgstr "Komunikaty debugowania"
 
 #. 200
 #: src/nntplib.c:1127
@@ -2597,7 +2585,7 @@ msgstr "wymagana autoryzacja"
 #. 381
 #: src/nntplib.c:1169
 msgid "<type> authorization data required"
-msgstr ""
+msgstr "<type> wymagane dane autoryzacji"
 
 #. 400
 #: src/nntplib.c:1171
@@ -2822,9 +2810,9 @@ msgid "***Warning: error writing to %s"
 msgstr "***Ostrze¿enie: b³±d zapisu do pliku %s"
 
 #: src/post.c:880
-#, fuzzy, c-format
+#, c-format
 msgid "%s Failed post saved in %s"
-msgstr "B³êdny artyku³ zapisany w pliku %s"
+msgstr "%s Artyku³ zapisano w pliku %s"
 
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
@@ -2895,14 +2883,12 @@ msgid "Posting ..."
 msgstr "Wysy³anie ..."
 
 #: src/post.c:1104
-#, fuzzy
 msgid "post_file_hook returned error."
-msgstr "post_file_hook zwróci³ b³±d. %s nie wys³ano."
+msgstr "post_file_hook zwróci³ b³±d."
 
 #: src/post.c:1126
-#, fuzzy
 msgid "Could not reach server."
-msgstr "Nie mo¿na wej¶æ do grupy %s."
+msgstr "Brak po³±czenia z serwerem."
 
 #: src/post.c:1254
 msgid "Posting...done."
@@ -3869,7 +3855,7 @@ msgstr "B³±d funkcji SSL_set_fd()\n"
 
 #: src/sltcp.c:536
 msgid "SSL_connect"
-msgstr ""
+msgstr "SSL_connect"
 
 #: src/spool.c:793
 #, c-format

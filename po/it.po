@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slrn 0.9.7.3\n"
 "POT-Creation-Date: 2002-03-05 17:41+0100\n"
-"PO-Revision-Date: 2002-03-05 21:28+0100\n"
+"PO-Revision-Date: 2002-03-13 01:29+0100\n"
 "Last-Translator: Emmanuele Bassi <emmanuele.bassi@iol.it>\n"
 "Language-Team: ITALIAN <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -50,7 +50,7 @@ msgstr "Nessun archivio successivo."
 
 #: src/art.c:1021
 msgid "Invalid Browser definition."
-msgstr "Definizione invalida del browser."
+msgstr "Definizione del browser invalida."
 
 #: src/art.c:1055
 msgid "Browse (^G aborts): "
@@ -165,7 +165,7 @@ msgstr "Questa operazione richiede un articolo"
 #: src/art.c:2611
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
-msgstr "%s non è valido.  Continua comunque"
+msgstr "%s non è valido. Continua comunque"
 
 #: src/art.c:2612
 msgid "Email address"
@@ -237,7 +237,7 @@ msgstr "Messaggio in Cc all'autore"
 #: src/art.c:3117
 #, c-format
 msgid "%s appears invalid.  CC anyway"
-msgstr "%s è invalido.  Invia una copia comunque"
+msgstr "%s è invalido. Invia una copia comunque"
 
 #: src/art.c:3295
 msgid "Are you sure you want to supersede"
@@ -266,7 +266,7 @@ msgstr "Non ci sono successivi articoli non letti."
 
 #: src/art.c:3581
 #, c-format
-msgid "No following unread articles.  Press %s for next group."
+msgid "No following unread articles. Press %s for next group."
 msgstr "Non ci sono altri articoli non letti. Premi %s per il prossimo gruppo."
 
 #: src/art.c:3612
@@ -380,7 +380,7 @@ msgstr "In pipe con il comando: "
 
 #: src/art.c:4216
 msgid "Aborted.  Command name is required."
-msgstr "Annullato.  E' richiesto il nome del comando."
+msgstr "Annullato. E' richiesto il nome del comando."
 
 #: src/art.c:4221
 #, c-format
@@ -494,7 +494,7 @@ msgstr "Recupero articoli figli dal server...[%c]"
 
 #: src/art.c:5388
 msgid "Your server does not provide support for this feature."
-msgstr "Il tuo server non supporta questa feature."
+msgstr "Il tuo server non supporta questa caratteristica."
 
 #: src/art.c:5554
 msgid "Header is part of a reference loop"
@@ -598,7 +598,7 @@ msgstr ""
 #: src/art.c:7749
 #, c-format
 msgid "End of Thread.  Next: %s"
-msgstr "Fine del Thread.  Successivo: %s"
+msgstr "Fine del Thread. Successivo: %s"
 
 #: src/art.c:7751
 msgid "End of Thread."
@@ -626,7 +626,7 @@ msgstr "slrn_sort_headers(): allocazione di memoria fallita."
 
 #: src/art_sort.c:586
 msgid "link_same_subjects: memory allocation failure."
-msgstr "link_same_subjects: fallita allocazione di memoria."
+msgstr "link_same_subjects: allocazione di memoria fallita."
 
 #: src/art_sort.c:797
 msgid "Internal Error in fixup_threads()."
@@ -679,12 +679,12 @@ msgstr ""
 "\n"
 "\n"
 "******\n"
-"slang.h non corrisponde alla versione della libreria slang.  Hai installato "
+"slang.h non corrisponde alla versione della libreria slang. Hai installato "
 "slang\n"
-"come una libreria distribuita?  Hai lanciato ldconfig?  Hai un problema di\n"
+"come una libreria distribuita? Hai lanciato ldconfig? Hai un problema di\n"
 "installazione e probabilmente devi controllare le variabili SLANG nel "
 "Makefile\n"
-"e impostarle correttamente.  Prova anche: make clean; make\n"
+"e impostarle correttamente. Prova anche: make clean; make\n"
 "******\n"
 "\n"
 
@@ -740,7 +740,7 @@ msgstr "Set di caratteri non supportato: %s"
 
 #: src/decode.c:105
 msgid "Error closing file.  File system full?"
-msgstr "Errore nella chiusura del file.  File system pieno?"
+msgstr "Errore nella chiusura del file. File system pieno?"
 
 #: src/decode.c:124
 msgid "Unable to open /bin/sh\n"
@@ -813,7 +813,7 @@ msgstr "QqTt"
 
 #: src/editscore.c:76
 msgid "A Score file has not been specified."
-msgstr "Un file di Score non è stato specificato."
+msgstr "Non è stato specificato un file di score."
 
 #: src/editscore.c:86
 msgid "Pick Score type: Subject, From, References, Edit, Cancel"
@@ -825,12 +825,12 @@ msgstr "Quale newsgroup: Questo gruppo, Tutti i gruppi"
 
 #: src/editscore.c:111
 msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
-msgstr "Scade (MM/GG/AAAA, GG-MM-AAAA, +NN (giorni) o lascia bianco): "
+msgstr "Scade (MM/GG/AAAA, GG-MM-AAAA, +NN (giorni) o lascia vuoto): "
 
 #: src/group.c:375
 #, c-format
 msgid "Selecting %s ..."
-msgstr "Selezionando %s ..."
+msgstr "Selezionano %s ..."
 
 #: src/group.c:387 src/group.c:525 src/group.c:1146
 #, c-format
@@ -870,7 +870,7 @@ msgstr "Vuoi davvero uscire"
 
 #: src/group.c:1044
 msgid "Write to newsrc file failed.  Quit anyway"
-msgstr "Impossibile scrivere sul file newsrc.  Sto uscendo comunque"
+msgstr "Impossibile scrivere sul file newsrc. Sto uscendo comunque"
 
 #: src/group.c:1057 src/group.c:1300
 msgid "End of Buffer."
@@ -882,7 +882,7 @@ msgstr "Inizio del Buffer."
 
 #: src/group.c:1133
 msgid "Server connection dropped."
-msgstr "Connesione al server caduta."
+msgstr "Connessione al server caduta."
 
 #: src/group.c:1176 src/group.c:2675
 #, c-format
@@ -921,7 +921,7 @@ msgstr "Aggiungi gruppo: "
 #: src/group.c:1361
 #, c-format
 msgid "Moving %s. Press RETURN when finished."
-msgstr "Sto muovendo %s. Premi INVIO quando hai finito."
+msgstr "Sto spostando %s. Premi INVIO quando hai finito."
 
 #: src/group.c:1444
 msgid "Subscribe pattern: "
@@ -963,7 +963,7 @@ msgstr "Invio non permesso."
 
 #: src/group.c:1754
 msgid "Are you sure that you want to post"
-msgstr "Sei sicuro di volere postare"
+msgstr "Sei sicuro di voler postare"
 
 #: src/group.c:1764
 msgid "Newsgroup: "
@@ -1030,13 +1030,11 @@ msgid ""
 "Note: This step may take some time if you have a slow connection!!!\n"
 msgstr ""
 "Recupero delle descrizioni dei newsgroup dal server.\n"
-"Nota: Questo passo potrebbe richiedere del tempo se hai una connessione "
-"lenta!!!\n"
+"Nota: Questo potrebbe richiedere del tempo se hai una connessione lenta!!!\n"
 
 #: src/group.c:2191
 msgid "Server failed on list newsgroups command."
-msgstr ""
-"Il server non è riuscito a rispondere al comando di lista dei newsgroup."
+msgstr "Il server no ha inviato la lista dei newsgroup."
 
 #: src/group.c:2206
 msgid "Error reading line from server"
@@ -1163,11 +1161,11 @@ msgstr "-%D-Newsgroup: %s %-20g -- %L (%P)"
 #: src/group.c:3150 src/group.c:3188 src/interp.c:360 src/interp.c:430
 msgid "To use this feature, please update s-lang and recompile slrn."
 msgstr ""
-"Per utilizzare questa opzione, per favore aggiorna le s-lang e ricompila slrn"
+"Per utilizzare questa opzione, per favore aggiorna le s-lang e ricompila slrn."
 
 #: src/group.c:3196 src/interp.c:438
 msgid "Array of string expected."
-msgstr "Array di stringhe richiesta."
+msgstr "Richiesto una lista di stringhe."
 
 #: src/group.c:3202 src/interp.c:444
 msgid "One-dimensional array expected."
@@ -1183,7 +1181,7 @@ msgstr "Il Servizio è Occupato"
 
 #: src/grplens.c:196
 msgid "Service Unavailable"
-msgstr "Il Servizio non è disponibile"
+msgstr "Il Servizio non è Disponibile"
 
 #: src/grplens.c:197
 msgid "Already logged in"
@@ -1230,7 +1228,7 @@ msgstr "%s utilizzo: %s [default] PSEUDONIMO"
 #: src/grplens.c:896 src/grplens.c:908
 #, c-format
 msgid "%s: expecting a single argument"
-msgstr "%s: atteso un signolo argomento"
+msgstr "%s: atteso un singolo argomento"
 
 #: src/grplens.c:950
 msgid "Too many arguments"
@@ -1271,8 +1269,7 @@ msgstr "Sto inviando le votazioni GroupLens a %s:%d..."
 
 #: src/help.c:41
 msgid " More information about slrn can be found on its home page:"
-msgstr ""
-" Più informaizoni riguardo slrn possono essere trovate sulla sua home page:"
+msgstr " Più informazioni su slrn possono essere trovate sulla sua homepage:"
 
 #: src/help.c:42
 msgid "   http://slrn.sourceforge.net/"
@@ -1324,7 +1321,7 @@ msgstr ""
 
 #: src/help.c:58
 msgid "  p                  Go to the previous unread article."
-msgstr "  p                  Va all'articolo non letto precedente."
+msgstr "  p                  Vai all'articolo non letto precedente."
 
 #: src/help.c:59
 msgid "  N, ESC RIGHT       Skip to next group."
@@ -1370,8 +1367,7 @@ msgstr "      ESC 1 f        Includi tutti gli header nel followup."
 msgid ""
 "      ESC 2 f        Followup without modifying (e.g. quoting) the article."
 msgstr ""
-"      ESC 2 f        Rispondi senza modificare (cioè senza quotare) "
-"l'articolo."
+"      ESC 2 f        Rispondi senza modificare (es. senza quotare) l'articolo."
 
 #: src/help.c:70
 msgid "  r                  Reply to poster (via email)."
@@ -1399,14 +1395,12 @@ msgstr "  ESC Ctrl-C         Cancella l'articolo (devi essere l'autore)."
 
 #: src/help.c:75
 msgid "  o                  Save article, tagged articles or thread to file."
-msgstr ""
-"  o                  Salva l'articolo, gli articoli segnati o il thread su "
+msgstr "  o                  Salva l'articolo, gli articoli segnati o il thread su "
 "un file."
 
 #: src/help.c:76
 msgid "  |                  Pipe article to an external program."
-msgstr ""
-"  |                  Invia l'articolo ad un programma esterno tramite un pipe"
+msgstr "  |                  Invia l'articolo ad altro programma tramite un pipe"
 
 #: src/help.c:77
 msgid "  y                  Print article (as displayed)."
@@ -1416,8 +1410,8 @@ msgstr "  y                  Stampa l'articolo (come è visualizzato)."
 msgid ""
 "      ESC 1 y        Print article (unwrapped and including hidden lines)."
 msgstr ""
-"      ESC 1 y        Stampa l'articolo (senza margini e con le linee "
-"nasoste)."
+"      ESC 1 y        Stampa l'articolo (senza margini ed incluse le linee "
+"nascoste)."
 
 #: src/help.c:80
 msgid "  :                  Decode article, tagged articles or thread."
@@ -1518,8 +1512,7 @@ msgstr "  ESC >              Vai al primo articolo del gruppo."
 
 #: src/help.c:104
 msgid "  j                  Jump to article (by server number)."
-msgstr ""
-"  j                  Vai all'articolo (secondo la numerazione del server)."
+msgstr "  j                  Vai all'articolo (usando il numero dato dal server)."
 
 #: src/help.c:105
 msgid "  a                  Author search forward."
@@ -1590,7 +1583,7 @@ msgstr "Comandi della finestra degli articoli:"
 
 #: src/help.c:119
 msgid "  t                  Show full headers (on/off)."
-msgstr "  t                  Mostra tutti gli headers (on/off)."
+msgstr "  t                  Mostra tutti gli header (on/off)."
 
 #: src/help.c:120
 msgid "  ESC r              Decrypt ROT-13 (on/off)."
@@ -1650,7 +1643,7 @@ msgstr "  ESC t              Collassa / Ripristina il thread."
 
 #: src/help.c:138
 msgid "      ESC 1 ESC t    Collapse / Uncollapse all threads."
-msgstr "      ESC 1 ESC t    Collassa / Ripristuina tutti i thread."
+msgstr "      ESC 1 ESC t    Collassa / Ripristina tutti i thread."
 
 #: src/help.c:139
 msgid "  ESC a              Toggle between header display formats."
@@ -1677,8 +1670,7 @@ msgstr "      ESC 1 K        Edita lo scorefile."
 msgid ""
 "  v                  Show which scorefile rules matched the current article."
 msgstr ""
-"  v                  Mostra a quale regola dello scorefile risponde questo "
-"post."
+"  v                  Mostra a quale regola dello scorefile risponde questo articolo."
 
 #: src/help.c:145
 msgid "  * The following five commands query the server if necessary:"
@@ -1721,7 +1713,7 @@ msgstr "  ,                  Ritorna ad un articolo precedentemente segnato."
 #: src/help.c:153
 msgid "  #                  Numerically tag article (for saving / decoding)."
 msgstr ""
-"  #                  Segna un articolo nuomericamente (per salvare /"
+"  #                  Segna un articolo numericamente (per salvare /"
 "decodificare)."
 
 #: src/help.c:154
@@ -1794,7 +1786,7 @@ msgstr "  SPAZIO, INVIO           Entra nel newsgroup corrente."
 
 #: src/help.c:182
 msgid "  * The following variations also download previously read articles:"
-msgstr "  * Le seguenti variazioni ricevono anche gli articoli già letti:"
+msgstr "  * Le seguenti variazioni scaricano anche gli articoli già letti:"
 
 #: src/help.c:183
 msgid "      ESC 1 SPACE         Enter group with article number query."
@@ -2124,7 +2116,7 @@ msgstr "Ordina per punteggi."
 #. 100
 #: src/menu.c:197
 msgid "Thread, then sort by scores."
-msgstr "Ordina in thread per score."
+msgstr "Ordina in thread per punteggio."
 
 #. 101
 #: src/menu.c:198
@@ -2251,12 +2243,12 @@ msgstr "**SCONOSCIUTO**"
 #: src/misc.c:1304
 #, c-format
 msgid "Command %s returned exit status %d.  Press RETURN.\n"
-msgstr "Il comando %s ha ritornato %d.  Premi INVIO.\n"
+msgstr "Il comando %s ha ritornato %d. Premi INVIO.\n"
 
 #: src/misc.c:1331
 #, c-format
 msgid "Command %s failed to run.  Press RETURN.\n"
-msgstr "Il comando %s non ha funzionato.  Premi INVIO.\n"
+msgstr "Il comando %s non ha funzionato. Premi INVIO.\n"
 
 #: src/misc.c:1372
 msgid "Invalid Editor definition."
@@ -2377,7 +2369,7 @@ msgstr "Questo client non supporta indirizzi più lunghi di 255 caratteri."
 #: src/nntp.c:67
 #, c-format
 msgid "Server connection to %s lost.  Cannot recover."
-msgstr "Connessione al server %s persa.  Impossibile recuperare."
+msgstr "Connessione al server %s persa. Impossibile recuperare."
 
 #: src/nntp.c:121
 #, c-format
@@ -2396,13 +2388,13 @@ msgstr "Articolo rifiutato: %s"
 #: src/nntp.c:425
 msgid ""
 "--nntp options:\n"
-"-h nntp-host    Host name to connect to.  This overrides NNTPSERVER "
+"-h nntp-host    Host name to connect to. This overrides NNTPSERVER "
 "variable.\n"
 "-p NNTP-PORT    Set the NNTP port to NNTP-PORT. The default value is 119.\n"
 "                 Note: This option has no effect on some systems.\n"
 msgstr ""
 "Opzioni --nntp:\n"
-"-h nntp-host    Hostname al quale connettersi.  Questo non tiene conto\n"
+"-h nntp-host    Hostname al quale connettersi. Questo non tiene conto\n"
 "                 della variabile NNTPSERVER.\n"
 "-p NNTP-PORT    Imposta la porta NNTP a NNTP-PORT. Il valore di default è "
 "119.\n"
@@ -2415,8 +2407,8 @@ msgstr "Ragione: %s"
 
 #: src/nntplib.c:266
 #, c-format
-msgid "Server %s dropped connection.  Reconnecting..."
-msgstr "Il server %s ha chiuso la connessione.  Mi riconnetto..."
+msgid "Server %s dropped connection. Reconnecting..."
+msgstr "Il server %s ha chiuso la connessione. Mi riconnetto..."
 
 #: src/nntplib.c:412
 msgid "Authorization needed, but could not determine username / password."
@@ -2439,7 +2431,7 @@ msgstr "Connessione all'host %s ..."
 #: src/nntplib.c:493
 #, c-format
 msgid "Connected to host.  %s"
-msgstr "Connesso all'host.  %s"
+msgstr "Connesso all'host. %s"
 
 #: src/nntplib.c:494
 msgid "Posting ok."
@@ -2715,7 +2707,7 @@ msgstr "La prima linea deve essere un header."
 
 #: src/post.c:455
 msgid "Expecting a header.  This is not a header line."
-msgstr "Richiesto un header.  Questa non è una linea di header."
+msgstr "Richiesto un header. Questa non è una linea di header."
 
 #: src/post.c:463
 msgid "The subject header is not allowed be to empty."
@@ -3105,11 +3097,11 @@ msgstr "Impossibile rinominare il file. errno = %d."
 
 #: src/server.c:588
 msgid "Write error.  File system full?"
-msgstr "Errore di scrittura.  File system pieno?"
+msgstr "Errore di scrittura. File system pieno?"
 
 #: src/server.c:607
 msgid "Write failed.  File system full?"
-msgstr "Scrittura fallita.  File system pieno?"
+msgstr "Scrittura fallita. File system pieno?"
 
 #: src/server.c:634
 #, c-format
@@ -3159,7 +3151,7 @@ msgstr "slrn: uscita su segnale %d.\n"
 
 #: src/slrn.c:881
 msgid "slrn fatal error:"
-msgstr "slrn errore fatale:"
+msgstr "errore fatale di slrn:"
 
 #: src/slrn.c:909
 #, c-format
@@ -3196,14 +3188,13 @@ msgstr ""
 "-Dnome          Aggiungi 'nome' alla lista delle sezioni preprocessate\n"
 "                 predefinite.\n"
 "-d              Recupera le descrizioni dei newsgroup dal server.\n"
-"                 Nota: Potrebbe richiedere MOLTO tempo per recuperare "
-"queste                 informazioni.\n"
-"                 Il risultato potrebbe essere di vari Kilobyte!\n"
+"                 Nota: Potrebbe richiedere MOLTO tempo per recuperarle.\n "
+"                 Il file prodotto potrebbe essere di vari Kilobyte!\n"
 "-i file init    Nome del file di configurazione (default: %s).\n"
 "-k              Non utilizzare il file di score.\n"
 "-k0             Utilizza il file di score, ma inibisci l'expensive score.\n"
 "-m              Forza l'utilizzo del mouse in Xterm\n"
-"-n              Non cercare nuovi gruppo. Questo di solito si traduce in\n"
+"-n              Non cercare nuovi gruppi. Questo di solito si traduce in\n"
 "                 un avvio più veloce.\n"
 "-w              Attendi la pressione di un tasto prima di passare a tutto\n"
 "                 schermo\n"
@@ -3314,7 +3305,7 @@ msgstr "            slrn non genererà alcun Message-ID."
 msgid ""
 "            Please note that the \"hostname\" setting does not affect this;"
 msgstr ""
-"            Prego notare che l'ozpione \"hostname\" non si applica a questo;"
+"            Prego notare che l'opzione \"hostname\" non si applica a questo;"
 
 #: src/slrn.c:1271
 msgid "            see the \"slrn reference manual\" for details."
@@ -3333,7 +3324,7 @@ msgstr "Impossibile inizializzare il server."
 #: src/slrn.c:1327
 #, c-format
 msgid "Unable to open %s.  I will try .newsrc."
-msgstr "Impossibile aprire %s.  Proverò con .newsrc."
+msgstr "Impossibile aprire %s. Proverò con .newsrc."
 
 #: src/slrn.c:1332
 #, c-format
@@ -3401,7 +3392,7 @@ msgstr "Impossibile utilizzare getcwd"
 #: src/slrndir.c:231
 #, c-format
 msgid "chdir %s failed.  Does the directory exist?"
-msgstr "chdir %s è fallito.  La directory esiste?"
+msgstr "chdir %s è fallito. La directory esiste?"
 
 #: src/slrnpull.c:318
 #, c-format
@@ -3471,7 +3462,7 @@ msgstr "%s: linea %u: errore nell'aggiungere %s."
 #: src/slrnpull.c:672 src/slrnpull.c:712 src/util.c:377 src/util.c:530
 #: src/util.c:549
 msgid "Out of memory."
-msgstr "Fine della memoria."
+msgstr "Memoria esaurita."
 
 #: src/slrnpull.c:739
 msgid "Read failed."
@@ -3575,7 +3566,7 @@ msgstr "Recupero articoli per %s."
 #: src/slrnpull.c:1445
 #, c-format
 msgid "Error selecting group %s.  Code = %d: %s"
-msgstr "Errore nel selezionare il gruppo %s.  Codice = %d: %s"
+msgstr "Errore nel selezionare il gruppo %s. Codice = %d: %s"
 
 #: src/slrnpull.c:1478
 #, c-format
@@ -3590,7 +3581,7 @@ msgstr "Impossibile aprire il file %s per l'invio."
 #: src/slrnpull.c:1490
 #, c-format
 msgid "Server failed post cmd.  Code = %d: %s"
-msgstr "Il server ha fallito il comando di post.  Codice = %d: %s"
+msgstr "Il server ha fallito il comando di post. Codice = %d: %s"
 
 #: src/slrnpull.c:1512 src/slrnpull.c:1523
 #, c-format
@@ -3620,7 +3611,7 @@ msgstr "Impossibile cancellare %s dopo l'invio."
 #: src/slrnpull.c:1556
 #, c-format
 msgid "%s directory does not exist.  Creating it..."
-msgstr "La directory %s non esiste.  Sto creandola..."
+msgstr "La directory %s non esiste. Sto creandola..."
 
 #: src/slrnpull.c:1564
 #, c-format
@@ -3783,7 +3774,7 @@ msgstr "%u articoli scaduti in %s."
 
 #: src/slrnpull.c:2578
 msgid "Termination requested.  Shutting down."
-msgstr "Richiesta chiusura.  Uscita in corso."
+msgstr "Richiesta chiusura. Uscita in corso."
 
 #: src/slrnpull.c:2626
 #, c-format
@@ -3792,7 +3783,7 @@ msgstr "Errore nella lettura del nome e della password da %s."
 
 #: src/slrnpull.c:2639
 msgid "Empty user name.  Please check syntax of the authinfo file."
-msgstr "Nuome utente vuoto.  Prego verificare la sintassi del file authinfo."
+msgstr "Nuome utente vuoto. Prego verificare la sintassi del file authinfo."
 
 #: src/sltcp.c:202
 #, c-format
@@ -3832,7 +3823,7 @@ msgstr "Errore inaspettato: connessione SSL chiusa\n"
 #: src/sltcp.c:461
 #, c-format
 msgid "System call failed: errno = %d\n"
-msgstr "Chiamata di systema fallita: errno = %d\n"
+msgstr "Chiamata di sistema fallita: errno = %d\n"
 
 #: src/sltcp.c:464
 msgid "Possible protocol error\n"
@@ -3986,7 +3977,7 @@ msgid ""
 "Please make use of the group_display_format variable instead."
 msgstr ""
 "%s: Variabile obsoleta alla linea %d: %s\n"
-"Prego usare la variabile group_display_formay."
+"Prego usare la variabile group_display_format."
 
 #: src/startup.c:819
 #, c-format
@@ -4051,12 +4042,12 @@ msgstr "Lettura del file di startup %s."
 #: src/startup.c:1616
 #, c-format
 msgid "Server object '%s' is not supported."
-msgstr "L'oggetto server '%s' non supportato."
+msgstr "L'oggetto server '%s' non è supportato."
 
 #: src/startup.c:1620
 #, c-format
 msgid "Post object '%s' is not supported."
-msgstr "L'oggetto post '%s' non supportato."
+msgstr "L'oggetto post '%s' non è supportato."
 
 #: src/startup.c:1639
 #, c-format
@@ -4077,7 +4068,7 @@ msgstr "Errore nell'allocazione di memoria."
 
 #: src/util.c:433
 msgid "Out of memory"
-msgstr "Fine della memoria"
+msgstr "Memoria esaurita"
 
 #: src/util.c:472
 msgid "Pattern too long for buffer"
@@ -4091,7 +4082,7 @@ msgstr "Conversione cygwin di %s fallita."
 #: src/util.c:578
 #, c-format
 msgid "Error closing file.  File system full? (errno = %d)"
-msgstr "Errore in chiusura di file.  File system pieno? (errno = %d)"
+msgstr "Errore in chiusura di file. File system pieno? (errno = %d)"
 
 #: src/util.c:671 src/util.c:678
 #, c-format
@@ -4109,7 +4100,7 @@ msgid ""
 " COMPILE TIME OPTIONS:"
 msgstr ""
 "\n"
-" OPZIONI A COMPILE TIME:"
+" OPZIONI DI COMPILAZIONE:"
 
 #: src/version.c:101
 msgid ""
@@ -4125,7 +4116,7 @@ msgid ""
 "  External programs / libs:"
 msgstr ""
 "\n"
-"  Programmi esterni / librerie:"
+"  Programmi / librerie esterne:"
 
 #: src/version.c:109
 msgid ""
@@ -4147,7 +4138,7 @@ msgstr "Versione Librerie S-Lang: %s\n"
 #: src/version.c:160
 #, c-format
 msgid "\t* Note: This program was compiled against version %s.\n"
-msgstr "\t* Nota: Questo programma è stato compilato usando la version %s.\n"
+msgstr "\t* Nota: Questo programma è stato compilato usando la versione %s.\n"
 
 #: src/version.c:164
 #, c-format
@@ -4175,7 +4166,7 @@ msgstr "  Meccanismo di post di default: %s\n"
 
 #: src/xover.c:953
 msgid "Server closed connection.  Cannot recover."
-msgstr "Il server ha chiuso la connessione.  Impossibile recuperare."
+msgstr "Il server ha chiuso la connessione. Impossibile recuperare."
 
 #: src/xover.c:999
 msgid "Server does not provide this capability."
