@@ -2290,11 +2290,25 @@ char slrn_get_response (char *valid_chars, char *translated_chars, /*{{{*/
 }
 
 /*}}}*/
+
+/*{{{ Doubles percent characters. p0 is source, p is destination. */
+static void escape_percent_chars (char *p, char *p0, char *pmax)
+{
+   while ((*p0) && (p < pmax - 2))
+     {
+	if (*p0 == '%')
+	  *p++ = '%';
+	*p++ = *p0++;
+     }
+   *p = '\0';
+}
+/*}}}*/
+
 int slrn_get_yesno (int dflt, char *str, ...) /*{{{*/
 /* For both dflt and the return value, 0 means "no", 1 is "yes". */
 {
    va_list ap;
-   char buf[512];
+   char buf0[512], buf[512];
    char ch, rsp;
    char *prompt, *fmt;
    /* Note to translators:
@@ -2307,8 +2321,12 @@ int slrn_get_yesno (int dflt, char *str, ...) /*{{{*/
    /* if (SLang_Error) return -1; */
    
    va_start(ap, str);
-   (void) slrn_vsnprintf(buf, sizeof (buf), str, ap);
+   (void) slrn_vsnprintf(buf0, sizeof (buf0), str, ap);
    va_end(ap);
+   
+   /* As the prompt will be processed through printf again (by
+    * slrn_get_response), we need to escape percent characters. */
+   escape_percent_chars (buf, buf0, buf + sizeof (buf));
    
    if (dflt)
      {

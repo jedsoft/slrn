@@ -6,6 +6,7 @@ Changes since 0.9.7.3
   * Mouse support did not work correctly when using a translation.
   * Fixed a segfault while scoring. (Byrial Jensen)
   * Fixed rare segfault caused by broken "References:" lines. (Felix Schueller)
+  * Fixed a segfault while browsing URLs.
   * get_(fg|bg)_color() mapped color names incorrectly and did not allow
     quotes[0-7] as an argument.
   * Use color object "message" for all prompts.
