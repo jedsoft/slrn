@@ -44,7 +44,7 @@ Changes since 0.9.7.4
    with the article to the save_posts folder. (patch by Felix Schueller)
 5. Added intrinsic functions article_cline_as_string, article_cline_number,
    article_count_lines, article_goto_line, article_line_down, article_line_up,
-   has_parent, set_color_attr (see doc/slrnfuns.txt).
+   has_parent, header_cursor_pos, set_color_attr (see doc/slrnfuns.txt).
 6. locate_article ignores leading "news:" (Jarek Baczynski)
 7. When reading in spool mode with spool_check_up_on_nov set, slrn now finds
    out the number of bytes of each article, even if it is not included in

@@ -4212,7 +4212,7 @@ static int do_slrn_uudeview (char *uu_dir, char *file)
 	  slrn_error (_("could not load %s: errno = %d"), 
 		      file, UUGetOption (UUOPT_ERRNO, NULL, NULL, 0));
 	else
-	  slrn_error (_("could not load %s: %s"),  UUstrerror (ret));
+	  slrn_error (_("could not load %s: %s"),  file, UUstrerror (ret));
      }
    
    i = 0;
