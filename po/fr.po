@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.7.2\n"
 "POT-Creation-Date: 2002-03-13 14:15+0100\n"
-"PO-Revision-Date: 2001-11-05 09:10-0500\n"
-"Last-Translator: Phil Boutros <philb@total.net>\n"
+"PO-Revision-Date: 2002-06-20 13:57+02:00\n"
+"Last-Translator: Nicolas Le Scouarnec <nlsn@free.fr>\n"
 "Language-Team: French - <slrnfr@ml.free.fr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -223,11 +223,11 @@ msgstr "sSpPiIaA"
 
 #: src/art.c:3017
 msgid ""
-"Crossposting. Followup-To this group, Post to this group only, Ignore,"
-" Cancel?"
+"Crossposting. Followup-To this group, Post to this group only, Ignore, "
+"Cancel?"
 msgstr ""
-"Plus d'un forum.  Suivi à ce forum, Poster à ce forum seulement, Ignorer,"
-" Annuler?"
+"Plus d'un forum.  Suivi à ce forum, Poster à ce forum seulement, Ignorer, "
+"Annuler?"
 
 #: src/art.c:3099
 msgid "Cc message as requested by poster"
@@ -416,39 +416,31 @@ msgid "Mark not set."
 msgstr "Marque non positionnée."
 
 #: src/art.c:4590
-#, fuzzy
 msgid "Subject search "
-msgstr "Sujet :"
+msgstr "Recherche sur le sujet "
 
 #: src/art.c:4590
-#, fuzzy
 msgid "Author search "
-msgstr " Recherche "
+msgstr "Recherche sur l'auteur "
 
 #: src/art.c:4591
-#, fuzzy
 msgid "(forward)"
-msgstr "En avant"
+msgstr "(suivant)"
 
 #: src/art.c:4591
-#, fuzzy
 msgid "(backward)"
-msgstr "Précédent"
+msgstr "(précédent)"
 
 #: src/art.c:4777 src/slrnpull.c:1182
-#, fuzzy, c-format
+#, c-format
 msgid "Score %d killed article %s\n"
-msgstr ""
-"Score %d articles tués %s\n"
-"Groupes : %s\n"
-"De : %s\n"
-"Sujet : %s\n"
-"\n"
+msgstr "Score %d articles tués %s\n"
 
+# Probleme de variables
 #: src/art.c:4781 src/slrnpull.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
-msgstr "création de %s (%s)\n"
+msgstr ""
 
 #: src/art.c:4785 src/slrnpull.c:1190
 #, c-format
@@ -456,14 +448,13 @@ msgid " Score %c%5i: %s:%i\n"
 msgstr ""
 
 #: src/art.c:4790 src/slrnpull.c:1195
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "  Newsgroup: %s\n"
 "  From: %s\n"
 "  Subject: %s\n"
 "\n"
 msgstr ""
-"Score %d articles tués %s\n"
 "Groupes : %s\n"
 "De : %s\n"
 "Sujet : %s\n"
@@ -641,18 +632,16 @@ msgid "Spoilers visible!"
 msgstr "Texte visible !"
 
 #: src/art_sort.c:330
-#, fuzzy
 msgid "slrn_sort_headers(): memory allocation failure."
-msgstr "sort_headers() : échec d'allocation de mémoire."
+msgstr "slrn_sort_headers() : échec d'allocation de mémoire."
 
 #: src/art_sort.c:588
 msgid "link_same_subjects: memory allocation failure."
 msgstr "link_same_subjects : échec d'allocation de mémoire."
 
 #: src/art_sort.c:799
-#, fuzzy
 msgid "Internal Error in fixup_threads()."
-msgstr "Erreur interne."
+msgstr "Erreur interne dans fixup_threads()."
 
 #: src/art_sort.c:853
 msgid "Threading by references ..."
@@ -824,7 +813,7 @@ msgstr ""
 #.
 #: src/editscore.c:66
 msgid "SsFfRrEeCc"
-msgstr ""
+msgstr "SsFfRrEeCc"
 
 #. Note to translators: The translated string needs to have 4 characters.
 #. * The two pairs become valid responses for "This group" and "All groups",
@@ -833,7 +822,7 @@ msgstr ""
 #.
 #: src/editscore.c:72
 msgid "TtAa"
-msgstr "CcTt"
+msgstr "CcLl"
 
 #: src/editscore.c:76
 msgid "A Score file has not been specified."
@@ -846,11 +835,11 @@ msgstr ""
 
 #: src/editscore.c:103
 msgid "Which newsgroups: This group, All groups"
-msgstr "Quels forums : Ce forum, Tous les forums"
+msgstr "Quels forums : Ce forum, Tous les forums"
 
 #: src/editscore.c:111
 msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
-msgstr "Expire (MM-JJ-YYYY ou JJ-MM-YYYY ou laissez vierge)"
+msgstr "Expire (MM-JJ-AAAA, JJ-MM-AAAA, +NN (jours) ou laissez vierge) : "
 
 #: src/group.c:375
 #, c-format
@@ -1006,11 +995,11 @@ msgstr ""
 #.
 #: src/group.c:1787
 msgid "fFsSnNcC"
-msgstr "cCsSuUaA"
+msgstr "oOsSuUaA"
 
 #: src/group.c:1794
 msgid "Select scoring mode: Full, Simple, None, Cancel"
-msgstr "Choisissez le mode de notation : Complet, Simple, Aucun, Annuler"
+msgstr "Choisissez le mode de notation : Complet, Simple, Aucun, Annuler"
 
 #: src/group.c:1802
 msgid "Full Header Scoring enabled."
@@ -1125,8 +1114,8 @@ msgid ""
 "* The autosave file of %s is newer than the file itself.\n"
 msgstr ""
 "\n"
-"* Le fichier de sauvegarde automatique %s est plus récent que le fichier lui-"
-"même.\n"
+"* Le fichier de sauvegarde automatique %s est plus récent que le fichier "
+"lui-même.\n"
 
 #: src/group.c:2632
 msgid "Do you want to restore your newsrc from the autosave version"
@@ -1421,8 +1410,8 @@ msgstr "  F               Renvoyer l'article à quelqu'un (par messagerie)."
 msgid ""
 "      ESC 1 F        Forward the current article (including all headers)."
 msgstr ""
-"      ESC 1 F     Renvoyer l'article à quelqu'un (y compris tous les en-"
-"têtes)."
+"      ESC 1 F     Renvoyer l'article à quelqu'un (y compris tous les "
+"en-têtes)."
 
 #: src/help.c:73
 msgid "  ESC Ctrl-S         Supersede article (you have to be the author)."
@@ -2055,9 +2044,8 @@ msgid "Array must contain at least one, at most %d elements."
 msgstr ""
 
 #: src/interp.c:460
-#, fuzzy
 msgid "Failed to allocate memory."
-msgstr "Échec de sélection du jeu de caractères."
+msgstr "Échec durant l'allocaion de mémoire."
 
 #: src/interp.c:527
 msgid "definekey: no such keymap."
@@ -2485,14 +2473,15 @@ msgstr "Échec de l'autorisation."
 msgid "Connecting to host %s ..."
 msgstr "Connexion au serveur %s ..."
 
+# %s correspond à la chaine suivante
 #: src/nntplib.c:496
 #, c-format
 msgid "Connected to host.  %s"
-msgstr "Connecté à l'hôte. Postage %s"
+msgstr "Connecté à l'hôte. %s"
 
 #: src/nntplib.c:497
 msgid "Posting ok."
-msgstr "Vouz avez le droit de poster."
+msgstr "Vous avez le droit de poster."
 
 #: src/nntplib.c:497
 msgid "Posting NOT ok."
@@ -2882,9 +2871,9 @@ msgid "***Warning: error writing to %s"
 msgstr "*** Attention : erreur d'écriture vers %s"
 
 #: src/post.c:880
-#, fuzzy, c-format
+#, c-format
 msgid "%s Failed post saved in %s"
-msgstr "Échec du post, article sauvé dans %s"
+msgstr "%s Échec du post, article sauvé dans %s"
 
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
@@ -2900,7 +2889,8 @@ msgstr "oOnNeEsSaAfF"
 
 #: src/post.c:947
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
-msgstr "Poster le message ? Oui, Non, Éditer, Suspendre, Effacer, Filtrer"
+msgstr ""
+"Poster le message ? Oui, Non, Éditer, Suspendre, Effacer, Filtrer"
 
 #: src/post.c:951
 msgid "yYnNeEsSfF"
@@ -2955,14 +2945,12 @@ msgid "Posting ..."
 msgstr "Envoi ..."
 
 #: src/post.c:1104
-#, fuzzy
 msgid "post_file_hook returned error."
-msgstr "post_file_hook a renvoyé une erreur. %s non posté."
+msgstr "post_file_hook a renvoyé une erreur."
 
 #: src/post.c:1126
-#, fuzzy
 msgid "Could not reach server."
-msgstr "Impossible d'entrer dans le forum %s."
+msgstr "Impossible de contacter le serveur."
 
 #: src/post.c:1254
 msgid "Posting...done."
@@ -3257,27 +3245,28 @@ msgid ""
 "them.\n"
 msgstr ""
 "Utilisation : slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
-"-n              Ne pas vérifier les nouveaux forums. Ceci résulte en général\n"
-"                 en un démarrage plus rapide.\n"
+"-a              Utiliser le fichier active pour obtenir les nouveaux articles.\n"
 "-f fichier-newsrc  Nom du fichier newsrc à utiliser.\n"
-"-C              Utiliser les couleurs.\n"
-"-create         Créer un fichier newsrc en obtenant la liste des forums du serveur.\n"
-"-d              Obtenir de nouvelles descriptions au format texte de chaque forum du serveur.\n"
-"                 Note : ceci peut prendre BEAUCOUP de temps pour récupérer cette information.\n"
-"                 Le fichier résultant peut faire plusieurs kilo-octets !\n"
-"-i fichier-init Nom du fichier d'initialisation à utiliser (%s par défaut)\n"
+"-C[-]              [Ne pas] utiliser les couleurs.\n"
 "-Dnom           Ajouter 'nom' à la liste des marques de prétraitement prédéfinies.\n"
+"-d              Obtenir de nouvelles descriptions de chaque forum du serveur.\n"
+"                 Note : ceci peut prendre BEAUCOUP de temps pour récupérer cette information.\n"
+"                 Le fichier résultant peut faire plusieurs centaines de kilo-octets !\n"
+"-i fichier-init Nom du fichier d'initialisation à utiliser (%s par défaut)\n"
 "-k              Ne pas traiter le fichier de score.\n"
 "-k0             Traiter le fichier de score mais désactiver les scores chers.\n"
-"-a              Utiliser le fichier active pour obtenir les nouveaux articles.\n"
 "-m              Forcer le rapport de la souris XTerm.\n"
+"-n              Ne pas vérifier les nouveaux forums. Ceci résulte en général\n"
+"                 en un démarrage plus rapide.\n"
+"-w              Attendre la pression d'une touche avant de passer en plein-écran\n"
+"--create         Créer un fichier newsrc en obtenant la liste des forums du serveur.\n"
+"--debug FICHIER Ecrit des informations pour le débuggage dans FICHIER\n"
 "--help          Affiche ce message.\n"
+"--kill-log FIC  Garder une trace des articles ignoré dans FIC\n"
 "--version       Montre la version et les capacités supportées.\n"
 "\n"
-"Pour plus d'informations, utilisez l'une de ces formes :\n"
-"    slrn --inews --help\n"
-"    slrn --nntp --help\n"
-"    slrn --spool --help\n"
+"Le mode NNTP a des options suplémentaires; utilisés \"slrn --nntp --help\" pour\n"
+"les afficher.\n"
 
 #: src/slrn.c:959
 #, c-format
@@ -3332,13 +3321,12 @@ msgid ""
 "! or retrieved from <URL:http://slrn.sourceforge.net/data/>.\n"
 msgstr ""
 "\n"
-"! Votre configuration contient des commandes désuettes ou des fonctions qui\n"
-"! ne seront pas supportées par des versions futures de ce programme.\n"
-"! Si vous avez Perl installé, vous pouvez utiliser le script slrnrc-conv "
-"pour changer\n"
-"! votre configuration correctement.  Il peut être trouvé dans la distibution "
-"de la source]n! ou récupéréà partir de <URL:http://slrn.sourceforge.net/data/"
-">.\n"
+"! Votre configuration contient des commandes désuettes ou des fonctions \n"
+"! qui ne seront pas supportées par de futures versions de ce programme. \n"
+"! Vous pouvez les mettre a jour en utilisant le script slrn-conv (qui\n"
+"! necessite Perl)\n"
+"! Il peut être trouvé dans la distribution officielle des sources\n"
+"!  ou récupéré à partir de <URL:http://slrn.sourceforge.net/data/>.\n"
 
 #: src/slrn.c:1202
 msgid "Failed to select character set."
@@ -3887,9 +3875,8 @@ msgid "Unable to make connection. Giving up.\n"
 msgstr "Incapable d'établir la connexion.  J'abandonne.\n"
 
 #: src/sltcp.c:408
-#, fuzzy
 msgid "Unable to generate enough entropy\n"
-msgstr "Incapable de créer le fichier de débogage %s\n"
+msgstr "Incapable de générer suffisament de données aléatoires\n"
 
 #: src/sltcp.c:427
 msgid "SSL_CTX_new failed.\n"
@@ -4138,7 +4125,7 @@ msgid ""
 "%s: line %d:\n"
 "%sFile not opened: %s"
 msgstr ""
-"%s : ligne %d\n"
+"%s : ligne %d:\n"
 "%sfichier non ouvert : %s"
 
 #: src/util.c:340
