@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -1846,6 +1846,10 @@ static void slrn_group_hup (int sig)
 
 static void enter_group_mode_hook (void)
 {
+   if (Slrn_Scroll_By_Page)
+     Group_Window.cannot_scroll = 2;
+   else
+     Group_Window.cannot_scroll = SLtt_Term_Cannot_Scroll;
 #if SLRN_HAS_SLANG
    slrn_run_hooks (HOOK_GROUP_MODE, 0);
 #endif
