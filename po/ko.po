@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.7.3\n"
-"POT-Creation-Date: 2003-07-31 19:19+0200\n"
+"POT-Creation-Date: 2003-08-25 17:14+0200\n"
 "PO-Revision-Date: 2002-03-17 22:47+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Korean - Im Eunjea <eunjea@kldp.org>\n"
@@ -54,7 +54,7 @@ msgstr "잘못된 브라우저 정의."
 msgid "Browse (^G aborts): "
 msgstr "브라우즈 (^G 취소): "
 
-#: src/art.c:1095 src/art.c:4153
+#: src/art.c:1095 src/art.c:4163
 msgid "Aborted."
 msgstr "취소됨."
 
@@ -83,7 +83,7 @@ msgstr "URL을 찾을수 없음."
 msgid "Search: "
 msgstr "검색: "
 
-#: src/art.c:1239 src/art.c:4811 src/group.c:1196
+#: src/art.c:1239 src/art.c:4821 src/group.c:1188
 msgid "Not found."
 msgstr "결과 없음."
 
@@ -152,68 +152,68 @@ msgstr "[%d] 읽기 %d/%d"
 msgid "Server sent empty article."
 msgstr "서버가 빈 기사를 보냄."
 
-#: src/art.c:2557
+#: src/art.c:2563
 msgid "%Y-%m-%d"
 msgstr ""
 
-#: src/art.c:2600
+#: src/art.c:2606
 msgid "This operation requires an article"
 msgstr "기사가 필요합니다."
 
-#: src/art.c:2711
+#: src/art.c:2717
 #, c-format
 msgid "%s appears invalid.  Continue anyway"
 msgstr "%s에 오류가 있습니다. 계속 합니다"
 
-#: src/art.c:2712
+#: src/art.c:2718
 msgid "Email address"
 msgstr "이메일 주소"
 
-#: src/art.c:2723 src/art.c:2899 src/art.c:3238 src/art.c:3486
+#: src/art.c:2729 src/art.c:2905 src/art.c:3244 src/art.c:3494
 #: src/slrnpull.c:386 src/slrnpull.c:463 src/slrnpull.c:1131
 #: src/slrnpull.c:1185
 #, c-format
 msgid "Unable to open %s for writing."
 msgstr "쓰기 위한 %s 열기가 실패."
 
-#: src/art.c:2849
+#: src/art.c:2855
 msgid "Are you sure you want to reply"
 msgstr "정말로 답장을 하겠습니까"
 
-#: src/art.c:2876
+#: src/art.c:2882
 msgid "Forward to (^G aborts): "
 msgstr "포워딩할 주소 (^G 취소): "
 
-#: src/art.c:2878
+#: src/art.c:2884
 msgid "Aborted.  An email address is required."
 msgstr "취소됨. 이메일 주소가 필요함."
 
-#: src/art.c:2882
+#: src/art.c:2888
 msgid "Edit the message before sending"
 msgstr "보내기전에 메세지를 편집"
 
-#: src/art.c:2986 src/art.c:3441
+#: src/art.c:2992 src/art.c:3449
 msgid "Posting not allowed by server"
 msgstr "서버가 투고를 허용하지 않음"
 
-#: src/art.c:2993
+#: src/art.c:2999
 msgid "Are you sure you want to followup"
 msgstr "댓글을 쓰시겠습니까"
 
-#: src/art.c:3034
+#: src/art.c:3040
 msgid "Do you want to reply to POSTER as poster prefers"
 msgstr "글쓴이에게 답장을 하겠습니까"
 
-#: src/art.c:3072
+#: src/art.c:3078
 #, c-format
 msgid "Followup to %s as poster prefers"
 msgstr "글쓴이가 선택한 %s로 댓글"
 
-#: src/art.c:3114
+#: src/art.c:3120
 msgid "fFaAtTcC"
 msgstr ""
 
-#: src/art.c:3117
+#: src/art.c:3123
 #, fuzzy
 msgid ""
 "Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
@@ -221,244 +221,244 @@ msgid ""
 msgstr ""
 "교차 투고. F(이 그룹에 Followup-To), P(이 그룹에만 투고), I(무시), C(취소)?"
 
-#: src/art.c:3199
+#: src/art.c:3205
 msgid "Cc message as requested by poster"
 msgstr "글쓴이가 메일 사본 요청. 메일도 보낼까요"
 
-#: src/art.c:3205
+#: src/art.c:3211
 msgid "Cc message to poster"
 msgstr "글쓴이에게 Cc 메세지"
 
-#: src/art.c:3218
+#: src/art.c:3224
 #, c-format
 msgid "%s appears invalid.  CC anyway"
 msgstr "%s에 오류가 있지만 CC 합니다"
 
-#: src/art.c:3389 src/post.c:996
+#: src/art.c:3397 src/post.c:996
 #, fuzzy, c-format
 msgid "Cannot open file: %s"
 msgstr "로그 파일 %s를 열수 없음"
 
-#: src/art.c:3396 src/post.c:1003
+#: src/art.c:3404 src/post.c:1003
 #, fuzzy, c-format
 msgid "Zero length file: %s"
 msgstr "로그 파일 %s를 열수 없음"
 
-#: src/art.c:3446
+#: src/art.c:3454
 msgid "Are you sure you want to supersede"
 msgstr "정말로 바꾸시겠습니까"
 
-#: src/art.c:3465 src/art.c:6577
+#: src/art.c:3473 src/art.c:6609
 #, c-format
 msgid "Failed: Your name: '%s' is not '%s'"
 msgstr "실패: 당신의 이름은 '%2$s'가 아니라 '%1$s' 입니다."
 
-#: src/art.c:3581 src/art.c:3630
+#: src/art.c:3589 src/art.c:3638
 msgid "End of buffer."
 msgstr "버퍼의 끝."
 
-#: src/art.c:3602 src/art.c:3620 src/group.c:1032
+#: src/art.c:3610 src/art.c:3628 src/group.c:1024
 msgid "Top of buffer."
 msgstr "버퍼의 처음."
 
-#: src/art.c:3665
+#: src/art.c:3673
 msgid "No previous unread articles."
 msgstr "읽지 않은 이전 기사가 없음."
 
-#: src/art.c:3709
+#: src/art.c:3719
 msgid "No following unread articles."
 msgstr "읽지 않은 기사가 없음."
 
-#: src/art.c:3745
+#: src/art.c:3755
 #, c-format
 msgid "No following unread articles.  Press %s for next group."
 msgstr "읽지 않은 기사가 없음. 다음 그룹은 %s."
 
-#: src/art.c:3776
+#: src/art.c:3786
 msgid "No more high scoring articles."
 msgstr "높은 점수의 기사가 더 이상 없음."
 
-#: src/art.c:3805 src/group.c:1730
+#: src/art.c:3815 src/group.c:1722
 msgid "Subject: "
 msgstr "제목: "
 
-#: src/art.c:3830
+#: src/art.c:3840
 msgid "No more articles on that subject."
 msgstr "그 제목의 기사가 더 이상 없음."
 
-#: src/art.c:3863
+#: src/art.c:3873
 #, c-format
 msgid "Goto Header: %d"
 msgstr "헤더로 이동: %d"
 
-#: src/art.c:3945 src/group.c:2601 src/post.c:459
+#: src/art.c:3955 src/group.c:2593 src/post.c:459
 #, c-format
 msgid "Unable to open %s."
 msgstr "%s를 열수 없음."
 
-#: src/art.c:3951 src/slrnpull.c:1138 src/slrnpull.c:1146 src/slrnpull.c:1193
+#: src/art.c:3961 src/slrnpull.c:1138 src/slrnpull.c:1146 src/slrnpull.c:1193
 #: src/slrnpull.c:1201
 #, c-format
 msgid "Error writing to %s."
 msgstr "%s를 쓸수 없음."
 
-#: src/art.c:4058
+#: src/art.c:4068
 msgid "Save tagged articles"
 msgstr "표시한 기사 저장"
 
-#: src/art.c:4066
+#: src/art.c:4076
 msgid "Save this thread"
 msgstr "이 글타래를 저장"
 
-#: src/art.c:4087 src/post.c:1622
+#: src/art.c:4097 src/post.c:1622
 #, fuzzy, c-format
 msgid "Do you want to create directory %s"
 msgstr "정말로 지울까요"
 
-#: src/art.c:4090 src/post.c:1626
+#: src/art.c:4100 src/post.c:1626
 #, fuzzy, c-format
 msgid "Unable to create directory. (errno = %d)"
 msgstr "%s 디렉토리를 만들수 없음. (errno = %d)"
 
-#: src/art.c:4095
+#: src/art.c:4105
 #, fuzzy, c-format
 msgid "Warning: %s is a regular file."
 msgstr "%s: 은 정규 파일이 아님"
 
-#: src/art.c:4149
+#: src/art.c:4159
 msgid "Temporary file (^G aborts): "
 msgstr "임시 파일 (^G 취소): "
 
-#: src/art.c:4150
+#: src/art.c:4160
 msgid "Save to file (^G aborts): "
 msgstr "파일로 저장 (^G 취소): "
 
-#: src/art.c:4159 src/editscore.c:167 src/post.c:614
+#: src/art.c:4169 src/editscore.c:167 src/post.c:614
 #, c-format
 msgid "Unable to open %s"
 msgstr "%s를 열수 없음."
 
-#: src/art.c:4249
+#: src/art.c:4259
 #, c-format
 msgid "decoding %10s (%3d/%3d) %s"
 msgstr "디코딩 %10s (%3d/%3d) %s"
 
-#: src/art.c:4265
+#: src/art.c:4275
 msgid "Filename buffer not large enough."
 msgstr "파일 이름 버퍼가 부족함."
 
-#: src/art.c:4269
+#: src/art.c:4279
 msgid "Calling uudeview ..."
 msgstr "uudeview를 부릅니다..."
 
-#: src/art.c:4278
+#: src/art.c:4288
 #, c-format
 msgid "could not load %s: errno = %d"
 msgstr "%s를 부를수 없음: errno = %d"
 
-#: src/art.c:4281
+#: src/art.c:4291
 #, c-format
 msgid "could not load %s: %s"
 msgstr "%s를 부를수 없음: %s"
 
-#: src/art.c:4300
+#: src/art.c:4310
 msgid "I/O error."
 msgstr "입/출력 오류."
 
-#: src/art.c:4303
+#: src/art.c:4313
 #, c-format
 msgid "error decoding %s: %s"
 msgstr "%s 디코딩 오류: %s"
 
-#: src/art.c:4327
+#: src/art.c:4337
 #, c-format
 msgid "Decode %s"
 msgstr "%s 디코딩"
 
-#: src/art.c:4338
+#: src/art.c:4348
 #, c-format
 msgid "Delete %s"
 msgstr "%s 삭제"
 
-#: src/art.c:4341
+#: src/art.c:4351
 #, c-format
 msgid "Unable to delete %s"
 msgstr "%s를 삭제할 수 없음"
 
-#: src/art.c:4379
+#: src/art.c:4389
 #, c-format
 msgid "Unable to open pipe to %s"
 msgstr "%s를 연결할 수 없음"
 
-#: src/art.c:4390 src/art.c:4411 src/decode.c:65
+#: src/art.c:4400 src/art.c:4421 src/decode.c:65
 msgid "Piping not implemented on this system."
 msgstr "이 시스템은 연결(pipe)를 지원하지 않습니다."
 
-#: src/art.c:4402
+#: src/art.c:4412
 msgid "Pipe to command: "
 msgstr "명령으로 연결: "
 
-#: src/art.c:4404
+#: src/art.c:4414
 msgid "Aborted.  Command name is required."
 msgstr "취소됨. 명령어가 필요함."
 
-#: src/art.c:4409
+#: src/art.c:4419
 #, c-format
 msgid "Error piping to %s."
 msgstr "%s로 연결 오류."
 
-#: src/art.c:4425
+#: src/art.c:4435
 msgid "Printing article..."
 msgstr "기사 출력..."
 
-#: src/art.c:4456
+#: src/art.c:4466
 msgid "Printing article...done"
 msgstr "기사 출력...끝냄"
 
-#: src/art.c:4472
+#: src/art.c:4482
 msgid "Are you sure you want to print the article"
 msgstr "이 기사를 출력 하시겠습니까"
 
-#: src/art.c:4744
+#: src/art.c:4754
 msgid "Mark set."
 msgstr "표시."
 
-#: src/art.c:4756
+#: src/art.c:4766
 msgid "Mark not set."
 msgstr "표시 해제."
 
-#: src/art.c:4777
+#: src/art.c:4787
 msgid "Subject search "
 msgstr "제목 검색 "
 
-#: src/art.c:4777
+#: src/art.c:4787
 msgid "Author search "
 msgstr "글쓴이 검색 "
 
-#: src/art.c:4778
+#: src/art.c:4788
 msgid "(forward)"
 msgstr "(앞으로)"
 
-#: src/art.c:4778
+#: src/art.c:4788
 msgid "(backward)"
 msgstr "(뒤로)"
 
-#: src/art.c:4964 src/slrnpull.c:1336
+#: src/art.c:4974 src/slrnpull.c:1336
 #, c-format
 msgid "Score %d killed article %s\n"
 msgstr "점수 %d가 기사 %s 삭제\n"
 
-#: src/art.c:4968 src/slrnpull.c:1340
+#: src/art.c:4978 src/slrnpull.c:1340
 #, c-format
 msgid " Score %c%5i: %s (%s:%i)\n"
 msgstr " 점수 %c%5i: %s (%s:%i)\n"
 
-#: src/art.c:4972 src/slrnpull.c:1344
+#: src/art.c:4982 src/slrnpull.c:1344
 #, c-format
 msgid " Score %c%5i: %s:%i\n"
 msgstr " 점수 %c%5i: %s:%i\n"
 
-#: src/art.c:4977 src/slrnpull.c:1349
+#: src/art.c:4987 src/slrnpull.c:1349
 #, c-format
 msgid ""
 "  Newsgroup: %s\n"
@@ -471,182 +471,182 @@ msgstr ""
 "  제목: %s\n"
 "\n"
 
-#: src/art.c:5047
+#: src/art.c:5057
 msgid "Scoring articles ..."
 msgstr "기사의 점수 계산중 ..."
 
-#: src/art.c:5060
+#: src/art.c:5070
 #, c-format
 msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
 msgstr "기사 점수: %2d%%, 삭제: %u, 높음: %u, 낮음: %u"
 
-#: src/art.c:5100
+#: src/art.c:5110
 msgid "Apply scorefile now"
 msgstr "점수파일 적용"
 
-#: src/art.c:5146
+#: src/art.c:5156
 #, fuzzy
 msgid "No scorefile loaded."
 msgstr "더 이상 파일이 없음.\n"
 
-#: src/art.c:5155
+#: src/art.c:5165
 msgid "This article is not matched by any scorefile entries."
 msgstr "이 기사는 점수파일 항목과 일치하지 않습니다."
 
-#: src/art.c:5201
+#: src/art.c:5211
 msgid "This article is matched by the following scores"
 msgstr "이 기사는 다음 점수와 일치합니다"
 
-#: src/art.c:5303
+#: src/art.c:5313
 #, c-format
 msgid "%s: receiving additional headers...[%c]"
 msgstr "%s: 추가 헤더 받는중...[%c]"
 
-#: src/art.c:5388
+#: src/art.c:5398
 #, c-format
 msgid "%s: headers received: %2d/%d"
 msgstr "%s: 수신된 헤더: %2d/%d"
 
-#: src/art.c:5551
+#: src/art.c:5559
 #, c-format
 msgid "Finding %s from server..."
 msgstr "%s를 서버에서 찾는중..."
 
-#: src/art.c:5582
+#: src/art.c:5598
 #, c-format
 msgid "Finding children from server...[%c]"
 msgstr "서버에서 찾는중...[%c]"
 
-#: src/art.c:5590
+#: src/art.c:5606
 msgid "Your server does not provide support for this feature."
 msgstr "서버가 이 기능을 지원하지 않습니다."
 
-#: src/art.c:5756
+#: src/art.c:5772
 msgid "Header is part of a reference loop"
 msgstr "헤더가 reference loop의 부분임"
 
-#: src/art.c:5804
+#: src/art.c:5826
 msgid "Article has no parent reference."
 msgstr "기사에 부모글 참조가 없음."
 
-#: src/art.c:5851
+#: src/art.c:5883
 #, c-format
 msgid "Article %s not available."
 msgstr "기사 %s가 없음."
 
-#: src/art.c:5863
+#: src/art.c:5895
 #, fuzzy
 msgid "Enter Message-ID: "
 msgstr "Message-Id 입력: "
 
-#: src/art.c:6285
+#: src/art.c:6317
 msgid "Warning: Could not save list of requested bodies."
 msgstr ""
 
-#: src/art.c:6554
+#: src/art.c:6586
 msgid "Are you sure that you want to cancel this article"
 msgstr "이 기사를 정말로 취소할까요"
 
-#: src/art.c:6557
+#: src/art.c:6589
 msgid "Cancelling..."
 msgstr "취소중..."
 
-#: src/art.c:6592
+#: src/art.c:6624
 msgid "No message id."
 msgstr "message id 없음."
 
-#: src/art.c:6622
+#: src/art.c:6654
 msgid "Done."
 msgstr "끝냄."
 
-#: src/art.c:6661
+#: src/art.c:6693
 #, fuzzy
 msgid "Warning: Can only request article bodies from this group."
 msgstr "이 그룹에 이전 기사 없음"
 
-#: src/art.c:6678
+#: src/art.c:6710
 msgid "Mark all articles as read"
 msgstr "모든 기사를 읽은 것으로 표시"
 
-#: src/art.c:6688
+#: src/art.c:6720
 msgid "Mark all articles as unread"
 msgstr "모든 기사를 읽지 않은 것으로 표시"
 
-#: src/art.c:6698
+#: src/art.c:6730
 msgid "Mark all articles up to here as read"
 msgstr "다음 기사들을 읽은 것으로 표시"
 
-#: src/art.c:6708
+#: src/art.c:6740
 msgid "Mark all articles up to here as unread"
 msgstr "다음 기사들을 읽지 않은 것으로 표시"
 
-#: src/art.c:6809
+#: src/art.c:6841
 msgid "Rate article (1-5):"
 msgstr "기사 평가 (1-5):"
 
-#: src/art.c:6814
+#: src/art.c:6846
 msgid "Rating must be in range 1 to 5."
 msgstr "평가의 범위는 1~5 여야함."
 
-#: src/art.c:7107
+#: src/art.c:7139
 msgid "Unable to create Article keymap!"
 msgstr "기사 키맵을 만들수 없음!"
 
-#: src/art.c:7545
+#: src/art.c:7577
 msgid "Group transfer aborted."
 msgstr "그룹 전송 취소."
 
-#: src/art.c:7547
+#: src/art.c:7579
 msgid "Server read failed."
 msgstr "서버 읽기 실패."
 
-#: src/art.c:7564
+#: src/art.c:7596
 #, c-format
 msgid "No unread articles found. (%d killed)"
 msgstr "읽지 않은 기사가 없음. (%d 삭제됨)"
 
-#: src/art.c:7566
+#: src/art.c:7598
 msgid "No unread articles found."
 msgstr "읽지 않은 기사가 없음."
 
-#: src/art.c:7620
+#: src/art.c:7652
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
 msgstr "삭제: %u, 높음: %u, 낮음: %u, 그룹 렌즈 평가: %d"
 
-#: src/art.c:7626
+#: src/art.c:7658
 #, c-format
 msgid "Num Killed: %u, Num High: %u, Num Low: %u"
 msgstr "삭제: %u, 높음: %u, 낮음: %u"
 
-#: src/art.c:7827
+#: src/art.c:7859
 msgid ""
 "SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
 msgstr ""
 "SPC:선택  Ctrl-D:다음장  Ctrl-U:이전장  d:읽음표시  n:다음  p:이전  q:종료"
 
-#: src/art.c:7832
+#: src/art.c:7864
 msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
 msgstr "SPC:다음장  B:이전장  u:읽지않음-표시  f:댓글  n:다음  p:이전  q:종료"
 
-#: src/art.c:8043
+#: src/art.c:8075
 #, c-format
 msgid "End of Thread.  Next: %s"
 msgstr "글타래의 끝. 다음: %s"
 
-#: src/art.c:8045
+#: src/art.c:8077
 msgid "End of Thread."
 msgstr "글타래의 끝."
 
-#: src/art.c:8057
+#: src/art.c:8089
 msgid "End of Sub-Thread"
 msgstr "부속 글타래의 끝"
 
-#: src/art.c:8678
+#: src/art.c:8712
 msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
 msgstr "%p[%u/%t 읽지않음] 그룹: %n%-20g -- %L (%P)"
 
-#: src/art.c:8866
+#: src/art.c:8900
 msgid "Spoilers visible!"
 msgstr "스포일러가 보임!"
 
@@ -840,186 +840,186 @@ msgstr "뉴스 그룹 선택: T(현재 그룹), A(모든 그룹)"
 msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
 msgstr "만기 (MM/DD/YYYY, DD-MM-YYYY, +NN (날짜) 또는 공백): "
 
-#: src/group.c:339
+#: src/group.c:331
 #, c-format
 msgid "Selecting %s ..."
 msgstr "선택중 %s ..."
 
-#: src/group.c:351 src/group.c:484 src/group.c:1103
+#: src/group.c:343 src/group.c:476 src/group.c:1095
 #, c-format
 msgid "Group %s is bogus%s."
 msgstr "그룹 %s 오류%s."
 
-#: src/group.c:352 src/group.c:1104
+#: src/group.c:344 src/group.c:1096
 msgid " - dropping it"
 msgstr " - 떨어뜨림"
 
-#: src/group.c:360
+#: src/group.c:352
 #, c-format
 msgid "Could not enter group %s."
 msgstr "그룹 %s을 선택할 수 없음."
 
-#: src/group.c:485
+#: src/group.c:477
 msgid " - ignoring it"
 msgstr " - 취소"
 
-#: src/group.c:578
+#: src/group.c:570
 #, c-format
 msgid "Group %s is bogus - ignoring it."
 msgstr "그룹 %s 오류 - 무시함."
 
-#: src/group.c:870
+#: src/group.c:862
 msgid "No articles to read."
 msgstr "읽을 기사가 없음."
 
-#: src/group.c:896
+#: src/group.c:888
 #, c-format
 msgid "%s: Read how many? "
 msgstr "%s: 몇개를 읽을까요? "
 
-#: src/group.c:908
+#: src/group.c:900
 #, c-format
 msgid "Only downloading %d of %d articles."
 msgstr ""
 
-#: src/group.c:988
+#: src/group.c:980
 msgid "Do you really want to quit"
 msgstr "slrn을 종료 할까요"
 
-#: src/group.c:997
+#: src/group.c:989
 msgid "Write to newsrc file failed.  Quit anyway"
 msgstr "newsrc 파일 쓰기 실패. 종료합니다"
 
-#: src/group.c:1010 src/group.c:1257
+#: src/group.c:1002 src/group.c:1249
 msgid "End of Buffer."
 msgstr "버퍼의 끝."
 
-#: src/group.c:1021
+#: src/group.c:1013
 msgid "Top of Buffer."
 msgstr "버퍼의 처음."
 
-#: src/group.c:1090
+#: src/group.c:1082
 msgid "Server connection dropped."
 msgstr "서버와의 접속이 끊어짐."
 
-#: src/group.c:1133 src/group.c:2636
+#: src/group.c:1125 src/group.c:2628
 #, c-format
 msgid "Checking news%s ..."
 msgstr "기사%s 확인중 ..."
 
-#: src/group.c:1134 src/group.c:2637
+#: src/group.c:1126 src/group.c:2629
 msgid " via active file"
 msgstr " active 파일 사용"
 
-#: src/group.c:1187
+#: src/group.c:1179
 msgid "Forward"
 msgstr "앞으로"
 
-#: src/group.c:1187
+#: src/group.c:1179
 msgid "Backward"
 msgstr "뒤로"
 
-#: src/group.c:1188
+#: src/group.c:1180
 msgid " Search: "
 msgstr " 찾기: "
 
-#: src/group.c:1202
+#: src/group.c:1194
 msgid "Search wrapped."
 msgstr "단축 검색."
 
-#: src/group.c:1231
+#: src/group.c:1223
 #, c-format
 msgid "Group %s does not exist."
 msgstr "그룹 %s가 없음."
 
-#: src/group.c:1247
+#: src/group.c:1239
 msgid "Add group: "
 msgstr "그룹 추가: "
 
-#: src/group.c:1318
+#: src/group.c:1310
 #, c-format
 msgid "Moving %s. Press RETURN when finished."
 msgstr "이동중 %s. 끝나면 RETURN를 누르세요."
 
-#: src/group.c:1401
+#: src/group.c:1393
 msgid "Subscribe pattern: "
 msgstr "가입 패턴: "
 
-#: src/group.c:1430
+#: src/group.c:1422
 #, c-format
 msgid "Mark %s as read"
 msgstr "%s 읽음 표시"
 
-#: src/group.c:1434
+#: src/group.c:1426
 msgid "Group marked as read."
 msgstr "그룹이 읽은 것으로 표시됨."
 
-#: src/group.c:1445
+#: src/group.c:1437
 #, c-format
 msgid "Mark %s as un-read"
 msgstr "%s 읽지않음 표시"
 
-#: src/group.c:1449
+#: src/group.c:1441
 msgid "Group marked as un-read."
 msgstr "그룹이 읽지 않은 것으로 표시됨."
 
-#: src/group.c:1472
+#: src/group.c:1464
 msgid "Un-Subscribe pattern: "
 msgstr "탈퇴 패턴: "
 
-#: src/group.c:1539
+#: src/group.c:1531
 msgid "List Groups (e.g., comp*unix*): "
 msgstr "그룹 목록 (예, comp*unix*): "
 
-#: src/group.c:1688
+#: src/group.c:1680
 msgid "No unread articles."
 msgstr "읽지 않은 기사가 없음."
 
-#: src/group.c:1700 src/post.c:963 src/post.c:1338
+#: src/group.c:1692 src/post.c:963 src/post.c:1338
 msgid "Posting not allowed."
 msgstr "투고가 허용되지 않습니다."
 
-#: src/group.c:1711
+#: src/group.c:1703
 msgid "Are you sure that you want to post"
 msgstr "정말로 투고 할까요"
 
-#: src/group.c:1721
+#: src/group.c:1713
 msgid "Newsgroup: "
 msgstr "뉴스그룹: "
 
-#: src/group.c:1725
+#: src/group.c:1717
 msgid "Followup-To: "
 msgstr "Followup-To: "
 
-#: src/group.c:1744
+#: src/group.c:1736
 msgid "fFsSnNcC"
 msgstr "fFsSnNcC"
 
-#: src/group.c:1751
+#: src/group.c:1743
 msgid "Select scoring mode: Full, Simple, None, Cancel"
 msgstr "점수 모드 선택: F(완전히), S(간단히), N(없음), C(취소)"
 
-#: src/group.c:1759
+#: src/group.c:1751
 msgid "Full Header Scoring enabled."
 msgstr "완전한 헤더 점수 주기."
 
-#: src/group.c:1764
+#: src/group.c:1756
 msgid "Expensive Scoring disabled."
 msgstr "간단한 점수 주기."
 
-#: src/group.c:1769
+#: src/group.c:1761
 msgid "Scoring disabled."
 msgstr "점수 주기를 안함."
 
-#: src/group.c:1787
+#: src/group.c:1779
 msgid "No changes need to be saved."
 msgstr "변경 사항 없음."
 
-#: src/group.c:1982
+#: src/group.c:1974
 msgid "Unable to create group keymap!"
 msgstr "그룹 키맵을 만들지 못함!"
 
-#: src/group.c:2140
+#: src/group.c:2132
 #, c-format
 msgid ""
 "Unable to create newsgroup description file:\n"
@@ -1028,7 +1028,7 @@ msgstr ""
 "뉴스그룹 설명 파일을 만들지 못함:\n"
 "%s\n"
 
-#: src/group.c:2144
+#: src/group.c:2136
 #, c-format
 msgid ""
 "\n"
@@ -1037,7 +1037,7 @@ msgstr ""
 "\n"
 "설명 파일 %s.\n"
 
-#: src/group.c:2145
+#: src/group.c:2137
 msgid ""
 "Getting newsgroup descriptions from server.\n"
 "Note: This step may take some time if you have a slow connection!!!\n"
@@ -1045,23 +1045,23 @@ msgstr ""
 "서버로 부터 설명 파일을 받습니다.\n"
 "참고: 느린 접속인 경우 이 절차는 오랜 시간이 걸릴수 있습니다!!!\n"
 
-#: src/group.c:2152
+#: src/group.c:2144
 msgid "Server failed on list newsgroups command."
 msgstr "서버에서 뉴스그룹 목록 명령 실패."
 
-#: src/group.c:2167
+#: src/group.c:2159
 msgid "Error reading line from server"
 msgstr "서버 읽기 오류"
 
-#: src/group.c:2298
+#: src/group.c:2290
 msgid "Checking for new groups ..."
 msgstr "새로운 그룹 확인중 ..."
 
-#: src/group.c:2356 src/slrnpull.c:2433
+#: src/group.c:2348 src/slrnpull.c:2433
 msgid "Server does not implement NEWGROUPS command."
 msgstr "NEWGROUPS 명령어를 서버가 지원하지 않음."
 
-#: src/group.c:2360 src/slrnpull.c:2437
+#: src/group.c:2352 src/slrnpull.c:2437
 #, c-format
 msgid ""
 "Server failed to return proper response to NEWGROUPS:\n"
@@ -1070,16 +1070,16 @@ msgstr ""
 "서버가 NEWGROUPS 명령에 올바르지 않은 반응을 함:\n"
 "%s\n"
 
-#: src/group.c:2374 src/group.c:2487
+#: src/group.c:2366 src/group.c:2479
 msgid "Read from server failed"
 msgstr "서버 읽기 실패"
 
-#: src/group.c:2385
+#: src/group.c:2377
 #, c-format
 msgid "%d new newsgroup(s) found."
 msgstr "%d개의 새 뉴스그룹을 찾음."
 
-#: src/group.c:2393
+#: src/group.c:2385
 #, c-format
 msgid ""
 "%s appears corrupt.\n"
@@ -1090,20 +1090,20 @@ msgstr ""
 "NEWGROUPS yymmdd hhmmss GMT 형태를 기대함\n"
 "패치 파일을 올립니다.\n"
 
-#: src/group.c:2405
+#: src/group.c:2397
 #, c-format
 msgid "Unable to open %s to record date."
 msgstr "날짜 저장을 위한 %s 열기 실패."
 
-#: src/group.c:2473
+#: src/group.c:2465
 msgid "Server failed LIST ACTIVE - authorization missing."
 msgstr "서버에서 LIST ACTIVE 실패 - 인증이 필요함."
 
-#: src/group.c:2474
+#: src/group.c:2466
 msgid "Server failed LIST ACTIVE."
 msgstr "서버에서 LIST ACTIVE 실패."
 
-#: src/group.c:2587
+#: src/group.c:2579
 #, c-format
 msgid ""
 "\n"
@@ -1112,16 +1112,16 @@ msgstr ""
 "\n"
 "* 자동 저장 파일 %s 가 파일 자신보다 새 것임.\n"
 
-#: src/group.c:2589
+#: src/group.c:2581
 msgid "Do you want to restore your newsrc from the autosave version"
 msgstr "자동 저장된 것으로 부터 newsrc 파일을 복구할까요"
 
-#: src/group.c:2650 src/post.c:1563 src/slrnpull.c:1844
+#: src/group.c:2642 src/post.c:1563 src/slrnpull.c:1844
 #, c-format
 msgid "Unable to create %s."
 msgstr "%s 생성 불가."
 
-#: src/group.c:2653
+#: src/group.c:2645
 msgid ""
 "\n"
 "--The next step may take a while if the NNTP connection is slow.--\n"
@@ -1131,54 +1131,54 @@ msgstr ""
 "--다음 단계는 NNTP 접속이 느릴 경우 많은 시간이 걸릴수 있습니다.--\n"
 "\n"
 
-#: src/group.c:2654
+#: src/group.c:2646
 #, c-format
 msgid "Creating %s."
 msgstr "생성중 %s."
 
-#: src/group.c:2665
+#: src/group.c:2657
 msgid "Unable to read newsrc file"
 msgstr "newsrc 파일을 읽을 수 없음"
 
-#: src/group.c:2758
+#: src/group.c:2750
 #, c-format
 msgid "Writing %s ..."
 msgstr "%s를 쓰는 중 ..."
 
-#: src/group.c:2780
+#: src/group.c:2772
 #, c-format
 msgid "Unable to open file %s for writing."
 msgstr "%s를 쓰기 위해 열수 없음."
 
-#: src/group.c:2869
+#: src/group.c:2861
 #, c-format
 msgid "Writing %s ... done."
 msgstr "쓰기 %s ... 끝."
 
-#: src/group.c:2877
+#: src/group.c:2869
 #, c-format
 msgid "Write to %s failed! Disk Full?"
 msgstr "%s 쓰기 실패! 공간 부족?"
 
-#: src/group.c:2892
+#: src/group.c:2884
 msgid ""
 "SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
 msgstr ""
 "SPC:선택  p:투고  c:CatchUp  l:목록  q:종료  ^R:다시-그리기  (u)탈퇴 (U)가입"
 
-#: src/group.c:3064
+#: src/group.c:3056
 msgid "-%D-News Groups: %s %-20g -- %L (%P)"
 msgstr "-%D-뉴스 그룹: %s %-20g -- %L (%P)"
 
-#: src/group.c:3096 src/group.c:3134 src/interp.c:360 src/interp.c:430
+#: src/group.c:3088 src/group.c:3126 src/interp.c:360 src/interp.c:430
 msgid "To use this feature, please update s-lang and recompile slrn."
 msgstr "이 기능을 사용하려면 s-lang의 업데이트, slrn의 재컴파일이 필요함."
 
-#: src/group.c:3142 src/interp.c:438
+#: src/group.c:3134 src/interp.c:438
 msgid "Array of string expected."
 msgstr "문자 배열 기대."
 
-#: src/group.c:3148 src/interp.c:444
+#: src/group.c:3140 src/interp.c:444
 msgid "One-dimensional array expected."
 msgstr "일차원 배열 기대."
 
@@ -3675,173 +3675,173 @@ msgstr "종료중."
 msgid "Slrnpull exiting on signal."
 msgstr "신호에 따라 Slrnpull 종료함."
 
-#: src/slrnpull.c:2674
+#: src/slrnpull.c:2678
 #, fuzzy, c-format
 msgid "Error creating filename in %s."
 msgstr "%s 읽기 오류."
 
-#: src/slrnpull.c:2680 src/slrnpull.c:3009
+#: src/slrnpull.c:2684 src/slrnpull.c:3037
 #, c-format
 msgid "Unable to stat %s."
 msgstr "%s의 알 수 없는 상태"
 
-#: src/slrnpull.c:2690
+#: src/slrnpull.c:2694
 #, fuzzy, c-format
 msgid "Unable to read header %d in %s."
 msgstr "%s 생성 불가."
 
-#: src/slrnpull.c:2696
+#: src/slrnpull.c:2700
 #, c-format
 msgid "Header %d not parseable for overview."
 msgstr ""
 
-#: src/slrnpull.c:2719
+#: src/slrnpull.c:2723
 #, c-format
 msgid "%s overview: article %u of %u in %s."
 msgstr ""
 
-#: src/slrnpull.c:2720
+#: src/slrnpull.c:2724
 #, fuzzy
 msgid "Creating"
 msgstr "생성중 %s."
 
-#: src/slrnpull.c:2720
+#: src/slrnpull.c:2724
 msgid "Updating"
 msgstr ""
 
-#: src/slrnpull.c:2734
+#: src/slrnpull.c:2741
 #, c-format
 msgid "Creating Overview file for %s..."
 msgstr "%s를 위한 개략 파일을 생성중..."
 
-#: src/slrnpull.c:2801
+#: src/slrnpull.c:2829
 #, fuzzy
 msgid "Unable to create filename for overview file.\n"
 msgstr "%s의 개략 파일 열지 못함.\n"
 
-#: src/slrnpull.c:2811
+#: src/slrnpull.c:2839
 #, fuzzy, c-format
 msgid "Unable to open new overview file %s.\n"
 msgstr "%s의 개략 파일 열지 못함.\n"
 
-#: src/slrnpull.c:2889
+#: src/slrnpull.c:2917
 #, fuzzy, c-format
 msgid "failed to close overview file %s.\n"
 msgstr "%s의 개략 파일 열지 못함.\n"
 
-#: src/slrnpull.c:2891
+#: src/slrnpull.c:2919
 #, fuzzy, c-format
 msgid "failed to close new overview file %s.\n"
 msgstr "%s의 개략 파일 열지 못함.\n"
 
-#: src/slrnpull.c:2901
+#: src/slrnpull.c:2929
 #, fuzzy, c-format
 msgid "failed to rename %s to %s."
 msgstr "%s를 %s로 바꿀수 없음."
 
-#: src/slrnpull.c:2934
+#: src/slrnpull.c:2962
 #, c-format
 msgid "opendir %s failed."
 msgstr "%s 디렉토리를 열 수 없음."
 
-#: src/slrnpull.c:2961
+#: src/slrnpull.c:2989
 #, c-format
 msgid "malloc error. Unable to expire group %s."
 msgstr "malloc 오류. %s 그룹을 만기 할 수 없음."
 
-#: src/slrnpull.c:3087
+#: src/slrnpull.c:3115
 #, c-format
 msgid "Unable to expire %s."
 msgstr "%s을 만기할 수 없음."
 
-#: src/slrnpull.c:3094
+#: src/slrnpull.c:3122
 #, c-format
 msgid "%u articles expired in %s."
 msgstr "%u 기사는 %s에 만기됨."
 
-#: src/slrnpull.c:3122
+#: src/slrnpull.c:3150
 msgid "Termination requested.  Shutting down."
 msgstr "종료가 요청되어 종료함."
 
-#: src/slrnpull.c:3170
+#: src/slrnpull.c:3198
 #, c-format
 msgid "Error reading name and password from %s."
 msgstr "%s로부터 이름과 암호를 읽지 못함."
 
-#: src/slrnpull.c:3183
+#: src/slrnpull.c:3211
 msgid "Empty user name.  Please check syntax of the authinfo file."
 msgstr "빈 사용자 이름. authinfo 파일의 문법을 확인하세요."
 
-#: src/slrnpull.c:3211
+#: src/slrnpull.c:3239
 #, fuzzy, c-format
 msgid "Unable to read headers file for group %s.\n"
 msgstr "%s 생성 불가."
 
-#: src/slrnpull.c:3220
+#: src/slrnpull.c:3251
 #, fuzzy, c-format
 msgid "File %s exists, but could not be read."
 msgstr "편집기를 찾았으나, 실행 할 수 없음."
 
-#: src/slrnpull.c:3252 src/slrnpull.c:3279
+#: src/slrnpull.c:3283 src/slrnpull.c:3310
 #, fuzzy, c-format
 msgid "Unable to write headers file for group %s.\n"
 msgstr "디버그 파일 %s를 만들지 못함\n"
 
-#: src/slrnpull.c:3287
+#: src/slrnpull.c:3318
 #, fuzzy, c-format
 msgid "Error while writing headers file for group %s.\n"
 msgstr "%s 개략 파일 닫기 오류."
 
-#: src/sltcp.c:216
+#: src/sltcp.c:217
 #, fuzzy, c-format
 msgid "Failed to resolve %s\n"
 msgstr "%s를 %s로 바꿀수 없음."
 
-#: src/sltcp.c:272 src/sltcp.c:375
+#: src/sltcp.c:273 src/sltcp.c:376
 msgid "Unable to make connection. Giving up.\n"
 msgstr "접속 불가능. 포기함.\n"
 
-#: src/sltcp.c:307
+#: src/sltcp.c:308
 #, c-format
 msgid "%s: Unknown host.\n"
 msgstr "%s: 알 수 없는 호스트.\n"
 
-#: src/sltcp.c:366
+#: src/sltcp.c:367
 #, c-format
 msgid "connection to %s, port %d:"
 msgstr "%s의 %d 포트로 접속중:"
 
-#: src/sltcp.c:513
+#: src/sltcp.c:514
 msgid "Unable to generate enough entropy\n"
 msgstr "충분한 엔트로피를 만들수 없음\n"
 
-#: src/sltcp.c:532
+#: src/sltcp.c:533
 msgid "SSL_CTX_new failed.\n"
 msgstr "SSL_CTX_new 실패.\n"
 
-#: src/sltcp.c:547
+#: src/sltcp.c:548
 msgid "SSL_new failed\n"
 msgstr "SSL_new 실패\n"
 
-#: src/sltcp.c:564
+#: src/sltcp.c:565
 msgid "Unexpected error: SSL connection closed\n"
 msgstr "예상치 못한 오류: SSL 연결이 닫힘\n"
 
-#: src/sltcp.c:567
+#: src/sltcp.c:568
 #, c-format
 msgid "System call failed: errno = %d\n"
 msgstr "시스템 콜 실패: errno = %d\n"
 
-#: src/sltcp.c:570
+#: src/sltcp.c:571
 msgid "Possible protocol error\n"
 msgstr "프로토콜 오류\n"
 
-#: src/sltcp.c:574
+#: src/sltcp.c:575
 #, c-format
 msgid "%s failed\n"
 msgstr "%s 실패함\n"
 
-#: src/sltcp.c:593
+#: src/sltcp.c:594
 msgid ""
 "\n"
 "\n"
@@ -3851,15 +3851,15 @@ msgstr ""
 "\n"
 "*** SSL을 지원하지 않습니다.\n"
 
-#: src/sltcp.c:601
+#: src/sltcp.c:602
 msgid "Memory Allocation Failure.\n"
 msgstr "메모리 배치 실패.\n"
 
-#: src/sltcp.c:633
+#: src/sltcp.c:634
 msgid "SSL_set_fd failed\n"
 msgstr "SSL_set_fd 실패\n"
 
-#: src/sltcp.c:642
+#: src/sltcp.c:643
 msgid "SSL_connect"
 msgstr "SSL_연결"
 
@@ -3958,7 +3958,7 @@ msgstr ""
 "%s: 줄 %d:\n"
 "%s너무 많은 표현 지정."
 
-#: src/startup.c:796
+#: src/startup.c:797
 #, fuzzy, c-format
 msgid ""
 "%s: Obsolete variable name on line %d: %s\n"
@@ -3967,14 +3967,14 @@ msgstr ""
 "%s: 구식의 기능 이름 %d: %s\n"
 "새 이름은: %s"
 
-#: src/startup.c:806 src/startup.c:875
+#: src/startup.c:807 src/startup.c:876
 #, c-format
 msgid ""
 "%s: In this version of slrn, setting variable\n"
 "%s has no effect. Please refer to the manual for details."
 msgstr ""
 
-#: src/startup.c:843
+#: src/startup.c:844
 #, c-format
 msgid ""
 "%s: Obsolete variable on line %d: %s\n"
@@ -3983,7 +3983,7 @@ msgstr ""
 "%s: 구식의 변수 이름 %d: %s\n"
 "header_display_format 명령을 사용하세요."
 
-#: src/startup.c:851
+#: src/startup.c:852
 #, c-format
 msgid ""
 "%s: Obsolete variable on line %d: %s\n"
@@ -3992,7 +3992,7 @@ msgstr ""
 "%s: 구식의 변수 %d: %s\n"
 "대신에 group_display_format 변수를 사용하세요."
 
-#: src/startup.c:858
+#: src/startup.c:859
 #, c-format
 msgid ""
 "%s: Obsolete spelling on line %d:\n"
@@ -4001,12 +4001,12 @@ msgstr ""
 "%s: 구식의 철자 %d:\n"
 "\"process_verbatum_marks\" 대신에 \"process_verbatim_marks\"를 사용하세요."
 
-#: src/startup.c:867
+#: src/startup.c:868
 #, c-format
 msgid "%s: Obsolete variable on line %d: %s"
 msgstr "%s: 구식의 변수 %d: %s"
 
-#: src/startup.c:1047
+#: src/startup.c:1048
 #, c-format
 msgid ""
 "%s: Obsolete spelling on line %d:\n"
@@ -4015,52 +4015,52 @@ msgstr ""
 "%s: 구식의 철자 %d:\n"
 "\"verbatum\" 대신에 \"verbatim\"를 사용하세요"
 
-#: src/startup.c:1100 src/startup.c:1147
+#: src/startup.c:1101 src/startup.c:1148
 #, c-format
 msgid "%s is not a color object"
 msgstr "%s는 색 대상이 아님"
 
-#: src/startup.c:1123
+#: src/startup.c:1124
 msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
 msgstr "S-Lang의 한계로 이 기능은 Unix에서만 지원됨."
 
-#: src/startup.c:1249
+#: src/startup.c:1250
 #, c-format
 msgid "%s is not a valid fully-qualified host name."
 msgstr "%s는 올바른 호스트 이름이 아님."
 
-#: src/startup.c:1539
+#: src/startup.c:1540
 msgid "Username: "
 msgstr "사용자이름: "
 
-#: src/startup.c:1554
+#: src/startup.c:1555
 msgid "Password: "
 msgstr "암호: "
 
-#: src/startup.c:1652
+#: src/startup.c:1653
 msgid "Unable to initialize S-Lang readline library."
 msgstr "S-Lang readline 라이브러리 초기화 실패."
 
-#: src/startup.c:1657
+#: src/startup.c:1658
 msgid "Error initializing S-Lang preprocessor."
 msgstr "S-Lang preprocessor 초기화 오류."
 
-#: src/startup.c:1663
+#: src/startup.c:1664
 #, c-format
 msgid "Reading startup file %s."
 msgstr "시작 파일 %s를 읽는중."
 
-#: src/startup.c:1689
+#: src/startup.c:1690
 #, c-format
 msgid "Server object '%s' is not supported."
 msgstr "서버 객체 '%s'는 지원하지 않음."
 
-#: src/startup.c:1693
+#: src/startup.c:1694
 #, c-format
 msgid "Post object '%s' is not supported."
 msgstr "포스트 객체 '%s'는 지원하지 않음."
 
-#: src/startup.c:1712
+#: src/startup.c:1713
 #, c-format
 msgid ""
 "%s: line %d:\n"

@@ -165,6 +165,7 @@ static int is_article_requested (Slrn_Group_Type *g, long num) /*{{{*/
 
    return slrn_ranges_is_member (g->requests, num);
 #else
+   (void) g; (void) num;
    return 0;
 #endif
 }

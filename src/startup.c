@@ -456,6 +456,7 @@ static int set_comp_charsets_fun (int argc, SLcmd_Cmd_Table_Type *table)
 #if SLRN_HAS_MIME
    return slrn_set_compatible_charsets (table->string_args[1]);
 #else
+   (void) table;
    return -1;
 #endif
 }
@@ -1725,7 +1726,7 @@ static int interpret_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    if (Slrn_Use_Slang == 0) return 0;
    return slrn_eval_slang_file (file);
 #else
-   (void) argc;
+   (void) argc; (void) table;
    return 0;
 #endif
 }

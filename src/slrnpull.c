@@ -2780,7 +2780,7 @@ static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 	  {
 	     bmin = bmax = nums[i];
 	  }
-	else if ((bmin != -1) && (ret || (nums[i] != bmax+1)))
+	else if ((bmin != -1) && (ret || ((int)nums[i] != bmax+1)))
 	  {
 	     headers = slrn_ranges_add (headers, bmin, bmax);
 	     if (ret)

@@ -1287,9 +1287,12 @@
 
   If you experience such a problem, please also report it as a bug to
   your distributor, so we will hopefully see no more broken slang
-  packages in the future. Also, slang 2.0 will officially include
-  Unicode support, so by the time it is out and slrn supports it, these
-  kinds of problems will hopefully disappear.
+  packages in the future. For RedHat, I got a report that it already got
+  fixed in version 8.
+
+  Also, slang 2.0 will officially include Unicode support, so by the
+  time it is out and slrn supports it, these kinds of problems will
+  hopefully be gone for good.
 
 
   6.2.  The bug I found is not listed here. What do I do now?
@@ -1312,7 +1315,6 @@
   o  Which actions make the bug appear
 
   o  The output of ``slrn --version''
-
 
   o  If a certain article caused the problem, the Message-ID of that
      article (or even the article itself, if it is not too long)
@@ -1369,6 +1371,9 @@
 
   7.1.  History
 
+
+     2003-08-25: Revision 1.1
+        Minor corrections before the release of 0.9.8.0.
 
      2003-08-19: Revision 1.0
         The first version of this FAQ documents slrn 0.9.8.0. It merges

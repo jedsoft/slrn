@@ -2830,8 +2830,8 @@ char *slrn_make_from_string (void)
 	SLang_free_slstring (msg);
 	/* Drop through to default */
      }
-   msg = NULL;
 #endif
+   msg = NULL;
 
    if (make_localpart (Slrn_User_Info.username, localpart, sizeof (localpart)))
      msg = _("Cannot generate \"From:\" line without a valid username.");

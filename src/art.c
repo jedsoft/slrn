@@ -2273,9 +2273,11 @@ static int art_undo_modifications (Slrn_Article_Type *a)
    
    a->is_modified = 0;
    a->is_wrapped = 0;
+#if SLRN_HAS_MIME
    a->mime_was_modified = 0;
    a->mime_was_parsed = 0;
    a->mime_needs_metamail = 0;
+#endif
    
    free_article_line (a->lines);
    a->lines = NULL;
@@ -2321,6 +2323,8 @@ static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{
 	     slrn_mime_article_init (Slrn_Current_Article);
 	     slrn_mime_process_article (Slrn_Current_Article);
 	  }
+#else
+	(void) do_mime;
 #endif
 	return 0;
      }
@@ -2372,11 +2376,13 @@ static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{
 	     strcpy (tmp, subj); /* safe */
 	     h->from = tmp + strlen (tmp) + 1;
 	     strcpy (h->from, from); /* safe */
+#if SLRN_HAS_MIME
 	     if ((do_mime == 0) && (Slrn_Use_Mime & MIME_DISPLAY))
 	       {
 		  slrn_rfc1522_decode_string (tmp);
 		  slrn_rfc1522_decode_string (h->from);
 	       }
+#endif
 	     slrn_free (h->realname);
 	     get_header_real_name (h);
 	  }
@@ -3365,6 +3371,8 @@ static void followup (void) /*{{{*/
 #if SLRN_HAS_SLANG
    if (free_cc_string && (cc_address != NULL))
      SLang_free_slstring (cc_address);
+#else
+   return;
 #endif
 }
 
@@ -5470,7 +5478,6 @@ static void insert_header (Slrn_Header_Type *ref) /*{{{*/
 {
    int n, id;
    Slrn_Header_Type *h;
-   Slrn_Range_Type *r;
    
    ref->hash_next = Header_Table[ref->hash % HEADER_TABLE_SIZE];
    Header_Table[ref->hash % HEADER_TABLE_SIZE] = ref;
@@ -8164,6 +8171,7 @@ static void disp_write_flags (Slrn_Header_Type *h)
     else SLsmg_write_char ((flags & HEADER_READ) ? 'D': '-');
 }
 
+#if SLRN_HAS_SPOOL_SUPPORT
 static char get_body_status (Slrn_Header_Type *h) /*{{{*/
 {
    if ((h->parent == NULL) && (h->child != NULL)
@@ -8194,6 +8202,7 @@ static char get_body_status (Slrn_Header_Type *h) /*{{{*/
    return ' ';
 }
 /*}}}*/
+#endif
 
 #if SLRN_HAS_GROUPLENS
 # define SLRN_GROUPLENS_DISPLAY_WIDTH 5

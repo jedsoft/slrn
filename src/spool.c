@@ -1880,7 +1880,7 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 	     while ((p < pmax) && (*p != ':'))
 	       p++;
 	     
-	     if ((p != vline) && ((p-vline != strlen(group) ||
+	     if ((p != vline) && (((p-vline != (int) strlen(group)) ||
 				   strncmp(vline, group, (p-vline)))))
 	       {
 		  /* It seems we may not write past vline[vlen-1] for vgets
