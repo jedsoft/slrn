@@ -48,7 +48,7 @@ esac
 AC_SUBST(LM)
 
 dnl List of all translations.
-ALL_LINGUAS="da de it nl pl ru"
+ALL_LINGUAS="da de fr it nl pl ru"
 AM_GNU_GETTEXT
 
 CF_HARDCODE_LIBS

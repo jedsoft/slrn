@@ -4,6 +4,9 @@ Changes since 0.9.7.3
   * slrn sometimes hung when reading via SSL. (Robert Dennis Manchester)
   * Fixed rare segfault caused by broken "References:" lines. (Felix Schueller)
 
+   More translations:
+  * fr.po (French; slrn-fr project)
+
 Changes since 0.9.7.2
 
 0. Bug fixes include:
