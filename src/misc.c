@@ -471,6 +471,8 @@ void slrn_write_nchars (char *s, unsigned int n) /*{{{*/
 	     int consumed;
 	     SLuchar_Type *post = SLutf8_decode (next, next+SLUTF8_MAX_MBLEN,
 						 &w, &consumed);
+	     if (w == 0) /* never output past end of the string */
+	       break;
 	     prev = next;
 	     prevlen = len;
 	     next += consumed;
@@ -531,6 +533,48 @@ void slrn_write_nchars (char *s, unsigned int n) /*{{{*/
    /* If we omitted the last char, pad with a space. */
    if (len<n)
      SLsmg_write_nchars (" ", 1);
+}
+/*}}}*/
+
+
+/* Wrapper around the SLsmg routine.
+ * This writes n bytes (not necessarily screen characters), replacing
+ * unprintable 8bit chars with question marks.
+ */
+
+/* Wrapper around the SLsmg routine. */
+void slrn_write_nbytes (char *s, unsigned int n) /*{{{*/
+{
+   unsigned char *s1, *smax;
+   unsigned int eight_bit;
+
+#if SLANG_VERSION >= 20000
+   if (Slrn_UTF8_Mode)
+     {
+	SLsmg_write_nchars (s, n);
+	return;
+     }
+#endif
+   
+   s1 = (unsigned char *) s;
+   smax = s1 + n;
+   eight_bit = SLsmg_Display_Eight_Bit;
+   
+   while (s1 < smax)
+     {
+	if ((*s1 & 0x80) && (eight_bit > (unsigned int) *s1))
+	  {
+	     if (s != (char *) s1)
+	       SLsmg_write_nchars (s, (unsigned int) ((char *)s1 - s));
+	     SLsmg_write_char ('?');
+	     s1++;
+	     s = (char *) s1;
+	  }
+	else s1++;
+     }
+   
+   if (s != (char *)s1)
+     SLsmg_write_nchars (s, (unsigned int) ((char *)s1 - s));
 }
 /*}}}*/
 

@@ -7956,12 +7956,12 @@ static void toggle_header_formats (void)
 
 static void smg_write_string (char *s)
 {
-   slrn_write_nchars (s, strlen (s));
+   slrn_write_nbytes (s, strlen (s));
 }
 
-static void smg_write_char (char c)
+static void smg_write_byte (char c)
 {
-   slrn_write_nchars (&c, 1);
+   slrn_write_nbytes (&c, 1);
 }
 
 #if SLRN_HAS_EMPHASIZED_TEXT
@@ -7991,9 +7991,9 @@ static void smg_write_emphasized_text (char *str, int color0)
 	
 	if ((url != NULL) && (s >= url))
 	  {
-	     slrn_write_nchars (str, (unsigned int) (url - str));
+	     slrn_write_nbytes (str, (unsigned int) (url - str));
 	     slrn_set_color (URL_COLOR);
-	     slrn_write_nchars (url, url_len);
+	     slrn_write_nbytes (url, url_len);
 	     slrn_set_color (color0);
 	     s = str = url + url_len;
 	     url = NULL;
@@ -8073,7 +8073,7 @@ static void smg_write_emphasized_text (char *str, int color0)
 	
 	/* Now, we have s0 at _bla bla and s at _ whatever */
 	
-	slrn_write_nchars (str, (unsigned int) (s0 - str));
+	slrn_write_nbytes (str, (unsigned int) (s0 - str));
 	str = s + 1;
 	     
 	if (ch == '_')
@@ -8088,31 +8088,31 @@ static void smg_write_emphasized_text (char *str, int color0)
 	   case 1:  /* Strip _ characters */
 	     slrn_set_color (color);
 	     s0++;
-	     slrn_write_nchars (s0, (unsigned int) (s-s0));
+	     slrn_write_nbytes (s0, (unsigned int) (s-s0));
 	     slrn_set_color (color0);
 	     break;
 	     
 	   case 2:		       /* substitute space */
 	     ch = ' ';
-	     slrn_write_nchars (&ch, 1);
+	     slrn_write_nbytes (&ch, 1);
 	     slrn_set_color (color);
 	     s0++;
-	     slrn_write_nchars (s0, (unsigned int) (s-s0));
+	     slrn_write_nbytes (s0, (unsigned int) (s-s0));
 	     slrn_set_color (color0);
-	     slrn_write_nchars (&ch, 1);
+	     slrn_write_nbytes (&ch, 1);
 	     break;
 		  
 	   case 3:		       /* write as is */
 	   default:
 	     slrn_set_color (color);
 	     s++;
-	     slrn_write_nchars (s0, (unsigned int)(s-s0));
+	     slrn_write_nbytes (s0, (unsigned int)(s-s0));
 	     slrn_set_color (color0);
 	  }
 	
 	s = str;
      }
-   slrn_write_nchars (str, (unsigned int)(s - str));
+   slrn_write_nbytes (str, (unsigned int)(s - str));
 }
 #endif				       /* SLRN_HAS_EMPHASIZED_TEXT */
    
@@ -8181,7 +8181,7 @@ static void write_rot13 (unsigned char *buf, int color, int use_emph) /*{{{*/
    while ((ch = *buf++) != 0)
      {
 	ch = Rot13buf[ch];
-	slrn_write_nchars ((char *) &ch, 1);
+	slrn_write_nbytes ((char *) &ch, 1);
      }
 }
 /*}}}*/
@@ -8233,14 +8233,14 @@ static void write_spoiler (char *buf, int first_line) /*{{{*/
 	     return;
 	  }
 	
-	slrn_write_nchars (buf, s - buf);
+	slrn_write_nbytes (buf, s - buf);
 	buf = s;
      }
    
    while ((ch = *buf++) != 0)
      {
 	if (!isspace(ch)) ch = Slrn_Spoiler_Char;
-	slrn_write_nchars (&ch, 1);
+	slrn_write_nbytes (&ch, 1);
      }
 }
 /*}}}*/
@@ -8813,7 +8813,7 @@ static void display_article_line (Slrn_Article_Line_Type *l)
 	       {
 		  lbuf++;
 		  slrn_set_color (SLRN_HEADER_KEYWORD_COLOR);
-		  slrn_write_nchars (l->buf, lbuf - l->buf);
+		  slrn_write_nbytes (l->buf, lbuf - l->buf);
 	       }
 	     else lbuf = l->buf;
 	  }
@@ -9124,7 +9124,7 @@ static void update_article_window (void)
 	     else if (Slrn_Use_Tildes)
 	       {
 		  slrn_set_color (SLRN_TILDE_COLOR);
-		  smg_write_char ('~');
+		  smg_write_byte ('~');
 	       }
 
 	     slrn_set_color (0);
