@@ -1,285 +1,1380 @@
-Last-Modified: 2002-03-13
+  The slrn FAQ
+  John E. Davis <davis@space.mit.edu>
+  Matthias Friedrich <matt@mafr.de>
+  Thomas Schultz <tststs@gmx.de>
+  Version 0.9.8.0
 
-This is the slrn FAQ.  Send comments, suggestions, or corrections to
-tststs@gmx.de.  Please note that we are currently working on a completely
-revised version of the FAQ - if you want to contribute, please contact us
-first.
+  Frequently asked questions about the slrn newsreader.
+  ______________________________________________________________________
 
-   The latest version of slrn is 0.9.7.4. It is available via HTTP from
-   http://sourceforge.net/project/showfiles.php?group_id=7768 or
-   anonymous FTP from ftp://ftp.fh-heilbronn.de/pub/mirrors/slrn/.
-   In addition, it may be obtained from the European mirror
-   ftp://ftp.fu-berlin.de/pub/unix/news/slrn/.
-   
-   Questions:
-   
-    1. Where can I find more information about slrn?
-    2. Instead of drawing lines for the thread tree, I see `mq'. Why?
-    3. I do not see a thread tree. Why?
-    4. When I mark an article as read, why aren't cross-posts marked as
-       read also?
-    5. What is a prefix argument?
-    6. How do I re-read articles in a newsgroup that I have already read?
-    7. Can I use the mouse with slrn?
-    8. How do I use the mouse in an XTerm to cut/paste?
-    9. What is the easiest way to uudecode articles?
-   10. How do I cross-post an article?
-   11. How do I find the previously read articles of a thread?
-   12. Why doesn't the `L' command work as advertised?
-   13. How can I set my `From' line for my posts?
-       
-   Answers:
-   
-1. Where can I find more information about slrn?
+  Table of Contents
 
-   The most important sources of information about slrn's features are
-   currently the man page and the new manual (`doc/manual.txt' in the
-   source tarball). Additionally, the example `slrn.rc' is a good start
-   for your own configuration file. Help on the scoring / killfile
-   features can be found in `score.txt' and `SCORE_FAQ'; when dealing
-   with macros, `README.macros' and `slrnfuns.txt' are valuable
-   resources. If you just want to keep track of recent changes, look at
-   `changes.txt'. More information is also available from
-   http://www.slrn.org/.
-   
-2. Instead of drawing lines for the thread tree, I see `mq'. Why?
 
-   There are a couple of reasons for this. The simplest may be that the
-   font that you are using does not support line drawing characters.
-   Simply switching fonts to a dec-vt220 compatible font may solve the
-   problem. This is usually the case with Windows telnet applications.
-   Another reason for this is that your terminfo file may not be set up
-   properly. The obvious solution is fix the terminfo file. However, this
-   may not be possible without the correct tools (untic and tic) and many
-   systems do not have those tools installed. Although slang is a
-   terminfo based system, there is another solution based on termcap if
-   you are using version 0.99.18 of slang or later. First of all, get a
-   termcap entry that contains the appropriate capabilities for an
-   alternate character set, that is, the termcap `ac', `ae', `as', and
-   possibly `eA' capabilities. Lets call this file `my_termcap'. Then do:
-       setenv TERMCAP `pwd`/my_termcap
-       eval `tset -s terminal-name`
 
-   (Replace `terminal-name' by your terminal name). `tset' will then read
-   and parse the my_termcap file and set the TERMCAP variable
-   appropriately. You will want to put this in your .login file.
-   
-3. I do not see a thread tree. Why?
+  1. General questions about slrn
+     1.1 What is slrn?
+     1.2 Where can I download slrn?
+     1.3 Where is slrn's documentation?
+     1.4 Are there any mailing lists and/or newsgroups about slrn?
 
-   See the answer to the previous question.
-   
-4. When I mark an article as read, why aren't cross-posts marked as read also?
+  2. Configuration
+     2.1 Is it possible to set my ``From'' header line for postings?
+     2.2 How can I set my ``Message-ID'' header?
+     2.3 How can I set the size of the article pager?
+     2.4 What charset settings should I use under Windows?
+     2.5 How can I use an external e-mail program for replies?
+     2.6 The thread tree is not drawn properly. Why?
+     2.7 Can I use the mouse with slrn?
+     2.8 How can I rotate signatures in slrn?
 
-   For slrn to mark an article as read in more than one group, it needs
-   information about what groups the article was cross-posted to. This
-   information is provided by the Xref header. Not all servers provide
-   this header so this feature will not work with those servers.
-   
-   Now suppose that your server provides the Xref header as one of the
-   headers of the article and at the same time, provides support for the
-   NOV database (via the XOVER nntp command). In this case, unless the
-   server has been configured to provide the Xref header as part of the
-   NOV database, slrn will not be able to get the header without
-   accessing the article. Unfortunately, Xref is optional under NOV so
-   many systems do not automatically provide it even though it is one of
-   the recommended headers.
-   
-   To summarize, make sure that your server provides the Xref header AND
-   if it supports NOV, make sure that the Xref header is part of the NOV
-   database.
-   
-5. What is a prefix argument?
+  3. Usage
+     3.1 What is a prefix argument?
+     3.2 Treatment of read articles
+        3.2.1 How can I never mark articles as read?
+        3.2.2 How can I get slrn to show both read and unread articles?
+        3.2.3 How can I retrieve read articles from the same thread?
+        3.2.4 How can I retrieve other read articles?
+        3.2.5 I want to see full threads as soon as they contain at least one unread article. Can slrn do this?
+     3.3 Handling of binary postings
+        3.3.1 How do I uudecode articles?
+        3.3.2 What are the advantages of using uudeview?
+        3.3.3 What about yEnc?
+        3.3.4 Can I put multipart binary postings into one thread?
+     3.4 How can I mark cross-posts as read in other groups as well?
+     3.5 Why doesn't the `L' command work as advertised?
+     3.6 How do I cross-post an article?
+     3.7 How do I use the mouse in an XTerm to copy/paste?
+     3.8 How can I sort the list of newsgroups?
 
-   Many key-bindings accept prefix arguments. A prefix argument is an
-   integer that is generated prior to a key sequence and is used as a way
-   of controlling the behavior the key sequence. It is generated by
-   pressing the ESC key and then pressing the keys that correspond to the
-   integer. For example, to generate a prefix argument of 314, simply
-   press the 4 keys: ESC 3 1 4.
-   
-   Some functions use such arguments as repeat factors. That is, the
-   function bound to the key sequence that they modify will be repeated
-   the number of times specified by the prefix argument.
-   
-   Some other functions may simply use it as a way of slightly modifying
-   the behavior of the function. For example, if a prefix argument is
-   used as a modifier for the `followup' function, the original article's
-   headers will be included in the followup message. Without a prefix
-   argument, the headers will not be included in followups.
-   
-6. How do I re-read articles in a newsgroup that I have already read?
+  4. Scoring
+     4.1 What is scoring?
+     4.2 How can I killfile with Slrn?
+     4.3 How do I set up slrn to read a score file?
+     4.4 What is the format of an slrn score file?
+     4.5 Where can I get a full description of slrn's regular expressions?
+     4.6 How can I test whether my regular expressions do what I expect them to do?
+     4.7 Is there an easy way to watch or kill threads / authors?
+     4.8 Do I need to remove expired entries from my score file manually?
+     4.9 How do I score on a specific subject, e.g., ``test'' messages?
+     4.10 How do I score postings from a specific person?
+     4.11 How do I score articles from a specific site?
+     4.12 How do I score followups?
+     4.13 Is it possible to score followups to my own postings?
+     4.14 How do I kill cross posts from a specific group?
+     4.15 How do I score all cross-posts?
+     4.16 How do I make it so I read only posts from a specific person?
+     4.17 How do I score articles that have no ``References'' line but whose ``Subject'' line starts with ``Re:''?
+     4.18 How do I score subjects that contain only uppercase characters?
+     4.19 How can I filter people without a realname?
 
-   When entering a newsgroup, simply use a `prefix argument'. This means,
-   press ESC and then a number followed by the key sequence that you use
-   to enter the newsgroup. For example, if you use the RETURN key, then
-   do the following: ESC 1 RETURN
-   
-7. Can I use the mouse with slrn?
+  5. slrnpull
+     5.1 What is slrnpull?
+     5.2 Why can't I post when using slrnpull?
+     5.3 How do I get a full list of newsgroups?
 
-   If slrn is run in an XTerm, it can use the mouse. To enable it, add
-   the line
-           set mouse 1
+  6. I found a bug in slrn!!!
+     6.1 slrn hangs infinitely when I press the delete key
+     6.2 The bug I found is not listed here. What do I do now?
+        6.2.1 Some additional notes for the advanced user
 
-   to your .slrnrc file. This will cause slrn to turn on XTerm mouse
-   reporting when run in an XTerm window. The TERM environment variable
-   is used to determine whether or not this is the case. To force the
-   mouse to be used, startup slrn using the -m option, e.g., `slrn -m'.
-   The actions defined for the mouse are specified in the following
-   table:
-     Group Mode:
+  7. About this document
+     7.1 History
 
-         Object                 Button         Action
-         ------------------------------------------------
-         Top Status line        any            specified by button label
-         Group Name             any            select group
-         Bottom Status line     middle         toggle display of unread groups
-         Bottom Status line     left           page-down
-         Bottom Status line     right          page-up
 
-     Article Mode:
+  ______________________________________________________________________
 
-         Object                 Button         Action
-         ------------------------------------------------
-         Top status line        any            specified by button label
+  1.  General questions about slrn
 
-         Header status line     left           header page down
-                                right          header page up
-                                middle         hide article window
+  1.1.  What is slrn?
 
-         Article status line    left           next unread
-                                right          previous unread
-                                middle         toggle quotes
+  Slrn <http://slrn.sourceforge.net> (``slang read news'') is a Usenet
+  newsreader that runs in text mode on various Unix and Unix-like
+  operating systems (including Linux), Windows, OS/2, BeOS, MacOS X and
+  VMS.
 
-         Header item            any            select item
+  It supports scoring rules to highlight, sort or kill articles to make
+  reading news more efficient. Furthermore it is highly customizable,
+  allows free key-bindings and can be extended using the slang macro
+  language. Offline reading is possible using either slrnpull (shipped
+  with slrn) or a local newsserver like leafnode or INN.
 
-         Article window         left           article page down
-                                right          article page up
-                                middle         hide article window
 
-8. How do I use the mouse in an XTerm to cut/paste?
 
-   The easiest way is to hold down the shift key when using the mouse for
-   cut/paste operations. The other way is to simply get an slrn prompt,
-   e.g., search for something then after cut/paste abort the search.
-   
-9. What is the easiest way to uudecode articles?
+  1.2.  Where can I download slrn?
 
-   Fortunately, the easiest way is also the most efficient. Basically
-   this involves using the `#' key to numerically tag articles that you
-   want to decode and then the `:' key to start the decode process. The
-   only restriction is that multi-part uuencoded articles must be tagged
-   in their proper order. There is no need to uudecode one article at a
-   time. Simply mark everything that you would like to decode then press
-   `:'. Here is an actual example taken from
-   alt.binaries.pictures.fractals:
-    -    9:[Mike In Indy]    Kaboom! - kaboom.gif (0/1)
-    - 3078:[Mike In Indy]    Kaboom! - kaboom.gif (1/1)
-    -   23:[Gumbycat    ]    lucifer.gif  (0/7)
-    -  433:[Gumbycat    ]    lucifer.gif -  for Halloween  (5/7)
-    -  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (3/7)
-    -  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (4/7)
-    -  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (6/7)
-    -  244:[Gumbycat    ]    lucifer.gif  -  for Halloween (7/7)
-    -  434:[Gumbycat    ]    lucifer.gif  - for Halloween (1/7)
-    -  433:[Gumbycat    ]    lucifer.gif - for Halloween (2/7)
-    -   16:[Paul Carlson]    My Halloween Fractal - devil.gif (0/1)
-    - 4310:[Paul Carlson]    My Halloween Fractal - devil.gif (1/1)
 
-   As you can see, 3 files have been posted: kaboom.gif, lucifer.gif, and
-   devel.gif (At the time of this writing, it is Halloween weekend). Both
-   kaboom.gif and devel.gif are single part files whereas lucifer.gif is
-   a seven part series. Since lucifer.gif is displayed out of order, care
-   must be exercised when tagging it (slrn will sort threads by subject
-   and in this case the poster used an inconsistent subject format---
-   usually, sorting will result in the correct ordering). Assuming that
-   we wish to decode these three gif images, the `#' key will be used to
-   tag them. The result of using the `#' key is shown below:
-    -    9:[Mike In Indy]    Kaboom! - kaboom.gif (0/1)
-   1- 3078:[Mike In Indy]    Kaboom! - kaboom.gif (1/1)
-    -   23:[Gumbycat    ]    lucifer.gif  (0/7)
-   6-  433:[Gumbycat    ]    lucifer.gif -  for Halloween  (5/7)
-   4-  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (3/7)
-   5-  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (4/7)
-   7-  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (6/7)
-   8-  244:[Gumbycat    ]    lucifer.gif  -  for Halloween (7/7)
-   2-  434:[Gumbycat    ]    lucifer.gif  - for Halloween (1/7)
-   3-  433:[Gumbycat    ]    lucifer.gif - for Halloween (2/7)
-    -   16:[Paul Carlson]    My Halloween Fractal - devil.gif (0/1)
-   9- 4310:[Paul Carlson]    My Halloween Fractal - devil.gif (1/1)
+  The latest source distribution of slrn is available via HTTP from
+  <http://prdownloads.sourceforge.net/slrn/>. A list of mirrors as well
+  as links to precompiled binaries can be found at
+  <http://slrn.sourceforge.net/#sect_getslrn>.
 
-   Now 9 headers have been numerically tagged. To decode these, simply
-   press the `:' key. slrn will prompt for a filename to save the
-   articles to and after saving, it will prompt to go ahead and decode.
-   The decoded files will be placed in the directory specified by the
-   `decode_directory' variable that one can set in the .slrnrc file. The
-   end result is that after tagging with the `#' key, one presses `:' and
-   hits return twice. To un-tag articles, press `ESC #'.
-   
-10. How do I cross-post an article?
+  If you run Linux, your distribution probably contains a slrn package
+  that might not offer the latest version, but is more or less ``ready
+  to go''.
 
-   There are two ways:
-    1. When slrn prompts for a newsgroup, simply specify a comma
-       separated list of newsgroups. DO NOT USE SPACES!
-    2. Edit the Newsgroup header line when editing the message. Again,
-       the list of newsgroups must be comma separated with no whitespace.
-       Also make sure that you do not wrap this line.
-       
-   Helpful hint: If you forget the name of a newsgroup while inside the
-   editor, suspend the editor with Ctrl-Z and use more/less/most to view
-   your .newsrc file. If your editor is sophisticated enough, you can
-   really simplify this process by using the `editor_command' keyword in
-   your .slrnrc file. For example, if you use jed as your editor, you can
-   set your editor command to something like:
-         editor_command "jed ~/.jnewsrc -2 %s -g %d"
+  Additional resources are available at slrn's official homepage
+  <http://slrn.sourceforge.net>.
 
-   This says to load the file ~/.jnewsrc into the editor, split the
-   window, then load the file that slrn wants to edit in one of the
-   windows and then goto a specified line number.
-   
-11. How do I re-read previously read articles of a thread?
 
-   `ESC p' will attempt to find the parent as specified by the references
-   header of the current article querying the server if necessary. To
-   find the children of the current article (articles that reference it),
-   use `ESC Ctrl-P'. Finally, to reconstruct the entire tree (all parents
-   and all children), use `ESC 1 ESC p'.
-   
-12. Why doesn't the `L' command work as advertised?
 
-   Capital L lists all un-subscribed groups that slrn knows about. Slrn
-   gets this information through one of three sources. It tries the
-   following in order and stops when one is successful:
-    1. From the server via the active file. It only does this if the line
-       `set read_active 1' is in your .slrnrc file. By default, slrn does
-       not read the active file.
-    2. By querying the server using the LIST ACTIVE NNTP command with a
-       wildmat argument. Please note that not all servers support this
-       kind of query.
-    3. From the groups listed in your newsrc file. In that case, the `L'
-       command will only list unsubscribed groups that are present in
-       this file.
-       
-   The last one always succeeds with results that may be less than
-   desirable. If you have a fast network connection to your server,
-   simply put
-         set read_active 1
+  1.3.  Where is slrn's documentation?
 
-   in your .slrnrc file. If you do not want slrn to read the active file
-   because your connection is slow, see whether or not your server
-   supports LIST ACTIVE with a wildmat argument. As a last resort, try to
-   keep a full list of newsgroups in your newsrc file.
-   
-13. How can I set my `From' line for my posts?
 
-   Use the .slrnrc settings:
-         set hostname "YOUR.HOST.NAME"
-         set username "USERNAME"
-         set realname "YOUR REAL NAME"
+  The source distribution contains a lot of documentation; on Unix-like
+  systems, it is likely to be installed somewhere in /usr/share/doc or
+  /usr/doc.  It contains manpages (type man slrn at the command prompt),
+  the Slrn Reference Manual (manual.txt) and several other useful
+  resources like a sample slrnrc (configuration) file.
 
-   This will cause slrn to use a From line of the form:
-        From: USERNAME@YOUR.HOST.NAME (YOUR REAL NAME)
-     _________________________________________________________________
-   
-   This page is created by John E. Davis. To comment on it or the
-   material presented here, please send email to the current maintainer,
-   Thomas Schultz <tststs@gmx.de>.
+  If you are new to slrn, please make sure to read the file FIRST_STEPS.
+  It should get you started.
+
+  If you cannot find this documentation on your system, you can browse
+  it online at http://slrn.sourceforge.net/docs/.
+
+
+
+  1.4.  Are there any mailing lists and/or newsgroups about slrn?
+
+  If you have general questions about slrn that are not covered by its
+  documentation, please make use of the appropriate newsgroups or
+  mailing list rather than writing to the maintainer directly:
+
+  The appropriate newsgroup for questions about slrn is
+  news.software.readers. There is also a German speaking equivalent
+  (de.comm.software.newsreader).
+  Slrn-user is a mailing list for discussion of the use, development and
+  extension of slrn. You can subscribe to it through the web interface
+  at <http://lists.sourceforge.net/lists/listinfo/slrn-user>.
+
+  To keep track of slrn's development, simply subscribe to slrn-
+  announce.  It is a low-traffic moderated list that informs you about
+  new releases, important bugfixes or major changes to the website. The
+  subscription address is
+  <http://lists.sourceforge.net/lists/listinfo/slrn-announce>.  All
+  announcements are also mailed to slrn-user, so there is no need to
+  read both lists.
+
+
+  2.  Configuration
+
+  2.1.  Is it possible to set my ``From'' header line for postings?
+
+  On (properly configured) Unix-like systems, slrn should be able to
+  determine a valid 'From:' header line itself. However, you can also
+  set one explicitly using the following variables in your slrnrc file:
+
+  set realname "Your Real Name"
+  set username "username"
+  set hostname "your.host.name"
+
+
+
+  This will cause slrn to generate a 'From:' header line of the form:
+
+  From: Your Real Name <username@your.host.name>
+
+
+
+  Note: It is possible that your system administrator disabled this
+  feature to make sure everybody uses his or her correct name and
+  address when posting. To find out whether this is the case, type slrn
+  --version and look for strict_from in the feature list. If it is
+  enabled (indicated by a plus sign), you cannot set your ``From''
+  header line yourself.
+
+
+  2.2.  How can I set my ``Message-ID'' header?
+
+
+  First of all, slrn will only attempt to create the 'Message-ID' header
+  line if it was not compiled with the --disable-gen-mid option (check
+  gen_msgid in the output of slrn --version) and the generate_message_id
+  config variable has not been set to 0.
+
+  To create a valid Message-ID, slrn needs to know the fully qualified
+  domain name (FQDN) of the host it is running on. In most cases, slrn
+  can find it by querying the system. In case this does not work
+  properly, you can alternatively set the domain (right-hand) part of
+  your Message-IDs via the posting_host command. If you think you need
+  this feature, please read the corresponding entry in the reference
+  manual carefully.
+
+
+  2.3.  How can I set the size of the article pager?
+
+
+  Unless you ``zoom'' the article pager (using ``z''), slrn will split
+  the screen and display some article headers at the top. By default, it
+  gives about 75% of the lines to the article pager, but leaves at least
+  four lines for the header overview. At runtime, you can change this
+  using enlarge_article_window (bound to ``^'') and
+  shrink_article_window (bound to ``CTRL-^'').
+
+  There is no config variable you could use to make permanent changes to
+  this; fortunately, it is very easy to set it using a simple slang
+  macro. For example,
+
+  define set_size_of_article_pager ()
+  {
+     set_article_window_size (int(SCREEN_HEIGHT*0.8));
+  }
+  !if (register_hook ("resize_screen_hook", "set_size_of_article_pager"))
+    message ("Warning: Could not register set_size_of_article_pager" +
+             " for resize_screen_hook");
+
+
+  would give about 80% of the screen to the pager. If you want the
+  header overview to have a fixed size, you can use an argument like
+  SCREEN_HEIGHT-10 instead, which would make it 6 lines high (after the
+  command, the article pager has SCREEN_HEIGHT-10 lines; 4 lines are
+  used by status bars).
+
+
+  2.4.  What charset settings should I use under Windows?
+
+  As on any other operating system, this depends on the character set
+  your terminal uses. When using slrn on Windows, two problems connected
+  with character sets frequently appear:
+
+
+  1. The terminal may not use the charset used in the Usenet postings
+     you are trying to read. In this case, you depend on slrn to convert
+     between the two character sets to display certain (8bit) characters
+     correctly. You can enable this by setting the config variable
+     charset to the appropriate value (all supported charsets are listed
+     in the reference manual), for example:
+
+     set charset "ibm850"
+
+
+
+  2. Your editor may use a different charset than your terminal. This is
+     often the case with GUI editors that have their own window, e.g.
+     gvim. In this case, you may want slrn to convert charsets when
+     displaying messages, but not when calling the editor on them, so
+     you should put a line like this into your slrnrc file:
+
+     set editor_uses_mime_charset 1
+
+
+  Note that this only works correctly if your editor uses the charset
+  declared for outgoing postings (in the variable mime_charset). Fortu-
+  nately, this is usually the case with GUI editors on Windows.
+
+  Note: slrn's recoding abilities are currently restricted and rather
+  rudimentary. This will hopefully improve as soon as slang 2.0 is out
+  and includes Unicode support.
+
+
+  2.5.  How can I use an external e-mail program for replies?
+
+
+  You can use the config variable mail_editor_command for this. The
+  following example will use mutt as an external e-mail program for
+  replies:
+
+
+  set mail_editor_command "/usr/bin/mutt -H '%s'"
+  set mail_editor_is_mua 1
+
+
+  Setting mail_editor_is_mua to 1 tells slrn not to try and send any e-
+  mail, because the external program used as the e-mail editor will han-
+  dle this itself.
+
+
+  2.6.  The thread tree is not drawn properly. Why?
+
+
+
+  There are a couple of reasons for this. The most simple may be that
+  the font that you are using does not support line drawing characters.
+  Simply switching fonts to a dec-vt220 compatible font may solve the
+  problem. This is usually the case with Windows telnet applications.
+
+  If you see strings like ``mq>'' or ``tq>'' instead of a thread tree
+  make sure that your terminal or terminal emulator supports vt100
+  escape sequences. This is the case for most emulators like the Linux
+  console, NetBSD's wscons, xterm, rxvt and others. Set the TERM
+  environment variable to vt100 and start slrn to see if the thread is
+  drawn correctly. If this isn't the case, you have to fix your
+  termcap/terminfo file. For termcap based systems, the ``ac'', ``as''
+  and ``ae'' capabilities have to be set correctly. On terminfo based
+  systems, the ``acsc'', ``smacs'' and ``rmacs'' capabilities need
+  adjustment.
+
+  If you can't solve the problem that way because your terminal setup or
+  your terminal emulator is severely broken, consider setting
+
+  set simulate_graphic_chars 1
+
+
+  in your slrnrc file. It restricts slrn to plain ASCII characters for
+  drawing the tree.
+
+  A major drawback of the vt100 solution is, that vt100 terminals can't
+  display colors. Since most terminal emulators support ANSI colors, you
+  could start slrn with the ``-C'' command line switch or use the
+  following configuration command to force the use of colors:
+
+
+  set use_color 1
+
+
+
+  But if you want to use colors with other programs as well, you need a
+  real solution to this problem. Try the following:
+
+  Find a $TERM setting that supports line drawing characters like the
+  vt100 or vt220. Then create a new termcap entry based on that terminal
+  with additional color capabilities and save it to ~/.termcap.  It
+  might look like this:
+
+  myterm:\
+          :Co#8:NC#3:pa#64:\
+          :AB=\E[4%dm:AF=\E[3%dm:op=\E[m:\
+          :mb=\E[5m:md=\E[1m:me=\E[0m:mk=\E[8m:mr=\E[7m:\
+          :cl=\E[H\E[J:vi=\E[?25l:ve=\E[?25h:\
+          :tc=vt100:
+
+
+
+  On some systems, you can then set $TERM to 'myterm' and the settings
+  apply. On others, you need to do something like this:
+
+  TERMCAP=$HOME/.termcap
+  export TERMCAP
+  eval `tset -s myterm`
+
+
+
+  2.7.  Can I use the mouse with slrn?
+
+  xterm (and some compatible terminal emulation programs) have a feature
+  called ``mouse reporting'' that slrn can turn on to support using the
+  mouse. To enable this whenever the terminal offers it, put
+
+  set mouse 1
+
+
+  into your slrnrc file. To force the mouse to be used, startup slrn
+  using the -m command line option - of course, this will not have the
+  desired effect if your terminal really does not have this feature ;-)
+
+  If you want to know what exactly you can do with the mouse, please see
+  the entry on the variable mouse in the reference manual.
+
+
+  2.8.  How can I rotate signatures in slrn?
+
+  There are different ways to do this - chose one:
+
+  The easiest way is probably to call a sig rotation program in the
+  post_editor_command in your slrnrc file. In the following example, the
+  program fortune is called and its output gets written to ~/.signature.
+  After that, the editor jed is called:
+
+  set post_editor_command "fortune -s > ~/.signature; jed '%s' -g %d -tmp"
+
+
+
+  If you want to chose the signature depending on the group you are
+  posting to, you can set the config variable signature using a macro;
+  in the following example, .signature.german gets selected for all
+  newsgroups in de.* and .signature.english gets selected for any other
+  group. Call this macro from post_hook and article_mode_hook to switch
+  the signature automatically.
+
+
+  define set_signature ()
+  {
+    variable signature_file = ".signature.english";
+    if (0 == strncmp (current_newsgroup(), "de.", 3))
+      signature_file = ".signature.german";
+    set_string_variable ("signature", signature_file);
+  }
+
+
+
+  If you want more sophisticated per-group settings, I recommend the
+  macro identity.sl from Emanuele Bassi's slrn page.
+  <http://digilander.libero.it/ebassi/slrn.html#macros>
+
+  Note: slrn itself does not have an option to execute a program and use
+  its output as the signature. Such an option would require piping,
+  which is not available on all platforms. If you're on a Unix-like
+  system and still want to use pipes, you can make ~/.signature a named
+  pipe and attach a daemon sig randomizer to it. Various programs that
+  do this are available on the net - one example is the program autosig
+  <http://www.irendi.com/~msharpe/>.
+
+
+  3.  Usage
+
+  3.1.  What is a prefix argument?
+
+
+  Many key-bindings accept prefix arguments. A prefix argument is a
+  number that is generated prior to a key sequence and is used as a way
+  of controlling the behavior of that key sequence. It is generated by
+  pressing the ``ESC'' key and then pressing the keys that correspond to
+  the number. For example, to generate a prefix argument of 314, simply
+  press the 4 keys: ``ESC 3 1 4''.
+
+  Some functions use such arguments as repeat factors. That is, the
+  function bound to the key sequence that they modify will be repeated
+  the number of times specified by the prefix argument.
+
+  Other functions may simply use it as a way of slightly modifying the
+  behavior of the function. For example, if 1 is used as a prefix
+  argument for the ``followup'' function, the original article's headers
+  will be included in the followup message; if 2 is used, the article
+  also does not get modified (i.e. slrn does not insert quoting
+  characters and neither attaches nor strips signatures). Without a
+  prefix argument, you get a ``regular'' followup without the original
+  article's headers.
+
+
+  3.2.  Treatment of read articles
+
+  By default, slrn does not display articles that were previously marked
+  as read. In most cases, this makes entering groups a lot faster,
+  especially as slrn currently does not cache the headers locally and
+  thus would have to download all the header information from the server
+  again, each time you enter a group.
+
+  At first, most people who are used to a newsreader that always shows
+  all available messages are often disappointed by this. After some
+  time, they might find that slrn's default way of doing things allows
+  them to read their news efficiently, because it keeps their mind on
+  articles they did not yet deal with.
+
+  However, others still prefer to see everything and even if you don't,
+  you still need to re-read an old article now and then. The following
+  questions deal with these cases:
+
+
+  3.2.1.  How can I never mark articles as read?
+
+  There is an option for it - you just need to set
+  auto_mark_article_as_read to 0 in your slrnrc file.
+
+  In most cases, you will find that this is not what you really wanted
+  to do, as it will make it difficult to find the ``new'' articles (i.e.
+  the ones you did not yet read), so you might want to consider the
+  answers to the following questions.
+
+
+  3.2.2.  How can I get slrn to show both read and unread articles?
+
+  If you want to see all articles in a group (read and unread ones),
+  simply set a ``prefix argument'' before entering a newsgroup. Using
+  the default bindings, you can do this by pressing ESC 1 RETURN in
+  group mode. There are variations of this; the online help or the
+  manual will tell you more about them.
+
+  If you always want to enter groups that way, pressing three keys
+  instead of one is annoying. You can avoid this using a special
+  keybinding in your slrnrc file. Here is an example:
+
+
+
+               setkey group "set_prefix_argument(4); () = select_group();" " "
+
+
+
+  With this line, pressing SPACE in group mode will enter the selected
+  group with four as the prefix argument.
+
+  However, you might find it sufficient to make use of the following
+  ways to display specific articles that were previously marked as read:
+
+
+  3.2.3.  How can I retrieve read articles from the same thread?
+
+  If you want to read the ``parent'' of the article you are currently
+  reading (e.g. because the author did not quote enough material to
+  understand his message), ESC p will attempt to find it, using the
+  ``References'' header line.
+
+  It is also possible to find all ``children'' of a given article using
+  ESC Ctrl-P (note that this does not work with all servers) and, using
+  a recursive combination of both, to reconstruct the entire thread
+  tree. This is done by pressing either ESC 1 ESC p or ESC 2 ESC p - the
+  second alternative can be much faster, but the first is more likely to
+  find all articles even if some articles contain incomplete
+  ``References''.
+
+
+  3.2.4.  How can I retrieve other read articles?
+
+  You can locate any article if it is available on your server and you
+  know its Message-Id. Pressing ESC l will produce the necessary prompt.
+
+
+  3.2.5.  I want to see full threads as soon as they contain at least
+  one unread article. Can slrn  do this?
+
+  This is currently not implemented, although it should be possible to
+  achieve such an effect using a macro.
+
+  For many, this behaviour would be a useful compromise between the two
+  extremes of seeing all messages and seeing unread ones only, so this
+  feature might be added in a future version of slrn.
+
+
+  3.3.  Handling of binary postings
+
+  slrn is primarily designed as a newsreader (i.e. for reading and
+  processing text messages); it is not a dedicated agent for downloading
+  and decoding binary postings from Usenet. However, there is some basic
+  functionality for decoding binary postings and there are some ways to
+  make handling them a bit more convenient:
+
+
+
+  3.3.1.  How do I uudecode articles?
+
+
+  Fortunately, the easiest way is also the most efficient. Basically
+  this involves using the `#' key to numerically tag articles that you
+  want to decode and then the `:' key to start the decode process. The
+  only restriction is that multi-part uuencoded articles must be tagged
+  in their proper order (see the next question if you think this is too
+  much trouble). There is no need to uudecode one article at a time.
+  Simply mark everything that you would like to decode and then press
+  `:'. Here is an actual example taken from
+  alt.binaries.pictures.fractals:
+
+
+
+               -    9:[Mike In Indy]    Kaboom! - kaboom.gif (0/1)
+               - 3078:[Mike In Indy]    Kaboom! - kaboom.gif (1/1)
+               -   23:[Gumbycat    ]    lucifer.gif  (0/7)
+               -  433:[Gumbycat    ]    lucifer.gif -  for Halloween  (5/7)
+               -  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (3/7)
+               -  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (4/7)
+               -  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (6/7)
+               -  244:[Gumbycat    ]    lucifer.gif  -  for Halloween (7/7)
+               -  434:[Gumbycat    ]    lucifer.gif  - for Halloween (1/7)
+               -  433:[Gumbycat    ]    lucifer.gif - for Halloween (2/7)
+               -   16:[Paul Carlson]    My Halloween Fractal - devil.gif (0/1)
+               - 4310:[Paul Carlson]    My Halloween Fractal - devil.gif (1/1)
+
+
+
+  As you can see, 3 files have been posted: kaboom.gif, lucifer.gif, and
+  devil.gif (At the time of this writing, it is Halloween weekend).
+  Both kaboom.gif and devel.gif are single part files whereas
+  lucifer.gif is a seven part series. Since lucifer.gif is displayed out
+  of order, care must be exercised when tagging it (slrn will sort
+  threads by subject and in this case the poster used an inconsistent
+  subject format--- usually, sorting will result in the correct
+  ordering). Assuming that we wish to decode these three gif images, the
+  `#' key will be used to tag them. The result of using the `#' key is
+  shown below:
+
+
+
+               -     9:[Mike In Indy]    Kaboom! - kaboom.gif (0/1)
+               1- 3078:[Mike In Indy]    Kaboom! - kaboom.gif (1/1)
+               -    23:[Gumbycat    ]    lucifer.gif  (0/7)
+               6-  433:[Gumbycat    ]    lucifer.gif -  for Halloween  (5/7)
+               4-  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (3/7)
+               5-  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (4/7)
+               7-  433:[Gumbycat    ]    lucifer.gif  -  for Halloween (6/7)
+               8-  244:[Gumbycat    ]    lucifer.gif  -  for Halloween (7/7)
+               2-  434:[Gumbycat    ]    lucifer.gif  - for Halloween (1/7)
+               3-  433:[Gumbycat    ]    lucifer.gif - for Halloween (2/7)
+               -    16:[Paul Carlson]    My Halloween Fractal - devil.gif (0/1)
+               9- 4310:[Paul Carlson]    My Halloween Fractal - devil.gif (1/1)
+
+
+
+  Now 9 headers have been numerically tagged. To decode these, simply
+  press the `:' key. slrn will prompt for a filename to save the
+  articles to and after saving, it will prompt to go ahead and decode.
+  The decoded files will be placed in the directory specified by the
+  `decode_directory' variable that one can set in the slrnrc file.  The
+  end result is that after tagging with the `#' key, one presses `:' and
+  hits return twice. To un-tag articles, press `ESC #'.
+
+
+  3.3.2.  What are the advantages of using uudeview?
+
+  slrn can be linked against the uudeview library; in this case, it will
+  use the library functions to decode uuencoded articles. Unlike slrn's
+  internal routines, uudeview is usually able to decode multipart
+  messages even if you did not tag them in the correct order. Another
+  advantage of (current versions of) uudeview is that it supports yEnc
+  (see next question for details). A disadvantage is that it needs a lot
+  more memory for decoding than slrn.
+
+  I got reports that uudeview decoded files for which slrn's code failed
+  (and vice versa), so if you run into problems with a particular binary
+  posting, it might be worth trying both - to allow this, there is the
+  config variable use_uudeview which can be set to zero in case you have
+  uudeview support compiled in, but want to use the builtin code
+  nonetheless.
+
+  To link against uudeview, you need to have the library installed on
+  your system; one way to get it is its homepage at
+  <http://www.fpx.de/fp/Software/UUDeview/>. You also need to pass
+  --with-uudeview to the configure script when building slrn (on Unix-
+  like systems). If you did not compile your copy of slrn yourself, you
+  can still find out whether it has uudeview support by looking for a
+  `+' sign in front of ``uudeview'' in the output of slrn --version.
+
+
+  3.3.3.  What about yEnc?
+
+  yEnc <http://www.yenc.org/> is a way to encode binaries that makes use
+  of 8bit characters, thus creating less overhead than the traditional
+  uuencode and base64 methods. For this reason, it becomes increasingly
+  popular in certain binary groups. slrn does not have builtin support
+  for yEnc: One reason for this is that I do not need this feature
+  myself and so far, no patches for it have been contributed; besides,
+  yEnc is still under development and still has some drawbacks which I'd
+  like to see solved first. However, there already are two ways to
+  decode such messages:
+
+  Prior to 0.9.7.4, slrn would corrupt some yEnc-encoded postings (by
+  removing backspace-letter combinations traditionally used for
+  formatting text messages). As this code has now been removed, you can
+  pipe yEnc-encoded messages to external decoding programs from slrn; if
+  you want to decode them from within slrn, you can link against a
+  current version of uudeview, which now also supports yEnc (see
+  previous question for details on this). However, uudeview sometimes
+  generates ``no data found'' error messages when dealing with yEnc-
+  encoded postings (even if it does decode them correctly); if you want
+  to avoid them, you need at least version 0.9.8.0 of slrn, which simply
+  ignores them.
+
+
+  3.3.4.  Can I put multipart binary postings into one thread?
+
+  That option has been added in slrn 0.9.7.1. To use it, you need to
+  define a macro that can compare two subjects and tell slrn whether or
+  not they should be put into the same thread. An implementation of such
+  a macro that should work for most cases and can serve as a starting
+  point for your own experiments can be found in macros/multipart.sl in
+  the source distribution.
+
+
+
+  3.4.  How can I mark cross-posts as read in other groups as well?
+
+
+  For slrn to mark an article as read in more than one group, it needs
+  information about what groups the article was cross-posted to. This
+  information is provided by the Xref header. Not all servers provide
+  this header so this feature will not work with those servers.
+
+  Now suppose that your server provides the Xref header as one of the
+  headers of the article and at the same time, provides support for the
+  NOV database (via the XOVER NNTP command). In this case, unless the
+  server has been configured to provide the Xref header as part of the
+  NOV database, slrn will not be able to get the header without
+  accessing the article. Unfortunately, Xref is optional under NOV so
+  many systems do not automatically provide it even though it is one of
+  the recommended headers.
+
+  To summarize, make sure that your server provides the Xref header AND
+  if it supports NOV, make sure that the Xref header is part of the NOV
+  database.
+
+
+
+  3.5.  Why doesn't the `L' command work as advertised?
+
+
+  Capital ``L'' lists all un-subscribed groups that slrn knows about.
+  Slrn gets this information through one of three sources. It tries the
+  following in order and stops when one is successful:
+
+
+  1. From the server via the active file. It only does this if the line
+     ``set read_active 1'' is in your slrnrc file. By default, slrn does
+     not read the active file.
+
+  2. By querying the server using the LIST ACTIVE NNTP command with a
+     wildmat argument. Please note that not all servers support this
+     kind of query.
+
+  3. From the groups listed in your newsrc file. In that case, the ``L''
+     command will only list unsubscribed groups that are present in this
+     file.
+
+  The last one always succeeds with results that may be less than
+  desirable. If you have a fast network connection to your server,
+  simply put
+
+
+          set read_active 1
+
+
+
+  in your slrnrc file. If you do not want slrn to read the active file
+  because your connection is slow, see whether or not your server
+  supports LIST ACTIVE with a wildmat argument. As a last resort, try to
+  keep a full list of newsgroups in your newsrc file.
+
+
+
+  3.6.  How do I cross-post an article?
+
+
+  There are two ways:
+
+  1. When slrn prompts for a newsgroup, simply specify a comma-separated
+     list of newsgroups. Do not use spaces!
+  2. Edit the ``Newsgroups'' header line when editing the message.
+     Again, the list of newsgroups must be comma separated with no
+     whitespace.  Also make sure that you do not wrap this line.
+
+
+
+  3.7.  How do I use the mouse in an XTerm to copy/paste?
+
+  If mouse reporting is turned on (via the -m command line switch or the
+  mouse config variable), you need to hold down the shift key to mark
+  text for copy/paste.
+
+
+  3.8.  How can I sort the list of newsgroups?
+
+  Depending on what exactly you want to do, there are different
+  possibilities: First of all, you can use the interactive move_group
+  command (by default bound to m) to move a single newsgroup to a
+  different position. Before doing this, I recommend you display all
+  subscribed groups (using toggle_hidden, usually bound to l, if
+  necessary) so you won't be surprised by the result.
+
+  However, if you want to sort all groups alphabetically, you don't have
+  to do this manually. slrn comes with a simple macro that does the job
+  for you (gsort.sl) and you can find a more sophisticated one on the
+  macro page of J.B. Nicholson-Owens. <http://forestfield.org/slrn/>
+
+  On Unix-like systems, you can also use the sort command to sort your
+  newsrc file (do this while slrn is not running). For example, if you
+  use .jnewsrc as your newsrc file:
+
+  sort .jnewsrc > .jnewsrc-sorted
+  mv .jnewsrc-sorted .jnewsrc
+
+
+  Note: Simply doing sort -o .jnewsrc .jnewsrc may or may not work
+  depending on your version of sort.
+
+
+  4.  Scoring
+
+  4.1.  What is scoring?
+
+
+  Scoring is a method to give articles a score based on user defined
+  rules. The idea behind this is to give articles with a high score a
+  higher priority while articles with a low score (less than zero) are
+  marked as read.
+
+  When entering a group, all articles are given a score of ``0''. Then
+  the list of scoring rules, the ``score file'', is applied to each
+  article.  The score file might give articles from ``John Doe'' a
+  higher score, while articles with the word ``Gnus'' in their subjects
+  get a negative score.
+
+  In the end, threads with high-score articles appear at the top of your
+  screen and can be read before other, possibly less interesting,
+  articles.
+
+
+
+  4.2.  How can I killfile with Slrn?
+
+
+  Slrn has no killfile. The same effect can be achieved with its score
+  file, however. Assigning a particularly low score will do the trick:
+  [news.software.readers]
+          Score: =-9999   % I'm not interested in articles on gnus
+          Subject: gnus
+
+
+
+  In this example, all postings in news.software.readers that have the
+  substring ``gnus'' in their subjects are assigned a negative score.
+  The equal sign before the score value tells slrn to assign the score
+  -9999 and to skip all other tests for the affected article; otherwise,
+  the score would be added to the score value of all previous matching
+  rules and subsequent rules could increase the score again.
+
+  If the score of an article is equal to or less than kill_score (which
+  happens to be -9999 if you didn't change it), the article does not
+  even get displayed, so the above scoring rule effectively killfiles
+  all articles that have ``gnus'' in their subject line.
+
+
+  4.3.  How do I set up slrn to read a score file?
+
+
+  In order for slrn to read a score file, it must know the name of the
+  score file.  This is specified by putting the appropriate line in your
+  slrnrc file.  For example, if the name of the score file is ``Score''
+  and it is located in the News subdirectory, then add the line:
+
+  set scorefile "News/Score"
+
+
+  to your slrnrc file.
+
+
+
+  4.4.  What is the format of an slrn score file?
+
+  The format of slrn's score files is described in the file score.txt
+  which is part of the documentation that comes with the source package.
+  That file also contains some examples.
+
+
+  4.5.  Where can I get a full description of slrn's regular expres-
+  sions?
+
+
+  slrn makes use of the regexp engine built into the slang programmer's
+  library.  Thus, a full description of the regexp syntax that can be
+  used in slrn's scorefiles can be found in the documentation of slang.
+  In version 1.4.4, this is chapter 18 of the file slang.txt (also
+  available online
+  <http://space.mit.edu/~davis/slang/doc/html/slang-18.html>). Please
+  note that in slrn, the default is \C (case insensitive), not \c.
+
+
+  4.6.  How can I test whether my regular expressions do what I expect
+  them to do?
+
+  The grep-like utility rgrep that comes with the editor jed uses the
+  same regexp engine as slrn, so you can use it. Alternatively, Matthias
+  Friedrich wrote a small program that can be used to make such tests.
+  He posted the source to de.comm.software.newsreader (Message-ID is
+  <slrn9u07di.93n.matt@endeavour.mafr.de>); you can get the article from
+  google groups
+  <http://groups.google.com/groups?selm=slrn9u07di.93n.matt@endeavour.mafr.de&output=gplain>.
+
+
+  4.7.  Is there an easy way to watch or kill threads / authors?
+
+  Editing the scorefile and adding entries manually can become quite
+  time consuming if you want to score on threads or authors regularly.
+  The interactive command create_score (default binding is 'K' in
+  article mode) makes it easy to create a new scorefile entry based on
+  the currently selected article.
+
+  If you want to watch or kill subthreads via a single keystroke, you
+  may like the ``one-key scoring macro'' that's available from the macro
+  section <http://slrn.sourceforge.net/macros/> of slrn's homepage.
+
+
+  4.8.  Do I need to remove expired entries from my score file manually?
+
+  Using the Expires: keyword, you can specify that a certain scoring
+  rule should only be valid until a given date. After that, slrn ignores
+  it and will warn you on startup, but does not remove the entry from
+  the score file. If you often use this keyword, expired entries will
+  clutter up your scorefile and make it difficult to read.
+
+  Fortunately, Felix Schueller wrote a perl script called cleanscore
+  that can remove expired entries from your score file automatically for
+  you. On Unix-like systems, it can even be called as a cron job, so you
+  don't need to worry about expired entries at all. cleanscore is
+  included in the contrib directory of slrn's source distribution and
+  has its own web page <http://slrn.sourceforge.net/cleanscore/>.
+
+
+  4.9.  How do I score on a specific subject, e.g., ``test'' messages?
+
+
+  The most simple version is
+
+  Score: -9999
+  Subject: test
+
+
+
+  This matches all subjects which contain the substring ``test'' case
+  insensitively. The above matches ``test'', ``TEST'',
+  ``teSt'',``Kerneltest'', ``protesting'', etc.
+
+  In order to limit this to all subjects containing the word ``test''
+  rather than the substring use this:
+
+
+  Score: -9999
+  Subject: \<test\>
+
+
+
+  The following will score postings which subject is exactly ``test'':
+
+
+  Score: -9999
+  Subject: ^test$
+
+
+
+  Finally, a score entry that filters all test-postings to non-test
+  groups:
+
+
+
+  [~*.test]
+          Score: -9999
+          Subject: ^test$
+
+
+
+  4.10.  How do I score postings from a specific person?
+
+
+  The following rule
+
+
+  Score: -9999
+  From: name@who\.knows\.where
+
+
+
+  assigns a score of -9999 to the person with the mail address
+  ``name@who.knows.where''.
+
+
+
+  4.11.  How do I score articles from a specific site?
+
+
+
+  Score: -9999
+  From: @who\.knows\.where
+
+
+
+  will give a score of -9999 to a From line that contains
+  ``@who.knows.where''. An alternative would be to score on the Message-
+  ID header field.
+
+
+
+  4.12.  How do I score followups?
+
+
+  We're assuming that a followup contains a subject starting with
+  ``Re:'' and/or has a references header.  To assign a score of -9999 to
+  such an article use:
+
+
+  Score:: -9999
+  Subject: ^Re:
+  References: .
+
+
+
+  Note the use of the double colon following the score keyword. This
+  indicates that the score is an OR type expression. This means that the
+  above score will pick out articles with subjects that begin with `Re:'
+  OR have a references line (OR both).
+
+  To score articles that have both a subject starting with ``Re:'' and a
+  ``References'' header, use the single colon form:
+
+
+  Score: -9999
+  Subject: ^Re:
+  References: .
+
+  Single colon forms are AND expressions.
+
+
+  4.13.  Is it possible to score followups to my own postings?
+
+  Scoring followups to your own postings is quite easy if slrn generates
+  the Message-IDs of your articles (see the question on ``generating
+  Message-IDs'' for details). In this case, all you have to do is
+  looking for username@your.hosts.fqdn in the `References:' header line.
+  Of course, you need to replace username and your.hosts.fqdn with the
+  strings that are correct for your setup - if in doubt, look at the
+  Message-ID of one of your own articles to find out.
+
+
+  Score: 1000
+  References: username@your\.hosts\.fqdn>
+
+
+
+  Note that this will catch articles that reference one of your articles
+  directly or indirectly (e.g. a followup to a followup to your
+  posting). If you only want to score direct followups, make sure to
+  check the last ID in the `References:' header only (note the trailing
+  dollar sign):
+
+
+  Score: 1000
+  References: username@your\.hosts\.fqdn>$
+
+
+
+  4.14.  How do I kill cross posts from a specific group?
+
+
+  You have two choices: either use the ``Xref'' header or the
+  ``Newsgroups'' header. If possible, you should avoid the
+  ``Newsgroups'' header in your score files, as it is usually not
+  included in the NOV (news overview) data, so retrieving it requires
+  extra server communication that may slow down scoring (and thus
+  entering groups) significantly. So if your server provides ``Xref''
+  headers, use them.
+
+  Assume that you want to score any article that was cross-posted to an
+  ``astrology'' newsgroup. Then use one of the following forms:
+
+
+  Score: -9999
+  Xref: astrology
+
+  Score: -9999
+  Newsgroups: astrology
+
+
+
+  To say it again, the latter version is usually much slower.
+
+
+
+  4.15.  How do I score all cross-posts?
+
+
+  Like the previous answer you have two choices: to use the ``Xref''
+  header (preferred) or the ``Newsgroups'' header. The first choice uses
+  the fact that a cross-posted article will have two colons in the
+  ``Xref'' header field. So, use a score of the form:
+  Score: -9999
+  Xref: :.*:
+
+
+
+  If you do not have the option of using the ``Xref'' header, use:
+
+
+  Score: -9999
+  Newsgroups: ,
+
+
+
+  However, you may want to tolerate cross-posts if a Followup-To header
+  is set. The following rule scores articles that are cross-posted into
+  many groups (e.g. more than 2) and have no Followup-To header (note
+  that this rule is ``expensive'', as usually neither Newsgroups nor
+  Followup-To are included in the NOV data).
+
+
+  Score: -9999
+          Newsgroups: ,.*,
+          ~Followup-To: .
+
+
+
+  4.16.  How do I make it so I read only  posts from a specific person?
+
+
+  The answer is simple: kill posts by everyone else. Assume that you
+  want to read only posts by someone whose From line contains:
+  ``someone@i.like''.  Then use a score of the form:
+
+
+  Score: -9999
+  ~From: someone@i\.like
+
+
+
+  Note the use of the NOT indicator (~).
+
+
+
+  4.17.  How do I score articles that have no ``References'' line but
+  whose ``Subject'' line starts with ``Re:''?
+
+
+  Define a score based on the ``References'' header and the ``Subject''
+  headers, e.g.,
+
+
+  Score: -9999
+  ~References: .
+  Subject: ^Re:
+
+
+
+  Here the ``References'' line simply says that the article must not
+  have a ``References'' header. The subject header uses a regular
+  expression that says ``Re:'' must occur at the beginning of the
+  subject. This will match the strings "Re:", "re:", "rE:", and "RE:".
+  To match only "Re:", use the regular expression
+
+
+
+  Subject: ^\cRe:
+
+
+
+  Here, ``\c'' turns on case-sensitivity.  To turn it off (which is the
+  default), use ``\C''.
+
+
+
+  4.18.  How do I score subjects that contain only uppercase characters?
+
+
+  Use something like:
+
+
+  Score: -9999
+  ~Subject: \c[a-z]
+
+
+
+  This will assign a score of -9999 to any article whose subject header
+  does not contain a lowercase character. If you also want to kill
+  followups to such articles use:
+
+
+  Score: -9999
+  Subject: ^Re: \c[^a-z]*$
+  ~Subject: ^Re: *
+
+
+
+  The last one says that the article will be killed if the subject
+  satisfies the two conditions:
+
+
+  1. It begins with "Re: " and the rest of the line does not contain a
+     lowercase character.
+
+  2. It does not begin with "Re: ", followed by blanks only.
+
+  The last constraint is necessary to avoid killing articles that are
+  followups to articles with an empty subject line.  Of course, one
+  might want to kill such articles as well.
+
+
+  4.19.  How can I filter people without a realname?
+
+
+  Some people dislike posters who don't post under their full real name.
+  Of course, slrn has no way of knowing whether a given name is a real
+  name or not; however, a name that does not contain a space is most
+  probably not a full real name, so a commonly used rule is to check for
+  the 'From:' header to contain at least two spaces (one inside the name
+  and one between the name and the address), separated by non-blank
+  characters:
+
+
+  [*]
+  Score: -9999
+  ~From: [ ]+[^ ]+[ ]+
+
+
+
+  5.  slrnpull
+
+  5.1.  What is slrnpull?
+
+  slrnpull is a program that pulls a small newsfeed from an NNTP server
+  and saves it to a local spool. slrn can subsequently read from this
+  spool without needing to contact the server, so you can use both
+  programs together to read your news offline (e.g. because you pay for
+  your Internet connection by the second).
+
+  Since version 0.9.8.0, slrnpull optionally allows you to pull only the
+  article headers first, mark those you are interested in for download
+  inside of slrn and get only the marked article bodies later. This can
+  reduce download cost and disk space for groups in which you only want
+  to read a small percentage of all articles. If you are interested in
+  this functionality, please read slrnpull/README.offline.
+
+
+  5.2.  Why can't I post when using slrnpull?
+
+
+  In order to post an article via slrnpull, slrn needs to place the
+  article in slrnpull's out.going directory. Two things are necessary
+  for this to happen:
+
+  First of all, slrn must know that you are using the slrnpull out.going
+  directory for posts. Make sure the line
+
+
+  set use_slrnpull 1
+
+
+
+  is in your slrnrc file. This indicates to slrn that the news spool is
+  an slrnpull news spool.
+
+  The second point is, you must have write permission to the out.going
+  directory in order for slrn to place your article in that directory.
+  The permissions may be changed via the Unix command:
+
+
+  chmod ugo+rwxt out.going
+
+
+
+  Do not put this in your slrnrc file!
+
+
+
+  5.3.  How do I get a full list of newsgroups?
+
+
+  You will have to go online for that.  Run slrn as follows:
+
+
+  slrn --nntp -h YOUR.NEWS.SERVER -a -f groups.dat --create
+
+
+
+  This will start slrn and download the groups and put them in the file
+  groups.dat.  Before actually doing this, modify your slrnrc file to
+  make sure write_newsrc_flags has its default setting
+
+
+  set write_newsrc_flags 0
+
+  so that all groups will be written out to groups.dat.
+
+
+
+  6.  I found a bug in slrn!!!
+
+  First, please check whether the bug you discovered is already
+  discussed here:
+
+
+  6.1.  slrn hangs infinitely when I press the delete key
+
+  This is a known bug; however, it's not a problem in slrn, so I cannot
+  fix it. slrn uses a library called slang for its screen input/output
+  and some Linux distributions (including RedHat) patch that library to
+  get Unicode support. Unfortunately, the patch they use makes slang
+  unstable.
+
+  To get rid of this program, you can get the vanilla slang sources from
+  the public FTP space <ftp://space.mit.edu/pub/davis/slang> of its
+  author, John E. Davis and compile them yourself.
+
+  However, simply deinstalling the slang package that came with your
+  distribution and replacing it with your own version might break
+  dependencies in your system's package management - even if you build
+  your own RPM package: Some packages explicitly depend on the patched
+  version!
+
+  For this reason, you may have to install the unpatched version in a
+  different directory than the patched one that came with your distro,
+  e.g. in /usr/local/. To make sure slrn uses the right one, point the
+  configure script to it using --with-slang-library=/path/to/lib and
+  --with-slang-includes=/path/to/includes. Additionally, you either need
+  to specify --enable-hardcode-libs or point the environment variable
+  LD_LIBRARY_PATH to the library path when running slrn.
+
+  If you experience such a problem, please also report it as a bug to
+  your distributor, so we will hopefully see no more broken slang
+  packages in the future. Also, slang 2.0 will officially include
+  Unicode support, so by the time it is out and slrn supports it, these
+  kinds of problems will hopefully disappear.
+
+
+  6.2.  The bug I found is not listed here. What do I do now?
+
+  The bug might already be fixed, so please consider upgrading to the
+  latest release of slrn or at least check whether the problem is listed
+  in the current changes file
+  <http://slrn.sourceforge.net/docs/changes.html>. If I already wrote a
+  patch for it, it is available at
+  <http://slrn.sourceforge.net/patches/>, so you should look at that
+  page, too. If you find that the bug is still unreported, send me a bug
+  report (tststs@gmx.de).
+
+  Please give a detailed description of what you did, how you expected
+  slrn to behave and what slrn did instead; also include the exact error
+  messages (in case you got any) and information I might need to
+  reproduce the bug or that might make it easier to find it, such as
+
+
+  o  Which actions make the bug appear
+
+  o  The output of ``slrn --version''
+
+
+  o  If a certain article caused the problem, the Message-ID of that
+     article (or even the article itself, if it is not too long)
+
+  o  Details of your configuration that might be relevant, like config
+     files (after deleting personal data like passwords)
+
+
+  6.2.1.  Some additional notes for the advanced user
+
+  If you have an idea what piece of code is causing the bug and how to
+  fix it, comments on this (or even a patch) are of course welcome, too.
+
+  If you think the problem might be on the server side, the command line
+  switch --debug can be used to log the dialog with the server to a
+  file. Note that the resulting file may become quite large and may
+  contain your password!  Keep this in mind when attaching it to bug
+  reports: Delete personal data, shorten it to the significant portion
+  (if you have some basic knowledge about NNTP) or use bzip2 and ask
+  before sending large session transcripts.
+
+  If slrn crashes (i.e. gets terminated because of a segmentation
+  fault), it may also be helpful if you can provide a stack backtrace.
+  If you're willing to do this, try the following steps to get one
+  (assuming you use a Unix-like environment and have script and gdb
+  installed):
+
+  At the command line, type:
+
+  script
+  gdb slrn
+
+
+
+  Then, at the prompt of gdb, type:
+
+  run [command line arguments here]
+  [do whatever leads to the crash here]
+  bt
+  quit
+
+
+
+  Finally, type exit to leave the shell opened by script. This should
+  have lead to a file called typescript; please include the portion of
+  it that starts with (gdb) bt in your bug report.
+
+
+  7.  About this document
+
+  The latest version of this FAQ is available at slrn's homepage
+  <http://slrn.sourceforge.net/manual/>.
+
+
+  7.1.  History
+
+
+     2003-08-19: Revision 1.0
+        The first version of this FAQ documents slrn 0.9.8.0. It merges
+        the three files FAQ, SCORE_FAQ and slrnpull/FAQ written by John
+        E. Davis. Matthias Friedrich and Thomas Schultz updated the
+        existing entries and wrote some new ones.
+
+
+

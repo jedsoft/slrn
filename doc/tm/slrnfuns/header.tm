@@ -136,8 +136,9 @@ mode and allow you to manipulate the header window.
 \function{header_next_unread}
 \usage{Integer header_next_unread ()}
 \description
-   Goto next unread header.  The function returns one upon success or
-   zero upon failure.
+   Goto next unread header. When reading from an slrnpull spool, headers for
+   which the article body is not present are skipped. The function returns
+   one upon success or zero upon failure.
 \seealso{header_down}
 \done
 

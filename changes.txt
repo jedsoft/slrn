@@ -100,6 +100,9 @@ Changes since 0.9.7.4
    * tr.po (Turkish; A. Alper ATICI)
 21. Remove duplicates when browsing URLs (Ruediger Sonderfeld)
 22. IPv6 support (requires getaddrinfo; patch by J.H.M. Dassen (Ray))
+23. A new, updated and more comprehensive FAQ (doc/FAQ) - it replaces the
+    files FAQ, SCORE_FAQ and slrnpull/FAQ (written by Matthias Friedrich and
+    me, based on John E. Davis' original files).
 
 Changes since 0.9.7.3
 

@@ -3,13 +3,13 @@
 SUBDIRS = tm
 
 SLRNPULL = @SLRNPULL@
-PULLDOCS = slrnpull/FAQ slrnpull/README slrnpull/SETUP slrnpull/score \
+PULLDOCS = slrnpull/README slrnpull/SETUP slrnpull/score \
  slrnpull/setgid.txt slrnpull/slrn.rc slrnpull/slrnpull.conf \
  slrnpull/slrnpull.sh slrnpull/README.offline
 
 docdir = @docdir@
 doc_DATA = FAQ FIRST_STEPS README.GroupLens README.SSL README.macros \
- README.multiuser SCORE_FAQ THANKS help.txt manual.txt score.sl score.txt \
+ README.multiuser THANKS help.txt manual.txt score.sl score.txt \
  slrn-doc.html slrn.rc slrnfuns.txt
 
 man_MANS = slrn.1 @MAN_SLRNPULL@

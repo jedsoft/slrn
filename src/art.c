@@ -3656,7 +3656,7 @@ static int prev_unread (void) /*{{{*/
    
    while (h != NULL)
      {
-	if (0 == (h->flags & HEADER_READ)) break;
+	if (0 == (h->flags & (HEADER_READ|HEADER_WITHOUT_BODY))) break;
 	h = h->prev;
      }
    

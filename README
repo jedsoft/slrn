@@ -40,7 +40,7 @@ changes.txt             Lists the changes from version to version.
 				Files in doc/
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-FAQ                     Frequently Asked Questions about slrn.
+FAQ                     Frequently Asked Questions about slrn / slrnpull.
 
 FIRST_STEPS             How to setup slrn for the first time.
 
@@ -60,8 +60,6 @@ README.macros           Some notes on how to expand slrn using the powerful
                         S-Lang macro language
 
 README.multiuser        How to set up slrn for more than one user.
-
-SCORE_FAQ               Frequently Asked Questions about slrn's scoring.
 
 THANKS                  Thanks to people involved in slrn's development.
 
@@ -95,9 +93,10 @@ tm/                     Source files of the documentation in slrnfuns.txt
 			   Files in doc/slrnpull/
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-FAQ                     Frequently Answered Questions about slrnpull.
-
 README                  General information and usage of slrnpull.
+
+README.offline		How to fetch article headers first and bodies only on
+                        request.
 
 SETUP                   How to install and configure slrnpull.
 
