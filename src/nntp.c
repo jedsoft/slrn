@@ -152,6 +152,13 @@ static int _nntp_read_line (char *buf, unsigned int len)
    return -1;
 }
 
+static int _nntp_get_article_size (int id)
+{
+   /* no nntp-command for this, reading the article takes too much time */
+   (void) id;
+   return 0;
+}
+
 static int _nntp_head_cmd (int id, char *msgid, int *real_idp)
 {
    return nntp_head_cmd (NNTP_Server, id, msgid, real_idp);
@@ -356,6 +363,7 @@ static int nntp_init_objects (void)
    NNTP_Server_Obj.sv_current_group = _nntp_current_group;
    NNTP_Server_Obj.sv_read_line = _nntp_read_line;
    NNTP_Server_Obj.sv_close = _nntp_close_server;
+   NNTP_Server_Obj.sv_get_article_size = _nntp_get_article_size;
    NNTP_Server_Obj.sv_initialize = _nntp_initialize_server;
    NNTP_Server_Obj.sv_select_article = _nntp_select_article;
    NNTP_Server_Obj.sv_put_server_cmd = _nntp_put_server_cmd;

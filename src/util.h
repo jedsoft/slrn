@@ -34,6 +34,7 @@ extern int slrn_move_file (char *, char *);
 extern int slrn_fclose (FILE *);
 extern int slrn_delete_file (char *);
 extern int slrn_file_exists (char *);
+extern int slrn_file_size (char *);
 extern char *slrn_basename (char *);
 extern int slrn_is_absolute_path (char *);
 #if defined(IBMPC_SYSTEM)

@@ -4123,7 +4123,11 @@ static int do_slrn_uudeview (char *uu_dir, char *file)
      {
 	i++;
 	
-	if (UURET_OK != (ret = UUDecodeFile (item, NULL)))
+	/* When decoding yEnc messages, uudeview inserts bogus items into the
+	 * file list. Processing them should not trigger an error, so we need
+	 * to ignore errors where no data was found. */
+	ret = UUDecodeFile (item, NULL);
+	if ((ret != UURET_OK) && (ret != UURET_NODATA))
 	  {
 	     char *f;
 	     char *err;
@@ -7993,10 +7997,31 @@ static char *display_header_cb (char ch, void *data, int *len, int *color) /*{{{
 	
       case 'b':
 	retval = buf;
+	if (h->bytes < 1000)
 #ifdef HAVE_ANSI_SPRINTF
-	*len =
+	  *len =
 #endif
-	sprintf (retval, "%d", h->bytes); /* safe */
+	  sprintf (retval, "%d ", h->bytes); /* safe */
+	else
+	  {
+	     float size = h->bytes / 1024.0;
+	     char factor = 'k';
+	     if (h->bytes >= 1024000)
+	       {
+		  size = size/1024.0;
+		  factor = 'M';
+	       }
+	     if (size < 10)
+#ifdef HAVE_ANSI_SPRINTF
+	       *len =
+#endif
+	       sprintf (retval, "%.1f%c", size, factor); /* safe */
+	     else
+#ifdef HAVE_ANSI_SPRINTF
+	       *len =
+#endif
+	       sprintf (retval, "%.0f%c", size, factor); /* safe */
+	  }
 	break;
 	
       case 'c':

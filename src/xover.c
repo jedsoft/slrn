@@ -321,12 +321,19 @@ static int parsed_headers_to_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
 #ifndef SLRNPULL_CODE
    if (id == -1)
      id = extract_id_from_xref (xov->xref);
+# if SLRN_HAS_SPOOL_SUPPORT
+   if (Slrn_Spool_Check_Up_On_Nov && (xov->bytes == 0) && (id != -1))
+     {
+	int size = Slrn_Server_Obj->sv_get_article_size (id);
+	if (size != -1) xov->bytes = size;
+     }
+# endif
 #endif
    
    xov->add_hdrs = copy_add_headers (Additional_Headers, 0);
 
    xov->id = id;
-
+   
    return 0;
 }
 
@@ -893,6 +900,7 @@ int slrn_read_xover (Slrn_XOver_Type *xov) /*{{{*/
    if (Slrn_Server_Obj->sv_has_xover && !Suspend_XOver_For_Kill &&
        (Slrn_Prefer_Head != 2))
      {
+	int bytes = -1;
 	while (1)
 	  {
 	     status = Slrn_Server_Obj->sv_read_line (buf, sizeof (buf));
@@ -905,6 +913,12 @@ int slrn_read_xover (Slrn_XOver_Type *xov) /*{{{*/
 	       }
 
 	     id = atoi (buf);
+# if SLRN_HAS_SPOOL_SUPPORT
+	     if (Slrn_Spool_Check_Up_On_Nov)
+	       if (-1 == (bytes = Slrn_Server_Obj->sv_get_article_size (id)))
+		 continue; /* skip nonexisting article */
+# endif
+	     
 	     if ((id >= XOver_Min) && (id <= XOver_Max))
 	       break;
 	     /* else server screwed up and gave bad response.  Ignore it. */
@@ -913,6 +927,8 @@ int slrn_read_xover (Slrn_XOver_Type *xov) /*{{{*/
 	if (-1 == parse_xover_line (buf, xov))
 	  return -1;
 	
+	if ((xov->bytes == 0) && (bytes > 0))
+	  xov->bytes = bytes;
 	return 1;
      }
 

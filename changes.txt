@@ -6,12 +6,14 @@ Changes since 0.9.7.4
   * Fixed memory leak when grouping scorefile entries.
   * No more rubbish at the end of popup window lines (Jurriaan).
   * subject_compare_hook leads to the expected result again (Jurriaan).
+  * Ignore "no data found" errors when using uudeview (Chris Hanson).
 
    Changes to the user interface:
   * view_scores uncollapses threads (suggested by Jurriaan W Kalkman).
   * By default, articles are now saved to folders with lower case names;
     upper case filenames are still used when the file already exists. The
     new hook make_save_filename allows overriding these defaults.
+  * In header_display_format, %b choses a suitable "unit" automatically.
   
    slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still
@@ -19,6 +21,10 @@ Changes since 0.9.7.4
    on a patch by Jurriaan W Kalkman).
 
    locate_article ignores leading "news:" (Jarek Baczynski)
+   
+   When reading in spool mode with spool_check_up_on_nov set, slrn now finds
+   out the number of bytes of each article, even if it is not included in
+   the news overview file (based on a patch by Jurriaan W Kalkman).
    
    configure script accepts new options --with-server-name and
    --with-server-file (Matthias Friedrich).

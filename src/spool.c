@@ -67,6 +67,7 @@ static int spool_initialize_server (void);
 static int spool_read_line (char *, unsigned int );
 static int spool_xpat_cmd (char *, int, int, char *);
 static int spool_select_article (int, char *);
+static int spool_get_article_size (int);
 static int spool_one_xhdr_command (char *, int, char *, unsigned int);
 static int spool_xhdr_command (char *, int, int);
 static int spool_list (char *);
@@ -319,6 +320,9 @@ static int spool_read_xover (char *the_buf, unsigned int len)
 	     return 0;
 	  }
 	
+#if 0
+	/* We now do this check in xover.c and get the article size (in bytes)
+	 * using the same call to stat(). */
 	if (Slrn_Spool_Check_Up_On_Nov == 0)
 	  break;
 	
@@ -329,6 +333,7 @@ static int spool_read_xover (char *the_buf, unsigned int len)
 	     break;
 	  }
 	debug_output (NULL, -1, "Nov entry %ld skipped!", Spool_XOver_Next);
+#endif
      }
 
    Spool_XOver_Next++;
@@ -412,6 +417,15 @@ static int spool_article_num_exists (int num)
      return 0;
    
    return -1;
+}
+
+static int spool_get_article_size (int num)
+{
+   char buf [SLRN_MAX_PATH_LEN];
+   
+   slrn_snprintf (buf, sizeof (buf), "%s/%d", Spool_Group, num);
+   
+   return slrn_file_size (buf);
 }
 
 static int spool_is_name_all_digits (char *p)
@@ -1624,6 +1638,7 @@ static int spool_init_objects (void)
    Spool_Server_Obj.sv_reset = spool_reset;
    Spool_Server_Obj.sv_initialize = spool_initialize_server;
    Spool_Server_Obj.sv_select_article = spool_select_article;
+   Spool_Server_Obj.sv_get_article_size = spool_get_article_size;
    Spool_Server_Obj.sv_put_server_cmd = spool_put_server_cmd;
    Spool_Server_Obj.sv_xpat_cmd = spool_xpat_cmd;
    Spool_Server_Obj.sv_xhdr_command = spool_one_xhdr_command;

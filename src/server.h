@@ -44,6 +44,7 @@ typedef struct
    void (*sv_reset)(void);
    int (*sv_initialize) (void);
    int (*sv_select_article) (int, char *);
+   int (*sv_get_article_size) (int);
    int (*sv_put_server_cmd) (char *, char *, unsigned int);
    int (*sv_xpat_cmd) (char *, int, int, char *);
 

@@ -613,6 +613,22 @@ int slrn_file_exists (char *file) /*{{{*/
 
 /*}}}*/
 
+int slrn_file_size (char *file) /*{{{*/
+{
+   struct stat st;
+   int m;
+   
+   if (file == NULL)
+     return 0;
+   
+   if (stat(file, &st) < 0) return -1;
+   m = st.st_mode;
+   
+   if (S_ISDIR(m)) return -1;
+   return (int)st.st_size;
+}
+/*}}}*/
+
 char *slrn_basename (char *file)
 {
    char *f;
