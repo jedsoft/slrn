@@ -579,14 +579,15 @@ char *nntp_get_server_name (void)
 }
 
 
-/* In general, host has the form: "address:port".  If port is non-negative
- * use its value despite the value coded in the hostname.
- */
+/* In general, host has the form: "address:port" or "[address]:port" (to
+ * support IPv6 literal addresses).  If port is non-negative use its value
+ * despite the value coded in the hostname. */
 static int _nntp_setup_host_and_port (char *host, int port, NNTP_Type *s)
 {
    char *a, *b, *bmax;
    int def_port = 119;
    char *def_service = "nntp";
+   int quoteaddr=0;
 
    a = host;
    if (0 == strncmp (a, "snews://", 8))
@@ -602,8 +603,21 @@ static int _nntp_setup_host_and_port (char *host, int port, NNTP_Type *s)
 
    b = s->host;
    bmax = b + NNTP_MAX_HOST_LEN;
-   while ((*a != 0) && (*a != ':') && (b < bmax))
-     *b++ = *a++;
+   while ((*a != 0) && ((*a != ':') || (quoteaddr)) && (b < bmax))
+     {
+	if(*a == '[')
+	  {
+	     quoteaddr=1;
+	     a++;
+	  }
+	else if(*a == ']')
+	  {
+	     quoteaddr=0;
+	     a++;
+	  }
+	else
+	  *b++ = *a++;
+     }
    *b = 0;
    slrn_strncpy (s->name, host, NNTP_MAX_HOST_LEN);
 
@@ -615,9 +629,9 @@ static int _nntp_setup_host_and_port (char *host, int port, NNTP_Type *s)
 
    if (port <= 0)
      {
-	if (*a == ':')
-	  port = atoi (a + 1);
-	else if (-1 == (port = sltcp_map_service_to_port (def_service)))
+	if (((*a != ':') || (!(port = atoi (a+1))
+	     && (-1 == (port = sltcp_map_service_to_port (a+1)))))
+	    && (-1 == (port = sltcp_map_service_to_port (def_service))))
 	  port = def_port;
      }
    s->port = port;
