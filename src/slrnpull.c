@@ -1448,13 +1448,13 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
    unsigned int i, num;
    int max, bmin, bmax;
    Slrn_Range_Type *r;
-   
-   if (NULL == (r = g->requests))
-     return;
 
    Num_Articles_Received = 0;
    Num_Killed = 0;
-   Num_Articles_To_Receive = 0;   
+   Num_Articles_To_Receive = 0;
+   
+   if (NULL == (r = g->requests))
+     return;
    
    while (r!=NULL)
      {
@@ -2603,7 +2603,7 @@ int slrn_message (char *fmt, ...) /*{{{*/
 
 /*}}}*/
 
-static char *read_header_from_file (char *file)
+static char *read_header_from_file (char *file, int *has_body)
 {
    FILE *fp;
    char line [NNTP_BUFFER_SIZE];
@@ -2645,6 +2645,8 @@ static char *read_header_from_file (char *file)
 	buffer_len += len;
      }
    
+   *has_body = (line != NULL) && (*line == '\n');
+   
    fclose (fp);
    return mbuf;
 }
@@ -2658,6 +2660,7 @@ static int sort_int_cmp (unsigned int *a, unsigned int *b)
 
 /*
  * write an overview-file entry for a single article
+ * returns -1 on error, 0 if header is missing, 1 otherwise
  */
 static int write_overview_entry(FILE *xov_fp, int id, char *dir)
 {
@@ -2665,6 +2668,7 @@ static int write_overview_entry(FILE *xov_fp, int id, char *dir)
    char *header;
    struct stat st;
    Slrn_XOver_Type xov;
+   int has_body;
    char buf[32];
    
    sprintf (buf, "%d", id); /* safe */
@@ -2682,9 +2686,9 @@ static int write_overview_entry(FILE *xov_fp, int id, char *dir)
      }
    
    if (0 == S_ISREG(st.st_mode))
-     return 0;
+     return 1;
    
-   header = read_header_from_file (file);
+   header = read_header_from_file (file, &has_body);
    if (header == NULL)
      {
         log_error(_("Unable to read header %d in %s."), id, file);
@@ -2708,7 +2712,7 @@ static int write_overview_entry(FILE *xov_fp, int id, char *dir)
    slrn_free (header);
    slrn_free (xov.subject_malloced);
    slrn_free (xov.date_malloced);
-   return 0;
+   return has_body;
 }
 
 /* 
@@ -2724,11 +2728,14 @@ static void progress_update_overview(int i, int n_nums, Active_Group_Type *g, in
    fflush (stdout);
 }
 
+/* Now also updates g->headers */
 static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, unsigned int n_nums)
 {
    char dir [SLRN_MAX_PATH_LEN + 1];
    FILE *xov_fp;
-   unsigned i;
+   unsigned int i;
+   int bmin, bmax;
+   Slrn_Range_Type *headers = NULL;
    void (*qsort_fun) (char *, unsigned int, int, int (*)(unsigned int *, unsigned int *));
 
    log_message (_("Creating Overview file for %s..."), g->name);
@@ -2759,18 +2766,34 @@ static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 	g->active_max = g->active_min - 1;
      }
    
-   
+   bmin = bmax = -1;
    for (i = 0; i < n_nums; i++)
      {
-        if (-1 == write_overview_entry(xov_fp, (int) nums [i], dir))
+	int ret;
+        if (-1 == (ret = write_overview_entry(xov_fp, (int) nums [i], dir)))
           {
              fclose(xov_fp);
+	     slrn_ranges_free (headers);
              return -1;
           }
+	if ((ret == 0) && (bmin == -1))
+	  {
+	     bmin = bmax = nums[i];
+	  }
+	bmax++;
+	if ((bmin != -1) &&
+	    ((i==n_nums-1) || ret || (nums[i] != bmax)))
+	  {
+	     headers = slrn_ranges_add (headers, bmin, bmax-1);
+	     bmin = bmax = -1;
+	  }
+	       
 	if ((Stdout_Is_TTY) && (((i % 100) == 0) || (i+1 == n_nums)))
 	  progress_update_overview(i, n_nums, g, 1);
      }
-   
+
+   slrn_ranges_free (g->headers);
+   g->headers = headers;
    return slrn_fclose (xov_fp);
 }
 	
@@ -3213,7 +3236,10 @@ static int read_headers_files (void)
 	  }
 	
 	if (0 == slrn_file_exists (head_file))
-	  return 0;
+	  {
+	     group = group->next;
+	     continue;
+	  }
 	     
 	if (NULL == (vp = vopen (head_file, 4096, 0)))
 	  {
