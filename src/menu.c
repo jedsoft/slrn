@@ -133,7 +133,7 @@ int slrn_execute_menu (int want_col) /*{{{*/
    col = -1;
    while (m->menu_name != NULL)
      {
-	int dcol = 2 + strlen (m->menu_name);
+	int dcol = 2 + strlen (_(m->menu_name));
 	if ((want_col > col) 
 	    && (want_col <= col + dcol))
 	  break;
@@ -151,7 +151,7 @@ int slrn_execute_menu (int want_col) /*{{{*/
      {
 	slrn_set_color (color);
 	if (col) SLsmg_write_char (' ');
-	SLsmg_write_string (m->menu_name);
+	SLsmg_write_string (_(m->menu_name));
 	SLsmg_write_char (' ');
 	SLsmg_gotorc (0, col);
 	slrn_smg_refresh ();
