@@ -2079,6 +2079,8 @@ static void unquote_string (char *str)
    int offset = 1;
    if (*str == '"')
      {
+	if (str[1] == '\\')
+	  offset = 2;
 	while (str[offset] &&
 	       ((str[offset]!='"') || str[offset+1]))
 	  {
