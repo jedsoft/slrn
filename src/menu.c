@@ -392,6 +392,7 @@ static unsigned int Select_List_Window_Ncols;
 static int Select_List_Active_Color = SELECT_COLOR;
 static char *Select_List_Title = ".";
 static int Is_Popup_Window; /* set to 2 if full text is visible */
+static int Use_Shortcuts; /* do we use shortcuts to "jump" to entries? */
 
 static void draw_select_list (void)
 {
@@ -481,7 +482,10 @@ static void draw_select_list (void)
      }
    else
      {
-	slrn_message (_("Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"));
+	if (Use_Shortcuts)
+	  slrn_message (_("Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"));
+	else
+	  slrn_message (_("Use UP/DOWN to move, RETURN to select, q to quit"));
 	SLsmg_gotorc (row + Select_Window->window_row, column);
      }
    slrn_pop_suspension ();
@@ -679,6 +683,27 @@ static void sl_mouse (void)
 static SLKeyMap_List_Type *Select_List_Keymap;
 static SLKeyMap_List_Type *Popup_Keymap;
 
+static void adapt_shortcuts (void)
+{
+   char buf[2];
+   buf[1] = 0;
+   if (Use_Shortcuts)
+     {
+	for (*buf = 'a'; *buf <= 'z'; (*buf)++)
+	  SLkm_define_key (buf, (FVOID_STAR) sl_jump, Select_List_Keymap);
+	for (*buf = 'A'; *buf <= 'Z'; (*buf)++)
+	  SLkm_define_key (buf, (FVOID_STAR) sl_jump, Select_List_Keymap);
+     }
+   else
+     {
+	for (*buf = 'a'; *buf <= 'z'; (*buf)++)
+	  SLang_undefine_key (buf, Select_List_Keymap);
+	for (*buf = 'A'; *buf <= 'Z'; (*buf)++)
+	  SLang_undefine_key (buf, Select_List_Keymap);
+	SLkm_define_key ("Q", (FVOID_STAR) sl_cancel, Select_List_Keymap);
+     }
+}
+
 static int init_select_list_mode (int select_list)
 {
    SLKeyMap_List_Type **kmap;
@@ -706,6 +731,7 @@ static int init_select_list_mode (int select_list)
    if (*kmap != NULL)
      {
 	Select_List_Mode_Cap.keymap = *kmap;
+	if (select_list) adapt_shortcuts ();
 	return 0;
      }
    
@@ -740,7 +766,6 @@ static int init_select_list_mode (int select_list)
    
    if (select_list)
      {
-	char buf[2];
 #if defined(IBMPC_SYSTEM)
 	SLkm_define_key  ("^@M", (FVOID_STAR) sl_right, Select_List_Keymap);
 	SLkm_define_key  ("\xE0M", (FVOID_STAR) sl_right, Select_List_Keymap);
@@ -763,11 +788,7 @@ static int init_select_list_mode (int select_list)
 	SLkm_define_key  ("\033[M\041", (FVOID_STAR) sl_mouse, Select_List_Keymap);
 	SLkm_define_key  ("\033[M\042", (FVOID_STAR) sl_mouse, Select_List_Keymap);
 	
-	buf[1] = 0;
-	for (*buf = 'a'; *buf <= 'z'; (*buf)++)
-	  SLkm_define_key (buf, (FVOID_STAR) sl_jump, Select_List_Keymap);
-	for (*buf = 'A'; *buf <= 'Z'; (*buf)++)
-	  SLkm_define_key (buf, (FVOID_STAR) sl_jump, Select_List_Keymap);
+	adapt_shortcuts ();
      }
    
    if (SLang_Error)
@@ -779,11 +800,12 @@ static int init_select_list_mode (int select_list)
 
 int slrn_select_list_mode (char *title,
 			   unsigned int argc, char **argv, unsigned int active_num,
-			   int *want_edit)
+			   int want_shortcuts, int *want_edit)
 {
    unsigned int num_lines;
    Select_List_Type *root, *curr, *last, *active_line;
 
+   Use_Shortcuts = want_shortcuts;
    if (want_edit != NULL) *want_edit = 1;
 
    if (argv == 0)
@@ -1068,7 +1090,7 @@ static char *browse_dir (char *dir)
      }
 
    if (-1 == (selected = slrn_select_list_mode (title, argc, argv,
-						((argc > 2) ? 2 : 0),
+						((argc > 2) ? 2 : 0), 1,
 						NULL)))
      {
 	slrn_free_argc_argv_list (argc, argv);

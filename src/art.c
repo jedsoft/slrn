@@ -1172,7 +1172,7 @@ static void browse_url (void) /*{{{*/
    want_edit = 1;
    
    if (argc > 1)
-     selected = slrn_select_list_mode ("URL", argc, argv, start_argc, &want_edit);
+     selected = slrn_select_list_mode ("URL", argc, argv, start_argc, 1, &want_edit);
 
    if (-1 == selected)
      {
@@ -4995,6 +4995,12 @@ static void view_scores (void) /*{{{*/
    
    Slrn_Score_Debug_Info_Type *sdi = NULL, *hlp;
    
+   if (!Perform_Scoring)
+     {
+	slrn_message(_("No scorefile loaded."));
+	return;
+     }
+   
    slrn_uncollapse_this_thread (affected_header (), 1);
    slrn_score_header (affected_header (), Slrn_Current_Group_Name, &sdi);
    
@@ -5046,8 +5052,8 @@ static void view_scores (void) /*{{{*/
 	hlp = hlp->next;
      }
 
-   selection = slrn_select_list_mode
-     (_("This article is matched by the following scores"), scorenum, scores, 0, NULL);
+   selection = slrn_select_list_mode (_("This article is matched by the following scores"),
+				      scorenum, scores, 0, 0, NULL);
    
    if (selection >= 0)
      {

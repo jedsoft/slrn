@@ -180,7 +180,7 @@ static void select_list_box (void)
 	return;
      }
    
-   ret = slrn_select_list_mode (title, argc, argv, active - 1, NULL);
+   ret = slrn_select_list_mode (title, argc, argv, active - 1, 1, NULL);
    if (ret == -1)
      {
 	SLang_push_string ("");

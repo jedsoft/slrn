@@ -1887,7 +1887,7 @@ static void generic_mini_complete (int cycle) /*{{{*/
 	     qsort_fun (argv, argc, sizeof (char *), strpcmp);
 	     
 	     sel = slrn_select_list_mode (_("Possible completions"), argc,
-					  argv, 0, NULL);
+					  argv, 0, 1, NULL);
 	     slrn_update_screen ();
 	     if (sel != -1)
 	       {

@@ -33,6 +33,6 @@ Slrn_Select_Box_Type;
 extern int slrn_select_box (Slrn_Select_Box_Type *);
 
 
-extern int slrn_select_list_mode (char *, unsigned int, char **, unsigned int, int *);
+extern int slrn_select_list_mode (char *, unsigned int, char **, unsigned int, int, int *);
 extern int slrn_popup_win_mode (char *, char *);
 extern char *slrn_browse_dir (char *);
