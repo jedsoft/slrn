@@ -5064,8 +5064,8 @@ static void header_generic_search (int dir, int type) /*{{{*/
 				       (unsigned char *) l->from + strlen (l->from),
 				       &st))
 #else
-		 && (NULL != SLsearch_forward (st, (SLuchar_Type *) l->subject,
-					       (SLuchar_Type *) l->subject + strlen (l->subject)))
+		 && (NULL != SLsearch_forward (st, (SLuchar_Type *) l->from,
+					       (SLuchar_Type *) l->from + strlen (l->from)))
 #endif
 		     )
 	  break;
