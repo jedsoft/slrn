@@ -42,6 +42,13 @@ mode and allow you to manipulate the article window.
 \seealso{replace_article, is_article_visible}
 \done
 
+\function{bsearch_article}
+\usage{Integer bsearch_article (String_Type pat)}
+\description
+   This function works like search_article, but does a backward search.
+\seealso{search_article}
+\done
+
 \function{get_article_window_size}
 \usage{Integer get_article_window_size ()}
 \description
@@ -108,6 +115,13 @@ mode and allow you to manipulate the article window.
    given by the \var{cmd} argument.  If the article window is hidden, it
    downloads the article associated with the currently selected header.
 \seealso{read_mini}
+\done
+
+\function{re_bsearch_article}
+\usage{Integer re_bsearch_article (String_Type pat)}
+\description
+   This function works like re_search_article, but does a backward search.
+\seealso{re_search_article}
 \done
 
 \function{re_search_article}

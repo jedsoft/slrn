@@ -759,7 +759,7 @@ static int save_current_article (char *file) /*{{{*/
 /*}}}*/
 
 static int generic_search_article (char *str, int is_regexp, /*{{{*/
-				   int find_first)
+				   int dir)
 {
    Slrn_Article_Line_Type *l;
    char *ptr;
@@ -767,7 +767,7 @@ static int generic_search_article (char *str, int is_regexp, /*{{{*/
    if (-1 == check_article_mode ())
      return 0;
    
-   l = slrn_search_article (str, &ptr, is_regexp, 1, find_first);
+   l = slrn_search_article (str, &ptr, is_regexp, 1, dir);
    if (l == NULL)
      return 0;
    
@@ -777,27 +777,39 @@ static int generic_search_article (char *str, int is_regexp, /*{{{*/
 
 /*}}}*/
 
-static int search_article (char *s) /*{{{*/
+static int bsearch_article (char *s) /*{{{*/
 {
    return generic_search_article (s, 0, 0);
 }
 /*}}}*/
 
-static int search_article_first (char *s) /*{{{*/
+static int search_article (char *s) /*{{{*/
 {
    return generic_search_article (s, 0, 1);
 }
 /*}}}*/
 
-static int re_search_article (char *s) /*{{{*/
+static int search_article_first (char *s) /*{{{*/
+{
+   return generic_search_article (s, 0, 2);
+}
+/*}}}*/
+
+static int re_bsearch_article (char *s) /*{{{*/
 {
    return generic_search_article (s, 1, 0);
 }
 /*}}}*/
 
-static int re_search_article_first (char *s) /*{{{*/
+static int re_search_article (char *s) /*{{{*/
 {
    return generic_search_article (s, 1, 1);
+}
+/*}}}*/
+
+static int re_search_article_first (char *s) /*{{{*/
+{
+   return generic_search_article (s, 1, 2);
 }
 /*}}}*/
 
@@ -1374,6 +1386,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("reset_prefix_arg", reset_prefix_arg, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SI("locate_header_by_msgid", locate_header_by_msgid, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("article_as_string", article_as_string, SLANG_STRING_TYPE),
+   MAKE_INTRINSIC_S("bsearch_article", bsearch_article, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("call", slrn_call_command, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("collapse_thread", collapse_thread, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("collapse_threads", collapse_threads, SLANG_VOID_TYPE),
@@ -1416,6 +1429,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("popup_window", popup_window, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("prev_tagged_header", slrn_prev_tagged_header, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("quit", quit, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_S("re_bsearch_article", re_bsearch_article, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("re_bsearch_author", re_author_search_backward, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("re_bsearch_subject", re_subject_search_backward, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("re_fsearch_author", re_author_search_forward, SLANG_INT_TYPE),

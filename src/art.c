@@ -207,8 +207,8 @@ static Slrn_Header_Type *At_End_Of_Article;
  * If it points anywhere else, ignore it.
  */
 
-static int Quotes_Hidden_Mode = 0;
 static int Headers_Hidden_Mode = 1;
+int Slrn_Quotes_Hidden_Mode = 0;
 int Slrn_Signature_Hidden = 0;
 int Slrn_Pgp_Signature_Hidden = 0;
 int Slrn_Verbatim_Marks_Hidden = 0;
@@ -775,7 +775,8 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
 					     char **ptrp,
 					     int is_regexp,
 					     int set_current_flag,
-					     int find_first)
+					     int dir)
+  /* dir: 0 is backward, 1 is forward, 2 is "find first" */
 {
    SLsearch_Type st;
    Slrn_Article_Line_Type *l;
@@ -797,13 +798,13 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
    else SLsearch_init (string, 1, 0, &st);
 
    a = Slrn_Current_Article;
-   if (find_first)
+   if (dir == 2)
      l = a->lines;
    else
      {
 	l = a->cline;
 	if (ret == 1)
-	  l = l->next;
+	  l = (dir ? l->next : l->prev);
      }
    
    while (l != NULL)
@@ -829,7 +830,7 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
 		  break;
 	       }
 	  }
-	l = l->next;
+	l = (dir ? l->next : l->prev);
      }
       
    return l;
@@ -1192,7 +1193,7 @@ static void article_search (void) /*{{{*/
    
    if (slrn_read_input (_("Search: "), search_str, NULL, 0, 0) <= 0) return;
    
-   l = slrn_search_article (search_str, NULL, 0, 1, 0);
+   l = slrn_search_article (search_str, NULL, 0, 1, 1);
    
    if (l == NULL) slrn_error (_("Not found."));
 }
@@ -2044,8 +2045,8 @@ static int prepare_article (Slrn_Article_Type *a)
      a->is_wrapped = 1;
    if (Headers_Hidden_Mode)
      _slrn_art_hide_headers (a);
-   if (Quotes_Hidden_Mode)
-     _slrn_art_hide_quotes (a, -1);
+   if (Slrn_Quotes_Hidden_Mode)
+     _slrn_art_hide_quotes (a, 0);
    if (Slrn_Signature_Hidden)
      _slrn_art_hide_signature (a);
    if (Slrn_Pgp_Signature_Hidden)
@@ -5846,7 +5847,7 @@ static void hide_or_unhide_quotes (void) /*{{{*/
      return;
 
    if (Slrn_Current_Article->quotes_hidden)
-     _slrn_art_hide_quotes (Slrn_Current_Article, -1);
+     _slrn_art_hide_quotes (Slrn_Current_Article, 1);
    else
      _slrn_art_unhide_quotes (Slrn_Current_Article);
 }
@@ -5855,7 +5856,6 @@ static void hide_or_unhide_quotes (void) /*{{{*/
 
 static void toggle_quotes (void) /*{{{*/
 {
-   int level = -1;
    Slrn_Article_Type *a = Slrn_Current_Article;
    
    if (a == NULL)
@@ -5863,16 +5863,16 @@ static void toggle_quotes (void) /*{{{*/
 
    if (Slrn_Prefix_Arg_Ptr != NULL)
      {
-	level = *Slrn_Prefix_Arg_Ptr;
+	Slrn_Quotes_Hidden_Mode = *Slrn_Prefix_Arg_Ptr + 1;
 	Slrn_Prefix_Arg_Ptr = NULL;
-	_slrn_art_hide_quotes (Slrn_Current_Article, level);
+	_slrn_art_hide_quotes (Slrn_Current_Article, 0);
      }
    else if (a->quotes_hidden)
      _slrn_art_unhide_quotes (a);
    else
-     _slrn_art_hide_quotes (a, -1);
+     _slrn_art_hide_quotes (a, 1);
 
-   Quotes_Hidden_Mode = Slrn_Current_Article->quotes_hidden;
+   Slrn_Quotes_Hidden_Mode = Slrn_Current_Article->quotes_hidden;
 
    find_article_line_num ();
 }

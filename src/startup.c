@@ -467,6 +467,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"hide_verbatim_marks",	&Slrn_Verbatim_Marks_Hidden},
      {"hide_signature",	&Slrn_Signature_Hidden},
      {"hide_pgpsignature",	&Slrn_Pgp_Signature_Hidden},
+     {"hide_quotes",            &Slrn_Quotes_Hidden_Mode},
      {"emphasized_text_mask",	&Slrn_Emphasized_Text_Mask},
      {"emphasized_text_mode",	&Slrn_Emphasized_Text_Mode},
      {"process_verbatim_marks", &Slrn_Process_Verbatim_Marks},

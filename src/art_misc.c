@@ -59,7 +59,7 @@
 
 /*}}}*/
 
-int Slrn_Art_Hide_Quote_Level = 0;
+static int Art_Hide_Quote_Level = 1;
 int Slrn_Wrap_Mode = 3;
 int Slrn_Wrap_Method = 2;
 
@@ -124,7 +124,7 @@ int _slrn_art_unhide_quotes (Slrn_Article_Type *a) /*{{{*/
 
 
 
-int _slrn_art_hide_quotes (Slrn_Article_Type *a, int level) /*{{{*/
+int _slrn_art_hide_quotes (Slrn_Article_Type *a, int reset) /*{{{*/
 {
    Slrn_Article_Line_Type *l, *last;
    
@@ -135,11 +135,9 @@ int _slrn_art_hide_quotes (Slrn_Article_Type *a, int level) /*{{{*/
    
    a->needs_sync = 1;
 
-   if (level == -1)
-     level = Slrn_Art_Hide_Quote_Level;
-   else 
-     Slrn_Art_Hide_Quote_Level = level;
-
+   if (!reset)
+     Art_Hide_Quote_Level = Slrn_Quotes_Hidden_Mode;
+   
    l = a->lines;
    last = NULL;
 
@@ -147,20 +145,20 @@ int _slrn_art_hide_quotes (Slrn_Article_Type *a, int level) /*{{{*/
      {
 	if (l->flags & QUOTE_LINE)
 	  {
-	     if (level > 0)
+	     if (Art_Hide_Quote_Level > 1)
 	       {
-		  if (QUOTE_LEVEL(l->flags) >= (unsigned int) level)
+		  if (QUOTE_LEVEL(l->flags) >= (unsigned int) Art_Hide_Quote_Level - 1)
 		    l->flags |= HIDDEN_LINE;
 	       }
 	     else if (last != NULL)
 	       l->flags |= HIDDEN_LINE;
-
+	     
 	     last = l;
 	  }
 	else last = NULL;
 	l = l->next;
      }
-   a->quotes_hidden = 1;
+   a->quotes_hidden = Art_Hide_Quote_Level;
    return 0;
 }
 

@@ -57,6 +57,7 @@ extern int Slrn_Kill_Score_Max;
 extern FILE *Slrn_Kill_Log_FP;
 extern int Slrn_Signature_Hidden;
 extern int Slrn_Pgp_Signature_Hidden;
+extern int Slrn_Quotes_Hidden_Mode;
 extern int Slrn_Verbatim_Marks_Hidden;
 extern int Slrn_Warn_Followup_To;
 
@@ -265,7 +266,7 @@ extern void slrn_sort_headers (void);
 
 /* These are in art_misc.c : */
 extern int _slrn_art_unhide_quotes (Slrn_Article_Type *a);
-extern int _slrn_art_hide_quotes (Slrn_Article_Type *a, int level);
+extern int _slrn_art_hide_quotes (Slrn_Article_Type *a, int);
 #if SLRN_HAS_SPOILERS
 extern void slrn_art_mark_spoilers (Slrn_Article_Type *a);
 #endif

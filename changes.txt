@@ -29,10 +29,11 @@ Changes since 0.9.7.3
 4. New variable max_queued_groups to control batching of GROUP commands at
    startup, as some servers do not seem to like it. (Craig B. Agricola)
 5. In article mode, "expunge" now triggers the newsrc autosave copy feature.
-6. Added intrinsic functions re_search_article_first, search_article_first,
-   set_ignore_quotes, set_strip_re_regexp, set_strip_sig_regexp and
-   set_strip_was_regexp. Added a return value to register_hook (hopefully,
-   you'll find it backwards compatible).
+6. Added intrinsic functions bsearch_article, re_bsearch_article,
+   re_search_article_first, search_article_first, set_ignore_quotes,
+   set_strip_re_regexp, set_strip_sig_regexp and set_strip_was_regexp. Added
+   a return value to register_hook (hopefully, you'll find it backwards
+   compatible).
 7. Added support for dynamically linking slang modules using the import
    intrinsic function (where available).
 8. Added --with-mta option to the configure script to easily allow the use
@@ -42,6 +43,7 @@ Changes since 0.9.7.3
    * es.po (Spanish; Walter Echarri)
    * fr.po (French; slrn-fr project)
    * ko.po (Korean; Im Eunjea)
+11. New config variable "hide_quotes" (see manual for details).
 
 Changes since 0.9.7.2
 
