@@ -1128,7 +1128,7 @@ static void refresh_groups_cmd (void) /*{{{*/
    if (Slrn_List_Active_File)
      {
 	read_and_parse_active (0);
-	if (c != NULL)
+	if ((Slrn_Server_Obj->sv_id == SERVER_ID_INN) && (c != NULL))
 	  /* hack: avoid a problem with inn not updating the high water mark */
 	  {
 	     Slrn_Group_Type *a = c, *b;

@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -123,6 +123,8 @@ static int _nntp_initialize_server (void)
 	NNTP_Server_Obj.sv_has_xover = 0;
      }
    else NNTP_Server_Obj.sv_has_xover = 1;
+   
+   NNTP_Server_Obj.sv_id = NNTP_Server->sv_id;
    
    NNTP_Post_Obj.po_can_post = NNTP_Server->can_post;
    NNTP_Server->flags |= NNTP_RECONNECT_OK;
@@ -414,6 +416,7 @@ static int nntp_init_objects (void)
    NNTP_Server_Obj.sv_nntp_next = _nntp_next_cmd;
    NNTP_Server_Obj.sv_reset = _nntp_reset;
    NNTP_Server_Obj.sv_nntp_bytes = _nntp_get_bytes;
+   NNTP_Server_Obj.sv_id = SERVER_ID_UNKNOWN;
    return 0;
 }
 

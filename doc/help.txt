@@ -145,7 +145,7 @@ Article pager commands:
   \                  Show signature (on/off).
   W                  Wrap long lines (on/off).
 #if SLRN_HAS_SPOILERS
-  ESC ?              Reveal spoilers (on/off).
+  ESC ?              Reveal spoilers.
 #endif
   ]                  Show PGP signature (on/off).
 #if SLRN_HAS_VERBATIM_MARKS

@@ -15,6 +15,8 @@ Changes since 0.9.8.0
   * When retrieving article children, headers without body were not marked.
   * Ignore signature delimiters in verbatim text blocks.
   * Do not choke on long header lines when replying by email.
+  * A workaround for a bug in INN caused problems with leafnode; only use it
+    when the server was recognized as INN from the logon message.
 
    In the config file (and the corresponding intrinsic functions), the
    following names now denote special function keys: <PageUp> <PageDown>

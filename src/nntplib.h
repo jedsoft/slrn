@@ -42,6 +42,7 @@ typedef struct
    int can_xover;
    int can_xhdr;
    int can_xpat;
+   int sv_id; /* type of server software */
    
    int (*auth_hook)(char *, char **, char **);
 

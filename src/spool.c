@@ -1,7 +1,7 @@
 /* -*- mode: C; mode: fold; -*- */
 /* Local spool support for slrn added by Olly Betts <olly@mantis.co.uk> */
 /* Modified by Thomas Schultz:
- * Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ * Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
  */
 #include "config.h"
 #include "slrnfeat.h"
@@ -1677,6 +1677,7 @@ static int spool_init_objects (void)
    Spool_Server_Obj.sv_nntp_head = spool_nntp_head;
    Spool_Server_Obj.sv_nntp_next = spool_nntp_next;
    Spool_Server_Obj.sv_nntp_bytes = spool_get_bytes;
+   Spool_Server_Obj.sv_id = SERVER_ID_UNKNOWN;
 
    Slrn_Inn_Root = slrn_safe_strmalloc (SLRN_SPOOL_INNROOT);
    Slrn_Spool_Root = slrn_safe_strmalloc (SLRN_SPOOL_ROOT);

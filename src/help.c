@@ -126,7 +126,7 @@ static char *Art_Help[] =
    N_("  \\                  Show signature (on/off)."),
    N_("  W                  Wrap long lines (on/off)."),
 #if SLRN_HAS_SPOILERS
-   N_("  ESC ?              Reveal spoilers (on/off)."),
+   N_("  ESC ?              Reveal spoilers."),
 #endif
    N_("  ]                  Show PGP signature (on/off)."),
    N_("  [                  Show verbatim marks (on/off)."),

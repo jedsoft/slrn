@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -46,6 +46,7 @@
 #include "nntplib.h"
 #include "ttymsg.h"
 #include "snprintf.h"
+#include "server.h"
 
 void (*NNTP_Connection_Lost_Hook) (NNTP_Type *);
 int (*NNTP_Authorization_Hook) (char *, char **, char **);
@@ -483,6 +484,12 @@ static int _nntp_connect_server (NNTP_Type *s)
 	goto failed;
      }
 
+   /* Try to identify INN */
+   if (NULL != strstr (s->rspbuf, "INN"))
+     s->sv_id = SERVER_ID_INN;
+   else
+     s->sv_id = SERVER_ID_UNKNOWN;
+   
    if ((-1 == nntp_server_cmd (s, "MODE READER"))
        || (ERR_ACCESS == s->code))
      goto failed;
