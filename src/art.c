@@ -3841,12 +3841,13 @@ int slrn_save_current_article (char *file) /*{{{*/
 
 /*}}}*/
 
-static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp, /*{{{*/
-				      int skip_header)
+static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
 {
    int reload, is_wrapped = 0;
    Slrn_Article_Line_Type *l = NULL;
    Slrn_Article_Type *a = Slrn_Current_Article;
+   char *from;
+   time_t now;
    
    if ((Header_Showing == h)
        && (a != NULL)
@@ -3894,29 +3895,16 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp, /*{{{*/
      }
    l = a->lines;
    
-   if (skip_header == 0)
-     {
-	char *from;
-	time_t now;
-	
-	from = h->from;
-	if (from != NULL) from = parse_from (from);
-	if ((from == NULL) || (*from == 0)) from = "nobody@nowhere";
-	
-	time (&now);
-	fprintf (fp, "From %s %s", from, ctime(&now));
-     }
-   else
-     {
-	while ((l != NULL) && ((l->flags & HEADER_LINE) ||
-			       (l->buf[0] == '\0')))
-	  l = l->next;
-     }
+   from = h->from;
+   if (from != NULL) from = parse_from (from);
+   if ((from == NULL) || (*from == 0)) from = "nobody@nowhere";
+   
+   time (&now);
+   fprintf (fp, "From %s %s", from, ctime(&now));
    
    while (l != NULL)
      {
-	if ((skip_header == 0)
-	    && (*l->buf == 'F')
+	if ((*l->buf == 'F')
 	    && !strncmp ("From", l->buf, 4)
 	    && ((unsigned char)(l->buf[4]) <= ' '))
 	  {
@@ -4033,7 +4021,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	Slrn_Header_Type *h;
 	
 	if (NULL != (h = affected_header ()))
-	  save_article_as_unix_mail (h, fp, 0);
+	  save_article_as_unix_mail (h, fp);
      }
    else if (save_tagged)
      {
@@ -4042,8 +4030,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 
 	for (i = 0; i < Num_Tag_List.len; i++)
 	  {
-	     if (-1 == save_article_as_unix_mail (Num_Tag_List.headers[i], fp,
-						  0))
+	     if (-1 == save_article_as_unix_mail (Num_Tag_List.headers[i], fp))
 	       {
 		  slrn_smg_refresh ();
 		  if (SLang_Error == SL_USER_BREAK)
@@ -4063,7 +4050,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	unsigned int num_saved = 0;
 	do
 	  {
-	     if (-1 == save_article_as_unix_mail (h, fp, 0))
+	     if (-1 == save_article_as_unix_mail (h, fp))
 	       {
 		  slrn_smg_refresh ();
 		  SLang_Error = 0;
