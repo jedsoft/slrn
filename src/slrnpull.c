@@ -720,23 +720,24 @@ static int make_filenames (void) /*{{{*/
 
 /*}}}*/
 
-static int *listgroup_numbers (NNTP_Type *s, char *name, unsigned int *nump) /*{{{*/
+static int *listgroup_numbers (NNTP_Type *s, Active_Group_Type *g, unsigned int *nump) /*{{{*/
 {
    int *numbers;
-   unsigned int max, num;
+   unsigned int max, num, maxnum, curnum;
    char buf[256];
    int status;
    
-   status = nntp_listgroup (s, name);
+   status = nntp_listgroup (s, g->name);
    if (status != OK_GROUP)
      {
 	if (status == -1) log_error (_("Read failed."));
-	log_error (_("listgroup %s failed: %s"), name, nntp_map_code_to_string (status));
+	log_error (_("listgroup %s failed: %s"), g->name, nntp_map_code_to_string (status));
 	return NULL;
      }
    
    max = 0;
    num = 0;
+   maxnum = 0;
    numbers = NULL;
      
    while (1 == (status = nntp_read_line (s, buf, sizeof (buf))))
@@ -755,7 +756,9 @@ static int *listgroup_numbers (NNTP_Type *s, char *name, unsigned int *nump) /*{
 	       }
 	     numbers = newnums;
 	  }
-	numbers[num] =  atoi (buf);
+	curnum = atoi (buf);
+	if (curnum > maxnum) maxnum = curnum;
+	numbers[num] = curnum;
 	num++;
      }
    
@@ -766,6 +769,8 @@ static int *listgroup_numbers (NNTP_Type *s, char *name, unsigned int *nump) /*{
      }
    
    *nump = num;
+   if (g->server_max < maxnum)
+     g->server_max = maxnum;
    return numbers;
 }
 
@@ -773,6 +778,10 @@ static int *listgroup_numbers (NNTP_Type *s, char *name, unsigned int *nump) /*{
 
 static unsigned int Num_Duplicates;
 
+/* This function returns a malloc'ed array that contains all article numbers
+ * in group g on server s. *nump is set to the length of the array.
+ * If article numbers larger than g->server_max are found, that variable
+ * gets updated. */
 static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
 				 int server_min, int server_max,
 				 unsigned int *nump) /*{{{*/
@@ -788,9 +797,9 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
    
    name = g->name;
    if (1 != nntp_has_cmd (s, "XHDR"))
-     return listgroup_numbers (s, name, nump);
+     return listgroup_numbers (s, g, nump);
    
-   /* Server has XHDR.  Good. */
+   /* Server seems to have XHDR.  Good. */
    min = g->min;
    max = g->max + 1;
    if (max < min) max = min;
@@ -815,6 +824,11 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
 	return NULL;			       /* server closed? */
      }
    if (status == 224) status = OK_HEAD;/* Micro$oft broken server */
+   if (status == ERR_ACCESS)
+     { /* Command disabled by administrator. When we first test this outside
+	* the group, the server won't tell us. Fall back to LISTGROUP ... */
+	return listgroup_numbers (s, g, nump);
+     }
    if (status != OK_HEAD)
      {
 	log_error (_("Server failed XHDR command: %s"), s->rspbuf);
