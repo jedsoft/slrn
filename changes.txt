@@ -34,7 +34,12 @@ Changes since 0.9.7.4
    need to rebuild the overview, you can use the new --rebuild option (based
    on a patch by Jurriaan W Kalkman).
 
-   Added intrinsic functions has_parent (see doc/slrnfuns.txt).
+   If your terminal supports it (and you are not using Win32 or OS/2), you
+   can now use colors and attributes at the same time. Just append them to
+   the color lines in your config file, e.g.:
+     color underlinetext	"default"	"default"	"underline"
+
+   Added intrinsic functions has_parent, set_color_attr (see doc/slrnfuns.txt).
 
    locate_article ignores leading "news:" (Jarek Baczynski)
    

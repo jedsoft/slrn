@@ -940,6 +940,10 @@ static int Interp_Header_Read = HEADER_READ;
 static int Interp_Header_Tagged = HEADER_TAGGED;
 static int Interp_Header_High_Score = HEADER_HIGH_SCORE;
 static int Interp_Header_Low_Score = HEADER_LOW_SCORE;
+static int Interp_Attr_Blink = SLTT_BLINK_MASK;
+static int Interp_Attr_Bold = SLTT_BOLD_MASK;
+static int Interp_Attr_Rev = SLTT_REV_MASK;
+static int Interp_Attr_Uline = SLTT_ULINE_MASK;
 #ifdef HAVE_SETLOCALE
 # ifdef LC_TIME
 static int Interp_Lc_Time = LC_TIME;
@@ -1280,7 +1284,12 @@ static void hide_current_group (void)
 
 static void set_color (char *obj, char *fg, char *bg)
 {
-   slrn_set_object_color (obj, fg, bg);
+   slrn_set_object_color (obj, fg, bg, 0);
+}
+
+static void set_color_attr (char *obj, char *fg, char *bg, int *attr)
+{
+   slrn_set_object_color (obj, fg, bg, (SLtt_Char_Type) *attr);
 }
 
 static char *get_fg_color (char *name)
@@ -1485,6 +1494,8 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("get_article_window_size", get_article_window_size, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("set_article_window_size", set_article_window_size, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SSS("set_color", set_color, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_4("set_color_attr", set_color_attr, SLANG_VOID_TYPE,
+		    SLANG_STRING_TYPE, SLANG_STRING_TYPE, SLANG_STRING_TYPE, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("set_group_flags", set_group_flags, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("hide_current_group", hide_current_group, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_I("set_header_flags", set_header_flags, SLANG_VOID_TYPE),
@@ -1518,6 +1529,10 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
 
 static SLang_Intrin_Var_Type Intrin_Vars [] = /*{{{*/
 {
+   MAKE_VARIABLE("ATTR_BLINK", &Interp_Attr_Blink, SLANG_INT_TYPE, 1),
+   MAKE_VARIABLE("ATTR_BOLD", &Interp_Attr_Bold, SLANG_INT_TYPE, 1),
+   MAKE_VARIABLE("ATTR_REV", &Interp_Attr_Rev, SLANG_INT_TYPE, 1),
+   MAKE_VARIABLE("ATTR_ULINE", &Interp_Attr_Uline, SLANG_INT_TYPE, 1),
    MAKE_VARIABLE("GROUPS_DIRTY", &Slrn_Groups_Dirty, SLANG_INT_TYPE, 1),
    MAKE_VARIABLE("GROUP_NEW_GROUP_FLAG", &Interp_Group_New_Group_Flag, SLANG_INT_TYPE, 1),
    MAKE_VARIABLE("GROUP_UNSUBSCRIBED", &Interp_Group_Unsubscribed, SLANG_INT_TYPE, 1),

@@ -102,7 +102,7 @@ static SLcmd_Cmd_Type Slrn_Startup_File_Cmds[] = /*{{{*/
      {unsetkey_fun, "unsetkey", "SS"},
      {setkey_fun, "setkey", "SSS"},
      {server_fun, "server", "SS"},
-     {color_fun, "color", "SSS"},
+     {color_fun, "color", "SSSssss"},
      {mono_fun, "mono", "SSsss"},
      {set_variable_fun, "set", "SG"},
      {nnrp_fun, "nnrpaccess", "SSS" },
@@ -994,7 +994,8 @@ static char *Color_Names [16] =
 };
 /*}}}*/
 
-int slrn_set_object_color (char *name, char *fg, char *bg) /*{{{*/
+int slrn_set_object_color (char *name, char *fg, char *bg,
+			   SLtt_Char_Type attr) /*{{{*/
 {
    Color_Handle_Type *ct = Color_Handles;
 
@@ -1013,6 +1014,9 @@ int slrn_set_object_color (char *name, char *fg, char *bg) /*{{{*/
 	       }
 	     
 	     SLtt_set_color (ct->value, name, fg, bg);
+#ifndef IBMPC_SYSTEM
+	     SLtt_add_color_attribute (ct->value, attr);
+#endif
 	     
 	     while (ac->name != NULL)
 	       {
@@ -1029,6 +1033,9 @@ int slrn_set_object_color (char *name, char *fg, char *bg) /*{{{*/
 					 Color_Names [i | 0x8], bg);
 		       else
 			 SLtt_set_color (ac->value, NULL, fg, bg);
+#ifndef IBMPC_SYSTEM
+		       SLtt_add_color_attribute (ac->value, attr);
+#endif
 		       
 		       break;
 		    }
@@ -1046,6 +1053,9 @@ int slrn_set_object_color (char *name, char *fg, char *bg) /*{{{*/
 	if ((0<=level) && (level<MAX_QUOTE_LEVELS))
 	  {
 	     SLtt_set_color (QUOTE_COLOR + level, name, fg, bg);
+#ifndef IBMPC_SYSTEM
+	     SLtt_add_color_attribute (QUOTE_COLOR + level, attr);
+#endif
 	     return 0;
 	  }
      }
@@ -1103,14 +1113,35 @@ char *slrn_get_object_color (char *name, int want_bg) /*{{{*/
 }
 /*}}}*/
 
+static SLtt_Char_Type read_mono_attributes (int argc, int start,
+					    SLcmd_Cmd_Table_Type *table)/*{{{*/
+{
+   SLtt_Char_Type retval = 0;
+   char *attr;
+   int i;
+
+   for (i = start; i < argc; i++)
+     {
+	attr = table->string_args[i];
+	if (!strcmp (attr, "bold")) retval |= SLTT_BOLD_MASK;
+	else if (!strcmp (attr, "blink")) retval |= SLTT_BLINK_MASK;
+	else if (!strcmp (attr, "underline")) retval |= SLTT_ULINE_MASK;
+	else if (!strcmp (attr, "reverse")) retval |= SLTT_REV_MASK;
+	else if (!strcmp (attr, "none")) retval = 0;
+	else exit_unknown_object ();
+     }
+   return retval;
+}
+/*}}}*/
+
 static int color_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 {
    char *what = table->string_args[1];
    char *fg = table->string_args[2];
    char *bg = table->string_args[3];
+   SLtt_Char_Type attrs = read_mono_attributes (argc, 4, table);
    
-   (void) argc;   
-   if (-1 == slrn_set_object_color (what, fg, bg))
+   if (-1 == slrn_set_object_color (what, fg, bg, attrs))
      exit_unknown_object ();
    return 0;
 }
@@ -1120,21 +1151,10 @@ static int color_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 static int mono_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 {
    char *what = table->string_args[1];
-   char *attr;
-   int i;
-   SLtt_Char_Type mono_attr = 0;
+   SLtt_Char_Type mono_attr;
    Color_Handle_Type *ct = Color_Handles;
 
-   for (i = 2; i < argc; i++)
-     {
-	attr = table->string_args[i];
-	if (!strcmp (attr, "bold")) mono_attr |= SLTT_BOLD_MASK;
-	else if (!strcmp (attr, "blink")) mono_attr |= SLTT_BLINK_MASK;
-	else if (!strcmp (attr, "underline")) mono_attr |= SLTT_ULINE_MASK;
-	else if (!strcmp (attr, "reverse")) mono_attr |= SLTT_REV_MASK;
-	else if (!strcmp (attr, "none")) mono_attr = 0;
-	else exit_unknown_object ();
-     }
+   mono_attr = read_mono_attributes (argc, 2, table);
    
    while (ct->name != NULL)
      {
@@ -1537,6 +1557,9 @@ void slrn_startup_initialize (void) /*{{{*/
    while (h->name != NULL)
      {
 	SLtt_set_color (h->value, NULL, h->fg, h->bg);
+#ifndef IBMPC_SYSTEM
+	SLtt_add_color_attribute (h->value, h->mono & ~SLTT_REV_MASK);
+#endif	
 	SLtt_set_mono (h->value, NULL, h->mono);
 	h++;
      }
@@ -1544,6 +1567,9 @@ void slrn_startup_initialize (void) /*{{{*/
    while (h->name != NULL)
      {
 	SLtt_set_color (h->value, NULL, h->fg, h->bg);
+#ifndef IBMPC_SYSTEM
+	SLtt_add_color_attribute (h->value, h->mono & ~SLTT_REV_MASK);
+#endif	
 	SLtt_set_mono (h->value, NULL, h->mono);
 	h++;
      }

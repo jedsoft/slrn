@@ -30,7 +30,7 @@ extern int slrn_set_string_variable (char *, char *);
 extern int slrn_set_integer_variable (char *, int);
 extern int slrn_get_variable_value (char *, int *, char ***, int **);
 extern int slrn_get_authorization (char *, char **, char **);
-extern int slrn_set_object_color (char *, char *, char *);
+extern int slrn_set_object_color (char *, char *, char *, SLtt_Char_Type);
 extern char *slrn_get_object_color (char *, int);
 extern int slrn_add_to_server_list (char *, char *, char *, char *);
 

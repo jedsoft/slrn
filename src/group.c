@@ -2738,7 +2738,7 @@ static int read_and_parse_newsrc_file (void)
 	/* perform a re-arrangement to match arrangement in the
 	 * newsrc file
 	 */
-	if (Slrn_List_Active_File && (ch !=  '!'))
+	/*if (Slrn_List_Active_File && (ch !=  '!'))*/
 	  last_group = place_group_in_newsrc_order (last_group);
      }
    vclose (vp);

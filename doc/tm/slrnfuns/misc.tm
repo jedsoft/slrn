@@ -125,6 +125,21 @@ any of the others. They are available in all modes.
    colors, respectively.
 \done
 
+\function{set_color_attr}
+\usage{Void set_color_attr (String obj, String fg, String bg, Integer attr)}
+\description
+   This functions works like set_color, but has the additional argument
+   \var{attr} that allows you to assign attributes to the color object (if
+   your terminal supports this). \var{attr} can be 0 (if you do not want any
+   attributes to take effect) or any combination of the following constants:
+#v+
+   ATTR_BLINK     blinking text
+   ATTR_BOLD      bold text
+   ATTR_REV       inverse text
+   ATTR_ULINE     underlined text
+#v-
+\done
+
 \function{set_ignore_quotes}
 \usage{Void set_ignore_quotes (Array_Type regexps)}
 \description
