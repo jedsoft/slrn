@@ -107,10 +107,14 @@ extern int h_errno;
 
 #include <slang.h>
 
-#if SLTCP_HAS_SSL_SUPPORT
-# include <openssl/ssl.h>
-# include <openssl/err.h>
-# include <openssl/rand.h>
+#if SLTCP_HAS_GNUTLS_SUPPORT
+# include <gnutls/openssl.h>
+#else
+# if SLTCP_HAS_SSL_SUPPORT
+#  include <openssl/ssl.h>
+#  include <openssl/err.h>
+#  include <openssl/rand.h>
+# endif
 #endif
 
 #include "sltcp.h"

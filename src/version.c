@@ -62,7 +62,7 @@ static Compile_Option_Type Compile_Options [] =
 #define EXTERNAL_PROG_OFFSET 3
      {"canlock",		SLRN_HAS_CANLOCK},
      {"inews",			SLRN_HAS_INEWS_SUPPORT},
-     {"ssl",			SLRN_HAS_SSL_SUPPORT},
+     {"ssl",			SLTCP_HAS_SSL_SUPPORT},
      {"uudeview",    		SLRN_HAS_UUDEVIEW},
 #define FEATURES_OFFSET 7
      {"charset_mapping",	SLRN_HAS_CHARACTER_MAP},

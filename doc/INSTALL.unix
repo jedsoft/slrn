@@ -86,12 +86,22 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
     Default: PREFIX/lib/slrn [/usr/local/lib/slrn]
 
 --with-ssl[=DIR]
-    Include support for connections via SSL.
+    Include support for connections via SSL, using the OpenSSL library.
     You need to set DIR to the place where OpenSSL is installed.
+
+--with-gnutls[=DIR] 
+    Include support for connections via SSL, using the GNU TLS library and
+    its OpenSSL compatibility layer.
+    USE WITH CARE: GNU TLS is still under heavy development and slrn's
+    support for it is untested.
 
 --with-uudeview[=DIR]
     This option tells slrn to use the uudeview library for decoding
     uuencoded articles instead of its builtin routines.
+
+--with-canlock[=DIR]
+    Tells slrn to make use of the canlock library (needed to use
+    "Cancel-Locks" when posting, see <http://cssri.meowing.net/>).
 
 --with-slrnpull
     Build slrnpull and enable support for it in slrn.

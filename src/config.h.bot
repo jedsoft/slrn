@@ -32,7 +32,18 @@
 # define __unix__ 1
 #endif
 
-#define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_SSL_SUPPORT
+/* SLTCP_HAS_SSL_SUPPORT gets turned on whenever we use SSL
+ * SLTCP_HAS_GNUTLS_SUPPORT gets turned on when we use GNU TLS for it. */
+#if SLRN_HAS_SSL_SUPPORT == 1
+ #define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_SSL_SUPPORT
+#else
+  #if SLRN_HAS_GNUTLS_SUPPORT == 1
+  #define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_GNUTLS_SUPPORT
+  #define SLTCP_HAS_GNUTLS_SUPPORT SLRN_HAS_GNUTLS_SUPPORT
+  #else
+  #define SLTCP_HAS_SSL_SUPPORT 0
+  #endif
+#endif
 
 #define SLRN_SERVER_ID_NNTP 1
 #define SLRN_SERVER_ID_SPOOL 2

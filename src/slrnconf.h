@@ -31,6 +31,9 @@
 /* define if you want SSL support */
 #define SLRN_HAS_SSL_SUPPORT	0
 
+/* define if you want SSL support using GNU TLS */
+#define SLRN_HAS_GNUTLS_SUPPORT		0
+
 /* define if you want uudeview support */
 #define SLRN_HAS_UUDEVIEW	0
 
@@ -75,7 +78,16 @@
 /* Does your compiler support vsnprintf()? */
 /* #define HAVE_VSNPRINTF 1 */
 
-#define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_SSL_SUPPORT
+/* SLTCP_HAS_SSL_SUPPORT gets turned on whenever we use SSL
+ * SLTCP_HAS_GNUTLS_SUPPORT gets turned on when we use GNU TLS for it. */
+#if SLRN_HAS_SSL_SUPPORT == 1
+ #define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_SSL_SUPPORT
+#else
+  #if SLRN_HAS_GNUTLS_SUPPORT == 1
+  #define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_GNUTLS_SUPPORT
+  #define SLTCP_HAS_GNUTLS_SUPPORT SLRN_HAS_GNUTLS_SUPPORT
+  #endif
+#endif
 
 #if defined (__USE_SVID) || defined (__USE_XOPEN) || (defined (__MSVCRT__) && !defined (_NO_OLDNAMES))
 # define HAVE_TIMEZONE 1

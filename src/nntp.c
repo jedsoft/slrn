@@ -361,22 +361,17 @@ static unsigned int _nntp_get_bytes (int clear)
 
 static char * _nntp_get_recom_id (void)
 {
-   unsigned char compiled_pattern_buf[256];
-   SLRegexp_Type re;
+   SLRegexp_Type *re;
    
-   re.pat = (unsigned char *) "<.*@.*\\..*>";
-   re.buf = compiled_pattern_buf;
-   re.buf_len = sizeof (compiled_pattern_buf);
-   
-   if ((*compiled_pattern_buf == 0) && ! SLang_regexp_compile (&re))
+   if ((re=slrn_compile_regexp_pattern("<.*@.*\\..*>")) != NULL)
      {
 	char *t, *msgid, *post_rsp;
 	post_rsp = NNTP_Server->rspbuf;
 	t=(char*)SLang_regexp_match((unsigned char*) post_rsp,
-				    strlen(post_rsp), &re);
+				    strlen(post_rsp), re);
 	if (t != NULL)
 	  {
-	     if ((msgid=slrn_strnmalloc(t, re.end_matches[0],1)) == NULL)
+	     if ((msgid=slrn_strnmalloc(t, re->end_matches[0],1)) == NULL)
 	       return NULL;
 	     return msgid;
 	  }

@@ -56,6 +56,10 @@ Changes since 0.9.7.4
    Support Cancel-Locks using the canlock library (--with-canlock); you also
    need to set the new variable "cansecret_file" to a file containing your
    Cancel-Lock password to enable this (based on a patch by Andreas Barth).
+   
+   Support GNU TLS via its new OpenSSL compatibility layer (--with-gnutls).
+   Please note that GNU TLS still is under heavy development and that slrn's
+   support for it is still untested (based on a patch by Joey Hess.)
 
    New command-line option "-w0" that waits on startup, but only if a
    warning or error is displayed.

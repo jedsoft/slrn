@@ -43,8 +43,11 @@
 /* define if you want support for reading from a news spool */
 #define SLRN_HAS_SPOOL_SUPPORT		0
 
-/* define if you want SSL support */
+/* define if you want SSL support using OpenSSL */
 #define SLRN_HAS_SSL_SUPPORT		0
+
+/* define if you want SSL support using GNU TLS */
+#define SLRN_HAS_GNUTLS_SUPPORT		0
 
 /* define if you want to disallow custom From headers */
 #define SLRN_HAS_STRICT_FROM		0

@@ -314,37 +314,38 @@ AC_SUBST(SLANG_INC)dnl
 AC_SUBST(SLANG_INCLUDE)dnl
 ])
 
+dnl Specify (OpenSSL and ssl) or (GNU TLS and gnutls) as a parameter.
 AC_DEFUN(CF_SSL,
 [
   SSLLIB=""
   SSLINC=""
-  
-  AC_ARG_WITH(ssl,
-    [  --with-ssl[=DIR]        For SSL support],
+
+  AC_ARG_WITH($2,
+    [  --with-$2[=DIR]        For $1 support],
     [  ac_ssl_home="$withval" ], [ ac_ssl_home=no ])
   
-  AC_ARG_WITH(ssl-library,
-    [  --with-ssl-library      Where the OpenSSL library is located ],
+  AC_ARG_WITH($2-library,
+    [  --with-$2-library      Where the $1 library is located ],
     [  ac_ssl_library="$withval" ], [ ac_ssl_library=no ])
 
-  AC_ARG_WITH(ssl-includes,
-    [  --with-ssl-includes     Where the OpenSSL headers are located ],
-    [  ac_ssl_includes="$withval" ], [ ac_ssl_includes=no ])
+  AC_ARG_WITH($2-includes,
+    [  --with-$2-includes     Where the $1 headers are located ],
+    [  ac_ssl_includes="$withval" ], [ ac_ssl_includes=no ])    
 
   if test "x$ac_ssl_home" != xno || test "x$ac_ssl_library" != xno || \
      test "x$ac_ssl_includes" != xno ; then
   
     dnl We want SSL support
   
-    AC_MSG_CHECKING(for the OpenSSL library)
+    AC_MSG_CHECKING(for the $1 library)
     
     if test "x$ac_ssl_library" = xno || test "x$ac_ssl_library" = xyes ; then
-  
-    if test "x$ac_cv_lib_ssl" != "x" ; then
-      ac_ssl_library="$ac_cv_lib_ssl"
+      
+    if test "x${ac_cv_lib_$2}" != "x" ; then
+      ac_ssl_library="${ac_cv_lib_$2}"
     fi
 
-    AC_CACHE_VAL(ac_cv_lib_ssl, [
+    AC_CACHE_VAL(ac_cv_lib_$2, [
     
       dnl If you need to add extra directories to check, add them here.
       
@@ -360,14 +361,14 @@ AC_DEFUN(CF_SSL,
       fi
   
       for ssl_dir in $ssl_library_dirs; do
-        if test -r "$ssl_dir/libssl.a" || \
-	   test -r "$ssl_dir/libssl.so" ; then
+        if test -r "$ssl_dir/lib$2.a" || \
+	   test -r "$ssl_dir/lib$2.so" ; then
           ac_ssl_library="$ssl_dir"
           break
         fi
       done
 
-      ac_cv_lib_ssl="$ac_ssl_library"
+      eval "ac_cv_lib_$2=\"\$ac_ssl_library\""
     ])
     
     fi
@@ -375,34 +376,58 @@ AC_DEFUN(CF_SSL,
     AC_MSG_RESULT([$ac_ssl_library])
     
     if test "x$ac_ssl_library" = xno || test "x$ac_ssl_library" = xyes; then
-    AC_MSG_ERROR([
+      if test "$1" = OpenSSL ; then
+      AC_MSG_ERROR([
 
 Please install the OpenSSL library.  If you already did so, point this script
 to the right directory with the --with-ssl-library=DIR option.
 ])
+      else
+      AC_MSG_ERROR([
+
+Please install the GNU TLS library.  If you already did so, point this script
+to the right directory with the --with-gnutls-library=DIR option.
+])
+      fi
     fi
     
     # gcc under solaris is often not installed correctly.  Avoid specifying
     # -L/usr/lib.
-    if test "x$ac_ssl_library" = "x/usr/lib" ; then
+    if test "$1" = OpenSSL ; then
+      if test "x$ac_ssl_library" = "x/usr/lib" ; then
         SSLLIB="-lssl -lcrypto"
-    else
+      else
         if test "x$enable_hardcode_libs" = "xyes" ; then
             SSLLIB="-L$ac_ssl_library $cf_rpath_option$ac_ssl_library -lssl -lcrypto"
         else
             SSLLIB="-L$ac_ssl_library -lssl -lcrypto"
         fi
+      fi
+    else
+      if test "x$ac_ssl_library" = "x/usr/lib" ; then
+        SSLLIB="-lgnutls-extra -lgnutls -ltasn1 -lgcrypt"
+      else
+        if test "x$enable_hardcode_libs" = "xyes" ; then
+            SSLLIB="-L$ac_ssl_library $cf_rpath_option$ac_ssl_library -lgnutls-extra -lgnutls -ltasn1 -lgcrypt"
+        else
+            SSLLIB="-L$ac_ssl_library -lgnutls-extra -lgnutls -ltasn1 -lgcrypt"
+        fi
+      fi
     fi
-    
-    AC_MSG_CHECKING(for the OpenSSL includes)
+
+    if test "$1" = OpenSSL ; then
+      AC_MSG_CHECKING(for the OpenSSL includes)
+    else
+      AC_MSG_CHECKING(for the GNU TLS OpenSSL compatibility includes)
+    fi
     
     if test "x$ac_ssl_includes" = xno || test "x$ac_ssl_includes" = xyes ; then
     
-    if test "x$ac_cv_header_ssl" != "x" ; then
-      ac_ssl_includes="$ac_cv_header_ssl"
+    if test "x${ac_cv_header_$2}" != "x" ; then
+      ac_ssl_includes="${ac_cv_header_$2}"
     fi
 
-    AC_CACHE_VAL(ac_cv_header_ssl, [
+    AC_CACHE_VAL(ac_cv_header_$2, [
 
       dnl If you need to add extra directories to check, add them here.
       
@@ -417,14 +442,20 @@ to the right directory with the --with-ssl-library=DIR option.
         ssl_include_dirs="$ac_ssl_home $ac_ssl_home/include $ssl_include_dirs"
       fi
       
+      if test "$1" = OpenSSL ; then
+        ssl_file="openssl/ssl.h"
+      else
+        ssl_file="gnutls/openssl.h"
+      fi
+      
       for ssl_dir in $ssl_include_dirs; do
-        if test -r "$ssl_dir/openssl/ssl.h"; then
+        if test -r "$ssl_dir/$ssl_file"; then
           ac_ssl_includes="$ssl_dir"
           break
         fi
       done
 
-      ac_cv_header_ssl="$ac_ssl_includes"
+      eval "ac_cv_header_$2=\"\$ac_ssl_includes\""
     ])
     
     fi
@@ -432,11 +463,19 @@ to the right directory with the --with-ssl-library=DIR option.
     AC_MSG_RESULT([$ac_ssl_includes])
 
     if test "x$ac_ssl_includes" = xno || test "x$ac_ssl_includes" = xyes; then
-    AC_MSG_ERROR([
+    if test "$1" = OpenSSL ; then
+      AC_MSG_ERROR([
 
 Please install the OpenSSL header files.  If you already did so, point this
 script to the right directory with the --with-ssl-includes=DIR option.
 ])
+    else
+      AC_MSG_ERROR([
+
+Please install the GNU TLS header files.  If you already did so, point this
+script to the right directory with the --with-ssl-includes=DIR option.
+])
+    fi    
     fi
 
     # gcc under solaris is often not installed correctly.  Avoid specifying
@@ -447,9 +486,17 @@ script to the right directory with the --with-ssl-includes=DIR option.
         SSLINC="-I$ac_ssl_includes"
     fi
 
-    AC_DEFINE(SLRN_HAS_SSL_SUPPORT, 1)
+    if test "$1" = OpenSSL ; then
+      AC_DEFINE(SLRN_HAS_SSL_SUPPORT, 1)
+    else
+      AC_DEFINE(SLRN_HAS_GNUTLS_SUPPORT, 1)
+    fi
   else
-    AC_DEFINE(SLRN_HAS_SSL_SUPPORT, 0)
+    if test "$1" = OpenSSL ; then
+      AC_DEFINE(SLRN_HAS_SSL_SUPPORT, 0)
+    else
+      AC_DEFINE(SLRN_HAS_GNUTLS_SUPPORT, 0)
+    fi
   fi
   
     AC_SUBST(SSLINC)

@@ -55,7 +55,8 @@ CF_HARDCODE_LIBS
 CF_TERMCAP
 CF_PATH_SLANG_LIB
 CF_PATH_SLANG_INC
-CF_SSL
+CF_SSL(OpenSSL,ssl)
+CF_SSL([GNU TLS],gnutls)
 CF_MTA
 CF_WITH_OPT_LIB(uudeview, UULIB, UUINC, libuu.a, -luu, uudeview.h,
 [SLRN_HAS_UUDEVIEW], [  --with-uudeview[=DIR]   For uudeview library support])
