@@ -11,6 +11,8 @@ Changes since 0.9.7.3
    
    New variable max_queued_groups to control batching of GROUP commands at
    startup, as some servers do not seem to like it. (Craig B. Agricola)
+   
+   In article mode, "expunge" now triggers the newsrc autosave copy feature.
 
    More translations:
   * fr.po (French; slrn-fr project)

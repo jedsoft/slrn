@@ -7225,6 +7225,7 @@ static void art_xpunge (void) /*{{{*/
      }
    
    slrn_sort_by_sorting_mode ();
+   slrn_write_newsrc (1);
    
    Slrn_Full_Screen_Update = 1;
 }
