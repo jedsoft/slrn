@@ -584,30 +584,19 @@ void slrn_write_nbytes (char *s, unsigned int n) /*{{{*/
 static int screen_strlen (char *s, int len) /*{{{*/
 {
    int retval = 0;
+
+   if (len<0)
+     len = strlen(s);
+   
 #if SLANG_VERSION >= 20000
    if (Slrn_UTF8_Mode)
      {
-	SLwchar_Type w;
-	SLuchar_Type *next = (SLuchar_Type *) s;
-	SLuchar_Type *end = (SLuchar_Type *) (s + ((len<0) ? strlen(s) : len));
-	
-	while (next < end)
-	  {
-	     int consumed;
-	     SLuchar_Type *past = SLutf8_decode (next, end, &w, &consumed);
-	     next += consumed;
-	     if (past != NULL)
-	       retval += SLwchar_wcwidth (w);
-	     else
-	       retval += 1;
-	  }
+	return SLsmg_strwidth ((SLuchar_Type *) s, (SLuchar_Type *) (s+len));
      }
    else
 #endif
      {
 	int i;
-	if (len<0)
-	  len = strlen(s);
 	retval = len;
 	for (i = 0; i<len; i++)
 	  {
