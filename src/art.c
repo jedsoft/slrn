@@ -5266,7 +5266,7 @@ static void link_lost_relatives (void) /*{{{*/
 	       {
 		  Slrn_Header_Type *rjh = relatives[j].h;
 		  
-		  if (Slrn_New_Subject_Breaks_Threads
+		  if ((Slrn_New_Subject_Breaks_Threads & 1)
 		      && (rih->subject != NULL)
 		      && (rjh->subject != NULL)
 		      && (0 != subject_cmp (rih->subject, rjh->subject)))
@@ -5348,7 +5348,7 @@ static void thread_headers (void) /*{{{*/
 	       {
 		  Slrn_Header_Type *child, *rparent;
 		  
-		  if (Slrn_New_Subject_Breaks_Threads
+		  if ((Slrn_New_Subject_Breaks_Threads & 1)
 		      && (h->subject != NULL)
 		      && (ref->subject != NULL)
 		      && (0 != subject_cmp (h->subject, ref->subject)))
@@ -5388,8 +5388,11 @@ static void thread_headers (void) /*{{{*/
    
    /* Now perform sort on subject to catch those that have fallen through the
     * cracks, i.e., no references */
-   slrn_message_now (_("Linking articles with identical subjects ..."));
-   link_same_subjects ();
+   if (!(Slrn_New_Subject_Breaks_Threads & 2))
+     {
+	slrn_message_now (_("Linking articles with identical subjects ..."));
+	link_same_subjects ();
+     }
    
    /* Now link others up as sisters */
    h = Slrn_First_Header;

@@ -15,6 +15,7 @@ Changes since 0.9.7.2
   * The new default of 'reject_long_lines' is 2.
   * When confirm_actions is set, catching up a group requires confirmation.
   * Complain if user specifies a nonexistant config file on the command line.
+  * Made new_subject_breaks_threads a bitmapped value (see manual for details)
 2. On Unix, gettext is used to translate messages. Thanks to the slrn-pl and
    slrn-fr projects who helped with this and provided patches. Thanks to
    Byrial Jensen for a lot of minor improvements.
