@@ -467,7 +467,8 @@ static int cc_file (char *file, char *to) /*{{{*/
    linenum = 0;
    while ((NULL != (vline = vgets (vp, &vlen))) && (*vline != '\n'))
      {
-	vline[vlen-1] = 0;
+	if (vline[vlen-1] == '\n')
+	  vline[vlen-1] = 0;
 	linenum++;
 	if (0 == slrn_case_strncmp ((unsigned char *)vline,
 				    (unsigned char *) "Cc: ", 4))
@@ -540,7 +541,8 @@ static int cc_file (char *file, char *to) /*{{{*/
 
    while ((NULL != (vline = vgets (vp, &vlen))) && (*vline != '\n'))
      {
-	vline[vlen-1] = 0;
+	if (vline[vlen-1] == '\n')
+	  vline[vlen-1] = 0;
 	linenum++;
 	if (linenum == cc_line) continue;
 	if (is_empty_header (vline)) continue;
@@ -593,7 +595,8 @@ static int cc_file (char *file, char *to) /*{{{*/
 
    while (NULL != (vline = vgets (vp, &vlen)))
      {
-	vline[vlen-1] = 0;
+	if (vline[vlen-1] == '\n')
+	  vline[vlen-1] = 0;
 	fputs (vline, pp);
 	fputs ("\n", pp);
      }
@@ -1238,7 +1241,7 @@ static int post_user_confirm (char *file, int is_postponed) /*{{{*/
 	     if (filter_hook != 0)
 	       {
                   slrn_run_hooks (HOOK_POST_FILTER, 1, file);
-		  if (SLang_Error)
+		  if (SLang_get_error ())
 		    filter_hook = 0;
 	       }
 #endif
@@ -1331,7 +1334,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
    if (1 == slrn_is_hook_defined (HOOK_POST_FILE))
      {
 	(void) slrn_run_hooks (HOOK_POST_FILE, 1, file);
-	if (SLang_Error)
+	if (SLang_get_error ())
 	  {
 	     if (!Slrn_Editor_Uses_Mime_Charset)
 	       slrn_chmap_fix_file (file, 1);
@@ -1411,8 +1414,9 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	if (vlen == 0) continue;
 
 	linep = slrn_safe_malloc (vlen+512); /* add some for MIME overhead */
-	slrn_strncpy (linep, vline, vlen);
-	linep[vlen-1] = 0;	/* kill \n and NULL terminate */
+	strncpy (linep, vline, vlen);
+	if (linep[vlen-1] == '\n')
+	  linep[vlen-1] = 0;	/* kill \n and NULL terminate */
 	
 	if (header)
 	  {
@@ -1531,7 +1535,8 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	/* slrn_set_suspension (0); */
 	slrn_smg_refresh ();
 	slrn_sleep (2);
-	slrn_clear_message (); SLang_Error = 0;
+	slrn_clear_message (); 
+	SLang_set_error (0);
 
 	/* Note to translators: Here, "rR" is "repost", "eE" is "edit" and
 	 * "cC" is "cancel". Don't change the length of the string; you

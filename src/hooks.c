@@ -134,7 +134,7 @@ static int my_SLang_run_hooks(char *hook, unsigned int num_args, va_list ap)
 {
    unsigned int i;
 
-   if (SLang_Error) return -1;
+   if (SLang_get_error ()) return -1;
   
    if (0 == SLang_is_defined (hook))
      return 0;
@@ -147,7 +147,7 @@ static int my_SLang_run_hooks(char *hook, unsigned int num_args, va_list ap)
           break;
      }
 
-   if (SLang_Error) return -1;
+   if (SLang_get_error ()) return -1;
    return SLang_execute_function (hook);
 }
 

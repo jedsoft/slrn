@@ -39,6 +39,7 @@
 #include "misc.h"
 #include "score.h"
 #include "util.h"
+#include "slrn.h"
 
 /* In pathological situations, "Subject" or "From" header fields may include
  * (MIME-encoded) linebreaks that would lead to invalid scorefile entries, so
@@ -61,7 +62,7 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
    char ch = 'e';
    int ich;
    char file[256];
-   char qregexp[2*SLRL_DISPLAY_BUFFER_SIZE], buf[2*SLRL_DISPLAY_BUFFER_SIZE];
+   char qregexp[2*SLRL_DISPLAY_BUFFER_SIZE];
    unsigned int mm = 0, dd = 0, yy = 0;
    int days = 0;
    int use_expired = 0, force_score = 0;
@@ -71,7 +72,12 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
    FILE *fp;
    time_t myclock;
    int file_modified = 0, re_error = 0;
+#if SLANG_VERSION < 20000
    SLRegexp_Type re;
+   char buf[2*SLRL_DISPLAY_BUFFER_SIZE];
+#else
+   SLRegexp_Type *re;
+#endif
    /* Note to translators: The translated string needs to have 10 characters.
     * Each pair becomes a valid response for "Subject", "From", "References",
     * "Edit" and "Cancel" (in that order); you cannot use any of the default
@@ -167,11 +173,14 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	slrn_error (_("Unable to open %s"), file);
 	return -1;
      }
-   
+#if SLANG_VERSION < 20000
    re.pat = (unsigned char*) qregexp;
    re.buf = (unsigned char*) buf;
    re.buf_len = sizeof (buf);
    re.case_sensitive = 0;
+#else
+   re = NULL;
+#endif
    
    if (Slrn_Prefix_Arg_Ptr == NULL)
      {
@@ -197,7 +206,12 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	
 	if ((NULL == (q = SLregexp_quote_string (line, qregexp, sizeof (qregexp)))) ||
 	    (ch != 's') ||
-	    (0 != SLang_regexp_compile (&re)))
+#if SLANG_VERSION < 20000
+	    (0 != SLang_regexp_compile (&re))
+#else
+	    (NULL == (re = SLregexp_compile (qregexp, SLREGEXP_CASELESS)))
+#endif
+	    )
 	  {
 	     re_error |= (ch == 's');
 	     comment = 1;
@@ -207,12 +221,24 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	fprintf (fp, "%c\tSubject: %s\n",
 		 (comment ? '%' : ' '), (q ? q : line));
 	slrn_free (line);
+#if SLANG_VERSION >= 20000
+	if (re != NULL)
+	  {
+	     SLregexp_free (re);
+	     re = NULL;
+	  }
+#endif
 
 	line = slrn_safe_strmalloc (h->from);
 	remove_linebreaks (line);
 	if ((NULL == (q = SLregexp_quote_string (line, qregexp, sizeof (qregexp)))) ||
 	    (ch != 'f') ||
-	    (0 != SLang_regexp_compile (&re)))
+#if SLANG_VERSION < 20000
+	    (0 != SLang_regexp_compile (&re))
+#else
+	    (NULL == (re = SLregexp_compile (qregexp, SLREGEXP_CASELESS)))
+#endif
+	    )
 	  {
 	     re_error |= (ch == 'f');
 	     comment = 1;
@@ -222,10 +248,22 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	fprintf (fp, "%c\tFrom: %s\n",
 		 (comment ? '%' : ' '), (q ? q : line));
 	slrn_free (line);
+#if SLANG_VERSION >= 20000
+	if (re != NULL)
+	  {
+	     SLregexp_free (re);
+	     re = NULL;
+	  }
+#endif
 
 	if ((NULL == (q = SLregexp_quote_string (h->msgid, qregexp, sizeof (qregexp)))) ||
 	    (ch != 'r') ||
-	    (0 != SLang_regexp_compile (&re)))
+#if SLANG_VERSION < 20000
+	    (0 != SLang_regexp_compile (&re))
+#else
+	    (NULL == (re = SLregexp_compile (qregexp, SLREGEXP_CASELESS)))
+#endif
+	    )
 	  {
 	     re_error |= (ch == 'r');
 	     comment = 1;
@@ -234,6 +272,13 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	  comment = 0;
 	fprintf (fp, "%c\tReferences: %s\n",
 		 (comment ? '%' : ' '), (q ? q : h->msgid));
+#if SLANG_VERSION >= 20000
+	if (re != NULL)
+	  {
+	     SLregexp_free (re);
+	     re = NULL;
+	  }
+#endif
 	
 	if (NULL != (q = SLregexp_quote_string (h->xref, qregexp, sizeof (qregexp))))
 	  {

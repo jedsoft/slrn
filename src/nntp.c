@@ -73,7 +73,7 @@ static int _nntp_interrupt_handler (void)
 {
    (void) slrn_handle_interrupts ();
 
-   if ((SLang_Error == USER_BREAK) || SLKeyBoard_Quit)
+   if ((SLang_get_error () == USER_BREAK) || SLKeyBoard_Quit)
      return -1;
 
    return 0;
@@ -367,16 +367,29 @@ static char * _nntp_get_recom_id (void)
    
    if ((re=slrn_compile_regexp_pattern("<.*@.*\\..*>")) != NULL)
      {
-	char *t, *msgid, *post_rsp;
+	char *t, *msgid = NULL, *post_rsp;
 	post_rsp = NNTP_Server->rspbuf;
+#if SLANG_VERSION < 20000
 	t=(char*)SLang_regexp_match((unsigned char*) post_rsp,
 				    strlen(post_rsp), re);
+#else
+	t = SLregexp_match (re, post_rsp, strlen (post_rsp));
+#endif
 	if (t != NULL)
 	  {
-	     if ((msgid=slrn_strnmalloc(t, re->end_matches[0],1)) == NULL)
-	       return NULL;
-	     return msgid;
+	     unsigned int len;
+#if SLANG_VERSION < 20000
+	     len = re->end_matches[0];
+#else
+	     (void) SLregexp_nth_match (re, 0, NULL, &len);
+#endif
+	     
+	     msgid=slrn_strnmalloc(t, len, 1);
 	  }
+#if SLANG_VERSION >= 20000
+	SLregexp_free (re);
+#endif
+	return msgid;
      }
    return NULL;
 }

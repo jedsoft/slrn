@@ -110,7 +110,7 @@ static char **pop_argv_list (unsigned int *argcp)
       
    if (NULL == (argv = (char **) slrn_malloc (sizeof (char *) * (argc + 1), 1, 1)))
      {
-	SLang_Error = SL_MALLOC_ERROR;
+	SLang_set_error (SL_MALLOC_ERROR);
 	return NULL;
      }
    
@@ -531,17 +531,11 @@ static void definekey (char *fun, char *key, char *map) /*{{{*/
 	slrn_error (_("definekey: no such keymap."));
 	return;
      }
-   
-   if ((kmap == Slrn_Keymap_RLI->keymap) &&
-       (NULL == SLang_find_key_function(fun, kmap)))
-     {
-	SLKeymap_Function_Type *tmp = kmap->functions;
-	kmap->functions = Slrn_Custom_Readline_Functions;
-	SLang_define_key (convkey, fun, kmap);
-	kmap->functions = tmp;
-     }
+
+   if (kmap == SLrline_get_keymap (Slrn_Keymap_RLI))
+     (void) slrn_rline_setkey (convkey, fun, kmap);
    else
-     SLang_define_key (convkey, fun, kmap);
+     (void) SLang_define_key (convkey, fun, kmap);
 }
 
 /*}}}*/
@@ -901,7 +895,7 @@ static char *generic_article_as_string (int use_orig) /*{{{*/
    
    if (NULL == (s = (char *) SLMALLOC (len + 1)))
      {
-	SLang_Error = SL_MALLOC_ERROR;
+	SLang_set_error (SL_MALLOC_ERROR);
 	return NULL;
      }
    

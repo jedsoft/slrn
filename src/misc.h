@@ -63,6 +63,7 @@ extern int slrn_check_batch (void);
 
 extern unsigned char *slrn_regexp_match (SLRegexp_Type *, char *);
 extern SLRegexp_Type *slrn_compile_regexp_pattern (char *);
+extern SLRegexp_Type *slrn_free_regexp (SLRegexp_Type *);
 
 #define MAX_HOST_NAME_LEN 256
 typedef struct
@@ -109,9 +110,18 @@ extern void slrn_get_mouse_rc (int *, int *);
 #ifndef VMS
 extern char *Slrn_SendMail_Command;
 #endif
+
+#if SLANG_VERSION < 20000
+extern int SLang_get_error (void);
+extern int SLang_set_error (int);
+typedef struct SLKeyMap_List_Type SLkeymap_Type;
+typedef SLang_RLine_Info_Type SLrline_Type;
+extern SLkeymap_Type *SLrline_get_keymap (SLrline_Type *);
+#endif
+
 extern SLKeyMap_List_Type *Slrn_RLine_Keymap;
 extern SLang_RLine_Info_Type *Slrn_Keymap_RLI;
-extern SLKeymap_Function_Type Slrn_Custom_Readline_Functions [];
+extern int slrn_rline_setkey (char *, char *, SLkeymap_Type *);
 
 extern void slrn_va_message (char *, va_list);
 
@@ -139,4 +149,5 @@ extern char *Slrn_Failed_Post_Filename;
 extern char *Slrn_Top_Status_Line;
 
 extern int Slrn_Abort_Unmodified;
+
 #endif				       /* _SLRN_MISC_H */

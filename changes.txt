@@ -2,6 +2,7 @@ Changes since 0.9.8.1
 
 0. Bug fixes include:
   * slrnpull fetches marked articles even if no new headers are available.
+  * slrn would sometimes eat the last char of an article when posting.
 
 Changes since 0.9.8.0
 

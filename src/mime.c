@@ -458,7 +458,7 @@ static char *decode_utf8 (char *dest, char *src, char *srcmax,
    int ch;
    if (utf8_error != NULL)
      *utf8_error = 0;
-   
+
    while (src < srcmax)
      {
 	if (*src & 0x80)
@@ -512,6 +512,10 @@ int slrn_rfc1522_decode_string (char *s)
 /* Even if some user agents still send raw 8bit, it is safe to call
  * decode_utf8() -- if it finds 8bit chars that are not valid UTF-8, it
  * will set ch to 1 and we can leave the line untouched. */
+#if SLANG_VERSION >= 20000
+   if (Slrn_UTF8_Mode == 0)
+     {
+#endif
    len = strlen (s);
    s1 = slrn_safe_malloc(len + 1);
    
@@ -521,7 +525,10 @@ int slrn_rfc1522_decode_string (char *s)
    if (ch == 0)
      strcpy (s, s1); /* safe */
    slrn_free (s1);
-   
+#if SLANG_VERSION >= 20000
+     }
+#endif
+
    while (1)
      {
 	while ((NULL != (s = slrn_strchr (s, '=')))
@@ -591,8 +598,12 @@ int slrn_rfc1522_decode_string (char *s)
 	  s1 = decode_base64 (s1, txt, s);
 	else s1 = decode_quoted_printable (s1, txt, s, 1, 0);
 	
-	if (slrn_case_strncmp((unsigned char *)"utf-8",
+	if ((slrn_case_strncmp((unsigned char *)"utf-8",
 			      (unsigned char *)charset, 5) == 0)
+#if SLANG_VERSION >= 20000
+	    && (Slrn_UTF8_Mode == 0)
+#endif
+	    )
 	  s1 = decode_utf8 (s2, s2, s1, NULL);
 	
 	/* Now move everything over */
@@ -916,6 +927,9 @@ void slrn_mime_process_article (Slrn_Article_Type *a)
      }
    
    if ((a->mime_needs_metamail == 0) &&
+#if SLANG_VERSION >= 20000
+       (Slrn_UTF8_Mode == 0) &&
+#endif
        (Char_Set != NULL) &&
        (slrn_case_strncmp((unsigned char *)"utf-8",
 			  (unsigned char *)Char_Set, 5) == 0))
@@ -1288,7 +1302,7 @@ static int min_encode (unsigned char *from, unsigned char *to, /*{{{*/
 	  {
 	     len = eword - bword;
 	     if ((int)max < len) return -1;
-	     strncpy (dest, bword, len);
+	     strncpy ((char *)dest, (char *)bword, len);
 	     dest += len; max -= len; total += len;
 	     Keyword_Len = 0;
 	  }
@@ -1330,7 +1344,7 @@ static int encode_quoted_string (unsigned char **from, unsigned char *to, /*{{{*
      {
 	int len = end + 1 - *from;
 	if ((int)max <= len) return -1;
-	strncpy (dest, *from, len);
+	strncpy ((char *)dest, (char *)*from, len);
 	dest[len] = '\0';
 	*from = end + 1;
 	return len;

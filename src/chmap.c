@@ -40,6 +40,7 @@
 #include <slang.h>
 #include "jdmacros.h"
 
+#include "slrn.h"
 #include "misc.h"
 #include "util.h"
 #include "group.h"
@@ -68,11 +69,21 @@ static void chmap_map_string (char *str, unsigned char *map)
 
 static void chmap_map_string_from_iso (char *str)
 {
+# if SLANG_VERSION >= 20000
+   /* fixme */
+   if (Slrn_UTF8_Mode)
+     return;
+#endif
    chmap_map_string (str, ChMap_From_Iso_Map);
 }
 
 static void chmap_map_string_to_iso (char *str)
 {
+   /* fixme */
+#if SLANG_VERSION >= 20000
+   if (Slrn_UTF8_Mode)
+     return;
+#endif
    chmap_map_string (str, ChMap_To_Iso_Map);
 }
 

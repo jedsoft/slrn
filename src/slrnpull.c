@@ -91,6 +91,10 @@
 
 static char *Slrnpull_Version = SLRN_VERSION;
 
+#if SLANG_VERSION >= 20000
+int Slrn_UTF8_Mode = 0;
+#endif
+
 #if SLRNPULL_USE_SETGID_POSTS
 # define OUTGOING_DIR_MODE	(0777 | 03000)
 #else
@@ -2184,6 +2188,13 @@ int main (int argc, char **argv) /*{{{*/
    bindtextdomain(PACKAGE,LOCALEDIR);
    textdomain(PACKAGE);
 #endif
+
+#if SLANG_VERSION >= 20000
+   Slrn_UTF8_Mode = SLutf8_enable (-1);
+   if (Slrn_UTF8_Mode == 0)
+     SLsmg_utf8_enable (1);
+   Slrn_UTF8_Mode = 1;
+#endif
    
    pgm = argv[0];
    argv++; argc--;
@@ -3274,7 +3285,8 @@ static int read_headers_files (void)
 	
 	if (NULL != (vline = vgets (vp, &vlen)))
 	  {
-	     vline[vlen] = 0; /* make sure line is NULL terminated */
+	     if (vline[vlen-1] == '\n')
+	       vline[vlen-1] = 0; /* make sure line is NULL terminated */
 	     group->headers = slrn_ranges_from_newsrc_line (vline);
 	  }
 	
@@ -3383,7 +3395,8 @@ static void read_requests_files (void)
 	     if (NULL == (group = find_group_type (vline)))
 	       continue;
 	     
-	     vline[vlen-1] = 0;	       /* kill \n and NULL terminate */
+	     if (vline[vlen-1] == '\n')
+	       vline[vlen-1] = 0;
 	     
 	     r = slrn_ranges_from_newsrc_line (p+1);
 	     group->requests = slrn_ranges_merge (group->requests, r);

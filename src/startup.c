@@ -271,14 +271,8 @@ static int setkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    else if (!strcmp (map, "readline")) kmap = Slrn_RLine_Keymap;
    else slrn_exit_error (_("%s: line %d:\n%sNo such keymap: %s"), This_File, This_Line_Num, This_Line, map);
    
-   if ((kmap == Slrn_Keymap_RLI->keymap) &&
-       (NULL == SLang_find_key_function(fun, kmap)))
-     {
-	SLKeymap_Function_Type *tmp = kmap->functions;
-	kmap->functions = Slrn_Custom_Readline_Functions;
-	failure = SLang_define_key (key, fun, kmap);
-	kmap->functions = tmp;
-     }
+   if (kmap == SLrline_get_keymap (Slrn_Keymap_RLI))
+     failure = slrn_rline_setkey (key, fun, kmap);
    else
      failure = SLang_define_key (key, fun, kmap);
    
@@ -349,8 +343,9 @@ static int autobaud_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 
 static SLRegexp_Type *compile_quote_regexp (char *str) /*{{{*/
 {
-   unsigned char *compiled_pattern_buf;
    SLRegexp_Type *r;
+#if SLANG_VERSION < 20000
+   unsigned char *compiled_pattern_buf;
    
    compiled_pattern_buf = (unsigned char *) safe_malloc (512);
    r = (SLRegexp_Type *) safe_malloc (sizeof (SLRegexp_Type));
@@ -362,10 +357,17 @@ static SLRegexp_Type *compile_quote_regexp (char *str) /*{{{*/
    
    if (SLang_regexp_compile (r))
      {
-	slrn_exit_error (_("%s: line %d:\n%sInvalid regular expression."),
-			 This_File, This_Line_Num, This_Line);
+	SLfree ((char *) r);
+	r = NULL;
      }
-   
+#else
+   r = SLregexp_compile (str, 0);
+#endif
+
+   if (r == NULL)
+     slrn_exit_error (_("%s: line %d:\n%sInvalid regular expression."),
+		      This_File, This_Line_Num, This_Line);
+     
    return r;
 }
 
@@ -387,8 +389,12 @@ void slrn_generic_regexp_fun (int argc, SLcmd_Cmd_Table_Type *cmd_table,
 	r = regexp_table[i];
 	if (r != NULL)
 	  {
+#if SLANG_VERSION < 20000
 	     slrn_free ((char *) r->buf);
 	     SLFREE (r);
+#else
+	     SLregexp_free (r);
+#endif
 	     regexp_table[i] = NULL;
 	  }
      }
@@ -1651,7 +1657,11 @@ int slrn_read_startup_file (char *name) /*{{{*/
 {
    FILE *fp;
    char line [512];
+#if SLANG_VERSION < 20000
    SLPreprocess_Type pt;
+#else
+   SLprep_Type *pt;
+#endif
    int save_this_line_num;
    char *save_this_file;
    char *save_this_line;
@@ -1661,7 +1671,11 @@ int slrn_read_startup_file (char *name) /*{{{*/
 	slrn_exit_error (_("Unable to initialize S-Lang readline library."));
      }
    
+#if SLANG_VERSION < 20000
    if (-1 == SLprep_open_prep (&pt))
+#else
+   if (NULL == (pt = SLprep_new()))
+#endif
      {
 	slrn_exit_error (_("Error initializing S-Lang preprocessor."));
      }
@@ -1684,14 +1698,22 @@ int slrn_read_startup_file (char *name) /*{{{*/
    while (NULL != fgets (line, sizeof(line) - 1, fp))
      {
 	This_Line_Num++;
+#if SLANG_VERSION < 20000
 	if (SLprep_line_ok (line, &pt))
+#else
+	if (SLprep_line_ok (line, pt))
+#endif
 	  (void) SLcmd_execute_string (line, &Slrn_Cmd_Table);
 	
-	if (SLang_Error) exit_unknown_object ();
+	if (SLang_get_error()) exit_unknown_object ();
      }
    slrn_fclose (fp);
    
+#if SLANG_VERSION < 20000
    SLprep_close_prep (&pt);
+#else
+   SLprep_delete (pt);
+#endif
    
    if ((Server_Object != NULL)
        && (-1 == (Slrn_Default_Server_Obj = slrn_map_name_to_object_id (0, Server_Object))))

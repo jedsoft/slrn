@@ -756,7 +756,11 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
 					     int dir)
   /* dir: 0 is backward, 1 is forward, 2 is "find first" */
 {
+#if SLANG_VERSION < 20000
    SLsearch_Type st;
+#else
+   SLsearch_Type *st = NULL;
+#endif
    Slrn_Article_Line_Type *l;
    Slrn_Article_Type *a;
    char *ptr;
@@ -773,7 +777,20 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
 	if (re == NULL)
 	  return NULL;
      }
+#if SLANG_VERSION < 20000
    else SLsearch_init (string, 1, 0, &st);
+#else
+   else 
+     {
+	unsigned int flags = SLSEARCH_CASELESS;
+	if (Slrn_UTF8_Mode)
+	  flags |= SLSEARCH_UTF8;
+
+	st = SLsearch_new ((SLuchar_Type *) string, flags);
+	if (st == NULL)
+	  return NULL;
+     }
+#endif
 
    a = Slrn_Current_Article;
    if (dir == 2)
@@ -791,10 +808,13 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
 	  {
 	     if (is_regexp)
 	       ptr = (char *) slrn_regexp_match (re, l->buf);
-	     else
-	       ptr = (char *) SLsearch ((unsigned char *) l->buf,
-					(unsigned char *) l->buf + strlen (l->buf),
-					&st);
+#if SLANG_VERSION < 20000
+	     else ptr = (char *) SLsearch ((unsigned char *) l->buf,
+					   (unsigned char *) l->buf + strlen (l->buf),
+					   &st);
+#else
+	     else ptr = (char *)SLsearch_forward (st, (SLuchar_Type *) l->buf, (SLuchar_Type *) l->buf + strlen (l->buf));
+#endif
 	     
 	     if (ptr != NULL)
 	       {
@@ -810,7 +830,11 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
 	  }
 	l = (dir ? l->next : l->prev);
      }
-      
+   
+#if SLANG_VERSION >= 20000
+   if (re != NULL) SLregexp_free (re);
+   if (st != NULL) SLsearch_delete (st);
+#endif
    return l;
 }
 
@@ -2301,7 +2325,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	if (status == 0)
 	  break;
 	
-	if ((status == -1) || (SLang_Error == USER_BREAK))
+	if ((status == -1) || (SLang_get_error() == USER_BREAK))
 	  {
 	     if (Slrn_Server_Obj->sv_reset != NULL)
 	       Slrn_Server_Obj->sv_reset ();
@@ -2739,7 +2763,7 @@ static char *extract_reply_address (void)
  */
 static int check_for_current_article (void)
 {
-   if (SLang_Error)
+   if (SLang_get_error ())
      return -1;
    if (Slrn_Current_Article == NULL)
      {
@@ -2769,7 +2793,12 @@ void slrn_subject_strip_was (char *subject) /*{{{*/
      {
 	SLRegexp_Type *re;
 	re = *r++;
-	if (NULL != (was = SLang_regexp_match ((unsigned char*) subject, len, re)))
+#if SLANG_VERSION < 20000
+	was = SLang_regexp_match ((unsigned char*) subject, len, re);
+#else
+	was = (unsigned char *)SLregexp_match (re, subject, len);
+#endif
+	if (NULL != was)
 	  {
 	     if (was == (unsigned char*) subject)
 	       was = NULL;
@@ -2806,10 +2835,22 @@ static char *subject_skip_re (char *subject) /*{{{*/
 	while (*r != NULL)
 	  {
 	     SLRegexp_Type *re = *r;
-	     if (subject == (char*) SLang_regexp_match
-		 ((unsigned char*) subject, len, re))
+	     char *match_pos;
+	     
+#if SLANG_VERSION < 20000
+	     match_pos = SLang_regexp_match ((unsigned char*) subject, len, re);
+#else
+	     match_pos = SLregexp_match (re, subject, len);
+#endif
+	     if (subject == match_pos)
 	       {
+#if SLANG_VERSION < 20000
 		  subject = subject + re->end_matches[0];
+#else
+		  unsigned int ofs, mlen;
+		  (void) SLregexp_nth_match (re, 0, &ofs, &mlen);
+		  subject += mlen;
+#endif
 		  break;
 	       }
 	     r++;
@@ -3964,7 +4005,12 @@ static void next_high_score (void) /*{{{*/
 static Slrn_Header_Type *Same_Subject_Start_Header;
 static void next_header_same_subject (void) /*{{{*/
 {
+#if SLANG_VERSION < 20000
    SLsearch_Type st;
+#else
+   SLsearch_Type *st;
+   unsigned int flags = SLSEARCH_CASELESS;
+#endif
    Slrn_Header_Type *l;
    static char same_subject[SLRL_DISPLAY_BUFFER_SIZE];
    
@@ -3975,8 +4021,13 @@ static void next_header_same_subject (void) /*{{{*/
 	if (slrn_read_input (_("Subject: "), same_subject, NULL, 0, 0) <= 0) return;
 	Same_Subject_Start_Header = Slrn_Current_Header;
      }
+#if SLANG_VERSION < 20000
    SLsearch_init (same_subject, 1, 0, &st);
-   
+#else
+   if (Slrn_UTF8_Mode) flags |= SLSEARCH_UTF8;
+   if (NULL == (st = SLsearch_new ((SLuchar_Type *)same_subject, flags)))
+     return;
+#endif
    l = Slrn_Current_Header->next;
    
    while (l != NULL)
@@ -3987,11 +4038,17 @@ static void next_header_same_subject (void) /*{{{*/
 	    ((l->flags & HEADER_READ) == 0) &&
 #endif
 	    (l->subject != NULL)
+#if SLANG_VERSION < 20000
 	    && (NULL != SLsearch ((unsigned char *) l->subject,
 				  (unsigned char *) l->subject + strlen (l->subject),
-				  &st)))
+				  &st))
+#else
+	    && (NULL != SLsearch_forward (st, (SLuchar_Type *)l->subject,
+					  (SLuchar_Type *)l->subject + strlen (l->subject)))
+#endif
+	    )
 	  break;
-	
+
 	l = l->next;
      }
    
@@ -4010,6 +4067,9 @@ static void next_header_same_subject (void) /*{{{*/
      {
 	art_pagedn ();
      }
+#if SLANG_VERSION >= 20000
+   SLsearch_delete (st);
+#endif
 }
 
 /*}}}*/
@@ -4352,10 +4412,10 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	     if (-1 == save_article_as_unix_mail (Num_Tag_List.headers[i], fp))
 	       {
 		  slrn_smg_refresh ();
-		  if (SLang_Error == SL_USER_BREAK)
+		  if (SLang_get_error() == SL_USER_BREAK)
 		    break;
 
-		  SLang_Error = 0;
+		  SLang_set_error (0);
 		  (void) SLang_input_pending (5);   /* half second delay */
 		  slrn_clear_message ();
 	       }
@@ -4372,7 +4432,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	     if (-1 == save_article_as_unix_mail (h, fp))
 	       {
 		  slrn_smg_refresh ();
-		  SLang_Error = 0;
+		  SLang_set_error (0);
 		  (void) SLang_input_pending (5);   /* half second delay */
 	       }
 	     else num_saved++;
@@ -4384,7 +4444,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
      }
    slrn_fclose (fp);
    
-   if (SLang_Error) return NULL;
+   if (SLang_get_error ()) return NULL;
    
    return Output_Filename;
 }
@@ -4506,7 +4566,7 @@ static void decode_article (void) /*{{{*/
 # endif
 	(void) slrn_uudecode_file (file, NULL, 0, NULL);
 
-	if (SLang_Error == 0)
+	if (0 == SLang_get_error ())
 	  {
 	     if (1 == slrn_get_yesno (1, _("Delete %s"), file))
 	       {
@@ -4942,7 +5002,12 @@ static void exchange_mark (void) /*{{{*/
 static void header_generic_search (int dir, int type) /*{{{*/
 {
    static char search_str[SLRL_DISPLAY_BUFFER_SIZE];
+#if SLANG_VERSION < 20000
    SLsearch_Type st;
+#else
+   SLsearch_Type *st;
+   unsigned int flags = SLSEARCH_CASELESS;
+#endif
    Slrn_Header_Type *l;
    char* prompt;
    int ret;
@@ -4955,8 +5020,15 @@ static void header_generic_search (int dir, int type) /*{{{*/
    slrn_free (prompt);
    if (ret <= 0) return;
    
+#if SLANG_VERSION < 20000
    SLsearch_init (search_str, 1, 0, &st);
-   
+#else
+   if (Slrn_UTF8_Mode) flags |= SLSEARCH_UTF8;
+   st = SLsearch_new ((SLuchar_Type *)search_str, flags);
+   if (NULL == st)
+     return;
+#endif
+
    if (dir > 0) l = Slrn_Current_Header->next;
    else l = Slrn_Current_Header->prev;
    
@@ -4965,20 +5037,35 @@ static void header_generic_search (int dir, int type) /*{{{*/
 	if (type == 's')
 	  {
 	     if ((l->subject != NULL)
+#if SLANG_VERSION < 20000
 		 && (NULL != SLsearch ((unsigned char *) l->subject,
 				       (unsigned char *) l->subject + strlen (l->subject),
-				       &st)))
+				       &st))
+#else
+		 && (NULL != SLsearch_forward (st, (SLuchar_Type *) l->subject,
+					       (SLuchar_Type *) l->subject + strlen (l->subject)))
+#endif
+		     )
 	       break;
 	  }
 	else if ((l->from != NULL)
+#if SLANG_VERSION < 20000
 		 && (NULL != SLsearch ((unsigned char *) l->from,
 				       (unsigned char *) l->from + strlen (l->from),
-				       &st)))
+				       &st))
+#else
+		 && (NULL != SLsearch_forward (st, (SLuchar_Type *) l->subject,
+					       (SLuchar_Type *) l->subject + strlen (l->subject)))
+#endif
+		     )
 	  break;
 	
 	if (dir > 0) l = l->next; else l = l->prev;
      }
    
+#if SLANG_VERSION >= 20000
+   SLsearch_delete (st);
+#endif
    if (l == NULL)
      {
 	slrn_error (_("Not found."));
@@ -5219,7 +5306,7 @@ static void score_headers (int apply_kill) /*{{{*/
    
    slrn_message_now (_("Scoring articles ..."));
    
-   while ((h != NULL) && (SLang_Error != USER_BREAK))
+   while ((h != NULL) && (SLang_get_error() != USER_BREAK))
      {
 	Slrn_Header_Type *prev, *next;
 	prev = h->real_prev;
@@ -5248,10 +5335,10 @@ static void score_headers (int apply_kill) /*{{{*/
 	  }
 	h = next;
      }
-   if (SLang_Error == USER_BREAK)
+   if (SLang_get_error () == USER_BREAK)
      {
 	slrn_error ("Scoring aborted.");
-	SLang_Error = 0;
+	SLang_set_error (0);
      }
    if (apply_kill)
      Slrn_Current_Header = _art_Headers = Slrn_First_Header;
@@ -5461,7 +5548,7 @@ static int get_add_headers (int min, int max) /*{{{*/
 	
 	while (-1 != (this_num = slrn_read_add_xover(&l)))
 	  {
-	     if (SLang_Error == USER_BREAK)
+	     if (SLang_get_error () == USER_BREAK)
 	       {
 		  if (Slrn_Server_Obj->sv_reset != NULL)
 		    Slrn_Server_Obj->sv_reset ();
@@ -5507,7 +5594,7 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
    if (total == 0)
      return 0;
    
-   if (SLang_Error == USER_BREAK)
+   if (SLang_get_error () == USER_BREAK)
      return -1;
 
    if ((reads_per_update = Slrn_Reads_Per_Update) < 5)
@@ -5532,7 +5619,7 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
      {
 	int this_num;
 	
-	if (SLang_Error == USER_BREAK)
+	if (SLang_get_error () == USER_BREAK)
 	  {
 	     if (Slrn_Server_Obj->sv_reset != NULL)
 	       Slrn_Server_Obj->sv_reset ();
@@ -5556,7 +5643,7 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
 	h = process_xover (&xov);
 
 	if ((1 == (num % reads_per_update))
-	    && (SLang_Error == 0))
+	    && (SLang_get_error () == 0))
 	  {
 	     slrn_message_now (_("%s: headers received: %2d/%d"),
 			       Slrn_Current_Group_Name, num, total);
@@ -7085,27 +7172,26 @@ static void art_mouse (void (*top_status)(void), /*{{{*/
      {
 	if (Slrn_Highlight_Urls && (c < 255))
 	  {
-	     unsigned short buf[255];
+	     SLsmg_Char_Type buf[256];
 	     char line[512];
 	     char *url = NULL;
 	     unsigned int len, i;
 	     
 	     SLsmg_gotorc (r - 1, 0);
-	     len = SLsmg_read_raw (buf, sizeof (buf));
+	     len = SLsmg_read_raw (buf, 256);
 	     
 	     i = (unsigned int) c;
-	     while (c && (((buf[--c] >> 8) & 0xFF) == URL_COLOR))
+	     while (c && (SLSMG_EXTRACT_COLOR(buf[--c]) == URL_COLOR))
 	       {
-		  line[c] = buf[c] & 0xFF;
+		  line[c] = (char) SLSMG_EXTRACT_CHAR(buf[c]);
 		  url = line + c;
 	       }
-	     
-	     while ((i < len) && ((buf[i] >> 8) & 0xFF) == URL_COLOR)
+	     while ((i < len) && (SLSMG_EXTRACT_COLOR(buf[i]) == URL_COLOR))
 	       {
-		  line[i] = buf[i] & 0xFF;
+		  line[i] = (char) SLSMG_EXTRACT_CHAR(buf[i]);
 		  i++;
 	       }
-	     
+
 	     line[i] = '\0';
 	     
 	     if (url != NULL)
@@ -7501,7 +7587,7 @@ void slrn_init_article_mode (void) /*{{{*/
 
    SLkm_define_key  ("z", (FVOID_STAR) zoom_article_window, Slrn_Article_Keymap);
    
-   if (SLang_Error) slrn_exit_error (err);
+   if (SLang_get_error ()) slrn_exit_error (err);
 }
 
 /*}}}*/
@@ -7602,7 +7688,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 
 #if SLRN_HAS_SLANG
    slrn_run_hooks (HOOK_PRE_ARTICLE_MODE, 0);
-   if (SLang_Error)
+   if (SLang_get_error ())
      return -1;
 #endif
    
@@ -7755,7 +7841,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
    
    if ((status == -1) || SLKeyBoard_Quit)
      {
-	if (SLang_Error == USER_BREAK)
+	if (SLang_get_error () == USER_BREAK)
 	  slrn_error_now (0, _("Group transfer aborted."));
 	else
 	  slrn_error_now (0, _("Server read failed."));
@@ -7781,7 +7867,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 
 	free_kill_lists_and_update ();
 	Slrn_Current_Group_Name = NULL;
-	if ((SLang_Error == USER_BREAK) || (all != 0)) return -1;
+	if ((SLang_get_error () == USER_BREAK) || (all != 0)) return -1;
 	else return -2;
      }
    
@@ -7822,7 +7908,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 #endif
 
    if (Slrn_Startup_With_Article) art_pagedn ();
-   if (SLang_Error == 0)
+   if (SLang_get_error () == 0)
      {
 	if (Perform_Scoring 
 	    /* && (Number_Killed || Number_High_Scored) */
@@ -8162,7 +8248,7 @@ static void write_spoiler (char *buf, int first_line) /*{{{*/
 
 static void draw_tree (Slrn_Header_Type *h) /*{{{*/
 {
-   SLsmg_Char_Type buf[2];
+   SLwchar_Type buf[2];
 
 #if !defined(IBMPC_SYSTEM)
    if (Graphic_Chars_Mode == 0)

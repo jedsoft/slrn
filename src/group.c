@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -776,15 +776,30 @@ static void toggle_group_formats (void)
 
 int slrn_group_search (char *str, int dir) /*{{{*/
 {
+#if SLANG_VERSION < 20000
    SLsearch_Type st;
+#else
+   SLsearch_Type *st = NULL;
+   unsigned int flags;
+#endif
    Slrn_Group_Type *g;
    int found = 0;
    
    g = Slrn_Group_Current_Group;
    if (g == NULL) return 0;
    
+#if SLANG_VERSION < 20000
    SLsearch_init (str, 1, 0, &st);
-   
+#else
+   flags = SLSEARCH_CASELESS;
+   if (Slrn_UTF8_Mode)
+     flags |= SLSEARCH_UTF8;
+
+   st = SLsearch_new ((SLuchar_Type *) str, flags);
+   if (st == NULL)
+     return 0;
+#endif
+
    do
      {
 	if (dir > 0)
@@ -801,6 +816,7 @@ int slrn_group_search (char *str, int dir) /*{{{*/
 	
 	if ((g->flags & GROUP_HIDDEN) == 0)
 	  {
+#if SLANG_VERSION < 20000
 	     if ((NULL != SLsearch ((unsigned char *) g->group_name,
 				    (unsigned char *) g->group_name + strlen (g->group_name),
 				   &st))
@@ -812,10 +828,25 @@ int slrn_group_search (char *str, int dir) /*{{{*/
 		  found = 1;
 		  break;
 	       }
+#else
+	     if ((NULL != SLsearch_forward (st, (unsigned char *) g->group_name,
+					   (unsigned char *) g->group_name + strlen (g->group_name)))
+		 || ((NULL != g->descript)
+		     && (NULL != SLsearch_forward (st, (unsigned char *) g->descript,
+						  (unsigned char *) g->descript + strlen (g->descript)))))
+	       {
+		  found = 1;
+		  break;
+	       }
+#endif
 	  }
      }
    while (g != Slrn_Group_Current_Group);
    
+#if SLANG_VERSION >= 20000
+   SLsearch_delete (st);
+#endif
+
    Slrn_Group_Current_Group = g;
    find_line_num ();
    return found;
@@ -936,17 +967,17 @@ void slrn_select_next_group (void) /*{{{*/
    if (Slrn_Group_Current_Group == NULL) 
      return;
    
-   while ((SLang_Error == 0) && (1 == slrn_group_down_n (1)))
+   while ((SLang_get_error () == 0) && (1 == slrn_group_down_n (1)))
      {
 	if (Slrn_Group_Current_Group->unread == 0) 
 	  continue;
 	
 	if (0 == slrn_group_select_group ())
 	  break;
-	else if (SLang_Error == INTRINSIC_ERROR)
+	else if (SLang_get_error () == INTRINSIC_ERROR)
 	  /* all articles killed by scorefile, so proceed */
 	  {
-	     SLang_Error = 0;
+	     SLang_set_error (0);
 	     slrn_clear_message ();
 	  }
      }
@@ -958,7 +989,7 @@ void slrn_select_prev_group (void) /*{{{*/
    if (Slrn_Group_Current_Group == NULL)
      return;
 
-   while ((SLang_Error == 0) && (1 == slrn_group_up_n (1)))
+   while ((SLang_get_error () == 0) && (1 == slrn_group_up_n (1)))
      {
        if (Slrn_Group_Current_Group->unread == 0)
          continue;
@@ -1410,6 +1441,9 @@ static void subscribe (void) /*{{{*/
      }
    find_line_num ();
    Slrn_Full_Screen_Update = 1;
+#if SLANG_VERSION >= 20000
+   SLregexp_free (re);
+#endif
 }
 
 /*}}}*/
@@ -1479,6 +1513,9 @@ static void unsubscribe (void) /*{{{*/
      }
    find_line_num ();
    Slrn_Full_Screen_Update = 1;
+#if SLANG_VERSION >= 20000
+   SLregexp_free (re);
+#endif
 }
 
 /*}}}*/
@@ -1570,6 +1607,9 @@ static void toggle_list_all_groups1 (int hide_flag) /*{{{*/
 	       }
 	     g = g->next;
 	  }
+#if SLANG_VERSION >= 20000
+	SLregexp_free (re);
+#endif
      }
    
    g = Slrn_Group_Current_Group;
@@ -1695,7 +1735,7 @@ void slrn_post_cmd (void) /*{{{*/
 
 #if SLRN_HAS_SLANG
    slrn_run_hooks (HOOK_POST, 0);
-   if (SLang_Error)
+   if (SLang_get_error ())
      return;
 #endif
 
@@ -2062,7 +2102,7 @@ void slrn_init_group_mode (void) /*{{{*/
 #if USE_TEST_FUNCTION
    SLkm_define_key  ("y", (FVOID_STAR) test_function, Slrn_Group_Keymap);
 #endif
-   if (SLang_Error) slrn_exit_error (err);
+   if (SLang_get_error ()) slrn_exit_error (err);
 }
 
 /*}}}*/
@@ -2605,7 +2645,8 @@ static int read_and_parse_newsrc_file (void)
 	if ((p == pmax) || (p == vline))
 	  continue;
      
-	vline[vlen-1] = 0;	       /* kill \n and NULL terminate */
+	if (vline[vlen-1] == '\n')
+	  vline[vlen-1] = 0;
 
 	if (-1 == add_group (vline, (unsigned int) (p - vline),
 			     ((ch == '!') ? GROUP_UNSUBSCRIBED : 0), 0, 0))

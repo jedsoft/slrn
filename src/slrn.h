@@ -27,6 +27,12 @@ extern int Slrn_TT_Initialized;
 extern int Slrn_Use_Flow_Control;
 extern int Slrn_Simulate_Graphic_Chars;
 extern int Slrn_Saw_Warning;
+#if SLANG_VERSION >= 20000
+extern int Slrn_UTF8_Mode;
+# ifndef SLRL_DISPLAY_BUFFER_SIZE
+#  define SLRL_DISPLAY_BUFFER_SIZE 256
+# endif
+#endif
 
 extern int slrn_getkey (void);
 extern void slrn_quit (int);
@@ -91,12 +97,15 @@ extern FILE *Slrn_Debug_Fp;
 extern int slrn_sys_system (char *);
 
 extern void slrn_init_graphic_chars (void);
-extern SLsmg_Char_Type Graphic_LTee_Char;
-extern SLsmg_Char_Type Graphic_UTee_Char;
-extern SLsmg_Char_Type Graphic_LLCorn_Char;
-extern SLsmg_Char_Type Graphic_HLine_Char;
-extern SLsmg_Char_Type Graphic_VLine_Char;
-extern SLsmg_Char_Type Graphic_ULCorn_Char;
+#if SLANG_VERSION < 20000
+typedef char SLwchar_Type;
+#endif
+extern SLwchar_Type Graphic_LTee_Char;
+extern SLwchar_Type Graphic_UTee_Char;
+extern SLwchar_Type Graphic_LLCorn_Char;
+extern SLwchar_Type Graphic_HLine_Char;
+extern SLwchar_Type Graphic_VLine_Char;
+extern SLwchar_Type Graphic_ULCorn_Char;
 extern int Graphic_Chars_Mode;
 #define ALT_CHAR_SET_MODE	1
 #define SIMULATED_CHAR_SET_MODE	2

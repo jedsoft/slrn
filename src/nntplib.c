@@ -209,6 +209,7 @@ static int _nntp_try_parse_timeout (char *str)
    /* Some servers now have NLS, so this might fail.
     * I'm trying to handle that case in nntp_server_cmd.
     */
+#if SLANG_VERSION < 20000
    static SLRegexp_Type re;
    unsigned char compiled_pattern_buf[256];
 
@@ -220,8 +221,19 @@ static int _nntp_try_parse_timeout (char *str)
    (void) SLang_regexp_compile (&re);
    if (NULL == SLang_regexp_match ((unsigned char *) str, strlen (str), &re))
      return -1;
-
    return 0;
+#else
+   int status = -1;
+   SLRegexp_Type *re = SLregexp_compile ("time.*out", SLREGEXP_CASELESS);
+   if (re != NULL)
+     {
+	if (NULL != SLregexp_match (re, str, strlen (str)))
+	  status = 0;
+	
+	SLregexp_free (re);
+     }
+   return status;
+#endif
 }
 
 int nntp_get_server_response (NNTP_Type *s)

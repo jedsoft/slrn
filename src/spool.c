@@ -158,6 +158,10 @@ static int spool_fclose_local (void)
 
    Spool_fhead=0;
    Spool_fFakingActive=0;
+#if SLANG_VERSION >= 20000
+   if (Spool_Output_Regexp != NULL)
+     SLregexp_free (Spool_Output_Regexp);
+#endif
    Spool_Output_Regexp = NULL;
    Spool_Ignore_Comments=0;
 
@@ -1424,6 +1428,7 @@ static int spool_list_newsgroups (void)
 
 /* Having an independant buffer for the spool code might spare us mysterious
  * bugs, so I'm not simply using slrn_compile_regexp_pattern */
+#if SLANG_VERSION < 20000
 static SLRegexp_Type *spool_compile_regexp_pattern (char *pat)
 {
    static unsigned char compiled_pattern_buf [512];
@@ -1441,13 +1446,23 @@ static SLRegexp_Type *spool_compile_regexp_pattern (char *pat)
      }
    return &re;
 }
+#endif
 
 static int spool_list_active (char *pat)
 {
    spool_fclose_local();
    Spool_fh_local=fopen (Slrn_Active_File,"r");
    if (pat != NULL)
-     Spool_Output_Regexp=spool_compile_regexp_pattern (slrn_fix_regexp (pat));
+     {
+#if SLANG_VERSION < 20000
+	Spool_Output_Regexp=spool_compile_regexp_pattern (slrn_fix_regexp (pat));
+#else
+	if (Spool_Output_Regexp != NULL)
+	  SLregexp_free (Spool_Output_Regexp);
+	Spool_Output_Regexp = SLregexp_compile (slrn_fix_regexp(pat),0);
+#endif
+     }
+	
    if (!Spool_fh_local)
      {
 	spool_fake_active(Slrn_Spool_Root);
@@ -1757,7 +1772,8 @@ Slrn_Range_Type *slrn_spool_get_no_body_ranges (char *group)
    
    if (NULL != (vline = vgets (vp, &vlen)))
      {
-	vline[vlen] = 0; /* make sure line is NULL terminated */
+	if (vline[vlen-1] == '\n')
+	  vline[vlen-1] = 0; /* make sure line is NULL terminated */
 	retval = slrn_ranges_from_newsrc_line (vline);
      }
    
@@ -1787,8 +1803,9 @@ Slrn_Range_Type *slrn_spool_get_requested_ranges (char *group) /*{{{*/
 	if ((p == pmax) || (p == vline) ||
 	    (strncmp(vline, group, (p-vline))))
 	  continue;
-     
-	vline[vlen-1] = 0;	       /* kill \n and NULL terminate */
+
+	if (vline[vlen-1] == '\n')
+	  vline[vlen-1] = 0;
 	
 	retval = slrn_ranges_from_newsrc_line (p+1);
 	break;

@@ -130,13 +130,20 @@ static unsigned char *is_matching_line (unsigned char *b, SLRegexp_Type **r) /*{
    while (*r != NULL)
      {
 	SLRegexp_Type *re;
+	unsigned int match_len;
 
 	re = *r++;
+#if SLANG_VERSION < 20000
 	if ((re->min_length > len) 
 	    || (b != SLang_regexp_match (b, len, re)))
 	  continue;
-	
-	return b + re->end_matches[0];
+	match_len = re->end_matches[0];
+#else
+	if (b != (unsigned char *) SLregexp_match (re, (char *) b, len))
+	  continue;
+	(void) SLregexp_nth_match (re, 0, NULL, &match_len);
+#endif
+	return b + match_len;
      }
    return NULL;
 }
@@ -232,25 +239,37 @@ void slrn_art_mark_spoilers (Slrn_Article_Type *a) /*{{{*/
 static int try_supercite (Slrn_Article_Line_Type *l) /*{{{*/
 {
    Slrn_Article_Line_Type *last, *lsave;
+#if SLANG_VERSION < 20000
    static unsigned char compiled_pattern_buf[256];
-   static SLRegexp_Type re;
+   static SLRegexp_Type re_buf;
+   SLRegexp_Type *re;
+#else
+   static SLRegexp_Type *re = NULL;
+#endif
    unsigned char *b;
    int count;
    char name[32];
    unsigned int len;
+   unsigned int ofs;
    int ret;
 
-   re.pat = (unsigned char *) Super_Cite_Regexp;
-   re.buf = compiled_pattern_buf;
-   re.case_sensitive = 1;
-   re.buf_len = sizeof (compiled_pattern_buf);
+#if SLANG_VERSION < 20000
+   re = &re_buf;
+   re->pat = (unsigned char *) Super_Cite_Regexp;
+   re->buf = compiled_pattern_buf;
+   re->case_sensitive = 1;
+   re->buf_len = sizeof (compiled_pattern_buf);
+   if ((*compiled_pattern_buf == 0) && SLang_regexp_compile (re))
+     return -1;
+#else
+   if ((re == NULL)
+       && (NULL == (re = SLregexp_compile (Super_Cite_Regexp, 0))))
+     return -1;
+#endif
    
    /* skip header --- I should look for Xnewsreader: gnus */
    while ((l != NULL) && (*l->buf != 0)) l = l->next;
-   
-   if ((*compiled_pattern_buf == 0) && SLang_regexp_compile (&re))
-     return -1;
-   
+
    /* look at the first 15 lines on first attempt.
     * After that, scan the whole buffer looking for more citations */
    count = 15;
@@ -262,7 +281,7 @@ static int try_supercite (Slrn_Article_Line_Type *l) /*{{{*/
 	  {
 	     if ((l->flags & QUOTE_LINE) == 0)
 	       {
-		  if (NULL != slrn_regexp_match (&re, l->buf))
+		  if (NULL != slrn_regexp_match (re, l->buf))
 		    {
 		       l->flags |= QUOTE_LINE;
 		       break;
@@ -275,10 +294,16 @@ static int try_supercite (Slrn_Article_Line_Type *l) /*{{{*/
 	if ((l == NULL) || (count == 0)) return ret;
 	
 	/* Now find out what is used for citing. */
-	b = (unsigned char *) l->buf + re.beg_matches[1];
-	len = re.end_matches[1];
+#if SLANG_VERSION < 20000
+	ofs = re->beg_matches[1];
+	len = re->end_matches[1];
+#else
+	if (-1 == SLregexp_nth_match (re, 1, &ofs, &len))
+	  return ret;
+#endif
+	b = (unsigned char *) l->buf + ofs;
 	if (len > sizeof (name) - 2) return ret;
-	
+
 	ret = 0;
 	strncpy (name, (char *) b, len); name[len] = 0;
 	
@@ -521,7 +546,11 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 	     else
 	       {
 		  len += 2;
+#if SLANG_VERSION < 20000
 		  if (ch & 0x80) len++;
+#else
+		  if (ch & 0x80) len += 2;
+#endif
 	       }
 
 	     if (len > (unsigned int) SLtt_Screen_Cols)

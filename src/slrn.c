@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -111,6 +111,10 @@
 
 /*{{{ Global Variables */
 
+#if SLANG_VERSION >= 20000
+int Slrn_UTF8_Mode = 0;
+#endif
+
 int Slrn_TT_Initialized = 0;
 
 /* If -1, force mouse.  If 1 the mouse will be used on in XTerm.  If 0, 
@@ -136,12 +140,12 @@ int Slrn_Default_Post_Obj = SLRN_DEFAULT_POST_OBJ;
 FILE *Slrn_Debug_Fp = NULL;
 
 /* You need to call slrn_init_graphic_chars before using these */
-SLsmg_Char_Type Graphic_LTee_Char;
-SLsmg_Char_Type Graphic_UTee_Char;
-SLsmg_Char_Type Graphic_LLCorn_Char;
-SLsmg_Char_Type Graphic_HLine_Char;
-SLsmg_Char_Type Graphic_VLine_Char;
-SLsmg_Char_Type Graphic_ULCorn_Char;
+SLwchar_Type Graphic_LTee_Char;
+SLwchar_Type Graphic_UTee_Char;
+SLwchar_Type Graphic_LLCorn_Char;
+SLwchar_Type Graphic_HLine_Char;
+SLwchar_Type Graphic_VLine_Char;
+SLwchar_Type Graphic_ULCorn_Char;
 
 int Graphic_Chars_Mode = ALT_CHAR_SET_MODE;
 
@@ -1010,6 +1014,9 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
    int dsc_flag = 0;
    int use_active = 0;
    int wait_for_key = 0;
+#if SLANG_VERSION >= 20000
+   int want_utf8 = 1;
+#endif
    FILE *fp;
    char file [SLRN_MAX_PATH_LEN];
    char *init_file = NULL;
@@ -1138,6 +1145,16 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
    
    if (Slrn_Batch == 0)
      {
+#if SLANG_VERSION >= 20000
+	if (want_utf8)
+	  {
+	     Slrn_UTF8_Mode = SLutf8_enable (-1);
+	     if (Slrn_UTF8_Mode == 0)
+	       SLsmg_utf8_enable (1);
+	     Slrn_UTF8_Mode = 1;
+	  }
+#endif
+	
 	SLtt_get_terminfo ();
 	if (use_color == 1) SLtt_Use_Ansi_Colors = 1;
 	else if (use_color == -1) SLtt_Use_Ansi_Colors = 0;
@@ -1505,7 +1522,7 @@ static void run_winch_functions (int old_r, int old_c)
      }
 
 #if SLRN_HAS_SLANG
-   if (SLang_Error == 0)
+   if (SLang_get_error() == 0)
      slrn_run_hooks (HOOK_RESIZE_SCREEN, 0);
 #endif
 }
@@ -1628,14 +1645,15 @@ void slrn_do_keymap_key (SLKeyMap_List_Type *map) /*{{{*/
    key = SLang_do_key (map, slrn_getkey);
    Suspend_Sigtstp_Suspension = 0;
 
-   if (Slrn_Message_Present || SLang_Error) 
+   if (Slrn_Message_Present || SLang_get_error()) 
      {
 #if SLRN_HAS_SLANG
-	if (SLang_Error) SLang_restart (0);
+	if (SLang_get_error()) SLang_restart (0);
 #endif
 	slrn_clear_message ();
      }
-   SLang_Error = SLKeyBoard_Quit = 0;
+   SLKeyBoard_Quit = 0;
+   SLang_set_error (0);
    
    if ((key == NULL) || (key->type == 0))
      {
@@ -1754,7 +1772,7 @@ int main (int argc, char **argv) /*{{{*/
 	
 	(void) slrn_handle_interrupts ();
 
-	if (SLang_Error || !SLang_input_pending(0))
+	if (SLang_get_error() || !SLang_input_pending(0))
 	  {
 	     slrn_update_screen ();
 	  }

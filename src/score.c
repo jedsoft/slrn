@@ -116,8 +116,12 @@ PScore_Type;
 
 typedef struct
 {
+#if SLANG_VERSION < 20000
    SLRegexp_Type regexp;
    unsigned char buf[512];	       /* for compiled pattern */
+#else
+   SLRegexp_Type *regexp;
+#endif
 }
 Our_SLRegexp_Type;
 
@@ -132,7 +136,11 @@ typedef struct Score_Regexp_Type
      {
 	int ival;		       /* used by certain headers */
 	Our_SLRegexp_Type re;
+#if SLANG_VERSION < 20000
 	SLsearch_Type se;
+#else
+	SLsearch_Type *se;
+#endif
 	struct Score_Regexp_Type *srt;
      }
    search;
@@ -153,7 +161,11 @@ Score_Type;
 
 typedef struct Group_Score_Name_Type
 {
+#if SLANG_VERSION < 20000
    SLRegexp_Type group_regexp;
+#else
+   SLRegexp_Type *group_regexp;
+#endif
    char name[MAX_GROUP_NAME_LEN];      /* group name or pattern */
    unsigned char buf[MAX_GROUP_REGEXP_SIZE];/* for compiled pattern */
    struct Group_Score_Name_Type *next;
@@ -327,7 +339,7 @@ static int match_srt (Slrn_Header_Type *h, Score_Regexp_Type *srt,
           }
 
         len = strlen (s);
-
+#if SLANG_VERSION < 20000
         if (srt->do_osearch)
           {
              SLsearch_Type *se = &srt->search.se;
@@ -350,12 +362,17 @@ static int match_srt (Slrn_Header_Type *h, Score_Regexp_Type *srt,
                }
           }
         else
+#endif
           {
              SLRegexp_Type *re;
-
+#if SLANG_VERSION < 20000
              re = &srt->search.re.regexp;
              if ((len < re->min_length)
                  || (NULL == SLang_regexp_match ((unsigned char *)s, len, re)))
+#else
+	     re = srt->search.re.regexp;
+	     if (NULL == SLregexp_match (re, s, len))
+#endif
                {
                   if (srt->not_flag == 0)
                     {
@@ -463,8 +480,6 @@ int slrn_score_header (Slrn_Header_Type *h, char *newsgroup,
 static int compile_psrt (PScore_Regexp_Type *psrt, Score_Regexp_Type *srt,
 			 int *generic)
 {
-   SLRegexp_Type *re;
-
    while (psrt != NULL)
      {
         unsigned int flags = psrt->flags;
@@ -497,23 +512,28 @@ static int compile_psrt (PScore_Regexp_Type *psrt, Score_Regexp_Type *srt,
                }
              else
                {
-                  re = &srt->search.re.regexp;
+#if SLANG_VERSION < 20000
+		  SLRegexp_Type *re = &srt->search.re.regexp;
                   re->pat = psrt->ireg.regexp_str;
                   re->buf = srt->search.re.buf;
                   re->buf_len = sizeof (srt->search.re.buf);
                   re->case_sensitive = 0;
-
-                  if (0 != SLang_regexp_compile(re))
+		  if (0 != SLang_regexp_compile(re))
                     {
                        return -1;
                     }
-
+#else
+		  if (NULL == (srt->search.re.regexp = SLregexp_compile ((char *) psrt->ireg.regexp_str, SLREGEXP_CASELESS)))
+		    return -1;
+#endif
+#if SLANG_VERSION < 20000
                   /* If an ordinary search is ok, use it. */
                   if (re->osearch)
                     {
                        srt->do_osearch = 1;
                        SLsearch_init ((char *) psrt->ireg.regexp_str, 1, 0, &srt->search.se);
                     }
+#endif
                }
           }
 		
@@ -558,14 +578,53 @@ static int chain_group_regexp (PScore_Type *pst, int *generic)
 
 char *Slrn_Scorefile_Open = NULL;
 
+static void free_srt (Score_Regexp_Type *);
+static void free_srt_internal (Score_Regexp_Type *srt)
+{
+   if (srt == NULL)
+     return;
+
+   switch (srt->header_type)
+     {
+      case SCORE_LINES:
+      case SCORE_BYTES:
+      case SCORE_HAS_BODY:
+      case SCORE_AGE:
+	/* Use integer or boolean comparisons */
+	break;
+
+      case SCORE_SUB_AND:
+      case SCORE_SUB_OR:
+	free_srt (srt->search.srt);
+	break;
+	     
+      case SCORE_SUBJECT:
+      case SCORE_FROM:
+      case SCORE_DATE:
+      case SCORE_MESSAGE_ID:
+      case SCORE_XREF:
+      case SCORE_REFERENCES:
+      case SCORE_NEWSGROUP:
+      case SCORE_GENERIC:
+#if SLANG_VERSION >= 20000
+	if (srt->do_osearch)
+	  {
+	     if (srt->search.se != NULL)
+	       SLsearch_delete (srt->search.se);
+	  }
+	else if (srt->search.re.regexp != NULL)
+	  SLregexp_free (srt->search.re.regexp);
+#endif
+	break;
+     }
+}
+
 static void free_srt (Score_Regexp_Type *srt)
 {
    while (srt != NULL)
      {
 	Score_Regexp_Type *srt_next = srt->next;
-	if ((srt->header_type == SCORE_SUB_AND) || 
-	    (srt->header_type == SCORE_SUB_OR))
-	  free_srt (srt->search.srt);
+	free_srt_internal (srt);
 	SLFREE (srt);
 	srt = srt_next;
      }
@@ -580,9 +639,8 @@ static void free_group_chain (void)
 	Score_Type *next = Score_Root->next;
 	srt = &Score_Root->regexp_list;
 	/* first not malloced; free subscores only: */
-	if ((srt->header_type == SCORE_SUB_AND) ||
-	    (srt->header_type == SCORE_SUB_OR))
-	  free_srt (srt->search.srt);
+	free_srt_internal (srt);
+
 	free_srt (srt->next);
 	SLFREE (Score_Root);
 	Score_Root = next;
@@ -625,10 +683,14 @@ int slrn_open_score (char *group_name)
 	match = 0;
 	while ((gsnt != NULL) && (match == 0))
 	  {
+#if SLANG_VERSION < 20000
 	     SLRegexp_Type *re = &gsnt->group_regexp;
 
 	     match = ((re->min_length <= n)
 		      && (NULL != SLang_regexp_match ((unsigned char *) group_name, n, re)));
+#else
+	     match = (NULL != SLregexp_match (gsnt->group_regexp, group_name, n));
+#endif
 	     gsnt = gsnt->next;
 	  }
 
@@ -725,8 +787,9 @@ static int compile_group_names (char *group, Group_Score_Type *gst)
    comma = group;
    while (comma != NULL)
      {
+#if SLANG_VERSION < 20000
 	SLRegexp_Type *re;
-	
+#endif
 	group = slrn_skip_whitespace (group);
 	
 	comma = slrn_strchr ((char *) group, ',');
@@ -754,6 +817,7 @@ static int compile_group_names (char *group, Group_Score_Type *gst)
 	strncpy (gsnt->name, group, MAX_GROUP_NAME_LEN - 1);
 	/* Note: because of the memset, this string is null terminated. */
    
+#if SLANG_VERSION < 20000
 	re = &gsnt->group_regexp;
 	re->pat = (unsigned char *) slrn_fix_regexp ((char *)group);
 	re->buf = gsnt->buf;
@@ -763,7 +827,10 @@ static int compile_group_names (char *group, Group_Score_Type *gst)
 	  {
 	     return -1;
 	  }
-	
+#else
+	if (NULL == (gsnt->group_regexp = SLregexp_compile (slrn_fix_regexp ((char *)group), SLREGEXP_CASELESS)))
+	  return -1;
+#endif
 	if (comma != NULL)
 	  {
 	     Group_Score_Name_Type *gsnt1;
@@ -870,6 +937,10 @@ static void free_group_scores (void)
 	while (gsnt != NULL)
 	  {
 	     Group_Score_Name_Type *next = gsnt->next;
+#if SLANG_VERSION >= 20000
+	     if (gsnt->group_regexp != NULL) 
+	       SLregexp_free (gsnt->group_regexp);
+#endif
 	     SLFREE (gsnt);
 	     gsnt = next;
 	  }
@@ -936,7 +1007,11 @@ typedef struct
    int score_has_expired;
    unsigned int pscore_flags;
    PScore_Type *pst;
+#if SLANG_VERSION < 20000
    SLPreprocess_Type pt;
+#else
+   SLprep_Type *pt;
+#endif
 }
 Score_Context_Type;
 
@@ -1004,7 +1079,11 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 
 	psrt = NULL;
 	
+#if SLANG_VERSION < 20000
 	if (0 == SLprep_line_ok (line, &c->pt))
+#else
+	if (0 == SLprep_line_ok (line, c->pt))
+#endif
 	  continue;
 
 	lp = (unsigned char *) slrn_skip_whitespace (line);
@@ -1328,9 +1407,18 @@ int slrn_read_score_file (char *file)
    sc.group[0] = '*';
    sc.group[1] = 0;
 
-   (void) SLprep_open_prep (&sc.pt);
+#if SLANG_VERSION < 20000
+   if (-1 == SLprep_open_prep (&sc.pt))
+#else
+   if (NULL == (sc.pt = SLprep_new ()))
+#endif
+     return -1;
    status = read_score_file_internal (file, &sc);
+#if SLANG_VERSION < 20000
    SLprep_close_prep (&sc.pt);
+#else
+   SLprep_delete (sc.pt);
+#endif
    
    if (status == -1)
      Slrn_Apply_Score = 0;

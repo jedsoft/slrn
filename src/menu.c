@@ -791,7 +791,7 @@ static int init_select_list_mode (int select_list)
 	adapt_shortcuts ();
      }
    
-   if (SLang_Error)
+   if (SLang_get_error ())
      return -1;
    
    Select_List_Mode_Cap.keymap = *kmap;
