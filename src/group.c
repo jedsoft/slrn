@@ -1181,6 +1181,10 @@ static void set_current_group (void) /*{{{*/
      }
    Slrn_Group_Current_Group = g;
    
+   /* When there are less than SCREEN_HEIGHT-2 groups, they should all get
+    * displayed; scroll to the top of the buffer to ensure this. */
+   while (SLscroll_prev_n (&Group_Window, 1000));
+   (void) SLscroll_find_top (&Group_Window);
    find_line_num ();
    
    Slrn_Full_Screen_Update = 1;

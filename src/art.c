@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003  Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
+#include <errno.h>
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
@@ -2697,7 +2697,10 @@ static void reply (char *from) /*{{{*/
    if ((from_t == NULL) 
        || (NULL == (f = slrn_strchr (from_t, '@')))
        || (f == from_t)
-       || (0 == slrn_is_fqdn (f + 1)))
+       || (0 == slrn_is_fqdn (f + 1))
+       || ((strlen(f) > 8) &&
+	   !(slrn_case_strcmp((unsigned char*)".invalid",
+			      (unsigned char*)f+strlen(f)-8))))
      {
 	if (0 == slrn_get_yesno (1, _("%s appears invalid.  Continue anyway"),
 				 ((from_t == NULL) ? _("Email address") : from_t)))
@@ -4069,10 +4072,26 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	unsigned int defdir_len;
 	if (defdir == NULL) defdir = "News";
 	
-	defdir_len = strlen (defdir);
+	slrn_make_home_dirname (defdir, file, sizeof (file));
+	defdir_len = strlen (file);
+	
+	switch (slrn_file_exists (file))
+	  {
+	   case 0:
+	     if (slrn_get_yesno (1, _("Do you want to create directory %s"), file) &&
+		 (-1 == slrn_mkdir (file)))
+	       {
+		  slrn_error_now (2, _("Unable to create directory. (errno = %d)"), errno);
+		  slrn_clear_message ();
+	       }
+	     break;
+	   case 1:
+	     slrn_error_now (2, _("Warning: %s is a regular file."), file);
+	     slrn_clear_message ();
+	  }
 	
 #ifdef VMS
-	slrn_snprintf (name, sizeof (name) - 5, "%s/%s", defdir,
+	slrn_snprintf (name, sizeof (name) - 5, "%s/%s", file,
 		       Slrn_Current_Group_Name);
 	p = name + defdir_len + 1;
 	while (*p != 0)
@@ -4090,10 +4109,10 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 # endif
 	if ((filename == Slrn_Current_Group_Name) ||
 	    (0 == slrn_is_absolute_path(filename)))
-	  slrn_snprintf (name, sizeof (name), "%s/%s", defdir,
+	  slrn_snprintf (name, sizeof (name), "%s/%s", file,
 			 filename);
 	else
-	  slrn_strncpy (file, filename, sizeof (file));
+	  slrn_strncpy (name, filename, sizeof (name));
 #endif
 	
 #if !defined(VMS) && !defined(IBMPC_SYSTEM)

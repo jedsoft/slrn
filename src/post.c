@@ -1578,17 +1578,20 @@ static int get_postpone_dir (char *dirbuf, size_t n) /*{{{*/
 	     if (-1 == slrn_mkdir (dirbuf))
 	       {
 		  slrn_error_now (2, _("Unable to create directory. (errno = %d)"), errno);
+		  slrn_clear_message ();
 		  return -1;
 	       }
 	  }
 	else
 	  {
 	     slrn_error_now (1, _("Aborted on user request."));
+	     slrn_clear_message ();
 	     return -1;
 	  }
 	break;
       case 1:
 	slrn_error_now (2, _("postpone_directory points to a regular file (not a directory)"));
+	slrn_clear_message ();
 	return -1;
      }
    

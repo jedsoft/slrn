@@ -237,6 +237,7 @@ define tin_art_catchup_quit ()
    % Provide visual feedback that catchup worked
    update ();
    art_quit ();
+   group_down_n (1);
 }
 definekey ("tin_art_catchup_quit", "c", "article");
 
