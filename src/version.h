@@ -21,9 +21,9 @@
 
 /* Keep this separate from autoconf's settings for now */
 #define MY_VERSION "0.9.7.4"
-#define SLRN_VERSION_NUMBER 90704
-/* #define PATCH_LEVEL "1" */
-#define SLRN_RELEASE_DATE "2002-03-13"
+#define SLRN_VERSION_NUMBER 90705
+#define PATCH_LEVEL "1"
+#define SLRN_RELEASE_DATE "2002-08-30"
 
 #ifdef PATCH_LEVEL
 # define SLRN_VERSION (MY_VERSION "pl" PATCH_LEVEL)

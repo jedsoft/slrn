@@ -3,7 +3,6 @@ Changes since 0.9.7.4
 -1. Changes when building on Un*x:
    configure script accepts new options --with-server-name and
    --with-server-file (Matthias Friedrich).
-
 0. Bug fixes include:
   * Setting new_subject_breaks_threads to 2 has an effect again.
   * Some translations (fr/ko/nl/ru) were broken and could cause segfaults.
@@ -15,8 +14,7 @@ Changes since 0.9.7.4
   * Follow convention to use "Message-ID" instead of "Message-Id".
   * Use "X-Posted-To" instead of "Posted-To" (did not make it into RFC2822)
   * Also attempt MIME-decoding if no "Mime-Version:" header line is found.
-
-   Changes to the user interface:
+1. Changes to the user interface:
   * view_scores uncollapses threads (suggested by Jurriaan W Kalkman) and
     can optionally be left by pressing 'q'.
   * By default, articles are now saved to folders with lower case names;
@@ -30,50 +28,39 @@ Changes since 0.9.7.4
     can be configured with the new variable "followupto_string".
   * toggle_quotes now tries to find a non-blank line to leave on screen.
   * Defaults for "followup_string" and "followup_date_format" changed.
-  
-   slrnpull no longer completely rewrites the overview files when expiring
+2. slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still
    need to rebuild the overview, you can use the new --rebuild option (based
    on a patch by Jurriaan W Kalkman).
-
-   If your terminal supports it (and you are not using Win32 or OS/2), you
+3. If your terminal supports it (and you are not using Win32 or OS/2), you
    can now use colors and attributes at the same time. Just append them to
    the color lines in your config file, e.g.:
      color underlinetext	"default"	"default"	"underline"
-
-   Set use_recommended_msg_id to 1 in your config file if you want slrn to
+4. Set use_recommended_msg_id to 1 in your config file if you want slrn to
    make use of server-proposed Message-IDs; the IDs will get saved along
    with the article to the save_posts folder. (patch by Felix Schueller)
-
-   Added intrinsic functions has_parent, set_color_attr (see doc/slrnfuns.txt).
-
-   locate_article ignores leading "news:" (Jarek Baczynski)
-   
-   When reading in spool mode with spool_check_up_on_nov set, slrn now finds
+5. Added intrinsic functions has_parent, set_color_attr (see doc/slrnfuns.txt).
+6. locate_article ignores leading "news:" (Jarek Baczynski)
+7. When reading in spool mode with spool_check_up_on_nov set, slrn now finds
    out the number of bytes of each article, even if it is not included in
    the news overview file (based on a patch by Jurriaan W Kalkman).
-
-   Support Cancel-Locks using the canlock library (--with-canlock); you also
+8. Support Cancel-Locks using the canlock library (--with-canlock); you also
    need to set the new variable "cansecret_file" to a file containing your
    Cancel-Lock password to enable this (based on a patch by Andreas Barth).
-   
-   Support GNU TLS via its new OpenSSL compatibility layer (--with-gnutls).
+9. Support GNU TLS via its new OpenSSL compatibility layer (--with-gnutls).
    Please note that GNU TLS still is under heavy development and that slrn's
    support for it is still untested (based on a patch by Joey Hess.)
-
-   New command-line option "-w0" that waits on startup, but only if a
-   warning or error is displayed.
-
-   Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
-
-   Verbatim text can be hidden using toggle_verbatim_text (default binding
-   '{') or hide_verbatim_text in the config file. (Arek Sochala)
-   
-   The "BEGIN PGP SIGNED ARTICLE" line is displayed using the "pgpsignature"
-   color and stripped on followups. (Emmanuele Bassi)
-   
-   Support Turkish characters on Win32 - set charset to "ibm857" for this.
-   With help from A. Alper ATICI
+10. New command-line option "-w0" that waits on startup, but only if a
+    warning or error is displayed.
+11. Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
+12. Verbatim text can be hidden using toggle_verbatim_text (default binding
+    '{') or hide_verbatim_text in the config file. (Arek Sochala)
+13. The "BEGIN PGP SIGNED ARTICLE" line is displayed using the "pgpsignature"
+    color and stripped on followups. (Emmanuele Bassi)
+14. Support Turkish characters on Win32 - set charset to "ibm857" for this.
+    With help from A. Alper ATICI
+15. Re-structured the manual and added a chapter about slang's
+    pre-processing facilities. (Matthias Friedrich)
 
 Changes since 0.9.7.3
 

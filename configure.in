@@ -4,7 +4,7 @@ AC_INIT(src/slrn.c)
 AC_CONFIG_AUX_DIR(autoconf)
 
 dnl remember to update src/VMSMAKE.COM and src/version.h !
-AM_INIT_AUTOMAKE(slrn, 0.9.7.4)
+AM_INIT_AUTOMAKE(slrn, 0.9.7.4pl1)
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)

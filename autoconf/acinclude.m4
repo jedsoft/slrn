@@ -317,8 +317,10 @@ AC_SUBST(SLANG_INCLUDE)dnl
 dnl Specify (OpenSSL and ssl) or (GNU TLS and gnutls) as a parameter.
 AC_DEFUN(CF_SSL,
 [
-  SSLLIB=""
-  SSLINC=""
+  if test "$1" = OpenSSL ; then
+    SSLLIB=""
+    SSLINC=""
+  fi
 
   AC_ARG_WITH($2,
     [  --with-$2[=DIR]        For $1 support],
@@ -491,6 +493,8 @@ script to the right directory with the --with-ssl-includes=DIR option.
     else
       AC_DEFINE(SLRN_HAS_GNUTLS_SUPPORT, 1)
     fi
+    AC_SUBST(SSLINC)
+    AC_SUBST(SSLLIB)
   else
     if test "$1" = OpenSSL ; then
       AC_DEFINE(SLRN_HAS_SSL_SUPPORT, 0)
@@ -498,9 +502,6 @@ script to the right directory with the --with-ssl-includes=DIR option.
       AC_DEFINE(SLRN_HAS_GNUTLS_SUPPORT, 0)
     fi
   fi
-  
-    AC_SUBST(SSLINC)
-    AC_SUBST(SSLLIB)dnl
 ])
 
 AC_DEFUN(CF_MTA,
