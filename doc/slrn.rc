@@ -445,6 +445,7 @@ setkey article fast_quit            "Q"		% Quit slrn immediately
 % Moving in the article pager:
 setkey article article_line_down    "\eOD"	% Scroll article down one line
 setkey article article_line_down    "\e[D"
+setkey article article_line_down    "\r"
 setkey article article_line_up      "\e\eOB"	% Scroll article up one line
 setkey article article_line_up      "\e\e[B"
 setkey article article_page_down    " "		% Scroll article down one page

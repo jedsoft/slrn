@@ -7006,10 +7006,9 @@ void slrn_init_article_mode (void) /*{{{*/
    SLkm_define_key  ("\033p", (FVOID_STAR) get_parent_header, Slrn_Article_Keymap);
    SLkm_define_key  ("\033S", (FVOID_STAR) _art_toggle_sort, Slrn_Article_Keymap);
    SLkm_define_key  ("\033t", (FVOID_STAR) toggle_collapse_threads, Slrn_Article_Keymap);
-   SLkm_define_key  ("\r", (FVOID_STAR) art_pagedn, Slrn_Article_Keymap);
+   SLkm_define_key  ("\r", (FVOID_STAR) art_linedn, Slrn_Article_Keymap);
    SLkm_define_key  ("\t", (FVOID_STAR) skip_quoted_text, Slrn_Article_Keymap);
    SLkm_define_key  ("^L", (FVOID_STAR) slrn_redraw, Slrn_Article_Keymap);
-   SLkm_define_key  ("^M", (FVOID_STAR) art_linedn, Slrn_Article_Keymap);
    SLkm_define_key  ("^P", (FVOID_STAR) header_up, Slrn_Article_Keymap);
    SLkm_define_key  ("^R", (FVOID_STAR) slrn_redraw, Slrn_Article_Keymap);
    SLkm_define_key  ("^X^[", (FVOID_STAR) slrn_evaluate_cmd, Slrn_Article_Keymap);

@@ -112,7 +112,7 @@ mode and allow you to manipulate the header window.
 \done
 
 \function{header_next_unread}
-\usage{Intger header_next_unread ()}
+\usage{Integer header_next_unread ()}
 \description
    Goto next unread header.  The function returns one upon success or
    zero upon failure.
@@ -120,7 +120,7 @@ mode and allow you to manipulate the header window.
 \done
 
 \function{header_up}
-\usage{header_up ()}
+\usage{Integer header_up (Integer n)}
 \description
    The function moves the current position up \var{n} headers.  It
    returns the number that was actually moved.

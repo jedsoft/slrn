@@ -118,6 +118,8 @@ int Slrn_TT_Initialized = 0;
  */
 int Slrn_Use_Mouse;
 
+/* We do not (yet) offer a batch mode; however, I consider it an interesting
+ * idea and might implement it after version 1.0.*/
 int Slrn_Batch;
 int Slrn_Suspension_Ok;
 int Slrn_Simulate_Graphic_Chars = 0;

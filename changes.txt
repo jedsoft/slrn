@@ -12,7 +12,8 @@ Changes since 0.9.7.4
   * Also attempt MIME-decoding if no "Mime-Version:" header line is found.
 
    Changes to the user interface:
-  * view_scores uncollapses threads (suggested by Jurriaan W Kalkman).
+  * view_scores uncollapses threads (suggested by Jurriaan W Kalkman) and
+    can optionally be left by pressing 'q'.
   * By default, articles are now saved to folders with lower case names;
     upper case filenames are still used when the file already exists. The
     new hook make_save_filename allows overriding these defaults.

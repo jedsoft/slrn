@@ -22,9 +22,9 @@
 #include "config.h"
 #include "slrnfeat.h"
 
+/*{{{ Include Files */
 #include <stdio.h>
 #include <string.h>
-
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
@@ -60,35 +60,40 @@
 #include "version.h"
 #include "mime.h"
 #include "hooks.h"
+/*}}}*/
 
 #define MAX_LINE_BUFLEN	2048
 
+/*{{{ Public Global Variables */
 char *Slrn_CC_Followup_Message = NULL;
 char *Slrn_CC_Post_Message = NULL;
-char *Slrn_Save_Posts_File;
-char *Slrn_Save_Replies_File;
+char *Slrn_Failed_Post_Filename;
 char *Slrn_Last_Message_Id;
 char *Slrn_Post_Custom_Headers;
-char *Slrn_Failed_Post_Filename;
+char *Slrn_Postpone_Dir;
+char *Slrn_Save_Posts_File;
+char *Slrn_Save_Replies_File;
 char *Slrn_Signoff_String;
 
-int Slrn_Reject_Long_Lines = 2;
-int Slrn_Netiquette_Warnings = 1;
-char *Slrn_Postpone_Dir;
-int Slrn_Generate_Message_Id = 1;
 int Slrn_Generate_Date_Header = 0;
+int Slrn_Generate_Message_Id = 1;
+int Slrn_Netiquette_Warnings = 1;
+int Slrn_Reject_Long_Lines = 2;
+/*}}}*/
 
+/*{{{ Forward Function Declarations */
 static int postpone_file (char *);
+/*}}}*/
 
 #if SLRN_HAS_GEN_MSGID
-static char *slrn_create_message_id (void)
+static char *slrn_create_message_id (void)/*{{{*/
 {
    unsigned long pid, now;
    static unsigned char baseid[64];
    unsigned char *b, *t, tmp[32];
    char *chars32 = "0123456789abcdefghijklmnopqrstuv";
    static unsigned long last_now;
-   
+
    if (Slrn_Generate_Message_Id == 0)
      return NULL;
 
@@ -97,15 +102,15 @@ static char *slrn_create_message_id (void)
 	if ((Slrn_User_Info.posting_host == NULL)
 	    || ((time_t) -1 == time ((time_t *)&now)))
 	  return NULL;
-	
+
 	if (now != last_now) break;
 	slrn_sleep (1);
      }
    last_now = now;
-   
+
    pid = (unsigned long) getpid ();
    now -= 0x28000000;
-   
+
    b = baseid;
    t = tmp;
    while (now)
@@ -119,7 +124,7 @@ static char *slrn_create_message_id (void)
 	*b++ = *t;
      }
    *b++ = '.';
-   
+
    t = tmp;
    while (pid)
      {
@@ -131,7 +136,7 @@ static char *slrn_create_message_id (void)
 	t--;
 	*b++ = *t;
      }
-   
+
    t = (unsigned char *) Slrn_User_Info.username;
    if (t != NULL && *t != 0)
      {
@@ -149,24 +154,27 @@ static char *slrn_create_message_id (void)
 	  *b++ = '_';
      }
    *b = 0;
-   
+
    return (char *) baseid;
 }
-#endif
+#endif /*SLRN_HAS_GEN_MSGID*/
+/*}}}*/
+
+/*{{{ slrn_add_*() */
 
 const char *Weekdays[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 const char *Months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "ERR" };
 
-void slrn_add_date_header (FILE *fp)
+void slrn_add_date_header (FILE *fp) /*{{{*/
 {
    char buf[64];
    time_t now;
    struct tm *t;
    long int tz = 0;
-   
+
    time (&now);
    t = localtime (&now);
-   
+
 #ifdef HAVE_TIMEZONE
    tz = - timezone / 60;
    if (t->tm_isdst == 1) tz += 60;
@@ -175,20 +183,21 @@ void slrn_add_date_header (FILE *fp)
    tz = t->tm_gmtoff / 60;
 # endif
 #endif
-   
+
    slrn_snprintf (buf, sizeof (buf),
 		  "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d\n",
 		  Weekdays[t->tm_wday], t->tm_mday, Months[t->tm_mon],
 		  t->tm_year + 1900, t->tm_hour, t->tm_min, t->tm_sec,
 		  (int) tz / 60, (int) abs (tz) % 60);
-   
+
    if (fp != NULL)
      fputs (buf, fp);
    else if (Slrn_Generate_Date_Header)
      Slrn_Post_Obj->po_puts (buf);
 }
+/*}}}*/
 
-void slrn_add_signature (FILE *fp)
+void slrn_add_signature (FILE *fp) /*{{{*/
 {
    FILE *sfp;
    char file[SLRN_MAX_PATH_LEN];
@@ -199,25 +208,25 @@ void slrn_add_signature (FILE *fp)
         fputs ("\n", fp);
         fputs (Slrn_Signoff_String, fp);
      }
-   
+
    if ((Slrn_User_Info.signature == NULL)
        || (Slrn_User_Info.signature[0] == 0))
      return;
-   
+
    if ((sfp = slrn_open_home_file (Slrn_User_Info.signature, "r", file,
 				   sizeof (file), 0)) != NULL)
      {
- 	if (! Slrn_Signoff_String)
- 	  fputs ("\n", fp);
-	
+	if (! Slrn_Signoff_String)
+	  fputs ("\n", fp);
+
 	/* Apparantly some RFC suggests the -- \n. */
         fputs ("\n-- \n", fp);
-	
+
 	/* If signature file already has -- \n, do not add it. */
 	if ((NULL != fgets (buf, sizeof (buf), sfp))
 	    && (0 != strcmp (buf, "-- \n")))
 	  fputs (buf, fp);
-	  
+
         while (NULL != fgets (buf, sizeof(buf), sfp))
 	  {
 	     fputs (buf, fp);
@@ -225,22 +234,64 @@ void slrn_add_signature (FILE *fp)
         slrn_fclose(sfp);
      }
 }
+/*}}}*/
 
-static int is_empty_header (char *line)
+int slrn_add_custom_headers (FILE *fp, char *headers, int (*write_fun)(char *, FILE *)) /*{{{*/
+{
+   int n;
+   char *s, *s1, ch, last_ch;
+
+   if (headers == NULL) return 0;
+
+   s = slrn_skip_whitespace (headers);
+   if (*s == 0) return 0;
+
+   s1 = s;
+   n = 0;
+   last_ch = 0;
+   while ((ch = *s1) != 0)
+     {
+	if (ch == '\n')
+	  {
+	     n++;
+	     while (s1[1] == '\n') s1++;   /* skip multiple newlines */
+	  }
+	last_ch = ch;
+	s1++;
+     }
+
+   if (write_fun != NULL)
+     (*write_fun)(s, fp);
+   else fputs (s, fp);
+
+   if (last_ch != '\n')
+     {
+	fputc ('\n', fp);
+	n++;
+     }
+
+   return n;
+}
+/*}}}*/
+
+/*}}}*/
+
+static int is_empty_header (char *line) /*{{{*/
 {
    char *b;
-   
+
    if ((*line == ' ') || (*line == '\t')) return 0;
-   
+
    b = slrn_strchr (line, ':');
    if (b == NULL) return 0;
-   
+
    b = slrn_skip_whitespace (b + 1);
    return (*b == 0);
 }
+/*}}}*/
 
 
-static int slrn_cc_file (char *file, char *to, char *msgid)
+static int slrn_cc_file (char *file, char *to, char *msgid)  /*{{{*/
 {
 #if defined(VMS) || !SLRN_HAS_PIPING
    return -1;
@@ -262,7 +313,7 @@ static int slrn_cc_file (char *file, char *to, char *msgid)
 	slrn_error (_("Unable to open %s."));
 	return -1;
      }
-   
+
    /* Look for CC line */
    linenum = 0;
    while ((NULL != fgets (line, sizeof (line) - 1, fp)) && (*line != '\n'))
@@ -276,15 +327,15 @@ static int slrn_cc_file (char *file, char *to, char *msgid)
 	     break;
 	  }
      }
-   
+
    /* At this point, if all has gone well line contains the cc information */
-   
+
    if (cc_line == 0)
      {
 	slrn_fclose (fp);
 	return -1;
      }
-   
+
 #if defined(IBMPC_SYSTEM)
    pp = slrn_open_tmpfile (outfile, sizeof (outfile));
 #else
@@ -295,9 +346,9 @@ static int slrn_cc_file (char *file, char *to, char *msgid)
 	slrn_fclose (fp);
 	return -1;
      }
-   
+
    fputs ("To: ", pp);
-   
+
    /* This line consists of a comma separated list of addresses.  In
     * particular, "poster" will be replaced by 'to'.
     */
@@ -313,11 +364,11 @@ static int slrn_cc_file (char *file, char *to, char *msgid)
 
 	if (nth != 0)
 	  putc (',', pp);
-	
+
 	if ((0 == slrn_case_strcmp ((unsigned char *)b, (unsigned char *)"poster"))
 	    && (to != NULL))
 	  b = to;
-	
+
 	fputs (b, pp);
 	nth++;
      }
@@ -326,12 +377,12 @@ static int slrn_cc_file (char *file, char *to, char *msgid)
    rewind (fp);
 
    linenum = 0;
-   
+
    if (msgid != NULL)
-     fprintf (pp, "Message-ID: <slrn%s@%s>\n", 
+     fprintf (pp, "Message-ID: <slrn%s@%s>\n",
 	      msgid, Slrn_User_Info.posting_host);
-   
-   
+
+
    while ((NULL != fgets (line, sizeof (line) - 1, fp)) && (*line != '\n'))
      {
 	linenum++;
@@ -355,7 +406,7 @@ static int slrn_cc_file (char *file, char *to, char *msgid)
 		    reflen--;
 	       }
 	  }
-	
+
 	/* There is some discussion of this extension to mail headers.  For
 	 * now, assume that this extension will be adopted.
 	 */
@@ -373,23 +424,23 @@ static int slrn_cc_file (char *file, char *to, char *msgid)
 # if SLRN_HAS_MIME
    if (Slrn_Use_Mime & MIME_DISPLAY) slrn_mime_add_headers (pp);
 # endif
-   
+
    fputs ("\n", pp);
-   
+
    if ((Slrn_Current_Header != NULL) && (ref != NULL) &&
        (0 == strncmp ((unsigned char*)ref,
 		      (unsigned char*)Slrn_Current_Header->msgid, reflen)))
      ret = slrn_insert_followup_format (Slrn_CC_Followup_Message, pp);
    else if ((NULL != Slrn_CC_Post_Message) && (*Slrn_CC_Post_Message))
      ret = fputs (Slrn_CC_Post_Message, pp);
-   
+
    if (ret >= 0)
      ret = fputs ("\n", pp);
-   
+
 # if SLRN_HAS_MIME
    if (Slrn_Use_Mime & MIME_DISPLAY) fp = slrn_mime_encode (fp);
 # endif
-   
+
    while (NULL != fgets (line, sizeof (line) - 1, fp))
      {
 	fputs (line, pp);
@@ -403,12 +454,13 @@ static int slrn_cc_file (char *file, char *to, char *msgid)
    slrn_pclose (pp);
 # endif
    return 0;
-#endif				       /* NOT VMS */
+#endif /* NOT VMS */
 }
+/*}}}*/
 
 /* Returns -1 upon error, 0, if ok, 1 if needs repair, 2 is warning is issued */
 #define MAX_WARNINGS 10
-static int check_file_for_posting (char *file)
+static int check_file_for_posting (char *file) /*{{{*/
 {
    char line[MAX_LINE_BUFLEN], buf[MAX_LINE_BUFLEN], *the_line;
    FILE *fp;
@@ -423,39 +475,39 @@ static int check_file_for_posting (char *file)
    warn = newsgroups_found = followupto_found = subject_found = 0;
    err = NULL;
    fp = fopen (file, "r");
-   
+
    if (fp == NULL)
      {
 	slrn_error (_("Unable to open %s"), file);
 	return -1;
      }
-   
+
    the_line = line;
-   
+
    /* scan the header */
    num = 0;
    while (NULL != fgets (line, sizeof (line), fp))
      {
-	ch = *line;	
+	ch = *line;
 	num++;
 	if ((ch == ' ') || (ch == '\t') || (ch == '\n'))
 	  {
-	     if (num == 1) 
+	     if (num == 1)
 	       {
 		  err = _("The first line must begin with a header.");
 		  break;
 	       }
 	     if (ch == '\n') break;
-	     
+
 	     continue;
 	  }
-	
+
 	if (NULL == (colon = slrn_strchr (line, ':')))
 	  {
 	     err = _("Expecting a header.  This is not a header line.");
 	     break;
 	  }
-	
+
 	if (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Subject:", 8))
 	  {
 	     if (is_empty_header (line))
@@ -466,11 +518,11 @@ static int check_file_for_posting (char *file)
 	     subject_found = 1;
 	     continue;
 	  }
-	
+
 	if (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Newsgroups:", 11))
 	  {
 	     char *p = line;
-	     if (is_empty_header (line)) 
+	     if (is_empty_header (line))
 	       {
 		  err = _("The Newsgroups header is not allowed be to empty.");
 		  break;
@@ -482,7 +534,7 @@ static int check_file_for_posting (char *file)
 	       }
 	     continue;
 	  }
-	
+
 	if ((!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Followup-To:", 12))
 	    && (!is_empty_header (line)))
 	  {
@@ -494,16 +546,16 @@ static int check_file_for_posting (char *file)
 	       }
 	     continue;
 	  }
-	
+
 	/* slrn will remove it later if it is empty */
 	if (is_empty_header (line)) continue;
-	
-	if (*(colon + 1) != ' ') 
+
+	if (*(colon + 1) != ' ')
 	  {
 	     err = _("A space must follow the ':' in a header");
 	     break;
 	  }
-	
+
 #if SLRN_HAS_STRICT_FROM
 	if (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "From:", 5))
 	  {
@@ -520,7 +572,7 @@ static int check_file_for_posting (char *file)
 #endif
      }
 
-   if (err == NULL) 
+   if (err == NULL)
      {
 	if (subject_found == 0)
 	  {
@@ -545,9 +597,9 @@ static int check_file_for_posting (char *file)
 	       _("Setting a \"Followup-To:\" is recommended when crossposting.");
 	  }
      }
-   
+
    /* Now body.  Check for non-quoted lines. */
-   if (err == NULL) 
+   if (err == NULL)
      {
 	char *qs = Slrn_Quote_String;
 	unsigned int qlen;
@@ -555,14 +607,14 @@ static int check_file_for_posting (char *file)
 	int is_verbatim = 0;
 	if (qs == NULL) qs = ">";
 	qlen = strlen (qs);
-	
+
 	err = _("Your message does not appear to have any unquoted text.");
 	the_line = NULL;
 	while (NULL != fgets (line, sizeof (line), fp))
 	  {
 	     if (the_line == NULL) num++;
 	     if (sig_lines != -1) sig_lines++;
-	     
+
 	     if (!strncmp (line, qs, qlen))
 	       continue;
 	     if (0 == strncmp (line, "#v", 2))
@@ -572,14 +624,14 @@ static int check_file_for_posting (char *file)
 		       is_verbatim = 0;
 		       continue;
 		    }
-		  
+
 		  if ((is_verbatim == 0) && (line[2] == '+'))
 		    {
 		       is_verbatim = 1;
 		       continue;
 		    }
 	       }
-	     
+
 	     if (is_verbatim)
 	       continue;
 	     if (0 == strcmp (line, "-- \n"))
@@ -587,16 +639,16 @@ static int check_file_for_posting (char *file)
 		  sig_lines = 0;
 		  continue;
 	       }
-	     
+
 	     colon = slrn_skip_whitespace (line);
 	     if (*colon == 0) continue;
-	     
+
 	     err = NULL;
-	     
+
 	     if ((Slrn_Netiquette_Warnings == 0) &&
 		 (Slrn_Reject_Long_Lines == 0))
 	       break;
-	     
+
 	     if ((the_line == NULL) && (strlen (line) > 81)) /* allow \n to slip */
 	       {
 		  the_line = buf; /* magic: slrn will know that we got here */
@@ -607,7 +659,7 @@ static int check_file_for_posting (char *file)
 	  warnings[warn++ % MAX_WARNINGS] =
 	  _("Please keep your signature short. 4 lines is a commonly accepted limit.");
      }
-   
+
    fclose (fp);
 
    if (Slrn_Batch && (err != NULL))
@@ -616,14 +668,14 @@ static int check_file_for_posting (char *file)
 	slrn_error (_("Reason: %s"), err);
 	return -1;
      }
-   
+
    if ((err == NULL) && (!Slrn_Netiquette_Warnings || (*warnings == NULL)) &&
        (!Slrn_Reject_Long_Lines || (the_line == NULL))) return 0;
-   
+
    Slrn_Full_Screen_Update = 1;
 
    slrn_set_color (0);
-   
+
    SLsmg_cls ();
    SLsmg_gotorc (2,0);
    slrn_set_color (SUBJECT_COLOR);
@@ -653,7 +705,7 @@ static int check_file_for_posting (char *file)
 	int row = 4;
 	SLsmg_write_string (_("Your message breaks the following netiquette guidelines:"));
 	slrn_set_color (ERROR_COLOR);
-	
+
 	if (Slrn_Netiquette_Warnings)
 	  {
 	     warn = 0;
@@ -663,7 +715,7 @@ static int check_file_for_posting (char *file)
 		  SLsmg_write_string (warnings[warn++]);
 	       }
 	  }
-	
+
 	if ((the_line != NULL) && Slrn_Reject_Long_Lines)
 	  {
 	     SLsmg_gotorc (++row, 4);
@@ -681,9 +733,10 @@ static int check_file_for_posting (char *file)
      }
    return 0; /* never reached */
 }
+/*}}}*/
 
 
-int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid)
+int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid) /*{{{*/
 {
    FILE *infp, *outfp;
    time_t now;
@@ -694,7 +747,7 @@ int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid)
 
    if ((save_file == NULL) || (*save_file == 0))
      return 0;
-	
+
    if (NULL == (infp = fopen (file, "r")))
      {
 	slrn_error (_("File not found: %s--- message not posted."), file);
@@ -705,7 +758,7 @@ int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid)
    if (Slrn_Use_Mime & MIME_ARCHIVE)
      slrn_mime_scan_file (infp);
 #endif
-   
+
    if (NULL == (outfp = slrn_open_home_file (save_file, "a", save_post_file,
 					     sizeof (save_post_file), 1)))
      {
@@ -715,13 +768,13 @@ int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid)
 	slrn_fclose (infp);
 	return 0;
      }
-   
+
    time (&now);
    if ((*Slrn_User_Info.username == 0) || (*Slrn_User_Info.hostname == 0))
      fprintf (outfp, "From nobody@nowhere %s", ctime(&now));
    else
      fprintf (outfp, "From %s@%s %s", Slrn_User_Info.username, Slrn_User_Info.hostname, ctime(&now));
-   
+
    while (NULL != fgets (line, sizeof(line) - 1, infp))
      {
 	if (header)
@@ -734,7 +787,7 @@ int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid)
 		 !slrn_case_strncmp ((unsigned char*) "message-id:",
 				     (unsigned char*) line, 11))
 	       has_messageid = 1;
-	     
+
 	     if ((unsigned char)*line == '\n')
 	       {
 		  if (has_from == 0)
@@ -763,20 +816,21 @@ int slrn_save_file_to_mail_file (char *file, char *save_file, char *msgid)
 	       slrn_mime_header_encode (line, sizeof(line));
 #endif
 	  }
-	
+
 	if ((*line == 'F')
 	    && !strncmp ("From", line, 4)
 	    && ((unsigned char)line[4] <= ' '))
 	  putc ('>', outfp);
-	
+
 	fputs (line, outfp);
      }
    fputs ("\n\n", outfp);	       /* separator */
    slrn_fclose (infp);
    return slrn_fclose (outfp);
 }
+/*}}}*/
 
-static int post_references_header (char *line)
+static int post_references_header (char *line) /*{{{*/
 {
 #define GNKSA_LENGTH 986 /* 998 - strlen ("References: ") */
    char buf[GNKSA_LENGTH + 2];
@@ -785,14 +839,14 @@ static int post_references_header (char *line)
 
    /* Make sure line does not end in whitespace */
    (void) slrn_trim_string (line);
-   
+
    if ((NULL == (l = slrn_strchr (line, '<'))) ||
        (NULL == (r = slrn_strchr (l+1, '>'))))
      return -1;
    while ((NULL != (nextid = slrn_strchr (l+1, '<'))) &&
 	  (nextid < r))
      l = nextid;
-   
+
    len = r - l + 1;
    if (nextid != NULL) /* Skip enough IDs to fit into our limit */
      {
@@ -815,7 +869,7 @@ static int post_references_header (char *line)
 	       }
 	  }
      }
-   
+
    /* I'd rather violate GNKSA's limit than omitting the first or last ID */
    if ((nextid == NULL) || (len >= GNKSA_LENGTH))
      {
@@ -827,7 +881,7 @@ static int post_references_header (char *line)
    strncpy (buf, l, len);
    p = buf + len;
    l = nextid;
-   
+
    /* Copy the rest, dropping chopped IDs */
    while (l != NULL)
      {
@@ -842,15 +896,16 @@ static int post_references_header (char *line)
 	p += len + 1;
 	l = nextid;
      }
-   
+
    strcpy (p, "\n");
-   
+
    Slrn_Post_Obj->po_puts ("References: ");
    Slrn_Post_Obj->po_puts (buf);
    return 0;
 }
+/*}}}*/
 
-static int saved_failed_post (char *file, char *msg)
+static int saved_failed_post (char *file, char *msg) /*{{{*/
 {
    FILE *fp, *outfp;
    char filebuf[SLRN_MAX_PATH_LEN];
@@ -875,7 +930,7 @@ static int saved_failed_post (char *file, char *msg)
 
    slrn_error (_("%s Failed post saved in %s"),
 	       (msg != NULL) ? msg : _("Posting not allowed."), filebuf);
-   
+
    (void) fputs ("\n\n", outfp);
 
    while (NULL != (fgets (line, sizeof (line), fp)))
@@ -883,15 +938,17 @@ static int saved_failed_post (char *file, char *msg)
 	if (EOF == fputs (line, outfp))
 	  break;
      }
-   
+
    fclose (fp);
    fclose (outfp);
    return 0;
 }
+/*}}}*/
 
+/*{{{ Post functions*/
 
 /* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
-int slrn_post_file (char *file, char *to, int is_postponed)
+int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 {
    char line[MAX_LINE_BUFLEN]; /* also used for MIME encoding of the realname */
    char *linep;
@@ -939,14 +996,14 @@ int slrn_post_file (char *file, char *to, int is_postponed)
    */
 		  responses = _("yYnNeEsSdDfF");
 		  if (strlen (responses) != 12)
-		    responses = "";
+		       responses = "";
 		  rsp = slrn_get_response ("yYnNeEsSDdFf", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone, \001Delete, \001Filter"));
 	       }
 	     else
 	       {
 		  responses = _("yYnNeEsSfF");
 		  if (strlen (responses) != 10)
-		    responses = "";
+		       responses = "";
 		  rsp = slrn_get_response ("yYnNeEsSFf", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone, \001Filter"));
 	       }
 	  }
@@ -971,14 +1028,14 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	  }
 #endif
 	rsp = slrn_map_translated_char ("yYnNeEsSdDfF", _("yYnNeEsSdDfF"), rsp) | 0x20;
-	
+
 	switch (rsp)
 	  {
 	   case 'n':
 	     return -1;
-	     
+
 	   case 's':
-	     
+
 	     if (is_postponed
 		 || (0 == postpone_file (file)))
 	       return 1;
@@ -986,7 +1043,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	     /* Instead of returning, let user have another go at it */
 	     slrn_sleep (1);
 	     break;
-	     
+
 	   case 'd':
 	     rsp = slrn_get_yesno_cancel (_("Sure you want to delete it"));
 	     if (rsp == 0)
@@ -995,7 +1052,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	       return 1;
 	     /* Calling routine will delete it. */
 	     return 0;
-	  
+
 	   case 'y':
 	     if (0 == (rsp = check_file_for_posting (file)))
 	       {
@@ -1004,7 +1061,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	       }
 	     if (rsp == -1)
 	       return -1;
-	     
+
 	     SLtt_beep ();
 	     if (rsp == 1)
 	       {
@@ -1024,26 +1081,26 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 		    responses = "";
 		  rsp = slrn_get_response ("EeyYnNcC\007Ff", responses, _("re-\001Edit, \001Cancel, or \001Force the posting (not recommended)"));
 	       }
-	     
+
 	     rsp = slrn_map_translated_char ("yYeEnNcCfF", _("yYeEnNcCfF"), rsp) | 0x20;
-	     
+
 	     switch (rsp)
 	       {
 		case 'y': case 'e':
 		  rsp = 'y'; break;
-		  
+
 		case 'c': case 7:
 		  return -1;
-		  
+
 		case 'f':
 		  once_more = 0;
 	       }
 
 	     if (rsp != 'y')
 	       break;
-	     
+
 	     /* Drop */
-	     
+
 	   case 'e':
 	     if (slrn_edit_file (Slrn_Editor_Post, file, 1, 0) < 0)
 	       return -1;
@@ -1054,15 +1111,15 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	     if (filter_hook != 0)
 	       {
                   slrn_run_hooks (HOOK_POST_FILTER, 1, file);
-		  if (SLang_Error) 
+		  if (SLang_Error)
 		    filter_hook = 0;
 	       }
 #endif
 	  }
      }
-   
+
    slrn_message_now (_("Posting ..."));
-   
+
 #if SLRN_HAS_GEN_MSGID
    msgid = slrn_create_message_id ();
 #endif
@@ -1070,10 +1127,10 @@ int slrn_post_file (char *file, char *to, int is_postponed)
    if ((Slrn_Use_Mime & MIME_ARCHIVE) && /* else: do it later */
        !Slrn_Editor_Uses_Mime_Charset)
      slrn_chmap_fix_file (file, 0);
-   
+
    if (-1 == slrn_save_file_to_mail_file (file, Slrn_Save_Posts_File, msgid))
      return -1;
-   
+
    if (!(Slrn_Use_Mime & MIME_ARCHIVE) &&
        !Slrn_Editor_Uses_Mime_Charset)
      slrn_chmap_fix_file (file, 0);
@@ -1083,7 +1140,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	slrn_error (_("File not found: %s--- message not posted."), file);
 	return -1;
      }
-   
+
 #if SLRN_HAS_MIME
    if (Slrn_Use_Mime & MIME_DISPLAY)
      slrn_mime_scan_file (fp);
@@ -1139,6 +1196,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 # endif
 
    Slrn_Post_Obj->po_printf ("From: %s\n", line);
+
 #endif /*SLRN_HAS_STRICT_FROM*/
    /* if (Slrn_User_Info.posting_host != NULL)
      * Slrn_Post_Obj->po_printf ("X-Posting-Host: %s\n", Slrn_User_Info.posting_host); */
@@ -1172,7 +1230,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 
 	     while ((*white == ' ') || (*white == '\t')) white++;
 
-	     if (*white == '\n')
+	     if (*white == '\n') /* Header ends, body begins */
 	       {
 		  slrn_add_date_header (NULL);
 #if SLRN_HAS_GEN_MSGID
@@ -1187,19 +1245,19 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 #endif
 #if SLRN_HAS_MIME
 		  if (Slrn_Use_Mime & MIME_DISPLAY)
-		    slrn_mime_add_headers (0);   /* 0 --> Slrn_Post_Obj->po_puts */
+		       slrn_mime_add_headers (0);   /* 0 --> Slrn_Post_Obj->po_puts */
 #endif
-		  Slrn_Post_Obj->po_printf ("User-Agent: slrn/%s (%s)\n\n", 
+		  Slrn_Post_Obj->po_printf ("User-Agent: slrn/%s (%s)\n\n",
 					    Slrn_Version, system_os_name);
 		  header = 0;
 #if SLRN_HAS_MIME
 		  if (Slrn_Use_Mime & MIME_DISPLAY) fp = slrn_mime_encode (fp);
 #endif
-		  
+
 		  continue;
-	       }
-	     
-	     if (!slrn_case_strncmp ((unsigned char *)"Cc: ", 
+	       } /* if (*white == '\n') */
+
+	     if (!slrn_case_strncmp ((unsigned char *)"Cc: ",
 				     (unsigned char *)linep, 4))
 	       {
 		  b = (unsigned char *) linep + 4;
@@ -1213,7 +1271,7 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	     if (!slrn_case_strncmp ((unsigned char *)"Message-ID: ",
 				     (unsigned char *)linep, 12))
 	       has_messageid = 1;
-#endif	     
+#endif
 	     linep[len - 1] = 0;
 #if SLRN_HAS_MIME
 	     if (Slrn_Use_Mime & MIME_DISPLAY)
@@ -1222,9 +1280,9 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 		  len = strlen (linep);
 	       }
 #endif
-	  }
+	  } /* if (header) */
 
-	/* Since the header may not have ended in a \n, make sure the 
+	/* Since the header may not have ended in a \n, make sure the
 	 * other lines do not either.  Later, the \n will be added.
 	 */
 	if (linep[len - 1] == '\n')
@@ -1232,28 +1290,30 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	     len--;
 	     linep[len] = 0;
 	  }
-	
+
 	if (*linep == '.')
 	  {
 	     linep--;
 	     *linep = '.';
 	  }
-	
+
 	Slrn_Post_Obj->po_puts (linep);
 	Slrn_Post_Obj->po_puts ("\n");
-	
+
 	linep = line + 1;
-     }
+     } /*while (fgets (linep, sizeof(line) - 1, fp) != NULL) */
    slrn_fclose (fp);
 
    if (0 == Slrn_Post_Obj->po_end ())
-     slrn_message (_("Posting...done."));
+     {
+	slrn_message (_("Posting...done."));
+     }
    else
      {
 	/* convert back to users' charset, so it can easily be re-edited */
 	if (!Slrn_Editor_Uses_Mime_Charset)
-	  slrn_chmap_fix_file (file, 1); 
-	if (Slrn_Batch) 
+	     slrn_chmap_fix_file (file, 1);
+	if (Slrn_Batch)
 	  {
 	     saved_failed_post (file, NULL);
 	     return -1;
@@ -1263,17 +1323,17 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	slrn_smg_refresh ();
 	slrn_sleep (2);
 	slrn_clear_message (); SLang_Error = 0;
-   /* Note to translators: Here, "rR" is "repost", "eE" is "edit" and "cC" is
-    * "cancel". Don't change the length of the string; you cannot re-use any
-    * of the default characters for different fields.
-    */
+
+	/* Note to translators: Here, "rR" is "repost", "eE" is "edit" and
+	 * "cC" is "cancel". Don't change the length of the string; you
+	 * cannot re-use any of the default characters for different fields. */
 	responses = _("rReEcC");
 	if (strlen (responses) != 6)
-	  responses = "";
+	     responses = "";
 	rsp = slrn_get_response ("rReEcC\007", responses, _("Select one: \001Repost, \001Edit, \001Cancel"));
 	if (rsp == 7) rsp = 'c';
 	else rsp = slrn_map_translated_char ("rReEcC", responses, rsp) | 0x20;
-	
+
 	if ((rsp == 'c')
 	    || ((rsp == 'e')
 		&& (slrn_edit_file (Slrn_Editor_Post, file, 1, 0) < 0)))
@@ -1282,34 +1342,34 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 	     return -1;
 	  }
 	goto try_again;
-     }
-   
+     } /* (0 == Slrn_Post_Obj->po_end ()) */
+
    if (perform_cc)
      {
 	slrn_cc_file (file, to, msgid);
      }
    return 0;
 }
+/*}}}*/
 
-
-int slrn_post (char *newsgroup, char *followupto, char *subj)
+int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
 {
    FILE *fp;
    char file[SLRN_MAX_PATH_LEN], *from;
    unsigned int header_lines;
    int ret;
-   
+
    if (Slrn_Use_Tmpdir)
      fp = slrn_open_tmpfile (file, sizeof (file));
    else fp = slrn_open_home_file (SLRN_ARTICLE_FILENAME, "w", file,
 				  sizeof (file), 0);
-   
+
    if (fp == NULL)
      {
 	slrn_error (_("Unable to create %s."), file);
 	return -1;
      }
-   
+
    header_lines = 8;
    fprintf (fp, "Newsgroups: %s\n", newsgroup);
 #if ! SLRN_HAS_STRICT_FROM
@@ -1317,83 +1377,49 @@ int slrn_post (char *newsgroup, char *followupto, char *subj)
    fprintf (fp, "From: %s\n", from); header_lines++;
 #endif
    fprintf (fp, "Subject: %s\n", subj);
-   
+
    if (Slrn_User_Info.org != NULL)
      {
 	header_lines++;
 	fprintf (fp, "Organization: %s\n", Slrn_User_Info.org);
      }
-   
+
    fprintf (fp, "Reply-To: %s\nFollowup-To: %s\n", Slrn_User_Info.replyto,
 	    followupto);
    fprintf (fp, "Keywords: \nSummary: \n");
-   
+
    header_lines += slrn_add_custom_headers (fp, Slrn_Post_Custom_Headers, NULL);
 
    fputs ("\n", fp);
-   
+
    slrn_add_signature (fp);
    slrn_fclose (fp);
-   
+
    if (Slrn_Editor_Uses_Mime_Charset)
      slrn_chmap_fix_file (file, 0);
-   
+
    if (slrn_edit_file (Slrn_Editor_Post, file, header_lines, 1) >= 0)
      ret = slrn_post_file (file, NULL, 0);
    else ret = -1;
-   
+
    if (Slrn_Use_Tmpdir) (void) slrn_delete_file (file);
    return ret;
 }
+/*}}}*/
 
+/*}}}*/
 
+/*{{{ functions for postponing */
 
-int slrn_add_custom_headers (FILE *fp, char *headers, int (*write_fun)(char *, FILE *))
-{
-   int n;
-   char *s, *s1, ch, last_ch;
-   
-   if (headers == NULL) return 0;
-   
-   s = slrn_skip_whitespace (headers);
-   if (*s == 0) return 0;
-   
-   s1 = s;
-   n = 0;
-   last_ch = 0;
-   while ((ch = *s1) != 0)
-     {
-	if (ch == '\n') 
-	  {
-	     n++;
-	     while (s1[1] == '\n') s1++;   /* skip multiple newlines */
-	  }
-	last_ch = ch;
-	s1++;
-     }
-
-   if (write_fun != NULL)
-     (*write_fun)(s, fp);
-   else fputs (s, fp);
-   
-   if (last_ch != '\n')
-     {
-	fputc ('\n', fp);
-	n++;
-     }
-   
-   return n;
-}
-
-static int get_postpone_dir (char *dirbuf, size_t n)
+static int get_postpone_dir (char *dirbuf, size_t n) /*{{{*/
 {
    char *dir;
-   
+
    if (Slrn_Postpone_Dir != NULL)
      dir = Slrn_Postpone_Dir;
-   else 
+   else
      dir = Slrn_Save_Directory;
-   
+
    if ((dir == NULL)
        || (-1 == slrn_make_home_dirname (dir, dirbuf, n))
        || (2 != slrn_file_exists (dirbuf)))
@@ -1404,9 +1430,9 @@ static int get_postpone_dir (char *dirbuf, size_t n)
 
    return 0;
 }
+/*}}}*/
 
-	     
-static int postpone_file (char *file)
+static int postpone_file (char *file) /*{{{*/
 {
 #ifdef VMS
    slrn_error (_("Not implemented yet. Sorry"));
@@ -1417,7 +1443,7 @@ static int postpone_file (char *file)
 
    if (-1 == get_postpone_dir (dir, sizeof (dir)))
      return -1;
-   
+
    while (1)
      {
 	int status;
@@ -1427,7 +1453,7 @@ static int postpone_file (char *file)
 
 	if (-1 == slrn_read_filename (_("Save to: "), NULL, dirfile, 1, 1))
 	  return -1;
-	
+
 	status = slrn_file_exists (dirfile);
 	if (status == 1)
 	  {
@@ -1439,7 +1465,7 @@ static int postpone_file (char *file)
 
 	     return -1;
 	  }
-	
+
 	if (status == 0)
 	  break;
 	if (status == 2)
@@ -1447,34 +1473,38 @@ static int postpone_file (char *file)
 	else
 	  slrn_error_now (2, _("Illegal filename. Try again"));
      }
-   
+
    if (-1 == slrn_move_file (file, dirfile))
      return -1;
-   
+
    return 0;
 #endif
 }
+/*}}}*/
 
-void slrn_post_postponed (void)
+void slrn_post_postponed (void) /*{{{*/
 {
    char dir [SLRN_MAX_PATH_LEN];
    char *file;
 
    if (-1 == get_postpone_dir (dir, sizeof (dir)))
      return;
-   
+
    file = slrn_browse_dir (dir);
    if (file == NULL)
      return;
-   
+
    if (1 != slrn_file_exists (file))
      {
 	slrn_error (_("%s: not a regular file"));
 	return;
      }
-   
+
    if (0 == slrn_post_file (file, NULL, 1))
      slrn_delete_file (file);
 
    slrn_free (file);
 }
+/*}}}*/
+
+/*}}}*/
