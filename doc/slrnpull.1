@@ -1,7 +1,7 @@
 .\"
 .\" This manpage is written by Thomas Schultz
 .\"
-.TH slrnpull 1 "March 2002" Unix "User Manuals"
+.TH slrnpull 1 "August 2003" Unix "User Manuals"
 .\"
 .\" -------------------------------------------------------------------
 .\"
@@ -20,6 +20,7 @@ slrnpull - Pull a small newsfeed for offline reading.
 .RI "[--kill-log\ " file ]
 .RI "[--kill-score " n ]
 .RI "[--logfile\ " file ]
+[--marked-bodies]
 [--new-groups]
 [--no-post]
 [--post]
@@ -77,6 +78,8 @@ The default value for this is 0.
 Log the messages and errors that slrnpull prints to the screen to
 .IR file .
 By default, they get written to the file log in slrnpull's root directory.
+.IP "--marked-bodies"
+Only fetch bodies that were marked for download within slrn.
 .IP "--new-groups"
 Check for new groups, appending them to the file new.groups in the data
 directory.

@@ -2780,17 +2780,22 @@ static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 	  {
 	     bmin = bmax = nums[i];
 	  }
-	bmax++;
-	if ((bmin != -1) &&
-	    ((i==n_nums-1) || ret || (nums[i] != bmax)))
+	else if ((bmin != -1) && (ret || (nums[i] != bmax+1)))
 	  {
-	     headers = slrn_ranges_add (headers, bmin, bmax-1);
-	     bmin = bmax = -1;
+	     headers = slrn_ranges_add (headers, bmin, bmax);
+	     if (ret)
+	       bmin = bmax = -1;
+	     else
+	       bmin = bmax = nums[i];
 	  }
+	else
+	  bmax++;
 	       
 	if ((Stdout_Is_TTY) && (((i % 100) == 0) || (i+1 == n_nums)))
 	  progress_update_overview(i, n_nums, g, 1);
      }
+   if (bmin != -1)
+     headers = slrn_ranges_add (headers, bmin, bmax);
 
    slrn_ranges_free (g->headers);
    g->headers = headers;
