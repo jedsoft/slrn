@@ -565,7 +565,7 @@ static void undefinekey (char *key, char *map) /*{{{*/
 #define PROMPT_VARIABLE 3
 static void generic_read_mini (int mode, char *prompt, char *dfl, char *init) /*{{{*/
 {
-   char str[256];
+   char str[SLRL_DISPLAY_BUFFER_SIZE];
    int ret;
 
    strncpy (str, init, sizeof (str));

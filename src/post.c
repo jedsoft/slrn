@@ -1603,7 +1603,7 @@ static int postpone_file (char *file) /*{{{*/
    return -1;
 #else
    char dir [SLRN_MAX_PATH_LEN];
-   char dirfile [SLRN_MAX_PATH_LEN + 256];
+   char dirfile [SLRL_DISPLAY_BUFFER_SIZE + 256];
 
    if (-1 == get_postpone_dir (dir, sizeof (dir)))
      return -1;

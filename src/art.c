@@ -1183,7 +1183,7 @@ static void launch_url (char *url, int want_edit) /*{{{*/
 
 static void browse_url (void) /*{{{*/
 {
-   char url[256];
+   char url[SLRL_DISPLAY_BUFFER_SIZE];
    int selected;
    unsigned int argc, start_argc;
 #define MAX_URLS 1024
@@ -1223,7 +1223,7 @@ static void browse_url (void) /*{{{*/
 
 static void article_search (void) /*{{{*/
 {
-   static char search_str[256];
+   static char search_str[SLRL_DISPLAY_BUFFER_SIZE];
    Slrn_Article_Line_Type *l;
    
    if (slrn_read_input (_("Search: "), search_str, NULL, 0, 0) <= 0) return;
@@ -2850,7 +2850,7 @@ static void forward_article (void) /*{{{*/
    Slrn_Article_Line_Type *l;
    FILE *fp;
    char file[256];
-   char to[256];
+   char to[SLRL_DISPLAY_BUFFER_SIZE];
    int edit, n, wrap, full = 0;
    
    if (Slrn_Prefix_Arg_Ptr != NULL)
@@ -3787,7 +3787,7 @@ static void next_header_same_subject (void) /*{{{*/
 {
    SLsearch_Type st;
    Slrn_Header_Type *l;
-   static char same_subject[256];
+   static char same_subject[SLRL_DISPLAY_BUFFER_SIZE];
    
    if ((Same_Subject_Start_Header == NULL)
        || (Slrn_Prefix_Arg_Ptr != NULL))
@@ -4033,7 +4033,7 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
 
 static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 {
-   char file[SLRN_MAX_PATH_LEN];
+   char file[SLRL_DISPLAY_BUFFER_SIZE];
    char name[SLRN_MAX_PATH_LEN];
    char *input_string;
    int save_tagged = 0;
@@ -4372,7 +4372,7 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
 static void pipe_article (void) /*{{{*/
 {
 #if SLRN_HAS_PIPING
-   static char cmd[256];
+   static char cmd[SLRL_DISPLAY_BUFFER_SIZE];
    
    if (slrn_read_filename (_("Pipe to command: "), NULL, cmd, 1, 1) <= 0)
      {
@@ -4743,7 +4743,7 @@ static void exchange_mark (void) /*{{{*/
 
 static void header_generic_search (int dir, int type) /*{{{*/
 {
-   static char search_str[256];
+   static char search_str[SLRL_DISPLAY_BUFFER_SIZE];
    SLsearch_Type st;
    Slrn_Header_Type *l;
    char* prompt;
@@ -5828,7 +5828,7 @@ int slrn_locate_header_by_msgid (char *msgid, int no_error, int query_server)
 
 static void locate_header_by_msgid (void) /*{{{*/
 {
-   char buf[258];
+   char buf[SLRL_DISPLAY_BUFFER_SIZE+2];
    char *msgid = buf + 1;
    *buf = 0;
    *msgid = 0;

@@ -1515,7 +1515,7 @@ static int nnrp_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 int slrn_get_authorization (char *host, char **name, char **pass) /*{{{*/
 {
    Server_List_Type *s;
-   char buf[256];
+   char buf[SLRL_DISPLAY_BUFFER_SIZE];
    int do_newline = 1;
 
    *name = NULL;

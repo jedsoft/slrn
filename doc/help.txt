@@ -26,8 +26,8 @@ Cursor movement:
   UP                      Go to the previous group.
   Ctrl-V, Ctrl-D          Scroll to the next page.
   ESC V, Ctrl-U           Scroll to the previous page.
-  ESC <                   Go to the bottom of the list.
-  ESC >                   Go to the top of the list.
+  ESC >                   Go to the bottom of the list.
+  ESC <                   Go to the top of the list.
   /                       Group keyword search.
 
 Actions:

@@ -47,7 +47,7 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
    char ch = 'e';
    int ich;
    char file[256];
-   char qregexp[512], buf[512];
+   char qregexp[2*SLRL_DISPLAY_BUFFER_SIZE], buf[2*SLRL_DISPLAY_BUFFER_SIZE];
    unsigned int mm = 0, dd = 0, yy = 0;
    int days = 0;
    int use_expired = 0, force_score = 0;

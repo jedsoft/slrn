@@ -1592,14 +1592,14 @@ static SLang_RLine_Info_Type *init_readline (void) /*{{{*/
    if (rli == NULL)
      return NULL;
    
-   if (NULL == (buf = (unsigned char *) slrn_malloc (256, 0, 1)))
+   if (NULL == (buf = (unsigned char *) slrn_malloc (SLRL_DISPLAY_BUFFER_SIZE, 0, 1)))
      {
 	SLFREE (rli);
 	return NULL;
      }
 
    rli->buf = buf;
-   rli->buf_len = 255;
+   rli->buf_len = SLRL_DISPLAY_BUFFER_SIZE - 1;
    rli->tab = 8;
    rli->dhscroll = 20;
    rli->getkey = SLang_getkey;
@@ -2025,13 +2025,13 @@ SLKeymap_Function_Type Slrn_Custom_Readline_Functions [] =
    A_KEY(NULL, NULL)
 };
 
-/* str needs to have enough space for 256 characters */
+/* str needs to have enough space for SLRL_DISPLAY_BUFFER_SIZE characters */
 static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag, 
 			       int no_echo, int point) /*{{{*/
 {
    int i;
    int tt_init_state;
-   char prompt_buf[256];
+   char prompt_buf[SLRL_DISPLAY_BUFFER_SIZE];
    unsigned int len;
    int save_slang_error;
    
@@ -2194,7 +2194,7 @@ int slrn_read_integer (char *prompt, int *dflt, int *np) /*{{{*/
 {
    char sdfl_buf[32];
    char *sdfl = NULL;
-   char str[256];
+   char str[SLRL_DISPLAY_BUFFER_SIZE];
    int n;
    
    if (dflt != NULL)
@@ -2435,7 +2435,7 @@ void slrn_get_mouse_rc (int *rp, int *cp) /*{{{*/
 
 void slrn_evaluate_cmd (void) /*{{{*/
 {
-   char buf[256];
+   char buf[SLRL_DISPLAY_BUFFER_SIZE];
    
    *buf = '\0';
    if (slrn_read_input ("S-Lang> ", NULL, buf, 0, 0) > 0)

@@ -49,7 +49,7 @@ Changes since 0.9.7.4
      color underlinetext	"default"	"default"	"underline"
 4. Set use_recommended_msg_id to 1 in your config file if you want slrn to
    make use of server-proposed Message-IDs; the IDs will get saved along
-   with the article to the save_posts folder. (patch by Felix Schueller)
+   with the article to the save_posts mbox file. (patch by Felix Schueller)
 5. Added intrinsic functions article_cline_as_string, article_cline_number,
    article_count_lines, article_goto_line, article_line_down, article_line_up,
    has_parent, header_cursor_pos, raw_article_as_string, set_color_attr
@@ -85,6 +85,7 @@ Changes since 0.9.7.4
     now works correctly in all cases. Currently, the only supported escape
     sequence is "%n" for newsgroup name.
 19. New translations:
+   * be.po (Belarusian; Hleb Valoska)
    * fi.po (Finnish; Lauri Nurmi)
    * tr.po (Turkish; A. Alper ATICI)
 20. Remove duplicates when browsing URLs (Ruediger Sonderfeld)

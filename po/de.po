@@ -1,11 +1,11 @@
 # German Translation for slrn
-# Jens Wahnes <jewa@gmx.net>, 2001-2002.
+# Jens Wahnes <jewa@gmx.net>, 2001-2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.9.7.4pl1\n"
+"Project-Id-Version: 0.9.7.4pl2\n"
 "POT-Creation-Date: 2003-01-11 15:51+0100\n"
-"PO-Revision-Date: 2002-09-29 00:17+0100\n"
+"PO-Revision-Date: 2003-02-28 00:45+0100\n"
 "Last-Translator: Jens Wahnes <jewa@gmx.net>\n"
 "Language-Team: German - Jens Wahnes <jewa@gmx.net>\n"
 "MIME-Version: 1.0\n"
@@ -865,7 +865,7 @@ msgstr "%s: Wieviele Artikel einlesen? "
 #: src/group.c:1039
 #, c-format
 msgid "Only downloading %d of %d articles."
-msgstr ""
+msgstr "Es werden nur %d von %d Artikeln heruntergeladen."
 
 #: src/group.c:1119
 msgid "Do you really want to quit"
@@ -1434,7 +1434,7 @@ msgstr "  Q               slrn sofort beenden"
 
 #: src/help.c:86
 msgid "Moving in the article pager:"
-msgstr "Navigation in der Artikelanzeige"
+msgstr "Navigation in der Artikelanzeige:"
 
 #: src/help.c:87
 msgid "  ESC DOWN           Scroll article down one line."
@@ -1448,9 +1448,7 @@ msgstr "  ESC HOCH        Eine Zeile nach oben blättern (scrollen)"
 msgid ""
 "  SPACE              Scroll article down one page (or select next, if at "
 "end)."
-msgstr ""
-"  SPACE           Zur nächsten Seite blättern (am Ende eines Artikels:. zum "
-"nächsten Artikel)"
+msgstr "  SPACE           Zur nächsten Seite blättern (am Ende eines Artikels: zum nächsten Artikel)"
 
 #: src/help.c:90
 msgid "  DELETE, b          Scroll article up one page."
@@ -1486,7 +1484,7 @@ msgstr "  g               Zum nächsten Abschnitt (digest) springen"
 
 #: src/help.c:98
 msgid "Moving in the header display:"
-msgstr "Navigation in der Headeranzeige"
+msgstr "Navigation in der Headeranzeige:"
 
 #: src/help.c:99
 msgid "  DOWN, Ctrl-N       Move to the next article."
@@ -1585,7 +1583,7 @@ msgstr ""
 
 #: src/help.c:119
 msgid "Article pager commands:"
-msgstr "Kommandos, die die Artikelanzeige betreffen"
+msgstr "Kommandos, die die Artikelanzeige betreffen:"
 
 #: src/help.c:120
 msgid "  t                  Show full headers (on/off)."
@@ -1597,7 +1595,7 @@ msgstr "  ESC r           ROT-13-Verschlüsselung anzeigen (an/aus)"
 
 #: src/help.c:122
 msgid "  T                  Display quoted lines (on/off)."
-msgstr "  T               Anzeige von zitiertem Text unterdrücken (an/aus)"
+msgstr "  T               Zitierten Text ausblenden (an/aus)"
 
 #: src/help.c:123
 msgid "  \\                  Show signature (on/off)."
@@ -2893,24 +2891,22 @@ msgid "Select one: Repost, Edit, Cancel"
 msgstr "Wählen Sie: Nochmal versuchen, Erneut bearbeiten, Abbrechen"
 
 #: src/post.c:1571
-#, fuzzy, c-format
+#, c-format
 msgid "Do you want to create directory %s"
-msgstr "Wollen Sie sie wirklich löschen"
+msgstr "Soll das Verzeichnis %s angelegt werden"
 
 #: src/post.c:1575
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create directory. (errno = %d)"
-msgstr "Verzeichnis %s konnte nicht angelegt werden. (Fehlercode: %d)"
+msgstr "Das Verzeichnis konnte nicht angelegt werden. (Fehlercode: %d)"
 
 #: src/post.c:1581
-#, fuzzy
 msgid "Aborted on user request."
 msgstr "Auf Ihren Wunsch hin abgebrochen."
 
 #: src/post.c:1586
-#, fuzzy
 msgid "postpone_directory points to a regular file (not a directory)"
-msgstr "Sie haben postpone_directory nicht angegeben oder es existiert nicht."
+msgstr "Sie haben als postpone_directory eine Datei und kein Verzeichnis angegeben."
 
 #: src/post.c:1597
 msgid "Not implemented yet. Sorry"
@@ -4027,13 +4023,13 @@ msgstr ""
 "%sSie haben zu viele Ausdrücke angegeben."
 
 #: src/startup.c:796
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s: Obsolete variable name on line %d: %s\n"
 "The new name is %s"
 msgstr ""
-"%s: Veralteter Funktionsaufruf in Zeile %d: %s\n"
-"Der neue Name lautet: %s"
+"%s: Veralteter Variablenname in Zeile %d: %s\n"
+"Die Variable heißt jetzt: %s"
 
 #: src/startup.c:806 src/startup.c:875
 #, c-format
@@ -4041,6 +4037,8 @@ msgid ""
 "%s: In this version of slrn, setting variable\n"
 "%s has no effect. Please refer to the manual for details."
 msgstr ""
+"%s: In dieser slrn-Version kann die Variable\n"
+"%s nicht gesetzt werden. Details entnehmen Sie bitte dem slrn-Handbuch."
 
 #: src/startup.c:843
 #, c-format

@@ -861,10 +861,10 @@ static int find_group (char *name) /*{{{*/
 
 /*}}}*/
 
-/* origpat needs enough space for 256 chars */
+/* origpat needs enough space for SLRL_DISPLAY_BUFFER_SIZE chars */
 static SLRegexp_Type *read_group_regexp (char *prompt, char *origpat) /*{{{*/
 {
-   static char pattern[256];
+   static char pattern[SLRL_DISPLAY_BUFFER_SIZE];
    
    if (slrn_read_input (prompt, NULL, pattern, 1, 0) <= 0) return NULL;
    
@@ -1302,7 +1302,7 @@ static void refresh_groups_cmd (void) /*{{{*/
 
 static void generic_group_search (int dir) /*{{{*/
 {
-   static char search_str[256];
+   static char search_str[SLRL_DISPLAY_BUFFER_SIZE];
    char* prompt;
    Slrn_Group_Type *g;
    unsigned int n;
@@ -1368,7 +1368,7 @@ int slrn_add_group (char *group) /*{{{*/
 
 static void add_group_cmd (void) /*{{{*/
 {
-   char group[256];
+   char group[SLRL_DISPLAY_BUFFER_SIZE];
    
    *group = 0;
    if (slrn_read_input (_("Add group: "), NULL, group, 1, 0) > 0)
@@ -1661,7 +1661,7 @@ static void toggle_list_all_groups1 (int hide_flag) /*{{{*/
    else
      {
 	SLRegexp_Type *re;
-	char origpat[256];
+	char origpat[SLRL_DISPLAY_BUFFER_SIZE];
 	
 	if (NULL == (re = read_group_regexp (_("List Groups (e.g., comp*unix*): "),
 					     origpat)))
@@ -1818,9 +1818,9 @@ static void select_group_cmd (void)
 void slrn_post_cmd (void) /*{{{*/
 {
    char *name;
-   char group[256];
-   char followupto[256];
-   char subj[256];
+   char group[SLRL_DISPLAY_BUFFER_SIZE];
+   char followupto[SLRL_DISPLAY_BUFFER_SIZE];
+   char subj[SLRL_DISPLAY_BUFFER_SIZE];
    
    if (Slrn_Post_Obj->po_can_post == 0)
      {
