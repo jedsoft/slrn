@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -56,6 +56,7 @@
 #include "chmap.h"
 #include "print.h"
 #include "snprintf.h"
+#include "help.h"
 
 #ifdef VMS
 # include "vms.h"
@@ -253,7 +254,10 @@ static int setkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    int failure;
    
    (void) argc;
-
+   
+   if (NULL == (key = slrn_help_string_to_keyseq(key)))
+     key = table->string_args[3];
+   
    if (!strcmp (map, "group"))
      {
 	kmap = Slrn_Group_Keymap;
@@ -316,6 +320,9 @@ static int unsetkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    SLKeyMap_List_Type *kmap = NULL;
    
    (void) argc;
+
+   if (NULL == (key = slrn_help_string_to_keyseq(key)))
+     key = table->string_args[2];   
    
    if (!strcmp (map, "group")) kmap = Slrn_Group_Keymap;
    else if (!strcmp (map, "article")) kmap = Slrn_Article_Keymap;
@@ -1587,6 +1594,7 @@ void slrn_startup_initialize (void) /*{{{*/
 
    slrn_init_modes ();
    SLang_init_case_tables ();
+   slrn_help_init_keysym_table ();
    
    Slrn_Ignore_Quote_Regexp[0] = compile_quote_regexp ("^ ? ?[><:=|]");
    Slrn_Strip_Sig_Regexp[0] = compile_quote_regexp ("^-- $");

@@ -1,8 +1,9 @@
+/* -*- mode: C; mode: fold; -*- */
 /*
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -31,7 +32,9 @@
 #include <slang.h>
 #include "jdmacros.h"
 
+#include "help.h"
 #include "slrn.h"
+#include "snprintf.h"
 #include "misc.h"
 #include "util.h"
 
@@ -493,3 +496,339 @@ void slrn_group_help (void)
    if (User_Group_Help[0] != NULL) h = User_Group_Help; else h = Group_Help;
    do_help (h);
 }
+
+/* Returns the key sequence to which function f in the given keymap is
+ * bound (NULL if unbound). If more than one key sequences apply, a random
+ * one gets returned.
+ * The returned string can be static and does not need to be freed. */
+char *slrn_help_keyseq_from_function (char *f, SLKeyMap_List_Type *map) /*{{{*/
+{
+   int i;
+   SLang_Key_Type *key, *key_root;
+   FVOID_STAR fp;
+   unsigned char type;
+   static char buf[3];
+   
+   if (NULL == (fp = (FVOID_STAR) SLang_find_key_function(f, map)))
+     type = SLKEY_F_INTERPRET;
+   else type = SLKEY_F_INTRINSIC;
+   
+   i = 256;
+   key_root = map->keymap;
+   while (i--)
+     {
+	key = key_root->next;
+	if ((key == NULL) && (type == key_root->type) &&
+	    (((type == SLKEY_F_INTERPRET) && (!strcmp((char *) f, key_root->f.s)))
+	     || ((type == SLKEY_F_INTRINSIC) && (fp == key_root->f.f))))
+	  {
+	     buf[0] = 2;
+	     buf[1] = 256 - 1 - i;
+	     buf[2] = 0;
+	     return buf;
+	  }
+	
+	while (key != NULL)
+	  {
+	     if ((key->type == type) &&
+		 (((type == SLKEY_F_INTERPRET) && (!strcmp((char *) f, key->f.s)))
+		  || ((type == SLKEY_F_INTRINSIC) && (fp == key->f.f))))
+	       {
+		  return (char*)key->str;
+	       }
+	     key = key->next;
+	  }
+	key_root++;
+     }
+   return NULL;
+}
+/*}}}*/
+
+/* The following code handles conversion between (escape) key sequences
+ * and their symbolic names, like "<Up>" */
+
+/* In the following arrays, the same index corresponds to the same key */
+
+#define NUMBER_OF_KEYNAMES 28
+
+/* Symbolic names of keys as shown to the user */
+static char *KeyNames[NUMBER_OF_KEYNAMES] = /*{{{*/
+{
+   N_( "<PageUp>" ),
+   N_( "<PageDown>" ),
+   N_( "<Up>" ),
+   N_( "<Down>" ),
+   N_( "<Right>" ),
+   N_( "<Left>" ),
+   N_( "<Delete>" ),
+   N_( "<BackSpace>" ),
+   N_( "<Insert>" ),
+   N_( "<Home>" ),
+   N_( "<End>" ),
+   N_( "<Enter>" ),
+   N_( "<Return>" ),
+   N_( "<Tab>" ),
+   N_( "<Space>" ),
+   N_( "<F1>" ),
+   N_( "<F2>" ),
+   N_( "<F3>" ),
+   N_( "<F4>" ),
+   N_( "<F5>" ),
+   N_( "<F6>" ),
+   N_( "<F7>" ),
+   N_( "<F8>" ),
+   N_( "<F9>" ),
+   N_( "<F10>" ),
+   N_( "<F11>" ),
+   N_( "<F12>" ),
+   N_( "<Esc>" )
+}; /*}}}*/
+
+/* Length information for the unlocalized versions */
+static unsigned char KeyNameLengths[NUMBER_OF_KEYNAMES] =
+{8,10,4,6,7,6,8,11,8,6,5,7,8,5,7,4,4,4,4,4,4,4,4,4,5,5,5,5};
+
+/* Symbolic names of keys in the termcap database */
+static char *TermcapNames[NUMBER_OF_KEYNAMES] = /*{{{*/
+{
+   "kP",
+     "kN",
+     "ku",
+     "kd",
+     "kr",
+     "kl",
+     "kD",
+     "kb",
+     "kI",
+     "kh",
+     "@7",
+     "@8",
+     "",
+     "",
+     "",
+     "k1",
+     "k2",
+     "k3",
+     "k4",
+     "k5",
+     "k6",
+     "k7",
+     "k8",
+     "k9",
+     "k;",
+     "F1",
+     "F2",
+     ""
+}; /*}}}*/
+
+/* Default key sequences as fallbacks when termcap lookup has no result */
+static char *DefaultSequences[NUMBER_OF_KEYNAMES] = /*{{{*/
+{
+#ifdef IBMPC_SYSTEM
+   "\xE0I",
+     "\xE0Q",
+     "\xE0H",
+     "\xE0P",
+     "\xE0M",
+     "\xE0K",
+     "\xE0S",
+     "^@S",
+     "\xE0R",
+     "\xE0G",
+     "\xE0O",
+#else /* NOT IBMPC_SYSTEM */
+     "\033[5~",
+     "\033[6~",
+     "\033[A",
+     "\033[B",
+     "\033[C",
+     "\033[D",
+     "\033[3~",
+     "\010",
+     "\033[2~",
+     "\033[1~",
+     "\033[4~",
+#endif /* NOT IBMPC_SYSTEM */
+     "\r",
+     "\r",
+     "\t",
+     " ",
+#ifdef IBMPC_SYSTEM
+     "^@;",
+     "^@<",
+     "^@=",
+     "^@>",
+     "^@?",
+     "^@@",
+     "^@A",
+     "^@B",
+     "^@C",
+     "^@D",
+     "^@\x85",
+     "^@\x86",
+#else /* NOT IBMPC_SYSTEM */
+     "\033[11~",
+     "\033[12~",
+     "\033[13~",
+     "\033[14~",
+     "\033[15~",
+     "\033[17~",
+     "\033[18~",
+     "\033[19~",
+     "\033[20~",
+     "\033[21~",
+     "\033[23~",
+     "\033[24~",
+#endif /* NOT IBMPC_SYSTEM */
+     "\033"
+}; /*}}}*/
+
+/* Key sequences we actually use, initialized by init_keysym_table */
+/* The first character denotes the length of the sequence.
+ * Additionally, the strings are nul-terminated. */
+static char EscapeSequences[NUMBER_OF_KEYNAMES][SLANG_MAX_KEYMAP_KEY_SEQ+2];
+
+/* This function has to be called once before the conversion function can be
+ * used. */
+void slrn_help_init_keysym_table (void) /*{{{*/
+{
+   int i;
+   for (i = 0; i<NUMBER_OF_KEYNAMES; i++)
+     {
+#ifdef REAL_UNIX_SYSTEM
+	if (*TermcapNames[i] != 0) /* try to find in termcap database */
+	  {
+	     char *s = SLtt_tgetstr (TermcapNames[i]);
+	     int len;
+	     if (s != NULL)
+	       {
+		  len = strlen(s);
+		  if (len<=SLANG_MAX_KEYMAP_KEY_SEQ)
+		    {
+		       strcpy(EscapeSequences[i]+1,s); /* safe */
+		       EscapeSequences[i][0] = len;
+		       continue;
+		    }
+	       }
+	  }
+#endif
+	/* Fall back to the compiled-in default */
+	strcpy(EscapeSequences[i]+1,DefaultSequences[i]); /* safe */
+	EscapeSequences[i][0] = strlen(DefaultSequences[i]);
+     }
+}
+/*}}}*/
+
+/* Returns a human-friendly string representation of the given key sequence.
+ * Please note that it is stored in a local static variable.
+ * May return NULL if the resulting string would be too large. */
+char *slrn_help_keyseq_to_string (char *key, int keylen) /*{{{*/
+{
+   const int maxlen = 30;
+   static char result[31]; /* maxlen+1 */
+   int ind = 0;
+   
+   while (keylen && (ind < maxlen))
+     {
+	int i;
+	for (i = 0; i < NUMBER_OF_KEYNAMES; i++)
+	  {
+/* On IBMPC_SYSTEM, "escape" sequences may begin with the nul character, which
+ * requires special case treatment. Sigh.
+ * We replaced nul with "^@" above so we can still use the str* functions */
+	     if ((EscapeSequences[i][0]<=keylen) &&
+		 (((*key == 0) && /* this part for IBMPC_SYSTEM */
+		   (EscapeSequences[i][0]>=2) &&
+		   (EscapeSequences[i][1] == '^') &&
+		   (EscapeSequences[i][2] == '@') &&
+		   !strncmp(EscapeSequences[i]+3,key+1, EscapeSequences[i][0]-2)) ||
+		  !strncmp(EscapeSequences[i]+1, key, EscapeSequences[i][0])))
+	       break;
+	  }
+	if (i == NUMBER_OF_KEYNAMES) /* no key name found */
+	  {
+	     if (*key < 32) /* non-printable */
+	       {
+		  char *ctrlstr = _("Ctrl-");
+		  int len = strlen(ctrlstr)+1;
+		  if (len > maxlen-ind)
+		    break; /* not enough memory */
+		  strcpy (result+ind, ctrlstr); /* safe */
+		  result[ind+len-1] = *key + '@';
+		  ind += len;
+		  key++;
+		  keylen--;
+	       }
+	     else
+	       {
+		  result[ind++] = *key++;
+		  keylen--;
+	       }
+	  }
+	else
+	  {
+	     int len = strlen(_(KeyNames[i]));
+	     if (len > maxlen-ind)
+	       break; /* not enough memory */
+	     strcpy(result+ind, _(KeyNames[i])); /* safe */
+	     ind += len;
+	     key += EscapeSequences[i][0];
+	     keylen -= EscapeSequences[i][0];
+	  }
+     }
+   
+   if (keylen)
+     return NULL;
+
+   result[ind] = 0;
+   return result;
+}
+/*}}}*/
+
+/* Returns the corresponding key sequence for a human-friendly representation.
+ * Please note that the result is stored in a local static variable and may be
+ * NULL if the sequence would be too large. */
+char *slrn_help_string_to_keyseq (char *s) /*{{{*/
+{
+   /* We're using a nul-terminated representation here */
+   static char result [SLANG_MAX_KEYMAP_KEY_SEQ+1];
+   int ind = 0;
+   int slen = strlen(s);
+   
+   while (slen && (ind <= SLANG_MAX_KEYMAP_KEY_SEQ))
+     {
+	char *end;
+	if ((*s == '<') && (NULL != (end = slrn_strchr (s,'>'))))
+	  {
+	     int i;
+	     int len = end-s-1;
+	     for (i = 0; i < NUMBER_OF_KEYNAMES; i++)
+	       {
+		  if ((KeyNameLengths[i] == len+2) &&
+		      !slrn_case_strncmp ((unsigned char*)s+1,
+					  (unsigned char*)KeyNames[i]+1, len))
+		    break;
+	       }
+	     if (i < NUMBER_OF_KEYNAMES)
+	       {
+		  if (EscapeSequences[i][0] > SLANG_MAX_KEYMAP_KEY_SEQ - ind)
+		    break; /* not enough memory */
+		  strncpy(result+ind, EscapeSequences[i]+1, EscapeSequences[i][0]);
+		  ind += EscapeSequences[i][0];
+		  s += len+2;
+		  slen -= len+2;
+		  continue;
+	       }
+	  }
+	/* by default, just copy the character */
+	result[ind++] = *s++;
+	slen--;
+     }
+
+   if (slen)
+     return NULL;
+   
+   result[ind] = 0;
+   return result;
+}
+/*}}}*/

@@ -1563,7 +1563,7 @@ void slrn_call_command (char *cmd) /*{{{*/
 
 /*}}}*/
 
-static int slrn_getkey (void)
+int slrn_getkey (void)
 {
    static char buf[32];
    static unsigned int buf_len;

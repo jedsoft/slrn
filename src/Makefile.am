@@ -27,7 +27,7 @@ EXTRA_DIST = art.h charmaps.h chmap.h clientlib.c clientlib.h group.h \
  slrndir.h slrnfeat.h sltcp.h snprintf.h startup.h ttymsg.h \
  util.h decode.h version.h vfile.h vms.h vmsmail.h xover.h DESCRIP.MMS \
  Makefile.g32 Makefile.os2 Makefile.w32 VMSMAKE.COM nntp.c sltcp.c spool.c \
- vms.c vmsmail.c art_sort.h ranges.h
+ vms.c vmsmail.c art_sort.h ranges.h help.h
 
 MOSTLYCLEANFILES = *~ config.h chkslang slrnpull stamp2 uudecode
 

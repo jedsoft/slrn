@@ -55,6 +55,7 @@
 #include "mime.h"
 #include "version.h"
 #include "hooks.h"
+#include "help.h"
 
 /*}}}*/
 
@@ -518,6 +519,9 @@ static void quit (int *code) /*{{{*/
 static void definekey (char *fun, char *key, char *map) /*{{{*/
 {
    SLKeyMap_List_Type *kmap;
+   char *convkey = slrn_help_string_to_keyseq(key);
+   if (convkey == NULL)
+     convkey = key;
    
    if (!strcmp (map, "readline"))
      map = "ReadLine";
@@ -533,11 +537,11 @@ static void definekey (char *fun, char *key, char *map) /*{{{*/
      {
 	SLKeymap_Function_Type *tmp = kmap->functions;
 	kmap->functions = Slrn_Custom_Readline_Functions;
-	SLang_define_key (key, fun, kmap);
+	SLang_define_key (convkey, fun, kmap);
 	kmap->functions = tmp;
      }
    else
-     SLang_define_key (key, fun, kmap);
+     SLang_define_key (convkey, fun, kmap);
 }
 
 /*}}}*/
@@ -545,6 +549,10 @@ static void definekey (char *fun, char *key, char *map) /*{{{*/
 static void undefinekey (char *key, char *map) /*{{{*/
 {
    SLKeyMap_List_Type *kmap;
+   
+   char *convkey = slrn_help_string_to_keyseq(key);
+   if (convkey == NULL)
+     convkey = key;
    
    if (!strcmp (map, "readline"))
      map = "ReadLine";
@@ -555,7 +563,7 @@ static void undefinekey (char *key, char *map) /*{{{*/
 	return;
      }
    
-   SLang_undefine_key (key, kmap);
+   SLang_undefine_key (convkey, kmap);
 }
 
 /*}}}*/

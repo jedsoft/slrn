@@ -365,44 +365,38 @@ mono verbatim	        "none"
 %
 
 % Cursor movement:
-setkey group line_down        "\eOB"   % Go to the next group
-setkey group line_down        "\e[B"
+setkey group line_down        "<Down>"   % Go to the next group
 setkey group line_down        "^N"
-setkey group line_up          "\eOA"   % Go to the previous group
-setkey group line_up          "\e[A"
+setkey group line_up          "<Up>"   % Go to the previous group
 setkey group line_up          "^P"
 setkey group page_down        "^V"     % Scroll to the next page
-setkey group page_down        "\e[6~"
-setkey group page_down        "\e[G"       % (FreeBSD keycode)
+setkey group page_down        "<PageDown>"
 setkey group page_down        "^D"
-setkey group page_up          "\eV"    % Scroll to the previous page
-setkey group page_up          "\e[5~"
-setkey group page_up          "\e[I"       % (FreeBSD keycode)
+setkey group page_up          "<Esc>V"    % Scroll to the previous page
+setkey group page_up          "<PageUp>"
 setkey group page_up          "^U"
-setkey group bob              "\e<"    % Go to the bottom of the list
-setkey group bob              "^K\eOB"
-setkey group bob              "^K\e[B"
-setkey group eob              "\e>"    % Go to the top of the list
-setkey group eob              "^K\eOB"
-setkey group eob              "^K\e[B"
+setkey group bob              "<Esc><"    % Go to the bottom of the list
+setkey group bob              "^K<Up>"
+setkey group eob              "<Esc>>"    % Go to the top of the list
+setkey group eob              "^K<Down>"
 setkey group group_search_backward "\\"% Group keyword search backward
 setkey group group_search_forward  "/" % Group keyword search forward
 
 % Actions:
-setkey group select_group     " "      % Enter the current newsgroup
-setkey group select_group     "\r"
+setkey group select_group     "<Space>"      % Enter the current newsgroup
+setkey group select_group     "<Return>"
 setkey group post             "P"      % Post an article
-setkey group post_postponed   "\eP"    % Post or edit a postponed article
+setkey group post_postponed   "<Esc>P"    % Post or edit a postponed article
 setkey group refresh_groups   "G"      % Get new news from server
 setkey group toggle_scoring   "K"      % Select scoring mode
 setkey group repeat_last_key  "."      % Repeat last key sequence
-setkey group evaluate_cmd     "^X\e"   % Read line and interpret it as S-Lang
+setkey group evaluate_cmd     "^X<Esc>"   % Read line and interpret it as S-Lang
 setkey group suspend          "^Z"     % Suspend slrn
 setkey group quit             "Q"      % Quit slrn
 
 % Group management:
 setkey group catchup          "C"      % Mark all articles as read
-setkey group uncatchup        "\eu"    % Mark all articles as unread
+setkey group uncatchup        "<Esc>u"    % Mark all articles as unread
 setkey group add_group        "a"      % Add a new newsgroup
 setkey group subscribe        "S"      % Subscribe to the current newsgroup
 setkey group unsubscribe      "U"      % Unsubscribe from the current newsgroup
@@ -411,7 +405,7 @@ setkey group transpose_groups "^X^T"   % Transpose position of groups
 setkey group save_newsrc      "X"      % Force a save of the newsrc file
 
 % Display:
-setkey group toggle_group_formats "\033A" % Toggle group display formats
+setkey group toggle_group_formats "<Esc>A" % Toggle group display formats
 setkey group toggle_hidden    "l"      % Toggle display of hidden groups
 setkey group toggle_list_all  "L"      % Toggle listing of unsubscribed groups
 setkey group redraw           "^L"     % Redraw the screen
@@ -426,22 +420,20 @@ setkey group help             "?"      % Display a help screen
 setkey article next                    "n"  % next unread article
 setkey article previous                "p"  % previous unread article
 setkey article skip_to_next_group      "N"  % go to the next group
-setkey article skip_to_next_group      "\e\e[C"
-setkey article skip_to_next_group      "\e\eOC"
-setkey article skip_to_previous_group  "\e\e[D"  % go to the previous group
-setkey article skip_to_previous_group  "\e\eOD"
+setkey article skip_to_next_group      "<Esc><Right>"
+setkey article skip_to_previous_group  "<Esc><Left>"  % go to the previous group
 setkey article next_high_score         "!"  % next article with high score
 setkey article next_same_subject       "="  % next article with same subject
 setkey article goto_last_read          "L"  % go to the last read article
 
 % Actions:
 setkey article post                 "P"		% Post a new article
-setkey article post_postponed       "\eP"	% Post/edit a postponed article
+setkey article post_postponed       "<Esc>P"	% Post/edit a postponed article
 setkey article followup             "f"		% Post a followup
 setkey article reply                "r"		% Reply to poster
 setkey article forward              "F"		% Forward posting via mail
-setkey article supersede            "\e^S"	% Supersede article
-setkey article cancel               "\e^C"	% Cancel article
+setkey article supersede            "<Esc>^S"	% Supersede article
+setkey article cancel               "<Esc>^C"	% Cancel article
 setkey article save                 "O"		% Save article
 setkey article pipe                 "|"		% Pipe article
 setkey article print                "y"		% Print article
@@ -451,41 +443,33 @@ setkey article quit                 "q"		% Quit slrn
 setkey article fast_quit            "Q"		% Quit slrn immediately
 
 % Moving in the article pager:
-setkey article article_line_down    "\eOD"	% Scroll article down one line
-setkey article article_line_down    "\e[D"
-setkey article article_line_down    "\r"
-setkey article article_line_up      "\e\eOB"	% Scroll article up one line
-setkey article article_line_up      "\e\e[B"
-setkey article article_page_down    " "		% Scroll article down one page
-setkey article article_page_up      "^?"	% Scroll article up one page
+setkey article article_line_down    "<Esc><Down>"	% Scroll article down one line
+setkey article article_line_down    "<Return>"
+setkey article article_line_up      "<Esc><Up>"	% Scroll article up one line
+setkey article article_page_down    "<Space>"	% Scroll article down one page
+setkey article article_page_up      "<Backspace>"	% Scroll article up one page
 setkey article article_page_up      "b"		% Scroll article up one page
 setkey article article_eob          ">"		% Move to the end of the article
 setkey article article_bob          "<"		% Move to the beginning
-setkey article article_left         "\eOD"	% Pan article to the left
-setkey article article_left         "\e[D"
-setkey article article_right        "\eOC"	% Pan article to the right
-setkey article article_right        "\e[C"
+setkey article article_left         "<Left>"	% Pan article to the left
+setkey article article_right        "<Right>"	% Pan article to the right
 setkey article article_search       "/"		% Search forward in the article
-setkey article skip_quotes          "\t"	% Skip beyond quoted text
+setkey article skip_quotes          "<Tab>"	% Skip beyond quoted text
 setkey article forward_digest       "g"		% Skip to next digest
 
 % Moving in the header display:
-setkey article header_line_down      "\eOB"	% Move to next article
-setkey article header_line_down      "\e[B"
+setkey article header_line_down      "<Down>"	% Move to next article
 setkey article header_line_down      "^N"
-setkey article header_line_up        "\eOA"	% Move to previous article
-setkey article header_line_up        "\e[A"
+setkey article header_line_up        "<Up>"	% Move to previous article
 setkey article header_line_up        "^P"
 setkey article header_page_down      "^V"       % Scroll down one page
-setkey article header_page_down      "\e[6~"
-setkey article header_page_down      "\e[G"         % (FreeBSD keycode)
+setkey article header_page_down      "<PageDown>"
 setkey article header_page_down      "^D"
-setkey article header_page_up        "\eV"	% Scroll up one page
-setkey article header_page_up        "\e[5~"
-setkey article header_page_up        "\e[I"         % (FreeBSD keycode)
+setkey article header_page_up        "<Esc>V"	% Scroll up one page
+setkey article header_page_up        "<PageUp>"
 setkey article header_page_up        "^U"
-setkey article header_eob            "\e>"	% Go to last article in group
-setkey article header_bob            "\e<"	% Go to first article in group
+setkey article header_eob            "<Esc>>"	% Go to last article in group
+setkey article header_bob            "<Esc><"	% Go to first article in group
 setkey article goto_article          "j"	% Move to article (number)
 setkey article author_search_forward   "a"	% Author search forward
 setkey article author_search_backward  "A"	% Author search backward
@@ -495,21 +479,21 @@ setkey article subject_search_backward "S"	% Subject search backward
 % Marking as read/unread:
 setkey article delete                  "d"	% Mark article as read
 setkey article undelete                "u"	% Mark article as unread
-setkey article delete_thread           "\ed"	% Mark (Sub-)Thread as read
+setkey article delete_thread           "<Esc>d"	% Mark (Sub-)Thread as read
 setkey article catchup_all             "c"	% Mark all articles as read
-setkey article catchup_all             "\ec"
-setkey article catchup                 "\eC"	% Catchup (up to this article)
-setkey article uncatchup_all           "\eu"	% Mark all articles as unread
-setkey article uncatchup               "\eU"	% Uncatchup (up to this article)
+setkey article catchup_all             "<Esc>c"
+setkey article catchup                 "<Esc>C"	% Catchup (up to this article)
+setkey article uncatchup_all           "<Esc>u"	% Mark all articles as unread
+setkey article uncatchup               "<Esc>U"	% Uncatchup (up to this article)
 setkey article expunge                 "x"	% Remove all read articles
 
 % Display properties:
 setkey article toggle_headers          "t"	% Full headers (on/off)
-setkey article toggle_rot13            "\eR"	% Toggle ROT-13 decryption
+setkey article toggle_rot13            "<Esc>R"	% Toggle ROT-13 decryption
 setkey article toggle_quotes           "T"	% Display quoted lines (on/off)
 setkey article toggle_signature        "\\"	% Show signature (on/off)
 setkey article wrap_article            "W"	% Wrap long lines (on/off)
-setkey article show_spoilers           "\e?"	% Reveal spoilers (on/off)
+setkey article show_spoilers           "<Esc>?"	% Reveal spoilers (on/off)
 setkey article toggle_pgpsignature     "]"	% Show PGP signature (on/off)
 setkey article toggle_verbatim_marks   "["	% Show verbatim marks (on/off)
 setkey article enlarge_article_window  "^"	% Enlarge the article window
@@ -517,9 +501,9 @@ setkey article shrink_article_window   "^^"	% Shrink the article window
 setkey article zoom_article_window     "z"	% Maximize/Unmaximize article
 setkey article hide_article            "h"	% Hide/Show the article window
 setkey article browse_url              "U"	% Search for URL and follow it
-setkey article toggle_sort             "\eS"	% Select threading method
-setkey article toggle_collapse_threads "\et"	% Collapse/Uncollapse thread
-setkey article toggle_header_formats   "\ea"	% Toggle header display formats
+setkey article toggle_sort             "<Esc>S"	% Select threading method
+setkey article toggle_collapse_threads "<Esc>t"	% Collapse/Uncollapse thread
+setkey article toggle_header_formats   "<Esc>a"	% Toggle header display formats
 setkey article redraw                  "^L"	% Redraw screen
 setkey article redraw                  "^R"	% Redraw screen
 setkey article help                    "?"	% Display help screen
@@ -527,17 +511,17 @@ setkey article help                    "?"	% Display help screen
 % Miscellaneous actions:
 setkey article create_score            "K"	% Create a scorefile entry
 setkey article view_scores             "v"      % Show which rules matched
-setkey article locate_article          "\el"	% Locate article by Message-ID
-setkey article get_children_headers    "\e^P"	% Find all children
-setkey article get_parent_header       "\ep"	% Reconstruct thread
+setkey article locate_article          "<Esc>l"	% Locate article by Message-ID
+setkey article get_children_headers    "<Esc>^P"	% Find all children
+setkey article get_parent_header       "<Esc>p"	% Reconstruct thread
 setkey article mark_spot               ";"	% Mark current article position
 setkey article exchange_mark           ","	% Return to marked article
 setkey article tag_header              "#"	% Numerically tag article
-setkey article untag_headers           "\e#"	% Remove all numerical tags
+setkey article untag_headers           "<Esc>#"	% Remove all numerical tags
 setkey article toggle_header_tag       "*"	% Set/remove header tag
 setkey article repeat_last_key         "."	% Repeat last key sequence
 setkey article grouplens_rate_article  "0"	% Rate article with grouplens
-setkey article evaluate_cmd            "^X\e"   % Interpret line as S-Lang
+setkey article evaluate_cmd            "^X<Esc>"   % Interpret line as S-Lang
 
 %
 %% Command prompt key bindings
@@ -545,26 +529,15 @@ setkey article evaluate_cmd            "^X\e"   % Interpret line as S-Lang
 
 setkey readline bol		 "^A"		% Beginning of line
 setkey readline eol		 "^E"		% End of line
-setkey readline right		 "\e[C"		% Move right
-setkey readline left		 "\e[D"		% Move left
+setkey readline right		 "<Right>"	% Move right
+setkey readline left		 "<Left>"	% Move left
 setkey readline bdel		 "^H"		% Delete backward
 setkey readline bdel		 "^?"		% Delete Backward
 setkey readline del		 "^D"		% Delete Foreword
 setkey readline delbol		 "^U"		% Delete to Beginning of line
 setkey readline delbow		 "^W"		% Delete to Beginning of word
 setkey readline deleol		 "^K"		% Delete to End of line
-setkey readline trim		 "\e/"		% Trim whitespace
+setkey readline trim		 "<Esc>/"	% Trim whitespace
 setkey readline quoted_insert	 "^Q"		% Quoted insert
-setkey readline complete	 "\t"		% Complete filename
+setkey readline complete	 "<Tab>"	% Complete filename
 setkey readline cycle		 " "		% Cycle among filenames
-
-% This is a special hack for HP terminals to get the arrow keys working.  
-% Are there any other terminals being used with non-ANSI arrow keys?
-#if$TERM hpterm
-  setkey group line_up "\eA"
-  setkey group line_down "\eB"
-  setkey article header_line_down "\eB"
-  setkey article header_line_up "\eA"
-  setkey article article_left "\eD"
-  setkey article article_right "\eC"
-#endif

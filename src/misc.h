@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -137,10 +137,6 @@ extern int Slrn_Mail_Editor_Is_Mua;
 extern char *Slrn_Failed_Post_Filename;
 
 extern char *Slrn_Top_Status_Line;
-
-extern void slrn_push_keymap (SLKeyMap_List_Type *);
-extern void slrn_pop_keymap (void);
-extern SLKeyMap_List_Type *Slrn_Current_Keymap;
 
 extern int Slrn_Abort_Unmodified;
 #endif				       /* _SLRN_MISC_H */

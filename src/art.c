@@ -64,6 +64,7 @@
 #include "snprintf.h"
 #include "mime.h"
 #include "hooks.h"
+#include "help.h"
 
 #if SLRN_HAS_UUDEVIEW
 # include <uudeview.h>
@@ -293,41 +294,6 @@ static unsigned long time_diff(struct timeval t1, struct timeval t2)
 #endif
 #endif
 /*}}}*/
-
-/*{{{ utility functions */
-
-static char *map_char_to_string (int ch) /*{{{*/
-{
-   static char charbuf[16];
-   /* Note to translators:
-    * Make sure your translation is shorter than 16 characters. */
-   const char *fmtstr = _("Ctrl-%c");
-   
-   switch (ch)
-     {
-      case ' ': 	return _("SPACE");
-      case '\t': 	return _("TAB");
-      case '\r': 	return _("RETURN");
-      case 27: 		return _("ESCAPE");
-      case 127: 	return _("DELETE");
-      case 8: 		return _("BACKSPACE");
-     }
-
-   if (ch < 32)
-     {
-	if (strlen (fmtstr) > 16) fmtstr = "Ctrl-%c";
-	sprintf (charbuf, fmtstr, ch + '@'); /* safe */
-	return charbuf;
-     }
-   
-   sprintf (charbuf, "'%c'", ch); /* safe */
-   return charbuf;
-}
-
-/*}}}*/
-
-/*}}}*/
-
 
 /*{{{ SIGWINCH and window resizing functions */
 
@@ -1296,7 +1262,7 @@ int slrn_get_next_pagedn_action (void)
    
 static void art_pagedn (void) /*{{{*/
 {
-   unsigned char ch, ch1;
+   unsigned char ch;
    char *msg = NULL;
    
    if (Slrn_Current_Header == NULL) return;
@@ -1308,7 +1274,6 @@ static void art_pagedn (void) /*{{{*/
 	return;
      }
 #endif
-   
    
    if ((Article_Visible == 0) || (At_End_Of_Article != Slrn_Current_Header))
      {
@@ -1340,25 +1305,44 @@ static void art_pagedn (void) /*{{{*/
      }
    else if (Slrn_Query_Next_Article)
      msg = _("At end of article, press %s for next unread article.");
-   
-   if ((ch1 = SLang_Last_Key_Char) == 27) ch1 = ' ';
-   ch = ch1;
-	
+
    if (msg != NULL)
      {
-	slrn_message_now (msg, map_char_to_string (ch));
-	ch = SLang_getkey ();
+	char *keyseq = slrn_help_keyseq_from_function ("article_page_down", Slrn_Article_Keymap);
+	if (keyseq != NULL)
+	  {
+	     SLang_Key_Type *key;
+	     char *keystr = slrn_help_keyseq_to_string(keyseq+1,*keyseq-1);
+	     if (keystr == NULL)
+	       keystr = SLang_make_keystring((unsigned char*) keyseq);
+	     
+	     slrn_message_now (msg, keystr);
+	     key = SLang_do_key (Slrn_Article_Keymap, slrn_getkey);
+	     if (key == NULL) return;
+	     if ((key->type != SLKEY_F_INTRINSIC) ||
+		 (key->f.f != (FVOID_STAR) art_pagedn))
+	       {
+		  SLang_ungetkey_string (key->str+1, *(key->str)-1);
+		  return;
+	       }
+	  }
+	else /* article_page_down is unbound */
+	  {
+	     slrn_message_now (msg, _("<Space>"));
+	     ch = SLang_getkey ();
+	     if (ch != ' ')
+	       {
+		  SLang_ungetkey (ch);
+		  return;
+	       }
+	  }
      }
-   
-   if (ch == ch1)
-     {
-	At_End_Of_Article = NULL;
-	if (Slrn_Current_Header->next != NULL) art_next_unread ();
-	else skip_to_next_group ();
-     }
-   else SLang_ungetkey (ch);
+
+   At_End_Of_Article = NULL;
+   if (Slrn_Current_Header->next != NULL) art_next_unread ();
+   else skip_to_next_group ();
 }
-   
+
 
 /*}}}*/
 
@@ -3733,7 +3717,7 @@ int slrn_next_unread_header (int skip_without_body) /*{{{*/
 static void art_next_unread (void) /*{{{*/
 {
    char ch;
-   unsigned char ch1;
+   char *keyseq;
    
    if (slrn_next_unread_header (1))
      {
@@ -3749,18 +3733,36 @@ static void art_next_unread (void) /*{{{*/
    
    if (Slrn_Batch) return;
    
-   ch1 = SLang_Last_Key_Char;
-   if (ch1 == 27) ch1 = 'n';
-   slrn_message_now (_("No following unread articles.  Press %s for next group."),
-		     map_char_to_string (ch1));
-   
-   ch = SLang_getkey ();
-   
-   if ((unsigned char)ch == ch1)
+   keyseq = slrn_help_keyseq_from_function ("next", Slrn_Article_Keymap);
+   if (keyseq != NULL)
      {
-	skip_to_next_group ();
+	SLang_Key_Type *key;
+	char *keystr = slrn_help_keyseq_to_string(keyseq+1,*keyseq-1);
+	if (keystr == NULL)
+	  keystr = SLang_make_keystring((unsigned char*)keyseq);
+	slrn_message_now (_("No following unread articles.  Press %s for next group."),
+			  keystr);
+	key = SLang_do_key (Slrn_Article_Keymap, slrn_getkey);
+	if (key == NULL) return;
+	if ((key->type != SLKEY_F_INTRINSIC) ||
+	    (key->f.f != (FVOID_STAR) art_next_unread))
+	  {
+	     SLang_ungetkey_string (key->str+1, *(key->str)-1);
+	     return;
+	  }
      }
-   else SLang_ungetkey (ch);
+   else /* next is unbound */
+     {
+	slrn_message_now (_("No following unread articles.  Press %s for next group."), "n");
+	ch = SLang_getkey ();
+	if (ch != 'n')
+	  {
+	     SLang_ungetkey (ch);
+	     return;
+	  }
+     }
+   
+   skip_to_next_group ();
 }
 
 /*}}}*/

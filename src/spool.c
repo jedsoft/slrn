@@ -1801,7 +1801,7 @@ Slrn_Range_Type *slrn_spool_get_requested_ranges (char *group) /*{{{*/
  * returns 0 on success, -1 otherwise */
 int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 {
-   char *old_file;
+   char *old_file = NULL;
    FILE *fp;
    VFILE *vp;
    char *vline;

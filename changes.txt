@@ -8,13 +8,25 @@ Changes since 0.9.8.0
   * Always apply scoring rules in the order given in the scorefile.
   * When reading cross-posts, slrn sometimes marked additional articles in
     the other group(s) as read (Joerg Lueders).
+  * slrnpull no longer posts backup copies (*~) of files you edited manually
+    in the out.going directory.
+  * slrnpull tries to write .headers files on interrupts.
+  * The "Has-Body" scoring field sometimes did not work correctly.
+  * When retrieving article children, headers without body were not marked.
 
-  In true offline mode, slrnpull can now automatically retrieve bodies of
-  articles that get a high score value (--fetch-score option).
+   In the config file (and the corresponding intrinsic functions), the
+   following names now denote special function keys: <PageUp> <PageDown>
+   <Up> <Down> <Right> <Left> <Delete> <BackSpace> <Insert> <Home> <End>
+   <Enter> <Return> <Tab> <Space> <Esc> and <F1> through <F12>
+   If using these names does not seem to work for you, please make sure your
+   terminfo settings are correct.
 
-  Added Swedish translation (Johan Svedberg)
+   In true offline mode, slrnpull can now automatically retrieve bodies of
+   articles that get a high score value (--fetch-score option).
+
+   Added Swedish translation (Johan Svedberg)
   
-  Make hide_pgpsignature hide GnuPGs optional "NotDashEscaped" lines.
+   Make hide_pgpsignature hide GnuPGs optional "NotDashEscaped" lines.
 
 Changes since 0.9.7.4
 
