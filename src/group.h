@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -18,6 +18,9 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
+
+#include "ranges.h"
+
 extern int slrn_select_group_mode (void);
 extern void slrn_group_quit (void);
 extern int slrn_add_group (char *);
@@ -45,13 +48,6 @@ extern void slrn_hide_current_group (void);
 
 extern void slrn_intr_get_group_order (void);
 extern void slrn_intr_set_group_order (void);
-
-typedef struct Slrn_Range_Type 
-{
-   struct Slrn_Range_Type *next;
-   struct Slrn_Range_Type *prev;
-   int min, max;
-} Slrn_Range_Type;
 
 typedef struct Slrn_Group_Type
 {
@@ -82,8 +78,7 @@ typedef struct Slrn_Group_Type
 Slrn_Group_Type;
 
 extern Slrn_Group_Type *Slrn_Group_Current_Group;
-/* See important comment in group.c about these. */
-extern void slrn_add_group_ranges (Slrn_Group_Type *, int, int);
+extern void slrn_group_recount_unread (Slrn_Group_Type *);
 extern void slrn_add_group_requests (Slrn_Group_Type *, int, int);
 
 extern char *Slrn_Group_Help_Line;

@@ -7,7 +7,7 @@ bin_PROGRAMS = slangversion slrn $(SLRNPULL)
 slrn_SOURCES = art.c chmap.c editscore.c group.c grplens.c hash.c help.c \
  hooks.c interp.c menu.c mime.c misc.c post.c score.c server.c sortdate.c \
  slrn.c startup.c ttymsg.c util.c decode.c xover.c slrndir.c version.c \
- print.c art_misc.c vfile.c snprintf.c art_sort.c
+ print.c art_misc.c vfile.c snprintf.c art_sort.c ranges.c
 
 slrnpull_SOURCES = nntplib.c slrndir.c slrnpull.c snprintf.c ttymsg.c util.c
 slrnpull_DEPENDENCIES = stamp2
@@ -26,7 +26,7 @@ EXTRA_DIST = art.h charmaps.h chmap.h clientlib.c clientlib.h group.h \
  slrndir.h slrnfeat.h sltcp.h snprintf.h startup.h ttymsg.h \
  util.h decode.h version.h vfile.h vms.h vmsmail.h xover.h DESCRIP.MMS \
  Makefile.g32 Makefile.os2 Makefile.w32 VMSMAKE.COM nntp.c sltcp.c spool.c \
- vms.c vmsmail.c art_sort.h
+ vms.c vmsmail.c art_sort.h ranges.h
 
 MOSTLYCLEANFILES = *~ config.h chkslang slrnpull stamp2 uudecode
 

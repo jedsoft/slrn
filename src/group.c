@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -130,111 +130,33 @@ static void remove_group_entry (Slrn_Group_Type *);
 
 /*{{{ Functions that deal with Group Range */
 
-
-/* Note: This routine is NOT very robust.  It assumes that this function
- * is called in an ordered way such that the implied range is always increasing.
- * This is why the range is re-built in art.c:update_ranges.  Yes, it is ugly.
- * See also slrn_group_mark_article_as_read for something more random.
- */
-void slrn_add_group_ranges (Slrn_Group_Type *g, int min, int max) /*{{{*/
+static int count_unread (Slrn_Range_Type *r)
 {
-   Slrn_Range_Type *r, *next;
-   int unread;
-   
-   if ((max < min) || (g == NULL)) return;
-   
-   /* The first one is range of articles on server so expand max to cover
-    * the range of articles nolonger available.
-    */
-   next = &g->range;
-   if (max < next->min) 
+   int unread = r->max;
+
+   while (r->next != NULL)
      {
-	/* If we have already expanded the range up to range currently available
-	 * at server and we are now trying to add another range below available
-	 * range, do not bother.
-	 */
-	if (next->next != NULL) return;
-	max = next->min - 1;
+	r = r->next;
+	unread -= r->max - r->min + 1;
      }
    
-   /* Count number unread */
-   unread = next->max;
-   while (next->next != NULL)
-     {
-	next = next->next;
-	unread -= next->max - next->min + 1;
-     }
-   
-   /* check to see if a merge is possible */
-   if ((min <= next->max + 1)
-       && (next != &g->range))
-     {
-	next->max = max;
-     }
-   else
-     {
-	r = (Slrn_Range_Type *) slrn_safe_malloc (sizeof(Slrn_Range_Type));
-	
-	r->next = next->next;
-	next->next = r;
-	r->prev = next;
-	
-	r->min = min;
-	r->max = max;
-	
-#if 0
-	/* For this case, min should be 1 */
-	if (next == &g->range)
-	  {
-	     min = r->min = 1;
-	  }
-#endif
-     }
-   
-   unread -= max - min + 1;
-   
-   if (unread < 0) unread = 0;
-   g->unread = unread;
-   Slrn_Groups_Dirty |= 1;
+   return unread;
 }
 
-/*}}}*/
+void slrn_group_recount_unread (Slrn_Group_Type *g)
+{
+   /* Make sure old (unavailable) messages are marked read */
+   if (g->range.min>1)
+     g->range.next = slrn_ranges_add (g->range.next, 1, g->range.min-1);
+   g->unread = count_unread (&g->range);
+   if (g->unread < 0)
+     g->unread = 0;
+}   
 
-/* This routine also assumes that the implied range increases, so you need
- * to re-build the request list if you want to insert an article. */
 void slrn_add_group_requests (Slrn_Group_Type *g, int min, int max) /*{{{*/
 {
-   Slrn_Range_Type *last, *r;
-   
    if ((max < min) || (g == NULL)) return;
-   
-   if ((last = g->requests) != NULL)
-     {
-	while (last->next != NULL) last = last->next;
-	
-	/* check to see if a merge is possible */
-	if (min <= last->max + 1)
-	  {
-	     last->max = max;
-	     return;
-	  }
-     }
-   
-   r = (Slrn_Range_Type *) slrn_safe_malloc (sizeof(Slrn_Range_Type));
-   r->min = min;
-   r->max = max;
-   r->next = NULL;
-   
-   if (g->requests == NULL)
-     {
-	r->prev = NULL;
-	g->requests = r;
-     }
-   else
-     {
-	r->prev = last;
-	last->next = r;
-     }
+   g->requests = slrn_ranges_add (g->requests, min, max);
    Slrn_Groups_Dirty |= 2;
 }
 /*}}}*/
@@ -256,50 +178,31 @@ static int is_article_requested (Slrn_Group_Type *g, long num) /*{{{*/
 
 static void group_mark_article_as_read (Slrn_Group_Type *g, long num) /*{{{*/
 {
-   Slrn_Range_Type *r, *r1, *newr;
+   Slrn_Range_Type *r;
    
    /* Never mark articles as read if their body has been requested. */
    if (is_article_requested (g, num)) return;
    
-   r1 = &g->range;
-   if (r1->max < num)  /* not at server yet so update our data */
+   r = &g->range;
+   if (r->max < num)  /* not at server yet so update our data */
      {
-	r1->max = num;
+	r->max = num;
 	g->unread += 1;
      }
    
-   r = r1->next;
+   r = r->next;
    
    while (r != NULL)
      {
 	/* Already read */
 	if ((num <= r->max) && (num >= r->min)) return;
 	if (num < r->min) break;
-	r1 = r;
 	r = r->next;
      }
    
    if (g->unread > 0) g->unread -= 1;
    Slrn_Groups_Dirty |= 1;
-   if ((r != NULL) && (r->min == num + 1))
-     {
-	r->min = num;
-	return;
-     }
-   
-   if ((r1->max + 1 == num) && (r1 != &g->range))
-     {
-	r1->max = num;
-	return;
-     }
-   
-   newr = (Slrn_Range_Type *) slrn_safe_malloc (sizeof (Slrn_Range_Type));
-   
-   newr->min = newr->max = num;
-   newr->next = r;
-   if (r != NULL) r->prev = newr;
-   newr->prev = r1;
-   r1->next = newr;
+   g->range.next = slrn_ranges_add (g->range.next, num, num);   
 }
 
 /*}}}*/
@@ -462,33 +365,9 @@ static int group_sync_group_with_server (Slrn_Group_Type *g, int *minp, int *max
 
 /*}}}*/
 
-static void free_group_ranges (Slrn_Group_Type *g) /*{{{*/
-{
-   Slrn_Range_Type *r, *rnext;
-   
-   if (g == NULL) return;
-   
-   r = g->range.next;
-   while (r != NULL)
-     {
-	rnext = r->next;
-	SLFREE (r);
-	r = rnext;
-     }
-   g->range.next = NULL;
-}
-
-/*}}}*/
-
 static void free_group_requests (Slrn_Group_Type *g) /*{{{*/
 {
-   Slrn_Range_Type *r = g->requests;
-   while (r != NULL)
-     {
-	Slrn_Range_Type *rnext = r->next;
-	SLFREE (r);
-	r = rnext;
-     }
+   slrn_ranges_free (g->requests);
    g->requests = NULL;
 }
 /*}}}*/
@@ -498,7 +377,8 @@ static void free_newsgroup_type (Slrn_Group_Type *g)
    if (g == NULL)
      return;
    slrn_free (g->descript);
-   free_group_ranges (g);
+   slrn_ranges_free (g->range.next);
+   g->range.next = NULL;
    free_group_requests (g);
    slrn_free (g->group_name);
    slrn_free ((char *) g);
@@ -514,9 +394,15 @@ static void free_unsubscribed_group_type (Unsubscribed_Slrn_Group_Type *ug)
 
 void slrn_catchup_group (void) /*{{{*/
 {
-   if (Slrn_Group_Current_Group == NULL) return;
-   free_group_ranges (Slrn_Group_Current_Group);
-   slrn_add_group_ranges (Slrn_Group_Current_Group, 1, Slrn_Group_Current_Group->range.max);
+   if ((Slrn_Group_Current_Group == NULL)||
+       (Slrn_Group_Current_Group->unread==0))
+     return;
+   
+   Slrn_Group_Current_Group->range.next =
+     slrn_ranges_add(Slrn_Group_Current_Group->range.next, 1,
+		     Slrn_Group_Current_Group->range.max);
+   Slrn_Group_Current_Group->unread = 0;
+   Slrn_Groups_Dirty |= 1;
    Slrn_Group_Current_Group->flags |= GROUP_TOUCHED;
 }
 
@@ -526,8 +412,10 @@ void slrn_uncatchup_group (void) /*{{{*/
 {
    if (Slrn_Group_Current_Group == NULL)
      return;
-   free_group_ranges (Slrn_Group_Current_Group);
-   slrn_add_group_ranges (Slrn_Group_Current_Group, 1, 1);
+   slrn_ranges_free (Slrn_Group_Current_Group->range.next);
+   Slrn_Group_Current_Group->range.next = NULL;
+   slrn_group_recount_unread (Slrn_Group_Current_Group);
+   Slrn_Groups_Dirty |= 1;
    Slrn_Group_Current_Group->flags |= GROUP_TOUCHED;
 }
 
@@ -725,24 +613,8 @@ static int add_group (char *name, unsigned int len, /*{{{*/
    /* find ranges for this */
    name += len;			       /* skip past name */
    if (*name) name++;			       /* skip colon */
-   while (1)
-     {
-	int min, max;
-	/* skip white space and delimiters */
-	while (((ch = *name) != 0) && ((ch <= ' ') || (ch == ','))) name++;
-	if ((ch < '0') || (ch > '9')) break;
-	min = atoi (name++);
-	while (((ch = *name) != 0) && (ch >= '0') && (ch <= '9')) name++;
-	if (ch == '-')
-	  {
-	     name++;
-	     max = atoi (name);
-	     while (((ch = *name) != 0) && (ch >= '0') && (ch <= '9')) name++;
-	  }
-	else max = min;
-	
-	slrn_add_group_ranges (Slrn_Group_Current_Group, min, max);
-     }
+   g->range.next = slrn_ranges_from_newsrc_line (name);
+   slrn_group_recount_unread (g);
 
    if ((g->range.next != NULL)
        && (g->range.next->min < g->unread)
@@ -2950,34 +2822,19 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
 	max = g->range.max;
 	if (r != NULL)
 	  {
+	     int max_newsrc_number=0;
+	     /* Make this check because the unsubscribed group
+	      * range may not have been initialized from the server.
+	      */
+	     if ((max != -1) && (g->range.min != -1)
+		 && ((g->flags & GROUP_UNSUBSCRIBED) == 0))
+	       max_newsrc_number = max;
+	     
 	     if (EOF == putc (' ', fp))
 	       goto write_error;
-	     
-	     while (1)
-	       {
-		  /* Make this check because the unsubscribed group
-		   * range may not have been initialized from the server.
-		   */
-		  if ((max != -1) && (g->range.min != -1)
-		      && ((g->flags & GROUP_UNSUBSCRIBED) == 0))
-		    {
-		       if (r->min > max) break;
-		       if (r->max > max) r->max = max;
-		    }
-		  
-		  if (r->min != r->max)
-		    {
-		       if (fprintf (fp, "%d-%d", r->min, r->max) < 0)
-			 goto write_error;
-		    }
-		  else if (fprintf (fp, "%d", r->min) < 0)
-		    goto write_error;
-		  
-		  r = r->next;
-		  if (r == NULL) break;
-		  if (EOF == putc (',', fp))
-		    goto write_error;
-	       }
+
+	     if (-1 == slrn_ranges_to_newsrc_file (r, max_newsrc_number, fp))
+	       goto write_error;
 	  }
 	else if (g->range.min == 2)
 	  {

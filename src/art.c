@@ -6181,155 +6181,57 @@ static void toggle_verbatim (void) /*{{{*/
 /*}}}*/
 /*}}}*/
 
-static void free_ranges (Slrn_Range_Type *r) /*{{{*/
-{
-   while (r != NULL)
-     {
-	Slrn_Range_Type *r_next = r->next;
-	SLFREE (r);
-	r = r_next;
-     }
-}
-/*}}}*/
-
-/* Returns 0 if the given ranges are equal */
-static int compare_ranges (Slrn_Range_Type *a, Slrn_Range_Type *b) /*{{{*/
-{
-   while ((a != NULL) && (b != NULL)
-	  && (a->min == b->min)
-	  && (a->max == b->max))
-     {
-	a = a->next;
-	b = b->next;
-     }
-   
-   return ((a == NULL) && (b == NULL)) ? 0 : 1;
-}
-/*}}}*/
-
 /*{{{ leave/suspend article mode and support functions */
 static void update_ranges (void) /*{{{*/
 {
-   int min, max;
-   Slrn_Range_Type *r, *r_save;
-   Slrn_Header_Type *h, *h1;
-   int save_min, save_max, save_dirty;
-   char *list;
-   unsigned int i, imax, num;
-
+   int bmin, bmax, read;
+   Slrn_Range_Type *r_new;
+   Slrn_Header_Type *h;
+   
    if (User_Aborted_Group_Read) return;
 
    h = Slrn_First_Header;
    /* skip articles for which the numeric id was not available */
    while ((h != NULL) && (h->number < 0)) h = h->real_next;
    if (h == NULL) return;
-
-   /* Create a list of read articles and compare them with what
-    * is in the group range.  First find the min and max possible 
-    * article numbers.
-    */
-
-
-   min = Slrn_Server_Min;
-   max = Slrn_Server_Max;
    
-   if (max < min) max = min;
-   num = (unsigned int) (max - min + 1);
+   /* We do our work on a copy of the ranges first; this way, we can
+    * find out whether we need to mark the group dirty later. */
+   r_new = slrn_ranges_clone (Current_Group->range.next);
 
-   list = slrn_safe_malloc (num);
+   /* Mark old (unavailable) articles as read */
+   r_new = slrn_ranges_add (r_new, 1, Slrn_Server_Min - 1);
 
-   /* Mark all numbers in the list as unread (0) */
-   memset (list, 0, num);
-
-   /* Now make list consistent with the already read group ranges */
-   r = Current_Group->range.next;
-   while (r != NULL)
+   /* Now, mark blocks of articles read / unread */
+   read = h->flags & HEADER_READ;
+   bmin = bmax = h->number;
+   while (h != NULL)
      {
-	int this_max, this_min;
-
-	this_min = r->min;
-	this_max = r->max;
-
-	if (this_min < min)
-	  this_min = min;
-	if (this_max > max)
-	  max = this_max;
-	
-	if (this_max >= min)
+	h = h->real_next;
+	if ((h==NULL) || (h->number > bmax+1) ||
+	    (read != h->flags & HEADER_READ))
 	  {
-	     i = (unsigned int) (this_min - min);
-	     imax = (unsigned int) (this_max - min);
-	     if (imax >= num)
-	       imax = num - 1;
-	     while (i <= imax)
+	     if (read)
+	       r_new = slrn_ranges_add (r_new, bmin, bmax);
+	     else
+	       r_new = slrn_ranges_remove (r_new, bmin, bmax);
+	     if (h!=NULL)
 	       {
-		  list[i] = 1;
-		  i++;
+		  bmin = bmax = h->number;
+		  read = h->flags & HEADER_READ;
 	       }
 	  }
-	r = r->next;
+	else
+	  bmax++;
      }
 
-   /* Use the current headers to fixup the list */
-   h1 = h;
-   while (h1 != NULL)
-     {
-	if ((h1->number >= min) && (h1->number <= max))
-	  list[h1->number - min] = (h1->flags & HEADER_READ);
-	h1 = h1->real_next;
-     }
+   if (slrn_ranges_compare(r_new, Current_Group->range.next))
+     Slrn_Groups_Dirty |= 1;
 
-   /* Finally, update the ranges based on this list */
-
-   /* we are creating new ranges so steal old and save the range context
-    * because we will do a comparison to see whether or not the group
-    * was modified. 
-    */
-   r_save = Current_Group->range.next;
-   Current_Group->range.next = NULL;
-   save_min = Current_Group->range.min;
-   save_max = Current_Group->range.max;
-   save_dirty = Slrn_Groups_Dirty;
-   
-   /* Mark all articles up to the start of the list as read */
-   slrn_add_group_ranges (Current_Group, 1, min - 1);
-
-   i = 0;
-   while (i < num)
-     {
-	if (list[i] == 0)
-	  {
-	     i++;
-	     continue;
-	  }
-
-	imax = i;
-	while ((imax < num) && (list[imax] != 0))
-	  imax++;
-
-	slrn_add_group_ranges (Current_Group, 
-			       min + (int)i, min + (int) (imax - 1));
-	
-	i = imax;
-     }
-   
-   Slrn_Groups_Dirty |= 1;
-   
-   if (((save_dirty&1) == 0) 
-       && (Current_Group->range.min == save_min) 
-       && (Current_Group->range.max == save_max)
-       && (Current_Group->range.next != NULL))
-     {
-	/* Compare the newly constructed ranges to the old.  If they differ
-	 * then things were changed.
-	 */
-	if (!compare_ranges(Current_Group->range.next, r_save))
-	  Slrn_Groups_Dirty = save_dirty;
-     }
-
-   /* Finally delete the saved ranges */
-   free_ranges (r_save);
-   slrn_free (list);
+   /* Finally delete the old ranges and replace them with the new one */
+   slrn_ranges_free (Current_Group->range.next);
+   Current_Group->range.next = r_new;
+   slrn_group_recount_unread (Current_Group);
 }
 /*}}}*/
 
@@ -6369,11 +6271,11 @@ static void update_requests (void) /*{{{*/
      }
    
    /* If anything has changed, mark request file as dirty. */
-   if (compare_ranges (Current_Group->requests, rsave))
+   if (slrn_ranges_compare (Current_Group->requests, rsave))
      Slrn_Groups_Dirty |= 2;
    
    free_and_return: /* Free the saved ranges */
-   free_ranges (rsave);
+   slrn_ranges_free (rsave);
 }
 /*}}}*/
 
