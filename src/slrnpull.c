@@ -1821,6 +1821,7 @@ static void usage (char *pgm) /*{{{*/
   --new-groups         Get a list of new groups.\n\
   --no-post            Do not post news.\n\
   --post-only          Post news, but do not pull new news.\n\
+  --rebuild            Like --expire; additionally rebuilds overview files.\n\
   --version            Show the version number.\n\
 "),
 	      pgm, pgm);
@@ -1854,7 +1855,7 @@ static int read_score_file (void) /*{{{*/
 
 /*}}}*/
 
-static int do_expire (void);
+static int do_expire (int rebuild);
 static int get_new_groups (NNTP_Type *s);
 static int read_authinfo (void);
 
@@ -1910,6 +1911,8 @@ int main (int argc, char **argv) /*{{{*/
 	  }
 	else if (!strcmp (arg, "--expire"))
 	  expire_mode = 1;
+	else if (!strcmp (arg, "--rebuild"))
+	  expire_mode = 2;
 	else if ((!strcmp (arg, "--post-only"))
 		 || (!strcmp (arg, "--post")))
 	  post_mode = 1;
@@ -1982,7 +1985,7 @@ int main (int argc, char **argv) /*{{{*/
    
    if (expire_mode)
      {
-	if (-1 == do_expire ())
+	if (-1 == do_expire (expire_mode == 2))
 	  slrn_exit_error (NULL);
 	
 	close_log_files ();
@@ -2346,9 +2349,63 @@ static int sort_int_cmp (unsigned int *a, unsigned int *b)
    return -1;
 }
 
-static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, unsigned int n_nums)
+/*
+ * write an overview-file entry for a single article
+ */
+static int write_overview_entry(FILE *xov_fp, int id, char *dir)
 {
    char file [SLRN_MAX_PATH_LEN + 1];
+   char *header;
+   struct stat st;
+   Slrn_XOver_Type xov;
+   char buf[32];
+   
+   sprintf (buf, "%d", id); /* safe */
+   
+   if (-1 == slrn_dircat (dir, buf, file, sizeof (file)))
+     {
+        log_error(_("Error creating filename in %s."), dir);
+        return -1;
+     } 
+   
+   if (-1 == stat (file, &st))
+     {
+        log_error (_("Unable to stat %s."), file);
+        return -1;
+     }
+   
+   if (0 == S_ISREG(st.st_mode))
+     return 0;
+   
+   header = read_header_from_file (file);
+   if (header == NULL)
+     {
+        log_error(_("Unable to read header %d in %s."), id, file);
+        return -1;
+     }
+   
+   if (-1 == xover_parse_head (id, header, &xov))
+     {
+        log_error(_("Header %d not parseable for overview."), id);
+        slrn_free (header);
+        return -1;
+     }
+   
+   if (-1 == write_xover_line (xov_fp, &xov))
+     {
+        slrn_free (header);
+        slrn_free (xov.subject_malloced);
+        slrn_free (xov.from_malloced);
+        return -1;
+     }
+   slrn_free (header);
+   slrn_free (xov.subject_malloced);
+   slrn_free (xov.from_malloced);
+   return 0;
+}
+
+static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, unsigned int n_nums)
+{
    char dir [SLRN_MAX_PATH_LEN + 1];
    FILE *xov_fp;
    unsigned i;
@@ -2385,56 +2442,141 @@ static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
    
    for (i = 0; i < n_nums; i++)
      {
-	char *header;
-	Slrn_XOver_Type xov;
-	char buf[32];
-	int id;
-	struct stat st;
-	
-	id = (int) nums [i];
-	
-	sprintf (buf, "%d", id); /* safe */
-	
-	if (-1 == slrn_dircat (dir, buf, file, sizeof (file)))
-	  continue;
-	
-	if (-1 == stat (file, &st))
-	  {
-	     log_error (_("Unable to stat %s."), file);
-	     continue;
-	  }
-	
-	if (0 == S_ISREG(st.st_mode))
-	  continue;
-
-	header = read_header_from_file (file);
-	if (header == NULL)
-	  continue;
-	
-	if (-1 == xover_parse_head (id, header, &xov))
-	  {
-	     slrn_free (header);
-	     continue;
-	  }
-	
-	if (-1 == write_xover_line (xov_fp, &xov))
-	  {
-	     slrn_free (header);
-	     slrn_free (xov.subject_malloced);
-	     slrn_free (xov.from_malloced);
-	     fclose (xov_fp);
-	     return -1;
-	  }
-	
-	slrn_free (header);
-	slrn_free (xov.subject_malloced);
-	slrn_free (xov.from_malloced);
+        if (-1 == write_overview_entry(xov_fp, (int) nums [i], dir))
+          {
+             fclose(xov_fp);
+             return -1;
+          }
      }
    
    return slrn_fclose (xov_fp);
 }
+	
+/*
+ * this function tries to update the current overview file for a group,
+ * which is a lot faster than recreating the entire file. If the overview
+ * file cannot be opened for reading, a new one is created.
+ */
+static int update_overview_for_dir (Active_Group_Type *g, unsigned int *nums, unsigned int n_nums)
+{
+   char file [SLRN_MAX_PATH_LEN + 1];
+   char newfile [SLRN_MAX_PATH_LEN + 1];
+   char dir [SLRN_MAX_PATH_LEN + 1];
+   char buf [4096];
+   unsigned int xov_nr = 0;
+   FILE *xov_fp, *new_xov_fp;
+   unsigned int i;
+   void (*qsort_fun) (char *, unsigned int, int, int (*)(unsigned int *, unsigned int *));
+   
+   xov_fp = open_xover_file (g, "r");
+   if (xov_fp == NULL)
+     return create_overview_for_dir (g, nums, n_nums);
+   
+   new_xov_fp = NULL;
+   if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, g->dirname, file, sizeof (file))) ||
+       (-1 == slrn_dircat (file, Overview_File, file, sizeof (file))))
+     {
+        log_error (_("Unable to create filename for overview file.\n"));
+        (void) slrn_fclose (xov_fp);
+        return -1;
+     }
+   slrn_strncpy (newfile, file, SLRN_MAX_PATH_LEN - 5);
+   strcat (newfile, "-new"); /* safe */
+   
+   new_xov_fp = fopen (newfile, "w");
+   if (new_xov_fp == NULL)
+     {
+	log_error (_("Unable to open new overview file %s.\n"), newfile);
+        (void) slrn_fclose (xov_fp);
+        return -1;
+     }
+   
+   if ((nums != NULL) && (n_nums != 0))
+     {
+	qsort_fun = (void (*)(char *, unsigned int, int, 
+			      int (*)(unsigned int *, unsigned int *))) 
+	  qsort;
+	
+	(*qsort_fun) ((char *) nums, n_nums, sizeof (unsigned int), sort_int_cmp);
+	
+	g->active_min = g->min = nums[0];
+	g->active_max = nums [n_nums - 1];
+     }
+   else 
+     {
+	g->active_min = g->min = g->max + 1;
+	g->active_max = g->active_min - 1;
+     }
+   if (-1 == slrn_dircat (SlrnPull_Spool_News_Dir, g->dirname,
+			  dir, sizeof (dir)))
+     return -1;
+   
+   /*
+    * read one line from overview, and one item in nums[]
+    * they should match. If not, drop the overview info,
+    * or create a new one if necessary
+    */
+   i = 0;
+   while (i < n_nums)
+     {
+	while (xov_nr < nums[i]) /* drop old overview entries */
+	  {
+	     if (NULL != fgets (buf, sizeof(buf), xov_fp))
+	       xov_nr = atoi (buf);
+	     else
+	       /* end of overview file found, write remaining entries */
+	       {
+		  while (i < n_nums)
+		    {
+		       if (-1 == write_overview_entry (new_xov_fp, (int) nums [i], dir))
+			 break;
+		       i++;
+		    }
+		  goto end_of_loop; /* break 2 */
+	       }
+	  }
+	
+	if (nums [i] == xov_nr)
+	  {
+	     /* we are in sync */
+	     if (EOF == fputs (buf, new_xov_fp))
+	       break;
+	     i++;
+	     continue;
+	  }
+	
+	/* In case entries are missing, insert as many as needed */
+	while (nums [i] < xov_nr)
+	  {
+	     if (-1 == write_overview_entry (new_xov_fp, (int) nums [i], dir))
+	       goto end_of_loop; /* break 2 */
+	     i++;
+	     continue;
+	  }
+     }
 
-static int expire_group (Active_Group_Type *g) /*{{{*/
+   end_of_loop:
+   if (-1 == slrn_fclose (xov_fp))
+     log_error (_("failed to close overview file %s.\n"), file);
+   if (-1 == slrn_fclose (new_xov_fp))
+     log_error (_("failed to close new overview file %s.\n"), newfile);
+   
+   if (i < n_nums) /* an error occurred within the loop */
+     {
+	(void) slrn_delete_file (newfile);
+	return -1;
+     }
+   
+   if (-1 == slrn_move_file (newfile, file))
+     {
+	log_error (_("failed to rename %s to %s."), file, newfile);
+	return -1;
+     }
+   
+   return 0;
+}
+
+static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
 {
    Slrn_Dir_Type *dp;
    Slrn_Dirent_Type *df;
@@ -2552,9 +2694,17 @@ static int expire_group (Active_Group_Type *g) /*{{{*/
 	  num_expired++;
      }
    
-   if (num_expired) log_message (_("%u articles expired in %s."), num_expired, g->name);
-   
+   if (num_expired > 0)
+     {
+        log_message (_("%u articles expired in %s."), num_expired, g->name);
+        if (rebuild == 0)
+          (void) update_overview_for_dir (g, ok_names, new_num_ok_names);
+        else
+          (void) create_overview_for_dir (g, ok_names, new_num_ok_names);
+     }
+   else if (rebuild == 1)
    (void) create_overview_for_dir (g, ok_names, new_num_ok_names);
+   
    
    slrn_free ((char *) ok_names);
    
@@ -2563,7 +2713,7 @@ static int expire_group (Active_Group_Type *g) /*{{{*/
 
 /*}}}*/
 
-static int do_expire (void) /*{{{*/
+static int do_expire (int rebuild) /*{{{*/
 {
    Active_Group_Type *g;
    
@@ -2581,7 +2731,7 @@ static int do_expire (void) /*{{{*/
 	     slrn_exit_error (NULL);
 	  }
 	
-	(void) expire_group (g);
+	(void) expire_group (g, rebuild);
 	g = g->next;
      }
    

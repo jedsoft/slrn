@@ -1,7 +1,7 @@
 .\"
 .\" This manpage is written by Thomas Schultz
 .\"
-.TH slrnpull 1 "August 2001" Unix "User Manuals"
+.TH slrnpull 1 "March 2002" Unix "User Manuals"
 .\"
 .\" -------------------------------------------------------------------
 .\"
@@ -24,6 +24,7 @@ slrnpull - Pull a small newsfeed for offline reading.
 [--no-post]
 [--post]
 [--post-only]
+[--rebuild]
 [--version]
 .\"
 .\" -------------------------------------------------------------------
@@ -86,6 +87,9 @@ Obsolete version of
 .IR --post-only .
 .IP "--post-only"
 Post outgoing articles, but do not fetch news.
+.IP "--rebuild"
+Like --expire, but also rebuild the overview information.
+To be used when the overview information is damaged.
 .IP "--version"
 Print the version number.
 
