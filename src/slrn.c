@@ -118,6 +118,9 @@ int Slrn_TT_Initialized = 0;
  */
 int Slrn_Use_Mouse;
 
+/* Find out whether there was a warning at startup. Used for option -w0 */
+int Slrn_Saw_Warning = 0;
+
 /* We do not (yet) offer a batch mode; however, I consider it an interesting
  * idea and might implement it after version 1.0.*/
 int Slrn_Batch;
@@ -924,6 +927,7 @@ Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n\
 -n              Do not check for new groups.  This usually results in\n\
                  a faster startup.\n\
 -w              Wait for key before switching to full screen mode\n\
+-w0             Wait for key (only when warnings / errors occur)\n\
 --create        Create a newsrc file by getting list of groups from server.\n\
 --debug FILE    Write debugging information to FILE\n\
 --help          Print this usage.\n\
@@ -982,6 +986,7 @@ static void read_score_file (void)
    if (1 != slrn_file_exists (file))
      {
 	slrn_message_now (_("*** Warning: Score file %s does not exist"), file);
+	Slrn_Saw_Warning = 1;
 	return;
      }
 
@@ -1096,6 +1101,8 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
 	  Slrn_Perform_Scoring &= ~SLRN_EXPENSIVE_SCORING;
 	else if (!strcmp ("-w", argv_i))
 	  wait_for_key = 1;
+	else if (!strcmp ("-w0", argv_i))
+	  wait_for_key = 2;
 	else if (!strncmp ("-D", argv_i, 2) && (argv_i[2] != 0))
 	  {
 	     if (-1 == SLdefine_for_ifdef (argv_i + 2))
@@ -1191,6 +1198,7 @@ Could not read specified config file %s\n"), init_file);
 		      "! If you have Perl installed, you can use the script slrnrc-conv to change\n"
 		      "! your configuration accordingly.  It can be found in the source distribution\n"
 		      "! or retrieved from <URL:http://slrn.sourceforge.net/data/>.\n"));
+	Slrn_Saw_Warning = 1;
      }
 
    if (Slrn_Server_Id == 0) Slrn_Server_Id = Slrn_Default_Server_Obj;
@@ -1267,11 +1275,14 @@ cannot be constructed.  Try setting the USER environment variable.\n"));
 
    if ((NULL == Slrn_User_Info.posting_host)
        && Slrn_Generate_Message_Id)
-     slrn_stderr_strcat (_("\
+     {
+	slrn_stderr_strcat (_("\
 ***Warning: Unable to find a unique fully-qualified host name."), "\n", _("\
             slrn will not generate any Message-IDs."), "\n", _("\
             Please note that the \"hostname\" setting does not affect this;"), "\n", _("\
             see the \"slrn reference manual\" for details."), "\n", NULL);
+	Slrn_Saw_Warning = 1;
+     }
    
    if (no_score_file == 0) read_score_file ();
    
@@ -1369,6 +1380,7 @@ If you want to create %s, add command line options:\n\
 	  {
 	     fprintf (stderr, _("GroupLens disabled.\n"));
 	     Slrn_Use_Group_Lens = 0;
+	     Slrn_Saw_Warning = 1;
 	  }
      }
 #endif
@@ -1392,7 +1404,7 @@ If you want to create %s, add command line options:\n\
    slrn_read_newsrc (create_flag);
    slrn_read_group_descriptions ();
    
-   if (wait_for_key)
+   if (wait_for_key && ((wait_for_key == 1) || Slrn_Saw_Warning))
      {
 	slrn_message (_("* Press Ctrl-C to quit, any other key to continue.\n"));
 	slrn_set_display_state (SLRN_TTY_INIT);

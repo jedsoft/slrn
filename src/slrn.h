@@ -26,6 +26,7 @@
 extern int Slrn_TT_Initialized;
 extern int Slrn_Use_Flow_Control;
 extern int Slrn_Simulate_Graphic_Chars;
+extern int Slrn_Saw_Warning;
 
 extern void slrn_quit (int);
 

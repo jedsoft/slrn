@@ -386,6 +386,7 @@ static int group_sync_group_with_server (Slrn_Group_Type *g, int *minp, int *max
      {
 	slrn_error (_("Group %s is bogus%s."), group,
 		    Slrn_Drop_Bogus_Groups ? _(" - dropping it") : "");
+	Slrn_Saw_Warning = 1;
 	if (Slrn_Drop_Bogus_Groups)
 	  remove_group_entry (g);
 	return -1;
