@@ -86,7 +86,7 @@ Changes since 0.9.7.4
 19. New translations:
    * fi.po (Finnish; Lauri Nurmi)
    * tr.po (Turkish; A. Alper ATICI)
-20. Remove duplicates when browsing URLs (Rüdiger Sonderfeld)
+20. Remove duplicates when browsing URLs (Ruediger Sonderfeld)
 
 Changes since 0.9.7.3
 

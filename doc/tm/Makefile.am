@@ -19,7 +19,7 @@ DISTCLEANFILES = *.html $(TXT_FILES) $(SGML_FILES)
 
 SGML2LATEX = sgml2latex -p letter -o tex
 SGML2HTML = sgml2html
-SGML2TXT = sgml2txt -f
+SGML2TXT = sgml2txt -f --pass="-P -c"
 TM2TXT = tm2txt --quiet
 LATEX = latex
 

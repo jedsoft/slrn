@@ -1,7 +1,7 @@
   The slrn reference manual
   Matthias Friedrich <matt@mafr.de>
   Thomas Schultz <tststs@gmx.de>
-  version 0.9.7.4
+  version 0.9.7.4pl2
 
   Using and customizing the slrn newsreader
   ______________________________________________________________________
@@ -10,75 +10,16 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   1. Introduction
-
      1.1 Downloading slrn
      1.2 Getting help
      1.3 About this manual
         1.3.1 History
 
   2. Configuration
-
   3. Command line switches
-
   4. Environment variables
-
   5. The Slrn configuration file
-
      5.1 Basics
      5.2 Preprocessing of configuration files
         5.2.1 #iffalse, #ifntrue
@@ -114,7 +55,6 @@
         5.3.22 visible_headers
 
   6. Configuration variables
-
      6.1 abort_unmodified_edits
      6.2 art_help_line
      6.3 art_status_line
@@ -399,6 +339,7 @@
         7.3.17 up
 
 
+
   ______________________________________________________________________
 
   1.  Introduction
@@ -457,23 +398,32 @@
 
   1.3.  About this manual
 
-  This manual has been started by Matthias Friedrich and Thomas Schultz
-  in 1999 since there was no up to date end user documentation
-  available. As of version 0.9.7.0, it is part of the official
-  documentation.
+  This manual is the official reference for using and customizing the
+  slrn newsreader. If you find that slrn behaves differently then
+  described here, it means you found a bug (either in this manual or in
+  slrn itself) and should report it.
 
-  This manual still needs a lot of work to become more comprehensive.
-  Anyone willing to contribute additional chapters should contact us -
-  you are welcome to join our efforts. Furthermore, we greatly
-  appreciate feedback about errors, bad language or suggestions
-  concerning this manual.
+  The manual is written in SGML using the ``linuxdoc'' DTD and has been
+  ``rendered'' using the sgml-tools package. The manual has its own
+  webpage <http://slrn.sourceforge.net/manual/> where you can find the
+  SGML source file and different output formats, as well as instructions
+  on how to get the latest version via CVS (which might be useful if you
+  need documentation for a developer version of slrn).
 
-  All questions regarding the manual can be discussed on the slrn-user
+  If you want to contribute to the manual (e.g. write additional
+  chapters), please contact us, either privately or via the slrn-user
   mailing list <http://lists.sourceforge.net/mailman/listinfo/slrn-
-  user>. Of course, you still can email us privately if you want.
+  user>. We also appreciate feedback about errors, bad language or
+  suggestions concerning this manual.
 
 
   1.3.1.  History
+
+  This manual has been started by Matthias Friedrich and Thomas Schultz
+  in 1999 since there was no up to date end user documentation
+  available. As of version 0.9.7.0, it is part of the official
+  documentation. Since we first started it, the manual has undergone the
+  following revisions:
 
 
      2002-04-31: Revision 2.4
@@ -525,11 +475,9 @@
   Have a look at the following chapters for a detailed description of
   the above configuration facilities.
 
-
   Note: Please do not use options that are called ``obsolete'' in this
   manual. They are only included for backwards compatibility and will be
   removed before version 1.0 is released.
-
 
 
 
@@ -589,7 +537,6 @@
         message when SSL support is not compiled in. Like -p, this
         option is only accepted after --nntp or when NNTP is the default
         mode.
-
      -i file
         Read file as the initialization (slrnrc) file.  The default is
         to use .slrnrc (or slrn.rc on VMS, OS/2 and Windows) in your
@@ -655,8 +602,6 @@
 
      --version
         Print version and some compile time settings.
-
-
 
   4.  Environment variables
 
@@ -930,8 +875,6 @@
 
 
 
-
-
   5.2.2.  #iftrue, #ifnfalse
 
   The inverse of ``iffalse''. This condition is always true which means
@@ -957,8 +900,6 @@
 
 
 
-
-
   5.2.4.  #ifn$ENV
 
   This condition is true if the environment variable ENV is not set.
@@ -973,18 +914,6 @@
   space or tabulator characters.
 
   Example:
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1044,8 +973,6 @@
           % On Win32, printer_name is set to the print queue
           set printer_name "MyPrinter"
   #endif
-
-
 
 
 
@@ -1250,8 +1177,6 @@
 
 
 
-
-
   5.3.4.  group_display_format
 
   Usage: group_display_format number format-string
@@ -1314,7 +1239,6 @@
           header_display_format 2 "%F%-5l:%t%s"
           header_display_format 3 "%F%-5S%-5l:%t%50s %r"
           header_display_format 4 "%F%-5S [%10r]:%t%49s %-19g[%17d]"
-
 
 
 
@@ -1438,7 +1362,6 @@
 
 
   Example: include ".slrnrc-colors"
-
 
 
 
@@ -1643,7 +1566,6 @@
 
 
 
-
   5.3.22.  visible_headers
 
   Usage: visible_headers header_lines
@@ -1666,8 +1588,6 @@
 
   Example:
   visible_headers "From:,Subject:,Newsgroups:,Followup-To:,Reply-To:"
-
-
 
 
 
@@ -1768,8 +1688,6 @@
 
 
 
-
-
   6.7.  broken_xref
 
   Type: integer
@@ -1815,7 +1733,6 @@
 
 
 
-
   The original poster can indicate that he wishes to receive an email
   copy by adding an ``(X-)Mail-Copies-To:'' header line to his posting.
   If it contains the keyword ``nobody'' (``never'' is not covered by
@@ -1835,29 +1752,29 @@
   Type: string
   Default: "[This message has also been posted to %n.]" (localized)
 
-  This string will be included in the mail copies of any followup you
+  This string will be included in the mail copies of any article you
   send. However, it won't be displayed in the editor and will not be
   included in the posting sent to the newsgroup.
 
-  The variable may contain printf(3)-style % sequences which will be
-  replaced with the corresponding data from the original posting. See
-  the description of ``followup_string'' for a list of legal sequences.
+  The variable may contain the sequence %n, which will be replaced by
+  the newsgroup(s) the article was posted to. If you need a ``verbatim''
+  % character, use %%.
 
-  Note: If you postponed a followup and do not select the original
-  message before sending it, the information to expand the % sequences
-  is not available. In this case, ``cc_post_string'' is used.
+  Note: cc_followup_string used to support all % sequences defined by
+  ``followup_string''. This has been changed, as it could lead to wrong
+  data getting inserted in some cases. If you miss a special sequence,
+  please report it as a feature request.
+
   See Also: ``cc_followup''
 
 
   6.11.  cc_post_string
 
   Type: string
-  Default: "[This message has also been posted.]" (localized)
+  Default: (unset)
 
-  This string is automatically added to mail copies of postings you
-  send. In followups, ``cc_followup_string'' is used instead. As opposed
-  to this variable, cc_post_string currently does not expand any
-  printf(3)-style % sequences.
+  This variable is obsolete, as ``cc_followup_string'' now works
+  correctly in all cases.
 
 
   6.12.  charset
@@ -1894,6 +1811,9 @@
      ibm852
         converts from and to Latin 2 (east European);
 
+     ibm857
+        converts from and to Latin 5 (Turkish)
+
   This variable will only have an effect if ``character mapping'' is
   enabled at compile time (default). You can query this by calling slrn
   --version from your shell prompt.
@@ -1907,9 +1827,6 @@
   If you do not want to check for new groups on startup and when doing a
   ``group refresh'' (by default bound to `G'), you can set this variable
   to 0. This has the same effect as using the command-line parameter -n.
-
-
-
 
 
   6.14.  color_by_score
@@ -1926,7 +1843,6 @@
        1    scores are colored by their value
        2    subjects are colored by score
        3    both scores and subjects are colored by score
-
 
 
 
@@ -1951,7 +1867,6 @@
        4     Confirm posts, followups, replies and supersedes.
        8     Confirm leaving a group by following a news: URL.
        16    Confirm quitting slrn.
-
 
 
 
@@ -2023,7 +1938,6 @@
 
 
 
-
   As you can see, all keywords use an ascending sort order by default.
   You can however capitalize each keyword to reverse its order (i.e.
   Highscore would sort high scoring articles first, which is usually
@@ -2033,15 +1947,20 @@
   with the first keyword, until it finds an entry for which the articles
   differ.
 
+  You may want to use different criteria for sorting initial articles of
+  threads than for ``siblings'' inside of threads. This is possible by
+  using the delimiter '|': The comma-separated list before this
+  delimiter is applied when sorting initial articles in threads; the
+  string after the delimiter specifies the sort order to be used inside
+  threads. For example, if you want to see high scoring and recent
+  threads first, but sort the messages within the thread from oldest to
+  newest, you could set custom_sort_order to Highscore,Date|date.
+
   There is no performance penalty when using custom sorting. Actually,
   the other sorting methods are merely there for convenience and use the
   same algorithm internally. As an example, here is a list of those
   settings for custom_sort_order that are equivalent to the ``sorting
   methods'':
-
-
-
-
 
 
    0 and  1  ""
@@ -2050,7 +1969,6 @@
    6 and  7  "Score,subject"
    8 and  9  "Highscore,Date"
   10 and 11  "Highscore,date"
-
 
 
 
@@ -2105,11 +2023,11 @@
   they become available again. If your server is affected, you can set
   this variable to zero.
 
-
   6.24.  editor_command
 
   Type: string
   Default: (unset)
+
   The value of this variable is used as a shell command to start your
   favourite editor. However, slrn will prefer the more specific
   variables - there is one for each case in which an editor is needed:
@@ -2133,7 +2051,6 @@
 
        %s    name of the file to edit
        %d    number of the first line of the message body
-
 
 
 
@@ -2176,11 +2093,11 @@
   following numbers:
 
 
+
        1     scan message portion (the non-quoted, non-signature part)
        2     scan quoted text
        4     scan signature
        8     scan header lines
-
 
 
 
@@ -2233,13 +2150,13 @@
   header lines.
 
 
+
   6.30.  followup
 
   Type: string
   Default: "In article %m, %r wrote:" (localized)
 
   Obsolete; replaced by ``followup_string''.
-
 
 
   6.31.  followup_custom_headers
@@ -2293,7 +2210,6 @@
        %d     Date
        %D     Date (as defined by followup_date_format)
        %%     %
-
 
 
 
@@ -2363,6 +2279,7 @@
   See also: ``nnrpaccess''
 
 
+
   6.37.  generate_date_header
 
   Type: integer
@@ -2372,7 +2289,6 @@
   server.  If it does not do this correctly, please complain to its
   administrator, as a working system clock is essential for a news
   server.
-
 
   That being said, you can still have slrn generate that header line
   itself by changing this variable; you might want to use this to make
@@ -2430,7 +2346,6 @@
 
   Type: string
   Default: (unset)
-
   This string is displayed in the bottom line of the group menu. It is
   intended as a quick help. If unset, the following line is used
   (localized):
@@ -2506,6 +2421,7 @@
 
   Type: string
   Default: (unset)
+
   This string is displayed in the bottom line in article mode when no
   article is shown (e.g. while you are just browsing through the
   headers). If unset, the following line is used (localized):
@@ -2561,7 +2477,6 @@
   (default binding: `]') while slrn is running.
 
   See also: ``hide_signature''
-
 
   6.49.  hide_quotes
 
@@ -2637,7 +2552,6 @@
   Type: integer
   Default: 1
 
-
   If non-zero, URLs are highlighted in the article pager using the
   ``url'' color object. This affects all portions of the message that
   are scanned for emphasized text.
@@ -2695,6 +2609,7 @@
   ``post_object'' for details). In this case, inews_program can be used
   to specify the command you want slrn to pipe outgoing articles to.
 
+
   Note: This variable will not work if SLRN_HAS_USER_INEWS in slrnfeat.h
   was disabled at compile time. Obviously, it also has no effect if
   inews support is not compiled in.
@@ -2704,6 +2619,7 @@
 
   Type: integer
   Default: -9999
+
   When the score of an article is equal or less than kill_score points,
   it will be killed. This means that it will not be displayed in article
   mode at all, so you won't be bothered with it.
@@ -2759,7 +2675,6 @@
 
 
 
-
   6.61.  mail_editor_command
 
   Type: string
@@ -2768,7 +2683,6 @@
   This variable is interpreted as a shell command which will be used to
   invoke your editor of choice when you want to reply by email. If it is
   unset, slrn will use the editor defined by ``editor_command''.
-
 
   Note: The variable may contain % escapes. A list of them can be found
   in the section on ``editor_command''.
@@ -2790,7 +2704,6 @@
 
   set mail_editor_command "mutt -H '%s'"
   set mail_editor_is_mua 1
-
 
 
 
@@ -2826,6 +2739,7 @@
   Type: string
   Default: (unset)
 
+
   When you select an article which uses a MIME content type or encoding
   not supported by slrn, an external program can be launched to view it.
   This variable contains the name of the program which will be used in
@@ -2834,7 +2748,6 @@
 
   If this variable is unset, slrn will try to invoke metamail. Setting
   this variable has no effect if MIME support has not been compiled in.
-
 
   See also: ``use_metamail''
 
@@ -2846,9 +2759,9 @@
 
   This variable tells slrn which MIME character set to declare when
   posting 8bit characters. The default is "iso-8859-1", unless you set
-  ``charset'' to "ibm852" (then it's "iso-8859-2"), "ibm737" (default
-  for that is "iso-8859-7") or "koi8" (the resulting default is
-  "koi8-r").
+  ``charset'' to "ibm852" (then it's "iso-8859-2"), "ibm857" (then it's
+  "iso-8859-9"), "ibm737" (default for that is "iso-8859-7") or "koi8"
+  (the resulting default is "koi8-r").
 
   Note: This variable should not be set to the value of ``charset''.
 
@@ -2900,7 +2813,6 @@
   four groups or without setting a ``Followup-To:'', or if the
   ``Followup-To:'' header line contains multiple groups.  Additionally,
   you are notified if your signature has more than four lines.
-
 
   See also: ``reject_long_lines''
 
@@ -2968,6 +2880,7 @@
 
   Type: string
   Default: (compile time setting)
+
   Using this variable, you can set the ``Organization:'' header line to
   an arbitrary string. A discussion on how slrn obtains the default
   value can be found in the entry on ``$ORGANIZATION''.
@@ -3023,10 +2936,8 @@
   Default: (unset)
 
   Directory where articles you want to postpone are saved. If this
-  variable is unset, slrn will try to use ``save_directory'' for this
+  variable is unset, slrn will try to use "News/postponed" for this
   purpose.
-
-
   6.79.  prefer_head
 
   Type: integer
@@ -3100,6 +3011,7 @@
 
   This variable is obsolete.
 
+
   6.84.  query_next_article
 
   Type: integer
@@ -3138,6 +3050,10 @@
   (or change) the number of articles to read. This feature is turned off
   if you set this variable to 0.
 
+  Setting this variable to a negative number -n has a similar effect.
+  However, slrn will not prompt you in this case; instead, it will
+  automatically download n articles if more are present.
+
 
   6.87.  query_reconnect
 
@@ -3154,7 +3070,6 @@
 
   This string will be used to indent quoted text in followups and
   replies.  If the variable is unset, slrn uses ">".
-
   Note: slrn's default is the only quote prefix commonly accepted on
   Usenet. Please do not change it unless you are posting to a group or
   network that follows different rules.
@@ -3166,6 +3081,7 @@
 
   Type: integer
   Default: 0
+
   If this variable is non-zero, slrn will read the active file from the
   server when starting. If your server carries few groups or your
   network connection is fast (e.g. because you are using a local
@@ -3216,6 +3132,7 @@
 
   See also:  ``custom_headers'', ``followup_custom_headers'',
   ``supersedes_custom_headers''
+
 
 
   6.93.  reply_string
@@ -3364,6 +3281,7 @@
 
   See also: ``post_object'', ``use_slrnpull''
 
+
   6.103.  show_article
 
   Type: integer
@@ -3414,6 +3332,7 @@
   See also: ``signoff_string''
 
 
+
   6.107.  signoff_string
 
   Type: string
@@ -3427,7 +3346,6 @@
   with it, or you will annoy your readers. If you want to tell people
   the URL of your homepage or append some funny quote to your postings,
   put it in your ``signature file''.
-
 
 
   6.108.  simulate_graphic_chars
@@ -3481,9 +3399,6 @@
        11     thread, then sort by date with most recent last
        12     custom sorting
 
-
-
-
   As all the options offered by sorting_method can be replaced with a
   corresponding setting for custom sorting, this variable will be
   removed at some point in the future.
@@ -3491,9 +3406,6 @@
   To learn more about the powerful options in custom sorting, please
   look at the variables ``custom_sort_order'' and
   ``custom_sort_by_threads''.
-
-
-
 
 
   6.111.  spoiler_char
@@ -3526,7 +3438,6 @@
 
 
 
-
   See also: ``spoiler_char''
 
 
@@ -3550,6 +3461,7 @@
   ``use_slrnpull''
 
 
+
   6.114.  spool_activetimes_file
 
   Type: string
@@ -3560,7 +3472,6 @@
 
   The notes that can be found in the entry for ``spool_active_file''
   also apply to this variable.
-
 
   See also: ``spool_inn_root''
 
@@ -3627,7 +3538,6 @@
   Type: string
   Default: "/var/spool/news"
 
-
   The root directory of the news overview database. Often, this is the
   same as ``spool_root''.
 
@@ -3680,6 +3590,7 @@
   escapes can be used:
 
 
+
            %   percent character
            d   current date
            n   name of the current newsgroup
@@ -3694,6 +3605,7 @@
 
   When unset, slrn uses "slrn %v ** Press '?' for help, 'q' to quit. **
   Server: %s" (localized) as the default.
+
   Note: The current time and date are printed in the preferred
   representation for the current locale. If you have date/time
   information in the status line, you should be aware that it is not
@@ -3760,6 +3672,7 @@
 
   This variable has no effect if GroupLens has not been enabled at
   compile time.
+
   Note: As far as we could find out, GroupLens is not in use any more.
   If this is incorrect, we would be grateful for a pointer to additional
   information on it.
@@ -3792,7 +3705,6 @@
 
 
 
-
   Note: This setting does not affect the ``Date:'' header lines in your
   own postings. They are not even generated by slrn, unless you set
   ``generate_date_header''. VMS and BeOS do not support using GMT.
@@ -3805,6 +3717,7 @@
 
   If non-zero, slrn calls the program given in ``metamail_command'' to
   processes MIME articles it cannot handle.
+
 
 
   6.133.  use_mime
@@ -3822,7 +3735,6 @@
        2    decode MIME when saving articles
        4    MIME-encode the local copy of your own articles
        8    decode MIME when piping an article
-
 
 
 
@@ -3870,6 +3782,7 @@
   See also: ``server_object''
 
 
+
   6.136.  use_tilde
 
   Type: integer
@@ -3887,9 +3800,6 @@
   If non-zero, temporary files for postings, followups and replies will
   be held in the directory specified by ``$TMP'' (the entry there also
   explains what will happen if $TMP is unset).
-
-
-
 
 
   6.138.  use_uudeview
@@ -3958,6 +3868,8 @@
        2     wrap quoted material and body
        3     wrap headers, quoted material and body
 
+
+
   If you want to wrap long lines automatically, without having to press
   a key, you can set the variable to one of these values:
 
@@ -3967,7 +3879,6 @@
        5     wrap headers and body
        6     wrap quoted material and body
        7     wrap headers, quoted material and body
-
 
 
 
@@ -3997,6 +3908,7 @@
   newsrc file. If it is 1, unsubscribed groups are not saved; if it is
   2, unsubscribed groups are not saved if there are any unread messages
   in them.
+
 
 
   6.145.  Xbrowser
@@ -4088,8 +4000,6 @@
 
 
 
-
-
   7.1.5.  evaluate_cmd
 
   Default: "CTRL-X ESC"
@@ -4155,7 +4065,6 @@
 
   Default: "m"
 
-
   Allows you to move the current newsgroup to another position. You can
   move it around using the keys bound to ``line_up'' and ``line_down''
   (the up and down arrow keys by default). When finished, press Return.
@@ -4220,8 +4129,6 @@
 
 
 
-
-
   7.1.19.  refresh_groups
 
   Default: "G"
@@ -4260,12 +4167,11 @@
   this function also downloads previously read articles:
 
 
+
     1 Select group with article number query.
     2 Select group, but do not apply scores.
     3 Select group with query, but do not apply scores.
     4 Select group.
-
-
 
 
 
@@ -4284,7 +4190,6 @@
   Default: "CTRL-Z"
 
   Suspends slrn (if allowed by your shell).
-
 
 
 
@@ -4350,10 +4255,6 @@
 
 
 
-
-
-
-
   7.1.30.  transpose_groups
 
   Default: "CTRL-X CTRL-T"
@@ -4394,6 +4295,7 @@
 
   Default: "<"
 
+
   Shows the first page (``beginning of buffer'') of the current article.
 
 
@@ -4419,6 +4321,8 @@
   Default: "ESC DOWN" "RETURN"
 
   Scrolls the article down one line.
+
+
 
   7.2.5.  article_line_up
 
@@ -4480,9 +4384,6 @@
 
   Like ``author_search_forward'', but searching backwards, starting at
   the cursor.
-
-
-
 
 
 
@@ -4551,7 +4452,6 @@
 
   Default: ":"
 
-
   This function decodes files that are included in articles using the UU
   or base64 encoding. You first need to specify a temporary file to
   which the articles that should be decoded are saved. Then, the actual
@@ -4593,6 +4493,7 @@
   See also: ``shrink_article_window''
 
 
+
   7.2.21.  evaluate_cmd
 
   Default: "CTRL-X ESC"
@@ -4618,6 +4519,9 @@
 
   Removes all articles from the list that are marked as read and not
   tagged as important (using ``toggle_header_tag'').
+
+
+
   7.2.24.  fast_quit
 
   Default: "Q"
@@ -4637,8 +4541,6 @@
       1   Insert all headers.
       2   Insert all headers, but do not modify the article (no quoting,
           don't strip or attach signatures).
-
-
 
 
 
@@ -4750,6 +4652,7 @@
   Goes to the next visible article in this group.
 
 
+
   7.2.36.  header_line_up
 
   Default: "UP" "CTRL-P"
@@ -4816,6 +4719,9 @@
   the group does not contain a next unread header, slrn skips to the
   next group. Whether this happens automatically or you are prompted
   first depends on the setting of ``query_next_group''.
+
+
+
   7.2.44.  next_high_score
 
   Default: "!"
@@ -4880,8 +4786,6 @@
   not displayed in the article pager).
 
 
-
-
   7.2.51.  quit
 
   Default: "q"
@@ -4911,7 +4815,6 @@
   Default: "r"
 
   Reply to the selected article via email.
-
 
 
   7.2.55.  save
@@ -4979,6 +4882,7 @@
 
   Default: "S"
 
+
   Like ``subject_search_backward'', but searching backwards.
 
 
@@ -5009,8 +4913,6 @@
   Default: "CTRL-Z"
 
   Suspends slrn (if allowed by your shell).
-
-
 
 
 
@@ -5079,7 +4981,6 @@
 
 
 
-
   7.2.71.  toggle_quotes
 
   Default: "T"
@@ -5110,7 +5011,6 @@
 
   Toggles the variable ``hide_signature'' which controls the display of
   signatures.
-
 
 
   7.2.74.  toggle_sort
@@ -5144,6 +5044,7 @@
 
   Marks all articles from the top of the header window up to the current
   article as unread.
+
 
 
   7.2.78.  uncatchup_all
@@ -5304,6 +5205,7 @@
   program.
 
 
+
   7.3.11.  eol
 
   Default: "END" "CTRL-E"
@@ -5341,9 +5243,6 @@
   you want to ``unbind'' a key in readline mode.
 
 
-
-
-
   7.3.16.  trim
 
   Default: "ESC \"
@@ -5356,57 +5255,6 @@
   Default: "UP" "CTRL-P"
 
   Jumps to the previous (older) command line history entry.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

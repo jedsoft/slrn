@@ -1,71 +1,14 @@
   Slrn Intrinsic Function Reference Manual
   John E. Davis, davis@space.mit.edu
   Thomas Schultz, tststs@gmx.de
-  Wed Mar 13 14:05:50 2002
+  Sat Jan 11 15:38:53 2003
   ____________________________________________________________
 
   Table of Contents
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   1. Header and Thread Functions
-
      1.1 collapse_thread
      1.2 collapse_threads
      1.3 extract_article_header
@@ -77,48 +20,56 @@
      1.9 get_header_tag_number
      1.10 get_visible_headers
      1.11 goto_num_tagged_header
-     1.12 header_down
-     1.13 header_next_unread
-     1.14 header_up
-     1.15 headers_hidden_mode
-     1.16 is_thread_collapsed
-     1.17 locate_header_by_msgid
-     1.18 next_tagged_header
-     1.19 prev_tagged_header
-     1.20 re_bsearch_author
-     1.21 re_bsearch_subject
-     1.22 re_fsearch_author
-     1.23 re_fsearch_subject
-     1.24 set_header_display_format
-     1.25 set_header_flags
-     1.26 set_header_score
-     1.27 set_visible_headers
-     1.28 sort_by_sorting_method
-     1.29 thread_size
-     1.30 uncollapse_thread
-     1.31 uncollapse_threads
+     1.12 has_parent
+     1.13 header_cursor_pos
+     1.14 header_down
+     1.15 header_next_unread
+     1.16 header_up
+     1.17 headers_hidden_mode
+     1.18 is_thread_collapsed
+     1.19 locate_header_by_msgid
+     1.20 next_tagged_header
+     1.21 prev_tagged_header
+     1.22 re_bsearch_author
+     1.23 re_bsearch_subject
+     1.24 re_fsearch_author
+     1.25 re_fsearch_subject
+     1.26 set_header_display_format
+     1.27 set_header_flags
+     1.28 set_header_score
+     1.29 set_visible_headers
+     1.30 sort_by_sorting_method
+     1.31 thread_size
+     1.32 uncollapse_thread
+     1.33 uncollapse_threads
 
   2. Article Functions
-
      2.1 is_article_visible
      2.2 article_as_string
-     2.3 bsearch_article
-     2.4 get_article_window_size
-     2.5 get_next_art_pgdn_action
-     2.6 is_article_visible
-     2.7 is_article_window_zoomed
-     2.8 pipe_article
-     2.9 re_bsearch_article
-     2.10 re_search_article
-     2.11 re_search_article_first
-     2.12 replace_article
-     2.13 save_current_article
-     2.14 search_article
-     2.15 search_article_first
-     2.16 set_article_window_size
+     2.3 article_cline_as_string
+     2.4 article_cline_number
+     2.5 article_count_lines
+     2.6 article_goto_line
+     2.7 article_line_down
+     2.8 article_line_up
+     2.9 bsearch_article
+     2.10 get_article_window_size
+     2.11 get_body_status
+     2.12 get_next_art_pgdn_action
+     2.13 is_article_visible
+     2.14 is_article_window_zoomed
+     2.15 pipe_article
+     2.16 re_bsearch_article
+     2.17 re_search_article
+     2.18 re_search_article_first
+     2.19 replace_article
+     2.20 request_body
+     2.21 save_current_article
+     2.22 search_article
+     2.23 search_article_first
+     2.24 set_article_window_size
 
   3. Group Functions
-
      3.1 current_newsgroup
      3.2 get_group_flags
      3.3 get_group_order
@@ -134,7 +85,6 @@
      3.13 set_group_order
 
   4. Dialog and Message Functions
-
      4.1 get_response
      4.2 get_select_box_response
      4.3 get_yes_no_cancel
@@ -150,7 +100,6 @@
      4.13 set_input_string
 
   5. Key Input Functions
-
      5.1 call
      5.2 definekey
      5.3 get_prefix_arg
@@ -162,7 +111,6 @@
      5.9 ungetkey
 
   6. File I/O Functions
-
      6.1 close_log_file
      6.2 log_message
      6.3 make_home_filename
@@ -170,7 +118,6 @@
      6.5 print_file
 
   7. Miscellaneous Functions
-
      7.1 slrn_version
      7.2 slrn_version_string
      7.3 datestring_to_unixtime
@@ -182,20 +129,20 @@
      7.9 reload_scorefile
      7.10 server_name
      7.11 set_color
-     7.12 set_ignore_quotes
-     7.13 set_integer_variable
-     7.14 set_string_variable
-     7.15 set_strip_re_regexp
-     7.16 set_strip_sig_regexp
-     7.17 set_strip_was_regexp
-     7.18 set_utf8_conversion_table
-     7.19 setlocale
-     7.20 tt_send
-     7.21 unregister_hook
-     7.22 update
+     7.12 set_color_attr
+     7.13 set_ignore_quotes
+     7.14 set_integer_variable
+     7.15 set_string_variable
+     7.16 set_strip_re_regexp
+     7.17 set_strip_sig_regexp
+     7.18 set_strip_was_regexp
+     7.19 set_utf8_conversion_table
+     7.20 setlocale
+     7.21 tt_send
+     7.22 unregister_hook
+     7.23 update
 
   8. Hooks
-
      8.1 article_mode_hook
      8.2 article_mode_quit_hook
      8.3 article_mode_startup_hook
@@ -206,16 +153,17 @@
      8.8 group_mode_startup_hook
      8.9 header_number_hook
      8.10 make_from_string_hook
-     8.11 post_file_hook
-     8.12 post_filter_hook
-     8.13 post_hook
-     8.14 pre_article_mode_hook
-     8.15 read_article_hook
-     8.16 reply_hook
-     8.17 resize_screen_hook
-     8.18 startup_hook
-     8.19 subject_compare_hook
-     8.20 supersede_hook
+     8.11 make_save_filename_hook
+     8.12 post_file_hook
+     8.13 post_filter_hook
+     8.14 post_hook
+     8.15 pre_article_mode_hook
+     8.16 read_article_hook
+     8.17 reply_hook
+     8.18 resize_screen_hook
+     8.19 startup_hook
+     8.20 subject_compare_hook
+     8.21 supersede_hook
 
 
   ______________________________________________________________________
@@ -260,7 +208,6 @@
 
       Usage
         String_Type extract_article_header (String h)
-
 
       Description
         This function returns the article header line specified by the
@@ -322,11 +269,12 @@
         integer is a bitmapped value whose bits are defined by the
         following constants:
 
+           HEADER_READ : set if header is marked as read
+           HEADER_TAGGED : set if header has `*' tag
+           HEADER_HIGH_SCORE : set if header has high score
+           HEADER_LOW_SCORE : set if header has low score
 
-                HEADER_READ : set if header is marked as read
-                HEADER_TAGGED : set if header has `*' tag
-                HEADER_HIGH_SCORE : set if header has high score
-                HEADER_LOW_SCORE : set if header has low score
+
 
       See Also
         set_header_flags
@@ -340,7 +288,10 @@
         Integer get_header_number ()
 
       Description
-        This function returns the article number for the current header.
+        This function returns the article number for the current header
+        (i.e. the one assigned by the server and recorded in the newsrc
+        file). If you want the current cursor position instead, use
+        header_cursor_pos.
 
 
 
@@ -394,6 +345,7 @@
 
       Usage
         Integer goto_num_tagged_header (Integer n)
+
       Description
         This function causes the header with numerical tag n to become
         the current header.  It returns 1 upon success or 0 upon
@@ -404,7 +356,37 @@
 
 
 
-  1.12.  header_down
+  1.12.  has_parent
+
+
+      Usage
+        Integer has_parent ()
+
+      Description
+        Returns 1 if the current header has a parent (within a thread
+        tree), 0 otherwise.
+
+
+
+  1.13.  header_cursor_pos
+
+
+      Usage
+        Integer header_cursor_pos ()
+
+      Description
+        This function returns the current position of the cursor in the
+        header summary window. This is the same as the ``header number''
+        of the article that gets displayed if the use_header_numbers
+        config variable is turned on, so it is always a number in the
+        range 1 through SCREEN_HEIGHT-3; do not confuse it with the
+        article number assigned by the server (which can be obtained
+        using the intrinsic function get_header_number). If the article
+        pager is ``zoomed'', this function always returns 1.
+
+
+
+  1.14.  header_down
 
 
       Usage
@@ -418,12 +400,11 @@
         header_up
 
 
-
-  1.13.  header_next_unread
+  1.15.  header_next_unread
 
 
       Usage
-        Intger header_next_unread ()
+        Integer header_next_unread ()
 
       Description
         Goto next unread header.  The function returns one upon success
@@ -434,11 +415,11 @@
 
 
 
-  1.14.  header_up
+  1.16.  header_up
 
 
       Usage
-        header_up ()
+        Integer header_up (Integer n)
 
       Description
         The function moves the current position up n headers.  It
@@ -449,7 +430,7 @@
 
 
 
-  1.15.  headers_hidden_mode
+  1.17.  headers_hidden_mode
 
 
       Usage
@@ -460,12 +441,13 @@
         headers will be hidden when an article is displayed.  It returns
         0 is all headers will be displayed, or a non-zero value if some
         may be hidden.
+
       See Also
         set_visible_headers, get_visible_headers, is_article_visible
 
 
 
-  1.16.  is_thread_collapsed
+  1.18.  is_thread_collapsed
 
 
       Usage
@@ -481,7 +463,7 @@
 
 
 
-  1.17.  locate_header_by_msgid
+  1.19.  locate_header_by_msgid
 
 
       Usage
@@ -502,7 +484,7 @@
 
 
                  % Save the current position
-                 variable msgid = extract_article_header ("Message-Id");
+                 variable msgid = extract_article_header ("Message-ID");
                     .
                     .
                  % Return to previous position.
@@ -510,10 +492,7 @@
 
 
 
-
-
-
-  1.18.  next_tagged_header
+  1.20.  next_tagged_header
 
 
       Usage
@@ -530,7 +509,7 @@
 
 
 
-  1.19.  prev_tagged_header
+  1.21.  prev_tagged_header
 
 
       Usage
@@ -547,7 +526,7 @@
 
 
 
-  1.20.  re_bsearch_author
+  1.22.  re_bsearch_author
 
 
       Usage
@@ -564,7 +543,7 @@
 
 
 
-  1.21.  re_bsearch_subject
+  1.23.  re_bsearch_subject
 
 
       Usage
@@ -581,7 +560,7 @@
 
 
 
-  1.22.  re_fsearch_author
+  1.24.  re_fsearch_author
 
 
       Usage
@@ -592,12 +571,13 @@
         expression regexp. If successful, it returns 1 and the current
         header is set to the matching header.  It returns 0 upon
         failure.
+
       See Also
         re_bsearch_author, re_fsearch_subject
 
 
 
-  1.23.  re_fsearch_subject
+  1.25.  re_fsearch_subject
 
 
       Usage
@@ -612,9 +592,7 @@
       See Also
         re_fsearch_author, re_bsearch_subject
 
-
-
-  1.24.  set_header_display_format
+  1.26.  set_header_display_format
 
 
       Usage
@@ -630,7 +608,6 @@
 
 
                   %[-][w]x
-
 
 
 
@@ -656,7 +633,6 @@
 
 
 
-
      Thus, "%F%-5l:%t%s" indicates that the header window will contain
      the, in order: the flags, the number of lines the article contains
      right justified in a 5 character field, a `:', the tree, and the
@@ -674,7 +650,7 @@
 
 
 
-  1.25.  set_header_flags
+  1.27.  set_header_flags
 
 
       Usage
@@ -690,7 +666,7 @@
 
 
 
-  1.26.  set_header_score
+  1.28.  set_header_score
 
 
       Usage
@@ -705,7 +681,7 @@
 
 
 
-  1.27.  set_visible_headers
+  1.29.  set_visible_headers
 
 
       Usage
@@ -724,13 +700,15 @@
 
                set_visible_headers ("X-,From:");
 
+
+
       See Also
         get_visible_headers, headers_hidden_mode, is_article_visible,
         set_header_display_format
 
 
 
-  1.28.  sort_by_sorting_method
+  1.30.  sort_by_sorting_method
 
 
       Usage
@@ -743,16 +721,12 @@
       Example
         This is useful if you want to apply changes to sorting_method:
 
-
-               set_integer_variable("sorting_method", 3);
-               sort_by_sorting_method ();
-
+          set_integer_variable("sorting_method", 3);
+          sort_by_sorting_method ();
 
 
 
-
-
-  1.29.  thread_size
+  1.31.  thread_size
 
 
       Usage
@@ -764,7 +738,7 @@
 
 
 
-  1.30.  uncollapse_thread
+  1.32.  uncollapse_thread
 
 
       Usage
@@ -778,7 +752,7 @@
 
 
 
-  1.31.  uncollapse_threads
+  1.33.  uncollapse_threads
 
 
       Usage
@@ -788,7 +762,6 @@
         This function uncollapses all threads.  This is usually
         necessary if you want to use the header movement functions to
         access hidden headers.
-
 
       See Also
         collapse_threads
@@ -825,7 +798,6 @@
 
 
 
-
       Example
         If one only want to know whether or not there is an article
         visible in the window, then use
@@ -835,13 +807,11 @@
 
 
 
-
      To determine whether or not it is associated with the current
      header regardless of whether or not it is showing, use
 
 
                 _is_article_visible () & 2
-
 
 
 
@@ -867,7 +837,111 @@
 
 
 
-  2.3.  bsearch_article
+  2.3.  article_cline_as_string
+
+
+      Usage
+        String_Type article_cline_as_string ()
+
+      Description
+        Returns the current line of the article (i.e. the first one that
+        is displayed in the article pager) as a string.  If no article
+        has been downloaded, the empty string will be returned.
+      See Also
+        article_as_string, article_cline_number
+
+
+
+  2.4.  article_cline_number
+
+
+      Usage
+        Integer article_cline_number ()
+
+      Description
+        Returns the number of the line that is currently displayed at
+        the top of the article pager.  Counting starts at 1 and ignores
+        hidden lines.
+
+      See Also
+        article_cline_as_string, article_count_lines, article_goto_line
+
+
+
+  2.5.  article_count_lines
+
+
+      Usage
+        Integer article_count_lines ()
+
+      Description
+        This function returns the total number of visible lines in the
+        article pager.  For example, you could use it with
+        article_goto_line to jump to the last line in the pager:
+
+
+               define article_bob ()
+               {
+                   () = article_goto_line (article_count_lines ());
+               }
+
+
+
+  2.6.  article_goto_line
+
+
+      Usage
+        Integer article_goto_line (Integer linenum)
+
+      Description
+        Makes the article pager jump to line number linenum (i.e., puts
+        this line at the top of the pager).  As in article_cline_number,
+        counting starts at 1 and ignores hidden lines.  If you specify 0
+        or a negative number as the argument, no action is taken and the
+        function returns zero.  Otherwise, the new line number is
+        returned. If the article has less than linenum lines, the
+        function goes to the last line.
+
+      See Also
+        article_line_down, article_line_up
+
+
+
+  2.7.  article_line_down
+
+
+      Usage
+        Integer article_line_down (Integer num)
+
+      Description
+        Scrolls the article down num lines.  Returns the number of lines
+        that were actually scrolled.
+
+      Notes
+        If no article is in the pager, scrolling down first downloads an
+        article.
+
+      See Also
+        article_goto_line, article_line_up
+
+
+
+  2.8.  article_line_up
+
+
+      Usage
+        Integer article_line_up (Integer num)
+
+      Description
+        Scrolls the article up num lines and returns the number of lines
+        that were actually scrolled.
+
+      See Also
+        article_goto_line, article_line_down
+
+
+
+  2.9.  bsearch_article
 
 
       Usage
@@ -882,7 +956,7 @@
 
 
 
-  2.4.  get_article_window_size
+  2.10.  get_article_window_size
 
 
       Usage
@@ -897,7 +971,31 @@
 
 
 
-  2.5.  get_next_art_pgdn_action
+  2.11.  get_body_status
+
+
+      Usage
+        Integer get_body_status ()
+
+      Description
+        When reading from an slrnpull spool in "true offline" mode, the
+        body that belongs to an article header might not yet be on disk.
+        This function returns one of the following values:
+
+
+             -1  : currently, no header is selected
+              0  : the body of the current article is present
+              1  : the body of the article is missing
+              2  : the body of the article is missing, but requested for download
+
+
+
+      See Also
+        request_body
+
+
+
+  2.12.  get_next_art_pgdn_action
 
 
       Usage
@@ -917,12 +1015,7 @@
 
 
 
-
-
-
-
-
-  2.6.  is_article_visible
+  2.13.  is_article_visible
 
 
       Usage
@@ -938,8 +1031,6 @@
                 1  : if the article window is showing but the current header
                        does not refer to the article
                 3  : if the article window contains the current header article
-
-
 
 
       Notes
@@ -958,13 +1049,12 @@
 
 
 
-
       See Also
         _is_article_visible, is_article_window_zoomed, call
 
 
 
-  2.7.  is_article_window_zoomed
+  2.14.  is_article_window_zoomed
 
 
       Usage
@@ -979,7 +1069,7 @@
 
 
 
-  2.8.  pipe_article
+  2.15.  pipe_article
 
 
       Usage
@@ -996,7 +1086,7 @@
 
 
 
-  2.9.  re_bsearch_article
+  2.16.  re_bsearch_article
 
 
       Usage
@@ -1008,10 +1098,7 @@
 
       See Also
         re_search_article
-
-
-
-  2.10.  re_search_article
+  2.17.  re_search_article
 
 
       Usage
@@ -1032,7 +1119,7 @@
 
 
 
-  2.11.  re_search_article_first
+  2.18.  re_search_article_first
 
 
       Usage
@@ -1048,7 +1135,7 @@
 
 
 
-  2.12.  replace_article
+  2.19.  replace_article
 
 
       Usage
@@ -1067,13 +1154,29 @@
 
 
 
-
       See Also
         article_as_string, is_article_visible
 
 
 
-  2.13.  save_current_article
+  2.20.  request_body
+
+
+
+      Usage
+        request_body (Integer mode)
+
+      Description
+        If an article does not yet have a body, you can request it for
+        download using this function. Setting mode to 1 requests the
+        body, setting it to 0 un-requests it.
+
+      See Also
+        get_body_status
+
+
+
+  2.21.  save_current_article
 
 
       Usage
@@ -1094,8 +1197,7 @@
 
 
 
-
-  2.14.  search_article
+  2.22.  search_article
 
 
       Usage
@@ -1116,8 +1218,7 @@
 
 
 
-  2.15.  search_article_first
-
+  2.23.  search_article_first
 
 
       Usage
@@ -1135,7 +1236,7 @@
 
 
 
-  2.16.  set_article_window_size
+  2.24.  set_article_window_size
 
 
       Usage
@@ -1186,9 +1287,10 @@
                GROUP_UNSUBSCRIBED   : set if the group is unsubscribed
                GROUP_NEW_GROUP_FLAG : set if the group is new
 
+
+
       See Also
         get_header_flags, set_group_flags, current_newsgroup
-
 
 
   3.3.  get_group_order
@@ -1257,8 +1359,6 @@
       See Also
         select_group, current_newsgroup, is_group_mode
 
-
-
   3.7.  group_up_n
 
 
@@ -1300,7 +1400,6 @@
 
 
 
-
   3.10.  select_group
 
 
@@ -1314,7 +1413,6 @@
 
       See Also
         current_newsgroup
-
 
 
 
@@ -1342,9 +1440,6 @@
                    n : Group name
                    t : Total number of articles in the group (estimate)
                    u : Number of unread articles in the group
-
-
-
 
 
 
@@ -1384,13 +1479,13 @@
                 set_group_order ("news.software.readers");
 
 
+
      Moving a group to the end of the list can be done by removing it
      from the list returned by get_group_order and calling
      set_group_order on the result.
 
      An example for a simple group sort based on this function can be
      found in the file gsort.sl that comes with slrn.
-
       Notes
         This function is only available if slrn was compiled with S-Lang
         1.4.x.
@@ -1427,7 +1522,6 @@
 
 
 
-
      will return one of the four characters y, Y, n, or N to the vari-
      able rsp.
 
@@ -1450,13 +1544,11 @@
       Example
 
 
-            variable rsp = get_select_box_response (
-                              "Pick a number:",
-                              "one", "two", "three", "four",
-                              4);
-            message (sprintf ("You chose %d", rsp));
-
-
+                 variable rsp = get_select_box_response (
+                                   "Pick a number:",
+                                   "one", "two", "three", "four",
+                                   4);
+                 message (sprintf ("You chose %d", rsp));
 
 
       See Also
@@ -1480,7 +1572,6 @@
                   1 if yes
                   0 if no
                  -1 if cancel
-
 
 
 
@@ -1524,8 +1615,6 @@
 
       See Also
         select_list_box
-
-
 
   4.6.  read_mini
 
@@ -1619,7 +1708,6 @@
 
 
 
-
       Description
         This purpose of this function is to present a list of n strings,
         specified by the s_1, ... s_n parameters to the user and have
@@ -1648,10 +1736,10 @@
 
       Example
 
-            set_input_chars ("y");
-            if ('y' == get_yes_no_cancel ("Really Quit"))
-              quit (0);
 
+                 set_input_chars ("y");
+                 if ('y' == get_yes_no_cancel ("Really Quit"))
+                   quit (0);
 
 
 
@@ -1683,13 +1771,11 @@
 
 
 
-
      will result in a having the value Apple and b having the value
      Orange.
 
       See Also
         read_mini, set_input_chars
-
 
 
 
@@ -1712,6 +1798,7 @@
 
       See Also
         definekey, undefinekey, set_prefix_argument
+
 
 
   5.2.  definekey
@@ -1780,6 +1867,7 @@
         This function checks for keyboard input.  Its argument specifies
         the number of tenths of a second to wait.  It returns 0 if no
         input is available or a non-sero value if input is available.
+
       See Also
         getkey, ungetkey
 
@@ -1845,6 +1933,8 @@
 
       See Also
         getkey
+
+
 
   6.  File I/O Functions
 
@@ -1933,7 +2023,6 @@
 
       Notes
         The printer is specified via the slrnrc printer_name variable.
-
 
 
 
@@ -2078,7 +2167,6 @@
 
 
 
-
      If you register multiple functions for the same hook, they will be
      called in the order in which they were registered. If a function
      with the name of a hook is defined, it gets called after those that
@@ -2138,7 +2226,29 @@
 
 
 
-  7.12.  set_ignore_quotes
+  7.12.  set_color_attr
+
+
+      Usage
+        Void set_color_attr (String obj, String fg, String bg, Integer
+        attr)
+
+      Description
+        This functions works like set_color, but has the additional
+        argument attr that allows you to assign attributes to the color
+        object (if your terminal supports this). attr can be 0 (if you
+        do not want any attributes to take effect) or any combination of
+        the following constants:
+
+
+             ATTR_BLINK     blinking text
+             ATTR_BOLD      bold text
+             ATTR_REV       inverse text
+             ATTR_ULINE     underlined text
+
+
+
+  7.13.  set_ignore_quotes
 
 
       Usage
@@ -2149,6 +2259,7 @@
         ignore_quotes configuration command. regexps has to be a (one-
         dimensional) array of 1-5 strings that are interpreted as
         regular expressions to detect quoted lines.
+
 
       Example
         set_ignore_quotes (["^>", "^|"]);
@@ -2161,7 +2272,7 @@
 
 
 
-  7.13.  set_integer_variable
+  7.14.  set_integer_variable
 
 
       Usage
@@ -2176,7 +2287,8 @@
         set_string_variable, get_variable_value
 
 
-  7.14.  set_string_variable
+
+  7.15.  set_string_variable
 
 
       Usage
@@ -2192,7 +2304,7 @@
 
 
 
-  7.15.  set_strip_re_regexp
+  7.16.  set_strip_re_regexp
 
 
       Usage
@@ -2212,7 +2324,7 @@
 
 
 
-  7.16.  set_strip_sig_regexp
+  7.17.  set_strip_sig_regexp
 
 
       Usage
@@ -2234,7 +2346,7 @@
 
 
 
-  7.17.  set_strip_was_regexp
+  7.18.  set_strip_was_regexp
 
 
       Usage
@@ -2254,7 +2366,7 @@
 
 
 
-  7.18.  set_utf8_conversion_table
+  7.19.  set_utf8_conversion_table
 
 
       Usage
@@ -2278,14 +2390,13 @@
 
 
 
-
       Notes
         This function is only available if slrn was compiled with S-Lang
         1.4.x.
 
 
 
-  7.19.  setlocale
+  7.20.  setlocale
 
 
       Usage
@@ -2306,7 +2417,6 @@
 
 
 
-
      The locale can be any locale supported by your system.  If it is an
      empty string, the locale to use will be taken from the environment.
      The function will return the name of the locale that was actually
@@ -2317,7 +2427,7 @@
 
 
 
-  7.20.  tt_send
+  7.21.  tt_send
 
 
       Usage
@@ -2332,7 +2442,7 @@
 
 
 
-  7.21.  unregister_hook
+  7.22.  unregister_hook
 
 
       Usage
@@ -2343,9 +2453,9 @@
         to a hook using register_hook. Its return values are:
 
 
-             0: Hook does not exist or function is not assigned to it.
-             1: Function successfully unregistered.
 
+        0: Hook does not exist or function is not assigned to it.
+        1: Function successfully unregistered.
 
 
 
@@ -2354,7 +2464,7 @@
 
 
 
-  7.22.  update
+  7.23.  update
 
 
       Usage
@@ -2368,12 +2478,12 @@
 
 
 
-
   8.  Hooks
 
   This chapter is special. Rather than describing intrinsic functions,
   it gives you a list of hooks that can be used to execute arbitrary S-
   lang code on certain events (e.g. whenever entering article mode).
+
   You can define code for a hook by putting it into a function that has
   exactly the same name as the hook. However, the preferred way to add
   code to a hook is now using the register_hook () intrinsic function on
@@ -2400,26 +2510,24 @@
         comp.*:
 
 
-             define make_group_specific_settings ()
-             {
-               variable sorting_method = 7;
-               variable signature_file = ".signature";
 
-               if (is_substr (current_newsgroup (), "binaries")
-                   or is_substr (current_newsgroup (), "pictures"))
-                sorting_method = 3;
+        define make_group_specific_settings ()
+        {
+          variable sorting_method = 7;
+          variable signature_file = ".signature";
 
-               if (0 == strncmp (current_newsgroup (), "comp.", 5))
-                 signature_file = ".nerd-signature";
+          if (is_substr (current_newsgroup (), "binaries")
+              or is_substr (current_newsgroup (), "pictures"))
+           sorting_method = 3;
 
-               set_integer_variable ("sorting_method", sorting_method);
-               set_string_variable ("signature", signature_file);
-             }
-             () = register_hook ("article_mode_hook",
-                                 "make_group_specific_settings");
+          if (0 == strncmp (current_newsgroup (), "comp.", 5))
+            signature_file = ".nerd-signature";
 
-
-
+          set_integer_variable ("sorting_method", sorting_method);
+          set_string_variable ("signature", signature_file);
+        }
+        () = register_hook ("article_mode_hook",
+                            "make_group_specific_settings");
 
 
 
@@ -2437,7 +2545,6 @@
 
 
   8.3.  article_mode_startup_hook
-
 
 
       Usage
@@ -2465,7 +2572,6 @@
       Notes
         As this hook returns a value, you cannot bind multiple macros to
         it.
-
 
 
   8.5.  followup_hook
@@ -2500,9 +2606,6 @@
         This hook will be called whenever group mode is entered.  This
         includes the times when one exists article mode back to group
         mode.
-
-
-
 
 
 
@@ -2552,15 +2655,42 @@
 
              define make_from_string_hook ()
              {
-               return "My Name <me@my.machine>"
+               return "My Name <me@my.machine>";
              }
 
 
 
+  8.11.  make_save_filename_hook
+
+
+      Usage
+        String make_save_filename_hook ()
+
+      Description
+        This function is expected to leave a string on the stack that
+        will be used to decide what folder an article should be saved
+        to. If the returned filename is not absolute, it is interpreted
+        as relative to save_directory.
+
+      Notes
+        As this hook returns a value, you cannot bind multiple macros to
+        it.
+
+      Example
+        Here is a simple example:
+
+
+             define make_save_filename_hook ()
+             {
+               if (string_match (extract_article_header ("Subject"), "slrn", 1) != 0)
+                 return "slrn-related";
+               else
+                 return current_newsgroup();
+             }
 
 
 
-  8.11.  post_file_hook
+  8.12.  post_file_hook
 
 
       Usage
@@ -2576,7 +2706,7 @@
 
 
 
-  8.12.  post_filter_hook
+  8.13.  post_filter_hook
 
 
       Usage
@@ -2592,13 +2722,12 @@
 
 
 
-
      This hook takes a single parameter: the name of the file that slrn
      is about to post.
 
 
 
-  8.13.  post_hook
+  8.14.  post_hook
 
 
       Usage
@@ -2609,7 +2738,7 @@
 
 
 
-  8.14.  pre_article_mode_hook
+  8.15.  pre_article_mode_hook
 
 
       Usage
@@ -2621,7 +2750,7 @@
 
 
 
-  8.15.  read_article_hook
+  8.16.  read_article_hook
 
 
       Usage
@@ -2633,17 +2762,18 @@
 
 
 
-  8.16.  reply_hook
+  8.17.  reply_hook
 
 
       Usage
         Void reply_hook ()
+
       Description
         Function called when replying to poster.
 
 
 
-  8.17.  resize_screen_hook
+  8.18.  resize_screen_hook
 
 
       Usage
@@ -2654,7 +2784,7 @@
 
 
 
-  8.18.  startup_hook
+  8.19.  startup_hook
 
 
       Usage
@@ -2684,10 +2814,7 @@
 
 
 
-
-
-
-  8.19.  subject_compare_hook
+  8.20.  subject_compare_hook
 
 
       Usage
@@ -2702,9 +2829,7 @@
 
 
 
-
-
-  8.20.  supersede_hook
+  8.21.  supersede_hook
 
 
       Usage
@@ -2712,61 +2837,6 @@
 
       Description
         Function called when superseding an article.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
