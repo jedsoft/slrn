@@ -1815,6 +1815,11 @@ static char *read_token (char *start, char *dest, size_t max) /*{{{*/
    
    if (*start == '"')
      {
+	if (len < max)
+	  {
+	    *dest++ = '"';
+	    len++;
+	  }
 	start++;
 	while (*start && (*start != '"'))
 	  {
@@ -1827,7 +1832,15 @@ static char *read_token (char *start, char *dest, size_t max) /*{{{*/
 	       }
 	     start++;
 	  }
-	if (*start == '"') start++;
+	if (*start == '"')
+	  {
+	     if (len < max)
+	       {
+		  *dest++ = '"';
+		  len++;
+	       }
+	     start++;
+	  }
      }
    else if (*start && (NULL == strchr ("\t \"(),.:;<>@[\\]", *start)))
      {
