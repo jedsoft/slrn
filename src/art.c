@@ -585,14 +585,10 @@ static void init_article_window_struct (void) /*{{{*/
 
 /*}}}*/
 
-static void free_article_lines (Slrn_Article_Type *a)
+static void free_article_line (Slrn_Article_Line_Type *l)
 {
-   Slrn_Article_Line_Type *l, *next;
-
-   if (a == NULL)
-     return;
+   Slrn_Article_Line_Type *next;
    
-   l = a->lines;
    while (l != NULL)
      {
 	slrn_free ((char *) l->buf);
@@ -600,7 +596,49 @@ static void free_article_lines (Slrn_Article_Type *a)
 	slrn_free ((char *) l);
 	l = next;
      }
+}   
+
+static Slrn_Article_Line_Type *copy_article_line (Slrn_Article_Line_Type *l)
+{
+   Slrn_Article_Line_Type *retval = NULL, *r, *last = NULL;
+   
+   while (l != NULL)
+     {
+	r = (Slrn_Article_Line_Type*) slrn_malloc (sizeof(Slrn_Article_Line_Type), 1, 1);
+	if ((r == NULL) ||
+	    (NULL == (r->buf = slrn_strmalloc (l->buf, 0))))
+	  {
+	     free_article_line (retval);
+	     slrn_free ((char *)r);
+	     return NULL;
+	  }
+	r->flags = l->flags;
+	r->next = NULL;
+	if (retval == NULL)
+	  {
+	     r->prev = NULL;
+	     retval = r;
+	  }
+	else
+	  {
+	     r->prev = last;
+	     last->next = r;
+	  }
+	last = r;
+	l = l->next;
+     }
+   return retval;
+}
+
+static void free_article_lines (Slrn_Article_Type *a)
+{
+   if (a == NULL)
+     return;
+   
+   free_article_line(a->lines);
+   free_article_line(a->orig_lines);
    a->lines = NULL;
+   a->orig_lines = NULL;
 }
 
 static void slrn_art_free_article (Slrn_Article_Type *a)
@@ -626,48 +664,6 @@ static void free_article (void) /*{{{*/
    set_article_visibility (0);
 }
 
-/*}}}*/
-
-/* Please note that this function does not copy all fields */
-static Slrn_Article_Type *copy_article (Slrn_Article_Type *a) /*{{{*/
-{
-   Slrn_Article_Type *retval;
-   Slrn_Article_Line_Type *l = a->lines, *copy, *last = NULL;
-   
-   retval = (Slrn_Article_Type*) slrn_malloc (sizeof(Slrn_Article_Type), 1, 1);
-   if (retval == NULL) return NULL;
-   
-   while (l != NULL)
-     {
-	copy = (Slrn_Article_Line_Type*) slrn_malloc (sizeof(Slrn_Article_Line_Type), 1, 1);
-	if (copy == NULL)
-	  {
-	     slrn_art_free_article (retval);
-	     return NULL;
-	  }
-	if (NULL == (copy->buf = slrn_strmalloc (l->buf, 0)))
-	  {
-	     slrn_art_free_article (retval);
-	     slrn_free ((char *)copy);
-	     return NULL;
-	  }
-	copy->flags = l->flags;
-	copy->next = NULL;
-	if (retval->lines == NULL)
-	  {
-	     copy->prev = NULL;
-	     retval->lines = copy;
-	  }
-	else
-	  {
-	     copy->prev = last;
-	     last->next = copy;
-	  }
-	last = copy;
-	l = l->next;
-     }
-   return retval;
-}
 /*}}}*/
 
 static void skip_quoted_text (void) /*{{{*/
@@ -2239,7 +2235,13 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	slrn_art_free_article (retval);
 	return NULL;
      }
-   
+
+   retval->orig_lines = copy_article_line (retval->lines);
+   if (retval->orig_lines == NULL)
+     {
+	slrn_art_free_article (retval);
+	return NULL;
+     }
    retval->cline = retval->lines;
    retval->needs_sync = 1;
    
@@ -2257,6 +2259,38 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 }
 /*}}}*/
 
+/* returns -1 on errors */
+static int art_undo_modifications (Slrn_Article_Type *a)
+{
+   if (a == NULL) return 0;
+   
+   a->is_modified = 0;
+   a->is_wrapped = 0;
+   a->mime_was_modified = 0;
+   a->mime_was_parsed = 0;
+   a->mime_needs_metamail = 0;
+   
+   free_article_line (a->lines);
+   a->lines = NULL;
+   if (NULL == (a->lines = copy_article_line (a->orig_lines)))
+     {
+	slrn_art_free_article (a);
+	return -1;
+     }
+   
+   a->cline = a->lines;
+   slrn_mark_header_lines (a);
+   if (-1 == _slrn_art_unfold_header_lines (a))
+     {
+	slrn_art_free_article (a);
+	return -1;
+     }
+   slrn_chmap_fix_body (a, 0);
+   prepare_article (a);
+   init_article_window_struct();
+   return 0;
+}
+
 static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{*/
 {
    Slrn_Article_Type *a;
@@ -2267,21 +2301,19 @@ static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{
    
    if ((Header_Showing == h)
        && (Slrn_Current_Article != NULL))
-     {
+     { /* We already have the article in memory. */
 #if SLRN_HAS_MIME
-	if (((do_mime == 0) && (Slrn_Current_Article->mime_was_modified == 0))
-	    || (do_mime && Slrn_Current_Article->mime_was_parsed))
-	  return 0; /* The cached copy is good */
-	if (do_mime && (Slrn_Current_Article->mime_was_parsed == 0))
-	  { /* We only need to perform MIME decoding */
+	if ((do_mime == 0) && (Slrn_Current_Article->mime_was_modified))
+	  { /* Use the unchanged version of the article. */
+	     return art_undo_modifications (Slrn_Current_Article);
+	  }
+	else if (do_mime && (Slrn_Current_Article->mime_was_parsed == 0))
+	  { /* We need to perform MIME decoding */
 	     slrn_mime_article_init (Slrn_Current_Article);
 	     slrn_mime_process_article (Slrn_Current_Article);
-	     slrn_chmap_fix_body (Slrn_Current_Article, 0);
-	     return 0;
 	  }
-#else
-	return 0; /* The cached copy is good */
 #endif
+	return 0;
      }
    
    free_article ();
@@ -2428,6 +2460,11 @@ int slrn_string_to_article (char *str)
 #if 0 /* does this make any sense? */
    Header_Showing = Slrn_Current_Header;
 #endif
+   if (NULL == (a->orig_lines = copy_article_line (a->lines)))
+     {
+	free_article ();
+	return -1;
+     }
    a->cline = a->lines;
 
    slrn_mark_header_lines (a);
@@ -3834,15 +3871,8 @@ static void goto_header_number (void) /*{{{*/
 
 /*{{{ article save/decode functions */
 
-static int write_article_lines (Slrn_Article_Type *a, FILE *fp)
+static int write_article_line (Slrn_Article_Line_Type *l, FILE *fp)
 {
-   Slrn_Article_Line_Type *l;
-   
-   if (a == NULL)
-     return -1;
-   
-   l = a->lines;
-
    while (l != NULL)
      {
 	char *buf;
@@ -3880,6 +3910,7 @@ int slrn_save_current_article (char *file) /*{{{*/
 {
    FILE *fp = NULL;
    Slrn_Header_Type *h;
+   Slrn_Article_Line_Type *lines;
    int retval = 0;
    
    if (NULL == (h = affected_header ()) ||
@@ -3887,9 +3918,10 @@ int slrn_save_current_article (char *file) /*{{{*/
 		      Slrn_Use_Mime & MIME_SAVE) < 0)
      return -1;
    
+   lines = Slrn_Current_Article->lines;
 #if SLRN_HAS_MIME
    if (0 == (Slrn_Use_Mime & MIME_SAVE))
-     slrn_chmap_fix_body (Slrn_Current_Article, 1);
+     lines = Slrn_Current_Article->orig_lines;
 #endif
    
    fp = fopen (file, "w");
@@ -3901,14 +3933,12 @@ int slrn_save_current_article (char *file) /*{{{*/
      }
    else
      {
-	if (-1 == (retval = write_article_lines (Slrn_Current_Article, fp)))
+	if (-1 == (retval = write_article_line (lines, fp)))
 	  slrn_error (_("Error writing to %s."), file);
 	fclose (fp);
      }
    
 #if SLRN_HAS_MIME
-   if (0 == (Slrn_Use_Mime & MIME_SAVE))
-     slrn_chmap_fix_body (Slrn_Current_Article, 0);
    select_header (h, 0, Slrn_Use_Mime & MIME_DISPLAY);
 #endif
    
@@ -3920,24 +3950,13 @@ int slrn_save_current_article (char *file) /*{{{*/
 
 static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
 {
-   int reload, is_wrapped = 0;
+   int is_wrapped = 0, undo_mime = 0;
    Slrn_Article_Line_Type *l = NULL;
    Slrn_Article_Type *a = Slrn_Current_Article;
    char *from;
    time_t now;
    
-   if ((Header_Showing == h)
-       && (a != NULL)
-#if SLRN_HAS_MIME
-       && ((Slrn_Use_Mime & MIME_SAVE) ||
-	   (a->mime_was_modified == 0))
-#endif
-       )
-     reload = 0; /* We can use the cached copy */
-   else
-     reload = 1;
-   
-   if (reload)
+   if ((Header_Showing != h) || (a == NULL))
      {
 	if (NULL == (a = read_article (h, Slrn_Del_Article_Upon_Read)))
 	  return -1;
@@ -3949,6 +3968,7 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
 	     slrn_chmap_fix_body (a, 0);
 	  }
 #endif
+	l = a->lines;
      }
    else
      {
@@ -3959,18 +3979,16 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
 	  {
 	     if (a->mime_was_parsed == 0)
 	       {
-		  if (NULL == (a = copy_article (a)))
-		    return -1;
+		  undo_mime = 1;
 		  slrn_mime_article_init (a);
 		  slrn_mime_process_article (a);
-		  slrn_chmap_fix_body (a, 0);
 	       }
+	     l = a->lines;
 	  }
 	else
-	  slrn_chmap_fix_body (a, 1);
+	  l = a->orig_lines;
 #endif
      }
-   l = a->lines;
    
    from = h->from;
    if (from != NULL) from = parse_from (from);
@@ -3995,11 +4013,16 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
    
    fputs ("\n", fp); /* one empty line as a separator */
    
-#if SLRN_HAS_MIME
-   if ((reload == 0) && (0 == (Slrn_Use_Mime & MIME_SAVE)))
-     slrn_chmap_fix_body (Slrn_Current_Article, 0);
-#endif
    if (a != Slrn_Current_Article) slrn_art_free_article (a);
+   else if (undo_mime)
+     {
+	if (-1 == art_undo_modifications (a))
+	  {
+	     Slrn_Current_Article = NULL;
+	     free_article();
+	     return -1;
+	  }
+     }	  
    if (is_wrapped) _slrn_art_wrap_article (Slrn_Current_Article);
    
    return 0;
@@ -4309,14 +4332,18 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
 #if SLRN_HAS_PIPING
    FILE *fp;
    int retval;
+   Slrn_Article_Line_Type *lines;
 
    if (-1 == (retval = select_affected_article (MIME_PIPE)))
      return -1;
 #if SLRN_HAS_MIME
    else if (retval == 1)
      select_header (Header_Showing, 0, Slrn_Use_Mime & MIME_PIPE);
+#endif
+   lines = Slrn_Current_Article->lines;
+#if SLRN_HAS_MIME
    if (0 == (Slrn_Use_Mime & MIME_PIPE))
-     slrn_chmap_fix_body (Slrn_Current_Article, 1);
+     lines = Slrn_Current_Article->orig_lines;
 #endif
    
    if (NULL == (fp = slrn_popen (cmd, "w")))
@@ -4326,13 +4353,11 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
      }
    else
      {
-	retval = write_article_lines (Slrn_Current_Article, fp);
+	retval = write_article_line (lines, fp);
 	slrn_pclose (fp);
      }
    
 #if SLRN_HAS_MIME
-   if (0 == (Slrn_Use_Mime & MIME_PIPE))
-     slrn_chmap_fix_body (Slrn_Current_Article, 0);
    select_header (Header_Showing, 0, Slrn_Use_Mime & MIME_DISPLAY);
 #endif
    
