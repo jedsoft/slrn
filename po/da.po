@@ -1,5 +1,5 @@
 # Danish messages for slrn.
-# Translator: Byrial Ole Jensen <byrial@image.dk>, 2001.
+# Translator: Byrial Ole Jensen <byrial@image.dk>, 2001-2003.
 #
 # Historie:
 # 2001-10-21: Sendt til korrektur på dansklisten. Indarbejdet rettelser
@@ -22,9 +22,9 @@
 # score[file entry] - bedømmelse[sregel]
 msgid ""
 msgstr ""
-"Project-Id-Version: slrn 0.9.7.3pl1 (cvs 2002-03-05)\n"
+"Project-Id-Version: slrn 0.9.8\n"
 "POT-Creation-Date: 2003-08-25 17:14+0200\n"
-"PO-Revision-Date: 2002-03-12 18:00+0100\n"
+"PO-Revision-Date: 2003-09-16 21:29+0200\n"
 "Last-Translator: Byrial Ole Jensen <byrial@image.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -172,7 +172,7 @@ msgstr "Server sendte et tomt indlæg."
 
 #: src/art.c:2563
 msgid "%Y-%m-%d"
-msgstr ""
+msgstr "%Y-%m-%d"
 
 #: src/art.c:2606
 msgid "This operation requires an article"
@@ -229,16 +229,13 @@ msgstr "Opfølgning til %s som forfatter foretrækker"
 
 #: src/art.c:3120
 msgid "fFaAtTcC"
-msgstr ""
+msgstr "oOlLdDaA"
 
 #: src/art.c:3123
-#, fuzzy
 msgid ""
 "Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
 " Cancel?"
-msgstr ""
-"Flergruppe-sending. Opfølgning til denne, Send kun til denne, Ignorér,"
-" Afbryd?"
+msgstr "Flergruppe-sending. Opfølgning hertil, send til alle grupper/kun denne, afbryd?"
 
 #: src/art.c:3205
 msgid "Cc message as requested by poster"
@@ -254,14 +251,14 @@ msgid "%s appears invalid.  CC anyway"
 msgstr "%s synes ugyldig. Send kopi alligevel"
 
 #: src/art.c:3397 src/post.c:996
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot open file: %s"
-msgstr "Kan ikke åbne logfil %s"
+msgstr "Kan ikke åbne fil: %s"
 
 #: src/art.c:3404 src/post.c:1003
-#, fuzzy, c-format
+#, c-format
 msgid "Zero length file: %s"
-msgstr "Kan ikke åbne logfil %s"
+msgstr "Tom fil: %s"
 
 #: src/art.c:3454
 msgid "Are you sure you want to supersede"
@@ -330,19 +327,19 @@ msgid "Save this thread"
 msgstr "Gem denne tråd"
 
 #: src/art.c:4097 src/post.c:1622
-#, fuzzy, c-format
+#, c-format
 msgid "Do you want to create directory %s"
-msgstr "Er du sikker på at du vil slette den"
+msgstr "Vil du oprette kataloget %s"
 
 #: src/art.c:4100 src/post.c:1626
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to create directory. (errno = %d)"
-msgstr "Kan ikke lave kataloget %s. (fejlnr. = %d)."
+msgstr "Kan ikke oprette kataloget. (fejlnr. = %d)."
 
 #: src/art.c:4105
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: %s is a regular file."
-msgstr "%s er ikke en almindelig fil"
+msgstr "Advarsel: %s er en almindelig fil."
 
 #: src/art.c:4159
 msgid "Temporary file (^G aborts): "
@@ -504,9 +501,8 @@ msgid "Apply scorefile now"
 msgstr "Anvend bedømmelsesfil nu"
 
 #: src/art.c:5156
-#, fuzzy
 msgid "No scorefile loaded."
-msgstr "Fandt ikke flere filer.\n"
+msgstr "Ingen bedømmelsesregler er indlæst."
 
 #: src/art.c:5165
 msgid "This article is not matched by any scorefile entries."
@@ -554,13 +550,12 @@ msgid "Article %s not available."
 msgstr "Indlæg %s er ikke tilgængelig."
 
 #: src/art.c:5895
-#, fuzzy
 msgid "Enter Message-ID: "
-msgstr "Angiv id for indlæg (Message-Id): "
+msgstr "Angiv id for indlæg (Message-ID): "
 
 #: src/art.c:6317
 msgid "Warning: Could not save list of requested bodies."
-msgstr ""
+msgstr "Advarsel: Kunne ikke gemme liste over ønskede brevkroppe."
 
 #: src/art.c:6586
 msgid "Are you sure that you want to cancel this article"
@@ -579,9 +574,8 @@ msgid "Done."
 msgstr "Færdig."
 
 #: src/art.c:6693
-#, fuzzy
 msgid "Warning: Can only request article bodies from this group."
-msgstr "Ingen tidligere indlæg i denne gruppe"
+msgstr "Advarsel: Der kan kun ønskes indlægskroppe fra denne gruppe."
 
 #: src/art.c:6710
 msgid "Mark all articles as read"
@@ -901,7 +895,7 @@ msgstr "%s: Læs hvor mange? "
 #: src/group.c:900
 #, c-format
 msgid "Only downloading %d of %d articles."
-msgstr ""
+msgstr "Henter kun %d ud af %d indlæg."
 
 #: src/group.c:980
 msgid "Do you really want to quit"
@@ -1688,9 +1682,8 @@ msgid "      ESC 1 K        Edit scorefile."
 msgstr "      ESC 1 K        Redigér bedømmelsesfil."
 
 #: src/help.c:144
-#, fuzzy
 msgid "  m                  (Un-)mark article body for download by slrnpull."
-msgstr "  d                  Markér indlæg eller sammenfoldet tråd læst."
+msgstr "  m                  Markér indlægskrop til hentning med slrnpull (til/fra)."
 
 #: src/help.c:146
 msgid ""
@@ -1705,7 +1698,7 @@ msgstr ""
 
 #: src/help.c:148
 msgid "  ESC l              Locate article by its Message-ID."
-msgstr "  ESC l              Find indlæg efter dets id (Message-Id)"
+msgstr "  ESC l              Find indlæg efter dets id (Message-ID)."
 
 #: src/help.c:149
 msgid "  ESC Ctrl-P         Find all children of current article."
@@ -1791,14 +1784,12 @@ msgid "  ESC V, Ctrl-U           Scroll to the previous page."
 msgstr "  ESC V, Ctrl-U           Rul til forrige side."
 
 #: src/help.c:179
-#, fuzzy
 msgid "  ESC >                   Go to the bottom of the list."
-msgstr "  ESC <                   Gå til slutningen af listen."
+msgstr "  ESC >                   Gå til slutningen af listen."
 
 #: src/help.c:180
-#, fuzzy
 msgid "  ESC <                   Go to the top of the list."
-msgstr "  ESC >                   Gå til starten af listen."
+msgstr "  ESC <                   Gå til starten af listen."
 
 #: src/help.c:181
 msgid "  /                       Group keyword search."
@@ -2073,7 +2064,7 @@ msgstr "Kan ikke åbne logfil %s"
 
 #: src/interp.c:1457
 msgid "Could not replace article with given string."
-msgstr ""
+msgstr "Kunne ikke erstatte indlæg med den givne streng."
 
 # Herfra kommer punkterne til gruppe-muse-menuen. Original hhv. oversat ser
 # den sådan her ud:
@@ -2216,9 +2207,8 @@ msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
 msgstr "Brug OP/NED for at flytte, RETUR for at vælge, Ctrl-G for at annullere"
 
 #: src/menu.c:488
-#, fuzzy
 msgid "Use UP/DOWN to move, RETURN to select, q to quit"
-msgstr "Brug OP/NED for at flytte, RETUR for at vælge, Ctrl-G for at annullere"
+msgstr "Brug OP/NED for at flytte, RETUR for at vælge, q for at annullere"
 
 #: src/menu.c:1048
 msgid "Creating directory list..."
@@ -2356,11 +2346,11 @@ msgstr "? [J]a, Nej, Annullér"
 msgid "Invalid regular expression or expression too long."
 msgstr "Ugyldigt eller for langt regulært udtryk."
 
-# Standardværdi af reply_string.
+# Standardværdi af followup_string.
 #: src/misc.c:2599
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "On %D, %r <%f> wrote:"
-msgstr "I %n skrev du:"
+msgstr "%r <%f> skrev %D:"
 
 # Standardværdi af reply_string.
 #: src/misc.c:2601
@@ -2371,7 +2361,7 @@ msgstr "I %n skrev du:"
 #: src/misc.c:2603
 #, no-c-format
 msgid "[\"Followup-To:\" header set to %n.]"
-msgstr ""
+msgstr "[\"Followup-To:\"-hoved sat til %n.]"
 
 # Standardværdi af cc_followup_string.
 #: src/misc.c:2606
@@ -2472,9 +2462,8 @@ msgid "Failed to initialize server"
 msgstr "Klargøring af server mislykkedes"
 
 #: src/nntplib.c:567
-#, fuzzy
 msgid "You should set the NNTPSERVER environment variable to your server name."
-msgstr "Du skal sætte NNTPSERVER-miljøvariablen til dit servernavn."
+msgstr "Du bør sætte NNTPSERVER-miljøvariablen til dit servernavn."
 
 # VMS-eksempel
 #: src/nntplib.c:569
@@ -2497,7 +2486,7 @@ msgstr ""
 
 #: src/nntplib.c:578
 msgid "For now, I'm going to try \"localhost\" as the default..."
-msgstr ""
+msgstr "Nu vil jeg prøve \"localhost\" som standardværdi ..."
 
 # Denne og de efterfølgende tekster fra nntplib.c forklarer på NNTP-koder.
 # Oversættelserne kan ikke altid forstås uden kendskab til NNTP.
@@ -2555,7 +2544,7 @@ msgstr "Ingen tekst sendt for \"stat\", \"next\", \"last\""
 
 #: src/nntplib.c:1166
 msgid "New articles by message-id follow"
-msgstr "Id'er for nye indlæg (Message-Id) følger"
+msgstr "Id'er for nye indlæg (Message-ID) følger"
 
 #: src/nntplib.c:1168
 msgid "New newsgroups follow"
@@ -2716,10 +2705,8 @@ msgstr ""
 "Id)."
 
 #: src/post.c:702
-#, fuzzy
 msgid "This news reader will not accept user generated Message-IDs."
-msgstr ""
-"Denne nyhedslæser accepterer ikke bruger-genererede indlægsidentifikationer."
+msgstr "Denne nyhedslæser accepterer ikke bruger-genererede indlægsidentifikationer."
 
 #: src/post.c:712
 msgid "Subject header is required."
@@ -2791,9 +2778,9 @@ msgid "This affects at least line %d:"
 msgstr "Det berører linje %d og måske flere."
 
 #: src/post.c:872
-#, fuzzy, c-format
+#, c-format
 msgid "This affects %d lines between line %d and %d. First one:"
-msgstr "Det berører linje %d og måske flere."
+msgstr "Det berører %d linjer mellem linje %d og %d. Den første er:"
 
 #: src/post.c:898 src/post.c:1290 src/post.c:1313
 #, c-format
@@ -2882,9 +2869,9 @@ msgid "post_file_hook returned error."
 msgstr "post_file_hook returnerede fejl."
 
 #: src/post.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't open %s--- message not posted."
-msgstr "Fil ikke fundet: %s -- indlægget er ikke sendt."
+msgstr "Kunne ikke åbne %s -- indlægget er ikke sendt."
 
 #: src/post.c:1339
 msgid "Could not reach server."
@@ -2892,11 +2879,11 @@ msgstr "Kunne ikke få kontakt med server."
 
 #: src/post.c:1346
 msgid "Message-ID generating error."
-msgstr ""
+msgstr "Fejl ved dannelse af indlægsidentifikation (Message-ID)."
 
 #: src/post.c:1357
 msgid "\"From\" generating error."
-msgstr ""
+msgstr "Fejl ved dannelse af \"From:\"-hoved."
 
 #: src/post.c:1498
 msgid "Posting...done."
@@ -2911,14 +2898,12 @@ msgid "Select one: Repost, Edit, Cancel"
 msgstr "Vælg mellem: Send igen, Omredigér, Annullér"
 
 #: src/post.c:1633
-#, fuzzy
 msgid "Aborted on user request."
-msgstr "Afslutter efter brugerønske."
+msgstr "Annulleret efter brugerønske."
 
 #: src/post.c:1639
-#, fuzzy
 msgid "postpone_directory points to a regular file (not a directory)"
-msgstr "Katalog til udsatte indlæg er ikke angivet eller findes ikke"
+msgstr "\"postpone_directory\" peger på en almindelig fil (ikke et katalog)"
 
 #: src/post.c:1651
 msgid "Not implemented yet. Sorry"
@@ -3160,7 +3145,7 @@ msgid "slrn fatal error:"
 msgstr "slrn kritisk fejl:"
 
 #: src/slrn.c:915
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
 "-a              Use active file for getting new news.\n"
@@ -3192,27 +3177,25 @@ msgstr ""
 "-a              Brug aktivfil til at hente nye indlæg.\n"
 "-f newsrc-fil   Navn på den newsrc-fil som skal bruges.\n"
 "-C[-]           Brug [ikke] farver.\n"
-"-Dnavn          Tilføj 'navn' til listen over definerede "
-"forbehandlersymboler.\n"
+"-Dnavn          Tilføj 'navn' til listen over definerede forbehandlersymboler.\n"
 "-d              Hent nye tekstbeskrivelser for alle grupper på serveren.\n"
 "                 Bemærk: Det kan tage LANG tid at hente denne information.\n"
-"                 Den resulterende fil kan være adskillige hundrede "
-"kilobyte.\n"
+"                 Den resulterende fil kan være adskillige hundrede kilobyte.\n"
 "-i slrnrc-fil   Navn på klargøringsfil (standard: %s).\n"
-"-k              Behandl ikke bedømmelsesfil.\n"
-"-k0             Behandl bedømmelsesfil, men forhindr dyre bedømmelser.\n"
+"-k              Brug ikke bedømmelsesregler.\n"
+"-k0             Brug bedømmelsesregler, men forhindr dyre bedømmelser.\n"
 "-m              Forsøg altid XTerm muse-rapportering.\n"
 "-n              Kig ikke efter nye grupper. Dette giver sædvanligvis\n"
 "                 en hurtigere start.\n"
 "-w              Vent på en tast før der skiftes til fuld skærm.\n"
+"-w0             Vent på en tast (kun efter advarsler eller fejl).\n"
 "--create        Lav en newsrc-fil ved at hente en gruppeliste fra serveren.\n"
-"--debug FIL     Skriv information til fejlsøgning til FIL.\n"
+"--debug FIL     Skriv feljsøgningsinformation til FIL.\n"
 "--help          Udskriv denne brugsmeddelelse.\n"
 "--kill-log FIL  Behold en log over alle dumpede indlæg i FIL.\n"
 "--version       Vis version og understøttede funktioner.\n"
 "\n"
-"NNTP-tilstand har yderligere tilvalg; brug \"slrn --nntp --help\" for at "
-"vise\n"
+"NNTP-tilstand har yderligere tilvalg; brug \"slrn --nntp --help\" for at vise\n"
 "dem.\n"
 
 #: src/slrn.c:966
@@ -3456,9 +3439,9 @@ msgid "%s: line %u: expecting positive integer in third field."
 msgstr "%s, linje %u: forventer positivt heltal i det tredje felt."
 
 #: src/slrnpull.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "%s: line %u: expecting 0 or 1 in fourth field."
-msgstr "%s, linje %u: forventer positivt heltal i det tredje felt."
+msgstr "%s, linje %u: forventer 0 eller 1 i det fjerde felt."
 
 #: src/slrnpull.c:719
 #, c-format
@@ -3507,19 +3490,17 @@ msgid "Server failed XHDR command: %s"
 msgstr "XHDR-kommando på server mislykkedes: %s"
 
 #: src/slrnpull.c:992
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving %s %d-%d."
-msgstr "%s: Henter indlæg %d-%d."
+msgstr "%s: Henter %s %d-%d."
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "headers"
-msgstr "Efter tråd"
+msgstr "hoveder"
 
 #: src/slrnpull.c:993
-#, fuzzy
 msgid "articles"
-msgstr "Gå til indlæg: "
+msgstr "indlæg"
 
 #: src/slrnpull.c:1017
 #, c-format
@@ -3551,9 +3532,9 @@ msgid "Unable to open overview file %s.\n"
 msgstr "Kan ikke åbne oversigtsfil for %s.\n"
 
 #: src/slrnpull.c:1466
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Retrieving requested article bodies."
-msgstr "%s: Henter indlæg %d-%d."
+msgstr "%s: Henter ønskede indlægskroppe."
 
 #: src/slrnpull.c:1574
 #, c-format
@@ -3684,7 +3665,7 @@ msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "I alt blev %lu byte modtaget og %lu byte sendt på %ld sekunder."
 
 #: src/slrnpull.c:2096
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s usage: %s [options]\n"
 " Options:\n"
@@ -3704,7 +3685,7 @@ msgid ""
 "  --version            Show the version number.\n"
 msgstr ""
 "%s brug: %s [tilvalg]\n"
-"Tilvalg:\n"
+" Tilvalg:\n"
 "  -d LAGERKAT          Lagerkatalog at bruge.\n"
 "  -h VÆRTSNAVN         Værtsnavn for NNTP-server.\n"
 "  --debug FIL          Skriv dialog med server til FIL.\n"
@@ -3713,9 +3694,11 @@ msgstr ""
 "  --kill-log FIL       Behold en log over alle dumpede indlæg i FIL.\n"
 "  --kill-score POINT   Dump alle indlæg med en bedømmelse under POINT.\n"
 "  --logfile FIL        Brug FIL som logfil.\n"
+"  --marked-bodies      Hent kun kroppe som er mærket til hentning.\n"
 "  --new-groups         Hent en liste over nye grupper.\n"
 "  --no-post            Send ikke nyheder.\n"
 "  --post-only          Send, men hent ikke nyheder.\n"
+"  --rebuild            Som --expire; genopbygger også oversigtsfiler.\n"
 "  --version            Vis versionsnummer.\n"
 
 #: src/slrnpull.c:2122
@@ -3772,9 +3755,9 @@ msgid "Slrnpull exiting on signal."
 msgstr "Slrnpull afbrudt af signal."
 
 #: src/slrnpull.c:2678
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating filename in %s."
-msgstr "Fejl ved læsning af %s."
+msgstr "Fejl ved dannelse af filnavn i %s."
 
 #: src/slrnpull.c:2684 src/slrnpull.c:3037
 #, c-format
@@ -3782,28 +3765,27 @@ msgid "Unable to stat %s."
 msgstr "Kan ikke kalde stat for %s."
 
 #: src/slrnpull.c:2694
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read header %d in %s."
-msgstr "Kan ikke oprette %s."
+msgstr "Kan ikke læse hoved %d i %s."
 
 #: src/slrnpull.c:2700
 #, c-format
 msgid "Header %d not parseable for overview."
-msgstr ""
+msgstr "Hoved %d kan ikke analyses i oversigt."
 
 #: src/slrnpull.c:2723
 #, c-format
 msgid "%s overview: article %u of %u in %s."
-msgstr ""
+msgstr "%s oversigt: indlæg %u af %u in %s."
 
 #: src/slrnpull.c:2724
-#, fuzzy
 msgid "Creating"
-msgstr "Opretter %s."
+msgstr "Oretter"
 
 #: src/slrnpull.c:2724
 msgid "Updating"
-msgstr ""
+msgstr "Opdaterer"
 
 #: src/slrnpull.c:2741
 #, c-format
@@ -3811,29 +3793,28 @@ msgid "Creating Overview file for %s..."
 msgstr "Laver oversigtsfil for %s ..."
 
 #: src/slrnpull.c:2829
-#, fuzzy
 msgid "Unable to create filename for overview file.\n"
-msgstr "Kan ikke åbne oversigtsfil for %s.\n"
+msgstr "Kan ikke lave filnavn til oversigtsfil.\n"
 
 #: src/slrnpull.c:2839
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open new overview file %s.\n"
-msgstr "Kan ikke åbne oversigtsfil for %s.\n"
+msgstr "Kan ikke åbne ny oversigtsfil %s.\n"
 
 #: src/slrnpull.c:2917
-#, fuzzy, c-format
+#, c-format
 msgid "failed to close overview file %s.\n"
-msgstr "Kan ikke åbne oversigtsfil for %s.\n"
+msgstr "lukning af oversigtsfil %s mislykkedes.\n"
 
 #: src/slrnpull.c:2919
-#, fuzzy, c-format
+#, c-format
 msgid "failed to close new overview file %s.\n"
-msgstr "Kan ikke åbne oversigtsfil for %s.\n"
+msgstr "lukning af ny oversigtsfil %s mislykkedes.\n"
 
 #: src/slrnpull.c:2929
-#, fuzzy, c-format
+#, c-format
 msgid "failed to rename %s to %s."
-msgstr "Omdøbning af %s til %s mislykkdes."
+msgstr "omdøbning af %s til %s mislykkdes."
 
 #: src/slrnpull.c:2962
 #, c-format
@@ -3869,29 +3850,29 @@ msgid "Empty user name.  Please check syntax of the authinfo file."
 msgstr "Tomt brugernavn. Kontrollér venligst syntaksen af authinfo-filen."
 
 #: src/slrnpull.c:3239
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to read headers file for group %s.\n"
-msgstr "Kan ikke oprette %s."
+msgstr "Kan ikke læse hovedfil for gruppen %s.\n"
 
 #: src/slrnpull.c:3251
-#, fuzzy, c-format
+#, c-format
 msgid "File %s exists, but could not be read."
-msgstr "Redigeringsprogrammet blev fundet, men kunne ikke køres."
+msgstr "Filen %s eksisterer, men kunne ikke læses."
 
 #: src/slrnpull.c:3283 src/slrnpull.c:3310
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write headers file for group %s.\n"
-msgstr "Kan ikke lave fejlsøgningsfil %s\n"
+msgstr "Kan ikke skrive hovedfil for gruppen %s.\n"
 
 #: src/slrnpull.c:3318
-#, fuzzy, c-format
+#, c-format
 msgid "Error while writing headers file for group %s.\n"
-msgstr "Fejl ved lukning af oversigtsfil for %s."
+msgstr "Fejl under skrivning af hovedfil for gruppen %s.\n"
 
 #: src/sltcp.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to resolve %s\n"
-msgstr "Omdøbning af %s til %s mislykkdes."
+msgstr "Fejl ved opløsning af %s\n"
 
 #: src/sltcp.c:273 src/sltcp.c:376
 msgid "Unable to make connection. Giving up.\n"
@@ -4055,13 +4036,13 @@ msgstr ""
 "%sDer er angivet for mange udtryk."
 
 #: src/startup.c:797
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s: Obsolete variable name on line %d: %s\n"
 "The new name is %s"
 msgstr ""
-"%s: Forældet funktionsnavn på linje %d: %s\n"
-"Det nye navn er: %s"
+"%s: Forældet variabelnavn på linje %d: %s\n"
+"Det nye navn er %s"
 
 #: src/startup.c:807 src/startup.c:876
 #, c-format
@@ -4069,6 +4050,8 @@ msgid ""
 "%s: In this version of slrn, setting variable\n"
 "%s has no effect. Please refer to the manual for details."
 msgstr ""
+"%s: I denne version af slrn giver det ingen virkning at sætte\n"
+"variablen %s. Se venligst manualen for nærmere oplysninger."
 
 #: src/startup.c:844
 #, c-format
@@ -4289,20 +4272,10 @@ msgstr "Serveren stiller ikke denne funktion til rådighed."
 #~ msgid "[This message has also been posted.]"
 #~ msgstr "[Dette brev er også sendt til en nyhedsgruppe]"
 
-#~ msgid ""
-#~ "%s: Obsolete variable name on line %d: followup\n"
-#~ "The new name is followup_string"
-#~ msgstr ""
-#~ "%s: Forældet variabelnavn på linje %d: followup\n"
-#~ "Det nye navn er followup_string"
-
 # Standardværdi til followup_date_format. Det er nævnt i manualen
 # at den kan ændres. Default tidszone er GMT, men kan ændres.
 #~ msgid "%a, %d %b %Y at %H:%M GMT"
 #~ msgstr "%a. d. %d %b. %Y kl. %H:%M GMT"
-
-#~ msgid "fFpPiIcC"
-#~ msgstr "oOsSiIaA"
 
 # Standardværdi af followup_string.
 #~ msgid "In article %m, %r wrote:"
