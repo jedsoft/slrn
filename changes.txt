@@ -3,6 +3,7 @@ Changes since 0.9.7.4
 0. Bug fixes include:
   * Setting new_subject_breaks_threads to 2 has an effect again.
   * Some translations (fr/ko/nl/ru) were broken and could cause segfaults.
+  * Fixed memory leak when grouping scorefile entries.
   * No more rubbish at the end of popup window lines (Jurriaan).
   * subject_compare_hook leads to the expected result again (Jurriaan).
 

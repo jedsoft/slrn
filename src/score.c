@@ -550,6 +550,19 @@ static int chain_group_regexp (PScore_Type *pst, int *generic)
 
 char *Slrn_Scorefile_Open = NULL;
 
+static void free_srt (Score_Regexp_Type *srt)
+{
+   while (srt != NULL)
+     {
+	Score_Regexp_Type *srt_next = srt->next;
+	if ((srt->header_type == SCORE_SUB_AND) || 
+	    (srt->header_type == SCORE_SUB_OR))
+	  free_srt (srt->search.srt);
+	SLFREE (srt);
+	srt = srt_next;
+     }
+}
+
 static void free_group_chain (void)
 {
    Score_Regexp_Type *srt;
@@ -558,13 +571,11 @@ static void free_group_chain (void)
      {
 	Score_Type *next = Score_Root->next;
 	srt = &Score_Root->regexp_list;
-	srt = srt->next;	       /* first not malloced */
-	while (srt != NULL)
-	  {
-	     Score_Regexp_Type *srt_next = srt->next;
-	     SLFREE (srt);
-	     srt = srt_next;
-	  }
+	/* first not malloced; free subscores only: */
+	if ((srt->header_type == SCORE_SUB_AND) ||
+	    (srt->header_type == SCORE_SUB_OR))
+	  free_srt (srt->search.srt);
+	free_srt (srt->next);
 	SLFREE (Score_Root);
 	Score_Root = next;
      }
@@ -837,6 +848,21 @@ static void score_error (char *msg, char *line, unsigned int linenum, char *file
 }
 
 
+static void free_psrt (PScore_Regexp_Type *r)
+{
+   while (r != NULL)
+     {
+	PScore_Regexp_Type *rnext = r->next;
+	
+	if ((r->header_type == SCORE_SUB_AND) ||
+	    (r->header_type == SCORE_SUB_OR))
+	  free_psrt (r->ireg.psrt);
+	else if ((r->flags & USE_INTEGER) == 0)
+	  slrn_free ((char *) r->ireg.regexp_str);
+	SLFREE (r);
+	r = rnext;
+     }
+}
 
 static void free_group_scores (void)
 {
@@ -857,28 +883,12 @@ static void free_group_scores (void)
 	while (pst != NULL)
 	  {
 	     PScore_Type *pnext = pst->next;
-	     PScore_Regexp_Type *r = pst->pregexp_list;
 	     
-	     while (r != NULL)
-	       {
-		  PScore_Regexp_Type *rnext = r->next;
-		  
-		  if ((r->flags & USE_INTEGER) == 0)
-		    slrn_free ((char *) r->ireg.regexp_str);
-		  SLFREE (r);
-		  r = rnext;
-	       }
+	     free_psrt (pst->pregexp_list);
 	     slrn_free ((char *) pst->description);
 	     SLFREE (pst);
+	     
 	     pst = pnext;
-	  }
-	
-	while (Scorefile_Names != NULL)
-	  {
-	     Scorefile_Name_Type *next = Scorefile_Names->next;
-	     slrn_free ((char *) Scorefile_Names->filename);
-	     slrn_free ((char *) Scorefile_Names);
-	     Scorefile_Names = next;
 	  }
 	
 	SLFREE (Group_Score_Root);
@@ -1177,7 +1187,7 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 	  ret = add_group_regexp (psrt, lp + 5, lp, SCORE_BYTES, not_flag);
 	else if (!slrn_case_strncmp (lp, (unsigned char *)"Message-Id:", 11))
 	  ret = add_group_regexp (psrt, lp + 10, lp, SCORE_MESSAGE_ID, not_flag);
-        else if (!slrn_case_strncmp (lp, (unsigned char *)"{:", 1))
+        else if (!slrn_case_strncmp (lp, (unsigned char *)"{:", 2))
 	  {
             if (lp[2] ==':')
 	      {
@@ -1191,6 +1201,7 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
           }
         else if (!slrn_case_strncmp (lp, (unsigned char *)"}", 1))
 	  {
+	     SLFREE (psrt);
 	     if (sub_psrt != NULL)
 	       return 0;
 	     else
@@ -1205,6 +1216,7 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 	     while (*lpp && (*lpp != ':')) lpp++;
 	     if (*lpp != ':')
 	       {
+		  SLFREE (psrt);
 		  score_error (_("Missing COLON."), line, *linenum, file);
 		  return -1;
 	       }
@@ -1298,6 +1310,13 @@ int slrn_read_score_file (char *file)
 	free_group_scores ();
      }
    free_group_chain ();
+   while (Scorefile_Names != NULL)
+     {
+	Scorefile_Name_Type *next = Scorefile_Names->next;
+	slrn_free ((char *) Scorefile_Names->filename);
+	slrn_free ((char *) Scorefile_Names);
+	Scorefile_Names = next;
+     }
 
    sc.today = get_today ();
    sc.score = 0;
