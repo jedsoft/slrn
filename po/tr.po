@@ -1,0 +1,4250 @@
+# Turkish translations for slrn package
+# slrn paketi icin Türkçe çeviriler.
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# A. Alper Atýcý <alper_atici@yahoo.com>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: slrn 0.9.7.4\n"
+"POT-Creation-Date: 2002-08-30 11:28+0200\n"
+"PO-Revision-Date: 2002-09-06 13:56+0300\n"
+"Last-Translator: A. Alper Atýcý <alper_atici@yahoo.com>\n"
+"Language-Team: Turkish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-9\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. Note to translators:
+#. * Make sure your translation is shorter than 16 characters.
+#: src/art.c:304
+#, c-format
+msgid "Ctrl-%c"
+msgstr "Ctrl-%c"
+
+#: src/art.c:308
+msgid "SPACE"
+msgstr "BOÞLUK"
+
+#: src/art.c:309
+msgid "TAB"
+msgstr "SEKME"
+
+#: src/art.c:310
+msgid "RETURN"
+msgstr "ENTER"
+
+#: src/art.c:311
+msgid "ESCAPE"
+msgstr "ESC"
+
+#: src/art.c:312
+msgid "DELETE"
+msgstr "DEL"
+
+#: src/art.c:313
+msgid "BACKSPACE"
+msgstr "GERÝ"
+
+#: src/art.c:673
+msgid "No next digest."
+msgstr "Baþka özet yok."
+
+#: src/art.c:1035
+msgid "Invalid Browser definition."
+msgstr "Tarayýcý tanýmý geçersiz."
+
+#: src/art.c:1069
+msgid "Browse (^G aborts): "
+msgstr "Gözat (^G ile çýk): "
+
+#: src/art.c:1071 src/art.c:4070
+msgid "Aborted."
+msgstr "Ýptal edildi."
+
+#: src/art.c:1097
+msgid "Show all available groups"
+msgstr "Tüm gruplar gösterilsin mi"
+
+#: src/art.c:1107
+#, c-format
+msgid "Try switching to %s"
+msgstr "%s grubuna geçilsin mi"
+
+#: src/art.c:1113
+msgid "Group contains no articles."
+msgstr "Grupta hiç ileti yok."
+
+#: src/art.c:1128
+msgid "No Web Browser has been defined."
+msgstr "Bir Internet tarayýcýsý tanýmý yapýlmamýþ."
+
+#: src/art.c:1179
+msgid "No URLs found."
+msgstr "Hiç URL yok."
+
+#: src/art.c:1210
+msgid "Search: "
+msgstr "Ara: "
+
+#: src/art.c:1214 src/art.c:4728 src/group.c:1312
+msgid "Not found."
+msgstr "Bulunamadý."
+
+#: src/art.c:1314
+#, c-format
+msgid "At end of article, press %s for next group."
+msgstr "Ýleti sonu. %s ile sonraki gruba geçilir."
+
+#: src/art.c:1317
+#, c-format
+msgid "At end of article, press %s for next unread article."
+msgstr "Ýleti sonu. %s ile sonraki yeni iletiye geçilir."
+
+#: src/art.c:1999
+msgid "Goto article: "
+msgstr "Gidilecek ileti: "
+
+#: src/art.c:2016
+msgid "Article not found."
+msgstr "Ýleti bulunamadý."
+
+#: src/art.c:2087
+#, c-format
+msgid "#%2d/%-2d: Retrieving... %s"
+msgstr "#%2d/%-2d: Alýnýyor... %s"
+
+#: src/art.c:2090
+#, c-format
+msgid "[%d] Reading..."
+msgstr "[%d] Okunuyor..."
+
+#: src/art.c:2097
+msgid "Server failed to return article."
+msgstr "Sunucu iletiyi gönderemedi."
+
+#: src/art.c:2101
+#, c-format
+msgid "Article %d unavailable."
+msgstr "%d iletisi yok."
+
+#: src/art.c:2140
+msgid "Article transfer aborted or connection lost."
+msgstr "Ýleti aktarýmý kesildi, veya baðlantý koptu."
+
+#: src/art.c:2158
+#, c-format
+msgid "#%2d/%-2d: Read %4d/%-4d lines (%s) at %.2fkB/sec"
+msgstr "#%2d/%-2d: %4d/%-4d satýr okundu (%s), hýz: %.2fkB/sn"
+
+#: src/art.c:2162
+#, c-format
+msgid "#%2d/%-2d: Read %4d/%-4d lines (%s)"
+msgstr "#%2d/%-2d: %4d/%-4d satýr okundu (%s)"
+
+#: src/art.c:2168
+#, c-format
+msgid "[%d] Read %d/%d lines so far at %.2fkB/sec"
+msgstr "[%d] %d/%d satýr okundu, hýz: %.2fkB/sn"
+
+#: src/art.c:2171
+#, c-format
+msgid "[%d] Read %d/%d lines so far"
+msgstr "[%d] %d/%d satýr okundu"
+
+#: src/art.c:2211
+msgid "Server sent empty article."
+msgstr "Sunucu boþ ileti gönderdi."
+
+#: src/art.c:2484
+msgid "%Y-%m-%d"
+msgstr "%d-%m-%Y"
+
+#: src/art.c:2527
+msgid "This operation requires an article"
+msgstr "Bu iþlem için bir ileti gerekir."
+
+#: src/art.c:2635
+#, c-format
+msgid "%s appears invalid.  Continue anyway"
+msgstr "%s geçersiz görünüyor. Devam ediyor musunuz"
+
+#: src/art.c:2636
+msgid "Email address"
+msgstr "E-posta adresi"
+
+#: src/art.c:2647 src/art.c:2822 src/art.c:3161 src/art.c:3408
+#: src/slrnpull.c:395 src/slrnpull.c:1031
+#, c-format
+msgid "Unable to open %s for writing."
+msgstr "%s dosyasýna yazýlamýyor."
+
+#: src/art.c:2772
+msgid "Are you sure you want to reply"
+msgstr "Gönderene yanýt verilsin mi"
+
+#: src/art.c:2799
+msgid "Forward to (^G aborts): "
+msgstr "Ýletilecek kiþi (^G ile çýk): "
+
+#: src/art.c:2801
+msgid "Aborted.  An email address is required."
+msgstr "Ýptal edildi. Bir e-posta adresi gerekiyor."
+
+#: src/art.c:2805
+msgid "Edit the message before sending"
+msgstr "Göndermeden önce ileti düzenlenecek mi"
+
+#: src/art.c:2909 src/art.c:3363
+msgid "Posting not allowed by server"
+msgstr "Sunucu gönderime izin vermiyor"
+
+#: src/art.c:2916
+msgid "Are you sure you want to followup"
+msgstr "Gruba yanýt verilsin mi"
+
+#: src/art.c:2957
+msgid "Do you want to reply to POSTER as poster prefers"
+msgstr "Gönderen, kendisine yanýt verilmesini istemiþ, tamam mý"
+
+#: src/art.c:2995
+#, c-format
+msgid "Followup to %s as poster prefers"
+msgstr "Gönderen, %s grubuna yanýt verilmesini istemiþ, tamam mý"
+
+#. Note to translators: Here, "fF" means "Followup-To", "aA" is for
+#. * "all groups", "tT" is "this group only" and "cC" means "cancel".
+#. * Do not change the length of the string! You cannot use any of the
+#. * default characters for other fields than they originally stood for.
+#.
+#: src/art.c:3037
+msgid "fFaAtTcC"
+msgstr "dDtTbBiÝ"
+
+#: src/art.c:3040
+msgid ""
+"Crossposting. Set \"Followup-To\", Post to all groups / this group only,"
+" Cancel?"
+msgstr ""
+"Birçok gruba gönderiyorsunuz: Devam edilecek grup seç, Tümüne / Bu gruba "
+"gönder, Ýptal"
+
+#: src/art.c:3122
+msgid "Cc message as requested by poster"
+msgstr "Gönderen, bilgi iletisi istemiþ, tamam mý"
+
+#: src/art.c:3128
+msgid "Cc message to poster"
+msgstr "Gönderene bilgi iletisi gönderilsin mi"
+
+#: src/art.c:3141
+#, c-format
+msgid "%s appears invalid.  CC anyway"
+msgstr "%s geçersiz görünüyor. Devam ediyor musunuz"
+
+#: src/art.c:3311 src/post.c:969
+#, c-format
+msgid "Cannot open file: %s"
+msgstr "%s dosyasý açýlamadý"
+
+#: src/art.c:3318 src/post.c:976
+#, c-format
+msgid "Zero length file: %s"
+msgstr "%s dosya uzunluðu sýfýr"
+
+#: src/art.c:3368
+msgid "Are you sure you want to supersede"
+msgstr "Ýleti düzeltilsin mi"
+
+#: src/art.c:3387 src/art.c:6581
+#, c-format
+msgid "Failed: Your name: '%s' is not '%s'"
+msgstr "Olmadý: Sizin adýnýz '%s', '%s' deðil"
+
+#: src/art.c:3498 src/art.c:3547
+msgid "End of buffer."
+msgstr "Liste sonu."
+
+#: src/art.c:3519 src/art.c:3537 src/group.c:1152
+msgid "Top of buffer."
+msgstr "Liste baþý."
+
+#: src/art.c:3582
+msgid "No previous unread articles."
+msgstr "Öncesinde yeni ileti yok."
+
+#: src/art.c:3626
+msgid "No following unread articles."
+msgstr "Sonrasýnda yeni ileti yok."
+
+#: src/art.c:3662
+#, c-format
+msgid "No following unread articles.  Press %s for next group."
+msgstr "Sonrasýnda yeni ileti yok.  %s ile sonraki gruba geçilir."
+
+#: src/art.c:3693
+msgid "No more high scoring articles."
+msgstr "Yüksek puanlý baþka ileti yok."
+
+#: src/art.c:3722 src/group.c:1846
+msgid "Subject: "
+msgstr "Konu: "
+
+#: src/art.c:3747
+msgid "No more articles on that subject."
+msgstr "Bu konuda baþka ileti yok."
+
+#: src/art.c:3780
+#, c-format
+msgid "Goto Header: %d"
+msgstr "Gidilecek Üstbilgi: %d"
+
+#: src/art.c:3865 src/group.c:2717 src/post.c:433
+#, c-format
+msgid "Unable to open %s."
+msgstr "%s dosyasý açýlamýyor."
+
+#: src/art.c:3871 src/slrnpull.c:1039 src/slrnpull.c:1047
+#, c-format
+msgid "Error writing to %s."
+msgstr "%s dosyasýna yazma hatasý."
+
+#: src/art.c:3991
+msgid "Save tagged articles"
+msgstr "Ýmli iletiler saklansýn mý"
+
+#: src/art.c:3999
+msgid "Save this thread"
+msgstr "Bu görüþme saklansýn mý"
+
+#: src/art.c:4066
+msgid "Temporary file (^G aborts): "
+msgstr "Geçici dosya (^G ile çýk): "
+
+#: src/art.c:4067
+msgid "Save to file (^G aborts): "
+msgstr "Saklanacak dosya (^G ile çýk): "
+
+#: src/art.c:4076 src/editscore.c:153 src/post.c:593
+#, c-format
+msgid "Unable to open %s"
+msgstr "%s dosyasý açýlamýyor"
+
+#: src/art.c:4166
+#, c-format
+msgid "decoding %10s (%3d/%3d) %s"
+msgstr "%10s çözülüyor (%3d/%3d) %s"
+
+#: src/art.c:4182
+msgid "Filename buffer not large enough."
+msgstr "Dosya adý arabellek büyüklüðü yeterli deðil."
+
+#. safe
+#: src/art.c:4186
+msgid "Calling uudeview ..."
+msgstr "Uudeview çalýþtýrýlýyor ..."
+
+#: src/art.c:4195
+#, c-format
+msgid "could not load %s: errno = %d"
+msgstr "%s yüklenemedi: hata no = %d"
+
+#: src/art.c:4198
+#, c-format
+msgid "could not load %s: %s"
+msgstr "%s yüklenemedi: %s"
+
+#: src/art.c:4217
+msgid "I/O error."
+msgstr "G/Ç hatasý."
+
+#: src/art.c:4220
+#, c-format
+msgid "error decoding %s: %s"
+msgstr "%s çözülürken hata oldu: %s"
+
+#: src/art.c:4244
+#, c-format
+msgid "Decode %s"
+msgstr "%s çözülsün mü"
+
+#: src/art.c:4255
+#, c-format
+msgid "Delete %s"
+msgstr "%s silinsin mi"
+
+#: src/art.c:4258
+#, c-format
+msgid "Unable to delete %s"
+msgstr "%s silinemedi"
+
+#: src/art.c:4290
+#, c-format
+msgid "Unable to open pipe to %s"
+msgstr "%s komutuna girdirilemiyor"
+
+#: src/art.c:4307 src/art.c:4328 src/decode.c:65
+msgid "Piping not implemented on this system."
+msgstr "Bu sistemde komuta girdirme mümkün deðil."
+
+#: src/art.c:4319
+msgid "Pipe to command: "
+msgstr "Girdirilecek komut: "
+
+#: src/art.c:4321
+msgid "Aborted.  Command name is required."
+msgstr "Ýptal edildi. Komut adý gerekiyor."
+
+#: src/art.c:4326
+#, c-format
+msgid "Error piping to %s."
+msgstr "%s komutuna girdirme hatasý."
+
+#: src/art.c:4342
+msgid "Printing article..."
+msgstr "Ýleti basýlýyor..."
+
+#: src/art.c:4373
+msgid "Printing article...done"
+msgstr "Ýleti basýlýyor...bitti"
+
+#: src/art.c:4389
+msgid "Are you sure you want to print the article"
+msgstr "Ýleti basýlsýn mý"
+
+#: src/art.c:4661
+msgid "Mark set."
+msgstr "Ýþaret var."
+
+#: src/art.c:4673
+msgid "Mark not set."
+msgstr "Ýþaret yok."
+
+#: src/art.c:4694
+msgid "Subject search "
+msgstr "Konu ara "
+
+#: src/art.c:4694
+msgid "Author search "
+msgstr "Yazar ara "
+
+#: src/art.c:4695
+msgid "(forward)"
+msgstr "(ileri)"
+
+#: src/art.c:4695
+msgid "(backward)"
+msgstr "(geri)"
+
+#: src/art.c:4881 src/slrnpull.c:1182
+#, c-format
+msgid "Score %d killed article %s\n"
+msgstr "%d puanla %s iletisi atýldý\n"
+
+#: src/art.c:4885 src/slrnpull.c:1186
+#, c-format
+msgid " Score %c%5i: %s (%s:%i)\n"
+msgstr " Puan %c%5i: %s (%s:%i)\n"
+
+#: src/art.c:4889 src/slrnpull.c:1190
+#, c-format
+msgid " Score %c%5i: %s:%i\n"
+msgstr " Puan %c%5i: %s:%i\n"
+
+#: src/art.c:4894 src/slrnpull.c:1195
+#, c-format
+msgid ""
+"  Newsgroup: %s\n"
+"  From: %s\n"
+"  Subject: %s\n"
+"\n"
+msgstr ""
+"  Grup: %s\n"
+"  Kimden: %s\n"
+"  Konu: %s\n"
+"\n"
+
+#: src/art.c:4964
+msgid "Scoring articles ..."
+msgstr "Ýletiler puanlanýyor ..."
+
+#: src/art.c:4977
+#, c-format
+msgid "Scoring articles: %2d%%, Killed: %u, High: %u, Low: %u"
+msgstr "Puanlanan iletiler: %%%2d, Atýk: %u, Yüksek: %u, Düþük: %u"
+
+#: src/art.c:5017
+msgid "Apply scorefile now"
+msgstr "Puan dosyasý tatbik edilsin mi"
+
+#: src/art.c:5063
+msgid "No scorefile loaded."
+msgstr "Puan dosyasý yüklü deðil."
+
+#: src/art.c:5072
+msgid "This article is not matched by any scorefile entries."
+msgstr "Puan dosyasýndaki hiçbir kural ile bu ileti eþleþmedi."
+
+#: src/art.c:5118
+msgid "This article is matched by the following scores"
+msgstr "Bu iletiye þu puanlar verildi"
+
+#: src/art.c:5220
+#, c-format
+msgid "%s: receiving additional headers...[%c]"
+msgstr "%s: ek üstbilgiler alýnýyor... [%c]"
+
+#: src/art.c:5303
+#, c-format
+msgid "%s: headers received: %2d/%d"
+msgstr "%s: alýnan üstbilgiler:  %2d/%d"
+
+#: src/art.c:5466
+#, c-format
+msgid "Finding %s from server..."
+msgstr "Sunucuda %s bulunuyor..."
+
+#: src/art.c:5497
+#, c-format
+msgid "Finding children from server...[%c]"
+msgstr "Sunucuda alt-iletiler bulunuyor...[%c]"
+
+#: src/art.c:5505
+msgid "Your server does not provide support for this feature."
+msgstr "Sunucunuz bu özelliðe sahip deðil."
+
+#: src/art.c:5671
+msgid "Header is part of a reference loop"
+msgstr "Bu üstbilgi, bir ilgi döngüsü içinde"
+
+#: src/art.c:5719
+msgid "Article has no parent reference."
+msgstr "Bu iletinin üst-iletisi yok."
+
+#: src/art.c:5766
+#, c-format
+msgid "Article %s not available."
+msgstr "%s iletisi mevcut deðil."
+
+#: src/art.c:5778
+msgid "Enter Message-ID: "
+msgstr "Ýleti kimliðini girin: "
+
+#: src/art.c:6558
+msgid "Are you sure that you want to cancel this article"
+msgstr "Bu ileti iptal edilsin mi"
+
+#: src/art.c:6561
+msgid "Cancelling..."
+msgstr "Ýptal ediliyor..."
+
+#: src/art.c:6596
+msgid "No message id."
+msgstr "Ýleti kimliði yok."
+
+#: src/art.c:6626
+msgid "Done."
+msgstr "Tamam."
+
+#: src/art.c:6665
+msgid "Warning: Can only request article bodies from this group."
+msgstr "Uyarý: Bu gruptan sadece ileti metinleri alýnabilir."
+
+#: src/art.c:6682
+msgid "Mark all articles as read"
+msgstr "Tüm iletiler okunmuþ sayýlsýn mý"
+
+#: src/art.c:6692
+msgid "Mark all articles as unread"
+msgstr "Tüm iletiler yeni sayýlsýn mý"
+
+#: src/art.c:6702
+msgid "Mark all articles up to here as read"
+msgstr "Buraya kadarki tüm iletiler okunmuþ sayýlsýn mý"
+
+#: src/art.c:6712
+msgid "Mark all articles up to here as unread"
+msgstr "Buraya kadarki tüm iletiler yeni sayýlsýn mý"
+
+#: src/art.c:6814
+msgid "Rate article (1-5):"
+msgstr "Ýletiye not verin (1-5):"
+
+#: src/art.c:6819
+msgid "Rating must be in range 1 to 5."
+msgstr "1 ile 5 arasý bir not verin."
+
+#: src/art.c:7113
+msgid "Unable to create Article keymap!"
+msgstr "Ýleti tuþ eþlemi oluþturulamadý!"
+
+#: src/art.c:7531
+msgid "Group transfer aborted."
+msgstr "Grup aktarýmý iptal edildi."
+
+#: src/art.c:7533
+msgid "Server read failed."
+msgstr "Sunucu okuma baþarýsýz."
+
+#: src/art.c:7550
+#, c-format
+msgid "No unread articles found. (%d killed)"
+msgstr "Yeni ileti yok. (atýk: %d)"
+
+#: src/art.c:7552
+msgid "No unread articles found."
+msgstr "Yeni ileti yok."
+
+#: src/art.c:7606
+#, c-format
+msgid "Num Killed: %u, Num High: %u, Num Low: %u, Num GroupLens Rated: %d"
+msgstr "Atýk: %u, Yüksek: %u, Düþük: %u, GroupLens notlu: %d"
+
+#: src/art.c:7612
+#, c-format
+msgid "Num Killed: %u, Num High: %u, Num Low: %u"
+msgstr "Atýk: %u, Yüksek: %u, Düþük: %u"
+
+#: src/art.c:7813
+msgid ""
+"SPC:Select  Ctrl-D:PgDn  Ctrl-U:PgUp  d:Mark-as-Read  n:Next  p:Prev  q:Quit"
+msgstr ""
+"BOÞLUK:Seç  Ctrl-D:Aþaðý Ctrl-U:Yukarý  d:Okunmuþ say  n:Sonraki p:Önceki q:"
+"Çýk"
+
+#: src/art.c:7818
+msgid "SPC:Pgdn  B:PgUp  u:Un-Mark-as-Read  f:Followup  n:Next  p:Prev  q:Quit"
+msgstr ""
+"BOÞLUK:Aþaðý  B:Yukarý  u:Yeni say  f:Gruba yanýtla  n:Sonraki  p:Önceki  q:"
+"Çýk"
+
+#: src/art.c:8028
+#, c-format
+msgid "End of Thread.  Next: %s"
+msgstr "Görüþme sonu.  Sonraki: %s"
+
+#: src/art.c:8030
+msgid "End of Thread."
+msgstr "Görüþme sonu."
+
+#. The last test involving ^ is necessary because the two can be
+#. * sisters except that one can have a fake parent.  If this is the
+#. * case, we are at the end of a subthread.
+#.
+#: src/art.c:8042
+msgid "End of Sub-Thread"
+msgstr "Alt-görüþme sonu"
+
+#: src/art.c:8656
+msgid "%p[%u/%t unread] Group: %n%-20g -- %L (%P)"
+msgstr "%p[%u/%t yeni] Grup: %n%-20g -- %L (%P)"
+
+#: src/art.c:8844
+msgid "Spoilers visible!"
+msgstr "Spoiler açýk!"
+
+#: src/art_sort.c:342
+msgid "slrn_sort_headers(): memory allocation failure."
+msgstr "slrn_sort_headers(): bellek alým hatasý."
+
+#: src/art_sort.c:600
+msgid "link_same_subjects: memory allocation failure."
+msgstr "link_same_subjects: bellek alým hatasý."
+
+#: src/art_sort.c:811
+msgid "Internal Error in fixup_threads()."
+msgstr "Internal Error in fixup_threads()."
+
+#: src/art_sort.c:865
+msgid "Threading by references ..."
+msgstr "Ýlgiye göre görüþmeler ayrýlýyor ..."
+
+#: src/art_sort.c:902
+#, c-format
+msgid "Article %d is part of reference loop!"
+msgstr "%d iletisi ilgi döngüsü içinde!"
+
+#. Now perform a re-arrangement such that those without parents but that
+#. * share the same reference are placed side-by-side as sisters.
+#: src/art_sort.c:931
+msgid "Linking \"lost relatives\" ..."
+msgstr "Ayný ilgiye sahip iletiler baðlanýyor ..."
+
+#: src/art_sort.c:938
+msgid "Linking articles with identical subjects ..."
+msgstr "Ayný konulu iletiler baðlanýyor ..."
+
+#: src/art_sort.c:1049
+#, c-format
+msgid "Can't sort according to `%s'"
+msgstr "`%s' sýralamasý yapýlamýyor."
+
+#: src/chkslang.c:58
+#, c-format
+msgid "Usage: %s <PGM> <SLANG-VERSION> <SUGG VERSION>\n"
+msgstr "Kullaným: %s <PGM> <SLANG-VERSION> <SUGG VERSION>\n"
+
+#: src/chkslang.c:68
+msgid ""
+"\n"
+"\n"
+"******\n"
+"slang.h does not match slang library version.  Did you install slang as\n"
+"as a shared library?  Did you run ldconfig?  You have an installation "
+"problem\n"
+"and you will need to check the SLANG variables in the Makefile and properly\n"
+"set them.  Also try: make clean; make\n"
+"******\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"******\n"
+"slang.h dosyasý ile mevcut slang kütüphanesi uyuþmuyor.  slang, paylaþýmlý\n"
+"kütüphane olarak mý kuruldu?  ldconfig yürütüldü mü?  Bir yükleme sorunu "
+"var,\n"
+"Makefile dosyasýndaki SLANG deðiþkenlerini kontrol edin ve uygun þekilde\n"
+"ayarlayýn.  Ayrýca þunu deneyin: make clean; make\n"
+"******\n"
+"\n"
+
+#: src/chkslang.c:86
+#, c-format
+msgid "This version of %s requires slang version %s.\n"
+msgstr "Bu sürüm %s için %s sürüm slang gerekiyor.\n"
+
+#: src/chkslang.c:93
+#, c-format
+msgid "Your slang version is %s.\n"
+msgstr "Slang sürümünüz %s.\n"
+
+#: src/chkslang.c:94
+#, c-format
+msgid ""
+"To fully utilize this program, you should upgrade the slang library to\n"
+"  version %s\n"
+msgstr ""
+"Programý tam anlamýyla kullanmak için slang kütüphanesini %s sürümüne\n"
+"yükseltmeniz gerekiyor\n"
+
+#: src/chkslang.c:96
+msgid ""
+"This library is available via anonymous ftp from\n"
+"space.mit.edu in pub/davis/slang.\n"
+msgstr ""
+"Bu kütüphane ftp://space.mit.edu adresinde \n"
+"pub/davis/slang klasöründe mevcuttur.\n"
+
+#: src/chmap.c:147 src/chmap.c:154
+#, c-format
+msgid "File error: %s --- message not posted."
+msgstr "Dosya hatasý: %s --- ileti gönderilmedi."
+
+#: src/chmap.c:166
+msgid "Write Error. Disk Full? --- message not posted."
+msgstr "Yazma hatasý. Disk dolu mu? --- ileti gönderilmedi."
+
+#: src/chmap.c:196
+#, c-format
+msgid "  Default character set:     %s\n"
+msgstr "  Varsayýlan karakter kümesi:     %s\n"
+
+#: src/chmap.c:198
+msgid " SUPPORTED CHARACTER SETS:\n"
+msgstr " DESTEKLENEN KARAKTER KÜMELERÝ:\n"
+
+#: src/chmap.c:239
+#, c-format
+msgid "Unsupport character set: %s"
+msgstr "%s karakter kümesi desteklenmiyor"
+
+#: src/decode.c:105
+msgid "Error closing file.  File system full?"
+msgstr "Dosya kapatma hatasý.  Disk dolu mu?"
+
+#: src/decode.c:124
+msgid "Unable to open /bin/sh\n"
+msgstr "/bin/sh yürütülemiyor\n"
+
+#: src/decode.c:137
+msgid "Error encountered while processing shell archive.\n"
+msgstr "Kabuk arþivi iþlenirken hata oldu.\n"
+
+#: src/decode.c:166
+#, c-format
+msgid "Unable to create %s\n"
+msgstr "%s oluþturulamadý\n"
+
+#: src/decode.c:170
+#, c-format
+msgid "creating %s (%s)\n"
+msgstr "%s oluþturuluyor (%s)\n"
+
+#: src/decode.c:799 src/decode.c:813
+msgid "Unexpected end of file.\n"
+msgstr "Beklenmeyen dosya sonu.\n"
+
+#: src/decode.c:876
+#, c-format
+msgid "uuencode line appears corrupt: \"%s\""
+msgstr "uuencode satýrý bozuk görünüyor: \"%s\""
+
+#: src/decode.c:919
+#, c-format
+msgid "write to file failed (%u/%u bytes)\n"
+msgstr "dosyaya yazma baþarýsýz (%u/%u bayt)\n"
+
+#: src/decode.c:1030
+#, c-format
+msgid "Unable to open %s.\n"
+msgstr "%s açýlamýyor.\n"
+
+#: src/decode.c:1054
+msgid "No more files found.\n"
+msgstr "Baþka dosya bulunamadý.\n"
+
+#: src/decode.c:1060
+#, c-format
+msgid "Unable to chdir back to %s.\n"
+msgstr "%s klasörüne geri dönülemedi.\n"
+
+#: src/decode.c:1073
+msgid "Usage: uudecode [-64] [--stdout] [--guess] [filename ...]\n"
+msgstr "Kullaným: uudecode [-64] [--stdout] [--guess] [dosyaadý ...]\n"
+
+#. Note to translators: The translated string needs to have 10 characters.
+#. * Each pair becomes a valid response for "Subject", "From", "References",
+#. * "Edit" and "Cancel" (in that order); you cannot use any of the default
+#. * characters for any other field than they originally stood for!
+#.
+#: src/editscore.c:66
+msgid "SsFfRrEeCc"
+msgstr "KkMmGgDdÝi"
+
+#. Note to translators: The translated string needs to have 4 characters.
+#. * The two pairs become valid responses for "This group" and "All groups",
+#. * respectively. You cannot use any of the default characters for any other
+#. * field than they originally stood for!
+#.
+#: src/editscore.c:72
+msgid "TtAa"
+msgstr "BbTt"
+
+#: src/editscore.c:76
+msgid "A Score file has not been specified."
+msgstr "Bir puan dosyasý belirtilmemiþ."
+
+#: src/editscore.c:86
+msgid "Pick Score type: Subject, From, References, Edit, Cancel"
+msgstr "Puan türünü seçin: Konu, kiMden, ilGi, Düzenle, Ýptal"
+
+#: src/editscore.c:103
+msgid "Which newsgroups: This group, All groups"
+msgstr "Hangi gruplar: Bu grup, Tüm gruplar"
+
+#: src/editscore.c:111
+msgid "Expires (MM/DD/YYYY, DD-MM-YYYY, +NN (days) or leave blank): "
+msgstr "Son kullaným (AA/GG/YYYY, GG-AA-YYYY, +NN (gün) veya boþ býrakýn): "
+
+#: src/group.c:433
+#, c-format
+msgid "Selecting %s ..."
+msgstr "%s seçiliyor ..."
+
+#: src/group.c:445 src/group.c:598 src/group.c:1219
+#, c-format
+msgid "Group %s is bogus%s."
+msgstr "%s grubu geçersiz%s."
+
+#: src/group.c:446 src/group.c:1220
+msgid " - dropping it"
+msgstr " - atlanýyor"
+
+#: src/group.c:454
+#, c-format
+msgid "Could not enter group %s."
+msgstr "%s grubuna girilemedi."
+
+#: src/group.c:599
+msgid " - ignoring it"
+msgstr " - dikkate alýnmýyor"
+
+#: src/group.c:693
+#, c-format
+msgid "Group %s is bogus - ignoring it."
+msgstr "%s grubu geçersiz - dikkate alýnmýyor."
+
+#: src/group.c:1001
+msgid "No articles to read."
+msgstr "Okunacak ileti yok."
+
+#: src/group.c:1023
+#, c-format
+msgid "%s: Read how many? "
+msgstr "%s: Kaç adet okunsun? "
+
+#: src/group.c:1108
+msgid "Do you really want to quit"
+msgstr "Çýkmak istiyor musunuz"
+
+#: src/group.c:1117
+msgid "Write to newsrc file failed.  Quit anyway"
+msgstr "newsrc dosyasýna yazýlamadý.  Çýkýlsýn mý"
+
+#: src/group.c:1130 src/group.c:1373
+msgid "End of Buffer."
+msgstr "Liste sonu."
+
+#: src/group.c:1141
+msgid "Top of Buffer."
+msgstr "Liste baþý."
+
+#: src/group.c:1206
+msgid "Server connection dropped."
+msgstr "Sunucu baðlantýsý koptu."
+
+#: src/group.c:1249 src/group.c:2752
+#, c-format
+msgid "Checking news%s ..."
+msgstr "%siletiler kontrol ediliyor ..."
+
+#: src/group.c:1250 src/group.c:2753
+msgid " via active file"
+msgstr " aktif dosyasý kullanýlarak"
+
+#: src/group.c:1303
+msgid "Forward"
+msgstr "Ýleri"
+
+#: src/group.c:1303
+msgid "Backward"
+msgstr "Geri"
+
+#: src/group.c:1304
+msgid " Search: "
+msgstr " Ara: "
+
+#: src/group.c:1318
+msgid "Search wrapped."
+msgstr "Arama baþa döndü."
+
+#: src/group.c:1347
+#, c-format
+msgid "Group %s does not exist."
+msgstr "%s grubu mevcut deðil."
+
+#: src/group.c:1363
+msgid "Add group: "
+msgstr "Eklenecek grup: "
+
+#: src/group.c:1434
+#, c-format
+msgid "Moving %s. Press RETURN when finished."
+msgstr "%s taþýnýyor. Bitince ENTER tuþuna basýn."
+
+#: src/group.c:1517
+msgid "Subscribe pattern: "
+msgstr "Abonelik kriteri: "
+
+#: src/group.c:1546
+#, c-format
+msgid "Mark %s as read"
+msgstr "%s grubu okunmuþ sayýlsýn mý"
+
+#: src/group.c:1550
+msgid "Group marked as read."
+msgstr "Grup okunmuþ sayýldý."
+
+#: src/group.c:1561
+#, c-format
+msgid "Mark %s as un-read"
+msgstr "%s grubu iletileri yeni sayýlsýn mý"
+
+#: src/group.c:1565
+msgid "Group marked as un-read."
+msgstr "Grup iletileri yeni sayýldý."
+
+#: src/group.c:1588
+msgid "Un-Subscribe pattern: "
+msgstr "Abonelik silme kriteri: "
+
+#: src/group.c:1655
+msgid "List Groups (e.g., comp*unix*): "
+msgstr "Listelenecek grup(lar) (ör. comp*unix*): "
+
+#: src/group.c:1804
+msgid "No unread articles."
+msgstr "Yeni ileti yok."
+
+#: src/group.c:1816 src/post.c:936 src/post.c:1263
+msgid "Posting not allowed."
+msgstr "Gönderim izni yok."
+
+#: src/group.c:1827
+msgid "Are you sure that you want to post"
+msgstr "Gönderilsin mi"
+
+#: src/group.c:1837
+msgid "Newsgroup: "
+msgstr "Haber grubu: "
+
+#: src/group.c:1841
+msgid "Followup-To: "
+msgstr "Devam edilecek grup: "
+
+#. Note to translators: Here, "fF" means "full", "sS" is "simple",
+#. * "nN" means "none" and "cC" is "cancel".
+#. * As always, don't change the length of the string; you cannot use
+#. * the default characters for different fields.
+#.
+#: src/group.c:1860
+msgid "fFsSnNcC"
+msgstr "tTbByYiÝ"
+
+#: src/group.c:1867
+msgid "Select scoring mode: Full, Simple, None, Cancel"
+msgstr "Puanlama þekli: Tam, Basit, Yok, Ýptal"
+
+#: src/group.c:1875
+msgid "Full Header Scoring enabled."
+msgstr "Tam Üstbilgi Puanlamasý devrede."
+
+#: src/group.c:1880
+msgid "Expensive Scoring disabled."
+msgstr "Masraflý Puanlama devre dýþý."
+
+#: src/group.c:1885
+msgid "Scoring disabled."
+msgstr "Puanlama devre dýþý."
+
+#: src/group.c:1903
+msgid "No changes need to be saved."
+msgstr "Saklanacak deðiþiklik yok."
+
+#: src/group.c:2098
+msgid "Unable to create group keymap!"
+msgstr "Grup tuþ eþlemi oluþturulamýyor!"
+
+#: src/group.c:2256
+#, c-format
+msgid ""
+"Unable to create newsgroup description file:\n"
+"%s\n"
+msgstr ""
+"Habergrubu açýklama dosyasý oluþturulamýyor:\n"
+"%s\n"
+
+#: src/group.c:2260
+#, c-format
+msgid ""
+"\n"
+"Creating description file %s.\n"
+msgstr ""
+"\n"
+"%s açýklama dosyasý oluþturuluyor.\n"
+
+#: src/group.c:2261
+msgid ""
+"Getting newsgroup descriptions from server.\n"
+"Note: This step may take some time if you have a slow connection!!!\n"
+msgstr ""
+"Sunucudan habergrubu açýklamalarý alýnýyor.\n"
+"Not: Yavaþ bir baðlantýnýz varsa biraz zaman alabilir!!!\n"
+
+#: src/group.c:2268
+msgid "Server failed on list newsgroups command."
+msgstr "list newsgroups komutunda sunucu baþarýsýz oldu."
+
+#: src/group.c:2283
+msgid "Error reading line from server"
+msgstr "Sunucudan satýrý okuma hatasý."
+
+#: src/group.c:2414
+msgid "Checking for new groups ..."
+msgstr "Yeni gruplar aranýyor ..."
+
+#: src/group.c:2472 src/slrnpull.c:2126
+msgid "Server does not implement NEWGROUPS command."
+msgstr "NEWGROUPS komutu sunucuda geçerli deðil."
+
+#: src/group.c:2476 src/slrnpull.c:2130
+#, c-format
+msgid ""
+"Server failed to return proper response to NEWGROUPS:\n"
+"%s\n"
+msgstr ""
+"NEWGROUPS komutuna uygun yanýt alýnamadý:\n"
+"%s\n"
+
+#. Slrn_Groups_Dirty = 0;
+#. Huh?
+#: src/group.c:2490 src/group.c:2603
+msgid "Read from server failed"
+msgstr "Sunucudan okuma hatasý"
+
+#: src/group.c:2501
+#, c-format
+msgid "%d new newsgroup(s) found."
+msgstr "%d adet yeni grup bulundu."
+
+#: src/group.c:2509
+#, c-format
+msgid ""
+"%s appears corrupt.\n"
+"I expected to see: NEWGROUPS yymmdd hhmmss GMT\n"
+"I will patch the file up for you.\n"
+msgstr ""
+"%s bozuk görünüyor.\n"
+"NEWGROUPS yyaagg ssddss GMT þeklinde olmasý gerekir\n"
+"Sizin yerinize dosya yamalanacak.\n"
+
+#: src/group.c:2521
+#, c-format
+msgid "Unable to open %s to record date."
+msgstr "Tarihi kaydetmek için %s açýlamýyor."
+
+#: src/group.c:2589
+msgid "Server failed LIST ACTIVE - authorization missing."
+msgstr "Sunucuda LIST ACTIVE sorunu - yetki eksik."
+
+#: src/group.c:2590
+msgid "Server failed LIST ACTIVE."
+msgstr "Sunucuda LIST ACTIVE sorunu."
+
+#: src/group.c:2703
+#, c-format
+msgid ""
+"\n"
+"* The autosave file of %s is newer than the file itself.\n"
+msgstr ""
+"\n"
+"* %s dosyasýnýn otomatik kaydý, dosyanýn kendisinden yeni.\n"
+
+#: src/group.c:2705
+msgid "Do you want to restore your newsrc from the autosave version"
+msgstr "newsrc dosyanýz otomatik kaydýndan geri yüklensin mi"
+
+#: src/group.c:2766 src/post.c:1483 src/slrnpull.c:1559
+#, c-format
+msgid "Unable to create %s."
+msgstr "%s yaratýlamýyor."
+
+#: src/group.c:2769
+msgid ""
+"\n"
+"--The next step may take a while if the NNTP connection is slow.--\n"
+"\n"
+msgstr ""
+"\n"
+"--NNTP baðlantýnýz yavaþ ise sonraki adým biraz zaman alabilir.--\n"
+"\n"
+
+#: src/group.c:2770
+#, c-format
+msgid "Creating %s."
+msgstr "%s yaratýlýyor."
+
+#: src/group.c:2781
+msgid "Unable to read newsrc file"
+msgstr "newsrc dosyasý okunamadý"
+
+#: src/group.c:2874
+#, c-format
+msgid "Writing %s ..."
+msgstr "%s yazýlýyor ..."
+
+#: src/group.c:2896
+#, c-format
+msgid "Unable to open file %s for writing."
+msgstr "%s dosyasýna yazýlamýyor."
+
+#: src/group.c:3000
+#, c-format
+msgid "Writing %s ... done."
+msgstr "%s yazýlýyor ... bitti."
+
+#: src/group.c:3008
+#, c-format
+msgid "Write to %s failed! Disk Full?"
+msgstr "%s yazýlamadý! Disk dolu mu?"
+
+#: src/group.c:3023
+msgid ""
+"SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
+msgstr ""
+"BOÞLUK:Seç  p:Gönder  c:Eþitle  l:Listele  q:Çýk  ^R:Ekran tazele  u:Abone "
+"ol  s:Abonelik sil"
+
+#: src/group.c:3195
+msgid "-%D-News Groups: %s %-20g -- %L (%P)"
+msgstr "-%D-Haber gruplarý: %s %-20g -- %L (%P)"
+
+#: src/group.c:3227 src/group.c:3265 src/interp.c:360 src/interp.c:430
+msgid "To use this feature, please update s-lang and recompile slrn."
+msgstr "Bu özelliði kullanmak için daha yeni bir s-lang ile slrn derlenmeli."
+
+#: src/group.c:3273 src/interp.c:438
+msgid "Array of string expected."
+msgstr "Dize dizisi gerekli."
+
+#: src/group.c:3279 src/interp.c:444
+msgid "One-dimensional array expected."
+msgstr "Tek boyutlu dizi gerekli."
+
+#: src/grplens.c:194
+msgid "User is Unregistered"
+msgstr "Kullanýcý kayýtlý deðil"
+
+#: src/grplens.c:195
+msgid "Service is Busy"
+msgstr "Servis meþgul"
+
+#: src/grplens.c:196
+msgid "Service Unavailable"
+msgstr "Servis yok"
+
+#: src/grplens.c:197
+msgid "Already logged in"
+msgstr "Oturum zaten açýk"
+
+#: src/grplens.c:198
+msgid "Server failed to return proper response"
+msgstr "Sunucu yanýt gönderemedi"
+
+#: src/grplens.c:199
+msgid "Not enough memory"
+msgstr "Bellek yeterli deðil"
+
+#: src/grplens.c:200
+msgid "Error writing to server"
+msgstr "Sunucuya yazma hatasý"
+
+#: src/grplens.c:201
+msgid "Error reading from server"
+msgstr "Sunucudan okuma hatasý"
+
+#: src/grplens.c:202
+msgid "Token is invalid"
+msgstr "Yetki kartý geçersiz"
+
+#: src/grplens.c:203
+msgid "Newsgroup not supported"
+msgstr "Bu haber grubu desteði yok"
+
+#: src/grplens.c:206
+msgid "Unknown Error"
+msgstr "Belirsiz Hata"
+
+#: src/grplens.c:731
+#, c-format
+msgid "Failed: %s"
+msgstr "Baþarýsýz: %s"
+
+#: src/grplens.c:888
+#, c-format
+msgid "%s usage: %s [default] PSEUDONYM"
+msgstr "%s kullanýmý: %s [default] PSEUDONYM"
+
+#: src/grplens.c:896 src/grplens.c:908
+#, c-format
+msgid "%s: expecting a single argument"
+msgstr "%s: bir tek deðiþken bekleniyor"
+
+#: src/grplens.c:950
+msgid "Too many arguments"
+msgstr "Çok fazla deðiþken"
+
+#: src/grplens.c:986 src/slrnpull.c:535
+#, c-format
+msgid "Reading %s"
+msgstr "%s okunuyor"
+
+#: src/grplens.c:1000 src/grplens.c:1026
+#, c-format
+msgid "Error processing line %u of %s"
+msgstr "(satýr %u) %s iþlenirken hata oldu"
+
+#: src/grplens.c:1050
+#, c-format
+msgid "Checking to see if server %s:%d is alive..."
+msgstr "%s:%d sunucusunun durumu kontrol ediliyor..."
+
+#: src/grplens.c:1057
+msgid "GroupLens support initialized."
+msgstr "GroupLens desteði açýldý."
+
+#: src/grplens.c:1096
+msgid "Logging out of GroupLens servers ..."
+msgstr "GroupLens sunucularý ile oturum kapatýlýyor ..."
+
+#: src/grplens.c:1145
+#, c-format
+msgid "Getting GroupLens predictions from %s:%d..."
+msgstr "%s:%d sunucusundan GroupLens öngörüleri alýnýyor..."
+
+#: src/grplens.c:1195
+#, c-format
+msgid "Sending GroupLens ratings to %s:%d..."
+msgstr "%s:%d sunucusuna GroupLens notlarý gönderiliyor..."
+
+#: src/help.c:42
+msgid " More information about slrn can be found on its home page:"
+msgstr " Slrn hakkýnda daha fazla bilgi ev sayfasýnda bulunabilir:"
+
+#: src/help.c:43
+msgid "   http://slrn.sourceforge.net/"
+msgstr "   http://slrn.sourceforge.net/"
+
+#: src/help.c:44
+msgid " Questions not covered by the documentation can be posted to"
+msgstr " Dokümanlarda cevabýný bulamadýðýnýz sorularýnýz için"
+
+#: src/help.c:45
+msgid "   news.software.readers"
+msgstr "   news.software.readers (Usenet haber grubu)"
+
+#: src/help.c:47
+msgid ""
+" Please email bug reports, suggestions or comments to the current maintainer,"
+msgstr " Hatalarý, öneri ve yorumlarýnýzý lütfen paket sorumlusuna bildirin,"
+
+#: src/help.c:48
+msgid "   Thomas Schultz <tststs@gmx.de>"
+msgstr "   Thomas Schultz <tststs@gmx.de>"
+
+#: src/help.c:49
+msgid ""
+" The original author of this program is John E. Davis <davis@space.mit.edu>"
+msgstr " Bu programýn orjinal yazarý: John E. Davis <davis@space.mit.edu>"
+
+#. begin makehelp(article) - do *NOT* modify this line
+#: src/help.c:56 src/help.c:170
+msgid ""
+" Note: The keys are case sensitive!  That is, 's' and 'S' are not the same."
+msgstr ""
+" Dikkat: Komutlar büyük-küçük harf duyarlýdýr!  Yani, 's' ve 'S' ayný deðil."
+
+#: src/help.c:57
+msgid "General movement:"
+msgstr "Genel dolaþým:"
+
+#: src/help.c:58
+msgid ""
+"  n                  Go to the next unread article (or next group, if at "
+"end)."
+msgstr ""
+"  n                  Sonraki yeni iletiye (son iletide, sonraki gruba) geç."
+
+#: src/help.c:59
+msgid "  p                  Go to the previous unread article."
+msgstr "  p                  Önceki yeni iletiye geç."
+
+#: src/help.c:60
+msgid "  N, ESC RIGHT       Skip to next group."
+msgstr "  N, ESC SAÐA        Sonraki gruba geç."
+
+#: src/help.c:61
+msgid "  ESC LEFT           Go to previous group."
+msgstr "  ESC SOLA           Önceki gruba geç."
+
+#: src/help.c:62
+msgid "  !                  Go to the next article with a high score."
+msgstr "  !                  Sonraki yüksek puanlý bir iletiye geç."
+
+#: src/help.c:63
+msgid "  =                  Go to the next article with the same subject."
+msgstr "  =                  Ayný konulu sonraki iletiye geç."
+
+#: src/help.c:64
+msgid "  L                  Go to the last read article and display it."
+msgstr "  L                  Son okunmuþ iletiye geç."
+
+#: src/help.c:65 src/help.c:179
+msgid "Actions:"
+msgstr "Eylemler:"
+
+#: src/help.c:66
+msgid "  P                  Post a new article (no followup)."
+msgstr "  P                  Gruba yeni ileti gönder."
+
+#: src/help.c:67
+msgid "  ESC P              Post or edit a postponed article."
+msgstr "  ESC P              Erteli bir iletiyi düzenle veya gönder."
+
+#: src/help.c:68
+msgid "  f                  Post a followup to the current article."
+msgstr "  f                  Gruba yanýtla."
+
+#: src/help.c:69
+msgid "      ESC 1 f        Include all headers in the followup."
+msgstr "      ESC 1 f        Gruba yanýtta tüm üstbilgiler olsun."
+
+#: src/help.c:70
+msgid ""
+"      ESC 2 f        Followup without modifying (e.g. quoting) the article."
+msgstr "      ESC 2 f        Alýntýsýz olarak gruba yanýtla."
+
+#: src/help.c:71
+msgid "  r                  Reply to poster (via email)."
+msgstr "  r                  E-posta ile gönderene yanýtla."
+
+#: src/help.c:72
+msgid ""
+"  F                  Forward the current article to someone (via email)."
+msgstr "  F                  E-posta ile baþkasýna ilet."
+
+#: src/help.c:73
+msgid ""
+"      ESC 1 F        Forward the current article (including all headers)."
+msgstr "      ESC 1 F        Tüm üstbilgiler ile ilet."
+
+#: src/help.c:74
+msgid "  ESC Ctrl-S         Supersede article (you have to be the author)."
+msgstr "  ESC Ctrl-S         Ýletiyi düzelt (önceden gruba gönderdiðiniz)."
+
+#: src/help.c:75
+msgid "  ESC Ctrl-C         Cancel article (you have to be the author)."
+msgstr "  ESC Ctrl-C         Ýletiyi iptal et (önceden gruba gönderdiðiniz)."
+
+#: src/help.c:76
+msgid "  o                  Save article, tagged articles or thread to file."
+msgstr "  o                  Ýletiyi, imli iletileri veya görüþmeyi sakla."
+
+#: src/help.c:77
+msgid "  |                  Pipe article to an external program."
+msgstr "  |                  Ýletiyi harici bir komuta girdir."
+
+#: src/help.c:78
+msgid "  y                  Print article (as displayed)."
+msgstr "  y                  Ýletiyi yazdýr (göründüðü gibi)."
+
+#: src/help.c:79
+msgid ""
+"      ESC 1 y        Print article (unwrapped and including hidden lines)."
+msgstr ""
+"      ESC 1 y        Ýletiyi yazdýr (açýk olarak, saklý satýrlar dahil)."
+
+#: src/help.c:81
+msgid "  :                  Decode article, tagged articles or thread."
+msgstr "  :                  Ýleti, imli iletiler veya görüþmeyi çöz."
+
+#: src/help.c:83
+msgid "  Ctrl-Z             Suspend slrn."
+msgstr "  Ctrl-Z             Programý askýya al."
+
+#: src/help.c:84
+msgid "  q                  Return to group display."
+msgstr "  q                  Grup görüntüsüne dön."
+
+#: src/help.c:85
+msgid "  Q                  Quit slrn immediately."
+msgstr "  Q                  Derhal programdan çýk."
+
+#: src/help.c:86
+msgid "Moving in the article pager:"
+msgstr "Ýleti sayfasýnda dolaþým:"
+
+#: src/help.c:87
+msgid "  ESC DOWN           Scroll article down one line."
+msgstr "  ESC AÞAÐI          Bir satýr aþaðý."
+
+#: src/help.c:88
+msgid "  ESC UP             Scroll article up one line."
+msgstr "  ESC YUKARI         Bir satýr yukarý."
+
+#: src/help.c:89
+msgid ""
+"  SPACE              Scroll article down one page (or select next, if at "
+"end)."
+msgstr "  BOÞLUK             Bir sayfa aþaðý (ileti sonunda, sonrakine geç). "
+
+#: src/help.c:90
+msgid "  DELETE, b          Scroll article up one page."
+msgstr "  DEL, b             Bir sayfa yukarý."
+
+#: src/help.c:91
+msgid "  >                  Move to end of the article."
+msgstr "  >                  Ýleti sonuna git."
+
+#: src/help.c:92
+msgid "  <                  Move to beginning of the article."
+msgstr "  <                  Ýleti baþýna git."
+
+#: src/help.c:93
+msgid "  LEFT               Pan article to the left."
+msgstr "  SOLA               Sola kaydýr."
+
+#: src/help.c:94
+msgid "  RIGHT              Pan article to the right."
+msgstr "  SAÐA               Saða kaydýr."
+
+#: src/help.c:95
+msgid "  /                  Search forward in the article."
+msgstr "  /                  Ýletide ara (ileri)."
+
+#: src/help.c:96
+msgid "  TAB                Skip beyond quoted text."
+msgstr "  SEKME              Alýntýnýn ilerisine atla."
+
+#: src/help.c:97
+msgid "  g                  Skip to next digest."
+msgstr "  g                  Sonraki özete atla."
+
+#: src/help.c:98
+msgid "Moving in the header display:"
+msgstr "Üstbilgi sayfasýnda dolaþým:"
+
+#: src/help.c:99
+msgid "  DOWN, Ctrl-N       Move to the next article."
+msgstr "  AÞAÐI, CTRL-N      Sonraki ileti."
+
+#: src/help.c:100
+msgid "  UP, Ctrl-P         Move to the previous article."
+msgstr "  YUKARI, Ctrl-P     Önceki ileti."
+
+#: src/help.c:101
+msgid "  Ctrl-D             Scroll down one page."
+msgstr "  Ctrl-D             Bir sayfa aþaðý."
+
+#: src/help.c:102
+msgid "  Ctrl-U             Scroll up one page."
+msgstr "  Ctrl-U             Bir sayfa yukarý."
+
+#: src/help.c:103
+msgid "  ESC >              Go to the last article in group."
+msgstr "  ESC >              Gruptaki son iletiye git."
+
+#: src/help.c:104
+msgid "  ESC <              Go to the first article in group."
+msgstr "  ESC <              Gruptaki ilk iletiye git."
+
+#: src/help.c:105
+msgid "  j                  Jump to article (by server number)."
+msgstr "  j                  Sunucu numarasýna göre iletiye git."
+
+#: src/help.c:106
+msgid "  a                  Author search forward."
+msgstr "  a                  Yazar ara (ileri)."
+
+#: src/help.c:107
+msgid "  A                  Author search backward."
+msgstr "  A                  Yazar ara (geri)."
+
+#: src/help.c:108
+msgid "  s                  Subject search forward."
+msgstr "  s                  Konu ara (ileri)."
+
+#: src/help.c:109
+msgid "  S                  Subject search backward."
+msgstr "  S                  Konu ara (geri)."
+
+#: src/help.c:110
+msgid "Marking as read/unread:"
+msgstr "Yeni/okunmuþ saymak:"
+
+#: src/help.c:111
+msgid "  d                  Mark article or collapsed thread as read."
+msgstr "  d                  Ýleti veya yayýk görüþmeyi okunmuþ say."
+
+#: src/help.c:112
+msgid "  u                  Mark article or collapsed thread as unread."
+msgstr "  u                  Ýleti veya yayýk görüþmeyi yeni say."
+
+#: src/help.c:113
+msgid "  ESC d              Mark entire (sub-)thread as read."
+msgstr "  ESC d              Tüm (alt)görüþmeyi okunmuþ say."
+
+#: src/help.c:114
+msgid "  c                  Catchup - mark all articles as read."
+msgstr "  c                  Eþitle - tüm iletileri okunmuþ say."
+
+#: src/help.c:115
+msgid ""
+"  C                  Mark all articles up to the current position as read."
+msgstr "  C                  Buraya kadarki tüm iletileri okunmuþ say."
+
+#: src/help.c:116
+msgid "  ESC u              Un-Catchup - mark all articles as unread."
+msgstr "  ESC u              Yenile - tüm iletileri yeni say."
+
+#: src/help.c:117
+msgid ""
+"  ESC U              Mark all articles up to the current position as unread."
+msgstr "  ESC U              Buraya kadarki tüm iletileri yeni say."
+
+#: src/help.c:118
+msgid "  x                  Remove all non-tagged read articles from the list."
+msgstr "  x                  Ýmsiz okunmuþ tüm iletileri listeden sil."
+
+#: src/help.c:119
+msgid "Article pager commands:"
+msgstr "Ýleti sayfasý komutlarý:"
+
+#: src/help.c:120
+msgid "  t                  Show full headers (on/off)."
+msgstr "  t                  Üstbilgi görüntüsü (var/yok)."
+
+#: src/help.c:121
+msgid "  ESC r              Decrypt ROT-13 (on/off)."
+msgstr "  ESC r              ROT-13 çözümü (var/yok)."
+
+#: src/help.c:122
+msgid "  T                  Display quoted lines (on/off)."
+msgstr "  T                  Alýntý görüntüsü (var/yok)."
+
+#: src/help.c:123
+msgid "  \\                  Show signature (on/off)."
+msgstr "  \\                  Ýmza görüntüsü (var/yok)."
+
+#: src/help.c:124
+msgid "  W                  Wrap long lines (on/off)."
+msgstr "  W                  Uzun satýr bükümü (var/yok)."
+
+#: src/help.c:126
+msgid "  ESC ?              Reveal spoilers (on/off)."
+msgstr "  ESC ?              Spoiler görüntüsü (var/yok)."
+
+#: src/help.c:128
+msgid "  ]                  Show PGP signature (on/off)."
+msgstr "  ]                  PGP imza görüntüsü (var/yok)."
+
+#: src/help.c:129
+msgid "  [                  Show verbatim marks (on/off)."
+msgstr "  [                  Tek renkli metin iþareti görüntüsü (var/yok)."
+
+#: src/help.c:130
+msgid "  Ctrl-^             Enlarge the article window."
+msgstr "  Ctrl-^             Ýleti penceresini geniþlet."
+
+#: src/help.c:131
+msgid "  ^                  Shrink the article window."
+msgstr "  ^                  Ýleti penceresini daralt."
+
+#: src/help.c:132
+msgid "  z                  Maximize / Unmaximize the article window."
+msgstr ""
+"  z                  Ýleti penceresini tam geniþlet, veya bu iþlemi geri al."
+
+#: src/help.c:133
+msgid "  h                  Hide / Show the article window."
+msgstr "  h                  Ýleti penceresini göster veya gizle."
+
+#: src/help.c:134
+msgid "  U                  Search for URLs and follow them."
+msgstr "  U                  URL ara ve takip et."
+
+#: src/help.c:135
+msgid "Header window commands:"
+msgstr "Üstbilgi penceresi komutlarý:"
+
+#: src/help.c:136
+msgid "  ESC t              Collapse / Uncollapse thread."
+msgstr "  ESC t              Görüþmeyi yay, veya topla."
+
+#: src/help.c:137
+msgid "      ESC 1 ESC t    Collapse / Uncollapse all threads."
+msgstr "      ESC 1 ESC t    Tüm görüþmeleri yay, veya topla."
+
+#: src/help.c:138
+msgid "  ESC a              Toggle between header display formats."
+msgstr "  ESC a              Baþka üstbilgi gösterim biçemine geç."
+
+#: src/help.c:139
+msgid "  ESC s              Select threading and sorting method."
+msgstr "  ESC s              Sýralama ve görüþme düzenleme yöntemi seç."
+
+#: src/help.c:140
+msgid "Miscellaneous actions:"
+msgstr "Muhtelif iþlemler:"
+
+#: src/help.c:141
+msgid "  K                  Create a scorefile entry interactively."
+msgstr ""
+"  K                  Etkileþimli olarak bir puan dosyasý kuralý oluþtur."
+
+#: src/help.c:142
+msgid "      ESC 1 K        Edit scorefile."
+msgstr "      ESC 1 K        Puan dosyasý düzenle."
+
+#: src/help.c:143
+msgid ""
+"  v                  Show which scorefile rules matched the current article."
+msgstr ""
+"  v                  Ýleti ile eþleþen puan dosyasý kurallarýný göster."
+
+#: src/help.c:144
+msgid "  * The following five commands query the server if necessary:"
+msgstr "  * Bu komutlar gerekirse sunucuyu sorgular:"
+
+#: src/help.c:145
+msgid "  ESC l              Locate article by its Message-ID."
+msgstr "  ESC l              Kimliðine göre ileti belirle."
+
+#: src/help.c:146
+msgid "  ESC Ctrl-P         Find all children of current article."
+msgstr "  ESC Ctrl-P         Tüm alt-iletileri bul."
+
+#: src/help.c:147
+msgid "  ESC p              Find parent article."
+msgstr "  ESC p              Üst-iletiyi bul."
+
+#: src/help.c:148
+msgid ""
+"      ESC 1 ESC p    Reconstruct thread (slow when run on large threads)."
+msgstr "      ESC 1 ESC p    Görüþmeyi tekrar oluþtur (yavaþ, ama kapsamlý)."
+
+#: src/help.c:149
+msgid ""
+"      ESC 2 ESC p    Reconstruct thread (faster, may not find all articles)."
+msgstr "      ESC 2 ESC p    Görüþmeyi tekrar oluþtur (hýzlý, ama yüzeysel)."
+
+#: src/help.c:150
+msgid "  ;                  Set a mark at the current article."
+msgstr "  ;                  Ýletiyi iþaretle."
+
+#: src/help.c:151
+msgid "  ,                  Return to previously marked article."
+msgstr "  ,                  Ýþaretli iletiye git."
+
+#: src/help.c:152
+msgid "  #                  Numerically tag article (for saving / decoding)."
+msgstr "  #                  Ýletiyi sayýsal imle (saklama / çözme için)."
+
+#: src/help.c:153
+msgid "  ESC #              Remove all numerical tags."
+msgstr "  ESC #              Tüm sayýsal imleri kaldýr."
+
+#: src/help.c:154
+msgid "  *                  Protect article from catchup commands."
+msgstr "  *                  Ýletiyi eþitleme komutundan koru."
+
+#: src/help.c:155
+msgid "      ESC 1 *        Remove all protection marks."
+msgstr "      ESC 1 *        Tüm korumalarý kaldýr."
+
+#: src/help.c:156
+msgid "  .                  Repeat last key sequence."
+msgstr "  .                  Son komutu tekrarla."
+
+#: src/help.c:157
+msgid "  Ctrl-X ESC         Read line and interpret it as S-Lang."
+msgstr "  Ctrl-X ESC         Satýrý oku ve S-Lang olarak yorumla."
+
+#: src/help.c:159
+msgid "  0                  Rate article with GroupLens."
+msgstr "  0                  Ýletiye GroupLens ile not ver."
+
+#: src/help.c:161
+msgid "  Ctrl-R, Ctrl-L     Redraw screen."
+msgstr "  Ctrl-R, Ctrl-L     Ekran tazele."
+
+#: src/help.c:162
+msgid "  ?                  Display this help screen."
+msgstr "  ?                  Bu yardým ekranýný görüntüle."
+
+#: src/help.c:171
+msgid "Cursor movement:"
+msgstr "Ýmleç dolaþýmý:"
+
+#: src/help.c:172
+msgid "  DOWN                    Go to the next group."
+msgstr "  AÞAÐI                   Sonraki gruba geç."
+
+#: src/help.c:173
+msgid "  UP                      Go to the previous group."
+msgstr "  YUKARI                  Önceki gruba geç."
+
+#: src/help.c:174
+msgid "  Ctrl-V, Ctrl-D          Scroll to the next page."
+msgstr "  Ctrl-V, Ctrl-D          Sonraki sayfa."
+
+#: src/help.c:175
+msgid "  ESC V, Ctrl-U           Scroll to the previous page."
+msgstr "  ESC V, Ctrl-U           Önceki sayfa."
+
+#: src/help.c:176
+msgid "  ESC <                   Go to the bottom of the list."
+msgstr "  ESC <                   Liste sonuna git."
+
+#: src/help.c:177
+msgid "  ESC >                   Go to the top of the list."
+msgstr "  ESC >                   Liste baþýna git."
+
+#: src/help.c:178
+msgid "  /                       Group keyword search."
+msgstr "  /                       Grup ara."
+
+#: src/help.c:180
+msgid "  SPACE, RETURN           Enter the current newsgroup."
+msgstr "  BOÞLUK, ENTER           Gruba gir."
+
+#: src/help.c:181
+msgid "  * The following variations also download previously read articles:"
+msgstr "  * Aþaðýdakiler okunmuþ iletileri de karþýdan yükler:"
+
+#: src/help.c:182
+msgid "      ESC 1 SPACE         Enter group with article number query."
+msgstr "      ESC 1 BOÞLUK        Okunacak ileti sayýsýný sorarak gruba gir."
+
+#: src/help.c:183
+msgid "      ESC 2 SPACE         Enter group, but do not apply score."
+msgstr "      ESC 2 BOÞLUK        Puanlamadan gruba gir."
+
+#: src/help.c:184
+msgid "      ESC 3 SPACE         Enter group with query, but without scoring."
+msgstr "      ESC 3 BOÞLUK        Ýleti sayýsýný sorarak, ama puanlamadan gruba gir."
+
+#: src/help.c:185
+msgid "      ESC 4 SPACE         Enter the current newsgroup."
+msgstr "      ESC 4 BOÞLUK        Gruba gir."
+
+#: src/help.c:186
+msgid "  P                       Post an article to the current newsgroup."
+msgstr "  P                       Gruba ileti gönder."
+
+#: src/help.c:187
+msgid "  ESC P                   Post or edit a postponed article."
+msgstr "  ESC P                   Erteli bir iletiyi düzenle veya gönder."
+
+#: src/help.c:188
+msgid "  G                       Get new news from server."
+msgstr "  G                       Sunucudan yeni iletileri al."
+
+#: src/help.c:189
+msgid "  K                       Select scoring mode."
+msgstr "  K                       Puanlama þekli seç."
+
+#: src/help.c:190
+msgid "  .                       Repeat last key sequence."
+msgstr "  .                       Son komutu tekrarla."
+
+#: src/help.c:191
+msgid "  Ctrl-X ESC              Read line and interpret it as S-Lang."
+msgstr "  Ctrl-X ESC              Satýrý oku ve S-Lang olarak yorumla."
+
+#: src/help.c:192
+msgid "  Ctrl-Z                  Suspend slrn."
+msgstr "  Ctrl-Z                  Programý askýya al."
+
+#: src/help.c:193
+msgid "  q                       Quit slrn."
+msgstr "  q                       Programdan çýk."
+
+#: src/help.c:194
+msgid "Group management (affects newsrc file):"
+msgstr "Grup yönetimi (newsrc dosyasý etkilenir):"
+
+#: src/help.c:195
+msgid "  c                       Catchup - Mark all articles as read."
+msgstr "  c                       Eþitle - Tüm iletileri okunmuþ say."
+
+#: src/help.c:196
+msgid "  ESC u                   Un-Catchup - Mark all articles as unread."
+msgstr "  ESC u                   Yenile - Tüm iletileri yeni say."
+
+#: src/help.c:197
+msgid "  a                       Add a new newsgroup."
+msgstr "  a                       Haber grubu ekle."
+
+#: src/help.c:198
+msgid "  s                       Subscribe to the current newsgroup."
+msgstr "  s                       Haber grubuna abone ol."
+
+#: src/help.c:199
+msgid "      ESC 1 s             Subscribe to groups matching a pattern."
+msgstr "      ESC 1 s             Kritere uygun gruplara abone ol."
+
+#: src/help.c:200
+msgid "  u                       Unsubscribe from the current newsgroup."
+msgstr "  u                       Haber grubuna aboneliði sil."
+
+#: src/help.c:201
+msgid "      ESC 1 u             Unsubscribe from groups matching a pattern."
+msgstr "      ESC 1 u             Kritere uygun gruplara aboneliði sil."
+
+#: src/help.c:202
+msgid "  m                       Move newsgroup to a different location."
+msgstr "  m                       Grubu farklý yere taþý."
+
+#: src/help.c:203
+msgid "  Ctrl-X, Ctrl-T          Transpose position of groups."
+msgstr "  Ctrl-X, Ctrl-T          Gruplarýn yerini topluca kaydýr."
+
+#: src/help.c:204
+msgid "  X                       Force a save of the newsrc file."
+msgstr "  X                       newsrc dosyasýný sakla."
+
+#: src/help.c:205
+msgid "Display:"
+msgstr "Görüntü:"
+
+#: src/help.c:206
+msgid "  ESC a                   Toggle between group display formats."
+msgstr "  ESC a                   Baþka grup gösterim biçemine geç."
+
+#: src/help.c:207
+msgid ""
+"  l                       Toggle display of groups without unread articles."
+msgstr ""
+"  l                       Yeni iletisi olmayan gruplarýn görüntüsü (var/yok)."
+
+#: src/help.c:208
+msgid "  L                       Toggle listing of unsubscribed groups."
+msgstr ""
+"  L                       Abone olunmamýþ gruplarýn görüntüsü (var/yok)."
+
+#: src/help.c:209
+msgid "      ESC 1 L             Hide unsubscribed groups."
+msgstr "      ESC 1 L             Abone olunmamýþ gruplarý gizle."
+
+#: src/help.c:210
+msgid "      ESC 2 L             Show unsubscribed groups."
+msgstr "      ESC 2 L             Abone olunmamýþ gruplarý göster."
+
+#: src/help.c:211
+msgid "  Ctrl-L, Ctrl-R          Redraw the screen."
+msgstr "  Ctrl-L, Ctrl-R          Ekran tazele."
+
+#: src/help.c:212
+msgid "  ?                       Display this help screen."
+msgstr "  ?                       Bu yardým ekranýný görüntüle."
+
+#: src/help.c:298
+msgid " (continued)"
+msgstr " (devamý var)"
+
+#: src/help.c:303
+msgid "As a translation would not be legally binding, it remains untranslated."
+msgstr ""
+"Çevirisinin yasal müeyyidesi olmamasý nedeniyle orjinal olarak yer "
+"almaktadýr."
+
+#: src/help.c:307
+msgid "The following copyright notice applies to the slrn newsreader:"
+msgstr "Aþaðýdaki telif hakký uyarýsý slrn programýna tatbik olunur:"
+
+#: src/help.c:364
+msgid "Press 'c' to start over, or any other key to return to news reader."
+msgstr "'c' ile baþa, baþka bir tuþ ile programa geri dön."
+
+#: src/help.c:367
+msgid ""
+"Press 'c' for the copyright, '?' to start over, or any other key to quit "
+"help."
+msgstr ""
+"'c' ile telif hakký görüntüle, '?' ile baþa dön, baþka bir tuþla yardýmdan "
+"çýk."
+
+#: src/help.c:373
+msgid ""
+"Press 'q' to quit help, 'c' to start over, or any other key to continue."
+msgstr "'q' ile yardýmdan çýk, 'c' ile baþa dön, baþka bir tuþla devam et."
+
+#: src/help.c:376
+msgid ""
+"Press 'q' to quit help, '?' to start over, or any other key to continue."
+msgstr "'q' ile yardýmdan çýk, '?' ile baþa dön, baþka bir tuþla devam et."
+
+#: src/interp.c:104
+msgid "positive integer expected"
+msgstr "pozitif tamsayý olmasý beklenir"
+
+#: src/interp.c:140
+msgid "select box function not available in batch mode."
+msgstr "select box iþlevi toplu komut modunda geçerli deðil."
+
+#: src/interp.c:274 src/interp.c:284
+#, c-format
+msgid "loading %s"
+msgstr "%s yükleniyor"
+
+#: src/interp.c:301 src/interp.c:309 src/interp.c:322
+#, c-format
+msgid "%s is not a valid variable name."
+msgstr "%s geçerli bir deðiþken adý deðil."
+
+#: src/interp.c:350
+msgid "setlocale is not available on this system."
+msgstr "setlocale bu sistemde yok."
+
+#: src/interp.c:363
+msgid "This version of slrn lacks MIME support."
+msgstr "Bu sürüm slrn, MIME desteðine sahip deðil."
+
+#: src/interp.c:370
+msgid "Array of integer expected."
+msgstr "Tamsayý dizi olmasý beklenir."
+
+#: src/interp.c:376
+msgid "Two-dimensional array with two columns expected."
+msgstr "Ýki sütunlu iki boyutlu dizi olmasý beklenir."
+
+#: src/interp.c:388
+msgid "Could not get memory for conversion table."
+msgstr "Çevrim tablosu için bellek alýnamadý."
+
+#: src/interp.c:403
+#, c-format
+msgid "Unicode value in row %d out of range."
+msgstr "%d satýrýndaki Unicode deðeri aralýk dýþý."
+
+#: src/interp.c:412
+#, c-format
+msgid "Local charset value in row %d out of range."
+msgstr "%d satýrýndaki yerel charset deðeri aralýk dýþý."
+
+#: src/interp.c:452
+#, c-format
+msgid "Array must contain at least one, at most %d elements."
+msgstr "Dizi en az bir, en fazla %d eleman içermeli."
+
+#: src/interp.c:460
+msgid "Failed to allocate memory."
+msgstr "Bellek alýnamadý."
+
+#: src/interp.c:527
+msgid "definekey: no such keymap."
+msgstr "definekey: böyle tuþ eþlemi yok."
+
+#: src/interp.c:554
+msgid "undefinekey: no such keymap."
+msgstr "undefinekey: böyle tuþ eþlemi yok."
+
+#: src/interp.c:591 src/interp.c:629 src/slrn.c:1745
+msgid "Quit!"
+msgstr "Çýk!"
+
+#: src/interp.c:664
+msgid "Terminal not initialized."
+msgstr "Terminal baþlatýlamadý."
+
+#: src/interp.c:715
+msgid "Not in article mode."
+msgstr "Ýleti modunda deðil."
+
+#: src/interp.c:848
+msgid "No article selected"
+msgstr "Seçili ileti yok."
+
+#: src/interp.c:1192
+msgid "Not in group mode."
+msgstr "Grup modunda deðil."
+
+#: src/interp.c:1321
+#, c-format
+msgid "Unable to open log file %s"
+msgstr "%s dosyasý açýlamadý"
+
+#: src/interp.c:1381
+msgid "Could not replace article with given string."
+msgstr "Girilen dize ile ileti deðiþtirilemedi."
+
+#: src/menu.c:64 src/menu.c:77
+msgid "Quit"
+msgstr "Çýk"
+
+#: src/menu.c:65
+msgid "Refresh"
+msgstr "Tazele"
+
+#: src/menu.c:66 src/menu.c:81 src/misc.c:221
+msgid "Top"
+msgstr "Üst"
+
+#: src/menu.c:67 src/menu.c:82 src/misc.c:223
+msgid "Bot"
+msgstr "Alt"
+
+#: src/menu.c:68 src/menu.c:83
+msgid "Post"
+msgstr "Gönder"
+
+#: src/menu.c:69 src/menu.c:86
+msgid "Help"
+msgstr "Yardým"
+
+#: src/menu.c:78
+msgid "Catchup"
+msgstr "Eþitle"
+
+#: src/menu.c:79
+msgid "NextGrp"
+msgstr "SonrakiGrp"
+
+#: src/menu.c:80
+msgid "NextArt"
+msgstr "SonrakiÝlt"
+
+#: src/menu.c:84
+msgid "Reply"
+msgstr "Yanýtla"
+
+#: src/menu.c:85
+msgid "Followup"
+msgstr "GrubaYnt"
+
+#: src/menu.c:193
+msgid "No sorting"
+msgstr "Sýrasýz"
+
+#. 000
+#: src/menu.c:194
+msgid "Thread Headers"
+msgstr "Üstbilgileri Görüþmelere Ayýr"
+
+#. 001
+#: src/menu.c:195
+msgid "Sort by subject"
+msgstr "Konuya göre sýrala"
+
+#. 010
+#: src/menu.c:196
+msgid "Thread, then sort by subject."
+msgstr "Görüþmelere ayýr, sonra konuya göre sýrala."
+
+#. 011
+#: src/menu.c:197
+msgid "Sort by scores."
+msgstr "Puanlara göre sýrala."
+
+#. 100
+#: src/menu.c:198
+msgid "Thread, then sort by scores."
+msgstr "Görüþmelere ayýr, sonra puanlara göre sýrala."
+
+#. 101
+#: src/menu.c:199
+msgid "Sort by score and subject"
+msgstr "Puan ve konuya göre sýrala"
+
+#. 110
+#: src/menu.c:200
+msgid "Thread, then sort by score and subject"
+msgstr "Görüþmelere ayýr, sonra puan ve konuya göre sýrala"
+
+#. 111
+#: src/menu.c:201
+msgid "Sort by date (most recent first)"
+msgstr "Tarihe göre sýrala (en yeni baþta)"
+
+#. 1000
+#: src/menu.c:202
+msgid "Thread, then sort by date (most recent first)"
+msgstr "Görüþmelere ayýr, sonra tarihe göre sýrala (en yeni baþta)"
+
+#. 1001
+#: src/menu.c:203
+msgid "Sort by date (most recent last)"
+msgstr "Tarihe göre sýrala (en yeni sonda)"
+
+#. 1010
+#: src/menu.c:204
+msgid "Thread, then Sort by date (most recent last)"
+msgstr "Görüþmelere ayýr, sonra tarihe göre sýrala (en yeni sonda)"
+
+#. 1011
+#: src/menu.c:205
+msgid "Custom sorting (see manual)"
+msgstr "Özel sýralama"
+
+#: src/menu.c:213
+msgid "Sorting Method"
+msgstr "Sýralama Yöntemi"
+
+#: src/menu.c:297
+msgid "(Select One)"
+msgstr "(Birini Seçin)"
+
+#: src/menu.c:357
+msgid "Cancelled."
+msgstr "Ýptal edildi."
+
+#: src/menu.c:435
+msgid "[All]"
+msgstr "[Tümü]"
+
+#: src/menu.c:435
+msgid "[Top]"
+msgstr "[Üst]"
+
+#: src/menu.c:439
+msgid "[Bot]"
+msgstr "[Alt]"
+
+#: src/menu.c:479
+msgid "Press any key to close the window."
+msgstr "Pencereyi kapatmak için bir tuþa basýn."
+
+#: src/menu.c:481
+msgid "Use UP/DOWN to move, any other key to close the window."
+msgstr "YUKARI/AÞAÐI ile dolaþ, baþka bir tuþla pencereyi kapat"
+
+#: src/menu.c:486
+msgid "Use UP/DOWN to move, RETURN to select, Ctrl-G to cancel"
+msgstr "YUKARI/AÞAÐI ile dolaþ, ENTER ile seç, Ctrl-G ile iptal et"
+
+#: src/menu.c:488
+msgid "Use UP/DOWN to move, RETURN to select, q to quit"
+msgstr "YUKARI/AÞAÐI ile dolaþ, ENTER ile seç, q ile çýk"
+
+#: src/menu.c:1048
+msgid "Creating directory list..."
+msgstr "Klasör listesi oluþturuluyor..."
+
+#: src/mime.c:946
+msgid "Process this MIME article with metamail"
+msgstr "MIME iletisi metamail ile iþlensin mi"
+
+#: src/mime.c:960
+msgid "Unable to open tmp file for metamail."
+msgstr "metamail için tmp dosyasý açýlamadý."
+
+#: src/mime.c:988
+msgid "Press return to continue ..."
+msgstr "Devam etmek için bir tuþa basýn ..."
+
+#: src/misc.c:221
+msgid "All"
+msgstr "Tümü"
+
+#: src/misc.c:277
+msgid "slrn %v ** Press '?' for help, 'q' to quit. ** Server: %s"
+msgstr "slrn %v ** Yardým için '?', çýkmak için 'q'. ** Sunucu: %s"
+
+#: src/misc.c:693
+msgid "This function is not available in batch mode."
+msgstr "Toplu komut modunda bu iþlev mevcut deðil."
+
+#. Note to translators: "yY" is for "yes", "nN" for "no", "eE" for "edit".
+#. * Do not change the length of this string. You cannot use any of the
+#. * default characters for different fields.
+#: src/misc.c:1090
+msgid "yYnNeE"
+msgstr "eEhHdD"
+
+#: src/misc.c:1094
+msgid "Mail the message? Yes, No, Edit"
+msgstr "Ýleti postalansýn mý?  Evet, Hayýr, Düzenle"
+
+#: src/misc.c:1101
+msgid "Sending ..."
+msgstr "Gönderiliyor ..."
+
+#: src/misc.c:1220
+msgid "Sending...done"
+msgstr "Gönderiliyor ...bitti"
+
+#: src/misc.c:1324
+msgid "**UNKNOWN**"
+msgstr "**BÝLÝNMÝYOR**"
+
+#: src/misc.c:1337
+#, c-format
+msgid "Command %s returned exit status %d.  Press RETURN.\n"
+msgstr "%s komutu %d durumunda sonlandý.  ENTER tuþuna basýn.\n"
+
+#: src/misc.c:1364
+#, c-format
+msgid "Command %s failed to run.  Press RETURN.\n"
+msgstr "%s komutu yürütülemedi.  ENTER'e basýn.\n"
+
+#: src/misc.c:1405
+msgid "Invalid Editor definition."
+msgstr "Geçersiz Düzenleyici tanýmý."
+
+#: src/misc.c:1483
+msgid "No editor command defined."
+msgstr "Düzenleyici komutu tanýmlý deðil."
+
+#: src/misc.c:1505
+msgid "The editor could not be found."
+msgstr "Düzenleyici bulunamadý."
+
+#: src/misc.c:1510
+msgid "The editor was found, but could not be executed."
+msgstr "Bu düzenleyici yürütülemiyor."
+
+#: src/misc.c:1514
+msgid "The editor returned a non-zero status."
+msgstr "Düzenleyici sýfýrdan farklý bir durumla sonlandý."
+
+#: src/misc.c:1528
+msgid "File was not modified."
+msgstr "Dosya deðiþtirilmedi."
+
+#: src/misc.c:1537
+msgid "Please use double '\\\\' to separate directories in editor_command"
+msgstr "editor_command satýrýndaki klasörler arasýnda çift '\\\\' kullanýn"
+
+#: src/misc.c:1918
+msgid "Possible completions"
+msgstr "Olasý durumlar"
+
+#: src/misc.c:2046
+#, c-format
+msgid "(default: %s) "
+msgstr "(varsayýlan: %s) "
+
+#: src/misc.c:2209
+msgid "Abort!"
+msgstr "Ýptal et!"
+
+#: src/misc.c:2215
+msgid "Integer expected."
+msgstr "Tamsayý olmasý beklenir."
+
+#: src/misc.c:2317
+msgid "Invalid response! Try again."
+msgstr "Geçersiz yanýt! Tekrar deneyin."
+
+#. Note to translators:
+#. * The translated string needs to have exactly four characters.
+#. * The first two become valid keys for "yes", the last two for "no".
+#. * You *cannot* use "y" for "no" or "n" for "yes".
+#.
+#: src/misc.c:2352
+msgid "yYnN"
+msgstr "eEhH"
+
+#: src/misc.c:2367
+msgid "? [Y]es, No"
+msgstr "? [E]vet, Hayýr"
+
+#: src/misc.c:2372
+msgid "? Yes, [N]o"
+msgstr "? Evet, [H]ayýr"
+
+#. Note to translators:
+#. * The translated string needs to have exactly six characters.
+#. * The first two become valid keys for "yes", the next two for "no",
+#. * the last ones for "cancel". You cannot use the default characters
+#. * for other fields than they originally stood for.
+#.
+#: src/misc.c:2400
+msgid "yYnNcC"
+msgstr "eEhHiÝ"
+
+#: src/misc.c:2410
+msgid "? [Y]es, No, Cancel"
+msgstr "? [E]vet, Hayýr, Ýptal"
+
+#: src/misc.c:2466 src/spool.c:1434
+msgid "Invalid regular expression or expression too long."
+msgstr "Geçersiz düzenli ifade veya ifade çok uzun."
+
+#. Fill in what is assumed to be non-NULL by rest of program.
+#: src/misc.c:2594
+msgid "On %D, %r <%f> wrote:"
+msgstr "%D tarihinde, %r <%f> þunlarý yazdý:"
+
+#: src/misc.c:2595
+#, c-format
+msgid "In %n, you wrote:"
+msgstr "%n grubuna þunlarý yazdýnýz:"
+
+#: src/misc.c:2596
+#, c-format
+msgid "[\"Followup-To:\" header set to %n.]"
+msgstr "[Devam edilecek grup: %n.]"
+
+#: src/misc.c:2599
+#, c-format
+msgid "[This message has also been posted to %n.]"
+msgstr "[Bu ileti %n için de gönderilmiþtir.]"
+
+#: src/misc.c:2601
+msgid "[This message has also been posted.]"
+msgstr "[Bu ileti ayrýca gönderilmiþtir.]"
+
+#: src/misc.c:2832
+msgid "Cannot generate \"From:\" line without a valid username."
+msgstr "Geçerli kullanýcý adý olmadan \"Kimden:\" satýrý oluþturulamaz."
+
+#. Note: we currently do not check whether hostname is valid
+#: src/misc.c:2836
+msgid "Cannot generate \"From:\" line without a hostname."
+msgstr "Bilgisayar adý olmadan \"Kimden:\" satýrý oluþturulamaz."
+
+#: src/misc.c:2841
+msgid "This client cannot handle addresses longer than 255 characters."
+msgstr "Bu istemcide 255 karakterden uzun adresler kullanýlamaz."
+
+#: src/nntp.c:67
+#, c-format
+msgid "Server connection to %s lost.  Cannot recover."
+msgstr "%s sunucusuna baðlantý yitirildi, ve düzeltilemiyor."
+
+#: src/nntp.c:121
+#, c-format
+msgid "Server %s does not implement the XOVER command."
+msgstr "XOVER komutu %s sunucusunda geçerli deðil."
+
+#: src/nntp.c:266
+msgid "Error writing to server."
+msgstr "Sunucuya yazma hatasý."
+
+#: src/nntp.c:272
+#, c-format
+msgid "Article rejected: %s"
+msgstr "Ýleti reddedildi: %s"
+
+#: src/nntp.c:464
+msgid ""
+"--nntp options:\n"
+"-h nntp-host    Host name to connect to.  This overrides NNTPSERVER "
+"variable.\n"
+"-p NNTP-PORT    Set the NNTP port to NNTP-PORT. The default value is 119.\n"
+"                 Note: This option has no effect on some systems.\n"
+msgstr ""
+"--nntp seçenekleri:\n"
+"-h nntp-bilgisayarý    Baðlanýlacak bilgisayar. NNTPSERVER deðiþkenini "
+"etkisiz kýlar.\n"
+"-p NNTP-PORT           Baðlanýlacak NNTP port numarasý. Varsayýlan deðer "
+"119. (Bazý sistemlerde bu seçenek etkisizdir)\n"
+
+#: src/nntplib.c:196 src/post.c:790
+#, c-format
+msgid "Reason: %s"
+msgstr "Sebep: %s"
+
+#: src/nntplib.c:266
+#, c-format
+msgid "Server %s dropped connection.  Reconnecting..."
+msgstr "%s sunucusu baðlantýyý kesti. Tekrar baðlanýlýyor..."
+
+#: src/nntplib.c:415
+msgid "Authorization needed, but could not determine username / password."
+msgstr "Yetki gerekli, ancak kullanýcýadý/parola tespit edilemedi."
+
+#: src/nntplib.c:419
+#, c-format
+msgid "Authenticating %s ..."
+msgstr "%s için kimlik doðrulanýyor ..."
+
+#: src/nntplib.c:449
+msgid "Authorization failed."
+msgstr "Yetki verilmedi."
+
+#: src/nntplib.c:460
+#, c-format
+msgid "Connecting to host %s ..."
+msgstr "%s bilgisayarýna baðlanýlýyor ..."
+
+#: src/nntplib.c:496
+#, c-format
+msgid "Connected to host.  %s"
+msgstr "Bilgisayara baðlanýldý.  %s"
+
+#: src/nntplib.c:497
+msgid "Posting ok."
+msgstr "Gönderim serbest."
+
+#: src/nntplib.c:497
+msgid "Posting NOT ok."
+msgstr "Gönderime kapalý."
+
+#: src/nntplib.c:503
+msgid "Failed to initialize server"
+msgstr "Sunucu ayarlamalarý baþarýsýz"
+
+#: src/nntplib.c:567
+msgid ""
+"You need to set the NNTPSERVER environment variable to your server name."
+msgstr "NNTPSERVER çevre deðiþkenini haber sunucunuzun adýna ayarlamalýsýnýz."
+
+#: src/nntplib.c:569
+msgid "Example: $ define/job NNTPSERVER my.news.server"
+msgstr "Örnek: $ define/job NNTPSERVER news.server.net.tr"
+
+#: src/nntplib.c:572
+msgid "Example: set NNTPSERVER=my.news.server"
+msgstr "Örnek: set NNTPSERVER=news.server.net.tr"
+
+#: src/nntplib.c:574
+msgid "Example (csh): setenv NNTPSERVER my.news.server"
+msgstr "Örnek (csh): setenv NNTPSERVER news.server.net.tr"
+
+#: src/nntplib.c:575
+msgid "Example (sh) : NNTPSERVER='my.news.server' && export NNTPSERVER"
+msgstr "Örnek (sh) : NNTPSERVER='news.server.net.tr' && export NNTPSERVER"
+
+#. 100
+#: src/nntplib.c:1125
+msgid "Help text on way"
+msgstr "Yardým geliyor"
+
+#. 180
+#: src/nntplib.c:1127
+msgid "Authorization capabilities"
+msgstr "Yetkilendirme imkanlarý"
+
+#. 199
+#: src/nntplib.c:1129
+msgid "Debug output"
+msgstr "Çýktýdan hata ayýkla"
+
+#. 200
+#: src/nntplib.c:1131
+msgid "Hello; you can post"
+msgstr "Merhaba; gönderebilirsiniz"
+
+#. 201
+#: src/nntplib.c:1133
+msgid "Hello; you can't post"
+msgstr "Merhaba; gönderemezsiniz"
+
+#. 202
+#: src/nntplib.c:1135
+msgid "Slave status noted"
+msgstr "Slave durumu anlaþýldý"
+
+#. 205
+#: src/nntplib.c:1137
+msgid "Closing connection"
+msgstr "Baðlantý kapanýyor"
+
+#. 211
+#: src/nntplib.c:1139
+msgid "Group selected"
+msgstr "Grup seçildi"
+
+#. 215
+#: src/nntplib.c:1141
+msgid "Newsgroups follow"
+msgstr "Ýþte habergruplarý"
+
+#. 220
+#: src/nntplib.c:1143
+msgid "Article (head & body) follows"
+msgstr "Ýþte ileti (üstbilgi ve metin)"
+
+#. 221
+#: src/nntplib.c:1145
+msgid "Head follows"
+msgstr "Ýþte üstbilgi"
+
+#. 222
+#: src/nntplib.c:1147
+msgid "Body follows"
+msgstr "Ýþte ileti metni"
+
+#. 223
+#: src/nntplib.c:1149
+msgid "No text sent -- stat, next, last"
+msgstr "Metin gönderilmedi --- stat, next, last"
+
+#. 230
+#: src/nntplib.c:1151
+msgid "New articles by message-id follow"
+msgstr "Ýþte kimliðe göre yeni iletiler"
+
+#. 231
+#: src/nntplib.c:1153
+msgid "New newsgroups follow"
+msgstr "Ýþte yeni gruplar"
+
+#. 235
+#: src/nntplib.c:1155
+msgid "Article transferred successfully"
+msgstr "Ýleti baþarýyla aktarýldý"
+
+#. 240
+#: src/nntplib.c:1157
+msgid "Article posted successfully"
+msgstr "Ýleti baþarýyla gönderildi"
+
+#. 280
+#: src/nntplib.c:1159
+msgid "Authorization system ok"
+msgstr "Yetkilendirme sistemi tamam"
+
+#. 281
+#: src/nntplib.c:1161
+msgid "Authorization (user/pass) ok"
+msgstr "Yetki verildi"
+
+#. 282
+#: src/nntplib.c:1163
+msgid "Ok, XGTITLE info follows"
+msgstr "Ýþte XGTITLE bilgisi"
+
+#. 224
+#: src/nntplib.c:1165
+msgid "ok -- overview data follows"
+msgstr "Ýþte özet bilgi"
+
+#. 335
+#: src/nntplib.c:1167
+msgid "Continue to send article"
+msgstr "Ýletiyi göndermeye devam edin"
+
+#. 340
+#: src/nntplib.c:1169
+msgid "Continue to post article"
+msgstr "Ýletiyi göndermeye devam edin"
+
+#. 380
+#: src/nntplib.c:1171
+msgid "authorization is required"
+msgstr "yetki gerekiyor"
+
+#. 381
+#: src/nntplib.c:1173
+msgid "<type> authorization data required"
+msgstr "<tip> yetki verisi gerekli"
+
+#. 400
+#: src/nntplib.c:1175
+msgid "Have to hang up for some reason"
+msgstr "Baðlantýyý kesmek durumundayým"
+
+#. 411
+#: src/nntplib.c:1177
+msgid "No such newsgroup"
+msgstr "Böyle haber grubu yok"
+
+#. 412
+#: src/nntplib.c:1179
+msgid "Not currently in newsgroup"
+msgstr "Haber grubu seçili deðil"
+
+#. 420
+#: src/nntplib.c:1181
+msgid "No current article selected"
+msgstr "Seçili ileti yok"
+
+#. 421
+#: src/nntplib.c:1183
+msgid "No next article in this group"
+msgstr "Grupta daha sonrasýnda ileti yok"
+
+#. 422
+#: src/nntplib.c:1185
+msgid "No previous article in this group"
+msgstr "Grupta daha öncesinde ileti yok"
+
+#. 423
+#: src/nntplib.c:1187
+msgid "No such article in this group"
+msgstr "Grupta böyle ileti yok"
+
+#. 430
+#: src/nntplib.c:1189
+msgid "No such article at all"
+msgstr "Böyle ileti yok"
+
+#. 435
+#: src/nntplib.c:1191
+msgid "Already got that article, don't send"
+msgstr "Ýleti zaten alýnmýþ, tekrar göndermeyin"
+
+#. 436
+#: src/nntplib.c:1193
+msgid "Transfer failed"
+msgstr "Aktarým baþarýsýz"
+
+#. 437
+#: src/nntplib.c:1195
+msgid "Article rejected, don't resend"
+msgstr "Ýleti reddedildi, tekrar göndermeyin"
+
+#. 440
+#: src/nntplib.c:1197
+msgid "Posting not allowed"
+msgstr "Gönderim izni yok"
+
+#. 441
+#: src/nntplib.c:1199
+msgid "Posting failed"
+msgstr "Gönderim baþarýsýz"
+
+#. 480
+#: src/nntplib.c:1201
+msgid "authorization required for command"
+msgstr "komut için yetki gerekli"
+
+#. 481
+#. ERR_XGTITLE has same code
+#: src/nntplib.c:1203
+msgid "Authorization system invalid"
+msgstr "Yetkilendirme sistemi geçersiz"
+
+#. 482
+#: src/nntplib.c:1205
+msgid "Authorization data rejected"
+msgstr "Kimlik bilgileri reddedildi"
+
+#. 500
+#: src/nntplib.c:1207
+msgid "Command not recognized"
+msgstr "Komut anlaþýlmadý"
+
+#. 501
+#: src/nntplib.c:1209
+msgid "Command syntax error"
+msgstr "Komut yazým hatasý"
+
+#. 502
+#: src/nntplib.c:1211
+msgid "Access to server denied"
+msgstr "Sunucuya eriþim reddedildi"
+
+#. 503
+#: src/nntplib.c:1213
+msgid "Program fault, command not performed"
+msgstr "Program hatasý, komut yürütülmedi"
+
+#. 580
+#: src/nntplib.c:1215
+msgid "Authorization Failed"
+msgstr "Yetkilendirme iþlemi baþarýsýz"
+
+#: src/nntplib.c:1218
+msgid "Unknown NNTP code"
+msgstr "Bilinmeyen NNTP kodu"
+
+#: src/post.c:609
+msgid "The first line must begin with a header."
+msgstr "Ýlk satýr bir üstbilgi olmalý."
+
+#: src/post.c:619
+msgid "Expecting a header.  This is not a header line."
+msgstr "Üstbilgi olmasý beklenir.  Bu bir üstbilgi satýrý deðil."
+
+#: src/post.c:627
+msgid "The subject header is not allowed be to empty."
+msgstr "Konu satýrý boþ olamaz."
+
+#: src/post.c:639
+msgid "The Newsgroups header is not allowed be to empty."
+msgstr "Habergrubu üstbilgisi boþ olamaz."
+
+#: src/post.c:667
+msgid "A space must follow the ':' in a header"
+msgstr "Üstbilgideki ':' iþaretinden sonra bir boþluk olmalý."
+
+#: src/post.c:674
+msgid "This news reader will not accept user generated From lines."
+msgstr "Kullanýcý tarafýndan Kimden satýrý verilemez."
+
+#: src/post.c:681
+msgid "This news reader will not accept user generated Message-IDs."
+msgstr "Bu program, kullanýcý tarafýndan verilen ileti kimliklerini kabul etmez."
+
+#: src/post.c:691
+msgid "Subject header is required."
+msgstr "Konu üstbilgisi gerekli."
+
+#: src/post.c:696
+msgid "Newsgroups header is required."
+msgstr "Habergrubu üstbilgisi gerekli."
+
+#: src/post.c:703
+msgid "Please re-consider if posting to a large number of groups is necessary."
+msgstr "Çok sayýda gruba göndermenin gerekliliðini lütfen tekrar düþünün"
+
+#: src/post.c:706
+msgid ""
+"In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
+msgstr "Birçok gruptan devam etmeyi istemek iyi bir fikir deðil."
+
+#: src/post.c:709
+msgid "Setting a \"Followup-To:\" is recommended when crossposting."
+msgstr ""
+"Birçok gruba gönderirken, devam edilecek grup belirlemeniz tavsiye olunur."
+
+#: src/post.c:723
+msgid "Your message does not appear to have any unquoted text."
+msgstr "Ýletide, alýntý olmayan metin yok."
+
+#: src/post.c:782
+msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
+msgstr "Lütfen imzanýzý kýsa tutun. Genel kabul gören sýnýr 4 satýrdýr."
+
+#: src/post.c:789
+msgid "Message is not acceptable."
+msgstr "Ýleti kabul edilir deðil."
+
+#: src/post.c:807
+msgid "Your message is not acceptable for the following reason:"
+msgstr "Ýletiniz þu sebeple kabul edilir deðil:"
+
+#: src/post.c:814
+#, c-format
+msgid "This message was generated while looking at line %d:"
+msgstr "%d no'lu satýra bakýlýrken bu ileti oluþturuldu:"
+
+#: src/post.c:820
+msgid ""
+"Perhaps this error was generated because you did not separate the header"
+msgstr "Üstbilgi bloðu ile ileti metni arasýný boþ bir satýrla ayýrmadýðýnýz"
+
+#: src/post.c:822
+msgid "section from the body by a BLANK line."
+msgstr "için bu hata oluþmuþ olabilir."
+
+#: src/post.c:829
+msgid "Your message breaks the following netiquette guidelines:"
+msgstr "Ýletiniz, þu netiquette kurallarýna uymuyor:"
+
+#: src/post.c:845
+msgid "Lines with more than 80 characters generally need to be wrapped."
+msgstr "80 karakterden uzun satýrlar genellikle bükülür."
+
+#: src/post.c:849
+#, c-format
+msgid "This affects at least line %d:"
+msgstr "Bu, en azýndan %d no'lu satýrý etkiliyor:"
+
+#: src/post.c:851
+#, c-format
+msgid "This affects %d lines between line %d and %d. First one:"
+msgstr "Bu, %d adet satýrý etkiliyor (%d ve %d satýrlarý arasý). Ýlk satýr:"
+
+#: src/post.c:877 src/post.c:1215 src/post.c:1238
+#, c-format
+msgid "File not found: %s--- message not posted."
+msgstr "Dosya bulunamadý: %s--- ileti gönderilmedi."
+
+#: src/post.c:884
+#, c-format
+msgid "***Warning: error saving to %s"
+msgstr "***Uyarý: %s saklanýrken hata oldu"
+
+#: src/post.c:930
+#, c-format
+msgid "***Warning: error writing to %s"
+msgstr "***Uyarý: %s yazýlýrken hata oldu"
+
+#: src/post.c:935
+#, c-format
+msgid "%s Failed post saved in %s"
+msgstr "%s Baþarýsýz gönderi %s olarak saklandý"
+
+#. Note to translators:
+#. * In the following strings, "yY" will mean "yes", "nN" is for "no",
+#. * "eE" for "edit", "sS" for "postpone", "dD" for "delete" and "fF"
+#. * for "filter". Please use the same letter for the same field everywhere,
+#. * or your users will get unexpected results. As always, you can't use the
+#. * default letters for other fields than those they originally stood for.
+#. * Be careful not to change the length of these strings!
+#.
+#: src/post.c:1029 src/post.c:1062
+msgid "yYnNeEsSdDfF"
+msgstr "eEhHdDrRsSaA"
+
+#: src/post.c:1032
+msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
+msgstr "Ýleti gönderilsin mi? Evet, Hayýr, Düzenle, eRtele, Sil, Arýt"
+
+#: src/post.c:1036
+msgid "yYnNeEsSfF"
+msgstr "eEhHdDrRaA"
+
+#: src/post.c:1039
+msgid "Post the message? Yes, No, Edit, poStpone, Filter"
+msgstr "Ýleti gönderilsin mi? Evet, Hayýr, Düzenle, eRtele, Arýt"
+
+#: src/post.c:1047
+msgid "yYnNeEsSdD"
+msgstr "eEhHdDrRsS"
+
+#: src/post.c:1050
+msgid "Post the message? Yes, No, Edit, poStpone, Delete"
+msgstr "Ýleti gönderilsin mi? Evet, Hayýr, Düzenle, eRtele, Sil"
+
+#: src/post.c:1054
+msgid "yYnNeEsS"
+msgstr "eEhHdDrR"
+
+#: src/post.c:1057
+msgid "Post the message? Yes, No, Edit, poStpone"
+msgstr "Ýleti gönderilsin mi? Evet, Hayýr, Düzenle, eRtele"
+
+#: src/post.c:1080
+msgid "Sure you want to delete it"
+msgstr "Silinsin mi"
+
+#. Note to translators:
+#. * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
+#. * "cC" is "cancel" and "fF" means "force". The usual rules apply.
+#.
+#: src/post.c:1104
+msgid "yYeEnNcC"
+msgstr "eEdDhHiÝ"
+
+#: src/post.c:1107
+msgid "re-Edit,  or Cancel"
+msgstr "tekrar Düzenle, veya Ýptal"
+
+#: src/post.c:1111 src/post.c:1117
+msgid "yYeEnNcCfF"
+msgstr "eEdDhHiÝgG"
+
+#: src/post.c:1114
+msgid "re-Edit, Cancel, or Force the posting (not recommended)"
+msgstr "tekrar Düzenle, Ýptal, veya bu halde Gönder (tavsiye edilmez)"
+
+#: src/post.c:1202 src/post.c:1241
+msgid "Posting ..."
+msgstr "Gönderiliyor ..."
+
+#: src/post.c:1232
+msgid "post_file_hook returned error."
+msgstr "post_file_hook hata verdi."
+
+#: src/post.c:1249
+#, c-format
+msgid "Couldn't open %s--- message not posted."
+msgstr "%s dosyasý açýlamadý--- ileti gönderilmedi."
+
+#: src/post.c:1264
+msgid "Could not reach server."
+msgstr "Sunucuya ulaþýlamadý."
+
+#: src/post.c:1271
+msgid "Message-ID generating error."
+msgstr "Ýleti kimliði oluþturma hatasý."
+
+#: src/post.c:1282
+msgid "\"From\" generating error."
+msgstr "\"Kimden\" satýrý oluþturma hatasý."
+
+#: src/post.c:1418
+msgid "Posting...done."
+msgstr "Gönderiliyor ...tamam."
+
+#. Note to translators: Here, "rR" is "repost", "eE" is "edit" and
+#. * "cC" is "cancel". Don't change the length of the string; you
+#. * cannot re-use any of the default characters for different fields.
+#: src/post.c:1439
+msgid "rReEcC"
+msgstr "gGdDiÝ"
+
+#: src/post.c:1442
+msgid "Select one: Repost, Edit, Cancel"
+msgstr "Birini seçin: tekrar Gönder, Düzenle, Ýptal"
+
+#: src/post.c:1541
+msgid "postpone_directory not specified or does not exist"
+msgstr "postpone_directory ayarý yapýlmamýþ, veya bu klasör yok"
+
+#: src/post.c:1552
+msgid "Not implemented yet. Sorry"
+msgstr "Bu özellik henüz hazýr deðil."
+
+#: src/post.c:1568
+msgid "Save to: "
+msgstr "Saklanacak dosya adý:"
+
+#: src/post.c:1574
+msgid "File exists, overwrite"
+msgstr "Bu dosya var, üzerine yazýlsýn mý"
+
+#: src/post.c:1586
+msgid "You must specify a name"
+msgstr "Bir ad vermeniz gerekli"
+
+#: src/post.c:1588
+msgid "Illegal filename. Try again"
+msgstr "Geçersiz ad. Bir daha deneyin"
+
+#: src/post.c:1613
+#, c-format
+msgid "%s: not a regular file"
+msgstr "%s: bu bir dosya deðil"
+
+#: src/print.c:152
+#, c-format
+msgid "OpenPrinterA failed: %d"
+msgstr "OpenPrinterA baþarýsýz: %d"
+
+#: src/print.c:160
+#, c-format
+msgid "StartDocPrinterA failed: %d"
+msgstr "StartDocPrinterA  baþarýsýz: %d"
+
+#: src/print.c:180
+#, c-format
+msgid "Write to printer failed: %d"
+msgstr "Yazýcýya yazýlamadý: %d"
+
+#: src/print.c:227
+msgid "Failed to open tmp file"
+msgstr "tmp dosya açýlamadý"
+
+#: src/print.c:243
+msgid "Write to printer failed"
+msgstr "Yazýcýya yazýlamadý"
+
+#: src/print.c:273
+#, c-format
+msgid "Printer process returned error code %d"
+msgstr "Yazýcý prosesi hata kodu: %d"
+
+#: src/print.c:299
+#, c-format
+msgid "Failed to open process %s"
+msgstr "%s prosesi açýlamadý"
+
+#: src/print.c:315
+msgid "Error writing to print process"
+msgstr "Yazýcý prosesine yazma hatasý"
+
+#: src/print.c:333
+msgid "Printer not supported"
+msgstr "Bu yazýcý desteklenmiyor"
+
+#: src/print.c:405
+#, c-format
+msgid "Unable to open %s for printing"
+msgstr "%s yazýlamýyor"
+
+#: src/score.c:595
+msgid "Reloading score file ..."
+msgstr "Puan dosyasý tekrar yükleniyor ..."
+
+#: src/score.c:597 src/slrn.c:995
+#, c-format
+msgid "Error processing score file %s."
+msgstr "%s puan dosyasý iþlenirken hata oldu."
+
+#: src/score.c:846
+#, c-format
+msgid ""
+"Error processing %s\n"
+"Line %u:\n"
+"%s\n"
+"%s\n"
+msgstr ""
+"%s iþlenirken hata\n"
+"Satýr %u:\n"
+"%s\n"
+"%s\n"
+
+#: src/score.c:1027
+msgid "Error handling INCLUDE line"
+msgstr "INCLUDE satýrý iþlenirken hata"
+
+#: src/score.c:1055
+msgid "Syntax Error."
+msgstr "Yazým hatasý."
+
+#: src/score.c:1112
+msgid "Expecting 'Expires: MM/DD/YYYY' or 'Expires: DD-MM-YYYY'"
+msgstr ""
+"'Son Kullaným: AA/GG/YYYY' veya 'Son Kullaným: GG-AA-YYYY' olmasý beklenir."
+
+#: src/score.c:1119
+#, c-format
+msgid "%s has expired score on line %d"
+msgstr "%s ile %d no'lu satýrdaki puanlama kuralýnýn kullaným tarihi geçti"
+
+#: src/score.c:1135
+msgid "Bad group regular expression."
+msgstr "Geçersiz grup düzenli ifadesi."
+
+#: src/score.c:1155
+msgid "Expecting Score keyword."
+msgstr "Score anahtar sözcüðü olmasý beklenir."
+
+#: src/score.c:1212 src/score.c:1223
+msgid "Missing COLON."
+msgstr ": iþareti eksik."
+
+#: src/score.c:1232
+msgid "No regular expression given."
+msgstr "Düzenli ifade girilmedi."
+
+#: src/score.c:1267
+msgid "Missing '}' for  subscore"
+msgstr "'}' iþareti veya altpuan eksik"
+
+#: src/score.c:1283
+#, c-format
+msgid "*** Warning * Read file %s before - skipping ..."
+msgstr "*** Uyarý * %s dosyasý daha önce okundu - atlanýyor ..."
+
+#: src/score.c:1297
+#, c-format
+msgid "Unable to open score file %s"
+msgstr "%s puan dosyasý açýlamadý"
+
+#: src/server.c:112
+msgid "Couldn't open pipe to inews! -- Article not posted."
+msgstr "inews programýna girdirilemedi! -- Ýleti gönderilmedi."
+
+#: src/server.c:130
+msgid "pclose() failed -- check if article was posted"
+msgstr "pclose() baþarýz -- iletinin gidip-gitmediðini kontrol edin"
+
+#: src/server.c:201
+#, c-format
+msgid "Unable to locate inews program \"%s\""
+msgstr "\"%s\" inews programý bulunamadý"
+
+#: src/server.c:250 src/slrn.c:1110
+#, c-format
+msgid "Unable to add preprocessor name %s."
+msgstr "%s preprocessor adý eklenemedi."
+
+#: src/server.c:273
+msgid "inews cannot be used with an slrnpull spool."
+msgstr "inews bir slrnpull havuzuyla kullanýlamaz."
+
+#: src/server.c:297
+#, c-format
+msgid "%s is not a supported posting agent."
+msgstr "%s desteklenen bir gönderim unsuru deðil."
+
+#: src/server.c:337
+#, c-format
+msgid "%s is not a supported server object."
+msgstr "%s desteklenen bir sunucu nesnesi deðil."
+
+#: src/server.c:533
+#, c-format
+msgid "Unable to open file in %s."
+msgstr "%s içindeki dosya açýlamýyor."
+
+#: src/server.c:603
+#, c-format
+msgid "Unable to rename file. errno = %d."
+msgstr "Dosyaya yeni ad verilemedi. hata = %d."
+
+#: src/server.c:618
+msgid "Write error.  File system full?"
+msgstr "Yazma hatasý. Dosya sistemi dolu mu?"
+
+#: src/server.c:633
+msgid "Write failed.  File system full?"
+msgstr "Yazma baþarýsýz. Dosya sistemi dolu mu?"
+
+#: src/server.c:679
+#, c-format
+msgid "Posting directory %s does not exist."
+msgstr "Gönderim klasörü %s mevcut deðil."
+
+#: src/slrn.c:186
+#, c-format
+msgid ""
+"slrn: pid %d is locking the newsrc file. If you're not running another\n"
+"      copy of slrn, delete the file %s"
+msgstr ""
+"slrn: newsrc dosyasý %d no'lu pid ile kilitli. Baþka bir slrn çalýþmýyorsa\n"
+"      %s dosyasýný silin"
+
+#: src/slrn.c:191
+#, c-format
+msgid "slrn: pid %d is locking the newsrc file."
+msgstr "slrn: newsrc dosyasý %d no'lu pid ile kilitli."
+
+#. delete the "normal" lock file
+#: src/slrn.c:262 src/slrn.c:269
+#, c-format
+msgid "Unable to create lock file %s."
+msgstr "Kilit dosyasý %s yaratýlamadý."
+
+#: src/slrn.c:376
+msgid "pop_suspension: underflow!"
+msgstr "pop_suspension: underflow!"
+
+#: src/slrn.c:441
+msgid "Not implemented."
+msgstr "Henüz gerçekleþtirilmedi."
+
+#: src/slrn.c:454 src/slrn.c:473
+msgid "Suspension not allowed by shell."
+msgstr "Askýya alma izni yok."
+
+#: src/slrn.c:634
+msgid "Unable to initialize the tty"
+msgstr "Ekran ayarlanamadý"
+
+#: src/slrn.c:869
+#, c-format
+msgid "slrn: quiting on signal %d.\n"
+msgstr "slrn: %d sinyaline karþýlýk sona eriyor.\n"
+
+#: src/slrn.c:886
+msgid "slrn fatal error:"
+msgstr "slrn hatasý:"
+
+#: src/slrn.c:914
+#, c-format
+msgid ""
+"Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n"
+"-a              Use active file for getting new news.\n"
+"-f newsrc-file  Name of the newsrc file to use.\n"
+"-C[-]           [Do not] use colors.\n"
+"-Dname          Add 'name' to list of predefined preprocessing tokens.\n"
+"-d              Get new text descriptions of each group from server.\n"
+"                 Note: This may take a LONG time to retrieve this "
+"information.\n"
+"                 The resulting file can be several hundred Kilobytes!\n"
+"-i init-file    Name of initialization file to use (default: %s)\n"
+"-k              Do not process score file.\n"
+"-k0             Process score file but inhibit expensive scores.\n"
+"-m              Force XTerm mouse reporting\n"
+"-n              Do not check for new groups.  This usually results in\n"
+"                 a faster startup.\n"
+"-w              Wait for key before switching to full screen mode\n"
+"-w0             Wait for key (only when warnings / errors occur)\n"
+"--create        Create a newsrc file by getting list of groups from server.\n"
+"--debug FILE    Write debugging information to FILE\n"
+"--help          Print this usage.\n"
+"--kill-log FILE Keep a log of all killed articles in FILE\n"
+"--version       Show version and supported features\n"
+"\n"
+"NNTP mode has additional options; use \"slrn --nntp --help\" to display "
+"them.\n"
+msgstr ""
+"Kullaným: slrn [--inews] [--nntp ...] [--spool] SEÇENEKLER\n"
+"-a                 Yeni iletileri almak için aktif dosyayý kullan.\n"
+"-f newsrc-dosyasý  Kullanýlacak newsrc dosya adý.\n"
+"-C[-]              Renk kullan[ma].\n"
+"-Dad               Tanýmlanan preprocessing token listesine 'ad'ý ekle.\n"
+"-d                 Her grubun yeni açýklamalarýný sunucudan al.\n"
+"                    Not: Bu bilgiyi almak çok uzun sürebilir.\n"
+"                         Oluþan dosya birkaç yüz Kbayt olabilir!\n"
+"-i dosyaadý        Ayarlar dosyasý adý (varsayýlan: %s)\n"
+"-k                 Puan dosyasýný kullanma.\n"
+"-k0                Puan dosyasýný kullan, ancak masraflý puanlarý engelle.\n"
+"-m                 XTerm fare bildirimini saðla.\n"
+"-n                 Yeni grup kontrolu yapma (genelde daha çabuk açýlmasýný\n"
+"                    saðlar).\n"
+"-w                 Tam ekran moduna geçmeden önce tuþ bekle\n"
+"-w0                Tuþ bekle (sadece uyarýlar / hatalar olduðunda)\n"
+"--create           Sunucudan grup listesini alarak newsrc dosyasýný "
+"oluþtur.\n"
+"--debug DOSYA      Sunucu ile diyaloðu DOSYA'ya yaz\n"
+"--help             Bu kullanýmý göster.\n"
+"--kill-log DOSYA   Arýtýlan tüm iletilerin kaydýný DOSYA'da tut\n"
+"--version          Sürüm ve desteklenen özellikleri göster\n"
+"\n"
+"NNTP modunda ek seçenekler var; \"slrn --nntp --help\" ile bunlarý "
+"görüntüleyebilirsiniz.\n"
+
+#: src/slrn.c:965
+#, c-format
+msgid "%s is not a supported option."
+msgstr "%s desteklenen bir seçenek deðil."
+
+#: src/slrn.c:967
+#, c-format
+msgid "%s is not supported."
+msgstr "%s desteklenmiyor."
+
+#: src/slrn.c:988
+#, c-format
+msgid "*** Warning: Score file %s does not exist"
+msgstr "*** Uyarý: %s puan dosyasý mevcut deðil"
+
+#: src/slrn.c:1087
+#, c-format
+msgid "Unable to open %s for debugging."
+msgstr "Hata ayýklama için %s açýlamýyor."
+
+#: src/slrn.c:1135
+msgid "The -d and --create flags must not be specified together."
+msgstr "-d ve --create beraber kullanýlamaz."
+
+#: src/slrn.c:1148
+msgid "Error initializing SLtcp interface"
+msgstr "SLtcp arayüzü ayarlanýrken hata"
+
+#: src/slrn.c:1153
+msgid "Error initializing S-Lang interpreter.\n"
+msgstr "S-Lang yorumlayýcýsý ayarlanýrken hata.\n"
+
+#: src/slrn.c:1164
+msgid "Error configuring server objects."
+msgstr "Sunucu nesneleri yapýlandýrma hatasý."
+
+#: src/slrn.c:1190
+#, c-format
+msgid "Could not read specified config file %s\n"
+msgstr "%s yapýlandýrma dosyasý okunamadý\n"
+
+#: src/slrn.c:1196
+msgid ""
+"\n"
+"! Your configuration file contains obsolete commands or function names that\n"
+"! will not be supported by future versions of this program.\n"
+"! If you have Perl installed, you can use the script slrnrc-conv to change\n"
+"! your configuration accordingly.  It can be found in the source "
+"distribution\n"
+"! or retrieved from <URL:http://slrn.sourceforge.net/data/>.\n"
+msgstr ""
+"\n"
+"! Yapýlandýrma dosyanýz, programýn gelecek sürümlerinde desteklenmeyecek "
+"eski\n"
+"! komut veya iþlev adlarý içeriyor.\n"
+"! Perl paketi kurulu ise, slrnrc-conv betiðini kullanarak yapýlandýrma "
+"dosyanýzda\n"
+"! gerekli deðiþiklikleri yapabilirsiniz. Bu betik kaynak içeren daðýtýmda "
+"bulunabilir\n"
+"! veya þu adresten temin edin <URL:http://slrn.sourceforge.net/data/>.\n"
+
+#: src/slrn.c:1212
+msgid "Failed to select character set."
+msgstr "Karakter kümesi seçilemedi."
+
+#: src/slrn.c:1249
+msgid "Unable to select server/post object."
+msgstr "Sunucu/gönderme nesnesi seçilemedi."
+
+#: src/slrn.c:1265
+#, c-format
+msgid ""
+"Unable to find a valid hostname for constructing your e-mail address.\n"
+"You will have to specify a hostname in your %s file.\n"
+msgstr ""
+"e-posta adresinizde görünecek geçerli bir bilgisayar adý bulunamadý.\n"
+"%s dosyanýzda bir bilgisayar adý belirtmelisiniz.\n"
+
+#: src/slrn.c:1274
+msgid ""
+"Unable to find your user name.  This means that a valid 'From' header line\n"
+"cannot be constructed.  Try setting the USER environment variable.\n"
+msgstr ""
+"Kullanýcý adýnýz bulunamadý.  Bu nedenle geçerli bir 'Kimden' satýrý\n"
+"oluþturulamýyor.  USER çevre deðiþkenini ayarlamayý deneyin.\n"
+
+#: src/slrn.c:1282
+msgid "***Warning: Unable to find a unique fully-qualified host name."
+msgstr "***Uyarý: Benzersiz bir tam nitelikli bilgisayar adý bulunamadý."
+
+#: src/slrn.c:1283
+msgid "            slrn will not generate any Message-IDs."
+msgstr "           Ýleti kimlikleri slrn tarafýndan verilmeyecek,"
+
+#: src/slrn.c:1284
+msgid ""
+"            Please note that the \"hostname\" setting does not affect this;"
+msgstr "           \"hostname\" ayarýnýn bunu etkilemeyeceðini biliniz;"
+
+#: src/slrn.c:1285
+msgid "            see the \"slrn reference manual\" for details."
+msgstr "           daha fazla bilgi için \"slrn referans kitabý\"na baþvurun."
+
+#: src/slrn.c:1316
+#, c-format
+msgid "Using newsrc file %s for server %s."
+msgstr "%s newsrc dosyasý %s sunucusu için kullanýlýyor."
+
+#: src/slrn.c:1328 src/slrnpull.c:2003
+msgid "Unable to initialize server."
+msgstr "Sunucu ayarlarý yapýlamadý."
+
+#: src/slrn.c:1343
+#, c-format
+msgid "Unable to open %s.  I will try .newsrc."
+msgstr "%s açýlamadý,  .newsrc deniyorum."
+
+#: src/slrn.c:1348
+#, c-format
+msgid ""
+"\n"
+"Unable to open %s.\n"
+"If you want to create %s, add command line options:\n"
+"   -f %s --create\n"
+msgstr ""
+"\n"
+"%s açýlamýyor.\n"
+"%s yaratmak için, þu komut satýrý seçeneklerini kullanýn:\n"
+"   -f %s  --create\n"
+
+#: src/slrn.c:1365 src/slrnpull.c:1775 src/slrnpull.c:1787
+#, c-format
+msgid "Unable to open %s for logging."
+msgstr "Kayýt tutmak için %s açýlamýyor."
+
+#: src/slrn.c:1381
+msgid "Initializing GroupLens"
+msgstr "GroupLens ayarlarý yapýlýyor"
+
+#: src/slrn.c:1384
+msgid "GroupLens disabled.\n"
+msgstr "GroupLens devredýþý.\n"
+
+#: src/slrn.c:1393
+msgid "Failed to initialize server."
+msgstr "Sunucu ayarlarý baþarýsýz."
+
+#: src/slrn.c:1399
+msgid "OVERVIEW.FMT not RFC 2980 compliant -- XOVER support disabled."
+msgstr "OVERVIEW.FMT, RFC 2980 uyumlu deðil -- XOVER desteði devredýþý."
+
+#: src/slrn.c:1412
+msgid "* Press Ctrl-C to quit, any other key to continue.\n"
+msgstr "Ctrl-C ile çýk, baþka bir tuþ ile devam et.\n"
+
+#: src/slrn.c:1415
+msgid "Exit on user request."
+msgstr "Kullanýcý talebi üzerine çýk."
+
+#: src/slrn.c:1442
+msgid "Internal Error: Mode_Stack overflow"
+msgstr "Internal Error: Mode_Stack overflow"
+
+#: src/slrn.c:1457
+msgid "Internal Error: Mode_Stack underflow"
+msgstr "Internal Error: Mode_Stack underflow"
+
+#: src/slrn.c:1554
+#, c-format
+msgid "call: %s not in current keymap."
+msgstr "call: %s mevcut tuþ eþlemi içinde deðil."
+
+#: src/slrndir.c:79
+msgid "slrn_open_dir has not been ported to VMS"
+msgstr "slrn_open_dir, VMS üzerinde çalýþmaz"
+
+#: src/slrndir.c:167 src/slrndir.c:178
+msgid "Unable to getcwd"
+msgstr "getcwd hatasý"
+
+#: src/slrndir.c:231
+#, c-format
+msgid "chdir %s failed.  Does the directory exist?"
+msgstr "%s klasörüne geçilemedi.  Bu klasör var mý?"
+
+#: src/slrnpull.c:318
+#, c-format
+msgid "Created dir %s."
+msgstr "%s klasörü oluþturuldu."
+
+#: src/slrnpull.c:326
+#, c-format
+msgid "Unable to create directory %s. (errno = %d)"
+msgstr "%s klasörü oluþturulamadý. (hata = %d)"
+
+#: src/slrnpull.c:367
+#, c-format
+msgid "Error reading %s."
+msgstr "%s okunurken hata."
+
+#: src/slrnpull.c:375
+#, c-format
+msgid "Error parsing %s."
+msgstr "Error parsing %s."
+
+#: src/slrnpull.c:400 src/slrnpull.c:2142
+#, c-format
+msgid "Write to %s failed."
+msgstr "%s yazma hatasý."
+
+#: src/slrnpull.c:406
+#, c-format
+msgid "Error closing %s."
+msgstr "%s kapatma hatasý."
+
+#: src/slrnpull.c:528
+#, c-format
+msgid "Unable to open active groups file %s"
+msgstr "%s aktif gruplar dosyasý açýlamadý"
+
+#: src/slrnpull.c:564
+#, c-format
+msgid "%s: line %u: group name too long."
+msgstr "%s: satýr %u: grup adý çok uzun."
+
+#: src/slrnpull.c:581
+#, c-format
+msgid "%s: line %u: Group name contains whitespace."
+msgstr "%s: satýr %u: Grup adýnda boþluk var."
+
+#: src/slrnpull.c:599
+#, c-format
+msgid "%s: line %u: expecting positive integer in second field."
+msgstr "%s: satýr %u: ikinci alanda pozitif bir tam sayý olmasý beklenir."
+
+#: src/slrnpull.c:613
+#, c-format
+msgid "%s: line %u: expecting positive integer in third field."
+msgstr "%s: satýr %u: üçüncü alanda pozitif bir tamsayý olmasý beklenir."
+
+#: src/slrnpull.c:630
+#, c-format
+msgid "%s: line %u: group duplicated."
+msgstr "%s: satýr %u: grup tekrarý."
+
+#: src/slrnpull.c:638
+#, c-format
+msgid "%s: line %u: failed to add %s."
+msgstr "%s: satýr %u: %s eklenemedi."
+
+#: src/slrnpull.c:672 src/slrnpull.c:712 src/util.c:377 src/util.c:530
+#: src/util.c:549
+msgid "Out of memory."
+msgstr "Bellek yetersiz."
+
+#: src/slrnpull.c:739
+msgid "Read failed."
+msgstr "Okuma baþarýsýz."
+
+#: src/slrnpull.c:740
+#, c-format
+msgid "listgroup %s failed: %s"
+msgstr "listgroup %s baþarýsýz: %s"
+
+#: src/slrnpull.c:812
+#, c-format
+msgid "The server may contain as many as %d articles in this group"
+msgstr "Bu grup için sunucuda %d adet ileti var"
+
+#: src/slrnpull.c:814
+#, c-format
+msgid "Only examining last %u articles since this is a new group"
+msgstr "Yeni bir grup olmasý nedeniyle sadece son %u ileti inceleniyor"
+
+#: src/slrnpull.c:820
+msgid ""
+"Server failed to return proper code for XHDR.  The connection may be lost"
+msgstr ""
+"XHDR için sunucu uygun bir yanýt gönderemedi.  Baðlantý kopmuþ olabilir"
+
+#: src/slrnpull.c:826
+#, c-format
+msgid "Server failed XHDR command: %s"
+msgstr "Sunucu XHDR komutuna yanýt veremedi: %s"
+
+#: src/slrnpull.c:884
+#, c-format
+msgid "%s: Retrieving articles %d-%d."
+msgstr "%s: %d-%d arasý iletiler alýnýyor."
+
+#: src/slrnpull.c:907
+#, c-format
+msgid "%s: No articles in specified range."
+msgstr "%s: Belirtilen aralýkta ileti yok."
+
+#: src/slrnpull.c:955
+#, c-format
+msgid "%u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu      "
+msgstr "%u/%u (%u atýk), Süre: %02u:%02u:%02u, BPS: %lu      "
+
+#: src/slrnpull.c:965
+#, c-format
+msgid "%s: %u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu"
+msgstr "%s: %u/%u (%u atýk), Süre: %02u:%02u:%02u, BPS: %lu"
+
+#: src/slrnpull.c:990
+#, c-format
+msgid "Error writing to overview database: %s:%d."
+msgstr "Özet veritabanýna yazma hatasý: %s:%d."
+
+#: src/slrnpull.c:1239
+msgid "Internal error: Buffer in get_heads not large enough!"
+msgstr "Internal error: Buffer in get_heads not large enough!"
+
+#: src/slrnpull.c:1276
+#, c-format
+msgid "Unable to open overview file %s.\n"
+msgstr "%s özet dosyasý açýlamadý.\n"
+
+#: src/slrnpull.c:1324
+#, c-format
+msgid "Error closing overview file for %s."
+msgstr "%s için özet dosyasýný kapatma hatasý."
+
+#: src/slrnpull.c:1360
+#, c-format
+msgid "%s: no new articles available."
+msgstr "%s: yeni ileti yok."
+
+#: src/slrnpull.c:1367
+#, c-format
+msgid "%u duplicates removed leaving %u/%u."
+msgstr "%u adet mükerrer ileti çýkarýldý, %u/%u kaldý."
+
+#: src/slrnpull.c:1379
+#, c-format
+msgid "%s: No new articles available."
+msgstr "%s: Yeni ileti yok."
+
+#: src/slrnpull.c:1384
+#, c-format
+msgid "%s: %u articles available."
+msgstr "%s: %u ileti var."
+
+#: src/slrnpull.c:1391
+#, c-format
+msgid "%s: Only retrieving last %u articles."
+msgstr "%s: Sadece son %u ileti alýnýyor."
+
+#: src/slrnpull.c:1440
+#, c-format
+msgid "Fetching articles for %s."
+msgstr "%s için iletiler alýnýyor."
+
+#: src/slrnpull.c:1445
+#, c-format
+msgid "Error selecting group %s.  Code = %d: %s"
+msgstr "%s grubu seçilemedi. Kod = %d: %s"
+
+#: src/slrnpull.c:1478
+#, c-format
+msgid "Attempting to post %s..."
+msgstr "%s gönderiliyor..."
+
+#: src/slrnpull.c:1483
+#, c-format
+msgid "Unable to open file %s for posting."
+msgstr "%s gönderilemedi."
+
+#: src/slrnpull.c:1490
+#, c-format
+msgid "Server failed post cmd.  Code = %d: %s"
+msgstr "Gönderme komutunda sunucu baþarýsýz.  Kod = %d: %s"
+
+#: src/slrnpull.c:1512 src/slrnpull.c:1523
+#, c-format
+msgid "Write to server failed while posting %s."
+msgstr "%s gönderilirken sunucuya yazýlamadý."
+
+#: src/slrnpull.c:1532
+#, c-format
+msgid "Article %s rejected. status = %d: %s."
+msgstr "%s iletisi reddedildi. durum = %d: %s."
+
+#: src/slrnpull.c:1539
+#, c-format
+msgid "Saving article in %s..."
+msgstr "Ýleti, %s içine kaydediliyor..."
+
+#: src/slrnpull.c:1541 src/slrnpull.c:1657
+#, c-format
+msgid "Failed to rename %s to %s."
+msgstr "%s, %s olarak yeniden adlandýrýlamadý."
+
+#: src/slrnpull.c:1547
+#, c-format
+msgid "Unable to delete %s after posting."
+msgstr "Gönderdikten sonra %s silinemedi."
+
+#: src/slrnpull.c:1556
+#, c-format
+msgid "%s directory does not exist.  Creating it..."
+msgstr "%s klasörü yok.  Oluþturuluyor..."
+
+#: src/slrnpull.c:1564
+#, c-format
+msgid "chmod 0%o failed on %s."
+msgstr "chmod 0%o failed on %s."
+
+#: src/slrnpull.c:1588
+msgid "Server does not permit posting at this time."
+msgstr "Þu anda sunucu gönderime izin vermiyor."
+
+#: src/slrnpull.c:1609
+#, c-format
+msgid "Posting of %s failed."
+msgstr "%s gönderilemedi."
+
+#: src/slrnpull.c:1612
+#, c-format
+msgid "%s posted."
+msgstr "%s gönderildi."
+
+#: src/slrnpull.c:1634
+#, c-format
+msgid "Unable to create tmp active file (%s)."
+msgstr "Geçici aktif dosyasý oluþturulamadý (%s)."
+
+#: src/slrnpull.c:1664
+#, c-format
+msgid "Write failed to tmp active file (%s)."
+msgstr "Geçici aktif dosyasýna yazýlamadý (%s)."
+
+#: src/slrnpull.c:1676
+#, c-format
+msgid "Connection to %s lost. Performing shutdown."
+msgstr "%s ile baðlantý koptu. Kapatýlýyor."
+
+#: src/slrnpull.c:1688
+msgid "Error opening sltcp interface.\n"
+msgstr "sltcp arayüzü açýlýrken hata.\n"
+
+#: src/slrnpull.c:1729
+#, c-format
+msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
+msgstr "Toplam %lu bayt alýndý, %lu bayt gönderildi, geçen süre %ld saniye."
+
+#: src/slrnpull.c:1811
+#, c-format
+msgid ""
+"%s usage: %s [options]\n"
+" Options:\n"
+"  -d SPOOLDIR          Spool directory to use.\n"
+"  -h HOSTNAME          Hostname of NNTP server to connect to.\n"
+"  --debug FILE         Write dialogue with server to FILE.\n"
+"  --expire             Perform expiration, but do not pull news.\n"
+"  --help               Print this usage information.\n"
+"  --kill-log FILE      Keep a log of all killed articles in FILE.\n"
+"  --kill-score SCORE   Kill articles with a score below SCORE.\n"
+"  --logfile FILE       Use FILE as the log file.\n"
+"  --new-groups         Get a list of new groups.\n"
+"  --no-post            Do not post news.\n"
+"  --post-only          Post news, but do not pull new news.\n"
+"  --rebuild            Like --expire; additionally rebuilds overview files.\n"
+"  --version            Show the version number.\n"
+msgstr ""
+"%s kullaným: %s [seçenekler]\n"
+" Seçenekler:\n"
+"  -d HAVUZKLSR         Havuz amaçlý kullanýlacak klasör.\n"
+"  -h BILGADI           Haber sunucusu bilgisayarýnýn adý.\n"
+"  --debug DOSYA        Sunucu ile geçen diyaloðu DOSYA'ya kaydet.\n"
+"  --expire             Ýleti almadan eski iletileri havuzdan sil.\n"
+"  --help               Bu kullaným bilgisini görüntüle.\n"
+"  --kill-log DOSYA     Arýtýlan tüm iletilerin kaydýný DOSYA'da tut.\n"
+"  --kill-score PUAN    PUAN'dan daha az puaný olan iletileri arýt.\n"
+"  --logfile DOSYA      Kayýt tutmak için DOSYA'yý kullan.\n"
+"  --new-groups         Yeni gruplarý al.\n"
+"  --no-post            Ýleti gönderme.\n"
+"  --post-only          Ýleti almadan ileti gönder.\n"
+"  --rebuild            --expire gibi; ek olarak, özet dosyalarý tekrar oluþturur.\n"
+"  --version            Sürüm bilgilerini görüntüle.\n"
+
+#: src/slrnpull.c:1836
+#, c-format
+msgid "%s version: %s\n"
+msgstr "%s sürüm: %s\n"
+
+#: src/slrnpull.c:1944
+#, c-format
+msgid "Unable to create debug file %s\n"
+msgstr "%s diyalog dosyasý oluþturulamadý\n"
+
+#: src/slrnpull.c:1962
+msgid "The slrnpull spool directory has not been defined."
+msgstr "Slrnpull havuz klasörü tanýmlý deðil."
+
+#: src/slrnpull.c:1969
+msgid "slrnpull started in expire mode."
+msgstr "slrnpull, eski iletileri silecek."
+
+#: src/slrnpull.c:1971
+msgid "slrnpull started."
+msgstr "slrnpull baþlatýldý."
+
+#: src/slrnpull.c:2051
+msgid "Checking for new groups."
+msgstr "Yeni grup kontrolu yapýlýyor."
+
+#: src/slrnpull.c:2055
+#, c-format
+msgid "Unable to open new groups file %s.\n"
+msgstr "%s dosyasý açýlamadý.\n"
+
+#: src/slrnpull.c:2152
+#, c-format
+msgid "%d new groups found."
+msgstr "%d adet yeni grup var."
+
+#: src/slrnpull.c:2159
+#, c-format
+msgid ""
+"%s appears corrupt, expected to see: NEWGROUPS yymmdd hhmmss GMT, I will "
+"patch the file up for you."
+msgstr ""
+"%s bozuk görünüyor, NEWGROUPS yyaagg ssddss GMT olmasý gerek, dosya sizin "
+"için yamalanacak."
+
+#: src/slrnpull.c:2238
+msgid "Performing shutdown."
+msgstr "Kapatýlýyor."
+
+#: src/slrnpull.c:2241
+msgid "Slrnpull exiting on signal."
+msgstr "Gelen sinyal ile slrnpull kapanýyor."
+
+#: src/slrnpull.c:2367
+#, c-format
+msgid "Error creating filename in %s."
+msgstr "%s için dosyaadý oluþtururken hata."
+
+#: src/slrnpull.c:2373 src/slrnpull.c:2697
+#, c-format
+msgid "Unable to stat %s."
+msgstr "Unable to stat %s."
+
+#: src/slrnpull.c:2383
+#, c-format
+msgid "Unable to read header %d in %s."
+msgstr "%d üstbilgisi okunamýyor (%s)."
+
+#: src/slrnpull.c:2389
+#, c-format
+msgid "Header %d not parseable for overview."
+msgstr "Özet için %d üstbilgisi kullanýlýr deðil."
+
+#: src/slrnpull.c:2412
+#, c-format
+msgid "%s overview: article %u of %u in %s."
+msgstr "Özet %s: %u/%u ileti, grup %s."
+
+#: src/slrnpull.c:2413
+msgid "Creating"
+msgstr "yaratýlýyor"
+
+#: src/slrnpull.c:2413
+msgid "Updating"
+msgstr "güncelleniyor"
+
+#: src/slrnpull.c:2427
+#, c-format
+msgid "Creating Overview file for %s..."
+msgstr "%s için özet dosyasý oluþturuluyor..."
+
+#: src/slrnpull.c:2494
+msgid "Unable to create filename for overview file.\n"
+msgstr "Özet dosyasý için dosyaadý oluþturulamadý.\n"
+
+#: src/slrnpull.c:2504
+#, c-format
+msgid "Unable to open new overview file %s.\n"
+msgstr "Yeni özet dosyasý %s açýlamadý.\n"
+
+#: src/slrnpull.c:2582
+#, c-format
+msgid "failed to close overview file %s.\n"
+msgstr "%s özet dosyasý kapatýlamadý.\n"
+
+#: src/slrnpull.c:2584
+#, c-format
+msgid "failed to close new overview file %s.\n"
+msgstr "%s yeni özet dosyasý kapatýlamadý.\n"
+
+#: src/slrnpull.c:2594
+#, c-format
+msgid "failed to rename %s to %s."
+msgstr "%s, %s olarak yeniden adlandýrýlamadý."
+
+#: src/slrnpull.c:2624
+#, c-format
+msgid "opendir %s failed."
+msgstr "%s klasörü açma hatasý."
+
+#: src/slrnpull.c:2651
+#, c-format
+msgid "malloc error. Unable to expire group %s."
+msgstr "malloc hatasý. %s grubunda eski iletiler silinemedi."
+
+#: src/slrnpull.c:2714
+#, c-format
+msgid "Unable to expire %s."
+msgstr "%s grubunda eski iletiler silinemedi."
+
+#: src/slrnpull.c:2721
+#, c-format
+msgid "%u articles expired in %s."
+msgstr "%u adet ileti silindi (grup %s)."
+
+#: src/slrnpull.c:2750
+msgid "Termination requested.  Shutting down."
+msgstr "Kapatýlýyor."
+
+#: src/slrnpull.c:2798
+#, c-format
+msgid "Error reading name and password from %s."
+msgstr "Kullanýcý adý ve parola okuma hatasý: %s."
+
+#: src/slrnpull.c:2811
+msgid "Empty user name.  Please check syntax of the authinfo file."
+msgstr "Kullanýcý adý boþ.  Lütfen authinfo dosyasýný kontrol edin."
+
+#: src/sltcp.c:207
+#, c-format
+msgid "%s: Unknown host.\n"
+msgstr "%s: Bu bilgisayar bilinmiyor.\n"
+
+#: src/sltcp.c:253
+#, c-format
+msgid "trying %s\n"
+msgstr "%s deneniyor\n"
+
+#: src/sltcp.c:266
+#, c-format
+msgid "connection to %s, port %d:"
+msgstr "%s baðlantýsý, kapý %d:"
+
+#: src/sltcp.c:275
+msgid "Unable to make connection. Giving up.\n"
+msgstr "Baðlantý kurulamadý, daha fazla denemeyeceðim.\n"
+
+#: src/sltcp.c:412
+msgid "Unable to generate enough entropy\n"
+msgstr "Yeterli entropi yok\n"
+
+#: src/sltcp.c:431
+msgid "SSL_CTX_new failed.\n"
+msgstr "SSL_CTX_new baþarýsýz.\n"
+
+#: src/sltcp.c:446
+msgid "SSL_new failed\n"
+msgstr "SSL_new baþarýsýz\n"
+
+#: src/sltcp.c:463
+msgid "Unexpected error: SSL connection closed\n"
+msgstr "Beklenmedik hata: SSL baðlantýsý kapandý\n"
+
+#: src/sltcp.c:466
+#, c-format
+msgid "System call failed: errno = %d\n"
+msgstr "System call failed: hata = %d\n"
+
+#: src/sltcp.c:469
+msgid "Possible protocol error\n"
+msgstr "Muhtemel iletiþim kuralý hatasý\n"
+
+#: src/sltcp.c:473
+#, c-format
+msgid "%s failed\n"
+msgstr "%s baþarýsýz\n"
+
+#: src/sltcp.c:492
+msgid ""
+"\n"
+"\n"
+"*** This program does not support SSL\n"
+msgstr ""
+"\n"
+"\n"
+"*** Bu programýn SSL desteði yok\n"
+
+#: src/sltcp.c:500
+msgid "Memory Allocation Failure.\n"
+msgstr "Bellek alýmý hatasý.\n"
+
+#. Yuk.  SSL_set_fd returns 0 upon failure
+#: src/sltcp.c:532
+msgid "SSL_set_fd failed\n"
+msgstr "SSL_set_fd baþarýsýz\n"
+
+#: src/sltcp.c:541
+msgid "SSL_connect"
+msgstr "SSL_connect"
+
+#: src/spool.c:812
+#, c-format
+msgid "Unable to open directory %s"
+msgstr "%s klasörü açýlamadý"
+
+#: src/spool.c:1041
+#, c-format
+msgid "Local spool directory '%s' doesn't exist."
+msgstr "Havuz klasörü '%s' mevcut deðil."
+
+#: src/startup.c:162
+msgid "Memory Allocation Failure"
+msgstr "Bellek alýmý hatasý"
+
+#: src/startup.c:164
+#, c-format
+msgid ""
+"%s: Line %d\n"
+"%sMemory Allocation Failure"
+msgstr ""
+"%s: Satýr %d\n"
+"%sBellek alýmý hatasý"
+
+#: src/startup.c:183
+#, c-format
+msgid ""
+"%s: Error encountered processing line %d\n"
+"%s"
+msgstr ""
+"%s: %d no'lu satýr iþlenirken hata oldu\n"
+"%s"
+
+#: src/startup.c:192
+#, c-format
+msgid ""
+"%s: Command is obsolete on line %d:\n"
+"%s"
+msgstr ""
+"%s: %d no'lu satýrdaki komut artýk geçerli deðil:\n"
+"%s"
+
+#: src/startup.c:194
+#, c-format
+msgid ""
+"The new usage is:\n"
+"set %s\n"
+msgstr ""
+"Yeni kullaným þöyle:\n"
+"set %s\n"
+
+#: src/startup.c:268 src/startup.c:323
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sNo such keymap: %s"
+msgstr ""
+"%s: satýr %d:\n"
+"%sBöyle tuþ eþlemi yok: %s"
+
+#: src/startup.c:283
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%serror defining key."
+msgstr ""
+"%s: satýr %d:\n"
+"%stuþ tanýmlama hatasý."
+
+#: src/startup.c:302
+#, c-format
+msgid ""
+"%s: Obsolete function name on line %d: %s\n"
+"The new name is: %s"
+msgstr ""
+"%s: %d no'lu satýrdaki iþlev adý artýk geçerli deðil: %s\n"
+"Yeni ad þöyle: %s"
+
+#: src/startup.c:358
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sInvalid regular expression."
+msgstr ""
+"%s: satýr %d:\n"
+"%sGeçersiz düzenli ifade."
+
+#: src/startup.c:374
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sToo many expressions specified."
+msgstr ""
+"%s: satýr %d:\n"
+"%sÇok sayýda ifade belirtilmiþ."
+
+#: src/startup.c:782
+#, c-format
+msgid ""
+"%s: Obsolete variable name on line %d: followup\n"
+"The new name is followup_string"
+msgstr ""
+"%s: %d no'lu satýrdaki deðiþken adý artýk geçerli deðil: followup\n"
+"Yeni adý followup_string"
+
+#: src/startup.c:820
+#, c-format
+msgid ""
+"%s: Obsolete variable on line %d: %s\n"
+"Please make use of the header_display_format command instead."
+msgstr ""
+"%s: %d no'lu satýrdaki deðiþken adý artýk geçerli deðil: %s\n"
+"Lütfen yerine header_display_format komutunu kullanýn."
+
+#: src/startup.c:828
+#, c-format
+msgid ""
+"%s: Obsolete variable on line %d: %s\n"
+"Please make use of the group_display_format variable instead."
+msgstr ""
+"%s: %d no'lu satýrdaki deðiþken adý artýk geçerli deðil: %s\n"
+"Lütfen yerine group_display_format komutunu kullanýn."
+
+#: src/startup.c:835
+#, c-format
+msgid ""
+"%s: Obsolete spelling on line %d:\n"
+"Use \"process_verbatim_marks\" instead of \"process_verbatum_marks\"."
+msgstr ""
+"%s: %d no'lu satýrda artk geçerli olmayan yazýlýþ var:\n"
+"\"process_verbatum_marks\" yerine \"process_verbatim_marks\" kullanýn."
+
+#: src/startup.c:844
+#, c-format
+msgid "%s: Obsolete variable on line %d: %s"
+msgstr "%s: %d satýrýndaki deðiþken artýk geçerli deðil: %s"
+
+#: src/startup.c:1016
+#, c-format
+msgid ""
+"%s: Obsolete spelling on line %d:\n"
+"Use \"verbatim\" instead of \"verbatum\""
+msgstr ""
+"%s: %d no'lu satýrdaki yazýlýþ artýk geçerli deðil:\n"
+"\"verbatum\" yerine \"verbatim\" kullanýn."
+
+#: src/startup.c:1069 src/startup.c:1116
+#, c-format
+msgid "%s is not a color object"
+msgstr "%s bir renk nesnesi deðil"
+
+#: src/startup.c:1092
+msgid "Due to a limitation in S-Lang, this feature is only available on Unix."
+msgstr "Bu özellik sadece Unix sistemlerde var."
+
+#: src/startup.c:1218
+#, c-format
+msgid "%s is not a valid fully-qualified host name."
+msgstr "%s geçerli bir tam nitelikli bilgisayar adý deðil."
+
+#: src/startup.c:1508
+msgid "Username: "
+msgstr "Kullanýcý adý: "
+
+#: src/startup.c:1523
+msgid "Password: "
+msgstr "Parola: "
+
+#: src/startup.c:1621
+msgid "Unable to initialize S-Lang readline library."
+msgstr "S-Lang readline kütüphanesi baþlatýlamadý."
+
+#: src/startup.c:1626
+msgid "Error initializing S-Lang preprocessor."
+msgstr "S-Lang preprocessor baþlatýlma hatasý."
+
+#: src/startup.c:1632
+#, c-format
+msgid "Reading startup file %s."
+msgstr "%s baþlangýç dosyasý okunuyor."
+
+#: src/startup.c:1658
+#, c-format
+msgid "Server object '%s' is not supported."
+msgstr "'%s' sunucu nesnesi desteklenmiyor."
+
+#: src/startup.c:1662
+#, c-format
+msgid "Post object '%s' is not supported."
+msgstr "'%s' gönderme nesnesi desteklenmiyor."
+
+#: src/startup.c:1681
+#, c-format
+msgid ""
+"%s: line %d:\n"
+"%sFile not opened: %s"
+msgstr ""
+"%s: satýr %d:\n"
+"%sDosya açýlamadý: %s"
+
+#: src/util.c:340
+msgid "File name too long."
+msgstr "Dosya adý çok uzun."
+
+#: src/util.c:370
+msgid "Memory allocation failure."
+msgstr "Bellek alýmý baþarýsýz."
+
+#: src/util.c:433
+msgid "Out of memory"
+msgstr "Bellek yetersiz"
+
+#: src/util.c:472
+msgid "Pattern too long for buffer"
+msgstr "Pattern too long for buffer"
+
+#: src/util.c:556
+#, c-format
+msgid "Cygwin conversion of %s failed."
+msgstr "%s için Cygwin dönüþümü baþarýsýz."
+
+#: src/util.c:578
+#, c-format
+msgid "Error closing file.  File system full? (errno = %d)"
+msgstr "Dosya kapatma hatasý. Dosya sistemi dolu mu? (hata = %d)"
+
+#: src/util.c:687 src/util.c:694
+#, c-format
+msgid "Error opening %s"
+msgstr "%s açýlýrken hata"
+
+#: src/util.c:703
+#, c-format
+msgid "Write Error: %s"
+msgstr "Yazma hatasý: %s"
+
+#: src/version.c:90
+msgid ""
+"\n"
+" COMPILE TIME OPTIONS:"
+msgstr ""
+"\n"
+" DERLEME SEÇENEKLERÝ:"
+
+#: src/version.c:101
+msgid ""
+"\n"
+"  Backends:"
+msgstr ""
+"\n"
+"  Backends:"
+
+#: src/version.c:105
+msgid ""
+"\n"
+"  External programs / libs:"
+msgstr ""
+"\n"
+"  Harici programlar / kütüphaneler:"
+
+#: src/version.c:109
+msgid ""
+"\n"
+"  Features:"
+msgstr ""
+"\n"
+"  Özellikler:"
+
+#: src/version.c:155
+msgid "\t* Note: This version is a developer preview.\n"
+msgstr "\t* Not: Bu sürüm geliþtirici önizlemesidir.\n"
+
+#: src/version.c:157
+#, c-format
+msgid "S-Lang Library Version: %s\n"
+msgstr "S-Lang Kütüphane Sürümü: %s\n"
+
+#: src/version.c:160
+#, c-format
+msgid "\t* Note: This program was compiled against version %s.\n"
+msgstr "\t* Not: Bu program %s sürüm ile derlenmiþ.\n"
+
+#: src/version.c:164
+#, c-format
+msgid "Compiled at: %s %s\n"
+msgstr "Derleme zamaný: %s %s\n"
+
+#: src/version.c:166
+#, c-format
+msgid "Operating System: %s\n"
+msgstr "Ýþletim Sistemi: %s\n"
+
+#: src/version.c:170
+#, c-format
+msgid ""
+" DEFAULTS:\n"
+"  Default server object:     %s\n"
+msgstr ""
+" VARSAYILANLAR:\n"
+"  Varsayýlan sunucu nesnesi:     %s\n"
+
+#: src/version.c:173
+#, c-format
+msgid "  Default posting mechanism: %s\n"
+msgstr "  Varsayýlan gönderim mekanizmasý: %s\n"
+
+#: src/xover.c:982
+msgid "Server closed connection.  Cannot recover."
+msgstr "Sunucu baðlantýyý kesti, ve düzeltilemeiyor."
+
+#: src/xover.c:1028
+msgid "Server does not provide this capability."
+msgstr "Sunucuda bu imkan yok."
+
+#~ msgid "%a, %d %b %Y at %H:%M GMT"
+#~ msgstr "%d %b %Y %a, saat %H:%M GMT"
+
+#~ msgid "fFpPiIcC"
+#~ msgstr "bBsSdDiÝ"
+
+#~ msgid "In article %m, %r wrote:"
+#~ msgstr "%m kimlikli iletide, %r þunlarý yazdý:"

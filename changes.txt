@@ -61,6 +61,7 @@ Changes since 0.9.7.4
     With help from A. Alper ATICI
 15. Re-structured the manual and added a chapter about slang's
     pre-processing facilities. (Matthias Friedrich)
+16. New translation tr.po (Turkish; A. Alper ATICI)
 
 Changes since 0.9.7.3
 
