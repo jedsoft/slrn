@@ -2591,11 +2591,18 @@ void slrn_get_user_info (void) /*{{{*/
 #endif
    
    /* Fill in what is assumed to be non-NULL by rest of program. */
-   Slrn_User_Info.followup_string = slrn_safe_strmalloc (_("On %D, %r <%f> wrote:"));
-   Slrn_User_Info.reply_string = slrn_safe_strmalloc (_("In %n, you wrote:"));
-   Slrn_User_Info.followupto_string = slrn_safe_strmalloc (_("[\"Followup-To:\" header set to %n.]"));
+   
+   /* no-c-format tells gettext that the following strings do not
+    * need to be checked as if they were passed to printf. */
 
-   Slrn_CC_Followup_Message =
+   Slrn_User_Info.followup_string =   /* xgettext:no-c-format */
+     slrn_safe_strmalloc (_("On %D, %r <%f> wrote:"));
+   Slrn_User_Info.reply_string =      /* xgettext:no-c-format */
+     slrn_safe_strmalloc (_("In %n, you wrote:"));
+   Slrn_User_Info.followupto_string = /* xgettext:no-c-format */
+     slrn_safe_strmalloc (_("[\"Followup-To:\" header set to %n.]"));
+
+   Slrn_CC_Followup_Message =         /* xgettext:no-c-format */
      slrn_safe_strmalloc (_("[This message has also been posted to %n.]"));
    Slrn_CC_Post_Message =
      slrn_safe_strmalloc (_("[This message has also been posted.]"));
