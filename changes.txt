@@ -1,3 +1,8 @@
+Changes since 0.9.7.4
+
+0. Bug fixes include:
+  * Setting new_subject_breaks_threads to 2 has an effect again.
+
 Changes since 0.9.7.3
 
 0. Bug fixes include:

@@ -526,7 +526,7 @@ static void link_lost_relatives (void) /*{{{*/
 	       {
 		  Slrn_Header_Type *rjh = relatives[j].h;
 		  
-		  if (Slrn_New_Subject_Breaks_Threads
+		  if ((Slrn_New_Subject_Breaks_Threads & 1)
 		      && (rih->subject != NULL)
 		      && (rjh->subject != NULL)
 		      && (0 != _art_subject_cmp (rih->subject, rjh->subject)))
@@ -877,7 +877,7 @@ static void sort_by_threads (void) /*{{{*/
 	       {
 		  Slrn_Header_Type *child, *last_child, *rparent;
 		  
-		  if (Slrn_New_Subject_Breaks_Threads
+		  if ((Slrn_New_Subject_Breaks_Threads & 1)
 		      && (h->subject != NULL)
 		      && (ref->subject != NULL)
 		      && (0 != _art_subject_cmp (h->subject, ref->subject)))
