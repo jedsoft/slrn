@@ -1,3 +1,16 @@
+Changes since 0.9.8.0
+
+0. Bug fixes include:
+  * slrnpull's download statistics should work correctly in offline mode.
+  * slrn crashed on some operating systems when posting.
+  * slrn crashed when trying to decode base64 encoded articles without body.
+  * Don't destroy soft links / multiple hard links when writing newsrc file.
+  * Always apply scoring rules in the order given in the scorefile.
+  * When reading cross-posts, slrn sometimes marked additional articles in
+    the other group(s) as read (Joerg Lueders).
+
+  Added Swedish translation (Johan Svedberg)
+
 Changes since 0.9.7.4
 
 -1. Changes when building on Un*x:

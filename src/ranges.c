@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2003, 2004 Thomas Schultz <tststs@gmx.de>
 
  partly based on code by John E. Davis:
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
@@ -136,7 +136,22 @@ Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, int min, int max) /*{{{*/
 	r->next = n;
 	
 	return head;
-     }	
+     }
+   
+   /* Do we need to insert a new range? */
+   if (max+1 < r->min)
+     {
+        Slrn_Range_Type *n;
+        n = (Slrn_Range_Type *) slrn_safe_malloc (sizeof(Slrn_Range_Type));
+        n->min = min;
+        n->max = max;
+        n->next = r;
+        n->prev = r->prev;
+        n->prev->next = n;
+        r->prev = n;
+
+        return head;
+     }
 
    /* Update min / max values */
    if (min < r->min)

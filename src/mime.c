@@ -650,7 +650,7 @@ static void decode_mime_base64 (Slrn_Article_Type *a)
    l = a->lines;
    
    /* skip header and separator */
-   while (((l != NULL) && (l->flags & HEADER_LINE)) || l->buf[0] == '\0')
+   while ((l != NULL) && ((l->flags & HEADER_LINE) || l->buf[0] == '\0'))
      l = l->next;
    
    if (l == NULL) return;
