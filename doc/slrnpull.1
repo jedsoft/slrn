@@ -1,7 +1,7 @@
 .\"
 .\" This manpage is written by Thomas Schultz
 .\"
-.TH slrnpull 1 "August 2003" Unix "User Manuals"
+.TH slrnpull 1 "September 2004" Unix "User Manuals"
 .\"
 .\" -------------------------------------------------------------------
 .\"
@@ -16,6 +16,7 @@ slrnpull - Pull a small newsfeed for offline reading.
 .RI "[-h\ " server ]
 .RI "[--debug\ " file ]
 [--expire]
+.RI "[--fetch-score " n ]
 [--help]
 .RI "[--kill-log\ " file ]
 .RI "[--kill-score " n ]
@@ -27,6 +28,7 @@ slrnpull - Pull a small newsfeed for offline reading.
 [--post-only]
 [--rebuild]
 [--version]
+
 .\"
 .\" -------------------------------------------------------------------
 .\"
@@ -64,6 +66,11 @@ Write dialogue with the server and some additional debugging output to
 .IR file .
 .IP "--expire"
 Expire (remove) old messages from the spool, but do not fetch news.
+.IP "--fetch-score \fIn\fP"
+Fetch article bodies with a score of at least
+.IR n
+automatically (in true offline mode, the default is to fetch only bodies that
+were explicitly marked by the user).
 .IP "--help"
 Show help for command line switches.
 .IP "--kill-log \fIfile\fP"
