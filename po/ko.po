@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.7.3\n"
 "POT-Creation-Date: 2001-11-05 12:24+0100\n"
-"PO-Revision-Date: 2002-01-06 11:27+300\n"
+"PO-Revision-Date: 2002-01-10 11:14+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -828,7 +828,7 @@ msgstr "%s: 몇개를 읽을까요? "
 
 #: src/group.c:1034
 msgid "Do you really want to quit"
-msgstr "정말로 종료 할까요"
+msgstr "slrn을 종료 할까요"
 
 #: src/group.c:1043
 msgid "Write to newsrc file failed.  Quit anyway"
@@ -2443,289 +2443,291 @@ msgstr "본문"
 #. 223
 #: src/nntplib.c:1145
 msgid "No text sent -- stat, next, last"
-msgstr ""
+msgstr "텍스트가 보내지지 않음 -- 상태, 다음, 마지막"
 
 #. 230
 #: src/nntplib.c:1147
 msgid "New articles by message-id follow"
-msgstr ""
+msgstr "message-id에 따른 새 기사"
 
 #. 231
 #: src/nntplib.c:1149
 msgid "New newsgroups follow"
-msgstr ""
+msgstr "새 그룹"
 
 #. 235
 #: src/nntplib.c:1151
 msgid "Article transferred successfully"
-msgstr ""
+msgstr "기사 전송에 성공함"
 
 #. 240
 #: src/nntplib.c:1153
 msgid "Article posted successfully"
-msgstr ""
+msgstr "기사 전송에 성공함"
 
 #. 280
 #: src/nntplib.c:1155
 msgid "Authorization system ok"
-msgstr ""
+msgstr "인증 시스템 ok"
 
 #. 281
 #: src/nntplib.c:1157
 msgid "Authorization (user/pass) ok"
-msgstr ""
+msgstr "인증자 (유저/암호) ok"
 
 #. 282
 #: src/nntplib.c:1159
 msgid "Ok, XGTITLE info follows"
-msgstr ""
+msgstr "Ok, XGTITLE 정보"
 
 #. 224
 #: src/nntplib.c:1161
 msgid "ok -- overview data follows"
-msgstr ""
+msgstr "ok -- 개략 데이터"
 
 #. 335
 #: src/nntplib.c:1163
 msgid "Continue to send article"
-msgstr ""
+msgstr "기사 전송 계속"
 
 #. 340
 #: src/nntplib.c:1165
 msgid "Continue to post article"
-msgstr ""
+msgstr "기사 전송 계속"
 
 #. 380
 #: src/nntplib.c:1167
 msgid "authorization is required"
-msgstr ""
+msgstr "인증이 필요함"
 
 #. 381
 #: src/nntplib.c:1169
 msgid "<type> authorization data required"
-msgstr ""
+msgstr "<type> 인증 데이터가 필요함"
 
 #. 400
 #: src/nntplib.c:1171
 msgid "Have to hang up for some reason"
-msgstr ""
+msgstr "알 수 없는 이유로 취소됨"
 
 #. 411
 #: src/nntplib.c:1173
 msgid "No such newsgroup"
-msgstr ""
+msgstr "그룹 없음"
 
 #. 412
 #: src/nntplib.c:1175
 msgid "Not currently in newsgroup"
-msgstr ""
+msgstr "뉴스 그룹이 아님"
 
 #. 420
 #: src/nntplib.c:1177
 msgid "No current article selected"
-msgstr ""
+msgstr "기사가 선택되지 않음"
 
 #. 421
 #: src/nntplib.c:1179
 msgid "No next article in this group"
-msgstr ""
+msgstr "이 그룹에 다음 기사 없음"
 
 #. 422
 #: src/nntplib.c:1181
 msgid "No previous article in this group"
-msgstr ""
+msgstr "이 그룹에 이전 기사 없음"
 
 #. 423
 #: src/nntplib.c:1183
 msgid "No such article in this group"
-msgstr ""
+msgstr "이 그룹에 그런 기사 없음"
 
 #. 430
 #: src/nntplib.c:1185
 msgid "No such article at all"
-msgstr ""
+msgstr "그런 기사가 없음"
 
 #. 435
 #: src/nntplib.c:1187
 msgid "Already got that article, don't send"
-msgstr ""
+msgstr "같은 기사가 있음, 전송 안함"
 
 #. 436
 #: src/nntplib.c:1189
 msgid "Transfer failed"
-msgstr ""
+msgstr "전송 실패"
 
 #. 437
 #: src/nntplib.c:1191
 msgid "Article rejected, don't resend"
-msgstr ""
+msgstr "기사가 거부됨, 재시도 안함"
 
 #. 440
 #: src/nntplib.c:1193
 msgid "Posting not allowed"
-msgstr ""
+msgstr "투고가 허용되지 않음"
 
 #. 441
 #: src/nntplib.c:1195
 msgid "Posting failed"
-msgstr ""
+msgstr "투고 실패"
 
 #. 480
 #: src/nntplib.c:1197
 msgid "authorization required for command"
-msgstr ""
+msgstr "명령을 위해 인증이 필요함"
 
 #. 481
 #. ERR_XGTITLE has same code
 #: src/nntplib.c:1199
 msgid "Authorization system invalid"
-msgstr ""
+msgstr "인증 시스템에 문제가 있음"
 
 #. 482
 #: src/nntplib.c:1201
 msgid "Authorization data rejected"
-msgstr ""
+msgstr "인증 데이터가 거부됨"
 
 #. 500
 #: src/nntplib.c:1203
 msgid "Command not recognized"
-msgstr ""
+msgstr "인식하지 않는 명령어"
 
 #. 501
 #: src/nntplib.c:1205
 msgid "Command syntax error"
-msgstr ""
+msgstr "명령어 문법 오류"
 
 #. 502
 #: src/nntplib.c:1207
 msgid "Access to server denied"
-msgstr ""
+msgstr "서버 접속이 거부됨"
 
 #. 503
 #: src/nntplib.c:1209
 msgid "Program fault, command not performed"
-msgstr ""
+msgstr "프로그램 오류, 명령이 실행되지 않음"
 
 #. 580
 #: src/nntplib.c:1211
 msgid "Authorization Failed"
-msgstr ""
+msgstr "인증 실패"
 
 #: src/nntplib.c:1214
 msgid "Unknown NNTP code"
-msgstr ""
+msgstr "알 수 없는 NNTP 코드"
 
 #: src/post.c:445
 msgid "The first line must begin with a header."
-msgstr ""
+msgstr "첫번째 줄은 헤더로 시작되어야 함."
 
 #: src/post.c:455
 msgid "Expecting a header.  This is not a header line."
-msgstr ""
+msgstr "헤더를 기대.  이것은 헤더가 아님."
 
 #: src/post.c:463
 msgid "The subject header is not allowed be to empty."
-msgstr ""
+msgstr "빈 제목은 허용되지 않음."
 
 #: src/post.c:475
 msgid "The Newsgroups header is not allowed be to empty."
-msgstr ""
+msgstr "빈 뉴스그룹 헤더는 허용되지 않음."
 
 #: src/post.c:503
 msgid "A space must follow the ':' in a header"
-msgstr ""
+msgstr "헤더 필드의 ':' 뒤에는 공백이 있어야 함"
 
 #: src/post.c:510
 msgid "This news reader will not accept user generated From lines."
-msgstr ""
+msgstr "이용자가 만든 From 행은 사용할 수 없음."
 
 #: src/post.c:517
 msgid "This news reader will not accept user generated Message-Ids."
-msgstr ""
+msgstr "이용자가 만든 Message-Id 헤더는 사용할 수 없음."
 
 #: src/post.c:527
 msgid "Subject header is required."
-msgstr ""
+msgstr "제목이 필요함."
 
 #: src/post.c:532
 msgid "Newsgroups header is required."
-msgstr ""
+msgstr "뉴스 그룹 헤더가 필요함."
 
 #: src/post.c:539
 msgid "Please re-consider if posting to a large number of groups is necessary."
-msgstr ""
+msgstr "많은 그룹에 한번에 투고하는 것은 다시 한번 생각해 보시기 바랍니다."
 
 #: src/post.c:542
 msgid ""
 "In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."
 msgstr ""
+"\"Followup-To:\"을 여러개의 그룹으로 설정하는 것은 좋지 않습니다."
 
 #: src/post.c:545
 msgid "Setting a \"Followup-To:\" is recommended when crossposting."
-msgstr ""
+msgstr "\"Followup-To:\" 설정은 교차 투고때만 권장합니다."
 
 #: src/post.c:561
 msgid "Your message does not appear to have any unquoted text."
-msgstr ""
+msgstr "인용문 외에 글이 없는것으로 판단됩니다."
 
 #: src/post.c:612
 msgid "Please keep your signature short. 4 lines is a commonly accepted limit."
-msgstr ""
+msgstr "서명을 너무 길게 쓰지 마세요. 4줄 이하가 좋습니다."
 
 #: src/post.c:619
 msgid "Message is not acceptable."
-msgstr ""
+msgstr "메세지가 허용되지 않음."
 
 #: src/post.c:636
 msgid "Your message is not acceptable for the following reason:"
-msgstr ""
+msgstr "메세지가 다음 이유로 허용되지 않습니다:"
 
 #: src/post.c:643
 #, c-format
 msgid "This message was generated while looking at line %d:"
-msgstr ""
+msgstr "이 메세지는 %d줄을 볼때 생성됨:"
 
 #: src/post.c:649
 msgid ""
 "Perhaps this error was generated because you did not separate the header"
 msgstr ""
+"이 오류는 아마 헤더과 본문이 분리되지 않아서 입니다."
 
 #: src/post.c:651
 msgid "section from the body by a BLANK line."
-msgstr ""
+msgstr "본문이 비었음."
 
 #: src/post.c:658
 msgid "Your message breaks the following netiquette guidelines:"
-msgstr ""
+msgstr "당신의 메세지는 다음 네티켓에 위반됩니다:"
 
 #: src/post.c:674
 msgid "Lines with more than 80 characters generally need to be wrapped."
-msgstr ""
+msgstr "한줄을 너무 길게 쓰지 마세요. 80자 이상의 긴 줄은 wrap해야 합니다."
 
 #: src/post.c:677
 #, c-format
 msgid "This affects at least line %d:"
-msgstr ""
+msgstr "%d번째 줄의 효과:"
 
 #: src/post.c:704 src/post.c:1074 src/post.c:1098
 #, c-format
 msgid "File not found: %s--- message not posted."
-msgstr ""
+msgstr "파일을 찾을 수 없음: %s--- 메세지가 투고되지 않음."
 
 #: src/post.c:716
 #, c-format
 msgid "***Warning: error saving to %s"
-msgstr ""
+msgstr "***경고: %s로 저장중 오류"
 
 #: src/post.c:863
 #, c-format
 msgid "***Warning: error writing to %s"
-msgstr ""
+msgstr "***경고: %s 쓰기 오류"
 
 #: src/post.c:868
 #, c-format
 msgid "Failed post saved in %s"
-msgstr ""
+msgstr "%s 저장 오류"
 
 #. Note to translators:
 #. * In the following strings, "yY" will mean "yes", "nN" is for "no",
@@ -2741,7 +2743,7 @@ msgstr ""
 
 #: src/post.c:934
 msgid "Post the message? Yes, No, Edit, poStpone, Delete, Filter"
-msgstr "투고 할까요? Y(네), N(아니오), E(수정), S(연기), D(삭제), F(필터)"
+msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기), D(삭제), F(필터)"
 
 
 #: src/post.c:938
@@ -2750,7 +2752,7 @@ msgstr ""
 
 #: src/post.c:941
 msgid "Post the message? Yes, No, Edit, poStpone, Filter"
-msgstr "투고 할까요? Y(네), N(아니오), E(수정), S(연기), F(필터)"
+msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기), F(필터)"
 
 #: src/post.c:949
 msgid "yYnNeEsSdD"
@@ -2758,7 +2760,7 @@ msgstr ""
 
 #: src/post.c:952
 msgid "Post the message? Yes, No, Edit, poStpone, Delete"
-msgstr "투고 할까요? Y(네), N(아니오), E(수정), S(연기), D(삭제)"
+msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기), D(삭제)"
 
 #: src/post.c:956
 msgid "yYnNeEsS"
@@ -2766,7 +2768,7 @@ msgstr ""
 
 #: src/post.c:959
 msgid "Post the message? Yes, No, Edit, poStpone"
-msgstr "투고 할까요? Y(네), N(아니오), E(수정), S(연기)"
+msgstr "기사를 보낼까요? Y(네), N(아니오), E(수정), S(연기)"
 
 #: src/post.c:982
 msgid "Sure you want to delete it"
@@ -2795,7 +2797,7 @@ msgstr "E(수정), C(취소), F(강제 투고: 권장하지 않음)"
 
 #: src/post.c:1055 src/post.c:1101
 msgid "Posting ..."
-msgstr "투고중 ..."
+msgstr "보내는 중 ..."
 
 #: src/post.c:1089
 #, c-format
