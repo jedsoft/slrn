@@ -96,3 +96,4 @@ extern int Slrn_Query_Group_Cutoff;
 extern int Slrn_Write_Newsrc_Flags;
 extern int Slrn_Display_Cursor_Bar;
 extern int Slrn_Drop_Bogus_Groups;
+extern int Slrn_Max_Queued_Groups;

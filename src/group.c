@@ -89,6 +89,7 @@ int Slrn_No_Autosave = 0;
 int Slrn_Unsubscribe_New_Groups = 0;
 int Slrn_Check_New_Groups = 1;
 int Slrn_Drop_Bogus_Groups = 1;
+int Slrn_Max_Queued_Groups = 20;
 
 SLKeyMap_List_Type *Slrn_Group_Keymap;
 int *Slrn_Prefix_Arg_Ptr;
@@ -1103,18 +1104,20 @@ static void set_current_group (void) /*{{{*/
 
 /*}}}*/
 
-#define MAX_QUEUED_GROUPS 20
 static void refresh_groups (Slrn_Group_Type **c) /*{{{*/
 {
+   if (Slrn_Max_Queued_Groups <= 0)
+     Slrn_Max_Queued_Groups = 1;
+   {
    Slrn_Group_Type *g = Groups;
-   Slrn_Group_Range_Type ranges[MAX_QUEUED_GROUPS];
+   Slrn_Group_Range_Type ranges[Slrn_Max_Queued_Groups];
    
    while (g != NULL)
      {
 	Slrn_Group_Type *start = g;
 	int i = 0, j = 0;
 	
-	while ((g != NULL) && (i < MAX_QUEUED_GROUPS))
+	while ((g != NULL) && (i < Slrn_Max_Queued_Groups))
 	  {
 	     if (!(g->flags & GROUP_UNSUBSCRIBED))
 	       {
@@ -1158,6 +1161,7 @@ static void refresh_groups (Slrn_Group_Type **c) /*{{{*/
 	while ((g != NULL) && (g->flags & GROUP_UNSUBSCRIBED))
 	  g = g->next;
      }
+   }
 }
 /*}}}*/
 

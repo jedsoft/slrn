@@ -546,6 +546,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"wrap_method", &Slrn_Wrap_Method},
      {"write_newsrc_flags", &Slrn_Write_Newsrc_Flags},
      {"query_read_group_cutoff", &Slrn_Query_Group_Cutoff},
+     {"max_queued_groups", &Slrn_Max_Queued_Groups},
      {"use_header_numbers", &Slrn_Use_Header_Numbers},
      {"use_localtime", &Slrn_Use_Localtime},
 #if SLRN_HAS_SPOILERS

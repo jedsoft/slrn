@@ -9,6 +9,9 @@ Changes since 0.9.7.3
    The output of --kill-log now also shows which scorefile entries match
    the killed article (like view_scores; based on patch by Jurriaan W Kalkman)
    
+   New variable max_queued_groups to control batching of GROUP commands at
+   startup, as some servers do not seem to like it. (Craig B. Agricola)
+
    More translations:
   * fr.po (French; slrn-fr project)
   * ko.po (Korean; Im Eunjea)
