@@ -3426,7 +3426,7 @@ msgstr "B³±d zamkniêcia pliku %s."
 #: src/slrnpull.c:528
 #, c-format
 msgid "Unable to open active groups file %s"
-msgstr "B³±d zamkniêcia pliku active %s."
+msgstr "Nie mogê otworzyæ pliku active %s."
 
 #: src/slrnpull.c:564
 #, c-format

@@ -5661,7 +5661,12 @@ static void locate_header_by_msgid (void) /*{{{*/
    
    if (slrn_read_input (_("Enter Message-Id: "), NULL, msgid, 1, 0) <= 0) return;
    
-   if (*msgid != '<')
+   if (!strncmp (msgid, "news:", 5))
+     {
+	msgid += 4;
+	*msgid = '<';
+     }
+   else if (*msgid != '<')
      {
 	*buf = '<';
 	msgid = buf;

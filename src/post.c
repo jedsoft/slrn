@@ -1061,8 +1061,8 @@ int slrn_post_file (char *file, char *to, int is_postponed)
 		  if (SLang_Error) 
 		    filter_hook = 0;
 	       }
-	}
 #endif
+	  }
      }
    
    slrn_message_now (_("Posting ..."));

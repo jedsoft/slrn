@@ -8,6 +8,8 @@ Changes since 0.9.7.4
    articles, which should speed the process up quite a bit. If you still
    need to rebuild the overview, you can use the new --rebuild option (based
    on a patch by Jurriaan W Kalkman).
+   
+   locate_article ignores leading "news:" (Jarek Baczynski)
 
 Changes since 0.9.7.3
 
