@@ -18,6 +18,8 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
+#ifndef _SLRN_SCORE_H
+#define _SLRN_SCORE_H
 extern int Slrn_Apply_Score;
 extern char *Slrn_Scorefile_Open;
 extern int slrn_read_score_file (char *);
@@ -42,3 +44,4 @@ Slrn_Score_Debug_Info_Type;
 
 extern int slrn_score_header (Slrn_Header_Type *, char *,
 			      Slrn_Score_Debug_Info_Type **);
+#endif /* _SLRN_SCORE_H */

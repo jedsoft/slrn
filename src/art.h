@@ -238,7 +238,9 @@ extern int slrn_get_article_window_size (void);
 extern char *slrn_extract_header (char *, unsigned int);
 
 /* Third argument must be zero unless caller deals with Slrn_Current_Header. */
-extern Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *, int, int);
+#include "score.h"
+extern Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *, int, int,
+						Slrn_Score_Debug_Info_Type *);
 extern void slrn_apply_scores (int);
 
 extern void slrn_sort_by_sorting_mode (void);

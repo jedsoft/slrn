@@ -5637,8 +5637,9 @@ static void free_kill_lists_and_update (void) /*{{{*/
 
 /*}}}*/
 
-Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *h, 
-					 int score, int apply_kill)
+Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *h,
+					 int score, int apply_kill,
+					 Slrn_Score_Debug_Info_Type *sdi)
 {
    if (h == NULL) return NULL;
    
@@ -5660,13 +5661,29 @@ Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *h,
 	  {
 	     int number = h->number;
 	     if (Slrn_Kill_Log_FP != NULL)
-	       fprintf (Slrn_Kill_Log_FP,
-			_("Score %d killed article %s\nNewsgroup: %s\nFrom: %s\nSubject: %s\n\n"),
-			score, h->msgid, Slrn_Current_Group_Name, h->from, h->subject);
+	       {
+		  Slrn_Score_Debug_Info_Type *hlp = sdi;
+		  fprintf (Slrn_Kill_Log_FP, _("Score %d killed article %s\n"), score, h->msgid);
+		  while (hlp != NULL)
+		    {
+		       if (hlp->description [0] != 0)
+			 fprintf (Slrn_Kill_Log_FP, _(" Score %c%5i: %s (%s:%i)\n"),
+				  (hlp->stop_here ? '=' : ' '), hlp->score,
+				  hlp->description, hlp->filename, hlp->linenumber);
+		       else
+			 fprintf (Slrn_Kill_Log_FP, _(" Score %c%5i: %s:%i\n"),
+				  (hlp->stop_here ? '=' : ' '), hlp->score,
+				  hlp->filename, hlp->linenumber);
+		       hlp = hlp->next;
+		    }
+		  fprintf (Slrn_Kill_Log_FP, _("  Newsgroup: %s\n  From: %s\n  Subject: %s\n\n"),
+			   Slrn_Current_Group_Name, h->from, h->subject);
+	       }
 	     free_header (h);
 	     add_to_kill_list (number);
 	     Number_Score_Killed++;
-	     return NULL;
+	     h = NULL;
+	     goto free_and_return;
 	  }
 	
 	if (0 == (h->flags & HEADER_READ))
@@ -5677,6 +5694,14 @@ Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *h,
 	kill_cross_references (h);
      }
    h->thread_score = h->score = score;
+   
+   free_and_return:
+   while (sdi != NULL)
+     {
+	Slrn_Score_Debug_Info_Type *hlp = sdi->next;
+	slrn_free ((char*)sdi);
+	sdi = hlp;
+     }
    return h;
 }
 
@@ -5684,14 +5709,17 @@ Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *h,
 static Slrn_Header_Type *apply_score (Slrn_Header_Type *h, int apply_kill) /*{{{*/
 {
    int score;
+   Slrn_Score_Debug_Info_Type *sdi = NULL;
    
    if ((h == NULL) || (-1 == h->number)) return h;
    
    if (Slrn_Apply_Score && Perform_Scoring)
-     score = slrn_score_header (h, Slrn_Current_Group_Name, NULL);
+     score = slrn_score_header (h, Slrn_Current_Group_Name,
+				((Slrn_Kill_Log_FP != NULL) &&
+				 apply_kill) ? &sdi : NULL);
    else score = 0;
    
-   return slrn_set_header_score (h, score, apply_kill);
+   return slrn_set_header_score (h, score, apply_kill, sdi);
 }
 
 /*}}}*/

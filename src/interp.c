@@ -968,7 +968,7 @@ static int get_header_tag_number (void)
 
 static void set_header_score (int *score)
 {
-   (void) slrn_set_header_score (Slrn_Current_Header, *score, 0);
+   (void) slrn_set_header_score (Slrn_Current_Header, *score, 0, NULL);
 }
 
 static int get_header_score (void)

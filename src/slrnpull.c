@@ -1132,6 +1132,7 @@ static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov
    int status;
    Slrn_Header_Type h;
    int score;
+   Slrn_Score_Debug_Info_Type *sdi = NULL;
    
    *headers = NULL;
 
@@ -1169,16 +1170,38 @@ static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov
    (void) is_msgid_cached (h.msgid, Current_Newsgroup, (unsigned int) n, 1);
 #endif
 
-   score = slrn_score_header (&h, Current_Newsgroup, NULL);
+   score = slrn_score_header (&h, Current_Newsgroup, (KLog_Fp != NULL) ? &sdi : NULL);
    if (score < Kill_Score)
      {
 	Num_Killed++;
 	if (KLog_Fp != NULL)
-	  fprintf (KLog_Fp, "Score %d killed article %s\nNewsgroup: %s\nFrom: %s\nSubject: %s\n\n",
-		   score, h.msgid, Current_Newsgroup, h.from, h.subject);
+	  {
+	     Slrn_Score_Debug_Info_Type *hlp = sdi;
+	     fprintf (KLog_Fp, _("Score %d killed article %s\n"), score, h.msgid);
+	     while (hlp != NULL)
+	       {
+		  if (hlp->description [0] != 0)
+		    fprintf (KLog_Fp, _(" Score %c%5i: %s (%s:%i)\n"),
+			     (hlp->stop_here ? '=' : ' '), hlp->score,
+			     hlp->description, hlp->filename, hlp->linenumber);
+		  else
+		    fprintf (KLog_Fp, _(" Score %c%5i: %s:%i\n"),
+			     (hlp->stop_here ? '=' : ' '), hlp->score,
+			     hlp->filename, hlp->linenumber);
+		  hlp = hlp->next;
+	       }
+	     fprintf (KLog_Fp, _("  Newsgroup: %s\n  From: %s\n  Subject: %s\n\n"),
+		      Current_Newsgroup, h.from, h.subject);
+	  }
 	slrn_free (*headers);
 	*headers = NULL;
-	return 0;
+/*	return 0; */
+     }
+   while (sdi != NULL)
+     {
+	Slrn_Score_Debug_Info_Type *hlp = sdi->next;
+	slrn_free ((char *)sdi);
+	sdi = hlp;
      }
 #if 0
    /* This next call should add the message id to the cache. */
