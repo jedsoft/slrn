@@ -62,7 +62,6 @@
 
 extern int Slrn_Prefer_Head;
 char *Slrn_Overviewfmt_File;
-char *Slrn_Headers_File;
 char *Slrn_Requests_File;
 
 static int spool_put_server_cmd (char *, char *, unsigned int );
@@ -1644,6 +1643,7 @@ char *Slrn_Inn_Root;
 char *Slrn_Spool_Root;
 char *Slrn_Nov_Root;
 char *Slrn_Nov_File;
+char *Slrn_Headers_File;
 char *Slrn_Active_File;
 char *Slrn_ActiveTimes_File;
 char *Slrn_Newsgroups_File;
@@ -1682,26 +1682,26 @@ static int spool_init_objects (void)
    Slrn_Spool_Root = slrn_safe_strmalloc (SLRN_SPOOL_ROOT);
    Slrn_Nov_Root = slrn_safe_strmalloc (SLRN_SPOOL_NOV_ROOT);
    Slrn_Nov_File = slrn_safe_strmalloc (SLRN_SPOOL_NOV_FILE);
+   Slrn_Headers_File = slrn_safe_strmalloc (SLRN_SPOOL_HEADERS);
    Slrn_Active_File = slrn_safe_strmalloc (SLRN_SPOOL_ACTIVE);
    Slrn_ActiveTimes_File = slrn_safe_strmalloc (SLRN_SPOOL_ACTIVETIMES);
    Slrn_Newsgroups_File = slrn_safe_strmalloc (SLRN_SPOOL_NEWSGROUPS);
    Slrn_Overviewfmt_File = slrn_safe_strmalloc (SLRN_SPOOL_OVERVIEWFMT);
-   Slrn_Headers_File = slrn_safe_strmalloc (SLRN_SPOOL_HEADERS);
    if ((NULL == (login = Slrn_User_Info.login_name)) ||
        (*login == 0))
-     login = "$unknown";
-   Slrn_Requests_File = slrn_strdup_printf ("requests/%s", login);
+     login = "!unknown";
+   Slrn_Requests_File = slrn_strdup_printf ("%s/%s", SLRNPULL_REQUESTS_DIR, login);
    
 #if defined(IBMPC_SYSTEM)
    slrn_os2_convert_path (Slrn_Inn_Root);
    slrn_os2_convert_path (Slrn_Spool_Root);
    slrn_os2_convert_path (Slrn_Nov_Root);
    slrn_os2_convert_path (Slrn_Nov_File);
+   slrn_os2_convert_path (Slrn_Headers_File);
    slrn_os2_convert_path (Slrn_Active_File);
    slrn_os2_convert_path (Slrn_ActiveTimes_File);
    slrn_os2_convert_path (Slrn_Newsgroups_File);
    slrn_os2_convert_path (Slrn_Overviewfmt_File);
-   slrn_os2_convert_path (Slrn_Headers_File);
    slrn_os2_convert_path (Slrn_Requests_File);
 #endif   
    return 0;
@@ -1727,7 +1727,6 @@ static int spool_select_server_object (void)
    Slrn_ActiveTimes_File = spool_root_dircat (Slrn_ActiveTimes_File);
    Slrn_Newsgroups_File = spool_root_dircat (Slrn_Newsgroups_File);
    Slrn_Overviewfmt_File = spool_root_dircat (Slrn_Overviewfmt_File);
-   Slrn_Headers_File = spool_root_dircat (Slrn_Headers_File);
    Slrn_Requests_File = spool_root_dircat (Slrn_Requests_File);
    
    slrn_free (Spool_Server_Obj.sv_name);
@@ -1738,14 +1737,42 @@ static int spool_select_server_object (void)
 
 
 /* Handling of the additional newsrc-style files in true offline mode: */
-static Slrn_Range_Type *get_ranges_for_group (char *file, char *group) /*{{{*/
+Slrn_Range_Type *slrn_spool_get_no_body_ranges (char *group)
+{
+   VFILE *vp;
+   char *vline;
+   unsigned int vlen;
+   Slrn_Range_Type *retval = NULL;
+   char *p, *q;
+   
+   p = slrn_spool_dircat (Slrn_Spool_Root, group, 1);
+   q = slrn_spool_dircat (p, Slrn_Headers_File, 0);
+   SLFREE (p);
+   
+   vp = vopen (q, 4096, 0);
+   SLFREE (q);
+   if (NULL == vp)
+     return NULL;
+   
+   if (NULL != (vline = vgets (vp, &vlen)))
+     {
+	vline[vlen] = 0; /* make sure line is NULL terminated */
+	retval = slrn_ranges_from_newsrc_line (vline);
+     }
+   
+   vclose (vp);
+   
+   return retval;
+}
+
+Slrn_Range_Type *slrn_spool_get_requested_ranges (char *group) /*{{{*/
 {
    VFILE *vp;
    char *vline;
    unsigned int vlen;
    Slrn_Range_Type *retval = NULL;
 
-   if (NULL == (vp = vopen (file, 4096, 0)))
+   if (NULL == (vp = vopen (Slrn_Requests_File, 4096, 0)))
      return NULL;
    
    while (NULL != (vline = vgets (vp, &vlen)))
@@ -1769,16 +1796,6 @@ static Slrn_Range_Type *get_ranges_for_group (char *file, char *group) /*{{{*/
    return retval;
 }
 /*}}}*/
-
-Slrn_Range_Type *slrn_spool_get_no_body_ranges (char *group)
-{
-   return get_ranges_for_group (Slrn_Headers_File, group);
-}
-
-Slrn_Range_Type *slrn_spool_get_requested_ranges (char *group)
-{
-   return get_ranges_for_group (Slrn_Requests_File, group);
-}
 
 /* Updates the request file with the new ranges
  * returns 0 on success, -1 otherwise */
@@ -1829,17 +1846,16 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 #   define S_IRUSR 0400
 #   define S_IWUSR 0200
 #   define S_IRGRP 0040
-#   define S_IROTH 0004
 #  endif
    if (stat_worked)
      {
 	if (-1 == chmod (Slrn_Requests_File, filestat.st_mode))
-	  (void) chmod (Slrn_Requests_File, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+	  (void) chmod (Slrn_Requests_File, S_IWUSR | S_IRUSR | S_IRGRP);
 	
 	(void) chown (Slrn_Requests_File, filestat.st_uid, filestat.st_gid);
      }
    else
-     (void) chmod (Slrn_Requests_File, S_IWUSR | S_IRUSR | S_IRGRP | S_IROTH);
+     (void) chmod (Slrn_Requests_File, S_IWUSR | S_IRUSR | S_IRGRP);
 # endif
 #endif
 

@@ -166,6 +166,9 @@ Header window commands:
 Miscellaneous actions:
   K                  Create a scorefile entry interactively.
       ESC 1 K        Edit scorefile.
+#if SLRN_HAS_SPOOL_SUPPORT
+  m                  (Un-)mark article body for download by slrnpull.
+#endif
   v                  Show which scorefile rules matched the current article.
   * The following five commands query the server if necessary:
   ESC l              Locate article by its Message-ID.

@@ -214,10 +214,12 @@ Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *r, int min, int max) /*{{{
 	  }
      }
    
-   if ((min <= r->min) && (max >= r->min))
+   if ((min <= r->max) && (max >= r->min))
      {
 	if (max < r->max) /* Change this node */
 	  r->min = max+1;
+	else if (min > r->min)
+	  r->max = min-1;
 	else /* Delete this node */
 	  {
 	     Slrn_Range_Type *next = r->next;
@@ -249,6 +251,53 @@ Slrn_Range_Type *slrn_ranges_merge (Slrn_Range_Type *a, Slrn_Range_Type *b) /*{{
 	b = b->next;
      }
    
+   return retval;
+}
+/*}}}*/
+
+/* Creates a new range list that contains only the numbers that are
+ * both in a and b and returns it; a and b remain untouched.
+ */
+Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *a, Slrn_Range_Type *b) /*{{{*/
+{
+   Slrn_Range_Type *retval=NULL, *r, *n;
+   do
+     {
+	/* skip ranges that don't intersect at all */
+	if (b != NULL)
+	  while ((a != NULL) && (a->max < b->min))
+	    a = a->next;
+	
+	if (a != NULL)
+	  while ((b != NULL) && (b->max < a->min))
+	    b = b->next;
+	
+	/* append a range containing the next intersection */
+	if ((a!=NULL) && (b!=NULL))
+	  {
+	     n = (Slrn_Range_Type *) slrn_safe_malloc (sizeof(Slrn_Range_Type));
+	     n->next = NULL;
+	     if (retval==NULL)
+	       {
+		  n->prev = NULL;
+		  r = retval = n;
+	       }
+	     else
+	       {
+		  n->prev = r;
+		  r->next = n;
+		  r = n;
+	       }
+	     n->min = (a->min < b->min) ? b->min : a->min;
+	     n->max = (a->max > b->max) ? b->max : a->max;
+	     
+	     if (n->max == a->max)
+	       a = a->next;
+	     else
+	       b = b->next;
+	  }
+     }
+   while ((a!=NULL) && (b!=NULL));
    return retval;
 }
 /*}}}*/

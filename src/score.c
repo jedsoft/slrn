@@ -79,8 +79,9 @@ typedef struct PScore_Regexp_Type
 #define SCORE_DATE 8
 #define SCORE_AGE 9
 #define SCORE_BYTES 10
-#define SCORE_SUB_AND 11
-#define SCORE_SUB_OR 12
+#define SCORE_HAS_BODY 11
+#define SCORE_SUB_AND 12
+#define SCORE_SUB_OR 13
    /* generic requires extra server interaction */
 #define SCORE_GENERIC 16
    unsigned int flags;
@@ -224,6 +225,10 @@ static int match_srt (Slrn_Header_Type *h, Score_Regexp_Type *srt,
 	   case SCORE_BYTES:
 	     ival = h->bytes;
 	     goto integer_compare;
+	     
+	   case SCORE_HAS_BODY:
+	     ival = (h->flags & HEADER_WITHOUT_BODY) ? 0 : 1;
+	     goto boolean_compare;
 		  
            case SCORE_SUBJECT:
              s = h->subject;
@@ -373,21 +378,24 @@ static int match_srt (Slrn_Header_Type *h, Score_Regexp_Type *srt,
 	 * here for those headers that have integer values.
 	 */
 	integer_compare:
-	if (ival < srt->search.ival)
-	  {
-	     if (srt->not_flag == 0)
-	       {
-		  if (or_type) goto next_srt;
-		  return 0;
-	       }
-	  }
-	else if (srt->not_flag)
+	if ((ival < srt->search.ival) == (srt->not_flag == 0))
 	  {
 	     if (or_type) goto next_srt;
 	     return 0;
 	  }
 	
-	/* If we get here, the regular expression matched. */
+	/* If we get here, the integer comparison matched. */
+	if (or_type) return 1;
+	srt = srt->next;
+	continue;
+	
+	boolean_compare:
+	if ((ival != srt->search.ival) == (srt->not_flag == 0))
+	  {
+	     if (or_type) goto next_srt;
+	     return 0;
+	  }
+	
 	if (or_type) return 1;
 	
 	next_srt:
@@ -678,7 +686,7 @@ static int add_group_regexp (PScore_Regexp_Type *psrt, unsigned char *str,
 	len = (unsigned int) (slrn_trim_string ((char *) str) - (char *) str);
 	if (0 == len) return -1;
 	
-	if ((type == SCORE_LINES) || (type == SCORE_BYTES))
+	if ((type == SCORE_LINES) || (type == SCORE_BYTES) || (type == SCORE_HAS_BODY))
 	  {
 	     psrt->ireg.ival = atoi((char *)str);
 	     psrt->flags |= USE_INTEGER;
@@ -1188,6 +1196,8 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 	  ret = add_group_regexp (psrt, lp + 3, lp, SCORE_AGE, not_flag);
 	else if (!slrn_case_strncmp (lp, (unsigned char *)"Bytes:", 6))
 	  ret = add_group_regexp (psrt, lp + 5, lp, SCORE_BYTES, not_flag);
+	else if (!slrn_case_strncmp (lp, (unsigned char *)"Has-Body:", 9))
+	  ret = add_group_regexp (psrt, lp + 8, lp, SCORE_HAS_BODY, not_flag);
 	else if (!slrn_case_strncmp (lp, (unsigned char *)"Message-Id:", 11))
 	  ret = add_group_regexp (psrt, lp + 10, lp, SCORE_MESSAGE_ID, not_flag);
         else if (!slrn_case_strncmp (lp, (unsigned char *)"{:", 2))

@@ -76,6 +76,7 @@
 # define SLRN_SPOOL_NOV_ROOT	SLRN_SPOOL_ROOT
   /* SLRN_NOV_FILE gives filename for overview file in each directory */
 # define SLRN_SPOOL_NOV_FILE	".overview"
+# define SLRN_SPOOL_HEADERS	".headers"
 
 # define SLRN_SPOOL_INNROOT	"/var/lib/news"
   /* If the following filenames are relative ones, they are considered to be
@@ -83,7 +84,6 @@
    */
 # define SLRN_SPOOL_ACTIVE	"data/active"
 # define SLRN_SPOOL_ACTIVETIMES	"data/active.times"
-# define SLRN_SPOOL_HEADERS	"data/headers"
 # define SLRN_SPOOL_NEWSGROUPS	"data/newsgroups"
 # define SLRN_SPOOL_OVERVIEWFMT "data/overview.fmt"
 
@@ -176,6 +176,9 @@
 
 /* slrnpull failed outgoing post directory. */
 #define SLRNPULL_OUTGOING_BAD_DIR	"rejects"
+
+/* slrnpull requested bodies directory. */
+#define SLRNPULL_REQUESTS_DIR	"requests"
 
 /* The file that will be used for killing articles as they are fetched. */
 #define SLRNPULL_SCORE_FILE	"score"

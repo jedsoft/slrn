@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -69,6 +69,8 @@
 #include "nntpcodes.h"
 #include "slrndir.h"
 #include "version.h"
+#include "ranges.h"
+#include "vfile.h"
 
 #include "sortdate.c"
 #include "score.c"
@@ -110,7 +112,10 @@ int Slrn_Force_Authentication = 0;
 char *SlrnPull_Dir = SLRNPULL_ROOT_DIR;
 char *SlrnPull_Spool_News_Dir;
 char *Group_Min_Max_File;	       /* relative to group dir */
+char *Server_Min_File;		/* relative to group dir */
 char *Overview_File;	       /* relative to group dir */
+char *Headers_File = SLRN_SPOOL_HEADERS; /* relative to group dir */
+char *Requests_Dir;
 char *Outgoing_Dir;
 char *Outgoing_Bad_Dir;
 char *New_Groups_File = "new.groups";
@@ -157,7 +162,7 @@ typedef struct _Active_Group_Type /*{{{*/
     * smaller if Pine were eliminated.
     */
    unsigned int min, max;	       /* range of articles that slrnpull has 
-					already dealt with */
+					* already dealt with */
    unsigned int active_min, active_max;/* article numbers that are in spool dir */
    unsigned int server_min;	       /* artcle numbers that server reports */
    unsigned int server_max;
@@ -168,8 +173,9 @@ typedef struct _Active_Group_Type /*{{{*/
 #define MAX_GROUP_NAME_LEN 80
    char name [MAX_GROUP_NAME_LEN + 1];
    char dirname [MAX_GROUP_NAME_LEN + 1];
+   Slrn_Range_Type *headers;	/* list of articles that don't have bodies */
+   Slrn_Range_Type *requests;	/* list of requested article bodies */
    struct _Active_Group_Type *next;
-
 }
 
 /*}}}*/
@@ -320,6 +326,73 @@ static int do_mkdir (char *dir, int err) /*{{{*/
      log_error (_("Unable to create directory %s. (errno = %d)"), dir, errno);
 
    return -1;
+}
+
+/*}}}*/
+
+static FILE *open_server_min_file (Active_Group_Type *g, char *mode, /*{{{*/
+				   char *file, size_t n)
+{
+   if (-1 == slrn_dircat (SlrnPull_Spool_News_Dir, g->dirname, file, n))
+     return NULL;
+   if (-1 == slrn_dircat (file, Server_Min_File, file, n))
+     return NULL;
+   
+   return fopen (file, mode);
+}
+
+/*}}}*/
+
+static unsigned int read_server_min_file (Active_Group_Type *g) /*{{{*/
+{
+   char file[SLRN_MAX_PATH_LEN + 1];
+   char line[256];
+   unsigned int retval;
+   FILE *fp;
+
+   fp = open_server_min_file (g, "r", file, sizeof (file));
+   
+   if (fp == NULL)
+     return 0;
+
+   if (NULL == fgets (line, sizeof(line), fp))
+     {
+	fclose (fp);
+	log_error (_("Error reading %s."), file);
+	return 0;
+     }
+
+   fclose (fp);
+   
+   if (1 != sscanf (line, "%u", &retval))
+     {
+	log_error (_("Error parsing %s."), file);
+	return 0;
+     }
+
+   return retval;
+}
+/*}}}*/
+
+static void write_server_min_file (Active_Group_Type *g, unsigned int val) /*{{{*/
+{
+   char file[SLRN_MAX_PATH_LEN + 1];
+   FILE *fp;
+   
+   fp = open_server_min_file (g, "w", file, sizeof (file));
+   if (fp == NULL)
+     {
+	log_error (_("Unable to open %s for writing."), file);
+	return;
+     }
+   if (EOF == fprintf (fp, "%u", val))
+     {
+	log_error (_("Write to %s failed."), file);
+	(void) fclose (fp);
+	return;
+     }
+   if (-1 == slrn_fclose (fp))
+     log_error (_("Error closing %s."), file);
 }
 
 /*}}}*/
@@ -691,12 +764,14 @@ static int make_filenames (void) /*{{{*/
 {
    Data_Dir = root_dircat (Data_Dir);
    Outgoing_Dir = root_dircat (SLRNPULL_OUTGOING_DIR);
-   
+   Requests_Dir = root_dircat (SLRNPULL_REQUESTS_DIR);
+
    Active_Groups_File = root_dircat (SLRNPULL_CONF);
    SlrnPull_Spool_News_Dir = root_dircat (SLRNPULL_NEWS_DIR);
    
    New_Groups_Time_File = data_dircat (New_Groups_Time_File);
    Active_File = data_dircat (Active_File);
+   Headers_File = data_dircat (Headers_File);
    New_Groups_File = data_dircat (New_Groups_File);
    
    Outgoing_Bad_Dir = slrn_spool_dircat (Outgoing_Dir, SLRNPULL_OUTGOING_BAD_DIR, 0);
@@ -713,7 +788,9 @@ static int make_filenames (void) /*{{{*/
      return -1;
    
    Overview_File = SLRN_SPOOL_NOV_FILE;
+   Headers_File = SLRN_SPOOL_HEADERS;
    Group_Min_Max_File = ".minmax";
+   Server_Min_File = ".servermin";
 
    return 0;
 }
@@ -1006,6 +1083,50 @@ static int write_xover_line (FILE *fp, Slrn_XOver_Type *xov) /*{{{*/
 
 /*}}}*/
 
+static int append_body (Active_Group_Type *g, int n, char *body) /*{{{*/
+{
+   char file[SLRN_MAX_PATH_LEN + 1];
+   char buf[128];
+   FILE *fp;
+   
+   slrn_snprintf (buf, sizeof(buf), "%d", n);
+   
+   if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, g->dirname,
+			   file, sizeof (file)))
+       || (-1 == slrn_dircat (file, buf, file, sizeof (file))))
+     return -1;
+   
+#ifdef __OS2__
+   fp = fopen (file, "ab");
+#else
+   fp = fopen (file, "a");
+#endif
+   if (fp == NULL)
+     {
+	log_error (_("Unable to open %s for writing."), file);
+	return -1;
+     }
+
+   if ((EOF == fputc ('\n', fp)) ||
+       (EOF == fputs (body, fp)))
+     {
+	log_error (_("Error writing to %s."), file);
+	fclose (fp);
+	slrn_delete_file (file);
+	return -1;
+     }
+   
+   if (-1 == slrn_fclose (fp))
+     {
+	log_error (_("Error writing to %s."), file);
+	slrn_delete_file (file);
+	return -1;
+     }
+
+   return 0;
+}
+/*}}}*/
+
 static int write_head_and_body (Active_Group_Type *g, int n, /*{{{*/
 				char *head, char *body, 
 				Slrn_XOver_Type *xov, FILE *xov_fp)
@@ -1014,7 +1135,7 @@ static int write_head_and_body (Active_Group_Type *g, int n, /*{{{*/
    char buf[128];
    FILE *fp;
    
-   if ((head == NULL) || (body == NULL))
+   if (head == NULL)
      {
 	if (g->min > g->max) g->min = n;
 	g->max = n;
@@ -1040,9 +1161,9 @@ static int write_head_and_body (Active_Group_Type *g, int n, /*{{{*/
 	return -1;
      }
    
-   if ((EOF == fputs (head, fp))
-       || (EOF == fputc ('\n', fp))
-       || (EOF == fputs (body, fp)))
+   if ((EOF == fputs (head, fp)) ||
+       ((body!=NULL) && ((EOF == fputc ('\n', fp)) ||
+			 (EOF == fputs (body, fp)))))
      {
 	log_error (_("Error writing to %s."), file);
 	fclose (fp);
@@ -1294,7 +1415,91 @@ static FILE *open_xover_file (Active_Group_Type *g, char *mode) /*{{{*/
 
 /*}}}*/
 
-static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsigned int num) /*{{{*/
+static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
+{
+   char *heads[SLRN_MAX_QUEUED];
+   char *bodies[SLRN_MAX_QUEUED];
+   int numbers[SLRN_MAX_QUEUED];
+   unsigned int i, num, total=0;
+   int max, bmin, bmax;
+   Slrn_Range_Type *r;
+   
+   if (NULL == (r = g->requests))
+     return;
+
+   log_message (_("%s: getting requested article bodies..."), g->name);
+   
+   for (i = 0; i < SLRN_MAX_QUEUED; i++)
+     {
+	heads[i] = ""; /* insert dummy headers so get_bodies won't skip them */
+     }
+   
+   max = r->min;
+   while (r != NULL)
+     {
+	for (i = 0; i < SLRN_MAX_QUEUED; i++)
+	  {
+	     numbers[i] = max;
+	     max++;
+	     if (max > r->max)
+	       {
+		  r = r->next;
+		  if (r == NULL)
+		    {
+		       i++;
+		       break;
+		    }
+		  max = r->min;
+	       }
+	  }
+	num = i;
+	total += num;
+	
+	if (-1 == get_bodies (s, numbers, heads, bodies, num))
+	  break;
+	
+	for (i=0; i < num; i++)
+	  {
+	     if ((bodies[i]!=NULL) &&
+		 (-1 == append_body (g, numbers[i], bodies[i])))
+	       {
+		  slrn_free(bodies[i]);
+		  total--;
+		  bodies[i] = NULL;
+	       }
+	  }
+
+	/* Update headers list */
+	i=0;
+	while ((i<num) && (bodies[i]==NULL))
+	  i++;
+	if (i<num)
+	  bmin = bmax = numbers[i];
+	while (i < num)
+	  {
+	     i++;
+	     while ((i < num) && (bodies[i]==NULL))
+	       i++; /* skip bodies that were unavailable */
+	     if ((i==num) || (numbers[i] > bmax+1))
+	       {
+		  g->headers = slrn_ranges_remove (g->headers, bmin, bmax);
+		  if (i!=num)
+		    bmin = bmax = numbers[i];
+	       }
+	     else
+	       bmax++;
+	  }
+	
+	/* Free bodies */
+	for (i=0; i < num; i++)
+	  slrn_free(bodies[i]);
+     }
+   log_message (_("%s: %d requested article bodies retrieved"), g->name, total);
+}
+/*}}}*/
+
+static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsigned int num,
+			 int offline_mode) /*{{{*/
 {
    unsigned int i;
 #ifndef SLRN_MAX_QUEUED
@@ -1311,13 +1516,15 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 
    ret = 0;
    
-   if (-1 != get_bodies (s, numbers, heads, bodies, num))
+   if ((offline_mode&1) ||
+       (-1 != get_bodies (s, numbers, heads, bodies, num)))
      {
 	fp = open_xover_file (g, "a");
 
 	for (i = 0; i < num; i++)
 	  {
-	     if (-1 == write_head_and_body (g, numbers[i], heads[i], bodies[i],
+	     if (-1 == write_head_and_body (g, numbers[i], heads[i],
+					    (offline_mode&1) ? NULL : bodies[i],
 					    xovs + i, fp))
 	       {
 		  ret = -1;
@@ -1334,10 +1541,36 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 	       }
 	  }
      }
+
+   if (offline_mode&1) /* "register" new articles without body */
+     {
+	int bmin, bmax;
+	unsigned int j=0;
+	
+	while ((j < num) && (heads[j]==NULL))
+	  j++;
+	if (j < num)
+	  bmin = bmax = numbers[j];
+	while (j < num)
+	  {
+	     j++;
+	     while ((j < num) && (heads[j]==NULL))
+	       j++; /* skip articles that were unavailable */
+	     if ((j==num) || (numbers[j] > bmax+1))
+	       {
+		  g->headers = slrn_ranges_add (g->headers, bmin, bmax);
+		  if (j!=num)
+		    bmin = bmax = numbers[j];
+	       }
+	     else
+	       bmax++;
+	  }
+     }
    
    for (i = 0; i < num; i++) 
      {
-	slrn_free (bodies[i]);
+	if (!(offline_mode&1))
+	  slrn_free (bodies[i]);
 	slrn_free (heads[i]);
 	slrn_free (xovs[i].subject_malloced);
 	slrn_free (xovs[i].date_malloced);
@@ -1349,7 +1582,7 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 /*}}}*/
 
 static int get_group_articles (NNTP_Type *s, Active_Group_Type *g, 
-			       int server_min, int server_max) /*{{{*/
+			       int server_min, int server_max, int offline_mode) /*{{{*/
 {
    unsigned int gmin, gmax;
    int *numbers;
@@ -1359,6 +1592,17 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
    Num_Killed = 0;
    Num_Articles_To_Receive = 0;
 
+   if (!(offline_mode & 1) || (offline_mode & 2))
+     {
+	/* Don't request bodies that are no longer there. */
+	if (server_min > 1)
+	  g->requests = slrn_ranges_remove (g->requests, 1, server_min-1);
+	get_marked_bodies (s, g);
+     }
+   
+   if (offline_mode == 2)
+     return 0;
+   
    gmin = g->min;
    gmax = g->max;
    
@@ -1420,7 +1664,7 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 	  }
 	
 	print_time_stats (s, 0);
-	(void) get_articles (s, g, ns, j);
+	(void) get_articles (s, g, ns, j, offline_mode);
 	
 	Num_Articles_Received += j;
      }
@@ -1435,7 +1679,7 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 
 /*}}}*/
 
-static int pull_news (NNTP_Type *s) /*{{{*/
+static int pull_news (NNTP_Type *s, int offline_mode) /*{{{*/
 {
    int status;
    Active_Group_Type *g;
@@ -1444,7 +1688,7 @@ static int pull_news (NNTP_Type *s) /*{{{*/
    while (g != NULL)
      {
 	int min, max;
-	
+
 	log_message (_("Fetching articles for %s."), g->name);
 	
 	status = nntp_select_group (s, g->name, &min, &max);
@@ -1460,12 +1704,13 @@ static int pull_news (NNTP_Type *s) /*{{{*/
 	     continue;
 	  }
 
+	write_server_min_file (g, min);
 	if (g->server_max > (unsigned int) max)
 	  g->server_max = max;
 
 	Current_Newsgroup = g->name;
 	
-	(void) get_group_articles (s, g, min, max);
+	(void) get_group_articles (s, g, min, max, offline_mode);
 	
 	print_time_stats (s, 1);
 
@@ -1822,10 +2067,12 @@ static void usage (char *pgm) /*{{{*/
   -h HOSTNAME          Hostname of NNTP server to connect to.\n\
   --debug FILE         Write dialogue with server to FILE.\n\
   --expire             Perform expiration, but do not pull news.\n\
+  --headers-only       For new messages, get headers only (no bodies).\n\
   --help               Print this usage information.\n\
   --kill-log FILE      Keep a log of all killed articles in FILE.\n\
   --kill-score SCORE   Kill articles with a score below SCORE.\n\
   --logfile FILE       Use FILE as the log file.\n\
+  --marked-bodies      Only fetch bodies that were marked for download.\n\
   --new-groups         Get a list of new groups.\n\
   --no-post            Do not post news.\n\
   --post-only          Post news, but do not pull new news.\n\
@@ -1866,13 +2113,17 @@ static int read_score_file (void) /*{{{*/
 static int do_expire (int rebuild);
 static int get_new_groups (NNTP_Type *s);
 static int read_authinfo (void);
+static int read_headers_files (void);
+static int write_headers_files (void);
+static void read_requests_files (void);
 
 int main (int argc, char **argv) /*{{{*/
 {
    char *host = NULL;
    char *pgm;
    int expire_mode;
-   int post_mode;
+   int post_mode; /* 0==don't post; 1==post only */
+   int offline_mode=0; /* 1==headers only; 2==marked bodies; 3==both*/
    int check_new_groups = 0;
    char *dir;
    char *logfile;
@@ -1928,6 +2179,10 @@ int main (int argc, char **argv) /*{{{*/
 	  post_mode = 0;
 	else if (!strcmp (arg, "--new-groups"))
 	  check_new_groups = 1;
+	else if (!strcmp (arg, "--headers-only"))
+	  offline_mode |=1;
+	else if (!strcmp (arg, "--marked-bodies"))
+	  offline_mode |=2;
 	else if (!strcmp (arg, "--version"))
 	  show_version (pgm);
 	else if (!strcmp (arg, "--logfile") && (argc > 0))
@@ -1985,16 +2240,30 @@ int main (int argc, char **argv) /*{{{*/
    if (-1 == make_filenames ())
      slrn_exit_error (NULL);
 
+   if (offline_mode && (2 != slrn_file_exists (Requests_Dir)))
+     make_outgoing_dir (Requests_Dir);
+   
    if (-1 == read_active_groups ())
      slrn_exit_error (NULL);
    
    if (-1 == read_authinfo ())
      slrn_exit_error (NULL);
    
+   if (-1 == read_headers_files ())
+     slrn_exit_error (NULL);
+   
+   if ((post_mode != 1) && (offline_mode & 2))
+     read_requests_files ();
+   
    if (expire_mode)
      {
 	if (-1 == do_expire (expire_mode == 2))
 	  slrn_exit_error (NULL);
+	if (-1 == write_headers_files ())
+	  {
+	     Exit_Code = SLRN_EXIT_FILEIO;
+	     slrn_exit_error (NULL);
+	  }
 	
 	close_log_files ();
 	return 0;
@@ -2021,8 +2290,9 @@ int main (int argc, char **argv) /*{{{*/
    if (post_mode != 1)
      {
 	init_signals ();
-	pull_news (Pull_Server);
-	if (-1 == write_active ())
+	pull_news (Pull_Server, offline_mode);
+	if ((-1 == write_headers_files ()) | /* avoid short-circuit */
+	    (-1 == write_active ()))
 	  {
 	     Exit_Code = SLRN_EXIT_FILEIO;
 	     slrn_exit_error (NULL);
@@ -2614,14 +2884,17 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
    char file [SLRN_MAX_PATH_LEN + 1];
    unsigned int *ok_names;
    unsigned int num_ok_names, max_num_ok_names;
-   unsigned int min_not_expired, num_expired;
-   unsigned int i, n, new_num_ok_names;
+   unsigned int num_expired = 0;
+   unsigned int i, n;
+   unsigned int left, right, cutoff;
+   void (*qsort_fun) (char *, unsigned int, int, int (*)(unsigned int *, unsigned int *));
    time_t expire_time;
    int perform_expire = 1;
    
    if (g->expire_days == 0)
      perform_expire = 0;
 
+   /* First, make a list of all articles in this group. */
    if (-1 == slrn_dircat (SlrnPull_Spool_News_Dir, g->dirname,
 			  dir, sizeof (dir)))
      return -1;
@@ -2668,57 +2941,120 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
    
    slrn_close_dir (dp);
 
-   min_not_expired = 0xFFFFFFFF;
-   time (&expire_time);
-   expire_time -= g->expire_days * (24 * 60 * 60);
-   num_expired = 0;
+   if (num_ok_names==0) /* nothing to do */
+     return 0;
    
-   new_num_ok_names = 0;
-   
-   /* In this loop, articles are expired and the ok_names list is pruned 
-    * to only consist of non-expired articles.  The resulting list will
-    * be used to create the overview database.
+   /* Now, sort the array and use a binary search to find the lowest article
+    * number we don't want to expire.
     */
+   qsort_fun = (void (*)(char *, unsigned int, int, 
+			 int (*)(unsigned int *, unsigned int *))) qsort;
+   
+   (*qsort_fun) ((char *) ok_names, num_ok_names, sizeof (unsigned int), sort_int_cmp);
 
-   for (i = 0; i < num_ok_names; i++)
+   time (&expire_time);
+   expire_time -= g->expire_days * (24 * 60 * 60);   
+   
+   if (perform_expire == 0)
+     cutoff = 0;
+   else
+     {
+	left = 0;
+	right = num_ok_names;
+	/* When we finish, left should be the array index of the first
+	 * article we want to keep. */
+	while (left < right)
+	  {
+	     char buf[32];
+	     struct stat st;
+	     
+	     cutoff = (left + right) / 2;
+	     
+	     sprintf (buf, "%d", ok_names[cutoff]); /* safe */
+	     
+	     if (-1 == slrn_dircat (dir, buf, file, sizeof (file)))
+	       goto stat_error;
+	     
+	     if (-1 == stat (file, &st))
+	       {
+		  log_error (_("Unable to stat %s."), file);
+		  goto stat_error;
+	       }
+	     
+	     if (0 == S_ISREG(st.st_mode))
+	       goto stat_error;
+	     
+	     if (st.st_mtime > expire_time)
+	       right = cutoff;
+	     else
+	       left = cutoff+1;
+	     
+	     continue;
+	     
+	     stat_error:
+	     /* throw out the faulty entry */
+	     if (cutoff < num_ok_names-1)
+	       memmove (ok_names+cutoff, ok_names+cutoff+1, num_ok_names-cutoff-1);
+	     if (right==num_ok_names)
+	       right--;
+	     num_ok_names--;
+	  }
+	cutoff = left;
+     }
+   
+   /* Expire bodyless articles which are no longer on server. */
+   if (cutoff < num_ok_names)
+     {
+	Slrn_Range_Type *r;
+	unsigned int server_min = read_server_min_file (g);
+
+	i = ok_names[cutoff];
+	if (i>1)
+	  g->headers = slrn_ranges_remove (g->headers, 1, i-1);
+	r = g->headers;
+	
+	if (r!=NULL)
+	  {
+	     if ((int)i < r->min)
+	       i = r->min;
+	     
+	     n = cutoff;
+	     while (i < server_min)
+	       {
+		  while ((n<num_ok_names) && (ok_names[n]<i))
+		    n++;
+		  
+		  if ((n<num_ok_names) && (ok_names[n]==i))
+		    {
+		       ok_names[n] = ok_names[cutoff];
+		       ok_names[cutoff] = i;
+		       cutoff++;
+		    }
+		  
+		  i++;
+		  if ((int)i>r->max)
+		    {
+		       r = r->next;
+		       if (r != NULL)
+			 i = r->min;
+		       else
+			 break;
+		    }
+	       }
+	  }
+	
+	if (server_min>1)
+	  g->headers = slrn_ranges_remove (g->headers, 1, server_min-1);
+     }
+   
+   /* Now, actually delete the files on disk. */
+   for (i=0; i < cutoff; i++)
      {
 	char buf[32];
-	struct stat st;
+	sprintf (buf, "%d", ok_names[i]); /* safe */
 	
-	n = ok_names[i];
-	ok_names [new_num_ok_names] = n;
-	
-	if ((perform_expire == 0)
-	    || (n > min_not_expired))
-	  {
-	     new_num_ok_names++;
-	     continue;
-	  }
-	
-	sprintf (buf, "%d", n); /* safe */
-	
-	if (-1 == slrn_dircat (dir, buf, file, sizeof (file)))
-	  continue;
-	
-	if (-1 == stat (file, &st))
-	  {
-	     log_error (_("Unable to stat %s."), file);
-	     continue;
-	  }
-	
-	if (0 == S_ISREG(st.st_mode))
-	  continue;
-	
-	if (st.st_mtime > expire_time)
-	  {
-	     if (n < min_not_expired)
-	       min_not_expired = n;
-	     
-	     new_num_ok_names++;
-	     continue;
-	  }
-
-	if (-1 == slrn_delete_file (file))
+	if ((-1 == slrn_dircat (dir, buf, file, sizeof (file))) ||
+	    (-1 == slrn_delete_file (file)))
 	  log_error (_("Unable to expire %s."), file);
 	else
 	  num_expired++;
@@ -2728,13 +3064,12 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
      {
         log_message (_("%u articles expired in %s."), num_expired, g->name);
         if (rebuild == 0)
-          (void) update_overview_for_dir (g, ok_names, new_num_ok_names);
+          (void) update_overview_for_dir (g, ok_names+cutoff, num_ok_names-cutoff);
         else
-          (void) create_overview_for_dir (g, ok_names, new_num_ok_names);
+          (void) create_overview_for_dir (g, ok_names+cutoff, num_ok_names-cutoff);
      }
    else if (rebuild == 1)
-   (void) create_overview_for_dir (g, ok_names, new_num_ok_names);
-   
+     (void) create_overview_for_dir (g, ok_names+cutoff, num_ok_names-cutoff);
    
    slrn_free ((char *) ok_names);
    
@@ -2827,4 +3162,191 @@ static int read_authinfo (void)
    Slrn_Force_Authentication = 1;
    
    return 0;
+}
+
+static int read_headers_files (void)
+{
+   VFILE *vp;
+   char *vline;
+   unsigned int vlen;
+   Active_Group_Type *group = Active_Groups;
+   char head_file [SLRN_MAX_PATH_LEN + 1];
+
+   while (group != NULL)
+     {
+	if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, group->dirname,
+				head_file, sizeof (head_file)))
+	    || (-1 == slrn_dircat (head_file, Headers_File,
+				   head_file, sizeof (head_file))))
+	  {
+	     log_error (_("Unable to read headers file for group %s.\n"), group->name);
+	     return -1;
+	  }
+	
+	if (0 == slrn_file_exists (head_file))
+	  return 0;
+	     
+	if (NULL == (vp = vopen (head_file, 4096, 0)))
+	  {
+	     log_error (_("File %s exists, but could not be read."), head_file);
+	     return -1;
+	  }
+	
+	if (NULL != (vline = vgets (vp, &vlen)))
+	  {
+	     vline[vlen] = 0; /* make sure line is NULL terminated */
+	     group->headers = slrn_ranges_from_newsrc_line (vline);
+	  }
+	
+	vclose (vp);
+	group = group->next;
+     }
+   return 0;
+}
+
+static int write_headers_files (void)
+{
+   char backup_file[SLRN_MAX_PATH_LEN + 1];
+   char head_file[SLRN_MAX_PATH_LEN + 1];
+   FILE *fp;
+   int have_backup = 0;
+   Active_Group_Type *group = Active_Groups;
+   int error = 0;
+
+   while (group != NULL)
+     {
+	if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, group->dirname,
+				head_file, sizeof (head_file)))
+	    || (-1 == slrn_dircat (head_file, Headers_File,
+				   head_file, sizeof (head_file))))
+	  {
+	     log_error (_("Unable to write headers file for group %s.\n"), group->name);
+	     error = -1;
+	     goto next_group;
+	  }
+	   
+#ifdef VMS
+	slrn_snprintf (backup_file, sizeof (backup_file), "%s-bak",
+		       head_file);
+#else
+# ifdef SLRN_USE_OS2_FAT
+	slrn_os2_make_fat (backup_file, sizeof (backup_file), head_file,
+			   ".bak");
+# else
+	slrn_snprintf (backup_file, sizeof (backup_file), "%s~", head_file);
+# endif
+#endif
+
+	/* Save backup file in case anything goes wrong */
+	have_backup = 1;
+	if (-1 == rename (head_file, backup_file))
+	  have_backup = 0;
+
+	if (group->headers != NULL)
+	  {
+	     if (NULL == (fp = fopen (head_file, "w")))
+	       {
+		  if (have_backup) (void) rename (backup_file, head_file);
+		  log_error (_("Unable to write headers file for group %s.\n"), group->name);
+		  error = -1;
+		  goto next_group;
+	       }
+	     if ((-1 == slrn_ranges_to_newsrc_file (group->headers,0,fp)) |
+		 (-1 == slrn_fclose (fp)))
+	       {
+		  if (have_backup) (void) rename (backup_file, head_file);
+		  log_error (_("Error while writing headers file for group %s.\n"), group->name);
+		  error = -1;
+	       }
+	  }
+	  
+	if (have_backup) slrn_delete_file (backup_file);
+	
+	next_group:
+	group = group->next;
+     }
+
+   return error;
+}
+
+static void read_requests_files (void)
+{
+   Slrn_Dir_Type *dp;
+   Slrn_Dirent_Type *df;
+   Active_Group_Type *group;
+   char file [SLRN_MAX_PATH_LEN + 1];
+   
+   dp = slrn_open_dir (Requests_Dir);
+   if (dp == NULL) return;
+   
+   /* Read all files in the requests dir and merge them. */
+   while (NULL != (df = slrn_read_dir (dp)))
+     {
+	VFILE *vp;
+	char *vline;
+	unsigned int vlen;
+	char *name;
+	
+	name = df->name;
+	
+	/* skip backup copies */
+#ifdef VMS
+	if ((strlen(name)>4) &&
+	    (!strcmp("-bak", name+strlen(name)-4)))
+#else
+# ifdef SLRN_USE_OS2_FAT
+	if ((strlen(name)>4) &&
+	    (!strcmp(".bak", name+strlen(name)-4)))
+# else
+	if (name[strlen(name)-1]=='~')
+# endif
+#endif
+	  continue;
+	
+	if (-1 == slrn_dircat (Requests_Dir, name, file, sizeof (file)))
+	  break;
+	
+	if ((1 != slrn_file_exists (file)) ||
+	    (NULL == (vp = vopen (file, 4096, 0))))
+	  continue;
+	
+	while (NULL != (vline = vgets (vp, &vlen)))
+	  {
+	     Slrn_Range_Type *r;
+	     
+	     char *p = vline;
+	     char *pmax = p + vlen;
+	     
+	     while ((p < pmax) && (*p != ':'))
+	       p++;
+	     
+	     if ((p == pmax) || (p == vline))
+	       continue;
+	     
+	     *p = 0;
+	     
+	     if (NULL == (group = find_group_type (vline)))
+	       continue;
+	     
+	     vline[vlen-1] = 0;	       /* kill \n and NULL terminate */
+	     
+	     r = slrn_ranges_from_newsrc_line (p+1);
+	     group->requests = slrn_ranges_merge (group->requests, r);
+	     slrn_ranges_free (r);
+	  }
+	vclose (vp);
+     }
+   
+   slrn_close_dir (dp);
+   
+   /* Now, make sure we don't request bodies that are already there. */
+   group = Active_Groups;
+
+   while (group != NULL)
+     {
+	Slrn_Range_Type *r = group->requests;
+	group->requests = slrn_ranges_intersect (r, group->headers);
+	slrn_ranges_free (r);
+	group = group->next;
+     }
 }

@@ -9,7 +9,8 @@ slrn_SOURCES = art.c chmap.c editscore.c group.c grplens.c hash.c help.c \
  slrn.c startup.c ttymsg.c util.c decode.c xover.c slrndir.c version.c \
  print.c art_misc.c vfile.c snprintf.c art_sort.c ranges.c
 
-slrnpull_SOURCES = nntplib.c slrndir.c slrnpull.c snprintf.c ttymsg.c util.c
+slrnpull_SOURCES = nntplib.c slrndir.c slrnpull.c snprintf.c ttymsg.c util.c \
+ ranges.c vfile.c
 slrnpull_DEPENDENCIES = stamp2
 
 DEFS=-Dunix -DSLRN_LIB_DIR=\"$(slrn_libdir)\" -DSHAREDIR=\"$(pkgdatadir)\" \

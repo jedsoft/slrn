@@ -1,4 +1,4 @@
-% Mode for indenting slrn score files
+% Mode for editing slrn score files
 
 % To use this, add the following line to your .jedrc file:
 %    autoload ("score_mode", "score");
@@ -59,6 +59,7 @@ define_syntax ('[', '#', $1);
 () = define_keywords ($1, "Lines:Score:", 6);
 () = define_keywords ($1, "Score::", 7);
 () = define_keywords ($1, "Expires:Subject:", 8);
+() = define_keywords ($1, "Has-Body:", 9);
 () = define_keywords ($1, "Newsgroup:", 10);
 () = define_keywords ($1, "Message-Id:References:", 11);
 

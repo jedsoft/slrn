@@ -22,6 +22,7 @@ Changes since 0.9.7.4
   * Don't add an empty line at the end of saved articles (Alain Bench).
   * Use a completely unmodified copy of the article when piping / saving.
     This is important for some yenc-encoded and PGP-signed articles.
+  * Sometimes, all headers were downloaded even when user set a limit.
 1. Changes to the user interface:
   * view_scores uncollapses threads (suggested by Jurriaan W Kalkman) and
     can optionally be left by pressing 'q'.
@@ -39,57 +40,64 @@ Changes since 0.9.7.4
   * "postpone_directory" now defaults to "News/postponed"; if necessary,
     slrn will create this directory automatically (after asking the user)
   * Warn at startup when setting a variable that doesn't have an effect.
-2. slrnpull no longer completely rewrites the overview files when expiring
+  * The score value 0 no longer has a special meaning; if you want to assign
+    the score 0 and stop scoring for this article, use =0.
+2. When used in combination with slrnpull, slrn now supports "true offline
+   reading", i.e. you can tell slrnpull to download article headers only,
+   mark interesting ones for download in slrn and fetch those article bodies
+   during the next run of slrnpull. Please see doc/slrnpull/README.offline
+   for details.
+3. slrnpull no longer completely rewrites the overview files when expiring
    articles, which should speed the process up quite a bit. If you still
    need to rebuild the overview, you can use the new --rebuild option (based
    on a patch by Jurriaan W Kalkman).
-3. If your terminal supports it (and you are not using Win32 or OS/2), you
+4. If your terminal supports it (and you are not using Win32 or OS/2), you
    can now use colors and attributes at the same time. Just append them to
    the color lines in your config file, e.g.:
      color underlinetext	"default"	"default"	"underline"
-4. Set use_recommended_msg_id to 1 in your config file if you want slrn to
+5. Set use_recommended_msg_id to 1 in your config file if you want slrn to
    make use of server-proposed Message-IDs; the IDs will get saved along
    with the article to the save_posts mbox file. (patch by Felix Schueller)
-5. Added intrinsic functions article_cline_as_string, article_cline_number,
+6. Added intrinsic functions article_cline_as_string, article_cline_number,
    article_count_lines, article_goto_line, article_line_down, article_line_up,
    has_parent, header_cursor_pos, raw_article_as_string, set_color_attr
    (see doc/slrnfuns.txt).
-6. Custom sorting now allows you to use different criteria for sorting
+7. Custom sorting now allows you to use different criteria for sorting
    initial articles of threads and articles inside threads (see
    custom_sort_order in manual.txt for details). (patch by Anatoly Vorobey)
-7. locate_article ignores leading "news:" (Jarek Baczynski)
-8. When reading in spool mode with spool_check_up_on_nov set, slrn now finds
+8. locate_article ignores leading "news:" (Jarek Baczynski)
+9. When reading in spool mode with spool_check_up_on_nov set, slrn now finds
    out the number of bytes of each article, even if it is not included in
    the news overview file (based on a patch by Jurriaan W Kalkman).
-9. Support Cancel-Locks using the canlock library (--with-canlock) that can
-   be obtained from <http://cssri.meowing.net/>; you also need to set the
-   new variable "cansecret_file" to a file containing your Cancel-Lock
-   password to enable this (based on a patch by Andreas Barth).
-10. Support GNU TLS via its new OpenSSL compatibility layer (--with-gnutls).
+10. Support Cancel-Locks using the canlock library (--with-canlock) that can
+    be obtained from <http://cssri.meowing.net/>; you also need to set the
+    new variable "cansecret_file" to a file containing your Cancel-Lock
+    password to enable this (based on a patch by Andreas Barth).
+11. Support GNU TLS via its new OpenSSL compatibility layer (--with-gnutls).
     Please note that GNU TLS still is under heavy development and that slrn's
     support for it is still untested (based on a patch by Joey Hess.)
-11. New command-line option "-w0" that waits on startup, but only if a
+12. New command-line option "-w0" that waits on startup, but only if a
     warning or error is displayed.
-12. Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
-13. Verbatim text can be hidden using toggle_verbatim_text (default binding
+13. Updated cleanscore, see contrib/NEWS.cleanscore (Felix Schueller)
+14. Verbatim text can be hidden using toggle_verbatim_text (default binding
     '{') or hide_verbatim_text in the config file. (Arek Sochala)
-14. The "BEGIN PGP SIGNED ARTICLE" line is displayed using the "pgpsignature"
+15. The "BEGIN PGP SIGNED ARTICLE" line is displayed using the "pgpsignature"
     color and stripped on followups. (Emmanuele Bassi)
-15. If query_read_group_cutoff is set to -n, slrn will automatically
+16. If query_read_group_cutoff is set to -n, slrn will automatically
     (without prompting) download n articles when more than n are present.
-16. Support Turkish characters on Win32 - set charset to "ibm857" for this.
+17. Support Turkish characters on Win32 - set charset to "ibm857" for this.
     With help from A. Alper ATICI
-17. Re-structured the manual and added a chapter about slang's
+18. Re-structured the manual and added a chapter about slang's
     pre-processing facilities. (Matthias Friedrich)    
-18. The config variable cc_post_string is obsolete, as cc_followup_string
+19. The config variable cc_post_string is obsolete, as cc_followup_string
     now works correctly in all cases. Currently, the only supported escape
     sequence is "%n" for newsgroup name.
-19. New translations:
+20. New translations:
    * be.po (Belarusian; Hleb Valoska)
    * fi.po (Finnish; Lauri Nurmi)
    * tr.po (Turkish; A. Alper ATICI)
-20. Remove duplicates when browsing URLs (Ruediger Sonderfeld)
-21. IPv6 support (requires getaddrinfo; patch by J.H.M. Dassen (Ray))
+21. Remove duplicates when browsing URLs (Ruediger Sonderfeld)
+22. IPv6 support (requires getaddrinfo; patch by J.H.M. Dassen (Ray))
 
 Changes since 0.9.7.3
 

@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -22,8 +22,8 @@
 /* Keep this separate from autoconf's settings for now */
 #define MY_VERSION "0.9.7.4"
 #define SLRN_VERSION_NUMBER 90705
-#define PATCH_LEVEL "2"
-#define SLRN_RELEASE_DATE "2003-01-11"
+#define PATCH_LEVEL "3"
+#define SLRN_RELEASE_DATE "2003-07-31"
 
 #ifdef PATCH_LEVEL
 # define SLRN_VERSION (MY_VERSION "pl" PATCH_LEVEL)

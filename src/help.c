@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -140,6 +140,9 @@ static char *Art_Help[] =
    N_("Miscellaneous actions:"),
    N_("  K                  Create a scorefile entry interactively."),
    N_("      ESC 1 K        Edit scorefile."),
+#if SLRN_HAS_SPOOL_SUPPORT
+   N_("  m                  (Un-)mark article body for download by slrnpull."),
+#endif
    N_("  v                  Show which scorefile rules matched the current article."),
    N_("  * The following five commands query the server if necessary:"),
    N_("  ESC l              Locate article by its Message-ID."),
@@ -219,7 +222,7 @@ static char *Copyright_Notice [] =
    " Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>",
      "",
      " For parts of it:",
-     " Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>",
+     " Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>",
      "",
      " For the parts in src/snprintf.c that are based on code from glib 1.2.8:",
      " Copyright (C) 1995-1998  Peter Mattis, Spencer Kimball and Josh MacDonald",

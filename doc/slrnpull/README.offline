@@ -1,0 +1,124 @@
+True offline reading using slrn and slrnpull
+============================================
+
+This README describes how you can use slrn and slrnpull for "true offline
+reading", i.e. getting only the article headers first and selecting the
+article bodies you want to download. Support for this is new in slrn
+0.9.8.0, so please report any problems you may experience with this feature.
+
+Support in slrnpull:
+--------------------
+
+slrnpull has two new command-line switches that are connected with true
+offline reading:
+
+ --headers-only
+	This tells slrnpull to fetch only the headers of the new articles it
+	would otherwise retrieve completely.
+	
+ --marked-bodies 
+	Tells slrnpull to fetch only the article bodies that were marked for
+	download within slrn (see next section on how to do that).
+	
+If you run slrnpull without any command line switches, it gets both headers
+and bodies for new articles, plus the bodies that were requested for
+download.
+
+You can specify both --headers-only and --marked-bodies at the same time. In
+this case, headers are fetched for new articles and the requested bodies are
+downloaded. You will probably use this operation mode as the default if you
+want to use true offline reading.
+
+Notes:
+
+These two command-line switches have no effect in --post-only or --expire
+mode.
+
+If you didn't fetch the body of an article and it is no longer available on
+the server, slrnpull expires it even if it has not reached the age specified
+in slrnpull.conf. This makes sense, because it's no longer possible to
+download this article's body anyway.
+
+Support in slrn:
+----------------
+
+When run in spool mode, slrn will display whether or not the body of an
+article is present and whether or not you have requested it for download. In
+header_display_format the new %B escape is used for this. If you don't want
+to customize header_display_format, you don't need to worry about this.
+
+If the body of an article is missing, %B (in the default setting: The sixth
+column from the left) displays a "H" (for "header only"); if the body is
+requested for download, it displays a "M" (for "marked").  In a collapsed
+thread, only some of the articles may be incomplete or marked. In this case,
+a "h" or "m" is shown ("m" takes precedence, i.e. you'll see it if at least
+one article body in the thread is marked for download).
+
+To mark a body for download, you can use the "request" function (by default
+bound to 'm'). If the body is already requested, the mark is removed; if the
+body is already present, this command has no effect. Note that articles that
+are marked for download cannot be marked read - I expect that you will want
+to see them again when their body is in place.
+
+When applied on a collapsed thread that has some marked articles in it and
+some that are incomplete, but not yet marked for download, the "request"
+function will mark all articles in it, rather than toggling the status of
+each individual article. In this case, you can apply the command a second
+time to un-mark all articles.
+
+
+If you just want to use the basic true offline functionality, this should be
+all you need to know. The following sections are for people who want to use
+advanced functionality and those who want to know what's going on behind the
+scenes when using this feature.
+
+Scoring on the body status:
+---------------------------
+
+It is possible to score an article depending on whether or not its body is
+present. To do this, use the new "Has-Body" keyword described in score.txt.
+
+Intrinsic functions for true offline reading:
+---------------------------------------------
+
+Currently, there are two new intrinsic functions connected with this
+feature: get_body_status and request_body. Both are described in detail in
+slrnfuns.txt
+
+How does the whole thing work?
+------------------------------
+
+You may want to read this section if you're a system administrator who wants
+to set up true offline reading on a multiple-user system or if you're just
+curious ;-)
+
+slrnpull creates a directory for the requests (it is called "requests" and a
+subdirectory of the slrnpull root directory). In this directory, each user
+has his own newsrc-style file where the article numbers of the requested
+bodies are kept.
+
+The name of each user's request file is his login name, so there shouldn't
+be any accidental clashes (at least on Unix-like systems; if no login name
+can be determined, the file is called "!unknown"). By default, slrn sets
+these files to mode 0640. This means that your request list cannot be
+modified by others.
+
+Of course, slrnpull needs to be able to read the request files. On
+multi-user systems, you should run the configure script with
+--enable-setgid-code to ensure this (see setgid.txt for details). Note that
+slrnpull does not write to the request files - slrn itself will notice when
+article bodies have been downloaded and prune the request list accordingly.
+
+To keep track of the articles that don't have bodies, slrnpull creates a
+file called ".headers" in each spool directory that has incomplete articles
+in it. Make sure that these files do not get deleted or corrupted - if an
+article is not listed there, slrn won't allow the users to request its body
+for download; on the other hand, if that file lists a complete article, its
+body can get requested (and appended) again!
+
+Since version 0.9.8.0, slrnpull also creates files called ".servermin" in
+each spool directory - they only contain the server's low water mark that
+got reported for that group the last time slrnpull checked for new articles.
+This information is used to expire articles without body that are no longer
+available on the server - slrnpull does not connect to the server when run
+in expiry mode.

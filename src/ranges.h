@@ -39,6 +39,7 @@ extern int slrn_ranges_to_newsrc_file (Slrn_Range_Type *, int, FILE*);
 extern Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *, int, int);
 extern Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *, int, int);
 
+extern Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *, Slrn_Range_Type *);
 extern Slrn_Range_Type *slrn_ranges_merge (Slrn_Range_Type *, Slrn_Range_Type *);
 
 extern Slrn_Range_Type *slrn_ranges_clone (Slrn_Range_Type *);

@@ -72,8 +72,8 @@ As the example indicates, the date must be specified using either the format
 MM/DD/YYYY or DD-MM-YYYY.  Note: DO NOT CONFUSE THIS WITH THE EXPIRES HEADER
 KEYWORD.
 
-The Lines, Bytes and Age keywords are also special.  Their value is not a
-regular expression, rather, a simple integer.
+The Lines, Bytes, Age and Has-Body keywords are also special.  Their value
+is not a regular expression, rather, a simple integer.
 
 "Lines" and "Bytes" may be used to kill articles which contain too many or
 too few lines / bytes.  For example,
@@ -100,6 +100,17 @@ example,
 
 adds 10 points to the score of each article that is at most one week old.
 You can use negation (`~') to score articles that are older than N days.
+
+"Has-Body" can be used when reading offline in combination with slrnpull:
+You can tell slrnpull to download only article headers by default and fetch
+article bodies on request. In this case, you can use a rule like
+
+    Score: 20
+    Has-Body: 1
+
+to give each article that does have a body 20 points. You can invert this
+(i.e. score articles without bodies) either by using negation ('~') or by
+writing "Has-Body: 0". Other values than 0 or 1 have no meaning.
 
 Finally a score file may include other score files via the `include'
 statement.  The syntax is simple:

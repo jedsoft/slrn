@@ -5,7 +5,7 @@ SUBDIRS = tm
 SLRNPULL = @SLRNPULL@
 PULLDOCS = slrnpull/FAQ slrnpull/README slrnpull/SETUP slrnpull/score \
  slrnpull/setgid.txt slrnpull/slrn.rc slrnpull/slrnpull.conf \
- slrnpull/slrnpull.sh
+ slrnpull/slrnpull.sh slrnpull/README.offline
 
 docdir = @docdir@
 doc_DATA = FAQ FIRST_STEPS README.GroupLens README.SSL README.macros \

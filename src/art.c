@@ -6201,7 +6201,8 @@ static void update_ranges (void) /*{{{*/
    r_new = slrn_ranges_clone (Current_Group->range.next);
 
    /* Mark old (unavailable) articles as read */
-   r_new = slrn_ranges_add (r_new, 1, Slrn_Server_Min - 1);
+   if (Slrn_Server_Min > 1)
+     r_new = slrn_ranges_add (r_new, 1, Slrn_Server_Min - 1);
 
    /* Now, mark blocks of articles read / unread */
    is_read = h->flags & HEADER_READ;
@@ -6756,29 +6757,28 @@ static void request_header_cmd (void) /*{{{*/
        /* or at top with child showing */
        || (0 == (Slrn_Current_Header->child->flags & HEADER_HIDDEN)))
      {
-	slrn_request_header (Slrn_Current_Header);
+	if (Slrn_Current_Header->flags & HEADER_REQUEST_BODY)
+	  slrn_unrequest_header (Slrn_Current_Header);
+	else
+	  slrn_request_header (Slrn_Current_Header);
      }
    else
      {
-	for_this_tree (Slrn_Current_Header, slrn_request_header);
-     }
-   slrn_header_down_n (1, 0);
-   Slrn_Full_Screen_Update = 1;
-}
-/*}}}*/
-
-static void unrequest_header_cmd (void) /*{{{*/
-{
-   if ((Slrn_Current_Header->parent != NULL)/* in middle of thread */
-       || (Slrn_Current_Header->child == NULL)/* At top with no child */
-       /* or at top with child showing */
-       || (0 == (Slrn_Current_Header->child->flags & HEADER_HIDDEN)))
-     {
-	slrn_unrequest_header (Slrn_Current_Header);
-     }
-   else
-     {
-	for_this_tree (Slrn_Current_Header, slrn_unrequest_header);
+	/* Unrequest only if all bodies in the thread were requested */
+	Slrn_Header_Type *h=Slrn_Current_Header, *next;
+	next = h->sister;
+	while (h != next)
+	  {
+	     if ((h->flags & HEADER_WITHOUT_BODY) &&
+		 !(h->flags & HEADER_REQUEST_BODY))
+	       {
+		  for_this_tree (Slrn_Current_Header, slrn_request_header);
+		  break;
+	       }
+	     h = h->next;
+	  }
+	if (h == next)
+	  for_this_tree (Slrn_Current_Header, slrn_unrequest_header);
      }
    slrn_header_down_n (1, 0);
    Slrn_Full_Screen_Update = 1;
@@ -7051,7 +7051,6 @@ static SLKeymap_Function_Type Art_Functions [] = /*{{{*/
    A_KEY("uncatchup", un_catch_up_to_here),
    A_KEY("uncatchup_all", un_catch_up_all),
    A_KEY("undelete", undelete_header_cmd),
-   A_KEY("unrequest", unrequest_header_cmd),
    A_KEY("untag_headers", num_untag_headers),
    A_KEY("wrap_article", toggle_wrap_article),
    A_KEY("zoom_article_window", zoom_article_window),
@@ -7177,7 +7176,6 @@ void slrn_init_article_mode (void) /*{{{*/
    SLkm_define_key  ("\033^S", (FVOID_STAR) supersede, Slrn_Article_Keymap);
    SLkm_define_key  ("\033a", (FVOID_STAR) toggle_header_formats, Slrn_Article_Keymap);
    SLkm_define_key  ("\033d", (FVOID_STAR) thread_delete_cmd, Slrn_Article_Keymap);
-   SLkm_define_key  ("\033m", (FVOID_STAR) unrequest_header_cmd, Slrn_Article_Keymap);
    SLkm_define_key  ("\033p", (FVOID_STAR) get_parent_header, Slrn_Article_Keymap);
    SLkm_define_key  ("\033S", (FVOID_STAR) _art_toggle_sort, Slrn_Article_Keymap);
    SLkm_define_key  ("\033t", (FVOID_STAR) toggle_collapse_threads, Slrn_Article_Keymap);
