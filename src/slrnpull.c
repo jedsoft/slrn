@@ -38,11 +38,22 @@
 #ifdef HAVE_STDLIB_H
 # include <stdlib.h>
 #endif
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+
+#ifdef VMS
+# include "vms.h"
+#else
+# include <sys/types.h>
+# include <sys/stat.h>
+#endif
+
 #ifdef HAVE_FCNTL_H
 # include <fcntl.h>
 #endif
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
+#ifdef HAVE_SYS_FCNTL_H
+# include <sys/fcntl.h>
 #endif
 
 #include <ctype.h>
@@ -2265,7 +2276,19 @@ int main (int argc, char **argv) /*{{{*/
 	  }
 	else if (!strcmp (arg, "--debug") && (argc > 0))
 	  {
-	     if (NULL == (Slrn_Debug_Fp = fopen (*argv, "w")))
+	     int fd;
+	     if (Slrn_Debug_Fp != NULL)
+	       {
+		  fclose (Slrn_Debug_Fp);
+		  Slrn_Debug_Fp = NULL;
+	       }
+	     fd = open (*argv, O_WRONLY | O_CREAT, S_IREAD | S_IWRITE);
+	     if (fd != -1)
+	       {
+		  if (NULL == (Slrn_Debug_Fp = fdopen (fd, "w")))
+		    close (fd);
+	       }
+	     if (Slrn_Debug_Fp == NULL)
 	       {
 		  fprintf (stderr, _("Unable to create debug file %s\n"), *argv);
 		  exit (1);
