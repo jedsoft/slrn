@@ -184,11 +184,12 @@ typedef struct _Active_Group_Type /*{{{*/
 /*}}}*/
 Active_Group_Type;
 
-static char *Current_Newsgroup;
+static Active_Group_Type *Current_Group;
 
 static Active_Group_Type *Active_Groups;
 static Active_Group_Type *Active_Groups_Tail;
 
+static int write_headers_file (Active_Group_Type *group);
 /*}}}*/
 
 static FILE *MLog_Fp;
@@ -1075,7 +1076,7 @@ static void print_time_stats (NNTP_Type *s, int do_log) /*{{{*/
    if (do_log)
      {
 	log_message (_("%s: %u/%u (%u killed), Time: %02u:%02u:%02u, BPS: %lu"),
-		     Current_Newsgroup, 
+		     Current_Group->name, 
 		     Num_Articles_Received, Num_Articles_To_Receive, Num_Killed,
 		     hour, min, sec,
 		     in / elapsed_time);
@@ -1099,7 +1100,7 @@ static int write_xover_line (FILE *fp, Slrn_XOver_Type *xov) /*{{{*/
 	   && (EOF == fprintf (fp, "\tXref: %s", xov->xref)))
        || (EOF == fputc ('\n', fp)))
      {
-	log_error (_("Error writing to overview database: %s:%d."), Current_Newsgroup, xov->id);
+	log_error (_("Error writing to overview database: %s:%d."), Current_Group->name, xov->id);
 	return -1;
      }
 #else
@@ -1325,10 +1326,10 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
 #endif
    
 #if 1
-   (void) is_msgid_cached (h.msgid, Current_Newsgroup, (unsigned int) n, 1);
+   (void) is_msgid_cached (h.msgid, Current_Group->name, (unsigned int) n, 1);
 #endif
 
-   score = slrn_score_header (&h, Current_Newsgroup, (KLog_Fp != NULL) ? &sdi : NULL);
+   score = slrn_score_header (&h, Current_Group->name, (KLog_Fp != NULL) ? &sdi : NULL);
    if ((score < Kill_Score) || ((score >= Fetch_Score) && Use_Fetch_Score && g->headers_only))
      {
 	if (KLog_Fp != NULL)
@@ -1351,7 +1352,7 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
 		  hlp = hlp->next;
 	       }
 	     fprintf (KLog_Fp, _("  Newsgroup: %s\n  From: %s\n  Subject: %s\n\n"),
-		      Current_Newsgroup, h.from, h.subject);
+		      Current_Group->name, h.from, h.subject);
 	  }
 	if (score < Kill_Score)
 	  {
@@ -1377,7 +1378,7 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
 #endif
 #if 0
    /* This next call should add the message id to the cache. */
-   (void) is_msgid_cached (h.msgid, Current_Newsgroup, (unsigned int) n, 1);
+   (void) is_msgid_cached (h.msgid, Current_Group->name, (unsigned int) n, 1);
 #endif
    return 0;
 }
@@ -1755,9 +1756,11 @@ static int pull_news (NNTP_Type *s, int marked_bodies) /*{{{*/
 	if (g->server_max > (unsigned int) max)
 	  g->server_max = max;
 
-	Current_Newsgroup = g->name;
+	Current_Group = g;
 	
 	(void) get_group_articles (s, g, min, max, marked_bodies);
+	
+	(void) write_headers_file (g);
 	
 	g = g->next;
      }	
@@ -1890,11 +1893,10 @@ static int post_outgoing (NNTP_Type *s) /*{{{*/
    n = 0;
    while (NULL != (df = slrn_read_dir (dp)))
      {
-	char *name;
-	
-	name = df->name;
+	char *name = df->name;
 
-	if (*name != 'X')
+	/* Don't post incomplete / backup files */
+	if ((*name != 'X') || (name[strlen(name)-1] == '~'))
 	  continue;
 	
 	if (-1 == slrn_dircat (Outgoing_Dir, name, file, sizeof (file)))
@@ -2160,7 +2162,6 @@ static int do_expire (int rebuild);
 static int get_new_groups (NNTP_Type *s);
 static int read_authinfo (void);
 static int read_headers_files (void);
-static int write_headers_files (void);
 static void read_requests_files (void);
 
 int main (int argc, char **argv) /*{{{*/
@@ -2309,11 +2310,6 @@ int main (int argc, char **argv) /*{{{*/
      {
 	if (-1 == do_expire (expire_mode == 2))
 	  slrn_exit_error (NULL);
-	if (-1 == write_headers_files ())
-	  {
-	     Exit_Code = SLRN_EXIT_FILEIO;
-	     slrn_exit_error (NULL);
-	  }
 	
 	close_log_files ();
 	return 0;
@@ -2341,8 +2337,7 @@ int main (int argc, char **argv) /*{{{*/
      {
 	init_signals ();
 	pull_news (Pull_Server, marked_bodies);
-	if ((-1 == write_headers_files ()) | /* avoid short-circuit */
-	    (-1 == write_active ()))
+	if (-1 == write_active ())
 	  {
 	     Exit_Code = SLRN_EXIT_FILEIO;
 	     slrn_exit_error (NULL);
@@ -2565,6 +2560,8 @@ static int handle_interrupts (void) /*{{{*/
      {
 	log_error (_("Performing shutdown."));
 	write_active ();
+	if (Current_Group != NULL)
+	  write_headers_file (Current_Group);
 	Exit_Code = SLRN_EXIT_SIGNALED;
 	slrn_exit_error (_("Slrnpull exiting on signal."));
      }
@@ -3175,6 +3172,7 @@ static int do_expire (int rebuild) /*{{{*/
 	  }
 	
 	(void) expire_group (g, rebuild);
+	(void) write_headers_file (g);
 	g = g->next;
      }
    
@@ -3285,54 +3283,44 @@ static int read_headers_files (void)
    return 0;
 }
 
-static int write_headers_files (void)
+static int write_headers_file (Active_Group_Type *group)
 {
    char head_file[SLRN_MAX_PATH_LEN + 1];
    FILE *fp;
    int have_backup = 0;
-   Active_Group_Type *group = Active_Groups;
-   int error = 0;
 
-   while (group != NULL)
+   if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, group->dirname,
+			   head_file, sizeof (head_file)))
+       || (-1 == slrn_dircat (head_file, Headers_File,
+			      head_file, sizeof (head_file))))
      {
-	if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, group->dirname,
-				head_file, sizeof (head_file)))
-	    || (-1 == slrn_dircat (head_file, Headers_File,
-				   head_file, sizeof (head_file))))
-	  {
-	     log_error (_("Unable to write headers file for group %s.\n"), group->name);
-	     error = -1;
-	     goto next_group;
-	  }
-	   
-	/* Save backup file in case anything goes wrong */
-	have_backup = (0 == slrn_create_backup (head_file));
-
-	if (group->headers != NULL)
-	  {
-	     if (NULL == (fp = fopen (head_file, "w")))
-	       {
-		  if (have_backup) slrn_restore_backup (head_file);
-		  log_error (_("Unable to write headers file for group %s.\n"), group->name);
-		  error = -1;
-		  goto next_group;
-	       }
-	     if ((-1 == slrn_ranges_to_newsrc_file (group->headers,0,fp)) |
-		 (-1 == slrn_fclose (fp)))
-	       {
-		  if (have_backup) slrn_restore_backup (head_file);
-		  log_error (_("Error while writing headers file for group %s.\n"), group->name);
-		  error = -1;
-	       }
-	  }
-	  
-	if (have_backup) slrn_delete_backup (head_file);
-	
-	next_group:
-	group = group->next;
+	log_error (_("Unable to write headers file for group %s.\n"), group->name);
+	return -1;
      }
-
-   return error;
+   
+   /* Save backup file in case anything goes wrong */
+   have_backup = (0 == slrn_create_backup (head_file));
+   
+   if (group->headers != NULL)
+     {
+	if (NULL == (fp = fopen (head_file, "w")))
+	  {
+	     if (have_backup) slrn_restore_backup (head_file);
+	     log_error (_("Unable to write headers file for group %s.\n"), group->name);
+	     return -1;
+	  }
+	if ((-1 == slrn_ranges_to_newsrc_file (group->headers,0,fp)) | /* avoid short-circuit */
+	    (-1 == slrn_fclose (fp)))
+	  {
+	     if (have_backup) slrn_restore_backup (head_file);
+	     log_error (_("Error while writing headers file for group %s.\n"), group->name);
+	     return -1;
+	  }
+     }
+   
+   if (have_backup) slrn_delete_backup (head_file);
+   
+   return 0;
 }
 
 static void read_requests_files (void)
