@@ -112,7 +112,7 @@ AC_ARG_WITH(slrnpull,
     [  --with-slrnpull         Build slrnpull and add support for it to slrn],
     [if test "x$withval" = "xyes" ; then
     AC_DEFINE(SLRN_HAS_PULL_SUPPORT, 1)
-    SLRNPULL="slrnpull"
+    SLRNPULL="slrnpull\$(EXEEXT)"
     MAN_SLRNPULL="slrnpull.1"
     else
     AC_DEFINE(SLRN_HAS_PULL_SUPPORT, 0)
