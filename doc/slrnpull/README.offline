@@ -14,9 +14,13 @@ indicates if you want to use true offline reading for that group. If you set
 it to 1, slrnpull will fetch only the headers of the new articles it would
 otherwise retrieve completely.
 
-slrnpull also has a new command-line switch connected with true offline
+slrnpull also has two new command-line switch connected with true offline
 reading:
 
+--fetch-score SCORE
+	Tells slrnpull to fetch article bodies if the corresponding header
+	is assigned a score value of at least SCORE, even if true offline
+	reading is used for that group.
 --marked-bodies 
 	Tells slrnpull to fetch only the article bodies that were marked for
 	download within slrn (see next section on how to do that). slrnpull

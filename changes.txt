@@ -9,7 +9,12 @@ Changes since 0.9.8.0
   * When reading cross-posts, slrn sometimes marked additional articles in
     the other group(s) as read (Joerg Lueders).
 
+  In true offline mode, slrnpull can now automatically retrieve bodies of
+  articles that get a high score value (--fetch-score option).
+
   Added Swedish translation (Johan Svedberg)
+  
+  Make hide_pgpsignature hide GnuPGs optional "NotDashEscaped" lines.
 
 Changes since 0.9.7.4
 

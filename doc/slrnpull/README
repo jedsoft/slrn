@@ -96,14 +96,26 @@ slrnpull may be controlled by several command line parameters:
 
 where <options> can include any of the following:
 
-  -h HOSTNAME       name of NNTP server
-  -d SPOOLDIR       Spool Directory associated with server
-  --version         Show version number
-  --expire          Perform expiration but do not pull news
-  --post-only       Post news but do not pull new news
-  --no-post         Do not post news
-  --new-groups      Get new groups
-  --logfile FILE    Use FILE as the log file
+  -d SPOOLDIR          Spool directory to use.
+  -h HOSTNAME          Hostname of NNTP server to connect to.
+  --debug FILE         Write dialogue with server to FILE.
+  --expire             Perform expiration, but do not pull news.
+  --fetch-score SCORE  Fetch article bodies with a score of at least SCORE
+                       (for use in "true offline" mode)
+  --help               Print this usage information.
+  --kill-log FILE      Keep a log of all killed articles in FILE.
+  --kill-score SCORE   Kill articles with a score below SCORE.
+  --logfile FILE       Use FILE as the log file.
+  --marked-bodies      Only fetch bodies that were marked for download.
+  --new-groups         Get a list of new groups.
+  --no-post            Do not post news.
+  --post-only          Post news, but do not pull new news.
+  --rebuild            Like --expire; additionally rebuilds overview files.
+  --version            Show the version number.
+
+If the `-d' option is not specifed, slrnpull will attempt to determine
+the SLRNPULL_ROOT directory by the SLRNPULL_ROOT environment variable.
+If that fails, it will default to the compiled-in value.
 
 The `-h' option controls the name of the NNTP server that will be used
 for pulling the news feed.  If it is not specified, slrnpull will look
@@ -112,27 +124,33 @@ port 119. If you need to change this, you can code the port into the
 hostname (like in 'server.name:XXX', where XXX is an integer that
 represents the port number).
 
-If the `-d' option is not specifed, slrnpull will attempt to determine
-the SLRNPULL_ROOT directory by the SLRNPULL_ROOT environment variable.
-If that fails, it will default to the compiled-in value.
-
-The `--version' option causes slrnpull to write the version number to
-stdout.
+The `--debug' option allows you to write the dialog with the NNTP server to
+the specified file. This can be used for debugging purposes.
 
 The `--expire' option is used to run slrnpull in expire mode.  If this
-option is specifed, no attempt will be made to access the server.  It
-is recommended that slrnpull be run in expire mode once every day.  It
-may take a few minutes to run because it causes the OVERVIEW database
-to be rebuilt.
+option is specifed, no attempt will be made to access the server.  It is
+recommended that slrnpull be run in expire mode once every day.  Please note
+that on large spools, this operation may take a few minutes to run.
 
-The `--post' flag may be used to tell slrnpull to post any out-going
-articles but do not attempt pull any articles from the server.
-Normally this option is not required since before pulling articles
-because slrnpull will always post any articles in the in the out.going
-directory immediately before pulling new articles.
+The `--fetch-score' option can be used in "true offline mode"; please refer
+to README.offline for details.
 
-`--no-post' is used to indicate that slrnpull should not post any
-outgoing messages.
+The `--help' option gives a short listing of available options (see above
+for an example).
+
+The `--kill-log' option allows you to keep a log of all articles killed by
+slrnpull's scorefile, so you can check whether articles you really wanted to
+read accidentally got deleted.
+
+Using `--kill-score', you can change the threshold for killing articles via
+the score file - all articles with a score below the SCORE value get killed.
+The default is to delete all articles with negative scores.
+
+`--logfile' is used to specifiy a log file instead of the default ("log" in
+the slrnpull directory).
+
+`--marked-bodies' is a special option when using true offline reading;
+again, please refer to README.offline.
 
 Normally slrnpull does not query the server for new groups.  The
 --new-groups option forces slrnpull to query the server.  If the
@@ -140,7 +158,22 @@ server indicates any new groups, slrnpull will append the new group
 names to the file SLRNPULL_ROOT/data/new.groups and update the time
 stamp in the SLRNPULL_ROOT/data/new.groups-time file.
 
-`--logfile' is used to specifiy a log file instead of the default.
+`--no-post' is used to indicate that slrnpull should not post any
+outgoing messages.
+
+The `--post-only' flag may be used to tell slrnpull to post any out-going
+articles but do not attempt pull any articles from the server. Normally this
+option is not required, because slrnpull will always post any articles in
+the out.going directory immediately before pulling new articles.
+
+The `--rebuild' option works like `--expire', but additionally rebuild the
+overview files completely. Note that this may take quite some time. This
+option also rebuilds the .headers files used for true offline reading (see
+README.offline), so you may also want to use it when articles without body
+are not flagged appropriately.
+
+The `--version' option causes slrnpull to write the version number to
+stdout.
 
 Scoring with slrnpull
 =====================

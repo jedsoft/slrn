@@ -124,6 +124,8 @@ char *Data_Dir = "data";
 static char *Active_File = "active";
 
 static int Stdout_Is_TTY;
+static int Fetch_Score;
+static int Use_Fetch_Score;
 static int Kill_Score;
 static char *Active_Groups_File;
 static time_t Start_Time;
@@ -1281,7 +1283,7 @@ static int get_bodies (NNTP_Type *s, int *numbers, /*{{{*/
 
 /*}}}*/
 
-static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov) /*{{{*/
+static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **headers, Slrn_XOver_Type *xov) /*{{{*/
 {
    int status;
    Slrn_Header_Type h;
@@ -1327,13 +1329,15 @@ static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov
 #endif
 
    score = slrn_score_header (&h, Current_Newsgroup, (KLog_Fp != NULL) ? &sdi : NULL);
-   if (score < Kill_Score)
+   if ((score < Kill_Score) || ((score >= Fetch_Score) && Use_Fetch_Score && g->headers_only))
      {
-	Num_Killed++;
 	if (KLog_Fp != NULL)
 	  {
 	     Slrn_Score_Debug_Info_Type *hlp = sdi;
-	     fprintf (KLog_Fp, _("Score %d killed article %s\n"), score, h.msgid);
+	     if (score < Kill_Score)
+	       fprintf (KLog_Fp, _("Score %d killed article %s\n"), score, h.msgid);
+	     else
+	       fprintf (KLog_Fp, _("Score %d requested article %s\n"), score, h.msgid);
 	     while (hlp != NULL)
 	       {
 		  if (hlp->description [0] != 0)
@@ -1349,8 +1353,14 @@ static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov
 	     fprintf (KLog_Fp, _("  Newsgroup: %s\n  From: %s\n  Subject: %s\n\n"),
 		      Current_Newsgroup, h.from, h.subject);
 	  }
-	slrn_free (*headers);
-	*headers = NULL;
+	if (score < Kill_Score)
+	  {
+	     Num_Killed++;
+	     slrn_free (*headers);
+	     *headers = NULL;
+	  }
+	else
+	  g->requests = slrn_ranges_add (g->requests, n, n);
 /*	return 0; */
      }
    while (sdi != NULL)
@@ -1374,7 +1384,7 @@ static int fetch_head (NNTP_Type *s, int n, char **headers, Slrn_XOver_Type *xov
 
 /*}}}*/
 
-static int get_heads (NNTP_Type *s, int *numbers, char **heads, /*{{{*/
+static int get_heads (NNTP_Type *s,  Active_Group_Type *g, int *numbers, char **heads, /*{{{*/
 		      Slrn_XOver_Type *xovs, unsigned int num)
 {
    unsigned int i;
@@ -1404,7 +1414,7 @@ static int get_heads (NNTP_Type *s, int *numbers, char **heads, /*{{{*/
 
    for (i = 0; i < num; i++)
      {
-	if (-1 == fetch_head (s, numbers[i], heads + i, xovs + i))
+	if (-1 == fetch_head (s, g, numbers[i], heads + i, xovs + i))
 	  return -1;
      }
    
@@ -1546,7 +1556,7 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
    int ret;
    FILE *fp;
    
-   if (-1 == get_heads (s, numbers, heads, xovs, num))
+   if (-1 == get_heads (s, g, numbers, heads, xovs, num))
      return -1;
 
    ret = 0;
@@ -1619,93 +1629,98 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 static int get_group_articles (NNTP_Type *s, Active_Group_Type *g, 
 			       int server_min, int server_max, int marked_bodies) /*{{{*/
 {
-   unsigned int gmin, gmax;
-   int *numbers;
-   unsigned int num_numbers, i, imin;
+   if (!marked_bodies)
+     {
+	unsigned int gmin, gmax;
+	int *numbers;
+	unsigned int num_numbers, i, imin;
+	
+	Num_Articles_Received = 0;
+	Num_Killed = 0;
+	Num_Articles_To_Receive = 0;
+	
+	gmin = g->min;
+	gmax = g->max;
+	
+	if (((server_min > server_max) || (server_max < 0))
+	    || (((unsigned int)server_max <= gmax) && (gmin <= gmax)))
+	  {
+	     log_message (_("%s: no new articles available."), g->name);
+	     return 0;
+	  }
+	
+	Num_Duplicates = 0;
+	numbers = list_server_numbers (s, g, server_min, server_max, &num_numbers);
+	if (Num_Duplicates)
+	  log_message (_("%u duplicates removed leaving %u/%u."), 
+		       Num_Duplicates, num_numbers, num_numbers + Num_Duplicates);
+	
+	if (numbers == NULL) return -1;
+	
+	i = 0;
+	while ((i < num_numbers) && (numbers[i] <= (int) gmax))
+	  i++;
+	
+	if (i == num_numbers)
+	  {
+	     g->max = g->server_max;
+	     log_message (_("%s: No new articles available."), g->name);
+	     slrn_free ((char *) numbers);
+	     return 0;
+	  }
+	
+	log_message (_("%s: %u articles available."), g->name, num_numbers - i);
+	
+	/* Hmmm...  How shall g->max_to_get be defined?  Here I assume that it 
+	 * means to attempt to retrieve the last max_to_get articles.
+	 */
+	if ((g->max_to_get != 0) && (g->max_to_get + i < num_numbers))
+	  {
+	     log_message (_("%s: Only retrieving last %u articles."), g->name, g->max_to_get);
+	     i = num_numbers - g->max_to_get;
+	  }
+	
+	imin = i;
+	
+	(void) slrn_open_score (g->name);
+	
+	Num_Articles_To_Receive = num_numbers - i;
+	
+	while (i < num_numbers)
+	  {
+	     int ns[SLRN_MAX_QUEUED];
+	     unsigned int j;
+	     
+	     j = 0;
+	     while ((i < num_numbers) && (j < SLRN_MAX_QUEUED))
+	       {
+		  ns[j] = numbers[i];
+		  i++;
+		  j++;
+	       }
+	     
+	     print_time_stats (s, 0);
+	     (void) get_articles (s, g, ns, j);
+	     
+	     Num_Articles_Received += j;
+	  }
+	
+	g->max = g->server_max;
+	
+	(void) slrn_close_score ();
+	slrn_clear_requested_headers ();
+	slrn_free ((char *) numbers);
+	
+	print_time_stats (s, 1);	
+     }
+
+   /* Now, fetch marked article bodies. */
    
    /* Don't request bodies that are no longer there. */
    if (server_min > 1)
      g->requests = slrn_ranges_remove (g->requests, 1, server_min-1);
    get_marked_bodies (s, g);
    
-   if (marked_bodies)
-     return 0;
-
-   Num_Articles_Received = 0;
-   Num_Killed = 0;
-   Num_Articles_To_Receive = 0;
-   
-   gmin = g->min;
-   gmax = g->max;
-   
-   if (((server_min > server_max) || (server_max < 0))
-       || (((unsigned int)server_max <= gmax) && (gmin <= gmax)))
-     {
-	log_message (_("%s: no new articles available."), g->name);
-	return 0;
-     }
-
-   Num_Duplicates = 0;
-   numbers = list_server_numbers (s, g, server_min, server_max, &num_numbers);
-   if (Num_Duplicates)
-     log_message (_("%u duplicates removed leaving %u/%u."), 
-		  Num_Duplicates, num_numbers, num_numbers + Num_Duplicates);
-	
-   if (numbers == NULL) return -1;
-   
-   i = 0;
-   while ((i < num_numbers) && (numbers[i] <= (int) gmax))
-     i++;
-   
-   if (i == num_numbers)
-     {
-	g->max = g->server_max;
-	log_message (_("%s: No new articles available."), g->name);
-	slrn_free ((char *) numbers);
-	return 0;
-     }
-   
-   log_message (_("%s: %u articles available."), g->name, num_numbers - i);
-   
-   /* Hmmm...  How shall g->max_to_get be defined?  Here I assume that it 
-    * means to attempt to retrieve the last max_to_get articles.
-    */
-   if ((g->max_to_get != 0) && (g->max_to_get + i < num_numbers))
-     {
-	log_message (_("%s: Only retrieving last %u articles."), g->name, g->max_to_get);
-	i = num_numbers - g->max_to_get;
-     }
-	
-   imin = i;
-
-   (void) slrn_open_score (g->name);
-   
-   Num_Articles_To_Receive = num_numbers - i;
-   
-   while (i < num_numbers)
-     {
-	int ns[SLRN_MAX_QUEUED];
-	unsigned int j;
-	
-	j = 0;
-	while ((i < num_numbers) && (j < SLRN_MAX_QUEUED))
-	  {
-	     ns[j] = numbers[i];
-	     i++;
-	     j++;
-	  }
-	
-	print_time_stats (s, 0);
-	(void) get_articles (s, g, ns, j);
-	
-	Num_Articles_Received += j;
-     }
-   
-   g->max = g->server_max;
-   
-   (void) slrn_close_score ();
-   slrn_clear_requested_headers ();
-   slrn_free ((char *) numbers);
    return 0;
 }
 
@@ -1744,8 +1759,6 @@ static int pull_news (NNTP_Type *s, int marked_bodies) /*{{{*/
 	
 	(void) get_group_articles (s, g, min, max, marked_bodies);
 	
-	print_time_stats (s, 1);
-
 	g = g->next;
      }	
 	     
@@ -2099,6 +2112,8 @@ static void usage (char *pgm) /*{{{*/
   -h HOSTNAME          Hostname of NNTP server to connect to.\n\
   --debug FILE         Write dialogue with server to FILE.\n\
   --expire             Perform expiration, but do not pull news.\n\
+  --fetch-score SCORE  Fetch article bodies with a score of at least SCORE\n\
+                       (for use in \"true offline\" mode)\n\
   --help               Print this usage information.\n\
   --kill-log FILE      Keep a log of all killed articles in FILE.\n\
   --kill-score SCORE   Kill articles with a score below SCORE.\n\
@@ -2227,6 +2242,12 @@ int main (int argc, char **argv) /*{{{*/
 	else if (!strcmp (arg, "--kill-score") && (argc > 0))
 	  {
 	     Kill_Score = atoi (*argv);
+	     argv++; argc--;
+	  }
+	else if (!strcmp (arg, "--fetch-score") && (argc > 0))
+	  {
+	     Fetch_Score = atoi (*argv);
+	     Use_Fetch_Score = 1;
 	     argv++; argc--;
 	  }
 	else if (!strcmp (arg, "--debug") && (argc > 0))
