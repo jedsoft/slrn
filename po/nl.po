@@ -72,7 +72,7 @@ msgstr ""
 
 #: src/art.c:1355 src/help.c:572
 msgid "<Space>"
-msgstr ""
+msgstr "<Spatie>"
 
 #: src/art.c:2191
 msgid "Goto article: "
@@ -518,7 +518,7 @@ msgstr "Voer Bericht-Nummer in: "
 
 #: src/art.c:6597
 msgid "Warning: Could not save list of requested bodies."
-msgstr ""
+msgstr "Waarschuwing: Kon lijst met opgevraagde artikelen niet opslaan."
 
 #: src/art.c:6884
 msgid "Are you sure that you want to cancel this article"
@@ -1600,9 +1600,8 @@ msgid "  W                  Wrap long lines (on/off)."
 msgstr "  W                  Breek lange regels (aan/uit)."
 
 #: src/help.c:129
-#, fuzzy
 msgid "  ESC ?              Reveal spoilers."
-msgstr "  ESC ?              Laat 'bedorven' berichten zien (aan/uit)."
+msgstr "  ESC ?              Laat 'bedorven' berichten zien."
 
 #: src/help.c:131
 msgid "  ]                  Show PGP signature (on/off)."
@@ -1971,153 +1970,151 @@ msgstr ""
 
 #: src/help.c:557
 msgid "<PageUp>"
-msgstr ""
+msgstr "<PageUp>"
 
 #: src/help.c:558
 msgid "<PageDown>"
-msgstr ""
+msgstr "<PageDown>"
 
 #: src/help.c:559
 msgid "<Up>"
-msgstr ""
+msgstr "<Omhoog>"
 
 #: src/help.c:560
 msgid "<Down>"
-msgstr ""
+msgstr "<Omlaag>"
 
 #: src/help.c:561
 msgid "<Right>"
-msgstr ""
+msgstr "<Rechts>"
 
 #: src/help.c:562
 msgid "<Left>"
-msgstr ""
+msgstr "<Links>"
 
 #: src/help.c:563
-#, fuzzy
 msgid "<Delete>"
-msgstr "Verwijder %s"
+msgstr "<Verwijder>"
 
 #: src/help.c:564
 msgid "<BackSpace>"
-msgstr ""
+msgstr "<BackSpace>"
 
 #: src/help.c:565
 msgid "<Insert>"
-msgstr ""
+msgstr "<Insert>"
 
 #: src/help.c:566
 msgid "<Home>"
-msgstr ""
+msgstr "<Home>"
 
 #: src/help.c:567
 msgid "<End>"
-msgstr ""
+msgstr "<End>"
 
 #: src/help.c:568
 msgid "<Enter>"
-msgstr ""
+msgstr "<Enter>"
 
 #: src/help.c:569
 msgid "<Return>"
-msgstr ""
+msgstr "<Return>"
 
 #: src/help.c:570
 msgid "<Tab>"
-msgstr ""
+msgstr "<Tab>"
 
 #: src/help.c:571
 msgid "<BackTab>"
-msgstr ""
+msgstr "<BackTab>"
 
 #: src/help.c:573
 msgid "<F1>"
-msgstr ""
+msgstr "<F1>"
 
 #: src/help.c:574
 msgid "<F2>"
-msgstr ""
+msgstr "<F2>"
 
 #: src/help.c:575
 msgid "<F3>"
-msgstr ""
+msgstr "<F3>"
 
 #: src/help.c:576
 msgid "<F4>"
-msgstr ""
+msgstr "<F4>"
 
 #: src/help.c:577
 msgid "<F5>"
-msgstr ""
+msgstr "<F5>"
 
 #: src/help.c:578
 msgid "<F6>"
-msgstr ""
+msgstr "<F6>"
 
 #: src/help.c:579
 msgid "<F7>"
-msgstr ""
+msgstr "<F7>"
 
 #: src/help.c:580
 msgid "<F8>"
-msgstr ""
+msgstr "<F8>"
 
 #: src/help.c:581
 msgid "<F9>"
-msgstr ""
+msgstr "<F9>"
 
 #: src/help.c:582
 msgid "<F10>"
-msgstr ""
+msgstr "<F10>"
 
 #: src/help.c:583
 msgid "<F11>"
-msgstr ""
+msgstr "<F11>"
 
 #: src/help.c:584
 msgid "<F12>"
-msgstr ""
+msgstr "<F12>"
 
 #: src/help.c:585
 msgid "<F13>"
-msgstr ""
+msgstr "<F13>"
 
 #: src/help.c:586
 msgid "<F14>"
-msgstr ""
+msgstr "<F14>"
 
 #: src/help.c:587
 msgid "<F15>"
-msgstr ""
+msgstr "<F15>"
 
 #: src/help.c:588
 msgid "<F16>"
-msgstr ""
+msgstr "<F16>"
 
 #: src/help.c:589
 msgid "<F17>"
-msgstr ""
+msgstr "<F17>"
 
 #: src/help.c:590
 msgid "<F18>"
-msgstr ""
+msgstr "<F18>"
 
 #: src/help.c:591
 msgid "<F19>"
-msgstr ""
+msgstr "<F19>"
 
 #: src/help.c:592
 msgid "<F20>"
-msgstr ""
+msgstr "<F20>"
 
 #: src/help.c:593
 msgid "<Esc>"
-msgstr ""
+msgstr "<Esc>"
 
 #: src/help.c:787
-#, fuzzy
 msgid "Ctrl-"
-msgstr "Ctrl-%c"
+msgstr "Ctrl-"
 
 #: src/interp.c:105
 msgid "positive integer expected"
@@ -2623,7 +2620,7 @@ msgstr "Voorbeeld (sh) : NNTPSERVER='mijn.nieuws.server' && export NNTPSERVER"
 
 #: src/nntplib.c:597
 msgid "For now, I'm going to try \"localhost\" as the default..."
-msgstr ""
+msgstr "Voor nu zal \"localhost\" gebruikt worden..."
 
 #: src/nntplib.c:1159
 msgid "Help text on way"
@@ -2814,9 +2811,9 @@ msgid "Unknown NNTP code"
 msgstr "Onbekende NNTP code"
 
 #: src/post.c:534
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to re-open %s."
-msgstr "Kan %s niet openen."
+msgstr "Kan %s niet heropenen."
 
 #: src/post.c:660
 msgid "The first line must begin with a header."
@@ -3403,7 +3400,7 @@ msgid "Unable to select server/post object."
 msgstr "Kan geen server/post object selecteren."
 
 #: src/slrn.c:1279
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to find a valid hostname for constructing your e-mail address.\n"
 "You probably want to specify a hostname in your %s file.\n"
@@ -3412,6 +3409,7 @@ msgstr ""
 "Kan geen geldige computernaam vinden voor het construeren van je e-mail "
 "adres.\n"
 "Je zult een computernaam op moeten geven in je %s bestand.\n"
+"Zie die slrn handleiding voor details.\n"
 
 #: src/slrn.c:1289
 msgid ""
@@ -3667,9 +3665,9 @@ msgid "Error writing to overview database: %s:%d."
 msgstr "Fout tijdens schrijven naar overzichtsdatabase: %s:%d."
 
 #: src/slrnpull.c:1356
-#, fuzzy, c-format
+#, c-format
 msgid "Score %d requested article %s\n"
-msgstr "Score %d doodde artikel %s\n"
+msgstr "Score %d verzocht artikel %s\n"
 
 #: src/slrnpull.c:1419
 msgid "Internal error: Buffer in get_heads not large enough!"
@@ -3815,7 +3813,7 @@ msgid "A total of %lu bytes received, %lu bytes sent in %ld seconds."
 msgstr "%lu bytes ontvangen, %lu bytes verstuurd in %ld seconden."
 
 #: src/slrnpull.c:2127
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s usage: %s [options]\n"
 " Options:\n"
@@ -3842,6 +3840,8 @@ msgstr ""
 "  -h SERVER            Stel de server waarmee verbonden moet worden in.\n"
 "  --debug BESTAND      Schrijf dialoog met server naar BESTAND.\n"
 "  --expire             Laat artikelen verlopen, maar haal geen nieuws op.\n"
+"  --fetch-score SCORE  Haal inhoud van artikelen op die minstens score SCORE\n"
+"                       hebben (voor genruik in offline modus)\n"
 "  --help               Toon dit help overzicht.\n"
 "  --kill-log BESTAND   Log alle verwijderde berichten in BESTAND\n"
 "  --kill-score SCORE   Verwijder artikelen met een score lager dan SCORE.\n"
