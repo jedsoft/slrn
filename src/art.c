@@ -1778,17 +1778,12 @@ static void for_all_headers (void (*func)(Slrn_Header_Type *), int all) /*{{{*/
 
 /*}}}*/
 
+/* When using this, make sure *header points to a valid header. */
 int slrn_goto_header (Slrn_Header_Type *header, int read_flag) /*{{{*/
 {
-   Slrn_Header_Type *h = Slrn_First_Header;
-   
-   while ((h != NULL) && (h != header))
-     h = h->real_next;
-
-   if (h == NULL) return -1;
-   
-   Slrn_Current_Header = h;
-   if (h->flags & HEADER_HIDDEN) slrn_uncollapse_this_thread (h, 0);
+   Slrn_Current_Header = header;
+   if (header->flags & HEADER_HIDDEN)
+     slrn_uncollapse_this_thread (header, 0);
    _art_find_header_line_num ();
    
    if (read_flag) select_article (1);
@@ -6765,6 +6760,17 @@ static void art_xpunge (void) /*{{{*/
 	  }
 	Num_Tag_List.len = j;
      }
+
+   /* Check if Last_Read_Header and Mark_Header are unread */
+   if ((Last_Read_Header != NULL) &&
+       (Last_Read_Header->flags & HEADER_READ) &&
+       (0 == (Last_Read_Header->flags & HEADER_DONT_DELETE_MASK)))
+     Last_Read_Header = NULL;
+
+   if ((Mark_Header != NULL) &&
+       (Mark_Header->flags & HEADER_READ) &&
+       (0 == (Mark_Header->flags & HEADER_DONT_DELETE_MASK)))
+     Mark_Header = NULL;
    
    /* Find an unread message for Slrn_Current_Header; we made sure that
     * at least one unread message exists, so this can never fail. */
@@ -6828,7 +6834,6 @@ static void art_xpunge (void) /*{{{*/
      }
    
    /* Fix the prev / next linking */
-   Last_Read_Header = NULL;
    h = _art_Headers = Slrn_First_Header;
    _art_Headers->prev = NULL;
    
