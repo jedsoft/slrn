@@ -43,7 +43,6 @@
 
 #include "nntpcodes.h"
 #include "util.h"
-#include "misc.h"
 #include "nntplib.h"
 #include "ttymsg.h"
 #include "snprintf.h"
@@ -477,9 +476,6 @@ static int _nntp_connect_server (NNTP_Type *s)
 
    if (NULL == (s->tcp = sltcp_open_connection (s->host, s->port, s->use_ssh)))
      return -1;
-
-   /* Needed because sltcp writes to stderr. Should really be fixed there. */
-   slrn_redraw ();
 
    s->init_state = 1;
    s->number_bytes_received = 0;

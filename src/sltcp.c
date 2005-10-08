@@ -205,7 +205,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
       snprintf(portstr, 6, "%i", port);
       if ((r = getaddrinfo(host, portstr, &hint, &res)) != 0) {
 	 if (TCP_Verbose_Reporting) {
-	    fprintf (stderr, "Error resolving %s (port %s): %s\n", host, portstr, gai_strerror(r));
+	    slrn_error ("Error resolving %s (port %s): %s\n", host, portstr, gai_strerror(r));
 	 }
 	 if (r == EAI_AGAIN) {
 	    slrn_sleep (1);
@@ -214,11 +214,11 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
    } while (r && (tries++ <= 3));
    
    if (r) {
-      fprintf (stderr, _("Failed to resolve %s\n"), host);
+      slrn_error (_("Failed to resolve %s\n"), host);
       return -1;
    }
    if (TCP_Verbose_Reporting) {
-      fprintf (stderr, "Successfully resolved %s\n", host);
+      slrn_error ("Successfully resolved %s\n", host);
    }
 
    ai = res;
@@ -231,43 +231,43 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 	 int l;
 	 if (a->sa_family == AF_INET) {
 	    l = sizeof(struct sockaddr_in);
-	    fprintf (stderr, "Address family: AF_INET\n");
+	    slrn_error ("Address family: AF_INET\n");
 	 } else {
 	    assert(a->sa_family == AF_INET6);
 	    l = sizeof(struct sockaddr_in6);
-	    fprintf (stderr, "Address family: AF_INET6\n");
+	    slrn_error ("Address family: AF_INET6\n");
 	 }
 	 if (!getnameinfo(a, l, buf, NI_MAXHOST-1, NULL, 0, NI_NUMERICHOST)) {
-	    fprintf (stderr, "Will try with address %s", buf);
+	    slrn_error ("Will try with address %s", buf);
 	 } else {
-	    fprintf (stderr, "getnameinfo failed: %s\n", strerror(errno));
+	    slrn_error ("getnameinfo failed: %s\n", strerror(errno));
 	 }
 # else
 	 if (a->sa_family == AF_INET) {
-	    fprintf (stderr, "Address family: AF_INET\n");
+	    slrn_error ("Address family: AF_INET\n");
 	 } else {
 	    assert(a->sa_family == AF_INET6);
-	    fprintf (stderr, "Address family: AF_INET6\n");
+	    slrn_error ("Address family: AF_INET6\n");
 	 }
 # endif /* HAVE_GETNAMEINFO */
       }
       
       if ((fd = socket(ai->ai_family, SOCK_STREAM, 0)) == -1) {
 	 if (TCP_Verbose_Reporting) {
-	    fprintf (stderr, "Error creating socket: %s\n", strerror(errno));
+	    slrn_error ("Error creating socket: %s\n", strerror(errno));
 	 }
       } else {
 	 if (TCP_Verbose_Reporting) {
-	    fprintf (stderr, "Created socket; descriptor is = %i\n", fd);
+	    slrn_error ("Created socket; descriptor is = %i\n", fd);
 	 }
 	 if ((r = connect(fd, ai->ai_addr, ai->ai_addrlen)) == 0) {
 	    if (TCP_Verbose_Reporting) {
-	       fprintf (stderr, "Successfully connected\n");
+	       slrn_error ("Successfully connected\n");
 	    }
 	    connected = 1;
 	 } else {
 	    if (TCP_Verbose_Reporting) {
-	       fprintf (stderr, "Error connecting: %i, %s\n", errno, strerror(errno));
+	       slrn_error ("Error connecting: %i, %s\n", errno, strerror(errno));
 	    }
 	    (void) SLTCP_CLOSE (fd);
 	 }
@@ -278,7 +278,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
    freeaddrinfo(res);
    
    if (!connected)
-     fprintf(stderr, _("Unable to make connection. Giving up.\n"));
+     slrn_error(_("Unable to make connection. Giving up.\n"));
    
    return connected ? fd : -1;
 #else
@@ -313,7 +313,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 		  continue;
 	       }
 # endif
-	     fprintf(stderr, _("%s: Unknown host.\n"), host);
+	     slrn_error(_("%s: Unknown host.\n"), host);
 	     return -1;
 	  }
 	
@@ -359,7 +359,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 
 	this_host = (char *) inet_ntoa (s_in.sin_addr);
 	
-	if (TCP_Verbose_Reporting) fprintf (stderr, "trying %s\n", this_host);
+	if (TCP_Verbose_Reporting) slrn_error ("trying %s\n", this_host);
 	
 	not_connected = connect (s, (struct sockaddr *)&s_in, sizeof (s_in));
 	
@@ -372,7 +372,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
 		    continue;
 	       }
 # endif
-	     fprintf (stderr, _("connection to %s, port %d:"), 
+	     slrn_error (_("connection to %s, port %d:"), 
 		      (char *) this_host, port);
 	     perror ("");
 	  }
@@ -381,7 +381,7 @@ static int get_tcp_socket_1 (char *host, int port) /*{{{*/
    
    if (not_connected) 
      {
-	fprintf(stderr, _("Unable to make connection. Giving up.\n"));
+	slrn_error(_("Unable to make connection. Giving up.\n"));
 	(void) SLTCP_CLOSE (s);
 	return -1;
      }
@@ -484,7 +484,7 @@ static void dump_ssl_error_0 (void)
    int err;
    
    while (0 != (err = ERR_get_error()))
-     fprintf (stderr, "%s\n", ERR_error_string(err, 0));
+     slrn_error ("%s\n", ERR_error_string(err, 0));
 }
 
 unsigned long Fast_Random;
@@ -519,7 +519,7 @@ static int init_ssl_random (void)
    if (RAND_status ())
      return 0;
    
-   fprintf (stderr, _("Unable to generate enough entropy\n"));
+   slrn_error (_("Unable to generate enough entropy\n"));
    return -1;
 }
 
@@ -538,7 +538,7 @@ static SSL *alloc_ssl (void)
 	if (c == NULL)
 	  {
 	     dump_ssl_error_0 ();
-	     fprintf (stderr, _("SSL_CTX_new failed.\n"));
+	     slrn_error (_("SSL_CTX_new failed.\n"));
 	     return NULL;
 	  }
 	This_SSL_Ctx = c;
@@ -553,7 +553,7 @@ static SSL *alloc_ssl (void)
      return ssl;
    
    dump_ssl_error_0 ();
-   fprintf (stderr, _("SSL_new failed\n"));
+   slrn_error (_("SSL_new failed\n"));
    return NULL;
 }
 
@@ -570,17 +570,17 @@ static void dump_ssl_error (SSL *ssl, char *msg, int status)
       case SSL_ERROR_NONE:
 	break;
       case SSL_ERROR_ZERO_RETURN:
-	fprintf (stderr, _("Unexpected error: SSL connection closed\n"));
+	slrn_error (_("Unexpected error: SSL connection closed\n"));
 	break;
       case SSL_ERROR_SYSCALL:
-	fprintf (stderr, _("System call failed: errno = %d\n"), errno);
+	slrn_error (_("System call failed: errno = %d\n"), errno);
 	break;
       case SSL_ERROR_SSL:
-	fprintf (stderr, _("Possible protocol error\n"));
+	slrn_error (_("Possible protocol error\n"));
 	break;
      }
    dump_ssl_error_0 ();
-   if (msg != NULL) fprintf (stderr, _("%s failed\n"), msg);
+   if (msg != NULL) slrn_error (_("%s failed\n"), msg);
 }
 #endif				       /* SLTCP_HAS_SSL_SUPPORT */
 
@@ -599,7 +599,7 @@ SLTCP_Type *sltcp_open_connection (char *host, int port, int use_ssl) /*{{{*/
 	if (NULL == (ssl = alloc_ssl ()))
 	  return NULL;
 #else
-	fprintf (stderr, _("\n\n*** This program does not support SSL\n"));
+	slrn_error (_("\n\n*** This program does not support SSL\n"));
 	return NULL;
 #endif
      }
@@ -607,7 +607,7 @@ SLTCP_Type *sltcp_open_connection (char *host, int port, int use_ssl) /*{{{*/
    tcp = (SLTCP_Type *) SLMALLOC (sizeof (SLTCP_Type));
    if (tcp == NULL)
      {
-	fprintf (stderr, _("Memory Allocation Failure.\n"));
+	slrn_error (_("Memory Allocation Failure.\n"));
 #if SLTCP_HAS_SSL_SUPPORT
 	dealloc_ssl (ssl);
 #endif
@@ -639,7 +639,7 @@ SLTCP_Type *sltcp_open_connection (char *host, int port, int use_ssl) /*{{{*/
    if (1 != SSL_set_fd (ssl, fd))
      {
 	/* Yuk.  SSL_set_fd returns 0 upon failure */
-	fprintf (stderr, _("SSL_set_fd failed\n"));
+	slrn_error (_("SSL_set_fd failed\n"));
 	sltcp_close (tcp);
 	return NULL;
      }
