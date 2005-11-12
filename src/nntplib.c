@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2005 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -803,11 +803,10 @@ static int _nntp_num_or_msgid_cmd (NNTP_Type *s, char *cmd, int n, char *msgid)
 {
    if ((n != -1) && ((Slrn_Broken_Xref == 0) || (msgid == NULL)))
      return nntp_server_vcmd (s, "%s %d", cmd, n);
+   else if (msgid == NULL)
+     return nntp_server_cmd(s, cmd);
    else
-     {
-	if (msgid == NULL) msgid = "";
-	return nntp_server_vcmd (s, "%s %s", cmd, msgid);
-     }
+     return nntp_server_vcmd (s, "%s %s", cmd, msgid);
 }
 
 int nntp_head_cmd (NNTP_Type *s, int n, char *msgid, int *real_id)

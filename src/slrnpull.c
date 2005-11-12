@@ -812,7 +812,6 @@ static int make_filenames (void) /*{{{*/
    
    New_Groups_Time_File = data_dircat (New_Groups_Time_File);
    Active_File = data_dircat (Active_File);
-   Headers_File = data_dircat (Headers_File);
    New_Groups_File = data_dircat (New_Groups_File);
    
    Outgoing_Bad_Dir = slrn_spool_dircat (Outgoing_Dir, SLRNPULL_OUTGOING_BAD_DIR, 0);
@@ -829,7 +828,6 @@ static int make_filenames (void) /*{{{*/
      return -1;
    
    Overview_File = SLRN_SPOOL_NOV_FILE;
-   Headers_File = SLRN_SPOOL_HEADERS;
    Group_Min_Max_File = ".minmax";
    Server_Min_File = ".servermin";
 

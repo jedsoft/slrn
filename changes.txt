@@ -6,6 +6,9 @@ Changes since 0.9.8.1
   * slrnpull gives permission 600 to debugging files (may contain passwords).
   * Some minor usability glitches (Alain Bench)
   * Fixed fd leaks on some error conditions (Sami Farin)
+  * sltcp.c wrote to stderr, messing up the screen in some cases.
+  * Going to a numerically tagged article now faster in large groups.
+  * Do not send trailing space after some NNTP commands (Lars Kellogg-Stedman)
 1. Ported to slang-2 (patch by John E. Davis). slrn still compiles with
    slang-1 and I will keep this option until slang-2 is completely stable.
    Please see the FAQ for the current status of slang-2 support.
