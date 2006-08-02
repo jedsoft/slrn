@@ -47,55 +47,24 @@
 #include "server.h"
 #include "snprintf.h"
 #include "mime.h"
+#include "charset.h"
 
-#if ! SLRN_HAS_MIME
-int Slrn_Use_Mime = 0;
-#else /* rest of file in this ifdef */
-
-int Slrn_Use_Mime = 5;
 int Slrn_Use_Meta_Mail = 1;
 int Slrn_Fold_Headers = 1;
 char *Slrn_MetaMail_Cmd;
-char *Slrn_Utf8_Table = NULL;
-
-char *Slrn_Mime_Display_Charset;
-
-/* These are all supersets of US-ASCII.  Only the first N characters are 
- * matched, where N is the length of the table entry.
- */
-static char **Custom_Compatible_Charsets;
-static char *Compatible_Charsets[] =
-{
-   "US-ASCII",			       /* This MUST be zeroth element */
-   "ISO-8859-",
-   "iso-latin1",		       /* knews adds his one */
-   "KOI8-R",
-   "utf-8",			 /* we now have a function to decode this */
-   NULL
-};
 
 #ifndef SLRNPULL_CODE
-static char *Char_Set;
-static int Content_Type;
 #define CONTENT_TYPE_TEXT		0x01
 #define CONTENT_TYPE_MESSAGE		0x02
 #define CONTENT_TYPE_MULTIPART		0x03
 #define CONTENT_TYPE_UNSUPPORTED	0x10
 
-static int Content_Subtype;
 #define CONTENT_SUBTYPE_PLAIN		0x01
 #define CONTENT_SUBTYPE_UNKNOWN		0x02
 #define CONTENT_SUBTYPE_UNSUPPORTED	0x10
 
-static int Encoding_Method;
-#define ENCODED_7BIT			1
-#define ENCODED_8BIT			2
-#define ENCODED_QUOTED			3
-#define ENCODED_BASE64			4
-#define ENCODED_BINARY			5
-#define ENCODED_UNSUPPORTED		6
 
-static Slrn_Article_Line_Type *find_header_line (Slrn_Article_Type *a, char *header)
+static Slrn_Article_Line_Type *find_header_line (Slrn_Article_Type *a, char *header)/*{{{*/
 {
    Slrn_Article_Line_Type *line;
    unsigned char ch = (unsigned char) UPPER_CASE(*header);
@@ -117,91 +86,11 @@ static Slrn_Article_Line_Type *find_header_line (Slrn_Article_Type *a, char *hea
      }
    return NULL;
 }
-
-int slrn_set_compatible_charsets (char *charsets)
-{
-   static char* buf;
-   char *p;
-   char **pp;
-   unsigned int n;
-   
-   slrn_free (buf);
-   buf = NULL;
-   slrn_free ((char *) Custom_Compatible_Charsets);
-   Custom_Compatible_Charsets = NULL;
-   
-   if (*charsets == 0)
-     return 0;
-
-   n = 1;
-   p = charsets;
-   while (NULL != (p = strchr (p, ',')))
-     {
-	n++; p++;
-     }
-   
-   Custom_Compatible_Charsets = (char **) SLmalloc (sizeof (char **) * (n+1));
-   if (Custom_Compatible_Charsets == NULL)
-     return -1;
-   
-   buf = slrn_strmalloc (charsets, 0);
-   if (buf == NULL)
-     {
-	slrn_free ((char *) Custom_Compatible_Charsets);
-	Custom_Compatible_Charsets = NULL;
-	return -1;
-     }
-   
-   pp = Custom_Compatible_Charsets;
-   p = buf;
-   while (n-- != 0)
-     {
-	*pp++ = p;
-	if (NULL != (p = strchr (p, ',')))
-	  {
-	     *p = 0;
-	     p++;
-	  }
-     }
-   
-   *pp = NULL;
-   
-   return 0;
-}
+/*}}}*/
 #endif /* NOT SLRNPULL_CODE */
 
-static char *_find_compatible_charset (char **compat_charset, char *cs,
-				       unsigned int len)
-{
-   while (*compat_charset != NULL)
-     {
-	unsigned int len1;
-	
-	len1 = strlen (*compat_charset);
-	if ((len1 <= len) &&
-	    (0 == slrn_case_strncmp ((unsigned char *) cs,
-				     (unsigned char *) *compat_charset,
-				     len1)))
-	  return *compat_charset;
-	compat_charset++;
-     }
-   return NULL;
-}
-
-static char *find_compatible_charset (char *cs, unsigned int len)
-{
-   char *retval;
-   
-   if ((NULL == (retval = _find_compatible_charset (Compatible_Charsets, cs,
-						   len))) &&
-       (NULL != Custom_Compatible_Charsets))
-     retval = _find_compatible_charset (Custom_Compatible_Charsets, cs, len);
-   
-   return retval;
-}
-
 #ifndef SLRNPULL_CODE
-static int parse_content_type_line (Slrn_Article_Type *a)
+static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 {
    char *b;
    Slrn_Article_Line_Type *line;
@@ -209,10 +98,6 @@ static int parse_content_type_line (Slrn_Article_Type *a)
    if (a == NULL)
      return -1;
    line = a->lines;
-   /* Use default: text/plain; charset=us-ascii */
-   Content_Type = CONTENT_TYPE_TEXT;
-   Content_Subtype = CONTENT_SUBTYPE_PLAIN;
-   Char_Set = Compatible_Charsets[0];
    
    if (NULL == (line = find_header_line (a, "Content-Type:")))
      return 0;
@@ -223,13 +108,18 @@ static int parse_content_type_line (Slrn_Article_Type *a)
 			       (unsigned char *) "text/",
 			       5))
      {
+	a->mime.content_type = CONTENT_TYPE_TEXT;
 	b += 5;
 	if (0 != slrn_case_strncmp ((unsigned char *)b,
 				    (unsigned char *) "plain",
 				    5))
 	  {
-	     Content_Subtype = CONTENT_SUBTYPE_UNSUPPORTED;
+	     a->mime.content_subtype = CONTENT_SUBTYPE_UNSUPPORTED;
 	     return -1;
+	  }
+	else
+	  {
+	     a->mime.content_subtype = CONTENT_SUBTYPE_PLAIN;
 	  }
 	b += 5;
      }
@@ -237,21 +127,21 @@ static int parse_content_type_line (Slrn_Article_Type *a)
 				    (unsigned char *) "message/",
 				    5))
      {
-	Content_Type = CONTENT_TYPE_MESSAGE;
-	Content_Subtype = CONTENT_SUBTYPE_UNKNOWN;
+	a->mime.content_type = CONTENT_TYPE_MESSAGE;
+	a->mime.content_subtype = CONTENT_SUBTYPE_UNKNOWN;
 	b += 8;
      }
    else if (0 == slrn_case_strncmp ((unsigned char *)b,
 				    (unsigned char *) "multipart/",
 				    5))
      {
-	Content_Type = CONTENT_TYPE_MULTIPART;
-	Content_Subtype = CONTENT_SUBTYPE_UNKNOWN;
+	a->mime.content_type = CONTENT_TYPE_MULTIPART;
+	a->mime.content_subtype = CONTENT_SUBTYPE_UNKNOWN;
 	b += 10;
      }
    else
      {
-	Content_Type = CONTENT_TYPE_UNSUPPORTED;
+	a->mime.content_type = CONTENT_TYPE_UNSUPPORTED;
 	return -1;
      }
    
@@ -290,7 +180,7 @@ static int parse_content_type_line (Slrn_Article_Type *a)
 	       b++;
 	     len = b - charset;
 	     
-	     Char_Set = find_compatible_charset (charset, len);
+	     a->mime.charset = slrn_safe_strmalloc (charset);
 	     return 0;
 	  }
 	line = line->next;
@@ -302,7 +192,15 @@ static int parse_content_type_line (Slrn_Article_Type *a)
    return 0;
 }
 
-static int parse_content_transfer_encoding_line (Slrn_Article_Type *a)
+/*}}}*/
+#define ENCODED_RAW			0
+#define ENCODED_7BIT			1
+#define ENCODED_8BIT			2
+#define ENCODED_QUOTED			3
+#define ENCODED_BASE64			4
+#define ENCODED_BINARY			5
+#define ENCODED_UNSUPPORTED		6
+static int parse_content_transfer_encoding_line (Slrn_Article_Type *a)/*{{{*/
 {
    Slrn_Article_Line_Type *line;
    unsigned char *buf;
@@ -310,33 +208,29 @@ static int parse_content_transfer_encoding_line (Slrn_Article_Type *a)
    if (a == NULL)
      return -1;
 
-   Encoding_Method = ENCODED_7BIT;
    line = find_header_line (a, "Content-Transfer-Encoding:");
-   if (line == NULL) return 0;
+   if (line == NULL) return ENCODED_RAW;
 
    buf = (unsigned char *) slrn_skip_whitespace (line->buf + 26);
    if (*buf == '"') buf++;
    
    if (0 == slrn_case_strncmp (buf, (unsigned char *) "7bit", 4))
-     Encoding_Method = ENCODED_7BIT;
+	return ENCODED_7BIT;
    else if (0 == slrn_case_strncmp (buf, (unsigned char *) "8bit", 4))
-     Encoding_Method = ENCODED_8BIT;
+	return ENCODED_8BIT;
    else if (0 == slrn_case_strncmp (buf, (unsigned char *) "base64", 6))
-     Encoding_Method = ENCODED_BASE64;
+	return ENCODED_BASE64;
    else if (0 == slrn_case_strncmp (buf, (unsigned char *) "quoted-printable", 16))
-     Encoding_Method = ENCODED_QUOTED;
+	return ENCODED_QUOTED;
    else if (0 == slrn_case_strncmp (buf, (unsigned char *) "binary", 6))
-     Encoding_Method = ENCODED_BINARY;
-   else
-     {
-	Encoding_Method = ENCODED_UNSUPPORTED;
-	return -1;
-     }
-   return 0;
+	return ENCODED_BINARY;
+   return ENCODED_UNSUPPORTED;
 }
+
+/*}}}*/
 #endif /* NOT SLRNPULL_CODE*/
 
-static int Index_Hex[128] =
+static int Index_Hex[128] =/*{{{*/
 {
    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
      -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
@@ -347,21 +241,24 @@ static int Index_Hex[128] =
      -1,10,11,12, 13,14,15,-1, -1,-1,-1,-1, -1,-1,-1,-1,
      -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1
 };
+
+/*}}}*/
 #define HEX(c) (Index_Hex[(unsigned char)(c) & 0x7F])
 
-static char *decode_quoted_printable (char *dest,
+static char *decode_quoted_printable (char *dest,/*{{{*/
 				      char *src, char *srcmax,
 				      int treat_underscore_as_space,
 				      int strip_8bit)
 {
    char *allowed_in_qp = "0123456789ABCDEFabcdef";
    unsigned char ch, mask = 0x0;
+/*
 #ifndef SLRNPULL_CODE
    if (strip_8bit && (NULL == Char_Set))
      mask = 0x80;
 #else
    (void) strip_8bit;
-#endif
+#endif*/
    while (src < srcmax)
      {
 	ch = (unsigned char) *src++;
@@ -383,7 +280,9 @@ static char *decode_quoted_printable (char *dest,
    return dest;
 }
 
-static int Index_64[128] =
+/*}}}*/
+
+static int Index_64[128] =/*{{{*/
 {
    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
      -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
@@ -394,10 +293,10 @@ static int Index_64[128] =
      -1,26,27,28, 29,30,31,32, 33,34,35,36, 37,38,39,40,
      41,42,43,44, 45,46,47,48, 49,50,51,-1, -1,-1,-1,-1
 };
-
+/*}}}*/
 #define BASE64(c) (Index_64[(unsigned char)(c) & 0x7F])
 
-static char *decode_base64 (char *dest, char *src, char *srcmax)
+static char *decode_base64 (char *dest, char *src, char *srcmax) /*{{{*/
 {
    while (src + 3 < srcmax)
      {
@@ -413,122 +312,30 @@ static char *decode_base64 (char *dest, char *src, char *srcmax)
    return dest;
 }
 
-static char *utf_to_unicode (int *out, char *in, char *srcmax)
-{
-   int mask = 0;
-   short len = 0, i;
-   
-   for (i = 1; i < 8; i++)
-     {
-	if ((*in & (mask |(0x01 << (8-i)))) == mask)
-	  {
-	     len = i;
-	     break;
-	  }
-	mask = (mask |(0x01 << (8-i)));
-     }
-   
-   if ((len == 0) || (len == 2) || (in + len - 1 > srcmax))
-     {
-	*out = -1;
-	return in + 1;
-     }
-   if (len > 1) len--;
-   
-   for (i = 1; i < len; i++)
-     if ((in[i] & 0xC0) != 0x80)
-       {
-	  *out = -1;
-	  return in + 1;
-       }
-   
-   *out = ((int) in[0]) & ~mask & 0xFF;
-   for (i = 1; i < len; i++)
-     *out = (*out << 6) | (((int) in[i]) & 0x7F);
-   
-   if (!*out)
-     *out = -1;
-   
-   return in + len;
-}
+/*}}}*/
 
-static char *decode_utf8 (char *dest, char *src, char *srcmax,
-			  char *utf8_error)
+int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 {
-   int ch;
-   if (utf8_error != NULL)
-     *utf8_error = 0;
-
-   while (src < srcmax)
-     {
-	if (*src & 0x80)
-	  {
-	     src = utf_to_unicode (&ch, src, srcmax);
-	     if ((ch < 0) || (ch > 65535))
-	       {
-		  if (utf8_error != NULL)
-		    *utf8_error = 1;
-		  *dest++ = '?';
-	       }
-	     else if (Slrn_Utf8_Table == NULL) /* convert to iso-8859-1 */
-	       {
-		  if (ch < 256)
-		    *dest++ = (char) ch;
-		  else
-		    *dest++ = '?';
-	       }
-	     else /* use user-defined conversion table */
-	       {
-		  char c;
-		  
-		  if (ch < 128)
-		    *dest++ = (char) ch;
-		  else if (0 != (c = Slrn_Utf8_Table[ch]))
-		    *dest++ = c;
-		  else
-		    *dest++ = '?';
-	       }
-	  }
-	else
-	  *dest++ = *src++;
-     }
-   
-   return dest;
-}
-
-int slrn_rfc1522_decode_string (char *s)
-{
-   char *s1, *s2, ch;
+   char *s1, *s2, ch, *s;
    char *charset, method, *txt;
    char *after_last_encoded_word;
    char *after_whitespace;
+   int offset;
    unsigned int count;
    unsigned int len;
-
+   
    count = 0;
    after_whitespace = NULL;
    after_last_encoded_word = NULL;
+   charset = NULL;
+   s= *s_ptr;
 
-/* Even if some user agents still send raw 8bit, it is safe to call
+ /* Even if some user agents still send raw 8bit, it is safe to call
  * decode_utf8() -- if it finds 8bit chars that are not valid UTF-8, it
- * will set ch to 1 and we can leave the line untouched. */
-#if SLANG_VERSION >= 20000
-   if (Slrn_UTF8_Mode == 0)
-     {
-#endif
-   len = strlen (s);
-   s1 = slrn_safe_malloc(len + 1);
+ * will set ch to 1 and we can leave the line untouched.  XXX */
+   if (slrn_string_nonascii(s))
+	return -1;
    
-   s2 = decode_utf8 (s1, s, s + len, &ch);
-   *s2 = 0;
-   
-   if (ch == 0)
-     strcpy (s, s1); /* safe */
-   slrn_free (s1);
-#if SLANG_VERSION >= 20000
-     }
-#endif
-
    while (1)
      {
 	while ((NULL != (s = slrn_strchr (s, '=')))
@@ -536,6 +343,8 @@ int slrn_rfc1522_decode_string (char *s)
 	if (s == NULL) break;
 	
 	s1 = s;
+	offset= s - *s_ptr;
+
 	charset = s = s1 + 2;
 	while (((ch = *s) != 0)
 	       && (ch != '?') && (ch != ' ') && (ch != '\t') && (ch != '\n'))
@@ -544,24 +353,28 @@ int slrn_rfc1522_decode_string (char *s)
 	if (ch != '?')
 	  {
 	     s = s1 + 2;
+	     charset = NULL;
 	     continue;
 	  }
 	
 	charset = s1 + 2;
 	len = s - charset;
+	charset=slrn_strnmalloc (charset, len, 1);
 	
-	charset = find_compatible_charset (charset, len);
 	s++;			       /* skip ? */
 	method = *s++;		       /* skip B,Q */
-	method = UPPER_CASE(method);
-	
+	/* works in utf8 mode and else */
+	if (method == 'b') method = 'B';
+	if (method == 'q') method = 'Q';
+
 	if ((charset == NULL) || ((method != 'B') && (method != 'Q'))
 	    || (*s != '?'))
 	  {
 	     s = s1 + 2;
+	     slrn_free(charset);
+	     charset = NULL;
 	     continue;
 	  }
-	
 	/* Now look for the final ?= after encoded test */
 	s++;			       /* skip ? */
 	txt = s;
@@ -583,11 +396,10 @@ int slrn_rfc1522_decode_string (char *s)
 	if ((ch != '?') || (s[1] != '='))
 	  {
 	     s = s1 + 2;
+	     slrn_free(charset);
+	     charset = NULL;
 	     continue;
 	  }
-	
-	if (s1 == after_whitespace)
-	  s1 = after_last_encoded_word;
 
 	/* Note: these functions return a pointer to the END of the decoded
 	 * text.
@@ -598,14 +410,6 @@ int slrn_rfc1522_decode_string (char *s)
 	  s1 = decode_base64 (s1, txt, s);
 	else s1 = decode_quoted_printable (s1, txt, s, 1, 0);
 	
-	if ((slrn_case_strncmp((unsigned char *)"utf-8",
-			      (unsigned char *)charset, 5) == 0)
-#if SLANG_VERSION >= 20000
-	    && (Slrn_UTF8_Mode == 0)
-#endif
-	    )
-	  s1 = decode_utf8 (s2, s2, s1, NULL);
-	
 	/* Now move everything over */
 	s2 = s + 2;		       /* skip final ?= */
 	s = s1;			       /* start from here next loop */
@@ -614,17 +418,35 @@ int slrn_rfc1522_decode_string (char *s)
 	
 	count++;
 	
-	after_last_encoded_word = s;
-	s = slrn_skip_whitespace (s);
-	after_whitespace = s;
+	if (slrn_case_strncmp((unsigned char *)Slrn_Display_Charset,
+			   (unsigned char *)charset,
+			   (strlen(Slrn_Display_Charset) <= len) ? strlen(Slrn_Display_Charset) : len) != 0)
+           {
+	      if ((s2 = slrn_convert_substring(*s_ptr, offset, 0, Slrn_Display_Charset, charset, 0)) != NULL)
+		{
+		   slrn_free(*s_ptr);
+		   *s_ptr = s2;
+		   s = *s_ptr;
+		}
+	      else
+		{
+		   /* decoding fails */
+		}
+           }
+	
+	slrn_free(charset);
+	charset=NULL;
      }
+   if (charset!=NULL)
+	slrn_free(charset);
    return count;
 }
 
+/*}}}*/
 
 #ifndef SLRNPULL_CODE /* rest of the file in this ifdef */
 
-static void rfc1522_decode_headers (Slrn_Article_Type *a)
+static void rfc1522_decode_headers (Slrn_Article_Type *a)/*{{{*/
 {
    Slrn_Article_Line_Type *line;
    
@@ -639,16 +461,18 @@ static void rfc1522_decode_headers (Slrn_Article_Type *a)
 			       (unsigned char *)"Newsgroups:", 11) &&
 	    slrn_case_strncmp ((unsigned char *)line->buf,
 			       (unsigned char *)"Followup-To:", 12) &&
-	    slrn_rfc1522_decode_string (line->buf))
+	    (slrn_rfc1522_decode_string (&line->buf) > 0))
 	  {
 	     a->is_modified = 1;
-	     a->mime_was_modified = 1;
+	     a->mime.was_modified = 1;
 	  }
 	line = line->next;
      }
 }
 
-static void decode_mime_base64 (Slrn_Article_Type *a)
+/*}}}*/
+
+static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
 {
    Slrn_Article_Line_Type *l;
    Slrn_Article_Line_Type *body_start, *next;
@@ -694,7 +518,7 @@ static void decode_mime_base64 (Slrn_Article_Type *a)
    buf_pos = decode_base64(buf_dest, buf_src, buf_src+len);
    *buf_pos = '\0';
    
-   if (Char_Set == NULL)
+   if (a->mime.charset == NULL)
      {
 	buf_pos = buf_dest;
 	while (*buf_pos)
@@ -749,15 +573,17 @@ static void decode_mime_base64 (Slrn_Article_Type *a)
    slrn_free(base);
    
    a->is_modified = 1;
-   a->mime_was_modified = 1;
+   a->mime.was_modified = 1;
 }
+
+/*}}}*/
 
 /* This function checks if the last character on curr_line is an = and 
  * if it is, then it merges curr_line and curr_line->next. See RFC1341,
  * section 5.1 (Quoted-Printable Content-Transfer-Encoding) rule #5.
  * [csp@ohm.york.ac.uk]
  */
-static int merge_if_soft_linebreak (Slrn_Article_Line_Type *curr_line)
+static int merge_if_soft_linebreak (Slrn_Article_Line_Type *curr_line)/*{{{*/
 {
    Slrn_Article_Line_Type *next_line;
    char *b;
@@ -804,7 +630,9 @@ static int merge_if_soft_linebreak (Slrn_Article_Line_Type *curr_line)
    return 0;
 }
 
-static void decode_mime_quoted_printable (Slrn_Article_Type *a)
+/*}}}*/
+
+static void decode_mime_quoted_printable (Slrn_Article_Type *a)/*{{{*/
 {
    Slrn_Article_Line_Type *line;
    
@@ -838,75 +666,109 @@ static void decode_mime_quoted_printable (Slrn_Article_Type *a)
 	  {
 	     *b = 0;
 	     a->is_modified = 1;
-	     a->mime_was_modified = 1;
+	     a->mime.was_modified = 1;
 	  }
 	
 	line = line->next;
      }
 }
 
-static void decode_mime_utf8 (Slrn_Article_Type *a)
-{
-   Slrn_Article_Line_Type *line;
-   
-   if (a == NULL)
-     return;
-   
-   line = a->lines;
+/*}}}*/
 
-   /* skip to body */
-   while ((line != NULL) && (line->flags & HEADER_LINE))
-     line = line->next;
-   if (line == NULL) return;
-   
-   while (line != NULL)
+void slrn_mime_init (Slrn_Mime_Type *m)/*{{{*/
+{
+   m->was_modified = 0;
+   m->was_parsed = 0;
+   m->needs_metamail = 0;
+   m->charset = NULL;
+   m->content_type = 0;
+   m->content_subtype = 0;
+}
+
+/*}}}*/
+
+void slrn_mime_free (Slrn_Mime_Type *m)/*{{{*/
+{
+  if (m->charset != NULL)
+    {
+       slrn_free(m->charset);
+    }
+}
+
+/*}}}*/
+
+void slrn_malloc_mime_error(Slrn_Mime_Error_Obj **obj, /*{{{*/
+	  char *msg, char *line, int lineno, int critical)
+{
+   Slrn_Mime_Error_Obj *err;
+     
+   if (*obj == NULL)
      {
-	char *b;
-	unsigned int len;
-	
-	b = line->buf;
-	len = strlen (b);
-	
-	b = decode_utf8 (b, b, b + len, NULL);
-	
-	if (b < line->buf + len)
-	  {
-	     *b = 0;
-	     a->is_modified = 1;
-	     a->mime_was_modified = 1;
-	  }
-	
-	line = line->next;
+	err = *obj = (Slrn_Mime_Error_Obj *)
+	     slrn_malloc(sizeof(Slrn_Mime_Error_Obj),1,1);
+     }
+   else
+     {
+	err=(*obj)->next;
+	(*obj)->next = (Slrn_Mime_Error_Obj *)
+	     slrn_malloc(sizeof(Slrn_Mime_Error_Obj),1,1);
+	(*obj)->next->prev=*obj;
+	*obj = (*obj)->next;
+	(*obj)->next=err;
+	err=*obj;
+     }
+   err->msg = msg;
+   if (line != NULL)
+	err->err_str = slrn_safe_strmalloc(line);
+   else
+	err->err_str = NULL;
+   err->lineno=lineno;
+   err->critical=critical;
+   err->next=NULL;
+}
+
+/*}}}*/
+
+void slrn_free_mime_error(Slrn_Mime_Error_Obj *obj) /*{{{*/
+{
+   Slrn_Mime_Error_Obj *tmp;
+
+   while (obj != NULL)
+     {
+	tmp = obj->next;
+	if (obj->err_str != NULL)
+	     slrn_free(obj->err_str);
+	slrn_free((char *) obj);
+	obj=tmp;
      }
 }
 
-void slrn_mime_article_init (Slrn_Article_Type *a)
-{
-   a->mime_was_modified = 0;
-   a->mime_was_parsed = 0;
-   a->mime_needs_metamail = 0;
-}
+/*}}}*/
 
-void slrn_mime_process_article (Slrn_Article_Type *a)
+int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
 {
-   if ((a == NULL) || (a->mime_was_parsed))
+   if ((a == NULL) || (a->mime.was_parsed))
      return;
 
-   a->mime_was_parsed = 1;	       /* or will be */
+   a->mime.was_parsed = 1;	       /* or will be */
    
    rfc1522_decode_headers (a);
 
 /* Is there a reason to use the following line? */
 /*   if (NULL == find_header_line (a, "Mime-Version:")) return;*/
-   if ((-1 == parse_content_type_line (a))
-       || (-1 == parse_content_transfer_encoding_line (a)))
+/*   if ((-1 == parse_content_type_line (a))
+       || (-1 == parse_content_transfer_encoding_line (a)))*/
+   if (-1 == parse_content_type_line (a))
      {
-	a->mime_needs_metamail = 1;
-	return;
+	a->mime.needs_metamail = 1;
+	return 0;
      }
    
-   switch (Encoding_Method)
+   switch (parse_content_transfer_encoding_line (a))
      {
+      case ENCODED_RAW:
+	return 0;
+
       case ENCODED_7BIT:
       case ENCODED_8BIT:
       case ENCODED_BINARY:
@@ -922,25 +784,29 @@ void slrn_mime_process_article (Slrn_Article_Type *a)
 	break;
 	
       default:
-	a->mime_needs_metamail = 1;
+	a->mime.needs_metamail = 1;
 	return;
      }
    
-   if ((a->mime_needs_metamail == 0) &&
-#if SLANG_VERSION >= 20000
-       (Slrn_UTF8_Mode == 0) &&
-#endif
-       (Char_Set != NULL) &&
-       (slrn_case_strncmp((unsigned char *)"utf-8",
-			  (unsigned char *)Char_Set, 5) == 0))
-     decode_mime_utf8 (a);
+   if ((a->mime.needs_metamail == 0) &&
+	(slrn_case_strncmp((unsigned char *)"us-ascii",
+			   (unsigned char *)a->mime.charset,8) != 0) &&
+	(slrn_case_strcmp((unsigned char *)Slrn_Display_Charset,
+			   (unsigned char *)a->mime.charset) != 0))
+     {
+	return slrn_convert_article(a, Slrn_Display_Charset, a->mime.charset);
+     }
+   return 0;
 }
+
+
+/*}}}*/
 
 #ifndef MAXPATHLEN
 #define MAXPATHLEN 1024
 #endif
 
-int slrn_mime_call_metamail (void)
+int slrn_mime_call_metamail (void)/*{{{*/
 {
 #ifdef VMS
    return 0;
@@ -1008,570 +874,806 @@ int slrn_mime_call_metamail (void)
 #endif  /* NOT VMS */
 }
 
+/*}}}*/
+
 
 /* -------------------------------------------------------------------------
  * MIME encoding routines.
  * -------------------------------------------------------------------------*/
 
-static char *Mime_Posting_Charset;
-static int Mime_Posting_Encoding;
-
-int slrn_mime_scan_file (FILE *fp)
+/* expexts a->cline pointing to the last headerline, and the body in a->raw_lines */
+Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, int *hibin, char *from_charset) /*{{{*/
 {
-   /* This routine scans the article to determine what CTE should be used */
-   unsigned int linelen = 0;
-   unsigned int maxlinelen = 0;
-   int ch;
-   int cr = 0;
-   unsigned int hibin = 0;
+  char *charset = Slrn_Outgoing_Charset;
+  char *charset_end=NULL;
+  Slrn_Mime_Error_Obj *err=NULL;
+  Slrn_Article_Line_Type *endofheader, *rline=a->raw_lines;
+
+  a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+  a->cline->next->prev=a->cline;
+  a->cline=a->cline->next;
+  a->cline->flags=HEADER_LINE;
+  a->cline->buf=slrn_safe_strmalloc("Mime-Version: 1.0");
+  endofheader = a->cline;
+  
+  if (*hibin == -1)
+    {
+       *hibin = 0;
+       while(rline != NULL)
+	 {
+	    if (slrn_string_nonascii(rline->buf))
+	      {
+		 *hibin = 1;
+		 break;
+	      }
+	    rline=rline->next;
+	 }
+       rline=a->raw_lines;
+    }
+
+  if (*hibin)
+    {
+       do
+	 {
+	    if ((charset_end=slrn_strchr(charset, ',')) != NULL)
+	      {
+		 *charset_end = '\0';
+	      }
+	  
+	    if (slrn_case_strcmp(charset, from_charset) == 0)
+	    /* No recoding needed */
+	      {
+		 while(rline != NULL)
+		   {
+		      a->cline->next=rline;
+		      a->cline->next->prev=a->cline;
+		      a->cline=a->cline->next;
+		      rline=rline->next;
+		   }
+		 a->raw_lines=NULL;
+		 break;
+	      }
+
+	    if ( slrn_test_convert_article(a, charset, from_charset)  == 0)
+	      {
+		 break;
+	      }
+	    if (charset_end != NULL)
+	      {
+		 *charset_end=',';
+		 charset = charset_end + 1;
+	      }
+	 } while(charset_end != NULL);
+       if (endofheader == a->cline)
+	 {
+	    /* if we get here, no encoding was possible*/
+	    slrn_malloc_mime_error(&err, _("Can't determine suitable charset for body"), NULL, -1 , MIME_ERROR_CRIT);
+	    return err;
+	 }
+    }
+  else
+    {
+       a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+       a->cline->next->prev=a->cline;
+       a->cline=a->cline->next;
+       a->cline->flags=HEADER_LINE;
+       a->cline->buf=slrn_safe_strmalloc("Content-Type: text/plain; charset=us-ascii");
+       a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+       a->cline->next->prev=a->cline;
+       a->cline=a->cline->next;
+       a->cline->flags=HEADER_LINE;
+       a->cline->buf=slrn_safe_strmalloc("Content-Transfer-Encoding: 7bit");
+
+       while(rline != NULL)
+	 {
+	    a->cline->next=rline;
+	    a->cline->next->prev=a->cline;
+	    a->cline=a->cline->next;
+	    rline=rline->next;
+	 }
+       a->raw_lines=NULL;
+       return NULL;
+    }
+  /* if we get here, the posting contains 8bit chars */
+  a->cline = endofheader;
+  
+  endofheader = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+  endofheader->flags=HEADER_LINE;
+  endofheader->buf=slrn_malloc_sprintf ("Content-Type: text/plain; charset=%s", charset);
+  /*endofheader->buf=slrn_safe_malloc(36+strlen(charset));
+  sprintf(endofheader->buf, "Content-Type: text/plain; charset=%s", charset); /*safe*/
+  
+  endofheader->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+  endofheader->next->flags=HEADER_LINE;
+  endofheader->next->buf=slrn_safe_strmalloc("Content-Transfer-Encoding: 8bit");
+  endofheader->next->next = a->cline->next;
+  a->cline->next->prev= endofheader->next;
+  endofheader->prev = a->cline;
+  a->cline->next = endofheader;
+  
+  if (charset_end != NULL) *charset_end=',';
+  
+  return NULL;
+}
+
+/*}}}*/
+
+static Slrn_Mime_Error_Obj *fold_line (char **s_ptr)/*{{{*/
+{
+   int fold=0, pos=0, last_ws=0, linelen=0;
+   char *s=*s_ptr;
+   char *tmp, *ret;
+   Slrn_Mime_Error_Obj *err=NULL;
    
-   
-   /* Skip the header.  8-bit characters in the header are taken care of
-    * elsewhere since they ALWAYS need to be encoded.
-    */
-   while ((ch = getc(fp)) != EOF)
+   if (strlen(s) <= 78)
      {
-	if (ch == '\n')
-	  {
-	     ch = getc(fp);
-	     if (ch == '\n')
-	       break;
-	  }
+	/* nothing to do */
+	return NULL;
      }
-   
-   if (ch == EOF)
-     {
-	rewind (fp);
-	return -1;
-     }
-   
-   while ((ch = getc(fp)) != EOF)
-     {
-	linelen++;
-	if (ch & 0x80) hibin = 1; /* 8-bit character */
 	
-	if (ch == '\n')
+   /* First step: counting. */
+   
+   /* skip the first word and all ws after it
+    * (folding after the keyword is not allowed) */
+   /* I'm not sure about that FS */
+   while (((last_ws) || (s[pos] != ' ')) && (s[pos] != '\0'))
+     {
+	if (s[pos] == ' ')
+	     last_ws = pos;
+	pos++;
+     }
+   if (pos > 77)
+     {
+	slrn_malloc_mime_error(&err, _("First word of header is too long."), *s_ptr, 0,MIME_ERROR_WARN);
+	return err;
+     }
+
+   do
+     {
+	if ((s[pos] == ' ') || (s[pos] == '\0'))
 	  {
-	     if (linelen > maxlinelen)	maxlinelen = linelen;
-	     linelen = 0;
+	     if (pos > 77)
+	       {
+		  if (last_ws == 0)
+		    {
+		       slrn_malloc_mime_error(&err, _("One word of the header is too long to get folded."), *s_ptr, 0,MIME_ERROR_WARN);
+		       return err;
+		    }
+		  fold++;
+		  s += last_ws;
+		  pos=0;
+	       }
+	     last_ws=pos;
 	  }
-	else if (((unsigned char)ch < 32) && (ch != '\t') && (ch != 0xC))
-	  cr = 1;		       /* not tab or formfeed */
      }
-   if (linelen > maxlinelen) maxlinelen = linelen;
-   
-   if (hibin > 0)
+   while (s[pos++] != '\0');
+  
+   /* Second step: Folding */
+   s=*s_ptr;
+   ret=tmp=slrn_safe_malloc(strlen(s)+1+fold);
+   last_ws=pos=0;
+   do
      {
-	/* 8-bit data.  US-ASCII is NOT a valid charset, so use ISO-8859-1 */
-	if (slrn_case_strcmp((unsigned char *)"us-ascii",
-			     (unsigned char *)Slrn_Mime_Display_Charset) == 0)
-	  Mime_Posting_Charset = "iso-8859-1";
-	else
-	  Mime_Posting_Charset = Slrn_Mime_Display_Charset;
-     }
-   else if (NULL != find_compatible_charset (Slrn_Mime_Display_Charset,
-					     strlen (Slrn_Mime_Display_Charset)))
-     /* 7-bit data.  Check to make sure that this display supports US-ASCII */
-     Mime_Posting_Charset = "us-ascii";
-   else
-     Mime_Posting_Charset = Slrn_Mime_Display_Charset;
-
-#if 0
-   if ((maxlinelen > 990) || (cr > 0))
-     {
-	Mime_Posting_Encoding = ENCODED_QUOTED;
-     }
-   else
-#endif
-     if (hibin > 0)
-     Mime_Posting_Encoding = ENCODED_8BIT;
-   else
-     Mime_Posting_Encoding = ENCODED_7BIT;
-   
-   rewind(fp);
-   return 0;
-}
-
-static int get_word_len (char *s, int *is_encoded) /*{{{*/
-{
-   char *e = s;
-   int qmarks = 0;
-   
-   while (*e && ((*e == ' ') || (*e == '\t')))
-     e++;
-   if ((e[0] == '=') && (e[1] == '?'))
-     {
-	e += 2;
-	qmarks = 1;
-     }
-   while (*e && (*e != ' ') && (*e != '\t'))
-     {
-	if ((*e++ == '?') && qmarks) qmarks++;
-     }
-   if ((qmarks == 4) && (e > s+1) && (e[-1] == '=') && (e[-2] == '?'))
-     *is_encoded = 1;
-   return e - s;
-}
-/*}}}*/
-
-static int fold_line (char *s, unsigned int bytes, unsigned int line_len) /*{{{*/
-{
-   int line_enc = 0, word_len, word_enc = 0, retval = -1;
-   char *copy, *p;
-   
-   if (NULL == (copy = slrn_strmalloc (s, 0)))
-     return -1;
-   p = copy;
-   
-   /* skip the first word (folding after the keyword is not allowed) */
-   word_len = get_word_len (p, &line_enc);
-   strncpy (s, p, word_len);
-   s += word_len; p += word_len;
-   line_len += word_len; bytes -= word_len;
-   
-   while (*p)
-     {
-	word_len = get_word_len (p, &word_enc);
-	if ((line_enc || word_enc) && (line_len + word_len > 76))
+	if ((s[pos] == ' ') || (s[pos] == '\0'))
 	  {
-	     if (bytes-- <= 0) goto free_and_return;
-	     *s++ = '\n';
-	     line_len = 0;
-	     line_enc = 0;
+	     if (pos > 77)
+	       {
+		  strncpy(tmp, s, last_ws);
+		  tmp+=last_ws;
+		  *(tmp++)='\n';
+		  s+=last_ws;
+		  pos=0;
+	       }
+	     last_ws=pos;
 	  }
-	if ((int)bytes <= word_len) goto free_and_return;
-	strncpy (s, p, word_len);
-	s += word_len; p += word_len;
-	line_len += word_len; bytes -= word_len;
-	line_enc |= word_enc; word_enc = 0;
      }
-   
-   if (bytes)
-     {
-	retval = 0;
-	*s = '\0';
-     }
-   
-   free_and_return:
-   slrn_free (copy);
-   return retval;
+   while (s[pos++] != '\0');
+
+   strncpy(tmp, s, strlen(s)+1);
+
+   slrn_free(*s_ptr);
+   *s_ptr=ret;
+   return NULL;
 }
 /*}}}*/
-
-/* These functions return the number of characters written or
- * -1 if dest is too small to hold the result. */
-
-static int copy_whitespace (unsigned char *from, unsigned char *to, /*{{{*/
-			    unsigned char *dest, size_t max)
-{
-   int len = 0;
-   while ((from <= to) && ((*from == ' ') || (*from == '\t')))
-     {
-	if (len == (int)max) return -1;
-	*dest++ = *from++;
-	len++;
-     }
-   return len;
-}
-/*}}}*/
-
-/* Hack to keep encoded words shorter if they directly follow the keyword. */
-static int Keyword_Len;
-
-#define ENCODE_COMMENT	1
-#define ENCODE_PHRASE	2
 
 /* Do the actual encoding.
  * Note: This function does not generate encoded-words that are longer
- *       than 75 chars (or shorter, depending on Keyword_Len).  The line
- *       folding is performed by a separate function. */
-static int encode_string (unsigned char *from, unsigned char *to, /*{{{*/
-			  int flags, unsigned char *dest, size_t max)
+ *       than max_len chars. The line folding is performed by
+ *       a separate function. */
+static Slrn_Mime_Error_Obj *encode_string (char **s_ptr, int offset,/*{{{*/
+			  int len, char *from_charset, int max_len, int *chars_more)
 {
-   int len = 0, total = 0;
-   char charset[64];
+  int extralen[2] = {0,0}, total = 0;
+  char *s=*s_ptr + offset;
+  char *charset= Slrn_Outgoing_Charset;
+  char *charset_end=NULL;
+  char *ret, *tmp=NULL;
+  int i;
+  Slrn_Mime_Error_Obj *err=NULL;
+
+  do
+    {
+       if ((charset_end=slrn_strchr(charset, ',')) != NULL)
+	 {
+	    *charset_end = '\0';
+	 }
+     
+       if (!slrn_case_strcmp(charset, from_charset))
+       /* No recoding needed */
+	 {
+	    tmp=*s_ptr;
+	    extralen[0] =0;
+	    break;
+	 }
+
+       if ((tmp = slrn_convert_substring(*s_ptr, offset, len, charset, from_charset, 1)) != NULL)
+	 {
+	    extralen[0] = strlen(tmp) - strlen(*s_ptr);
+	    slrn_free(*s_ptr);
+	    *s_ptr=tmp;
+	    s=*s_ptr + offset;
+
+	    break;
+	 }
+       if (charset_end != NULL)
+	 {
+	    *charset_end=',';
+	    charset = charset_end + 1;
+	 }
+    } while(charset_end != NULL);
+  if (tmp == NULL)
+    {
+       /* if we get here, no encoding was possible*/
+       slrn_malloc_mime_error(&err, _("Can't find suitable charset for Header"), *s_ptr, 0 ,MIME_ERROR_CRIT);
+       return err;
+    }
+   extralen[1] = strlen(charset) + 2+3+2;
    
-   if (0 == slrn_case_strcmp ((unsigned char *)Slrn_Mime_Display_Charset,
-			      (unsigned char *)"us-ascii"))
+   for (i=0; i< len + extralen[0]; i++)
      {
-	strcpy (charset, "=?iso-8859-1?Q?"); /* safe */
-     }
-   else slrn_snprintf (charset, sizeof (charset), "=?%s?Q?", Slrn_Mime_Display_Charset);
-   
-   while (from < to)
-     {
-	/* Start the encoded-word */
-	len = strlen (charset);
-	if (len > (int) max - 1) return -1;
-	strcpy ((char *)dest, charset); /* safe */
-	dest += len; max -= len; total += len;
-	
-	/* Write the data */
-	while (max && (from < to) && (len < 71 - Keyword_Len))
+	if ( *s & 0x80)
 	  {
-	     unsigned char ch;
-	     if (flags && (*from == '\\') && (++from == to))
-	       break;
-	     if (((ch = *from) & 0x80) || (ch < 32) ||
-		 (ch == '?') || (ch == '\t') || (ch == '=') || (ch == '_') ||
-		 ((flags & ENCODE_COMMENT) &&
-		  ((ch == '(') || (ch == ')') || (ch == '"'))) ||
-		 ((flags & ENCODE_PHRASE) &&
-		  (NULL != strchr ("\"(),.:;<>@[\\]", ch))))
-	       {
-		  if (max < 3) return -1;
-		  sprintf ((char *) dest, "=%02X", (int) ch); /* safe */
-		  len += 3; max -= 3; dest += 3; total += 3;
-	       }
-	     else
-	       {
-		  if (ch == ' ') *dest = '_';
-		  else *dest = ch;
-		  len++; max--; dest++; total++;
-	       }
-	     from++;
+	     extralen[1] +=  2;
 	  }
-	
-	/* Finish the encoded-word */
-	if (max < 3) return -1;
-	Keyword_Len = 0;
-	*dest++ = '?'; *dest++ = '=';
-	if (from < to)
+	s++;
+     }
+   if ((max_len) && (max_len < len + extralen[0] + extralen[1]))
+     {
+	slrn_malloc_mime_error(&err, _("One word in the header is too long after encoding."), *s_ptr, 0, MIME_ERROR_CRIT);
+	return err;
+     }
+   ret=tmp=slrn_safe_malloc(strlen(*s_ptr) +1 +extralen[1]);
+   strncpy(ret, *s_ptr, offset);
+   tmp=ret + offset;
+   sprintf(tmp, "=?%s?Q?", charset); /* safe */
+   tmp=tmp + strlen(charset) + 5;
+
+   if (charset_end != NULL) *charset_end=',';
+
+   s= *s_ptr + offset;
+   for (i=0; i< len + extralen[0]; i++)
+     {
+	unsigned char ch;
+	if ((ch =*s) & 0x80)
 	  {
-	     *dest++ = ' ';
-	     len += 3; max -= 3; total += 3;
+	     sprintf (tmp, "=%02X", (int) ch); /* safe */
+	     tmp+=3;
 	  }
 	else
 	  {
-	     len += 2; max -= 2; total += 2;
+	     if (ch == ' ') *tmp = '_';
+	     else *tmp = ch;
+	     tmp++;
 	  }
+	s++;
      }
+   *tmp++ = '?';
+   *tmp++ = '=';
+   strncpy(tmp, s, strlen(s)+1); /* safe */
+    
    
-   if (max)
-     {
-	*dest = '\0';
-	return total;
-     }
-   return -1;
+   slrn_free(*s_ptr);
+   *s_ptr=ret;
+   
+   *chars_more = extralen[0] + extralen[1];
+   return NULL;
 }
 /*}}}*/
 
 /* Try to cause minimal overhead when encoding. */
-static int min_encode (unsigned char *from, unsigned char *to, /*{{{*/
-		       int flags, unsigned char *dest, size_t max)
+static Slrn_Mime_Error_Obj *min_encode (char **s_ptr, char *from_charset) /*{{{*/
 {
-   int len, total = 0;
+  char *s=*s_ptr;
+  int pos=0, last_ws=0;
+  int extralen, encode=0;
+  int encode_len;
+  Slrn_Mime_Error_Obj *ret;
+
+  while (s[pos] != ':')
+    {
+       pos++;
+    }
+  while (s[++pos] == ' ')
+    {
+       last_ws=pos;
+    }
+  encode_len = 75 - pos;
    
-   if (-1 == (len = copy_whitespace (from, to, dest, max)))
-     return -1;
-   from += len; dest += len; max -= len; total += len;
-   
-   while (from < to)
+  
+  while((slrn_string_nonascii(s)) && (strlen(s) >= pos))
+    {
+       if ((s[pos] == ' ') || (s[pos] == '\0') || (s[pos] == '\n'))
+	 {
+	    if (encode)
+	      {
+		 if ( (ret= encode_string(s_ptr,last_ws +1,pos - (last_ws+1),from_charset,encode_len, &extralen)) != NULL)
+		    {
+		       return ret;
+		    }
+		 pos+= extralen;
+		 s=*s_ptr;
+		 encode = 0;
+	      }
+	    encode_len = 75;
+	    last_ws=pos;
+	 }
+       if (s[pos] & 0x80)
+	    encode = 1;
+
+       pos++;
+    }
+  return NULL;
+}/*}}}*/
+
+/* Encode structured header fields ("From:", "To:", "Cc:" and such) {{{ */
+
+#define TYPE_ADD_ONLY 1
+#define TYPE_OLD_STYLE 2
+#define TYPE_RFC_2882 3
+#define RFC_2882_NOT_ATOM_CHARS "(),.:;<>@[\\]\""
+#define RFC_2882_NOT_DOTATOM_CHARS "(),:;<>@[\\]\""
+#define RFC_2882_NOT_QUOTED_CHARS "\t\\\""
+#define RFC_2882_NOT_DOMLIT_CHARS "[\\]"
+#define RFC_2882_NOT_COMMENT_CHARS "(\\)"
+
+static Slrn_Mime_Error_Obj *encode_comment (char **s_ptr, char *from_charset, int *start, int *max) /*{{{*/
+{
+   char *s =*s_ptr;
+   int pos = *start;
+   int last_ws = *start-1;
+   int encode=0;
+   int extralen;
+   Slrn_Mime_Error_Obj *err=NULL;
+
+   while (pos < *max)
      {
-	unsigned char *beg = NULL, *end = NULL;
-	unsigned char *eword = from, *bword = from;
-	int count;
-	
-	do
+	if ((s[pos]== ' ') || (s[pos]== '(') || (s[pos] == ')'))
 	  {
-	     count = 0;
-	     while ((eword < to) && (*eword != ' ') && (*eword != '\t'))
+	     if (encode)
 	       {
-		  if (*eword & 0x80) count++;
-		  eword++;
+		  if ( (err= encode_string(s_ptr,last_ws + 1,pos-(last_ws+1),from_charset,78, &extralen)) != NULL)
+		    {
+		       return err;
+		    }
+		  *max += extralen;
+		  pos +=extralen;
+		  s=*s_ptr;
+		  encode=0;
+	       }
+	     if (s[pos] == ')')
+	       {
+		  *start= pos;
+		  return NULL;
 	       }
 	     
-	     if (count)
+	     if (s[pos]== '(')
 	       {
-		  if (beg == NULL) beg = bword;
-		  bword = end = eword;
+		  pos++;
+		  if ((err= encode_comment(s_ptr, from_charset, &pos, max)) != NULL)
+		       return err;
+		  s=*s_ptr;
 	       }
-	     
-	     while ((eword < to) && ((*eword == ' ') || (*eword == '\t')))
-	       eword++;
+	     last_ws=pos++;
+	     continue;
 	  }
-	while ((eword < to) && count);
-	
-	if (beg != NULL)
+	if (s[pos] & 0x80)
 	  {
-	     if (-1 == (len = encode_string (beg, end, flags, dest, max)))
-	       return -1;
-	     dest += len; max -= len; total += len;
+	     encode=1;
+	     pos++;
+	     continue;
 	  }
-	if (bword != eword)
+	if (NULL != slrn_strchr(RFC_2882_NOT_COMMENT_CHARS, s[pos]))
 	  {
-	     len = eword - bword;
-	     if ((int)max < len) return -1;
-	     strncpy ((char *)dest, (char *)bword, len);
-	     dest += len; max -= len; total += len;
-	     Keyword_Len = 0;
+	     slrn_malloc_mime_error(&err, _("Illegal char in displayname of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+	     return err;
 	  }
-	from = eword;
+	pos++;
      }
-   
-   if (max)
-     {
-	*dest = '\0';
-	return total; /* don't count trailing zero */
-     }
-   
-   return -1;
+   /* upps*/
+   slrn_malloc_mime_error(&err, _("Comment opened but never closed in address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+   return err;
 }
+
 /*}}}*/
 
-static int encode_quoted_string (unsigned char **from, unsigned char *to, /*{{{*/
-				 unsigned char *dest, size_t max)
+static Slrn_Mime_Error_Obj *encode_phrase (char **s_ptr, char *from_charset, int *start, int *max) /*{{{*/
 {
-   unsigned char *end = *from + 1;
-   int count = 0;
-   
-   while ((end < to) && (*end != '"'))
+   char *s =*s_ptr;
+   int pos = *start;
+   int last_ws = *start-1;
+   int extralen;
+   int in_quote=0;
+   int encode=0;
+   Slrn_Mime_Error_Obj *err=NULL;
+     
+   while (pos < *max)
      {
-	if ((*end == '\\') && (++end == to))
-	  break;
-	if (*end & 0x80)
-	  count++;
-	end++;
-     }
-   
-   if (count)
-     {
-	int retval = encode_string (*from + 1, end, ENCODE_PHRASE, dest, max);
-	*from = end + 1;
-	return retval;
-     }
-   else
-     {
-	int len = end + 1 - *from;
-	if ((int)max <= len) return -1;
-	strncpy ((char *)dest, (char *)*from, len);
-	dest[len] = '\0';
-	*from = end + 1;
-	return len;
-     }
-}
-/*}}}*/
-
-static int encode_comment (unsigned char **from, unsigned char *to, /*{{{*/
-			   unsigned char *dest, size_t max)
-{
-   unsigned char *end = *from + 1;
-   int len, total = 0;
-   
-   while ((end < to) && (*end != ')'))
-     {
-	if (*end == '(')
+	if ((s[pos]== ' ') || (s[pos]== '"'))
 	  {
-	     if (**from == '(')
+	     if (encode)
 	       {
-		  if (!max) return -1;
-		  *dest++ = '('; total++; max--; (*from)++;
+		  if ( (err= encode_string(s_ptr,last_ws + 1,pos-(last_ws+1),from_charset,78, &extralen)) != NULL)
+		    {
+		       return err;
+		    }
+		  *max += extralen;
+		  pos +=extralen;
+		  s=*s_ptr;
+		  encode=0;
 	       }
-	     
-	     if (-1 == (len = min_encode (*from, end, ENCODE_COMMENT, dest, max)))
-	       return -1;
-	     total += len; max -= len; dest += len;
-	     
-	     if (-1 == (len = encode_comment (&end, to, dest, max)))
-	       return -1;
-	     total += len; max -= len; dest += len;
-	     *from = end;
+	     if (s[pos]== '"')
+	       {
+		  if (in_quote)
+		       in_quote=0;
+		  else
+		       in_quote=1;
+	       }
+	     last_ws=pos++;
+	     continue;
+	  }
+	if (s[pos] & 0x80)
+	  {
+	     encode=1;
+	     pos++;
+	     continue;
+	  }
+	if (!in_quote)
+	  {
+	     if (s[pos]== '(')
+	       {
+		  if (encode)
+		    {
+		       if ( (err= encode_string(s_ptr,last_ws + 1, pos-(last_ws + 1),from_charset,78,&extralen)) != NULL)
+			 {
+			    return err;
+			 }
+		       *max += extralen;
+		       pos += extralen;
+		       s=*s_ptr;
+		       encode=0;
+		    }
+		  
+		  pos++;
+		  if ((err= encode_comment(s_ptr, from_charset, &pos, max)) != NULL)
+		       return err;
+		  s=*s_ptr;
+		  last_ws=pos++;
+		  continue;
+	       }
+	     if ((s[pos-1] == ' ') && (s[pos] == '<'))
+	       /* Address begins, return */
+	       {
+		  *start= pos;
+		  return NULL;
+	       }
+	     if (NULL != slrn_strchr(RFC_2882_NOT_ATOM_CHARS, s[pos]))
+	       {
+		  slrn_malloc_mime_error(&err, _("Illegal char in displayname of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+		  return err;
+	       }
 	  }
 	else
 	  {
-	     if ((*end == '\\') && (++end == to))
-	       break;
-	     end++;
+	     if (NULL != slrn_strchr(RFC_2882_NOT_QUOTED_CHARS, s[pos]))
+	       {
+		  slrn_malloc_mime_error(&err, _("Illegal char in quoted displayname of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+		  return err;
+	       }
 	  }
+	pos++;
      }
-   
-   if (**from == '(')
-     {
-	if (!max) return -1;
-	*dest++ = '('; total++; max--; (*from)++;
-     }
-   if (-1 == (len = min_encode (*from, end, ENCODE_COMMENT, dest, max)))
-     return -1;
-   dest += len; total += len; max -= len;
-   *from = end + 1;
-   if (max < 2) return -1;
-   *dest++ = ')'; *dest = '\0';
-   
-   return total + 1; /* don't count trailing zero */
+   /* never reached */
+   return NULL;
 }
+
 /*}}}*/
 
-/* Encode structured header fields ("From:", "To:", "Cc:" and such) */
-static int from_encode (unsigned char *from, unsigned char *to, /*{{{*/
-			unsigned char *dest, size_t max)
+static Slrn_Mime_Error_Obj *encode_localpart (char **s_ptr, char *from_charset, int *start, int max) /*{{{*/
 {
-   int len, total = 0;
-   
-   if (-1 == (len = copy_whitespace (from, to, dest, max)))
-     return -1;
-   from += len; dest += len; max -= len; total += len;
-   
-   while (from < to)
+   char *s =*s_ptr;
+   int pos = *start;
+   int in_quote=0;
+   Slrn_Mime_Error_Obj *err=NULL;
+
+   while (pos < max)
      {
-	if (*from == '(')
+	if (s[pos] == ' ')
 	  {
-	     if (-1 == (len = encode_comment (&from, to, dest, max)))
-	       return -1;
-	     dest += len; max -= len; total += len;
+	     slrn_malloc_mime_error(&err, _("Space in localpart."), *s_ptr, 0, MIME_ERROR_CRIT);
+	     return err;
 	  }
-	else if (*from == '"')
+	if (s[pos] & 0x80)
 	  {
-	     if (-1 == (len = encode_quoted_string (&from, to, dest, max)))
-	       return -1;
-	     dest += len; max -= len; total += len;
+	     slrn_malloc_mime_error(&err, _("Non 7-bit char in localpart of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+	     return err;
 	  }
-	else if (NULL != strchr ("),.:;<>@[\\]", *from))
+	if (in_quote)
 	  {
-	     if (!max) return -1;
-	     *dest++ = *from++;
-	     max--; total++;
+	     if (s[pos] == '"') 
+	       {
+		  if (s[pos+1] == '@')
+		    {
+		       *start=++pos;
+		       return NULL;
+		    }
+		  else
+		    {
+		       slrn_malloc_mime_error(&err, _("Wrong quote in localpart of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+		       return err;
+		    }
+	       }
+	     if (NULL != slrn_strchr(RFC_2882_NOT_QUOTED_CHARS, s[pos]))
+	       {
+		  slrn_malloc_mime_error(&err, _("Illegal char in quoted localpart of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+		  return err;
+	       }
 	  }
 	else
 	  {
-	     unsigned char *next = from + 1;
-	     while ((next < to) && (NULL == strchr ("\"(),.:;<>@[\\]", *next)))
-	       next++;
-	     if (-1 == (len = min_encode (from, next, ENCODE_PHRASE, dest, max)))
-	       return -1;
-	     from = next; dest += len; max -= len; total += len;
+	     if (s[pos] == '@')
+	       {
+		  *start=pos;
+		  return NULL;
+	       }
+	     if (NULL != slrn_strchr(RFC_2882_NOT_DOTATOM_CHARS, s[pos]))
+	       {
+		  slrn_malloc_mime_error(&err, _("Illegal char in localpart of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+		  return err;
+	       }
 	  }
+	pos++;
      }
+   slrn_malloc_mime_error(&err, _("No domain found in address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+   return err;
+}
+
+/*}}}*/
+
+static Slrn_Mime_Error_Obj *encode_domain (char **s_ptr, char *from_charset, int *start, int max, int type) /*{{{*/
+{
+   char *s =*s_ptr;
+   int pos = *start;
+   Slrn_Mime_Error_Obj *err=NULL;
+
+   while (pos < max)
+     {
+#ifndef HAVE_LIBIDN
+	if (s[pos] & 0x80)
+	  {
+	     /* TODO: encode with libidn */
+	     slrn_malloc_mime_error(&err, _("Non 7-bit char in domain of address header. libidn is not yet supported."), *s_ptr, 0, MIME_ERROR_CRIT);
+	     return err;
+	  }
+#endif
+	if (type == TYPE_RFC_2882)
+	  {
+	     if (s[pos] == '>')
+	       {
+		  *start=pos;
+		  return NULL;
+	       }
+	
+	     if (s[pos] == ' ')
+	       {
+		  slrn_malloc_mime_error(&err, _("Space in domain."), *s_ptr, 0, MIME_ERROR_CRIT);
+		  return err;
+	       }
+	  }
+	else
+	  {
+	     if (s[pos] == ' ')
+	       {
+		  *start=pos;
+		  return NULL;
+	       }
+	  }
+	if (NULL != slrn_strchr(RFC_2882_NOT_DOTATOM_CHARS, s[pos]))
+	  {
+	     slrn_malloc_mime_error(&err, _("Illegal char in domain of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+	     return err;
+	  }
+	pos++;
+	
+     }
+   *start=pos;
+   return NULL;
+}
+
+/*}}}*/
+
+static Slrn_Mime_Error_Obj *encode_domainlit (char **s_ptr, char *from_charset, int *start, int max) /*{{{*/
+{
+   char *s =*s_ptr;
+   int pos = *start;
+   Slrn_Mime_Error_Obj *err=NULL;
+
+   while (pos < max)
+     {
+#ifndef HAVE_LIBIDN
+	if (s[pos] & 0x80)
+	  {
+	     slrn_malloc_mime_error(&err, _("Non 7-bit char in domain of address header. libidn is not yet supported."), *s_ptr, 0, MIME_ERROR_CRIT);
+	     return err;
+	  }
+#endif
+	if (s[pos] == ']')
+	  {
+	     *start=pos;
+	     return NULL;
+	  }
+	if (NULL != slrn_strchr(RFC_2882_NOT_DOMLIT_CHARS, s[pos]))
+	  {
+	     slrn_malloc_mime_error(&err, _("Illegal char in domain-literal of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+	     return err;
+	  }
+	pos++;
+     }
+   slrn_malloc_mime_error(&err, _("domain-literal opened but never closed."), *s_ptr, 0, MIME_ERROR_CRIT);
+   return err;
+}
+
+/*}}}*/
+
+static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset) /*{{{*/
+{
+   int head_start=0, head_end, type=0;
+   int pos=0;
+   int in_quote=0;
+   int i;
+   char *s=*s_ptr;
+   Slrn_Mime_Error_Obj *err=NULL;
+
+   while (s[head_start++] != ':');
    
-   if (!max) return -1;
-   *dest = '\0';
-   
-   return total;
+   while (head_start < strlen(s))
+     {
+	/* If multiple addresses are given, split at ',' */
+	head_end=head_start;
+	in_quote=0;
+	type=TYPE_ADD_ONLY;
+	while ((( in_quote) || (s[head_end] != ',')) && (s[head_end] != '\0'))
+	  {
+	     if ((!in_quote) && (s[head_end] == '<'))
+	       {
+		  type= TYPE_RFC_2882;
+	       }
+	     if (s[head_end++] == '"') /* quoted */
+	       {
+		  if (in_quote)
+		       in_quote=0;
+		  else
+		       in_quote=1;
+	       }
+	  }
+	if (in_quote)
+	  {
+	     slrn_malloc_mime_error(&err, _("Quote opened but never closed in address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+	     return err;
+	  }
+
+	pos=head_start;
+	while ((pos < head_end) && (s[pos]== ' '))
+	  {
+	     pos++;
+	  }
+	if (type == TYPE_RFC_2882)
+	  {
+	     if (s[pos] != '<')
+	       {
+		  if ((err=encode_phrase(s_ptr, from_charset, &pos, &head_end)) != NULL)
+		    {
+		       return err;
+		    }
+	       }
+	     pos++;
+	  }
+	
+	if ((err=encode_localpart(s_ptr, from_charset, &pos, head_end)) != NULL)
+	  {
+	     return err;
+	  }
+	pos++;
+	s=*s_ptr;
+	if (s[pos] == '[')
+	  {
+	     pos++;
+	     err=encode_domainlit(s_ptr, from_charset, &pos, head_end);
+	  }
+	else
+	  {
+	     err=encode_domain(s_ptr, from_charset, &pos, head_end, type);
+	  }
+	if (err != NULL)
+	     return err;
+	
+	if (type == TYPE_RFC_2882)
+	     pos++;
+	
+	s=*s_ptr;
+	
+	while (pos < head_end)
+	  {
+	     /* after domainpart only (folding) Whitespace and comments are allowed*/
+	     if (s[pos] != '(')
+	       {
+		  pos++;
+		  encode_comment(s_ptr, from_charset, &pos, &head_end);
+		  s=*s_ptr;
+		  pos++;
+		  continue;
+	       }
+	     if ((s[pos] != ' ') && (s[pos] != '\n'))
+	       {
+		  slrn_malloc_mime_error(&err, _("Illegal char after domain of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
+		  return err;
+	       }
+	     pos++;
+	  } /* while (pos < head_end) */
+	
+	head_start=head_end+2;
+     } /*while (head_start < strlen(*s_ptr)) */
+   return NULL;
 }
 /*}}}*/
 
-void slrn_mime_header_encode (char *s, unsigned int bytes) /*{{{*/
+/*}}}*/
+
+Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **s_ptr, char *from_charset) /*{{{*/
 {
-   char buf[1024], *colon;
-   unsigned int len, max = bytes;
+   char *s=*s_ptr;
+   Slrn_Mime_Error_Obj *ret=NULL;
+
    
    /* preserve 8bit characters in those headers */
    if (!slrn_case_strncmp ((unsigned char *) s,
 			   (unsigned char *) "Newsgroups: ", 12) ||
        !slrn_case_strncmp ((unsigned char *) s,
 			   (unsigned char *) "Followup-To: ", 13))
-     return;
+     return NULL; /* folding?*/
    
-   if ((NULL != (colon = strchr (s, ':'))) && (colon[1] == ' '))
-     {
-	max -= (colon + 2 - s);
-	colon += 2; /* skip the keyword */
-     }
+   if (!slrn_case_strncmp ((unsigned char *) s,
+			   (unsigned char *) "From: ", 6) ||
+       !slrn_case_strncmp ((unsigned char *) s,
+			   (unsigned char *) "Cc: ", 4) ||
+       !slrn_case_strncmp ((unsigned char *) s,
+			   (unsigned char *) "To: ", 4) ||
+       !slrn_case_strncmp ((unsigned char *) s,
+			   (unsigned char *) "Mail-Copies-To: ", 16))
+     ret = from_encode (s_ptr, from_charset);
    else
-     colon = s;
-   len = strlen (colon);
-   Keyword_Len = colon - s;
-   
-   if (len < sizeof (buf))
      {
-	int ret;
-	
-	strcpy (buf, colon); /* safe */
-	     
-	if (len && (buf[len-1] == '\n')) len--; /* save \n from being encoded */
-	
-	if (!slrn_case_strncmp ((unsigned char *) s,
-				(unsigned char *) "From: ", 6) ||
-	    !slrn_case_strncmp ((unsigned char *) s,
-				(unsigned char *) "Cc: ", 4) ||
-	    !slrn_case_strncmp ((unsigned char *) s,
-				(unsigned char *) "To: ", 4) ||
-	    !slrn_case_strncmp ((unsigned char *) s,
-				(unsigned char *) "Mail-Copies-To: ", 16))
-	  ret = from_encode ((unsigned char *) buf, (unsigned char *) buf + len,
-			     (unsigned char *) colon, max);
-	else
-	  ret = min_encode ((unsigned char *) buf, (unsigned char *) buf + len,
-			    0, (unsigned char *) colon, max);
-	
-	if ((ret != -1) && (max - ret > 1))
+	if (slrn_string_nonascii(s))
 	  {
-	     if (len && (buf[len] == '\n'))
-	       {
-		  colon[ret] = '\n';
-		  colon[ret+1] = '\0';
-	       }
-	     if ((0 == Slrn_Fold_Headers) ||
-		 (-1 != fold_line (colon, max, colon - s)))
-	       return;
+	     ret = min_encode (s_ptr, from_charset);
 	  }
-	strcpy (colon, buf); /* safe */
      }
+   if (ret != NULL)
+	return ret;
 
-#if 0
-   /* Cannot do it so strip it to 8 bits. */
-   while (*colon)
-     {
-	*colon = *colon & 0x7F;
-	colon++;
-     }
-#endif
+   return fold_line(s_ptr);
 }
+
 /*}}}*/
 
-void slrn_mime_add_headers (FILE *fp)
-{
-   char *encoding;
-   
-   if (Mime_Posting_Charset == NULL)
-     Mime_Posting_Charset = "us-ascii";
-
-   switch (Mime_Posting_Encoding)
-     {
-      default:
-      case ENCODED_8BIT:
-	encoding = "8bit";
-	break;
-	
-      case ENCODED_7BIT:
-	if (!strcmp ("us-ascii", Mime_Posting_Charset))
-	  return;
-	encoding = "7bit";
-	break;
-	
-      case ENCODED_QUOTED:
-	encoding = "quoted-printable";
-     }
-   
-   if (fp != NULL)
-     {
-	fprintf (fp, "\
-Mime-Version: 1.0\n\
-Content-Type: text/plain; charset=%s\n\
-Content-Transfer-Encoding: %s\n",
-		 Mime_Posting_Charset,
-		 encoding);
-     }
-   else
-     {
-	Slrn_Post_Obj->po_printf ("\
-Mime-Version: 1.0\n\
-Content-Type: text/plain; charset=%s\n\
-Content-Transfer-Encoding: %s\n",
-		 Mime_Posting_Charset,
-		 encoding);
-     }
-}
-
-VFILE *slrn_mime_encode (VFILE *vp)
-{
-   if ((Mime_Posting_Encoding == ENCODED_7BIT)
-       || (Mime_Posting_Encoding == ENCODED_8BIT))
-     return vp;
-   
-   /* Add encoding later. */
-   return vp;
-}
-
 #endif /* NOT SLRNPULL_CODE */
-
-#endif  /* SLRN_HAS_MIME */

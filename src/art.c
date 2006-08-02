@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2005  Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006  Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -59,7 +59,7 @@
 #include "util.h"
 #include "server.h"
 #include "xover.h"
-#include "chmap.h"
+#include "charset.h"
 #include "print.h"
 #include "snprintf.h"
 #include "mime.h"
@@ -122,6 +122,10 @@ int Slrn_Generate_Email_From = 0;
 int Slrn_Startup_With_Article = 0;
 int Slrn_Followup_Strip_Sig = 1;
 int Slrn_Smart_Quote = 1;
+#define PIPE_RAW		0
+#define PIPE_CONVERTED		1
+#define PIPE_DECODED		2
+int Slrn_Pipe_Type = 0;
 
 int Slrn_Query_Next_Article = 1;
 int Slrn_Query_Next_Group = 1;
@@ -228,7 +232,7 @@ static void hide_or_unhide_quotes (void);
 static void art_update_screen (void);
 static void art_next_unread (void);
 static void art_quit (void);
-static int select_header (Slrn_Header_Type *, int, int);
+static int select_header (Slrn_Header_Type *, int);
 static int select_article (int);
 static void quick_help (void);
 static void for_this_tree (Slrn_Header_Type *, void (*)(Slrn_Header_Type *));
@@ -468,6 +472,7 @@ static void free_header (Slrn_Header_Type *h)
    slrn_free (h->subject);
    slrn_free (h->date);
    slrn_free (h->realname);
+   slrn_free (h->from);
    slrn_free_additional_headers (h->add_hdrs);
    slrn_free ((char *) h);
 }
@@ -483,6 +488,7 @@ static void free_headers (void)
 	slrn_free (h->subject);
 	slrn_free (h->date);
 	slrn_free (h->realname);
+	slrn_free (h->from);
 	slrn_free_additional_headers (h->add_hdrs);
 	slrn_free ((char *) h);
 	h = next;
@@ -551,7 +557,7 @@ static void init_article_window_struct (void) /*{{{*/
 
 /*}}}*/
 
-static void free_article_line (Slrn_Article_Line_Type *l)
+void slrn_art_free_article_line (Slrn_Article_Line_Type *l)
 {
    Slrn_Article_Line_Type *next;
    
@@ -574,7 +580,7 @@ static Slrn_Article_Line_Type *copy_article_line (Slrn_Article_Line_Type *l)
 	if ((r == NULL) ||
 	    (NULL == (r->buf = slrn_strmalloc (l->buf, 0))))
 	  {
-	     free_article_line (retval);
+	     slrn_art_free_article_line (retval);
 	     slrn_free ((char *)r);
 	     return NULL;
 	  }
@@ -601,13 +607,13 @@ static void free_article_lines (Slrn_Article_Type *a)
    if (a == NULL)
      return;
    
-   free_article_line(a->lines);
-   free_article_line(a->raw_lines);
+   slrn_art_free_article_line(a->lines);
+   slrn_art_free_article_line(a->raw_lines);
    a->lines = NULL;
    a->raw_lines = NULL;
 }
 
-static void slrn_art_free_article (Slrn_Article_Type *a)
+void slrn_art_free_article (Slrn_Article_Type *a)
 {
    if (a == NULL)
      return;
@@ -615,6 +621,7 @@ static void slrn_art_free_article (Slrn_Article_Type *a)
    if (a == Slrn_Current_Article)
      Slrn_Current_Article = NULL;
 
+   slrn_mime_free(&a->mime);
    free_article_lines (a);
    slrn_free ((char *) a);
 }
@@ -734,13 +741,12 @@ static void toggle_wrap_article (void)
 /*}}}*/
 
 /* selects the article that should be affected by interactive commands */
-static int select_affected_article (int mime_mask) /*{{{*/
+static int select_affected_article () /*{{{*/
 {
    if ((Slrn_Current_Article == NULL) || !Article_Visible)
      {
 	slrn_uncollapse_this_thread (Slrn_Current_Header, 1);
-	if (select_header (Slrn_Current_Header, Slrn_Del_Article_Upon_Read,
-			  Slrn_Use_Mime & mime_mask) < 0)
+	if (select_header (Slrn_Current_Header, Slrn_Del_Article_Upon_Read) < 0)
 	  return -1;
 	else
 	  return 0;
@@ -768,7 +774,7 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
    SLRegexp_Type *re = NULL;
 
    if ((*string == 0) ||
-       (-1 == (ret = select_affected_article (MIME_DISPLAY))))
+       (-1 == (ret = select_affected_article ())))
      return NULL;
    
    if (is_regexp)
@@ -2420,6 +2426,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
      }
 
    slrn_mark_header_lines (retval);
+   slrn_mime_init (&retval->mime);
    
    return retval;
 }
@@ -2433,13 +2440,10 @@ static int art_undo_modifications (Slrn_Article_Type *a)
    
    a->is_modified = 0;
    a->is_wrapped = 0;
-#if SLRN_HAS_MIME
-   a->mime_was_modified = 0;
-   a->mime_was_parsed = 0;
-   a->mime_needs_metamail = 0;
-#endif
+   slrn_mime_free (&a->mime);
+   slrn_mime_init (&a->mime);
    
-   free_article_line (a->lines);
+   slrn_art_free_article_line (a->lines);
    a->lines = NULL;
    if (NULL == (a->lines = copy_article_line (a->raw_lines)))
      {
@@ -2454,7 +2458,6 @@ static int art_undo_modifications (Slrn_Article_Type *a)
 	slrn_art_free_article (a);
 	return -1;
      }
-   slrn_chmap_fix_body (a, 0);
    prepare_article (a);
    init_article_window_struct();
    slrn_art_linedn_n (linenum-1); /* find initial line */
@@ -2462,7 +2465,7 @@ static int art_undo_modifications (Slrn_Article_Type *a)
    return 0;
 }
 
-static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{*/
+static int select_header (Slrn_Header_Type *h, int kill_refs) /*{{{*/
 {
    Slrn_Article_Type *a;
    Slrn_Header_Type *last_header_showing;
@@ -2473,19 +2476,6 @@ static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{
    if ((Header_Showing == h)
        && (Slrn_Current_Article != NULL))
      { /* We already have the article in memory. */
-#if SLRN_HAS_MIME
-	if ((do_mime == 0) && (Slrn_Current_Article->mime_was_modified))
-	  { /* Use the unchanged version of the article. */
-	     return art_undo_modifications (Slrn_Current_Article);
-	  }
-	else if (do_mime && (Slrn_Current_Article->mime_was_parsed == 0))
-	  { /* We need to perform MIME decoding */
-	     slrn_mime_article_init (Slrn_Current_Article);
-	     slrn_mime_process_article (Slrn_Current_Article);
-	  }
-#else
-	(void) do_mime;
-#endif
 	return 0;
      }
    
@@ -2504,19 +2494,13 @@ static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{
 	return -1;
      }
    
-#if SLRN_HAS_MIME
-   slrn_mime_article_init (a);
-   if (/*(h == Slrn_Current_Header) && */do_mime)
+   if ( -1 == slrn_mime_process_article (a))
      {
-	/* Note: the mime routines assume that the article flags are valid.
-	 * That is, a header line is given by line->flags & HEADER_LINE
-	 */
-	slrn_mime_process_article (a);
+	slrn_art_free_article (a);
+	slrn_error(_("MIME processing unsuccessful"));
+	return -1;
      }
-#endif
 
-   slrn_chmap_fix_body (a, 0);
-   
    /* Only now may the article be said to be the current article */
    Slrn_Current_Article = a;
 
@@ -2528,24 +2512,10 @@ static int select_header (Slrn_Header_Type *h, int kill_refs, int do_mime) /*{{{
    if ((NULL != subj) && (NULL != from) &&
        (strcmp (subj, h->subject) || strcmp (from, h->from)))
      {
-	char *tmp = slrn_realloc (h->subject, strlen (subj) +
-				  strlen (from) + 2, 0);
-	if (tmp != NULL)
-	  {
-	     h->subject = tmp;
-	     strcpy (tmp, subj); /* safe */
-	     h->from = tmp + strlen (tmp) + 1;
-	     strcpy (h->from, from); /* safe */
-#if SLRN_HAS_MIME
-	     if ((do_mime == 0) && (Slrn_Use_Mime & MIME_DISPLAY))
-	       {
-		  slrn_rfc1522_decode_string (tmp);
-		  slrn_rfc1522_decode_string (h->from);
-	       }
-#endif
-	     slrn_free (h->realname);
-	     get_header_real_name (h);
-	  }
+	h->subject = slrn_safe_strmalloc(subj);
+	h->from = slrn_safe_strmalloc(from);
+	slrn_free (h->realname);
+	get_header_real_name (h);
      }
    
    if (last_header_showing != h)
@@ -2664,7 +2634,8 @@ int slrn_string_to_article (char *str)
 
 static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 {
-   char ch, *s, *smax, *c;
+   char ch, *s, *m, *f_conv=NULL;
+   int i;
    char buf[256];
    
    if ((f == NULL) || (*f == 0))
@@ -2673,14 +2644,20 @@ static int insert_followup_format (char *f, FILE *fp) /*{{{*/
    if (Header_Showing == NULL)
      return -1;
 
+   if (slrn_test_and_convert_string(f, &f_conv, Slrn_Editor_Charset, Slrn_Display_Charset) == -1)
+	return -1;
+
+   if (f_conv != NULL)
+	f=f_conv;
+   
    while ((ch = *f++) != 0)
      {
 	if (ch != '%')
 	  {
-	     putc (ch, fp);
+	     putc (ch, fp); /* charset ok*/
 	     continue;
 	  }
-	s = smax = NULL;
+	s = m = NULL;
 	ch = *f++;
 	if (ch == 0) break;
 	
@@ -2696,14 +2673,12 @@ static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 	     s = Header_Showing->realname;
 	     break;
 	   case 'R':
-	     c = s = Header_Showing->realname;
-	     smax = s + strlen (Header_Showing->realname);
-	     while (c++ < smax)
-	       if (*c == ' ')
-		 {
-		    smax = c;
-		    break;
-		 }
+	     for (i=0; i <= strlen (Header_Showing->realname); i++)
+	       {
+		  if (Header_Showing->realname[i] == ' ')
+		       break;
+	       }
+	     m = slrn_strnmalloc (Header_Showing->realname,i,1);
 	     break;
 	   case 'f':
 	     (void) parse_from (Header_Showing->from, buf, sizeof(buf));
@@ -2731,12 +2706,23 @@ static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 	     break;
 	   case '%':
 	   default:
-	     putc (ch, fp);
+	     putc (ch, fp); /* charset ok*/
 	  }
 	
-	if (s == NULL) continue;
-	if (smax == NULL) fputs (s, fp);
-	else fwrite (s, 1, (unsigned int) (smax - s), fp);
+	if (m != NULL)
+	  {
+	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s", m) < 0)
+	       {
+		  slrn_free(m);
+		  return -1;
+	       }
+	     slrn_free(m);
+	  }
+	if (s != NULL)
+	  {
+	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s", s) < 0)
+		  return -1;
+	  }
      }
    return 0;
 }
@@ -2874,7 +2860,7 @@ static void reply (char *from) /*{{{*/
    char *quote_str;
 
    if ((-1 == slrn_check_batch ()) ||
-       (-1 == select_affected_article (MIME_DISPLAY))
+       (-1 == select_affected_article ())
 #if SLRN_HAS_SLANG
        || (-1 == run_article_hook (HOOK_REPLY))
 #endif
@@ -2910,18 +2896,15 @@ static void reply (char *from) /*{{{*/
    msgid = slrn_extract_header ("Message-ID: ", 12);
    subject = slrn_extract_header ("Subject: ", 9);
 
-   if (subject == NULL) subject = "";
-   else subject = subject_skip_re (subject);
-   
-   /* We need a copy of subject as slrn_subject_strip_was() might change it */
-   subject = slrn_safe_strmalloc (subject);
-   slrn_subject_strip_was (subject);
-
    n = 0;
-   fputs ("To: ", fp);
+   
    if (from != NULL)
-     fputs (from, fp);
-   fputs ("\n", fp); 
+     {
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "To: %s\n", from) < 0)
+	     return;
+     }
+   else
+	fputs ("To: \n", fp);
    n++;
    
 #if 0 /* I think that a reply is private by definition */
@@ -2947,12 +2930,29 @@ static void reply (char *from) /*{{{*/
      {
 	char *fromstr = slrn_make_from_string ();
 	if (fromstr == NULL) return;
-	fprintf (fp, "From: %s\n", fromstr);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", fromstr)< 0)
+	  {
+	     slrn_free(fromstr);
+	     return;
+	  }
+	slrn_free(fromstr);
 	n += 1;
      }
    
-   fprintf (fp, "Subject: Re: %s\nIn-Reply-To: %s\n",
-	    subject, (msgid == NULL ? "" : msgid));
+   if (subject == NULL) subject = "";
+   else subject = subject_skip_re (subject);
+   
+   /* We need a copy of subject as slrn_subject_strip_was() might change it */
+   subject = slrn_safe_strmalloc (subject);
+   slrn_subject_strip_was (subject);
+
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Subject: Re: %s\n", subject) < 0)
+     {
+	slrn_free(subject);
+	return;
+     }
+   slrn_free(subject);
+   fprintf (fp, "In-Reply-To: %s\n", (msgid == NULL ? "" : msgid));
    n += 2;
 
    if ((msgid != NULL) && (*msgid != 0))
@@ -2967,7 +2967,8 @@ static void reply (char *from) /*{{{*/
    
    if (0 != *Slrn_User_Info.replyto)
      {
-	fprintf (fp, "Reply-To: %s\n", Slrn_User_Info.replyto);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Reply-To: %s\n", Slrn_User_Info.replyto) < 0)
+	     return;
 	n += 1;
      }
    
@@ -3009,9 +3010,6 @@ static void reply (char *from) /*{{{*/
    slrn_add_signature (fp);
    slrn_fclose (fp);
    
-   if (Slrn_Editor_Uses_Mime_Charset)
-     slrn_chmap_fix_file (file, 0);
-   
    slrn_mail_file (file, 1, n, from_buf, subject);
    slrn_free (subject);
    if (Slrn_Use_Tmpdir) (void) slrn_delete_file (file);
@@ -3024,7 +3022,7 @@ static void reply_cmd (void) /*{{{*/
    if (-1 == slrn_check_batch ())
      return;
    
-   select_affected_article (MIME_DISPLAY);
+   select_affected_article ();
    slrn_update_screen ();
    
    if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST)
@@ -3042,6 +3040,7 @@ static void forward_article (void) /*{{{*/
    FILE *fp;
    char file[256];
    char to[SLRL_DISPLAY_BUFFER_SIZE];
+   char *charset=NULL;
    int edit, n, wrap, full = 0;
    
    if (Slrn_Prefix_Arg_Ptr != NULL)
@@ -3051,7 +3050,7 @@ static void forward_article (void) /*{{{*/
      }
    
    if ((-1 == slrn_check_batch ()) ||
-       (-1 == select_affected_article (MIME_DISPLAY)))
+       (-1 == select_affected_article ()))
      return;
    
    *to = 0;
@@ -3064,6 +3063,12 @@ static void forward_article (void) /*{{{*/
    if (-1 == (edit = slrn_get_yesno_cancel (_("Edit the message before sending"))))
      return;
    
+   if (!edit)
+     {
+	charset=Slrn_Editor_Charset;
+	Slrn_Editor_Charset=NULL;
+     }
+
 #if SLRN_HAS_SLANG
    if (-1 == run_article_hook (HOOK_FORWARD))
      return;
@@ -3084,20 +3089,30 @@ static void forward_article (void) /*{{{*/
 
    subject = slrn_extract_header ("Subject: ", 9);
    
-   fprintf (fp, "To: %s\n", to); n = 4;
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "To: %s\n", to) <0)
+	return;
+   n = 4;
    
    if (Slrn_Generate_Email_From)
      {
 	char *from = slrn_make_from_string ();
 	if (from == NULL) return;
-	fprintf (fp, "From: %s\n", from); n++;
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) < 0)
+	  {
+	     slrn_free(from);
+	     return;
+	  }
+	slrn_free(from);
+	n++;
      }
    
-   fprintf (fp, "Subject: Fwd: %s\n", subject == NULL ? "" : subject);
-   
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset,"Subject: Fwd: %s\n", subject == NULL ? "" : subject) < 0)
+	return;
+  
    if (0 != *Slrn_User_Info.replyto)
      {
-	fprintf (fp, "Reply-To: %s\n", Slrn_User_Info.replyto);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Reply-To: %s\n", Slrn_User_Info.replyto)  < 0)
+	     return;
 	n++;
      }
    putc ('\n', fp);
@@ -3110,7 +3125,8 @@ static void forward_article (void) /*{{{*/
      {
 	if (full || (0 == (l->flags & HEADER_LINE)) ||
 	    (0 == (l->flags & HIDDEN_LINE)))
-	  fprintf (fp, "%s\n", l->buf);
+	  if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", l->buf) < 0)
+	        return;
 	l = l->next;
      }
    slrn_fclose (fp);
@@ -3118,11 +3134,11 @@ static void forward_article (void) /*{{{*/
    if (wrap)
      (void) _slrn_art_wrap_article (Slrn_Current_Article);
    
-   if (Slrn_Editor_Uses_Mime_Charset)
-     slrn_chmap_fix_file (file, 0);
-   
    (void) slrn_mail_file (file, edit, n, to, subject);
 
+   if (charset != NULL)
+	Slrn_Editor_Charset=charset;
+ 
    if (Slrn_Use_Tmpdir) slrn_delete_file (file);
 }
 
@@ -3153,7 +3169,7 @@ static void followup (void) /*{{{*/
    /* The perform_cc testing is ugly.  Is there an easier way?? */
 
    if ((-1 == slrn_check_batch ()) ||
-       (-1 == select_affected_article (MIME_DISPLAY)))
+       (-1 == select_affected_article ()))
      return;
    
    if (Slrn_Prefix_Arg_Ptr != NULL)
@@ -3425,19 +3441,27 @@ static void followup (void) /*{{{*/
 	goto free_and_return;
      }
    
-   subject = slrn_safe_strmalloc (subject);
-   slrn_subject_strip_was (subject);
-   
    fprintf (fp, "Newsgroups: %s\n", newsgroups);  n = 3;
 
 #if ! SLRN_HAS_STRICT_FROM
    from = slrn_make_from_string ();
    if (from == NULL) return;
-   fprintf (fp, "From: %s\n", from); n++;
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) < 0)
+     {
+	slrn_free(from);
+	goto free_and_return;
+     }
+   slrn_free(from);
+   n++;
 #endif
    
-   fprintf (fp, "Subject: Re: %s\n", subject);
-   
+   subject = slrn_safe_strmalloc (subject);
+   slrn_subject_strip_was (subject);
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Subject: Re: %s\n", subject) < 0)
+     {
+	slrn_free (subject);
+	goto free_and_return;
+     }
    slrn_free (subject);
    
    xref = slrn_extract_header("References: ", 12);
@@ -3452,20 +3476,23 @@ static void followup (void) /*{{{*/
 
    if (Slrn_User_Info.org != NULL)
      {
-	fprintf (fp, "Organization: %s\n", Slrn_User_Info.org);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Organization: %s\n", Slrn_User_Info.org) < 0)
+	  goto free_and_return;
 	n++;
      }
    
    if (perform_cc
        && (cc_address_t != NULL))
      {
-	fprintf (fp, "Cc: %s\n", cc_address);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset,  "Cc: %s\n", cc_address) < 0)
+	     goto free_and_return;
 	n++;
      }
    
    if (0 != *Slrn_User_Info.replyto)
      {
-	fprintf (fp, "Reply-To: %s\n", Slrn_User_Info.replyto);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Reply-To: %s\n", Slrn_User_Info.replyto) < 0)
+	     goto free_and_return;
 	n++;
      }
    
@@ -3526,7 +3553,10 @@ static void followup (void) /*{{{*/
 	if ((*l->buf == 0) && (Slrn_Smart_Quote & 0x02))
 	  fputc ('\n', fp);
 	else
-	  fprintf (fp, "%s%s%s\n", quote_str, (smart_space)? " " : "" , l->buf);
+	  {
+	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s%s%s\n", quote_str, (smart_space)? " " : "" , l->buf) < 0)
+		  goto free_and_return;
+	  }
 	
 	l = l->next;
      }
@@ -3536,9 +3566,6 @@ static void followup (void) /*{{{*/
 
    if (prefix_arg != 2) slrn_add_signature (fp);
    slrn_fclose (fp);
-   
-   if (Slrn_Editor_Uses_Mime_Charset)
-     slrn_chmap_fix_file (file, 0);
    
    if (slrn_edit_file (Slrn_Editor_Post, file, n, 1) >= 0)
      {
@@ -3615,14 +3642,14 @@ static void supersede (void) /*{{{*/
    char *followupto, *msgid, *newsgroups, *subject, *xref;
    Slrn_Article_Line_Type *l;
    FILE *fp;
-   char file[SLRN_MAX_PATH_LEN], from[512];
+   char file[SLRN_MAX_PATH_LEN], from_buf[512];
    unsigned int n;
    int wrap;
-   char *me;
+   char *from, *me;
    char me_buf[512];
    
    if ((-1 == slrn_check_batch ()) ||
-       (-1 == select_affected_article (MIME_DISPLAY)))
+       (-1 == select_affected_article ()))
      return;
    
    if (Slrn_Post_Obj->po_can_post == 0)
@@ -3631,17 +3658,17 @@ static void supersede (void) /*{{{*/
 	return;
      }
    
-   me = slrn_extract_header ("From: ", 6);
-   if (me != NULL)
-      (void) parse_from (me, from, sizeof(from));
+   from = slrn_extract_header ("From: ", 6);
+   if (from != NULL)
+      (void) parse_from (from, from_buf, sizeof(from_buf));
    else
-      from[0] = '\0';
+      from_buf[0] = '\0';
    if (NULL == (me = slrn_make_from_string())) return;
-   (void) parse_from (me, me_buf, sizeof(me_buf));
+   (void) parse_from (me+6, me_buf, sizeof(me_buf));
    
-   if (slrn_case_strcmp ((unsigned char *) from, (unsigned char *) me_buf))
+   if (slrn_case_strcmp ((unsigned char *) from_buf, (unsigned char *) me_buf))
      {
-        slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from);
+        slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from_buf);
         return;
      }
    
@@ -3672,21 +3699,32 @@ static void supersede (void) /*{{{*/
    if (fp == NULL)
      {
 	slrn_error (_("Unable to open %s for writing."), file);
+	slrn_free(me);
 	return;
      }
 
    fprintf (fp, "Newsgroups: %s\n", newsgroups); n = 5;
 #if ! SLRN_HAS_STRICT_FROM
-   fprintf (fp, "From: %s\n", me); n++;
-#endif
-   fprintf (fp, "Subject: %s\nSupersedes: %s\nFollowup-To: %s\n",
-	    subject, msgid, followupto);
-#if SLRN_HAS_CANLOCK
-   /* Abuse me, we don't need me anymore ;-) */
-   if (NULL != (me = gen_cancel_key(msgid)))
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", me) < 0)
      {
-	fprintf (fp, "Cancel-Key: %s\n", me);
-	SLFREE (me);
+	slrn_free(me);
+	return;
+     }
+   n++;
+#endif
+   slrn_free(me);
+
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Subject: %s\n", subject) < 0)
+	return;
+
+   fprintf (fp, "Supersedes: %s\nFollowup-To: %s\n",
+	    msgid, followupto);
+#if SLRN_HAS_CANLOCK
+   /* Abuse 'from', we don't need its content anymore */
+   if (NULL != (from = gen_cancel_key(msgid)))
+     {
+	fprintf (fp, "Cancel-Key: %s\n", from);
+	SLFREE (from);
      }
 #endif
     
@@ -3698,13 +3736,15 @@ static void supersede (void) /*{{{*/
    
    if (Slrn_User_Info.org != NULL)
      {
-	fprintf (fp, "Organization: %s\n", Slrn_User_Info.org);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Organization: %s\n", Slrn_User_Info.org) < 0)
+	     return; 
 	n++;
      }
    
    if (0 != *Slrn_User_Info.replyto)
      {
-	fprintf (fp, "Reply-To: %s\n", Slrn_User_Info.replyto);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset,  "Reply-To: %s\n", Slrn_User_Info.replyto) < 0)
+	     return;
 	n++;
      }
    
@@ -3723,7 +3763,8 @@ static void supersede (void) /*{{{*/
    
    while (l != NULL)
      {
-	fprintf (fp, "%s\n", l->buf);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", l->buf) < 0)
+	     return;
 	
 	l = l->next;
      }
@@ -3733,9 +3774,6 @@ static void supersede (void) /*{{{*/
    
    slrn_fclose (fp);
 
-   if (Slrn_Editor_Uses_Mime_Charset)
-     slrn_chmap_fix_file (file, 0);
-   
    if (slrn_edit_file (Slrn_Editor_Post, file, n, 1) >= 0)
      {
 	if (0 == slrn_post_file (file, NULL, 0))
@@ -4110,7 +4148,7 @@ static void goto_header_number (void) /*{{{*/
 
 /*{{{ article save/decode functions */
 
-static int write_article_line (Slrn_Article_Line_Type *l, FILE *fp)
+static int write_article_line (Slrn_Article_Line_Type *l, FILE *fp, int convert)
 {
    while (l != NULL)
      {
@@ -4120,8 +4158,16 @@ static int write_article_line (Slrn_Article_Line_Type *l, FILE *fp)
 	buf = l->buf;
 	if (l->flags & WRAPPED_LINE) buf++;   /* skip space */
 	
-	if (EOF == fputs (buf, fp))
-	  return -1;
+	if (convert)
+	  {
+	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s", buf)< 0)
+	       return -1;
+	  }
+	else
+	  {
+	     if (EOF == fputs (buf, fp))
+		  return -1;
+	  }
 	
 	if ((next == NULL) || (0 == (next->flags & WRAPPED_LINE)))
 	  {
@@ -4152,18 +4198,12 @@ int slrn_save_current_article (char *file) /*{{{*/
    Slrn_Article_Line_Type *lines;
    int retval = 0;
    
-   /* We're setting MIME_DISPLAY here and use raw_lines if
-    * MIME_SAVE is 0; this saves the re-encoding later */
+   /* We're saving raw_lines, this saves the re-encoding later */
    if (NULL == (h = affected_header ()) ||
-       select_header (h, Slrn_Del_Article_Upon_Read,
-		      Slrn_Use_Mime & MIME_DISPLAY) < 0)
+       select_header (h, Slrn_Del_Article_Upon_Read) < 0)
      return -1;
    
-   lines = Slrn_Current_Article->lines;
-#if SLRN_HAS_MIME
-   if (0 == (Slrn_Use_Mime & MIME_SAVE))
-     lines = Slrn_Current_Article->raw_lines;
-#endif
+   lines = Slrn_Current_Article->raw_lines;
    
    fp = fopen (file, "w");
    
@@ -4174,7 +4214,7 @@ int slrn_save_current_article (char *file) /*{{{*/
      }
    else
      {
-	if (-1 == (retval = write_article_line (lines, fp)))
+	if (-1 == (retval = write_article_line (lines, fp, 0)))
 	  slrn_error (_("Error writing to %s."), file);
 	fclose (fp);
      }
@@ -4198,36 +4238,9 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
      {
 	if (NULL == (a = read_article (h, Slrn_Del_Article_Upon_Read)))
 	  return -1;
-#if SLRN_HAS_MIME
-	if (Slrn_Use_Mime & MIME_SAVE)
-	  {
-	     slrn_mime_article_init (a);
-	     slrn_mime_process_article (a);
-	     slrn_chmap_fix_body (a, 0);
-	  }
-#endif
-	l = a->lines;
      }
-   else
-     {
-	is_wrapped = a->is_wrapped;
-	if (is_wrapped) _slrn_art_unwrap_article (a);
-#if SLRN_HAS_MIME
-	if (Slrn_Use_Mime & MIME_SAVE)
-	  {
-	     if (a->mime_was_parsed == 0)
-	       {
-		  undo_mime = 1;
-		  slrn_mime_article_init (a);
-		  slrn_mime_process_article (a);
-	       }
-	     l = a->lines;
-	  }
-	else
-	  l = a->raw_lines;
-#endif
-     }
-   
+
+   l = a->raw_lines;
    from = h->from;
    if (from != NULL) from = parse_from (from, from_buf, sizeof(from_buf));
    else from_buf[0] = '\0';
@@ -4254,16 +4267,7 @@ static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
    fputs ("\n", fp); /* one empty line as a separator */
    
    if (a != Slrn_Current_Article) slrn_art_free_article (a);
-   else if (undo_mime)
-     {
-	if (-1 == art_undo_modifications (a))
-	  {
-	     Slrn_Current_Article = NULL;
-	     free_article();
-	     return -1;
-	  }
-     }	  
-   if (is_wrapped) _slrn_art_wrap_article (Slrn_Current_Article);
+   else if (is_wrapped) _slrn_art_wrap_article (Slrn_Current_Article);
    
    return 0;
 }
@@ -4465,7 +4469,7 @@ static void save_article (void) /*{{{*/
 
 #if SLRN_HAS_DECODE
 #if SLRN_HAS_UUDEVIEW
-static int the_uudeview_busy_callback (void *param, uuprogress *progress)
+static int the_uudeview_busy_callback (void *param, uuprogress *progress)/*{{{*/
 {
    char stuff[26];
    unsigned int count, count_max;
@@ -4491,7 +4495,9 @@ static int the_uudeview_busy_callback (void *param, uuprogress *progress)
    return 0;
 }
 
-static int do_slrn_uudeview (char *uu_dir, char *file)
+/*}}}*/
+
+static int do_slrn_uudeview (char *uu_dir, char *file)/*{{{*/
 {
    uulist *item;
    char where [SLRN_MAX_PATH_LEN];
@@ -4544,6 +4550,8 @@ static int do_slrn_uudeview (char *uu_dir, char *file)
 
    UUCleanUp ();
 }
+
+/*}}}*/
 #endif
 
 static void decode_article (void) /*{{{*/
@@ -4596,21 +4604,28 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
 #if SLRN_HAS_PIPING
    FILE *fp;
    int retval;
+   int convert=0;
    Slrn_Article_Line_Type *lines;
 
-   /* We're setting MIME_DISPLAY here and use raw_lines if
-    * MIME_PIPE is 0; this saves the re-encoding later */   
-   if (-1 == (retval = select_affected_article (MIME_DISPLAY)))
+   if (-1 == (retval = select_affected_article ()))
      return -1;
-#if SLRN_HAS_MIME
    else if (retval == 1)
-     select_header (Header_Showing, 0, Slrn_Use_Mime & MIME_DISPLAY);
-#endif
-   lines = Slrn_Current_Article->lines;
-#if SLRN_HAS_MIME
-   if (0 == (Slrn_Use_Mime & MIME_PIPE))
-     lines = Slrn_Current_Article->raw_lines;
-#endif
+     select_header (Header_Showing, 0);
+  
+   switch (Slrn_Pipe_Type)
+     {
+	  case PIPE_RAW:
+	     lines = Slrn_Current_Article->raw_lines;
+	     convert=0;
+	     break;
+	  case PIPE_DECODED:
+	     return -1;
+	     break;
+	  case PIPE_CONVERTED:
+	     lines = Slrn_Current_Article->lines;
+	     convert = 1;
+	     break;
+     }
    
    if (NULL == (fp = slrn_popen (cmd, "w")))
      {
@@ -4619,7 +4634,7 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
      }
    else
      {
-	retval = write_article_line (lines, fp);
+	retval = write_article_line (lines, fp, convert);
 	slrn_pclose (fp);
      }
    
@@ -4658,7 +4673,7 @@ static int print_article (int full) /*{{{*/
    Slrn_Article_Line_Type *l;
    int was_wrapped = 0;
 
-   if (-1 == select_affected_article (MIME_DISPLAY)) return -1;
+   if (-1 == select_affected_article ()) return -1;
    
    slrn_message_now (_("Printing article..."));
 
@@ -4952,18 +4967,14 @@ static int select_article (int check_mime) /*{{{*/
      ret = 0;
    
    if (((ret == 0) || check_mime) &&
-       select_header (Slrn_Current_Header, Slrn_Del_Article_Upon_Read,
-		      Slrn_Use_Mime & MIME_DISPLAY) < 0)
+       select_header (Slrn_Current_Header, Slrn_Del_Article_Upon_Read) < 0)
      return -1;
    
-#if SLRN_HAS_MIME
-   if ((0 == ret) && (Slrn_Use_Mime & MIME_DISPLAY) &&
-       Slrn_Current_Article->mime_needs_metamail)
+   if ((0 == ret) && Slrn_Current_Article->mime.needs_metamail)
      {
 	if (slrn_mime_call_metamail ())
 	  return -1;
      }
-#endif
 
    /* The article gets synced here */
    set_article_visibility (1);
@@ -5510,16 +5521,10 @@ static Slrn_Header_Type *process_xover (Slrn_XOver_Type *xov)
    slrn_map_xover_to_header (xov, h);
    Number_Total++;
    
-#if SLRN_HAS_MIME
-   if (Slrn_Use_Mime & MIME_DISPLAY)
-     {
-	slrn_rfc1522_decode_string (h->subject);
-	slrn_rfc1522_decode_string (h->from);
-     }
-#endif
+   slrn_rfc1522_decode_string (&h->subject);
+   slrn_rfc1522_decode_string (&h->from);
 
    get_header_real_name (h);
-   slrn_chmap_fix_header (h);
    
 #if SLRN_HAS_GROUPLENS
    if (Slrn_Use_Group_Lens)
@@ -6860,11 +6865,12 @@ static void art_xpunge (void) /*{{{*/
 
 static void cancel_article (void) /*{{{*/
 {
-   char *me, *msgid, *newsgroups, *dist;
-   char from[512], me_buf[512];
+   char *me, *msgid, *newsgroups, *dist, *can_key;
+   char from_buf[512], me_buf[512], *from;
+   Slrn_Mime_Error_Obj *err;
    
    if ((-1 == slrn_check_batch ()) ||
-       (-1 == select_affected_article (MIME_DISPLAY)))
+       (-1 == select_affected_article ()))
      return;
    slrn_update_screen ();
    
@@ -6872,32 +6878,35 @@ static void cancel_article (void) /*{{{*/
     * see if this is really the owner of the message.
     */
    
-   me = slrn_extract_header ("From: ", 6);
-   if (me != NULL) (void) parse_from (me, from, sizeof(from));
+   from = slrn_extract_header ("From: ", 6);
+   if (from != NULL) (void) parse_from (from, from_buf, sizeof(from_buf));
    else from[0] = '\0';
    
    if (NULL == (me = slrn_make_from_string ())) return;
-   if (me != NULL) (void) parse_from (me, me_buf, sizeof(me_buf));
-   else me_buf[0] = '\0';
+   (void) parse_from (me+6, me_buf, sizeof(me_buf));
    
-   if (slrn_case_strcmp ((unsigned char *) from, (unsigned char *) me_buf))
+   if (slrn_case_strcmp ((unsigned char *) from_buf, (unsigned char *) me_buf))
      {
-        slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from);
-        return;
+        slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from_buf);
+        slrn_free(me);
+	return;
      }
    
    if (slrn_get_yesno (0, _("Are you sure that you want to cancel this article")) <= 0)
-     return;
+     {
+	slrn_free(me);
+	return;
+     }
    
    slrn_message_now (_("Cancelling..."));
    
-#if SLRN_HAS_MIME
-   strncpy(from, me, sizeof(from));
-   from[sizeof(from)-1] = '\0';
-
-   if (Slrn_Use_Mime & MIME_DISPLAY)
-     slrn_mime_header_encode(from, sizeof(from));
-#endif
+   if ((err = slrn_mime_header_encode(&me, Slrn_Display_Charset)) != NULL)
+     {
+	slrn_error (_("error during From: encoding: %s"), err->msg);
+	slrn_free(me);
+	slrn_free_mime_error(err);
+	return;
+     }
    
    if (NULL == (newsgroups = slrn_extract_header ("Newsgroups: ", 12)))
      newsgroups = "";
@@ -6906,6 +6915,7 @@ static void cancel_article (void) /*{{{*/
        (0 == *msgid))
      {
 	slrn_error (_("No message id."));
+	slrn_free(me);
 	return;
      }
    
@@ -6914,8 +6924,10 @@ static void cancel_article (void) /*{{{*/
    
    if (Slrn_Post_Obj->po_start () < 0) return;
    
-   Slrn_Post_Obj->po_printf ("From: %s\nNewsgroups: %s\nSubject: cmsg cancel %s\nControl: cancel %s\n",
-			     from, newsgroups, msgid, msgid);
+   Slrn_Post_Obj->po_printf ("%s\nNewsgroups: %s\nSubject: cmsg cancel %s\nControl: cancel %s\n",
+			     me, newsgroups, msgid, msgid);
+   
+   slrn_free(me);
    
    if ((dist != NULL) && (*dist != 0))
      {
@@ -6923,11 +6935,10 @@ static void cancel_article (void) /*{{{*/
      }
    
 #if SLRN_HAS_CANLOCK
-   /* Abuse me, not needed anymore */
-   if (NULL != (me = gen_cancel_key(msgid)))
+   if (NULL != (can_key = gen_cancel_key(msgid)))
      {
-	Slrn_Post_Obj->po_printf ("Cancel-Key: %s\n", me);
-	SLFREE (me);
+	Slrn_Post_Obj->po_printf ("Cancel-Key: %s\n", can_key);
+	SLFREE (can_key);
      }
 #endif
    

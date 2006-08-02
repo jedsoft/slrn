@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2002-2004 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2002-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -49,6 +49,7 @@
 #include "util.h"
 #include "ttymsg.h"
 #include "snprintf.h"
+#include "slrn.h"
 
 /* This function allows NULL as a parameter. This fact _is_ exploited */
 char *slrn_skip_whitespace (char *b) /*{{{*/
@@ -152,6 +153,12 @@ int slrn_case_strncmp (unsigned char *a, register unsigned char *b, register uns
 {
    register unsigned char cha, chb, *bmax;
    
+#if SLANG_VERSION >= 20000
+   if (Slrn_UTF8_Mode)
+     {
+	return SLutf8_compare(a, a+strlen(a), b, b+strlen(b), n , 0);
+     }
+#endif
    bmax = b + n;
    while (b < bmax)
      {
@@ -173,7 +180,20 @@ int slrn_case_strncmp (unsigned char *a, register unsigned char *b, register uns
 int slrn_case_strcmp (unsigned char *a, register unsigned char *b) /*{{{*/
 {
    register unsigned char cha, chb;
+   int len_a,len_b,min;
    
+#if SLANG_VERSION >= 20000
+   if (Slrn_UTF8_Mode)
+     {
+	len_a=strlen(a);
+	len_b=strlen(b);
+	if (len_a > len_b)
+	     min = len_b;
+	else
+	     min = len_a;
+	return SLutf8_compare(a, a+strlen(a), b, b+strlen(b), min , 0);
+     }
+#endif
    while (1)
      {
 	cha = UPPER_CASE(*a);

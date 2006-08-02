@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -77,6 +77,7 @@ extern int Slrn_Sig_Is_End_Of_Article;
 extern int Slrn_Del_Article_Upon_Read;
 extern int Slrn_Followup_Strip_Sig;
 extern int Slrn_Smart_Quote;
+extern int Slrn_Pipe_Type;
 extern int Slrn_Process_Verbatim_Marks;
 #if SLRN_HAS_UUDEVIEW
 extern int Slrn_Use_Uudeview;
@@ -122,7 +123,7 @@ typedef struct Slrn_Header_Type
    int lines;
    int bytes;
    char *subject;		       /* malloced separately */
-   char *from;
+   char *from;			       /* malloced */
    char *date;			       /* malloced */
    char *msgid;			       /* pointers to above space */
    char *refs;
@@ -177,6 +178,17 @@ Slrn_Article_Line_Type;
 
 typedef struct
 {
+    char *charset;
+    int content_type;
+    int content_subtype;
+    int was_modified;
+    int was_parsed;
+    int needs_metamail;
+}
+Slrn_Mime_Type;
+
+typedef struct
+{
    Slrn_Article_Line_Type *lines;
    Slrn_Article_Line_Type *cline;      /* current line */
    Slrn_Article_Line_Type *raw_lines;  /* unmodified article (as read from server) */
@@ -189,11 +201,7 @@ typedef struct
    int pgp_signature_hidden;
    int verbatim_hidden;
    int verbatim_marks_hidden;
-#if SLRN_HAS_MIME
-   int mime_was_modified;
-   int mime_was_parsed;
-   int mime_needs_metamail;
-#endif
+   Slrn_Mime_Type mime;
    int needs_sync;		       /* non-zero if line number/current line needs updated */
 }
 Slrn_Article_Type;
@@ -262,6 +270,8 @@ extern int Slrn_Highlight_Unread;
 extern int slrn_set_header_format (unsigned int, char *);
 
 extern void slrn_art_sync_article (Slrn_Article_Type *);
+extern void slrn_art_free_article_line (Slrn_Article_Line_Type *);
+extern void slrn_art_free_article (Slrn_Article_Type *);
 extern int slrn_art_get_unread (void);
 
 /* These are in art_sort.c : */

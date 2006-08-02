@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2005 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -102,12 +102,11 @@ extern int h_errno;
 #include "misc.h"
 #include "group.h"
 #include "slrn.h"
-#include "post.h"
 #include "util.h"
 #include "server.h"
 #include "ttymsg.h"
 #include "art.h"
-#include "chmap.h"
+#include "post.h"
 #include "snprintf.h"
 #include "mime.h"
 #include "slrndir.h"
@@ -1195,10 +1194,14 @@ VFILE *slrn_open_home_vfile (char *name, char *file, size_t n)
 
 /*}}}*/
 
+   
 int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char *subject) /*{{{*/
 {
    char *buf;
-   char fcc_file[SLRN_MAX_PATH_LEN];
+   FILE *pp;
+   Slrn_Article_Type *a = NULL;
+   int rsp;
+   char *responses;
 #if defined(IBMPC_SYSTEM)
    char outfile [SLRN_MAX_PATH_LEN];
 #endif
@@ -1211,9 +1214,9 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	while (1)
 	  {
 	     char rsp;
-   /* Note to translators: "yY" is for "yes", "nN" for "no", "eE" for "edit".
-    * Do not change the length of this string. You cannot use any of the
-    * default characters for different fields. */
+/* Note to translators: "yY" is for "yes", "nN" for "no", "eE" for "edit".
+ * Do not change the length of this string. You cannot use any of the
+ * default characters for different fields. */
 	     char *responses=_("yYnNeE");
 	     
 	     if (strlen (responses) != 6)
@@ -1225,147 +1228,96 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	     if (slrn_edit_file (Slrn_Editor_Mail, file, 1, 0) < 0) return -1;
 	  }
      }
-   slrn_message_now (_("Sending ..."));
-
-   if ((Slrn_Use_Mime & MIME_ARCHIVE) && /* else: do it later */
-       !Slrn_Editor_Uses_Mime_Charset)
-     slrn_chmap_fix_file (file, 0);
-
-   if (!(Slrn_Use_Mime & MIME_ARCHIVE) &&
-       !Slrn_Editor_Uses_Mime_Charset)
-     slrn_chmap_fix_file (file, 0);
-
 #ifdef VMS
    buf = slrn_strdup_printf ("%s\"%s\"", MAIL_PROTOCOL, to);
    vms_send_mail (buf, subject, file);
    slrn_free (buf);
 #else
-   (void) to; (void) subject;
-
-   /* What I need to do is to open the file and feed it line by line to the
-    * sendmail program.  This way I can strip out blank headers.
-    */
-# if SLRN_HAS_MIME
-   if (Slrn_Use_Mime & MIME_DISPLAY)
+   
+   while (1)
      {
-	FILE *fp, *pp, *fcc_fp;
-	VFILE *vp;
-	char *vline;
-	unsigned int vlen;
-	int header = 1;
-
-	/* First, fopen() the file to do the MIME check */
-	if ((fp = fopen (file, "r")) == NULL)
-	     return (-1);
-
-	fcc_fp = slrn_open_tmpfile (fcc_file, sizeof (fcc_file));
-
-	if (fcc_fp == NULL)
+	if (a!= NULL)
+	    slrn_art_free_article(a);
+	a=(Slrn_Article_Type*) slrn_malloc (sizeof(Slrn_Article_Type), 1, 1);
+   
+	if (0 == (rsp = slrn_prepare_file_for_posting(file, &editline, a, to, 1)))
 	  {
-	     slrn_fclose (fp);
-	     return (-1);
+	     break;
+	  }
+	if (rsp == -1)
+	  {
+	     slrn_art_free_article(a);
+	     return -1;
+	  }
+	if (rsp == 1)
+	  {
+/* Note to translators:
+* In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
+* "cC" is "cancel" and "fF" means "force". The usual rules apply.
+*/
+	     responses = _("yYeEnNcC");
+	     if (strlen (responses) != 8)
+	       responses = "";
+	     rsp = slrn_get_response ("yYEenNcC\007", responses, _("re-\001Edit,  or \001Cancel"));
+	  }
+	else
+	  {
+	     responses = _("yYeEnNcCfF");
+	     if (strlen (responses) != 10)
+	       responses = "";
+	     rsp = slrn_get_response ("EeyYnNcC\007Ff", responses, _("re-\001Edit, \001Cancel, or \001Force the posting (not recommended)"));
 	  }
 
-	slrn_mime_scan_file (fp);
-	slrn_fclose(fp);
-	
-	/* Now, vopen() it for reading in long lines */
-	if ((vp = vopen (file, 4096, 0)) == NULL)
-	  return (-1);
-	
-#  if defined(IBMPC_SYSTEM)
-	pp = slrn_open_tmpfile (outfile, sizeof (outfile));
-#  else
-	pp = slrn_popen (Slrn_SendMail_Command, "w");
-#  endif
-	if (pp == NULL)
+	rsp = slrn_map_translated_char ("yYeEnNcCfF", _("yYeEnNcCfF"), rsp) | 0x20;
+
+	if ((rsp == 'c') || (rsp == 'n') ||(rsp == 7) )
 	  {
-	     vclose (vp);
-	     slrn_fclose (fcc_fp);
-	     return (-1);
+	     slrn_art_free_article(a);
+	     return -1;
 	  }
-
-	while (NULL != (vline = vgets(vp, &vlen)))
+	if (rsp == 'f')
+	  break;
+	if (slrn_edit_file (Slrn_Editor_Mail, file, editline, 1) < 0)
 	  {
-	     char *line;
-	     
-	     if (vlen == 0) continue;
-	     
-	     line = slrn_safe_malloc (vlen+512); /* add some for MIME overhead */
-	     strncpy (line, vline, vlen);
-	     if (line[vlen-1] == '\n')
-	       line[vlen-1] = 0;
-	     else
-	       line[vlen] = 0;
-
-	     if (header)
-	       {
-		  if (((line[0] == 'R') || (line[0]== 'r'))
-		      && (0 == slrn_case_strncmp ((unsigned char *)"References: ",
-						  (unsigned char *)line,
-						  12)))
-		    {
-		       (void) slrn_add_references_header (pp, line);
-		       (void) slrn_add_references_header (fcc_fp, line);
-		       SLfree(line);
-		       continue;
-		    }
-
-		  if (line[0] == 0)
-		    {
-		       header = 0;
-
-		       slrn_add_date_header (pp);
-		       slrn_mime_add_headers (pp);
-		       vp = slrn_mime_encode (vp);
-
-		       slrn_add_date_header (fcc_fp);
-		       slrn_mime_add_headers (fcc_fp);
-		    }
-		  slrn_mime_header_encode (line, vlen+512);
-	       }
-	     if ((Slrn_Generate_Email_From) ||
-		 (header == 0) ||
-		 (slrn_case_strncmp ((unsigned char *)"From: ",
-				     (unsigned char *)line, 6)))
-	       {
-		  fputs (line, pp);
-		  putc('\n', pp);
-		  fputs (line, fcc_fp);
-		  putc('\n', fcc_fp);
-	       }
-	     SLfree(line);
+	     slrn_art_free_article(a);
+	     return -1;
 	  }
-	vclose (vp);
-	slrn_fclose (fcc_fp);
-#  if defined(IBMPC_SYSTEM)
-	slrn_fclose (pp);
-	buf = slrn_strdup_strcat (Slrn_SendMail_Command, " ", outfile, NULL);
-	slrn_posix_system (buf, 0);
-	slrn_free (buf);
-#  else
-	slrn_pclose (pp);
-#  endif
-     }
-   else
-# endif /* SLRN_HAS_MIME */
-     {
+     } /* while (1)*/
+
+   slrn_message_now (_("Sending ..."));
+
 # if defined(IBMPC_SYSTEM)
-	buf = slrn_strdup_strcat (Slrn_SendMail_Command, " ", file, NULL);
+   pp = slrn_open_tmpfile (outfile, sizeof (outfile));
 # else
-	buf = slrn_strdup_strcat (Slrn_SendMail_Command, " < ", file, NULL);
+   pp = slrn_popen (Slrn_SendMail_Command, "w");
 # endif
-	slrn_posix_system (buf, 0);
-	slrn_free (buf);
+
+   a->cline=a->lines;
+   while (a->cline != NULL)
+     {
+	fputs (a->cline->buf, pp);
+	putc('\n', pp);
+	a->cline=a->cline->next;
      }
+# if defined(IBMPC_SYSTEM)
+   slrn_fclose (pp);
+   buf = slrn_strdup_strcat (Slrn_SendMail_Command, " ", outfile, NULL);
+   slrn_posix_system (buf, 0);
+   slrn_free (buf);
+# else
+   slrn_pclose (pp);
+# endif
+   
 #endif /* NOT VMS */
    slrn_message (_("Sending...done"));
 
-   if (-1 == slrn_save_file_to_mail_file (fcc_file, Slrn_Save_Replies_File))
-     return -1;
+   if (-1 == slrn_save_article_to_mail_file (a, Slrn_Save_Replies_File))
+     {
+	slrn_art_free_article(a);
+	return -1;
+     }
 
-   (void) slrn_delete_file (fcc_file);
-
+   slrn_art_free_article(a);
    return 0;
 }
 
@@ -3133,61 +3085,66 @@ static int is_phrase (char *str)
    return 1;
 }
 
-static int make_quoted_string (char *src, char *dest, size_t n)
+static char *make_quoted_string (char *src)
 {
-   size_t len = 1;
-   char ch;
+   size_t extrachars =3;
+   char ch, *dest;
    
-   if (n == 0) return -1;
+   if ((src == NULL) || (*src == 0)) return NULL;
+   
+   while (ch = *src++)
+     {
+	if ((ch == 0x0a) || (ch == 0x0d)) continue;
+	if ((ch == '\t') || (ch == '"') || (ch == '\\'))
+	  {
+	    extrachars++;
+	  }
+     }
+   dest= slrn_safe_malloc(strlen(src)+extrachars);
    
    *dest++ = '"';
-   while (((ch = *src++)) && (len + 1 < n))
+   while ((ch = *src++))
      {
 	if ((ch == 0x0a) || (ch == 0x0d)) continue;
 	if ((ch == '\t') || (ch == '"') || (ch == '\\'))
 	  {
 	     *dest++ = '\\';
-	     len++;
 	  }
 	*dest++ = ch;
-	len++;
      }
    
-   if (len + 2 > n) return -1;
    *dest++ = '"'; *dest = '\0';
-   return 0;
+   return dest;
 }
 
-/* returns -1 upon failure */
-static int make_localpart (char *username, char *dest, size_t n)
+/* returns NULL upon failure */
+static char *make_localpart (char *username)
 {
-   if ((username == NULL) || (*username == 0) || (strlen (username) >= n))
-     return -1;
+   if ((username == NULL) || (*username == 0) )
+     return NULL;
    if (is_dot_atom (username))
      {
-	strcpy (dest, username); /* safe */
-	return 0;
+	
+	return slrn_safe_strmalloc(username);
      }
-   return make_quoted_string (username, dest, n);
+   return make_quoted_string (username);
 }
 
-static int make_realname (char *realname, char *dest, size_t n)
+static char *make_realname (char *realname)
 {
-   if ((realname == NULL) || (*realname == 0) || (strlen (realname) >= n))
-     return -1;
+   if ((realname == NULL) || (*realname == 0) )
+     return NULL;
    if (is_phrase (realname))
      {
-	strcpy (dest, realname); /* safe */
-	return 0;
+	return slrn_safe_strmalloc(realname);
      }
-   return make_quoted_string (realname, dest, n);
+   return make_quoted_string (realname);
 }
 
 char *slrn_make_from_string (void)
 {
-   static char buf[256];
-   char localpart[128], realname[128], *msg;
-   unsigned int addrlen = 0;
+   static char *buf;
+   char *localpart, *realname, *msg;
 
 #if SLRN_HAS_SLANG && ! SLRN_HAS_STRICT_FROM
    if ((1 == slrn_run_hooks (HOOK_MAKE_FROM_STRING, 0))
@@ -3195,7 +3152,7 @@ char *slrn_make_from_string (void)
      {
 	if (*msg != 0)
 	  {
-	     slrn_strncpy (buf, msg, sizeof (buf));
+	     buf = slrn_safe_strmalloc (msg);//XXX
 	     SLang_free_slstring (msg);
 	     return buf;
 	  }
@@ -3205,36 +3162,35 @@ char *slrn_make_from_string (void)
 #endif
    msg = NULL;
 
-   if (make_localpart (Slrn_User_Info.username, localpart, sizeof (localpart)))
-     msg = _("Cannot generate \"From:\" line without a valid username.");
-   else if ((NULL == Slrn_User_Info.hostname) ||
+   if (( localpart = make_localpart (Slrn_User_Info.username)) == NULL)
+     {
+	slrn_error (_("Cannot generate \"From:\" line without a valid username."));
+	return NULL;
+     }
+   if ((NULL == Slrn_User_Info.hostname) ||
 	    (0 == *Slrn_User_Info.hostname))
      /* Note: we currently do not check whether hostname is valid */
-     msg = _("Cannot generate \"From:\" line without a hostname.");
-   else
      {
-	addrlen = strlen (localpart) + strlen (Slrn_User_Info.hostname) + 2;
-	if (addrlen > sizeof (buf))
-	  msg = _("This client cannot handle addresses longer than 255 characters.");
-     }
-   
-   if (msg != NULL)
-     {
-	slrn_error (msg);
+	slrn_error (_("Cannot generate \"From:\" line without a hostname."));
 	return NULL;
      }
    
-   if ((0 == make_realname (Slrn_User_Info.realname, realname,
-			    sizeof (realname))) &&
-       (addrlen + strlen (realname) + 3 <= sizeof (buf)))
+   if (( realname = make_realname (Slrn_User_Info.realname))  != NULL) 
      {
-	sprintf (buf, "%s <%s@%s>", realname, localpart, /* safe */
+	buf=slrn_safe_malloc(6 + strlen(realname) +2 + strlen(localpart) + 1 
+		  + strlen(Slrn_User_Info.hostname)+2);
+	sprintf (buf, "From: %s <%s@%s>", realname, localpart, /* safe */
 		 Slrn_User_Info.hostname);
+	slrn_free(realname);
      }
    else
      {
-	sprintf (buf, "%s@%s", localpart, Slrn_User_Info.hostname); /* safe */
+	buf=slrn_safe_malloc(6 + strlen(localpart) + 1 
+		  + strlen(Slrn_User_Info.hostname)+2);
+	sprintf (buf, "From: %s@%s", localpart, Slrn_User_Info.hostname); /* safe */
      }
+
+   slrn_free(localpart);
    return buf;
 }
 

@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2003-2006 Thomas Schultz <tststs@gmx.de>
 
  partly based on code by John E. Davis:
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>

@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2005 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -82,7 +82,7 @@
 #include "art.h"
 #include "score.h"
 #include "snprintf.h"
-#include "chmap.h"
+#include "charset.h"
 #include "post.h"
 #include "xover.h"
 #include "mime.h"
@@ -1219,38 +1219,7 @@ Could not read specified config file %s\n"), init_file);
    if (Slrn_Post_Id == 0) Slrn_Post_Id = Slrn_Default_Post_Obj;
    if (no_new_groups) Slrn_Check_New_Groups = 0;
 
-#if SLRN_HAS_CHARACTER_MAP
-   if (-1 == slrn_set_charset (Slrn_Charset))
-     {
-	slrn_chmap_show_supported ();
-	slrn_exit_error (_("Failed to select character set."));
-     }
-#endif
-
-#if SLRN_HAS_MIME
-   if (NULL == Slrn_Mime_Display_Charset)
-     {
-# if SLRN_HAS_CHARACTER_MAP
-	if (NULL != Slrn_Charset)
-	  {
-	     if (0 == slrn_case_strcmp ((unsigned char *)Slrn_Charset,
-					(unsigned char *)"ibm852"))
-	       Slrn_Mime_Display_Charset = slrn_safe_strmalloc ("iso-8859-2");
-	     else if (0 == slrn_case_strcmp ((unsigned char *)Slrn_Charset,
-					     (unsigned char *)"ibm857"))
-	       Slrn_Mime_Display_Charset = slrn_safe_strmalloc ("iso-8859-9");
-	     else if (0 == slrn_case_strcmp ((unsigned char *)Slrn_Charset,
-					     (unsigned char *)"koi8"))
-	       Slrn_Mime_Display_Charset = slrn_safe_strmalloc ("koi8-r");
-	     else if (0 == slrn_case_strcmp ((unsigned char *)Slrn_Charset,
-					     (unsigned char *)"ibm737"))
-	       Slrn_Mime_Display_Charset = slrn_safe_strmalloc ("iso-8859-7");
-	  }
-	if (NULL == Slrn_Mime_Display_Charset)
-# endif
-	  Slrn_Mime_Display_Charset = slrn_safe_strmalloc ("iso-8859-1");
-     }
-#endif
+   slrn_prepare_charset();
 
 #ifdef SIGINT
    if (Slrn_TT_Initialized == 0)

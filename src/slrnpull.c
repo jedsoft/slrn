@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -85,9 +85,7 @@
 
 #include "sortdate.c"
 #include "score.c"
-#if SLRN_HAS_MIME
-# include "mime.c"
-#endif
+#include "mime.c"
 
 #include "xover.c"
 
@@ -1328,15 +1326,10 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
    
    slrn_map_xover_to_header (xov, &h);
 
-#if SLRN_HAS_MIME
    h.subject = slrn_safe_strmalloc (xov->subject_malloced);
    h.from = slrn_safe_strmalloc (xov->from);
-   if (Slrn_Use_Mime)
-     {
-	slrn_rfc1522_decode_string (h.subject);
-	slrn_rfc1522_decode_string (h.from);
-     }
-#endif
+   slrn_rfc1522_decode_string (&h.subject);
+   slrn_rfc1522_decode_string (&h.from);
    
 #if 1
    (void) is_msgid_cached (h.msgid, Current_Group->name, (unsigned int) n, 1);
@@ -1383,12 +1376,10 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
 	slrn_free ((char *)sdi);
 	sdi = hlp;
      }
-#if SLRN_HAS_MIME
    slrn_free (h.subject);
    h.subject = xov->subject_malloced;
    slrn_free (h.from);
-   h.from = xov->from;
-#endif
+   h.from = slrn_safe_strmalloc(xov->from);
 #if 0
    /* This next call should add the message id to the cache. */
    (void) is_msgid_cached (h.msgid, Current_Group->name, (unsigned int) n, 1);
@@ -2651,6 +2642,21 @@ int slrn_message (char *fmt, ...) /*{{{*/
 
 /*}}}*/
 
+/* For now, we need this to link against charset.o
+ * Maybe seek a cleaner alternative later. */
+
+void slrn_art_free_article_line (Slrn_Article_Line_Type *l)
+{
+   Slrn_Article_Line_Type *next;
+   
+   while (l != NULL)
+     {
+	slrn_free ((char *) l->buf);
+	next = l->next;
+	slrn_free ((char *) l);
+	l = next;
+     }
+}   
 
 /*}}}*/
 

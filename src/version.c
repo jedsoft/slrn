@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -40,7 +40,6 @@
 #include "server.h"
 #include "group.h"
 #include "art.h"
-#include "chmap.h"
 #include "snprintf.h"
 
 char *Slrn_Version = SLRN_VERSION;
@@ -72,7 +71,6 @@ static Compile_Option_Type Compile_Options [] =
      {"fake_refs",   		SLRN_HAS_FAKE_REFS},
      {"gen_msgid",   		SLRN_HAS_GEN_MSGID},
      {"grouplens",   		SLRN_HAS_GROUPLENS},
-     {"mime",		     	SLRN_HAS_MIME},
      {"msgid_cache", 		SLRN_HAS_MSGID_CACHE},
      {"piping",	     		SLRN_HAS_PIPING},
      {"rnlock",	     		SLRN_HAS_RNLOCK},
@@ -173,10 +171,10 @@ void slrn_show_version (void) /*{{{*/
    fprintf (stdout, _("  Default posting mechanism: %s\n"),
 	    slrn_map_object_id_to_name (1, SLRN_DEFAULT_POST_OBJ));
 
-   
+/*
 #if SLRN_HAS_CHARACTER_MAP
    slrn_chmap_show_supported ();
-#endif
+#endif*/
    exit (0);
 }
 

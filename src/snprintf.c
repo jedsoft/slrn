@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 2001, 2002 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  Based on code from glib 1.2.8; original copyright notice:
  Copyright (C) 1995-1998  Peter Mattis, Spencer Kimball and Josh MacDonald
@@ -41,6 +41,7 @@
 #include "util.h"
 
 /*}}}*/
+
 /*{{{ static function declarations and defines */
 static unsigned int printf_string_upper_bound (const char*, va_list);
 
@@ -110,6 +111,7 @@ char *slrn_strdup_vprintf (const char *format, va_list args1) /*{{{*/
 }
 
 /*}}}*/
+
 char *slrn_strdup_printf (const char *format, ... ) /*{{{*/
 {
    va_list args;
@@ -141,6 +143,7 @@ int slrn_vsnprintf (char *str, size_t n, const char *format, /*{{{*/
 }
 
 /*}}}*/
+
 int slrn_snprintf (char *str, size_t n, const char *format, ... ) /*{{{*/
 {
    va_list args;
@@ -193,6 +196,7 @@ int snprintf (char *str, size_t n, const char *format, ... ) /*{{{*/
 }
 
 /*}}}*/
+
 int vsnprintf (char *str, size_t n, const char *format, va_list ap) /*{{{*/
 {
    char *printed;
@@ -349,3 +353,35 @@ static unsigned int printf_string_upper_bound (const char* format, /*{{{*/
 }
 
 /*}}}*/
+
+char *slrn_malloc_sprintf (const char *format, ... ) /*{{{*/
+{
+   int len;
+   va_list args;
+   char *str;
+
+   va_start (args, format);
+   len=printf_string_upper_bound(format, args);
+   str = slrn_safe_malloc(len+1);
+   vsnprintf (str, len+1, format, args);
+   va_end (args);
+
+   return str;
+}
+
+/*}}}*/
+
+char *slrn_malloc_vsprintf (const char *format, va_list args ) /*{{{*/
+{
+   int len;
+   char *str;
+
+   len=printf_string_upper_bound(format, args);
+   str = slrn_safe_malloc(len+1);
+   vsnprintf (str, len+1, format, args);
+
+   return str;
+}
+
+/*}}}*/
+

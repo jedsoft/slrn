@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 2001 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -28,6 +28,8 @@ extern char *slrn_strdup_vprintf (const char*, va_list);
 
 extern int slrn_snprintf (char *, size_t, const char *, ...);
 extern int slrn_vsnprintf (char *, size_t, const char *, va_list);
+extern char *slrn_malloc_sprintf (const char *format, ... );
+extern char *slrn_malloc_vsprintf (const char *format, va_list args );
 
 extern char *slrn_strncpy (char *, const char*, size_t);
 

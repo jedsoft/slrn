@@ -43,9 +43,6 @@
 /* define if you want slang interpreter support */
 #define SLRN_HAS_SLANG			1
 
-/* define if you want MIME support */
-#define SLRN_HAS_MIME			1
-
 /* define if you want slrn to map between ISO-Latin and native charsets */
 #define SLRN_HAS_CHARACTER_MAP		1
 

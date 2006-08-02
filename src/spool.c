@@ -1,7 +1,7 @@
 /* -*- mode: C; mode: fold; -*- */
 /* Local spool support for slrn added by Olly Betts <olly@mantis.co.uk> */
 /* Modified by Thomas Schultz:
- * Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
+ * Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
  */
 #include "config.h"
 #include "slrnfeat.h"

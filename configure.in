@@ -195,14 +195,6 @@ CF_COMPILE_OPTION(slang,
     [  --disable-slang         Don't make the slang interpreter available],
     [SLRN_HAS_SLANG])
 
-dnl disable MIME support
-AH_VERBATIM([SLRN_HAS_MIME],
-[/* define if you want MIME support */
-#define SLRN_HAS_MIME			1])
-CF_COMPILE_OPTION(mime,
-    [  --disable-mime          Disable MIME support],
-    [SLRN_HAS_MIME])
-
 dnl character set mapping
 AH_VERBATIM([SLRN_HAS_CHARACTER_MAP],
 [/* define if you want slrn to map between ISO-Latin and native charsets */
@@ -280,6 +272,8 @@ arpa/inet.h \
 sys/utsname.h \
 sys/time.h \
 locale.h \
+langinfo.h \
+iconv.h\
 )
 
 AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
@@ -308,6 +302,7 @@ vsnprintf \
 uname \
 gettimeofday \
 setlocale \
+nl_langinfo \
 isalpha isspace isdigit isalnum ispunct \
 getaddrinfo getnameinfo \
 )

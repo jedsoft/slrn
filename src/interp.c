@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -360,9 +360,7 @@ static void set_utf8_conversion_table (void) /*{{{*/
 #if SLANG_VERSION < 10400
    slrn_error (_("To use this feature, please update s-lang and recompile slrn."));
 #else
-# if ! SLRN_HAS_MIME
-   slrn_error (_("This version of slrn lacks MIME support."));
-# else
+# if 0
    SLang_Array_Type *at;
    int rows;
    
@@ -420,7 +418,7 @@ static void set_utf8_conversion_table (void) /*{{{*/
    
    free_and_return:
    SLang_free_array (at);
-# endif /* SLRN_HAS_MIME */
+# endif
 #endif /* SLANG_VERSION */
 }
 /*}}}*/

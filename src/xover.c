@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -149,14 +149,11 @@ static void parse_headers (void) /*{{{*/
 	      && (0 == slrn_case_strcmp ((unsigned char *)h,
 					 (unsigned char *) addh->name)))
 	    {
-#if SLRN_HAS_MIME
-	       if ((Slrn_Use_Mime & MIME_DISPLAY) &&
-		   slrn_case_strcmp ((unsigned char *)h,
+	       if (slrn_case_strcmp ((unsigned char *)h,
 				     (unsigned char *)"Newsgroups") &&
 		   slrn_case_strcmp ((unsigned char *)h,
 				     (unsigned char *)"Followup-To"))
-		 slrn_rfc1522_decode_string (colon);
-#endif
+		 slrn_rfc1522_decode_string (&colon);
 	       addh->value = colon;
 	       break;
 	    }
@@ -382,7 +379,7 @@ void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h)
    
    h->subject = xov->subject_malloced;
    h->number = xov->id;
-   h->from = xov->from;
+   h->from = slrn_safe_strmalloc(xov->from);
    h->date = xov->date_malloced;
    h->refs = xov->references;
    h->lines = xov->lines;

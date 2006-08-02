@@ -3,7 +3,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -46,6 +46,7 @@
 #include "util.h"
 #include "decode.h"
 #include "mime.h"
+#include "charset.h"
 #if SLRN_HAS_GROUPLENS
 # include "grplens.h"
 #endif
@@ -53,7 +54,6 @@
 # include "interp.h"
 #endif
 #include "server.h"
-#include "chmap.h"
 #include "print.h"
 #include "snprintf.h"
 #include "help.h"
@@ -84,13 +84,14 @@ static int include_file_fun (int, SLcmd_Cmd_Table_Type *);
 static int set_header_format_fun (int, SLcmd_Cmd_Table_Type *);
 static int set_group_format_fun (int, SLcmd_Cmd_Table_Type *);
 static int set_visible_headers_fun (int, SLcmd_Cmd_Table_Type *);
-static int set_comp_charsets_fun (int, SLcmd_Cmd_Table_Type *);
+static int set_charset_fun (int, SLcmd_Cmd_Table_Type *);
 static int set_posting_host (int, SLcmd_Cmd_Table_Type *);
 
 /*}}}*/
 /*{{{ Static Global Variables */
 
 static int This_Line_Num;	       /* current line number in startup file */
+static int Saw_Charset;
 static char *This_File;
 static char *This_Line;		       /* line being parsed */
 
@@ -118,8 +119,8 @@ static SLcmd_Cmd_Type Slrn_Startup_File_Cmds[] = /*{{{*/
      {set_header_format_fun, "header_display_format", "IS"},
      {set_group_format_fun, "group_display_format", "IS"},
      {set_visible_headers_fun, "visible_headers", "S"},
-     {set_comp_charsets_fun, "compatible_charsets", "S"},
      {set_posting_host, "posting_host", "S"},
+     {set_charset_fun, "charset", "SS"},
 
    /* The following are considered obsolete */
      {user_data_fun, "hostname", "S"},
@@ -132,6 +133,7 @@ static SLcmd_Cmd_Type Slrn_Startup_File_Cmds[] = /*{{{*/
      {user_data_fun, "followup", "S"},
      {user_data_fun, "cc_followup_string", "S"},
      {user_data_fun, "quote_string", "S"},
+     {user_data_fun, "compatible_charsets", "S"},
 #if SLRN_HAS_DECODE
      {user_data_fun, "decode_directory", "S"},
 #endif
@@ -463,15 +465,57 @@ static int set_group_format_fun (int argc, SLcmd_Cmd_Table_Type *table)
    return slrn_set_group_format (table->int_args[1], table->string_args[2]);
 }
 
-static int set_comp_charsets_fun (int argc, SLcmd_Cmd_Table_Type *table)
+static int set_charset_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
    (void) argc;
-#if SLRN_HAS_MIME
-   return slrn_set_compatible_charsets (table->string_args[1]);
-#else
-   (void) table;
-   return -1;
-#endif
+   char *type=(table->string_args[1]);
+   char *value=(table->string_args[2]);
+	   
+   if (0 == slrn_case_strcmp(type, "Display"))
+     {
+	if (Slrn_Display_Charset != NULL)
+	     slrn_free(Slrn_Display_Charset);
+	if ((Slrn_Config_Charset != NULL) && (0 == slrn_case_strcmp(Slrn_Config_Charset, value)))
+	  {
+	     Slrn_Display_Charset = Slrn_Config_Charset;
+	     Slrn_Config_Charset = NULL;
+	     return 0;
+	  }
+	if (NULL == (Slrn_Display_Charset = SLmake_string (value)))
+	     exit_malloc_error ();
+	return 0;
+     }
+   if (0 == slrn_case_strcmp(type, "Config"))
+     {
+	Saw_Charset=1;
+	if (Slrn_Config_Charset != NULL)
+	     slrn_free(Slrn_Config_Charset);
+	if ((Slrn_Display_Charset != NULL) && (0 == slrn_case_strcmp(Slrn_Display_Charset, value)))
+	  {
+	     Slrn_Config_Charset = NULL;
+	     return 0;
+	  }
+	if (NULL == (Slrn_Config_Charset = SLmake_string (value)))
+	     exit_malloc_error ();
+	return 0;
+     }
+   if (0 == slrn_case_strcmp(type, "Outgoing"))
+     {
+	if (Slrn_Outgoing_Charset != NULL)
+	     slrn_free(Slrn_Outgoing_Charset);
+	if (NULL == (Slrn_Outgoing_Charset = SLmake_string (value)))
+	     exit_malloc_error ();
+	return 0;
+     }
+   if (0 == slrn_case_strcmp(type, "Editor"))
+     {
+	if (Slrn_Editor_Charset != NULL)
+	     slrn_free(Slrn_Editor_Charset);
+	if (NULL == (Slrn_Editor_Charset = SLmake_string (value)))
+	     exit_malloc_error ();
+	return 0;
+     }
+    exit_unknown_object ();
 }
 
 /*{{{ Setting/Getting Variable Functions */
@@ -505,6 +549,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"generate_date_header", &Slrn_Generate_Date_Header},
      {"generate_message_id", &Slrn_Generate_Message_Id},
      {"use_recommended_msg_id", &Slrn_Use_Recom_Id},
+     {"pipe_type", &Slrn_Pipe_Type},
 #if SLRN_HAS_STRICT_FROM
      {"generate_email_from", NULL},
 #else
@@ -541,9 +586,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"read_active", &Slrn_List_Active_File},
      {"drop_bogus_groups", &Slrn_Drop_Bogus_Groups},
      {"prefer_head", &Slrn_Prefer_Head},
-#if SLRN_HAS_MIME
      {"use_metamail", &Slrn_Use_Meta_Mail},
-#endif
 #if SLRN_HAS_UUDEVIEW
      {"use_uudeview", &Slrn_Use_Uudeview},
 #else
@@ -572,13 +615,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"spoiler_display_mode", NULL},
      {"spoiler_char", NULL},
 #endif
-#if SLRN_HAS_MIME
-     {"use_mime", &Slrn_Use_Mime},
      {"fold_headers", &Slrn_Fold_Headers},
-#else
-     {"use_mime", NULL},
-     {"fold_headers", NULL},
-#endif
 #if SLRN_HAS_GROUPLENS
      {"use_grouplens", &Slrn_Use_Group_Lens},
      {"grouplens_port", &Slrn_GroupLens_Port},
@@ -613,6 +650,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"query_reconnect", NULL},
      {"show_descriptions", NULL},
      {"use_xgtitle", NULL},
+     {"use_mime", NULL},
 #endif
      {NULL, NULL}
 };
@@ -691,14 +729,9 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 #endif
      },
      
-#if SLRN_HAS_MIME
-     {"mime_charset", &Slrn_Mime_Display_Charset},
      {"metamail_command", &Slrn_MetaMail_Cmd},
-#else
-     {"mime_charset", NULL},
-     {"metamail_command", NULL},
-#endif
-#if SLRN_HAS_CHARACTER_MAP
+//#if SLRN_HAS_CHARACTER_MAP
+#if 0
      {"charset", &Slrn_Charset},
 #else
      {"charset", NULL},
@@ -776,6 +809,9 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      {"group_status_line", &Slrn_Group_Status_Line},
      {"scorefile", &Slrn_Score_File},
      {"custom_sort_order", &Slrn_Sort_Order},
+#if 1 /* FIXME: These will be removed before 1.0 */
+     {"mime_charset", NULL},
+#endif
      {NULL, NULL}
 };
 
@@ -827,9 +863,32 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 	     ss = *sp->svaluep;
 		  
 	     slrn_free (ss);
-	     if (NULL == (ss = SLmake_string (value)))
-	       exit_malloc_error ();
-		  
+	     ss=NULL;
+	     if (slrn_string_nonascii(value))
+	       {
+		  if (!Saw_Charset)
+		    {
+		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset config 'charset'\"\n"),
+				 This_File);
+		       return -1;
+		    }
+		  if (Slrn_Display_Charset == 0)
+		    {
+		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset display 'charset'\"\n"),
+				 This_File);
+		       return -1;
+		    }
+		  if ( slrn_test_and_convert_string(value, &ss, Slrn_Display_Charset, Slrn_Config_Charset) == -1)
+		    {
+		       slrn_message (_("%s: charset convertion error\n"), This_File);
+		       return -1;
+		    }
+	       }
+	     if (ss == NULL)
+	       {
+		  if (NULL == (ss = SLmake_string (value)))
+		    exit_malloc_error ();
+	       }
 	     *sp->svaluep = ss;
 	     return 0;
 	  }
@@ -876,7 +935,8 @@ int slrn_set_integer_variable (char *name, int value) /*{{{*/
 		    }
 		  else if (!strcmp (name, "prompt_next_group") ||
 			   !strcmp (name, "query_reconnect") ||
-			   !strcmp (name, "use_xgtitle"))
+			   !strcmp (name, "use_xgtitle") ||
+			   !strcmp (name, "use_mime"))
 		    {
 		       slrn_message (_("%s: Obsolete variable on line %d: %s"),
 				     This_File, This_Line_Num, name);
@@ -1648,6 +1708,8 @@ void slrn_startup_initialize (void) /*{{{*/
    (void) slrn_set_group_format (0, "  %F%-5u  %n%45g%d");
    (void) slrn_set_group_format (1, "  %F%-5u  %n%50g%-8l-%h");
    (void) slrn_set_group_format (2, "  %F%-5u [%-6t]  %n");
+
+   slrn_init_charset();
 }
 
 
@@ -1663,9 +1725,11 @@ int slrn_read_startup_file (char *name) /*{{{*/
    SLprep_Type *pt;
 #endif
    int save_this_line_num;
+   int save_saw_charset;
    char *save_this_file;
    char *save_this_line;
-
+   char *save_config_charset;
+   
    if (-1 == slrn_init_readline ())
      {
 	slrn_exit_error (_("Unable to initialize S-Lang readline library."));
@@ -1688,11 +1752,15 @@ int slrn_read_startup_file (char *name) /*{{{*/
    save_this_file = This_File;
    save_this_line = This_Line;
    save_this_line_num = This_Line_Num;
-
+   save_saw_charset = Saw_Charset;
+   save_config_charset = Slrn_Config_Charset;
+   
    This_File = name;
    This_Line = line;
    This_Line_Num = 0;
-   
+   Saw_Charset = 0;
+   Slrn_Config_Charset=NULL;
+
    Slrn_Cmd_Table.table = Slrn_Startup_File_Cmds;
    
    while (NULL != fgets (line, sizeof(line) - 1, fp))
@@ -1726,6 +1794,9 @@ int slrn_read_startup_file (char *name) /*{{{*/
    This_File = save_this_file;
    This_Line = save_this_line;
    This_Line_Num = save_this_line_num;
+   Saw_Charset = save_saw_charset;
+   slrn_free(Slrn_Config_Charset);
+   Slrn_Config_Charset=save_config_charset;
    return 0;
 }
 

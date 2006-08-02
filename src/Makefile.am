@@ -4,13 +4,13 @@ EXTRA_PROGRAMS = chkslang slrnpull uudecode
 SLRNPULL = @SLRNPULL@
 bin_PROGRAMS = slangversion slrn $(SLRNPULL)
 
-slrn_SOURCES = art.c chmap.c editscore.c group.c grplens.c hash.c help.c \
+slrn_SOURCES = art.c charset.c editscore.c group.c grplens.c hash.c help.c \
  hooks.c interp.c menu.c mime.c misc.c post.c score.c server.c sortdate.c \
  slrn.c startup.c ttymsg.c util.c decode.c xover.c slrndir.c version.c \
  print.c art_misc.c vfile.c snprintf.c art_sort.c ranges.c
 
 slrnpull_SOURCES = nntplib.c slrndir.c slrnpull.c snprintf.c ttymsg.c util.c \
- ranges.c vfile.c
+ ranges.c vfile.c charset.c
 slrnpull_DEPENDENCIES = stamp2
 
 DEFS=-Dunix -DSLRN_LIB_DIR=\"$(slrn_libdir)\" -DSHAREDIR=\"$(pkgdatadir)\" \
@@ -21,7 +21,7 @@ LDADD=@LIBINTL@ @SLANG_LIB@ -lslang @TERMCAP@ @SSLLIB@ @UULIB@ @LOCKLIB@
 uudecode_SOURCES = slrndir.c snprintf.c ttymsg.c util.c
 uudecode_LDADD=uudecode.o @LIBINTL@ @SLANG_LIB@ -lslang
 
-EXTRA_DIST = art.h charmaps.h chmap.h clientlib.c clientlib.h group.h \
+EXTRA_DIST = art.h charset.h clientlib.c clientlib.h group.h \
  grplens.h hash.h hooks.h interp.h jdmacros.h menu.h mime.h misc.h \
  nntpcodes.h nntplib.h post.h print.h score.h server.h slrn.h slrnconf.h \
  slrndir.h slrnfeat.h sltcp.h snprintf.h startup.h ttymsg.h \

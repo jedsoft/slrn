@@ -2,7 +2,7 @@
  This file is part of SLRN.
 
  Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2004 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -57,12 +57,12 @@
 #include "util.h"
 #include "server.h"
 #include "misc.h"
-#include "post.h"
 #include "group.h"
 #include "art.h"
+#include "post.h"
 #include "decode.h"
 #include "snprintf.h"
-#include "chmap.h"
+#include "charset.h"
 #include "menu.h"
 #include "version.h"
 #include "mime.h"
@@ -195,9 +195,8 @@ static char *create_message_id (int *error)/*{{{*/
 const char *Weekdays[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 const char *Months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "ERR" };
 
-void slrn_add_date_header (FILE *fp) /*{{{*/
+char *slrn_gen_date_header () /*{{{*/
 {
-   char buf[64];
    time_t now;
    struct tm *t;
    long int tz = 0;
@@ -214,20 +213,15 @@ void slrn_add_date_header (FILE *fp) /*{{{*/
 # endif
 #endif
 
-   slrn_snprintf (buf, sizeof (buf),
-		  "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d\n",
+   return slrn_malloc_sprintf(
+		  "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d",
 		  Weekdays[t->tm_wday], t->tm_mday, Months[t->tm_mon],
 		  t->tm_year + 1900, t->tm_hour, t->tm_min, t->tm_sec,
 		  (int) tz / 60, (int) abs (tz) % 60);
-
-   if (fp != NULL)
-     fputs (buf, fp);
-   else if (Slrn_Generate_Date_Header)
-     Slrn_Post_Obj->po_puts (buf);
 }
 /*}}}*/
 
-void slrn_add_signature (FILE *fp) /*{{{*/
+int slrn_add_signature (FILE *fp) /*{{{*/
 {
    FILE *sfp;
    char file[SLRN_MAX_PATH_LEN];
@@ -236,12 +230,13 @@ void slrn_add_signature (FILE *fp) /*{{{*/
    if ((NULL != Slrn_Signoff_String) && (*Slrn_Signoff_String != 0))
      {
         fputs ("\n", fp);
-        fputs (Slrn_Signoff_String, fp);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s", Slrn_Signoff_String) < 0)
+	     return -1;
      }
 
    if ((Slrn_User_Info.signature == NULL)
        || (Slrn_User_Info.signature[0] == 0))
-     return;
+     return 0;
 
    if ((sfp = slrn_open_home_file (Slrn_User_Info.signature, "r", file,
 				   sizeof (file), 0)) != NULL)
@@ -249,32 +244,62 @@ void slrn_add_signature (FILE *fp) /*{{{*/
 	if (! Slrn_Signoff_String)
 	  fputs ("\n", fp);
 
+	/* If signature file already has -- \n, do not add it. */
+	if (NULL == fgets (buf, sizeof (buf), sfp))
+	     return 0;
+	     
+	if (0 == strcmp (buf, "-- \n"))
+	  {
+	     if (NULL == fgets (buf, sizeof (buf), sfp)) 
+	       {
+		  slrn_fclose(sfp);
+		  return 0;
+	       }
+		       
+	  }
 	/* Apparantly some RFC suggests the -- \n. */
         fputs ("\n-- \n", fp);
 
-	/* If signature file already has -- \n, do not add it. */
-	if ((NULL != fgets (buf, sizeof (buf), sfp))
-	    && (0 != strcmp (buf, "-- \n")))
-	  fputs (buf, fp);
-
-        while (NULL != fgets (buf, sizeof(buf), sfp))
+	do
 	  {
-	     fputs (buf, fp);
-	  }
+	    
+	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s", buf) < 0)
+	       {
+		  slrn_fclose(sfp);
+		  return -1;
+	       }
+	  } while (NULL != fgets (buf, sizeof(buf), sfp));
         slrn_fclose(sfp);
      }
+   return 0;
 }
 /*}}}*/
 
 int slrn_add_custom_headers (FILE *fp, char *headers, int (*write_fun)(char *, FILE *)) /*{{{*/
 {
    int n;
-   char *s, *s1, ch, last_ch;
+   char *s, *s1, ch, last_ch, *tmp=NULL;
 
    if (headers == NULL) return 0;
 
-   s = slrn_skip_whitespace (headers);
-   if (*s == 0) return 0;
+   /*if (slrn_test_and_convert_string(headers, &tmp, Slrn_Editor_Charset, Slrn_Display_Charset) != 0)
+     {
+	return -1;
+     }
+   if (tmp != NULL)
+     {
+	s = slrn_skip_whitespace (tmp);
+	if (*s == 0) 
+	  {
+	     slrn_free(tmp);
+	     return 0;
+	  }
+     }
+   else
+     {*/
+	s = slrn_skip_whitespace (headers);
+	if (*s == 0) return 0;
+     /*}*/
 
    s1 = s;
    n = 0;
@@ -300,14 +325,17 @@ int slrn_add_custom_headers (FILE *fp, char *headers, int (*write_fun)(char *, F
 	n++;
      }
 
+   if (tmp != NULL)
+	slrn_free(tmp);
+ 
    return n;
 }
 /*}}}*/
 
-int slrn_add_references_header (FILE *fp, char *line) /*{{{*/
+char *slrn_trim_references_header (char *line) /*{{{*/
 {
 #define GNKSA_LENGTH 986 /* 998 - strlen ("References: ") */
-   char buf[GNKSA_LENGTH + 2];
+   char *buf;
    char *p, *l, *r, *nextid, *tmp;
    unsigned int len = 0, extra_whitespaces=0;
 
@@ -316,10 +344,11 @@ int slrn_add_references_header (FILE *fp, char *line) /*{{{*/
 
    if ((NULL == (l = slrn_strchr (line, '<'))) ||
        (NULL == (r = slrn_strchr (l+1, '>'))))
-     return -1;
+     return NULL;
    while ((NULL != (nextid = slrn_strchr (l+1, '<'))) &&
 	  (nextid < r))
      l = nextid;
+
 
    len = r - l + 1;
    if (nextid != NULL) /* Skip enough IDs to fit into our limit */
@@ -347,22 +376,13 @@ int slrn_add_references_header (FILE *fp, char *line) /*{{{*/
    /* I'd rather violate GNKSA's limit than omitting the first or last ID */
    if ((nextid == NULL) || (len >= GNKSA_LENGTH))
      {
-	if (fp != NULL)
-	  {
-	     fputs ("References: ", fp);
-	     fputs (l, fp);
-	     fputs ("\n", fp);
-	  }
-	else
-	  {
-	     Slrn_Post_Obj->po_puts ("References: ");
-	     Slrn_Post_Obj->po_puts (l);
-	     Slrn_Post_Obj->po_puts ("\n");
-	  }
-	return 0;
+	return slrn_safe_strmalloc(line);
      }
-   strncpy (buf, l, len);
-   p = buf + len;
+   buf = slrn_safe_malloc(GNKSA_LENGTH + 12 + 2);
+   strncpy (buf, "References: ", 12);
+   p = buf + 12;
+   strncpy (p, l, len);
+   p += len;
    l = nextid;
 
    /* Copy the rest, dropping chopped IDs */
@@ -380,19 +400,7 @@ int slrn_add_references_header (FILE *fp, char *line) /*{{{*/
 	l = nextid;
      }
 
-   strcpy (p, "\n");
-
-   if (fp != NULL)
-     {
-	fputs ("References: ", fp);
-	fputs (buf, fp);
-     }
-   else
-     {
-	Slrn_Post_Obj->po_puts ("References: ");
-	Slrn_Post_Obj->po_puts (buf);
-     }
-   return 0;
+   return buf;
 }
 /*}}}*/
 
@@ -438,7 +446,7 @@ static void insert_cc_post_message (char *newsgroups, FILE* ofile) /*{{{*/
 }
 /*}}}*/
 
-static int cc_file (char *file, char *to) /*{{{*/
+static int cc_article (Slrn_Article_Type *a) /*{{{*/
 {
 #if defined(VMS) || !SLRN_HAS_PIPING
    return -1;
@@ -447,45 +455,29 @@ static int cc_file (char *file, char *to) /*{{{*/
    char outfile [SLRN_MAX_PATH_LEN];
 #endif
    FILE *pp;
-   VFILE *vp;
-   char *vline;
-   unsigned int vlen;
    unsigned int cc_line = 0;
-   unsigned int linenum;
-   char buf [MAX_LINE_BUFLEN];
-   unsigned int nth;
-   char *l, *ref, *newsgroups = NULL;
-   int reflen = 0;
+   unsigned int linenum =0;
+   char *l, *newsgroups = NULL;
 
-   if (NULL == (vp = vopen (file, 4096, 0)))
-     {
-	slrn_error (_("Unable to open %s."), file);
-	return -1;
-     }
-
+   a->cline=a->lines;
    /* Look for CC line */
-   linenum = 0;
-   while ((NULL != (vline = vgets (vp, &vlen))) && (*vline != '\n'))
+   while ((NULL != a->cline) && a->cline->flags == HEADER_LINE)
      {
-	if (vline[vlen-1] == '\n')
-	  vline[vlen-1] = 0;
-	else
-	  vline[vlen] = 0;
 	linenum++;
-	if (0 == slrn_case_strncmp ((unsigned char *)vline,
+	if (0 == slrn_case_strncmp ((unsigned char *) a->cline->buf,
 				    (unsigned char *) "Cc: ", 4))
 	  {
-	     l = slrn_skip_whitespace (vline + 4);
+	     l = slrn_skip_whitespace (a->cline->buf + 4);
 	     if (*l && (*l != ',')) cc_line = linenum;
 	     break;
 	  }
+	a->cline=a->cline->next;
      }
 
-   /* At this point, if all has gone well vline contains the cc information */
+   /* At this point, if all has gone well a->cline->buf contains the cc information */
 
    if (cc_line == 0)
      {
-	vclose (vp);
 	return -1;
      }
 
@@ -496,117 +488,70 @@ static int cc_file (char *file, char *to) /*{{{*/
 #endif
    if (pp == NULL)
      {
-	vclose (vp);
 	return -1;
      }
 
    fputs ("To: ", pp);
-
-   /* This line consists of a comma separated list of addresses.  In
-    * particular, "poster" will be replaced by 'to'.
-    */
-   l = vline + 4;
-   nth = 0;
-   while (0 == SLextract_list_element (l, nth, ',', buf, sizeof (buf)))
-     {
-	char *b;
-
-	/* Knock whitespace from ends of string */
-	b = slrn_skip_whitespace (buf);
-	slrn_trim_string (b);
-
-	if (nth != 0)
-	  putc (',', pp);
-
-	if ((0 == slrn_case_strcmp ((unsigned char *)b, (unsigned char *)"poster"))
-	    && (to != NULL))
-	  b = to;
-
-	fputs (b, pp);
-	nth++;
-     }
-
-   putc ('\n', pp);
-   /* Can we rewind a vfile more elegantly? */
-   vclose(vp);
-   if (NULL == (vp = vopen (file, 4096, 0)))
-     {
-	slrn_error (_("Unable to re-open %s."), file);
-# if defined(IBMPC_SYSTEM)
-	slrn_fclose (pp);
-# else
-	slrn_pclose (pp);
-# endif
-	return -1;
-     }
+   fputs (a->cline->buf + 4, pp);
+   fputs ("\n", pp);
+   
+   /* rewind */
+   a->cline=a->lines;
    linenum = 0;
 
-   while ((NULL != (vline = vgets (vp, &vlen))) && (*vline != '\n'))
+   while ((NULL != a->cline) && (a->cline->flags == HEADER_LINE  ))
      {
-	if (vline[vlen-1] == '\n')
-	  vline[vlen-1] = 0;
-	else
-	  vline[vlen] = 0;	
 	linenum++;
-	if (linenum == cc_line) continue;
-	if (is_empty_header (vline)) continue;
-	if (0 == slrn_case_strncmp ((unsigned char *)vline,
-				    (unsigned char *) "To: ", 4))
-	  continue;
-	if ((Slrn_Generate_Email_From == 0) &&
-	    (0 == slrn_case_strncmp ((unsigned char *)vline,
-				     (unsigned char *) "From: ", 6)))
-	  continue;
-	if (0 == slrn_case_strncmp ((unsigned char *)vline,
-				    (unsigned char *) "References: ", 12))
+	if (linenum == cc_line)
 	  {
-	     if (NULL != (ref = strrchr (vline, '<')))
-	       {
-		  reflen = strlen (ref);
-		  if ((ref[reflen - 1] == '\n') &&
-		      (ref[--reflen] == '\r'))
-		    reflen--;
-	       }
+	     a->cline=a->cline->next;
+	     continue;
+	  }
+	if (0 == slrn_case_strncmp ((unsigned char *) a->cline->buf,
+				    (unsigned char *) "To: ", 4))
+	  {
+	     a->cline=a->cline->next;
+	     continue;
+	  }
+	if ((Slrn_Generate_Email_From == 0) &&
+	    (0 == slrn_case_strncmp ((unsigned char *) a->cline->buf,
+				     (unsigned char *) "From: ", 6)))
+	  {
+	     a->cline=a->cline->next;
+	     continue;
 	  }
 
 	/* There is some discussion of this extension to mail headers.  For
 	 * now, assume that this extension will be adopted.
 	 */
-	if (0 == slrn_case_strncmp ((unsigned char *)vline,
+	if (0 == slrn_case_strncmp ((unsigned char *) a->cline->buf,
 				    (unsigned char *) "Newsgroups: ", 12))
 	  {
 	     fputs ("X-Posted-To: ", pp);
-	     fputs (vline + 12, pp);
+	     fputs (a->cline->buf + 12, pp);
 	     fputs ("\n", pp);
 	     if (newsgroups == NULL)
-	       newsgroups = slrn_strmalloc (vline + 12, 1);
+	       newsgroups = slrn_strmalloc (a->cline->buf + 12, 1);
+	     a->cline=a->cline->next;
+	     continue;
 	  }
-	else
-	  {
-	     fputs (vline, pp);
-	     fputs ("\n", pp);
-	  }	
+	fputs (a->cline->buf, pp);
+	fputs ("\n", pp);
+	a->cline=a->cline->next;
      }
 
    fputs ("\n", pp);
+   a->cline=a->cline->next;
 
    insert_cc_post_message (newsgroups, pp);
    slrn_free (newsgroups);
 
-# if SLRN_HAS_MIME
-   if (Slrn_Use_Mime & MIME_DISPLAY) vp = slrn_mime_encode (vp);
-# endif
-
-   while (NULL != (vline = vgets (vp, &vlen)))
+   while (NULL != a->cline)
      {
-	if (vline[vlen-1] == '\n')
-	  vline[vlen-1] = 0;
-	else
-	  vline[vlen] = 0;	
-	fputs (vline, pp);
+	fputs (a->cline->buf, pp);
 	fputs ("\n", pp);
+	a->cline=a->cline->next;
      }
-   vclose (vp);
 # if defined(IBMPC_SYSTEM)
    slrn_fclose (pp);
    slrn_snprintf (buf, sizeof (buf), "%s %s", Slrn_SendMail_Command, outfile);
@@ -620,85 +565,96 @@ static int cc_file (char *file, char *to) /*{{{*/
 /*}}}*/
 
 /* Returns -1 upon error, 0, if ok, 1 if needs repair, 2 is warning is issued */
-#define MAX_WARNINGS 10
-static int check_file_for_posting (char *file, int *linenum) /*{{{*/
+static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, int *linenum, Slrn_Article_Type *a, char *to, char *from_charset, int mail) /*{{{*/
 {
-   char line[MAX_LINE_BUFLEN], buf[MAX_LINE_BUFLEN], *the_line;
-   FILE *fp;
-   int num=0;
-   char *err, *warnings[MAX_WARNINGS];
-   int newsgroups_found, subject_found, followupto_found, warn;
+   char *vline;
+   unsigned int vlen;
+   char *tmp=NULL;
+   int lineno=0;
+   int newsgroups_found=0, subject_found=0, followupto_found=0;
+   Slrn_Mime_Error_Obj *err=NULL;
+   Slrn_Mime_Error_Obj *mime_err;
    char ch;
    char *colon;
-   /* for detecting overly long lines: */
-   int last_num = 0, long_lines = 0;
+   char *system_os_name;
 
-   for (warn = 0; warn < MAX_WARNINGS; warn++)
-     warnings[warn] = NULL;
-   warn = newsgroups_found = followupto_found = subject_found = 0;
-   err = NULL;
-   fp = fopen (file, "r");
+   system_os_name = slrn_get_os_name ();
 
-   if (fp == NULL)
+#if SLRN_HAS_STRICT_FROM
+   if (NULL != (tmp = slrn_make_from_string ()))
      {
-	slrn_error (_("Unable to open %s"), file);
-	return -1;
-     }
-
-   the_line = line;
-
-   /* scan the header */
-   num = 0;
-   while (NULL != fgets (line, sizeof (line), fp))
-     {
-	ch = *line;
-	num++;
-	if ((ch == ' ') || (ch == '\t') || (ch == '\n'))
+	if ((err = slrn_mime_header_encode(&tmp, from_charset)) != NULL)
 	  {
-	     if (num == 1)
+	     err->lineno=0;
+	  }
+	a->cline=a->lines = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+	a->lines->prev = NULL;
+	a->cline->flags=HEADER_LINE;
+	a->cline->buf=tmp;
+	tmp=NULL;
+     }
+   else
+     {
+	slrn_malloc_mime_error(&ret, &err, _("Could not generate From header."), NULL, 0, MIME_ERROR_CRIT);
+     }
+#endif
+   /* scan the header */
+   while (NULL != (vline = vgets (vp, &vlen)))
+     {
+	char *line;
+	/* remove trailing \n */
+	if (vline[vlen-1] == '\n')
+	  vlen--;
+	
+	line = slrn_strnmalloc(vline, vlen, 1);
+	
+	ch = *line;
+	lineno++;
+	if ((ch == ' ') || (ch == '\t') || (ch == '\0'))
+	  {
+	     if (lineno == 1)
 	       {
-		  err = _("The first line must begin with a header.");
-		  break;
+		  slrn_malloc_mime_error(&err, _("The first line must begin with a header."), line, lineno, MIME_ERROR_CRIT);
 	       }
-	     if (ch == '\n') break;
-
+	     if (ch == '\0')
+	       {
+		  slrn_free(line);
+		  break; /* header ends */
+	       }
+	     
+	     slrn_free(line);
 	     continue;
 	  }
 
 	if (NULL == (colon = slrn_strchr (line, ':')))
 	  {
-	     err = _("Expecting a header.  This is not a header line.");
-	     break;
+	     slrn_malloc_mime_error(&err, _("Expecting a header. This is not a header line."), line, lineno, MIME_ERROR_CRIT);
 	  }
 
 	if (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Subject:", 8))
 	  {
 	     if (is_empty_header (line))
 	       {
-		  err = _("The subject header is not allowed be to empty.");
-		  break;
+		  slrn_malloc_mime_error(&err, _("The Subject: header is not allowed be to empty."), line, lineno, MIME_ERROR_CRIT);
 	       }
 	     subject_found = 1;
-	     continue;
 	  }
 
-	if (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Newsgroups:", 11))
+	if ((!mail) && (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Newsgroups:", 11)))
 	  {
 	     char *p = line;
 	     if (is_empty_header (line))
 	       {
-		  err = _("The Newsgroups header is not allowed be to empty.");
-		  break;
+		  slrn_malloc_mime_error(&err, _("The Newsgroups header is not allowed be to empty."), line, lineno, MIME_ERROR_CRIT);
 	       }
 	     newsgroups_found = 1;
 	     while (*(++p))
 	       {
 		  if (*p == ',') newsgroups_found++;
 	       }
-	     continue;
 	  }
 
-	if ((!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Followup-To:", 12))
+	if ((!mail) && (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Followup-To:", 12))
 	    && (!is_empty_header (line)))
 	  {
 	     char *p = line;
@@ -707,227 +663,508 @@ static int check_file_for_posting (char *file, int *linenum) /*{{{*/
 	       {
 		  if (*p == ',') followupto_found++;
 	       }
+	  }
+
+	/* Remove empty header */
+	if (is_empty_header (line))
+	  {
+	     slrn_free(line);
 	     continue;
 	  }
 
-	/* slrn will remove it later if it is empty */
-	if (is_empty_header (line)) continue;
-
 	if (*(colon + 1) != ' ')
 	  {
-	     err = _("A space must follow the ':' in a header");
-	     break;
+	     slrn_malloc_mime_error(&err, _("A space must follow the ':' in a header."), line, lineno, MIME_ERROR_CRIT);
 	  }
 
 #if SLRN_HAS_STRICT_FROM
 	if (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "From:", 5))
 	  {
-	     err = _("This news reader will not accept user generated From lines.");
-	     break;
+	     slrn_malloc_mime_error(&err, _("This news reader will not accept user generated From lines."), line, lineno, MIME_ERROR_CRIT);
 	  }
 #endif
 #if ! SLRN_HAS_GEN_MSGID
 	if (!slrn_case_strncmp ((unsigned char *) line, (unsigned char *) "Message-Id:", 11))
 	  {
-	     err = _("This news reader will not accept user generated Message-IDs.");
-	     break;
+	     slrn_malloc_mime_error(&err, _("This news reader will not accept user generated Message-IDs."), line, lineno, MIME_ERROR_CRIT);
 	  }
 #endif
-     }
-
-   if (err == NULL)
-     {
-	if (subject_found == 0)
+	/* Check the references header.  Rumor has it that many
+	 * servers choke on long references lines.  In fact, to be
+	 * GNKSA compliant, references headers cannot be longer than
+	 * 998 characters.  Sigh.
+	 */
+	if (0 == slrn_case_strncmp ((unsigned char *) line,
+				    (unsigned char *)"References: ",
+					12))
 	  {
-	     err = _("Subject header is required.");
-	     num = 0;
+	     if ((tmp=slrn_trim_references_header (line)) == NULL)
+	       {
+		  slrn_malloc_mime_error(&err, _("Error trimming References header."), line, lineno, MIME_ERROR_CRIT);
+	       }
 	  }
-	else if (newsgroups_found == 0)
+   
+	/* prepare Cc: header:
+	 * This line consists of a comma separated list of addresses.  In
+	 * particular, "poster" will be replaced by 'to'. */
+	if ((to != NULL) && (0 == slrn_case_strncmp ((unsigned char *) line,
+						     (unsigned char *)"Cc: ",
+						     4)))
 	  {
-	     err = _("Newsgroups header is required.");
-	     num = 0;
+	     unsigned int  nth = 0;
+	     char *l = line + 4;
+	     char *t, *buf;
+	     
+	     buf=slrn_safe_malloc(strlen(line));
+	     t=tmp=slrn_safe_malloc(strlen(line) + strlen(to)+1);
+	     strncpy(t, "Cc: ", 4);
+	     t +=4;
+	     while (0 == SLextract_list_element (l, nth, ',', buf, sizeof (buf)))
+	       {
+		  char *b;
+
+		  /* Knock whitespace from ends of string */
+		  b = slrn_skip_whitespace (buf);
+		  slrn_trim_string (b);
+
+		  if (nth != 0)
+		       *(t++)= ',';
+
+		  if (0 == slrn_case_strcmp ((unsigned char *)b, (unsigned char *)"poster"))
+		    {
+		       strcpy(t, to); /*safe*/
+		       t += strlen(to);
+		    }
+		  else
+		    {
+		       strcpy(t, b);
+		       t += strlen(b);
+		    }
+		  nth++;
+	       }
+	     *t='\0';
+	     slrn_free(buf);
+	  }
+	/* encode and put into a */
+	if (tmp == NULL)
+	     tmp=line;
+	else
+	     slrn_free(line);
+	
+	if ((mime_err = slrn_mime_header_encode(&tmp, from_charset)) != NULL)
+	  {
+	     if (err == NULL)
+		  err=mime_err;
+	     else
+	       {
+		  err->next=mime_err;
+		  mime_err->prev=err;
+		  err=err->next;
+		  err->lineno=lineno;
+	       }
+	  }
+	
+	if (a->lines == NULL)
+	  {
+	     a->cline=a->lines = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+	     a->lines->prev = NULL;
 	  }
 	else
 	  {
-	     if (newsgroups_found > 4)
-	       warnings[warn++ % MAX_WARNINGS] =
-	       _("Please re-consider if posting to a large number of groups is necessary.");
-	     if (followupto_found > 1)
-	       warnings[warn++ % MAX_WARNINGS] =
-	       _("In most cases, setting a \"Followup-To:\" multiple groups is a bad idea.");
-	     else if ((newsgroups_found > 1) && (followupto_found == 0))
-	       warnings[warn++ % MAX_WARNINGS] =
-	       _("Setting a \"Followup-To:\" is recommended when crossposting.");
+	     a->cline->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+	     a->cline->next->prev = a->cline;
+	     a->cline=a->cline->next;
 	  }
-     }
+	a->cline->flags=HEADER_LINE;
+	a->cline->buf=tmp;
+	tmp=NULL;
+     } /*while (NULL != (vline = vgets (vp, &vlen)))*/
 
-   /* Now body.  Check for non-quoted lines. */
-   if (err == NULL)
+   /* Insert other headers */
+   a->cline->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+   a->cline->next->prev = a->cline;
+   a->cline=a->cline->next;
+   a->cline->flags=HEADER_LINE;
+   a->cline->buf=slrn_gen_date_header();
+   
+   a->cline->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+   a->cline->next->prev = a->cline;
+   a->cline=a->cline->next;
+   a->cline->flags=HEADER_LINE;
+   a->cline->buf = slrn_malloc_sprintf("User-Agent: slrn/%s (%s)", Slrn_Version, system_os_name);
+   
+   /* Insert empty line between headers and body */
+   a->raw_lines = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+   a->raw_lines->prev = NULL;
+   a->raw_lines->buf=slrn_safe_strmalloc("");
+
+   if (subject_found == 0)
      {
-	char *qs = Slrn_Quote_String;
-	int qlen, cline=num;
-	int sig_lines = -1;
-	int is_verbatim = 0;
-	if (qs == NULL) qs = ">";
-	qlen = strlen (qs);
+	slrn_malloc_mime_error(&err, _("Subject header is required."), NULL, 0, MIME_ERROR_NET);
+     }
+   if ((!mail) && (newsgroups_found == 0))
+     {
+	slrn_malloc_mime_error(&err, _("Newsgroups header is required."), NULL, 0, MIME_ERROR_NET);
+     }
+   if ((!mail) && (newsgroups_found > 4))
+     slrn_malloc_mime_error(&err,
+     _("Please re-consider if posting to a large number of groups is necessary."),
+     NULL, 0, MIME_ERROR_NET);
+   if ((!mail) && (followupto_found > 1))
+     slrn_malloc_mime_error(&err,
+	       _("In most cases, setting a \"Followup-To:\" multiple groups is a bad idea."),
+		NULL, 0, MIME_ERROR_NET);
+   if ((!mail) && (newsgroups_found > 1) && (followupto_found == 0))
+     slrn_malloc_mime_error(&err,
+	       _("Setting a \"Followup-To:\" is recommended when crossposting."),
+      NULL, 0, MIME_ERROR_NET);
 
-	err = _("Your message does not appear to have any unquoted text.");
-	the_line = NULL;
-	while (NULL != fgets (line, sizeof (line), fp))
+   *linenum=lineno;
+   return err;
+}
+
+/*}}}*/
+
+static Slrn_Mime_Error_Obj *prepare_body (VFILE *vp, int *linenum, /*{{{*/
+	  Slrn_Article_Type *a, char *from_charset, int mail)
+{
+   char *vline, *line;
+   unsigned int vlen;
+   char *tmp=NULL;
+   int lineno=*linenum;
+   char *qs = Slrn_Quote_String;
+   int qlen, not_quoted=0, sig_lines=-1, longline=0, hibin=0;
+   Slrn_Mime_Error_Obj *err = NULL;
+   Slrn_Mime_Error_Obj *mime_err;
+   Slrn_Article_Line_Type *cline=a->raw_lines;
+
+
+   if (qs == NULL) qs = ">";
+   qlen = strlen (qs);
+
+   /* put body into a->raw_lines */
+   while (NULL != (vline = vgets (vp, &vlen)))
+     {
+	/*remove trailing \n*/
+	if (vline[vlen-1] == '\n')
+	  vlen--;
+	
+	line = slrn_strnmalloc(vline, vlen, 1);
+	lineno++;
+	
+	if (!hibin && slrn_string_nonascii(line))
+	     hibin=1;
+	if (sig_lines != -1) sig_lines++;
+
+	if ((!not_quoted) &&(strncmp (line, qs, qlen)))
+	     not_quoted=1;
+
+	if (0 == strcmp (line, "-- "))
+	     sig_lines = 0;
+
+	if ( (Slrn_Netiquette_Warnings != 0) || (Slrn_Reject_Long_Lines != 0))
 	  {
-	     if (the_line == NULL) num++;
-	     cline++;
-	     if (sig_lines != -1) sig_lines++;
-
-	     if (!strncmp (line, qs, qlen))
-	       continue;
-	     if (0 == strncmp (line, "#v", 2))
+	     if ( !longline && (strlen (line) > 80))
 	       {
-		  if (is_verbatim && (line[2] == '-'))
-		    {
-		       is_verbatim = 0;
-		       continue;
-		    }
-
-		  if ((is_verbatim == 0) && (line[2] == '+'))
-		    {
-		       is_verbatim = 1;
-		       continue;
-		    }
-	       }
-
-	     if (is_verbatim)
-	       continue;
-	     if (0 == strcmp (line, "-- \n"))
-	       {
-		  sig_lines = 0;
-		  continue;
-	       }
-
-	     colon = slrn_skip_whitespace (line);
-	     if (*colon == 0) continue;
-
-	     err = NULL;
-
-	     if ((Slrn_Netiquette_Warnings == 0) &&
-		 (Slrn_Reject_Long_Lines == 0))
-	       break;
-
-	     if (strlen (line) > 81) /* allow \n to slip */
-	       {
-		  if (the_line == NULL)
-		    {
-		       the_line = buf; /* magic: slrn will know that we got here */
-		       strcpy (buf, line); /* safe */
-		       long_lines = 1;
-		    }
-		  else /* count long lines */
-		    {
-		       long_lines++;
-		       last_num = cline;
-		    }
+		   slrn_malloc_mime_error(&err,
+			     _("Lines with more than 80 characters generally need to be wrapped. (only first one is shown)"),
+			     NULL, lineno, MIME_ERROR_NET);
 	       }
 	  }
-	if (sig_lines > 4)
-	  warnings[warn++ % MAX_WARNINGS] =
-	  _("Please keep your signature short. 4 lines is a commonly accepted limit.");
+
+
+	cline->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+        cline->next->prev = cline;
+	cline = cline->next;
+	cline->buf = line;
+     }
+   if (sig_lines > 4)
+	slrn_malloc_mime_error(&err,
+		  _("Please keep your signature short. 4 lines is a commonly accepted limit."), NULL, lineno, MIME_ERROR_NET);
+
+   if ((mime_err = slrn_mime_encode_article(a, &hibin, from_charset)) != NULL)
+     {
+	if (err == NULL)
+	     err = mime_err;
+	else
+	  {
+	     err->next= mime_err;
+	     mime_err->prev=err;
+	  }
+     }
+   *linenum=lineno;
+   return err;
+}
+
+/*}}}*/
+
+/* Returns -1 upon error, 0, if ok, 1 if needs repair, 2 is warning is issued */
+int slrn_prepare_file_for_posting (char *file, int *linenum, Slrn_Article_Type *a, char *to, int mail) /*{{{*/
+{
+   VFILE *vp;
+   int i=0;
+   Slrn_Mime_Error_Obj *err=NULL, *warn=NULL, *net=NULL, *ret, *tmp, **e_ptr;
+   char *from_charset;
+   int iret;
+
+   if (Slrn_Editor_Charset != NULL)
+	from_charset = Slrn_Editor_Charset;
+   else
+	from_charset = Slrn_Display_Charset;
+   
+   if (NULL == (vp = vopen (file, 4096, 0)))
+     {
+	slrn_error (_("Unable to open %s."), file);
+	return -1;
      }
 
-   fclose (fp);
+   ret = prepare_header (vp, linenum, a, to, from_charset, mail);
 
+   if (ret == NULL)
+	ret = prepare_body (vp, linenum, a, from_charset, mail);
+   else
+     {
+	while(ret->next != NULL) ret=ret->next;
+	ret->next = prepare_body (vp, linenum, a, from_charset, mail);
+     }
+   vclose (vp);
+
+   /* sort errors/warnings etc */
+   if (ret != NULL)
+     {
+	while(ret->prev != NULL) ret=ret->prev; /*rewind*/
+	while (ret != NULL)
+	  {
+	     tmp = ret;
+	     ret = tmp->next;
+	     tmp->next=NULL;
+	     switch (tmp->critical)
+	       {
+		  case MIME_ERROR_WARN:
+		        e_ptr = &warn;
+			break;
+		  case MIME_ERROR_NET:
+			e_ptr = &net;
+			break;
+		  case MIME_ERROR_CRIT:
+		  default:
+			e_ptr = &err;
+			break;
+	       }
+	     if (*e_ptr == NULL)
+	       {
+		  tmp->prev = NULL;
+		  *e_ptr = tmp;
+	       }
+	     else
+	       {
+		  tmp->prev = *e_ptr;
+		  (*e_ptr)->next = tmp;
+		  *e_ptr = (*e_ptr)->next;
+	       }
+	  }
+     }
+		  
    if (Slrn_Batch && (err != NULL))
      {
 	slrn_error (_("Message is not acceptable."));
-	slrn_error (_("Reason: %s"), err);
+	slrn_error (_("Reason(s):"));
+	tmp=err;
+	while (tmp != NULL)
+	  {
+	     slrn_error (tmp->msg);
+	     tmp=tmp->next;
+	  }
+	slrn_free_mime_error(err);
+	slrn_free_mime_error(warn);
+	slrn_free_mime_error(net);
 	return -1;
      }
 
-   if ((err == NULL) && (!Slrn_Netiquette_Warnings || (*warnings == NULL)) &&
-       (!Slrn_Reject_Long_Lines || (the_line == NULL))) return 0;
+   if ((err == NULL) && (warn == NULL))
+     {
+	if (net == NULL)
+	  {
+	     return 0;
+	  }
+	else
+	  {
+	     if (!Slrn_Netiquette_Warnings)
+	       {
+		  slrn_free_mime_error(net);
+		  return 0;
+	       }
+	  }
+     }
 
-   Slrn_Full_Screen_Update = 1;
-
-   slrn_set_color (0);
-
-   SLsmg_cls ();
-   SLsmg_gotorc (2,0);
-   slrn_set_color (SUBJECT_COLOR);
-   if (num) *linenum = num;
    if (err != NULL)
      {
-	SLsmg_write_string (_("Your message is not acceptable for the following reason:"));
-	slrn_set_color (ERROR_COLOR);
-	SLsmg_gotorc (4,4); SLsmg_write_string (err);
-	if (num && (the_line != NULL))
+	Slrn_Full_Screen_Update = 1;
+
+	slrn_set_color (0);
+
+	SLsmg_cls ();
+	SLsmg_gotorc (2,0);
+	slrn_set_color (SUBJECT_COLOR);
+	i=4;
+	*linenum=err->lineno;
+	SLsmg_write_string (_("Your message is not acceptable for the following reason(s):"));
+
+	tmp=err;
+	while ((tmp != NULL) && ( i  < SLtt_Screen_Rows - 11))
 	  {
-	     SLsmg_gotorc (6,0);
-	     slrn_set_color (SUBJECT_COLOR);
-	     SLsmg_printf (_("This message was generated while looking at line %d:"), num);
-	     SLsmg_gotorc (8,0);
-	     slrn_set_color (QUOTE_COLOR);
-	     SLsmg_write_string (the_line);
-	     SLsmg_gotorc (12, 0);
-	     slrn_set_color (ARTICLE_COLOR);
-	     SLsmg_write_string (_("Perhaps this error was generated because you did not separate the header"));
-	     SLsmg_gotorc (13, 0);
-	     SLsmg_write_string (_("section from the body by a BLANK line."));
+	     slrn_set_color (ERROR_COLOR);
+	     SLsmg_gotorc (i,4); 
+	     SLsmg_write_string (tmp->msg);
+	     i += 2;
+	     if (tmp->lineno >= 0)
+	       {
+		  SLsmg_gotorc (i,0);
+		  i += 2;
+		  slrn_set_color (SUBJECT_COLOR);
+		  SLsmg_printf (_("This message was generated while looking at line %d:"), tmp->lineno);
+	       }
+	     else
+	       {
+		  if (tmp->err_str != NULL)
+		    {
+		       SLsmg_gotorc (i,0);
+		       i +=2;
+		       slrn_set_color (SUBJECT_COLOR);
+		       SLsmg_printf (_("This message was generated while looking at the following line"));
+		    }
+	       }
+	     if (tmp->err_str != NULL)
+	       {
+		  SLsmg_gotorc (i,0);
+		  i +=3;
+		  slrn_set_color (QUOTE_COLOR);
+		  SLsmg_write_string (tmp->err_str);
+	       }
+	     tmp=tmp->next;
 	  }
-	return 1;
+	SLsmg_gotorc (i++, 0);
+	slrn_set_color (ARTICLE_COLOR);
+	SLsmg_write_string (_("Perhaps this error was generated because you did not separate the header"));
+	SLsmg_gotorc (i, 0);
+	SLsmg_write_string (_("section from the body by a BLANK line."));
+	i += 2;
+	iret = 1;
      }
-   else
+   if ((warn != NULL) && ( i  < SLtt_Screen_Rows - 9))
      {
-	int row = 4;
+	if (err == NULL)
+	  {
+	     Slrn_Full_Screen_Update = 1;
+	     
+	     slrn_set_color (0);
+	     
+	     SLsmg_cls ();
+	     SLsmg_gotorc (2,0);
+	     slrn_set_color (SUBJECT_COLOR);
+	     i=4;
+	     *linenum=warn->lineno;
+	     SLsmg_write_string (_("Your message is not acceptable for the following reason(s):"));
+	  }
+	tmp=warn;
+	while ((tmp != NULL) && ( i  < SLtt_Screen_Rows - 9))
+	  {
+	     slrn_set_color (ERROR_COLOR);
+	     SLsmg_gotorc (i,4); 
+	     SLsmg_write_string (tmp->msg);
+	     i += 2;
+	     if (tmp->lineno >= 0)
+	       {
+		  SLsmg_gotorc (i,0);
+		  i += 2;
+		  slrn_set_color (SUBJECT_COLOR);
+		  SLsmg_printf (_("This message was generated while looking at line %d:"), tmp->lineno);
+	       }
+	     else
+	       {
+		  if (tmp->err_str != NULL)
+		    {
+		       SLsmg_gotorc (i,0);
+		       i += 2;
+		       slrn_set_color (SUBJECT_COLOR);
+		       SLsmg_printf (_("This message was generated while looking at the following line"));
+		    }
+	       }
+	     if (tmp->err_str != NULL)
+	       {
+		  SLsmg_gotorc (i,0);
+		  i +=3;
+		  slrn_set_color (QUOTE_COLOR);
+		  SLsmg_write_string (tmp->err_str);
+	       }
+	     tmp=tmp->next;
+	  }
+	if (ret == 0) iret=2;
+     }
+   if ((net != NULL) && ( i  < SLtt_Screen_Rows - 9))
+     {
+	if ((err == NULL) && (warn==NULL))
+	  {
+	     *linenum=net->lineno;
+	     Slrn_Full_Screen_Update = 1;
+
+	     slrn_set_color (0);
+
+	     SLsmg_cls ();
+	     SLsmg_gotorc (2,0);
+	     slrn_set_color (SUBJECT_COLOR);
+	     i=4;
+	  }
 	SLsmg_write_string (_("Your message breaks the following netiquette guidelines:"));
 	slrn_set_color (ERROR_COLOR);
 
-	if (Slrn_Netiquette_Warnings)
+	tmp=net;
+	while ((tmp != NULL) && ( i  < SLtt_Screen_Rows - 9))
 	  {
-	     warn = 0;
-	     while ((warn < MAX_WARNINGS) && warnings[warn] != NULL)
+	     SLsmg_gotorc (i++, 4);
+	     slrn_set_color (ERROR_COLOR);
+	     SLsmg_write_string (tmp->msg);
+	     i += 2;
+	     if (tmp->lineno >= 0)
 	       {
-		  SLsmg_gotorc (row++, 4);
-		  SLsmg_write_string (warnings[warn++]);
+		  SLsmg_gotorc (i,0);
+		  i += 2;
+		  slrn_set_color (SUBJECT_COLOR);
+		  SLsmg_printf (_("This message was generated while looking at line %d:"), tmp->lineno);
 	       }
-	  }
-
-	if ((the_line != NULL) && Slrn_Reject_Long_Lines)
-	  {
-	     SLsmg_gotorc (++row, 4);
-	     SLsmg_write_string (_("Lines with more than 80 characters generally need to be wrapped."));
-	     slrn_set_color (SUBJECT_COLOR);
-	     row += 2; SLsmg_gotorc (row, 0);
-	     if (long_lines == 1)
-	       SLsmg_printf (_("This affects at least line %d:"), num);
 	     else
-	       SLsmg_printf (_("This affects %d lines between line %d and %d. First one:"),
-			     long_lines, num, last_num);
-	     row += 2; SLsmg_gotorc (row, 0);
-	     slrn_set_color (QUOTE_COLOR);
-	     SLsmg_write_string (the_line);
-	     if (Slrn_Reject_Long_Lines == 1)
-	       return 1;
+	       {
+		  if (tmp->err_str != NULL)
+		    {
+		       SLsmg_gotorc (i,0);
+		       i += 2;
+		       slrn_set_color (SUBJECT_COLOR);
+		       SLsmg_printf (_("This message was generated while looking at the following line"));
+		    }
+	       }
+	     if (tmp->err_str != NULL)
+	       {
+		  SLsmg_gotorc (i,0);
+		  i += 3;
+		  slrn_set_color (QUOTE_COLOR);
+		  SLsmg_write_string (tmp->err_str);
+	       }
+	     tmp=tmp->next;
 	  }
-	return 2;
+	if (ret == 0) iret=2;
      }
-   return 0; /* never reached */
+   return iret;
 }
 /*}}}*/
 
-int slrn_save_file_to_mail_file (char *file, char *save_file) /*{{{*/
+int slrn_save_article_to_mail_file (Slrn_Article_Type *a, char *save_file) /*{{{*/
 {
-   FILE *infp, *outfp;
+   FILE *outfp;
    time_t now;
    char save_post_file[SLRN_MAX_PATH_LEN];
-   char line [MAX_LINE_BUFLEN];
 
    if ((save_file == NULL) || (*save_file == 0))
      return 0;
-
-   if (NULL == (infp = fopen (file, "r")))
-     {
-	slrn_error (_("File not found: %s--- message not posted."), file);
-	return -1;
-     }
 
    if (NULL == (outfp = slrn_open_home_file (save_file, "a", save_post_file,
 					     sizeof (save_post_file), 1)))
@@ -935,7 +1172,6 @@ int slrn_save_file_to_mail_file (char *file, char *save_file) /*{{{*/
 	slrn_message_now (_("***Warning: error saving to %s"), save_post_file);
 	SLang_input_pending (30);
 	SLang_flush_input ();
-	slrn_fclose (infp);
 	return 0;
      }
 
@@ -945,23 +1181,19 @@ int slrn_save_file_to_mail_file (char *file, char *save_file) /*{{{*/
    else
      fprintf (outfp, "From %s@%s %s", Slrn_User_Info.username, Slrn_User_Info.hostname, ctime(&now));
 
-   line[0] = '\n';
-   while (NULL != fgets (line, sizeof(line) - 1, infp))
+   a->cline=a->lines;
+   while (a->cline != NULL)
      {
-	if ((*line == 'F')
-	    && !strncmp ("From", line, 4)
-	    && ((unsigned char)line[4] <= ' '))
+	if ((*(a->cline->buf) == 'F')
+	    && !strncmp ("From", a->cline->buf, 4)
+	    && ((unsigned char)a->cline->buf[4] <= ' '))
 	  putc ('>', outfp);
 
-	if (*line == '.') /* Leading dots got doubled for posting. */
-	  fputs (line+1, outfp);
-	else
-	  fputs (line, outfp);
+	  fputs (a->cline->buf, outfp);
+	  putc ('\n', outfp);
+	  a->cline=a->cline->next;
      }
-   if (line[strlen(line)-1] != '\n')
-     putc ('\n', outfp); /* add newline in case last line did not end in one */
    putc ('\n', outfp);	       /* separator */
-   slrn_fclose (infp);
    return slrn_fclose (outfp);
 }
 /*}}}*/
@@ -1103,7 +1335,7 @@ static int insert_custom_header (char *fmt, FILE *fp) /*{{{*/
  *  0 => user wants to delete postponed article
  *  1 => user postponed the article
  *  2 => user wants to post article */
-static int post_user_confirm (char *file, int is_postponed) /*{{{*/
+static int post_user_confirm (Slrn_Article_Type *a, char *to, char *file, int is_postponed) /*{{{*/
 {
    int rsp;
    int once_more=1;
@@ -1190,7 +1422,7 @@ static int post_user_confirm (char *file, int is_postponed) /*{{{*/
 	     return 0;
 
 	   case 'y':
-	     if (0 == (rsp = check_file_for_posting (file, &linenum)))
+	     if (0 == (rsp = slrn_prepare_file_for_posting (file, &linenum, a, to, 0)))
 	       {
 		  once_more = 0;
 		  break;
@@ -1257,85 +1489,38 @@ static int post_user_confirm (char *file, int is_postponed) /*{{{*/
 }
 /*}}}*/
 
-static void post_printf(FILE *fcc_fp, char *fmt, ...) /*{{{*/
-{
-   va_list ap;
-
-   va_start(ap, fmt);
-   Slrn_Post_Obj->po_vprintf(fmt, ap);
-   va_end(ap);
-
-   va_start(ap, fmt);
-   vfprintf(fcc_fp, fmt, ap);
-   va_end(ap);
-}
-/*}}}*/
-
-static void post_puts(FILE *fcc_fp, char *buf) /*{{{*/
-{
-   Slrn_Post_Obj->po_puts(buf);
-   fputs(buf, fcc_fp);
-}
-/*}}}*/
-
 /* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
 int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 {
-#if SLRN_HAS_STRICT_FROM
-   char line[MAX_LINE_BUFLEN]; /* only used for MIME encoding of the realname */
-#endif
-   char *linep;
-   int len, header;
-   FILE *fp;
-   VFILE *vp;
-   char *vline;
-   unsigned int vlen;
-   FILE *fcc_fp;
-   char fcc_file[SLRN_MAX_PATH_LEN];
+   Slrn_Article_Type *a = NULL;
+   Slrn_Article_Line_Type *tmp;
+   int header;
    int rsp;
    int perform_cc;
    int status;
    char *msgid = NULL;
    int has_messageid = 0;
-   char *system_os_name;
    char *responses;
-
-   system_os_name = slrn_get_os_name ();
 
    try_again:
 
    perform_cc = 0;
+   has_messageid == 0;
+   if (msgid != NULL)
+	slrn_free(msgid);
+   if (a != NULL)
+	slrn_art_free_article(a);
+   a=(Slrn_Article_Type*) slrn_malloc (sizeof(Slrn_Article_Type), 1, 1);
 
    if (Slrn_Batch == 0)
      {
-	if ((rsp=post_user_confirm(file, is_postponed)) != 2)
+	if ((rsp=post_user_confirm(a, to, file, is_postponed)) != 2)
 	  return rsp;
      }
 
    slrn_message_now (_("Posting ..."));
 
-   if ((Slrn_Use_Mime & MIME_ARCHIVE) && /* else: do it later */
-       !Slrn_Editor_Uses_Mime_Charset)
-     slrn_chmap_fix_file (file, 0);
-
-
-   if (!(Slrn_Use_Mime & MIME_ARCHIVE) &&
-       !Slrn_Editor_Uses_Mime_Charset)
-     slrn_chmap_fix_file (file, 0);
-
-#if SLRN_HAS_MIME
-   if ((fp = fopen (file, "r")) == NULL)
-     {
-	slrn_error (_("File not found: %s--- message not posted."), file);
-	return -1;
-     }
-   
-   if (Slrn_Use_Mime & MIME_DISPLAY)
-     slrn_mime_scan_file (fp);
-   
-   fclose (fp);
-#endif
-   
+   /* XXX
 #if SLRN_HAS_SLANG
    if (1 == slrn_is_hook_defined (HOOK_POST_FILE))
      {
@@ -1351,179 +1536,110 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	slrn_message_now (_("Posting ..."));
      }
 #endif
-
-   if ((vp = vopen (file, 4096, 0)) == NULL)
-     {
-	slrn_error (_("File not found: %s--- message not posted."), file);
-	return -1;
-     }
-   
-   fcc_fp = slrn_open_tmpfile (fcc_file, sizeof (fcc_file));
-   
-   if (fcc_fp == NULL)
-     {
-	slrn_error (_("Couldn't open %s--- message not posted."), fcc_file);
-	vclose (vp);
-	return (-1);
-     }
+    */
 
    /* slrn_set_suspension (1); */
    status = Slrn_Post_Obj->po_start ();
    if (status != CONT_POST)
      {
-	vclose (vp);
-	fclose (fcc_fp);
-	if (!Slrn_Editor_Uses_Mime_Charset)
-	  slrn_chmap_fix_file (file, 1);
 	(void) saved_failed_post (file, (status != -1) ?
 				  _("Posting not allowed.") :
 				  _("Could not reach server."));
+	slrn_art_free_article(a);
 	return -1;
      }
 
     msgid = create_message_id (&rsp);
     if (rsp)
       {
-	(void) saved_failed_post (file, _("Message-ID generating error."));
-	vclose (vp);
-	fclose (fcc_fp);
+	(void) saved_failed_post (file, _("Could not generate Message-ID."));
 	slrn_free(msgid);
+	slrn_art_free_article(a);
 	return -1;
       }
 
-#if SLRN_HAS_STRICT_FROM
-   /* line is not used until now, so we can use it as a buffer */
-   if (NULL == (linep = slrn_make_from_string ()))
+   a->cline=a->lines;
+   
+   header=1;
+   while (a->cline != NULL)
      {
-	(void) saved_failed_post (file, _("\"From\" generating error."));
-	vclose (vp);
-	fclose (fcc_fp);
-	slrn_free(msgid);
-	return -1;
-     }
-   slrn_strncpy(line, linep, sizeof(line));
-
-# if SLRN_HAS_MIME
-   if (Slrn_Use_Mime & MIME_DISPLAY)
-	slrn_mime_header_encode(line, sizeof(line));
-# endif
-
-   post_printf (fcc_fp, "From: %s\n", line);
-
-#endif /*SLRN_HAS_STRICT_FROM*/
-   /* if (Slrn_User_Info.posting_host != NULL)
-     * post_printf (fcc_fp, "X-Posting-Host: %s\n", Slrn_User_Info.posting_host); */
-
-   header = 1;
-   while ((vline = vgets (vp, &vlen)) != NULL)
-     {
-	if (vlen == 0) continue;
-
-	linep = slrn_safe_malloc (vlen+512); /* add some for MIME overhead */
-	strncpy (linep, vline, vlen);
-	if (linep[vlen-1] == '\n')
-	  linep[vlen-1] = 0;	/* kill \n and NULL terminate */
-	else
-	  linep[vlen] = 0;
-	
 	if (header)
 	  {
-	     unsigned char *b;
-	     char *white = linep;
-
-	     /* Check the references header.  Rumor has it that many
-	      * servers choke on long references lines.  In fact, to be
-	      * GNKSA compliant, references headers cannot be longer than
-	      * 998 characters.  Sigh.
-	      */
-
-	     if (((*white == 'R') || (*white == 'r'))
-		 && (0 == slrn_case_strncmp ((unsigned char *)"References: ",
-					     (unsigned char *)white,
-					     12)))
+	     if (a->cline->flags != HEADER_LINE) /* Header ends, body begins */
 	       {
-		  (void) slrn_add_references_header (NULL, white);
-		  (void) slrn_add_references_header (fcc_fp, white);
-		  SLfree(linep);
-		  continue;
-	       }
-
-	     while ((*white == ' ') || (*white == '\t')) white++;
-
-	     if (*white == 0) /* Header ends, body begins */
-	       {
-		  slrn_add_date_header (NULL);
-		  slrn_add_date_header (fcc_fp);
 		  if (msgid != NULL)
 		    {
 #if SLRN_HAS_CANLOCK
 		       char *canlock;
 		       if (NULL != (canlock = gen_cancel_lock (msgid)))
 			 {
-			    post_printf(fcc_fp, "Cancel-Lock: %s\n", canlock);
+			    a->cline=a->cline->prev;
+			    tmp=a->cline->next;
+			    a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+			    a->cline->next->prev=a->cline;
+			    a->cline=a->cline->next;
+			    a->cline->next=tmp;
+			    a->cline->flags=HEADER_LINE;
+			    a->cline->buf=slrn_safe_malloc(14+strlen(canlock));
+			    sprintf(a->cline->buf, "Cancel-Lock: %s", canlock);
 			    SLFREE (canlock);
+			    Slrn_Post_Obj->po_puts(a->cline->buf);
+			    Slrn_Post_Obj->po_puts("\n");
+			    a->cline=a->cline->next;
 			 }
 #endif /* SLRN_HAS_CANLOCK */
 		       if (has_messageid == 0)
-			 post_printf(fcc_fp, "Message-ID: %s\n", msgid);
-		       SLFREE (msgid);
+			 {
+			    a->cline=a->cline->prev;
+			    tmp=a->cline->next;
+			    a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+			    a->cline->next->prev=a->cline;
+			    a->cline=a->cline->next;
+			    a->cline->next=tmp;
+			    a->cline->flags=HEADER_LINE;
+			    a->cline->buf=slrn_safe_malloc(13+strlen(msgid));
+			    sprintf(a->cline->buf, "Message-ID: %s", msgid);
+			    SLFREE (msgid);
+			    Slrn_Post_Obj->po_puts(a->cline->buf);
+			    Slrn_Post_Obj->po_puts("\n");
+			    a->cline=a->cline->next;
+			 }
 		    }
-#if SLRN_HAS_MIME
-		  if (Slrn_Use_Mime & MIME_DISPLAY)
-		    {
-		      slrn_mime_add_headers (0);   /* 0 --> Slrn_Post_Obj->po_puts */
-		      slrn_mime_add_headers (fcc_fp);
-		    }
-#endif
-		  post_printf (fcc_fp, "User-Agent: slrn/%s (%s)\n\n",
-					    Slrn_Version, system_os_name);
 		  header = 0;
-#if SLRN_HAS_MIME
-		  if (Slrn_Use_Mime & MIME_DISPLAY) vp = slrn_mime_encode (vp);
-#endif
-
-		  SLfree(linep);
-		  continue;
-	       } /* if (*white == 0) */
-
-	     if (!slrn_case_strncmp ((unsigned char *)"Cc: ",
-				     (unsigned char *)linep, 4))
-	       {
-		  b = (unsigned char *) linep + 4;
-		  b = (unsigned char *) slrn_skip_whitespace ((char *) b);
-		  if (*b && (*b != ',')) perform_cc = 1;
-		  fputs(linep, fcc_fp); /* The 'Cc:' header is only needed in the fcc-file.*/
-		  fputs("\n", fcc_fp);
-		  SLfree(linep);
 		  continue;
 	       }
 
-	     if (is_empty_header (linep)) continue;
+	     if (Slrn_Generate_Date_Header &&
+		       (!slrn_case_strncmp ((unsigned char *)"Date: ",
+					    (unsigned char *)a->cline->buf, 4)))
+	       {
+		  /* skip generated date header for posting */
+		  a->cline=a->cline->next;
+		  continue;
+	       }
+	     if (!slrn_case_strncmp ((unsigned char *)"Cc: ",
+				     (unsigned char *)a->cline->buf, 4))
+	       {
+		  perform_cc = 1;
+		  a->cline=a->cline->next; /* The 'Cc:' header is only needed in the cc-file.*/
+		  continue;
+	       }
+
 #if SLRN_HAS_GEN_MSGID
 	     if (!slrn_case_strncmp ((unsigned char *)"Message-ID: ",
-				     (unsigned char *)linep, 12))
+				     (unsigned char *)a->cline->buf, 12))
 	       {
 		  slrn_free(msgid);
-		  msgid = slrn_strmalloc (linep+12, 0);
+		  msgid = slrn_strmalloc (a->cline->buf+12, 0);
 		  has_messageid = 1;
-	       }
-#endif
-#if SLRN_HAS_MIME
-	     if (Slrn_Use_Mime & MIME_DISPLAY)
-	       {
-		  slrn_mime_header_encode (linep, vlen+512);
-		  len = strlen (linep);
 	       }
 #endif
 	  } /* if (header) */
 
-	if (*linep == '.')
-	  post_puts (fcc_fp, ".");
-	post_puts (fcc_fp, linep);
-	post_puts (fcc_fp, "\n");
-     } /*while vgets ... */
-   vclose (vp);
-   slrn_fclose (fcc_fp);
+	Slrn_Post_Obj->po_puts(a->cline->buf);
+	Slrn_Post_Obj->po_puts("\n");
+	a->cline=a->cline->next;
+     } /*while (a->cline != NULL)*/
 
    if (0 == Slrn_Post_Obj->po_end ())
      {
@@ -1531,12 +1647,10 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
      }
    else
      {
-	/* convert back to users' charset, so it can easily be re-edited */
-	if (!Slrn_Editor_Uses_Mime_Charset)
-	     slrn_chmap_fix_file (file, 1);
 	if (Slrn_Batch)
 	  {
 	     saved_failed_post (file, NULL);
+	     slrn_art_free_article(a);
 	     return -1;
 	  }
 
@@ -1561,30 +1675,36 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 		&& (slrn_edit_file (Slrn_Editor_Post, file, 1, 0) < 0)))
 	  {
 	     (void) saved_failed_post (file, NULL);
+	     slrn_art_free_article(a);
 	     return -1;
 	  }
 	goto try_again;
      } /* (0 == Slrn_Post_Obj->po_end ()) */
 
-   if (-1 == slrn_save_file_to_mail_file (fcc_file, Slrn_Save_Posts_File))
+   if (-1 == slrn_save_article_to_mail_file (a, Slrn_Save_Posts_File))
+     {
+	slrn_art_free_article(a);
 	return -1;
+     }
 
    if (perform_cc)
      {
-	cc_file (fcc_file, to);
+	cc_article (a);
      }
 
-   (void) slrn_delete_file (fcc_file);
+   slrn_art_free_article(a);
    return 0;
 }
+
 /*}}}*/
 
 int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
 {
    FILE *fp;
-   char file[SLRN_MAX_PATH_LEN], *from;
+   char file[SLRN_MAX_PATH_LEN], *from, *tmp;
    unsigned int header_lines;
    int ret;
+   int convert;
 
    if (Slrn_Use_Tmpdir)
      fp = slrn_open_tmpfile (file, sizeof (file));
@@ -1600,31 +1720,41 @@ int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
    header_lines = 8;
    fprintf (fp, "Newsgroups: %s\n", newsgroup);
 #if ! SLRN_HAS_STRICT_FROM
-   if (NULL == (from = slrn_make_from_string ())) return -1;
-   fprintf (fp, "From: %s\n", from); header_lines++;
+   if (NULL == (from = slrn_make_from_string ()))
+	return -1;
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) <0)
+     {
+	slrn_free(from);
+	return -1;
+     }
+   slrn_free(from);
+   header_lines++;
 #endif
-   fprintf (fp, "Subject: %s\n", subj);
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Subject: %s\n", subj)<0)
+	return -1;
 
    if (Slrn_User_Info.org != NULL)
      {
 	header_lines++;
-	fprintf (fp, "Organization: %s\n", Slrn_User_Info.org);
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset,"Organization: %s\n",Slrn_User_Info.org) <0)
+	     return -1;
      }
 
-   fprintf (fp, "Reply-To: %s\nFollowup-To: %s\n", Slrn_User_Info.replyto,
-	    followupto);
-   fprintf (fp, "Keywords: \nSummary: \n");
+   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Reply-To: %s\n", Slrn_User_Info.replyto) < 0)
+	return -1;
+   fprintf (fp, "Followup-To: %s\nKeywords: \nSummary: \n", followupto);
 
-   header_lines += slrn_add_custom_headers (fp, Slrn_Post_Custom_Headers,
-					    insert_custom_header);
+   if ((ret = slrn_add_custom_headers (fp, Slrn_Post_Custom_Headers,
+		       insert_custom_header)) == -1)
+	return -1;
+   else
+	header_lines += ret;
 
    fputs ("\n", fp);
 
-   slrn_add_signature (fp);
+   if (slrn_add_signature (fp) == -1)
+	return -1;
    slrn_fclose (fp);
-
-   if (Slrn_Editor_Uses_Mime_Charset)
-     slrn_chmap_fix_file (file, 0);
 
    if (slrn_edit_file (Slrn_Editor_Post, file, header_lines, 1) >= 0)
      ret = slrn_post_file (file, NULL, 0);
