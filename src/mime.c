@@ -979,9 +979,7 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, int *hibin, 
   
   endofheader = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
   endofheader->flags=HEADER_LINE;
-  endofheader->buf=slrn_malloc_sprintf ("Content-Type: text/plain; charset=%s", charset);
-  /*endofheader->buf=slrn_safe_malloc(36+strlen(charset));
-  sprintf(endofheader->buf, "Content-Type: text/plain; charset=%s", charset); /*safe*/
+  endofheader->buf=slrn_strdup_printf ("Content-Type: text/plain; charset=%s", charset);
   
   endofheader->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
   endofheader->next->flags=HEADER_LINE;

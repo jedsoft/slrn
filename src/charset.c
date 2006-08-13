@@ -208,7 +208,7 @@ int slrn_convert_fprintf(FILE *fp, char *to_charset, char *from_charset, const c
 	return retval;
      }
    
-   str = slrn_malloc_vsprintf(format, args);
+   str = slrn_strdup_vprintf(format, args);
    va_end (args);
    
    if (!slrn_string_nonascii(str))

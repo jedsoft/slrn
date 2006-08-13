@@ -213,7 +213,7 @@ char *slrn_gen_date_header () /*{{{*/
 # endif
 #endif
 
-   return slrn_malloc_sprintf(
+   return slrn_strdup_printf(
 		  "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d",
 		  Weekdays[t->tm_wday], t->tm_mday, Months[t->tm_mon],
 		  t->tm_year + 1900, t->tm_hour, t->tm_min, t->tm_sec,
@@ -791,7 +791,7 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, int *linenum, Slrn_Articl
    a->cline->next->prev = a->cline;
    a->cline=a->cline->next;
    a->cline->flags=HEADER_LINE;
-   a->cline->buf = slrn_malloc_sprintf("User-Agent: slrn/%s (%s)", Slrn_Version, system_os_name);
+   a->cline->buf = slrn_strdup_printf("User-Agent: slrn/%s (%s)", Slrn_Version, system_os_name);
    
    /* Insert empty line between headers and body */
    a->raw_lines = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);

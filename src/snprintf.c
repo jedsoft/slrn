@@ -353,35 +353,3 @@ static unsigned int printf_string_upper_bound (const char* format, /*{{{*/
 }
 
 /*}}}*/
-
-char *slrn_malloc_sprintf (const char *format, ... ) /*{{{*/
-{
-   int len;
-   va_list args;
-   char *str;
-
-   va_start (args, format);
-   len=printf_string_upper_bound(format, args);
-   str = slrn_safe_malloc(len+1);
-   vsnprintf (str, len+1, format, args);
-   va_end (args);
-
-   return str;
-}
-
-/*}}}*/
-
-char *slrn_malloc_vsprintf (const char *format, va_list args ) /*{{{*/
-{
-   int len;
-   char *str;
-
-   len=printf_string_upper_bound(format, args);
-   str = slrn_safe_malloc(len+1);
-   vsnprintf (str, len+1, format, args);
-
-   return str;
-}
-
-/*}}}*/
-

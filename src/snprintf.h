@@ -28,8 +28,6 @@ extern char *slrn_strdup_vprintf (const char*, va_list);
 
 extern int slrn_snprintf (char *, size_t, const char *, ...);
 extern int slrn_vsnprintf (char *, size_t, const char *, va_list);
-extern char *slrn_malloc_sprintf (const char *format, ... );
-extern char *slrn_malloc_vsprintf (const char *format, va_list args );
 
 extern char *slrn_strncpy (char *, const char*, size_t);
 
