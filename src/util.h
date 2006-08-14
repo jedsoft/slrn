@@ -64,6 +64,7 @@ extern int slrn_case_strcmp (unsigned char *, unsigned char *);
 extern char *slrn_strbrk (char *, char *);
 
 extern char *slrn_safe_strmalloc (char *);
+extern char *slrn_safe_strnmalloc (char *, unsigned int);
 extern char *slrn_safe_malloc (unsigned int);
 extern char *slrn_strmalloc (char *, int);
 extern char *slrn_strnmalloc (char *, unsigned int, int);

@@ -180,7 +180,7 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 	       b++;
 	     len = b - charset;
 	     
-	     a->mime.charset = slrn_safe_strmalloc (charset);
+	     a->mime.charset = slrn_safe_strnmalloc (charset, len);
 	     return 0;
 	  }
 	line = line->next;

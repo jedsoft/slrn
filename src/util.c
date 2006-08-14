@@ -401,6 +401,13 @@ char *slrn_safe_strmalloc (char *s) /*{{{*/
 
 /*}}}*/
 
+char *slrn_safe_strnmalloc (char *s, unsigned int len)
+{
+   s = SLmake_nstring (s, len);
+   if (s == NULL) slrn_exit_error (_("Out of memory."));
+   return s;
+}
+
 char *slrn_strnmalloc (char *s, unsigned int len, int do_error)
 {
    s = SLmake_nstring (s, len);
