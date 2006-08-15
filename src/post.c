@@ -1335,6 +1335,8 @@ static int insert_custom_header (char *fmt, FILE *fp) /*{{{*/
  *  0 => user wants to delete postponed article
  *  1 => user postponed the article
  *  2 => user wants to post article */
+/* Be warned: This function now also transfers "file" into "a", which will be
+ * used for the actual posting process later on. */
 static int post_user_confirm (Slrn_Article_Type *a, char *to, char *file, int is_postponed) /*{{{*/
 {
    int rsp;
@@ -1484,7 +1486,12 @@ static int post_user_confirm (Slrn_Article_Type *a, char *to, char *file, int is
 	       }
 #endif
 	  }
-     }
+	if (once_more) 
+	  {
+	     slrn_mime_free(&a->mime);
+	     slrn_art_free_article_lines(a);
+	  }
+     } /* while (once_more) */
    return 2;
 }
 /*}}}*/
@@ -1515,7 +1522,10 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
    if (Slrn_Batch == 0)
      {
 	if ((rsp=post_user_confirm(a, to, file, is_postponed)) != 2)
-	  return rsp;
+	  {
+	     slrn_art_free_article(a);
+	     return rsp;
+	  }	
      }
 
    slrn_message_now (_("Posting ..."));

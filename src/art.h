@@ -271,6 +271,7 @@ extern int slrn_set_header_format (unsigned int, char *);
 
 extern void slrn_art_sync_article (Slrn_Article_Type *);
 extern void slrn_art_free_article_line (Slrn_Article_Line_Type *);
+extern void slrn_art_free_article_lines (Slrn_Article_Type *);
 extern void slrn_art_free_article (Slrn_Article_Type *);
 extern int slrn_art_get_unread (void);
 

@@ -602,7 +602,7 @@ static Slrn_Article_Line_Type *copy_article_line (Slrn_Article_Line_Type *l)
    return retval;
 }
 
-static void free_article_lines (Slrn_Article_Type *a)
+void slrn_art_free_article_lines (Slrn_Article_Type *a)
 {
    if (a == NULL)
      return;
@@ -622,7 +622,7 @@ void slrn_art_free_article (Slrn_Article_Type *a)
      Slrn_Current_Article = NULL;
 
    slrn_mime_free(&a->mime);
-   free_article_lines (a);
+   slrn_art_free_article_lines (a);
    slrn_free ((char *) a);
 }
 
@@ -2555,7 +2555,7 @@ int slrn_string_to_article (char *str)
    if (NULL == (a = Slrn_Current_Article))
      return -1;
 
-   free_article_lines (a);
+   slrn_art_free_article_lines (a);
    a->is_modified = 1;
    a->needs_sync = 1;
 
