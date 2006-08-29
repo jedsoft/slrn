@@ -611,6 +611,7 @@ void slrn_art_free_article_lines (Slrn_Article_Type *a)
    slrn_art_free_article_line(a->raw_lines);
    a->lines = NULL;
    a->raw_lines = NULL;
+   a->cline=NULL;
 }
 
 void slrn_art_free_article (Slrn_Article_Type *a)
@@ -2714,6 +2715,8 @@ static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s", m) < 0)
 	       {
 		  slrn_free(m);
+		  if (f_conv != NULL)
+		       slrn_free(f_conv);
 		  return -1;
 	       }
 	     slrn_free(m);
@@ -2721,9 +2724,17 @@ static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 	if (s != NULL)
 	  {
 	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s", s) < 0)
+	       {
+		  if (f_conv != NULL)
+		       slrn_free(f_conv);
 		  return -1;
+	       }
 	  }
-     }
+     } /* while ((ch = *f++) != 0) */
+
+   if (f_conv != NULL)
+	slrn_free(f_conv);
+
    return 0;
 }
 
@@ -2951,7 +2962,6 @@ static void reply (char *from) /*{{{*/
 	slrn_free(subject);
 	return;
      }
-   slrn_free(subject);
    fprintf (fp, "In-Reply-To: %s\n", (msgid == NULL ? "" : msgid));
    n += 2;
 
@@ -2968,7 +2978,10 @@ static void reply (char *from) /*{{{*/
    if (0 != *Slrn_User_Info.replyto)
      {
 	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Reply-To: %s\n", Slrn_User_Info.replyto) < 0)
+	  {
+	     slrn_free (subject);
 	     return;
+	  }
 	n += 1;
      }
    
@@ -3000,7 +3013,13 @@ static void reply (char *from) /*{{{*/
 	if ((*l->buf == 0) && (Slrn_Smart_Quote & 0x02))
 	  fputc ('\n', fp);
 	else
-	  fprintf (fp, "%s%s%s\n", quote_str, (smart_space)? " " : "" , l->buf);
+	  {
+	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s%s%s\n", quote_str, (smart_space)? " " : "" , l->buf) < 0)
+	       {
+		  slrn_free (subject);
+		  return;
+	       }
+	  }
 	l = l->next;
      }
    

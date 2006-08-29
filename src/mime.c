@@ -330,9 +330,6 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
    charset = NULL;
    s= *s_ptr;
 
- /* Even if some user agents still send raw 8bit, it is safe to call
- * decode_utf8() -- if it finds 8bit chars that are not valid UTF-8, it
- * will set ch to 1 and we can leave the line untouched.  XXX */
    if (slrn_string_nonascii(s))
 	return -1;
    
@@ -788,6 +785,13 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
 	return;
      }
    
+   if ((a->mime.needs_metamail == 0) &&
+	     (a->mime.charset == NULL))
+     {
+	a->mime.charset = slrn_safe_strmalloc("us-ascii");
+	return 0;
+     }
+ 
    if ((a->mime.needs_metamail == 0) &&
 	(slrn_case_strncmp((unsigned char *)"us-ascii",
 			   (unsigned char *)a->mime.charset,8) != 0) &&

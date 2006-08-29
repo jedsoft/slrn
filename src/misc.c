@@ -1249,6 +1249,7 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	     slrn_art_free_article(a);
 	     return -1;
 	  }
+/*	SLtt_beep (); should we really beep here? TS */
 	if (rsp == 1)
 	  {
 /* Note to translators:
@@ -1265,7 +1266,7 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	     responses = _("yYeEnNcCfF");
 	     if (strlen (responses) != 10)
 	       responses = "";
-	     rsp = slrn_get_response ("EeyYnNcC\007Ff", responses, _("re-\001Edit, \001Cancel, or \001Force the posting (not recommended)"));
+	     rsp = slrn_get_response ("EeyYnNcC\007Ff", responses, _("re-\001Edit, \001Cancel, or \001Force the mailing (not recommended)"));
 	  }
 
 	rsp = slrn_map_translated_char ("yYeEnNcCfF", _("yYeEnNcCfF"), rsp) | 0x20;
@@ -3152,7 +3153,7 @@ char *slrn_make_from_string (void)
      {
 	if (*msg != 0)
 	  {
-	     buf = slrn_safe_strmalloc (msg);//XXX
+	     buf = slrn_safe_strmalloc (msg);
 	     SLang_free_slstring (msg);
 	     return buf;
 	  }

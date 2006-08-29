@@ -156,6 +156,16 @@ int slrn_case_strncmp (unsigned char *a, register unsigned char *b, register uns
 #if SLANG_VERSION >= 20000
    if (Slrn_UTF8_Mode)
      {
+	if (a == NULL)
+	  {
+	     if (b == NULL)
+	       return 0;
+	     else
+	       return -1;
+	  }
+	if (b == NULL)
+	  return 1;
+	
 	return SLutf8_compare(a, a+strlen(a), b, b+strlen(b), n , 0);
      }
 #endif
@@ -185,13 +195,22 @@ int slrn_case_strcmp (unsigned char *a, register unsigned char *b) /*{{{*/
 #if SLANG_VERSION >= 20000
    if (Slrn_UTF8_Mode)
      {
+	if (a == NULL)
+	  {
+	     if (b == NULL)
+	       return 0;
+	     else
+	       return -1;
+	  }
+	if (b == NULL)
+	  return 1;
 	len_a=strlen(a);
 	len_b=strlen(b);
 	if (len_a > len_b)
-	     min = len_b;
+	  min = len_b;
 	else
-	     min = len_a;
-	return SLutf8_compare(a, a+strlen(a), b, b+strlen(b), min , 0);
+	  min = len_a;
+	return SLutf8_compare(a, a+len_a, b, b+len_b, min , 0);
      }
 #endif
    while (1)

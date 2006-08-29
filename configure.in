@@ -3,6 +3,8 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT
 AC_CONFIG_SRCDIR([src/slrn.c])
 AC_CONFIG_AUX_DIR(autoconf)
+dnl Requested by a user who ran into trouble with a "wrong" version of autoconf
+AM_MAINTAINER_MODE
 
 dnl remember to update src/VMSMAKE.COM and src/version.h !
 AM_INIT_AUTOMAKE(slrn, 0.9.8.1pl1)

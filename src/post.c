@@ -282,24 +282,8 @@ int slrn_add_custom_headers (FILE *fp, char *headers, int (*write_fun)(char *, F
 
    if (headers == NULL) return 0;
 
-   /*if (slrn_test_and_convert_string(headers, &tmp, Slrn_Editor_Charset, Slrn_Display_Charset) != 0)
-     {
-	return -1;
-     }
-   if (tmp != NULL)
-     {
-	s = slrn_skip_whitespace (tmp);
-	if (*s == 0) 
-	  {
-	     slrn_free(tmp);
-	     return 0;
-	  }
-     }
-   else
-     {*/
-	s = slrn_skip_whitespace (headers);
-	if (*s == 0) return 0;
-     /*}*/
+   s = slrn_skip_whitespace (headers);
+   if (*s == 0) return 0;
 
    s1 = s;
    n = 0;
@@ -1290,10 +1274,16 @@ static char *gen_cancel_lock (char *msgid) /*{{{*/
 /* Does not yet accept any percent escapes */
 static int insert_custom_header (char *fmt, FILE *fp) /*{{{*/
 {
-   char ch;
+   char ch, *fmt_conv=NULL;
    
    if ((fmt == NULL) || (*fmt == 0))
      return -1;
+   
+   if (slrn_test_and_convert_string(fmt, &fmt_conv, Slrn_Editor_Charset, Slrn_Display_Charset) == -1)
+	return -1;
+
+   if (fmt_conv != NULL)
+	fmt = fmt_conv;
    
    while ((ch = *fmt) != 0)
      {
@@ -1325,6 +1315,7 @@ static int insert_custom_header (char *fmt, FILE *fp) /*{{{*/
 	     break;
 	  }
      }
+   slrn_free(fmt_conv);
    
    return 0;
 }
