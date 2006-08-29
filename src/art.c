@@ -2715,8 +2715,7 @@ static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s", m) < 0)
 	       {
 		  slrn_free(m);
-		  if (f_conv != NULL)
-		       slrn_free(f_conv);
+		  slrn_free(f_conv);
 		  return -1;
 	       }
 	     slrn_free(m);
@@ -2725,15 +2724,13 @@ static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 	  {
 	     if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s", s) < 0)
 	       {
-		  if (f_conv != NULL)
-		       slrn_free(f_conv);
+		  slrn_free(f_conv);
 		  return -1;
 	       }
 	  }
      } /* while ((ch = *f++) != 0) */
 
-   if (f_conv != NULL)
-	slrn_free(f_conv);
+   slrn_free(f_conv);
 
    return 0;
 }
