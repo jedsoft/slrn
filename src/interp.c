@@ -1402,7 +1402,9 @@ static void log_message (char *buf)
    FILE *fp;
    
    fp = Log_File_Ptr;
-   if (fp == NULL) fp = stderr;
+   /* Avoid messing up the screen for now. */
+   if (fp == NULL) return;
+/*   if (fp == NULL) fp = stderr;*/
    
    fputs (buf, fp);
    fflush (fp);
