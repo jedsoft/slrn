@@ -1659,10 +1659,18 @@ Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **s_ptr, char *from_charset) 
        !slrn_case_strncmp ((unsigned char *) s,
 			   (unsigned char *) "Cc: ", 4) ||
        !slrn_case_strncmp ((unsigned char *) s,
-			   (unsigned char *) "To: ", 4) ||
-       !slrn_case_strncmp ((unsigned char *) s,
-			   (unsigned char *) "Mail-Copies-To: ", 16))
+			   (unsigned char *) "To: ", 4))
      ret = from_encode (s_ptr, from_charset);
+   else if (!slrn_case_strncmp ((unsigned char *) s,
+				(unsigned char *) "Mail-Copies-To: ", 16))
+     {
+	unsigned char *b = slrn_skip_whitespace (s + 16);
+	if ((!slrn_case_strncmp(b, (unsigned char*) "nobody", 6) ||
+	     !slrn_case_strncmp(b, (unsigned char*) "poster", 6)) &&
+	    (0 == *slrn_skip_whitespace(b+6)))
+	  return NULL; /* nothing to convert */
+	ret = from_encode (s_ptr, from_charset);
+     }   
    else
      {
 	if (slrn_string_nonascii(s))
