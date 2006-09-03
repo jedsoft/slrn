@@ -1610,7 +1610,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 		  continue;
 	       }
 
-	     if (Slrn_Generate_Date_Header &&
+	     if (!Slrn_Generate_Date_Header &&
 		       (!slrn_case_strncmp ((unsigned char *)"Date: ",
 					    (unsigned char *)a->cline->buf, 4)))
 	       {
