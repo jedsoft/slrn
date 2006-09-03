@@ -1249,7 +1249,7 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	     slrn_art_free_article(a);
 	     return -1;
 	  }
-/*	SLtt_beep (); should we really beep here? TS */
+	SLtt_beep ();
 	if (rsp == 1)
 	  {
 /* Note to translators:

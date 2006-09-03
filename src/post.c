@@ -850,9 +850,10 @@ static Slrn_Mime_Error_Obj *prepare_body (VFILE *vp, int *linenum, /*{{{*/
 	  {
 	     if ( !longline && (strlen (line) > 80))
 	       {
+		  longline = 1;
 		   slrn_malloc_mime_error(&err,
 			     _("Lines with more than 80 characters generally need to be wrapped. (only first one is shown)"),
-			     NULL, lineno, MIME_ERROR_NET);
+			     line, lineno, MIME_ERROR_NET);
 	       }
 	  }
 
@@ -1006,7 +1007,8 @@ int slrn_prepare_file_for_posting (char *file, int *linenum, Slrn_Article_Type *
 		  SLsmg_gotorc (i,0);
 		  i += 2;
 		  slrn_set_color (SUBJECT_COLOR);
-		  SLsmg_printf (_("This message was generated while looking at line %d:"), tmp->lineno);
+		  SLsmg_printf (_("This message was generated while looking at line %d%c"), tmp->lineno,
+				tmp->err_str ? ':' : '.');
 	       }
 	     else
 	       {
@@ -1062,7 +1064,8 @@ int slrn_prepare_file_for_posting (char *file, int *linenum, Slrn_Article_Type *
 		  SLsmg_gotorc (i,0);
 		  i += 2;
 		  slrn_set_color (SUBJECT_COLOR);
-		  SLsmg_printf (_("This message was generated while looking at line %d:"), tmp->lineno);
+		  SLsmg_printf (_("This message was generated while looking at line %d%c"), tmp->lineno,
+				tmp->err_str ? ':' : '.');
 	       }
 	     else
 	       {
@@ -1105,7 +1108,7 @@ int slrn_prepare_file_for_posting (char *file, int *linenum, Slrn_Article_Type *
 	tmp=net;
 	while ((tmp != NULL) && ( i  < SLtt_Screen_Rows - 9))
 	  {
-	     SLsmg_gotorc (i++, 4);
+	     SLsmg_gotorc (i, 4);
 	     slrn_set_color (ERROR_COLOR);
 	     SLsmg_write_string (tmp->msg);
 	     i += 2;
@@ -1114,7 +1117,8 @@ int slrn_prepare_file_for_posting (char *file, int *linenum, Slrn_Article_Type *
 		  SLsmg_gotorc (i,0);
 		  i += 2;
 		  slrn_set_color (SUBJECT_COLOR);
-		  SLsmg_printf (_("This message was generated while looking at line %d:"), tmp->lineno);
+		  SLsmg_printf (_("This message was generated while looking at line %d%c"), tmp->lineno,
+				tmp->err_str ? ':' : '.');
 	       }
 	     else
 	       {
@@ -1637,6 +1641,8 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 #endif
 	  } /* if (header) */
 
+	if (a->cline->buf[0] == '.')
+	  Slrn_Post_Obj->po_puts("."); /* double leading dots for posting */
 	Slrn_Post_Obj->po_puts(a->cline->buf);
 	Slrn_Post_Obj->po_puts("\n");
 	a->cline=a->cline->next;

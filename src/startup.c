@@ -874,13 +874,13 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 	       {
 		  if (!Saw_Charset)
 		    {
-		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset config 'charset'\"\n"),
+		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset config CONFIG_CHARSET\"\n"),
 				 This_File);
 		       return -1;
 		    }
 		  if (Slrn_Display_Charset == 0)
 		    {
-		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset display 'charset'\"\n"),
+		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset display DISPLAY_CHARSET\"\n"),
 				 This_File);
 		       return -1;
 		    }
