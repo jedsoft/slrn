@@ -470,7 +470,13 @@ static int set_charset_fun (int argc, SLcmd_Cmd_Table_Type *table)
    (void) argc;
    char *type=(table->string_args[1]);
    char *value=(table->string_args[2]);
-	   
+
+#if SLANG_VERSION < 20000
+   /* we cannot use utf-8 */
+   if (!slrn_case_strcmp(value, "utf-8"))
+     slrn_exit_error(_("For UTF-8 support, please update s-lang to 2.0 or higher and recompile slrn."));
+#endif
+   
    if (0 == slrn_case_strcmp(type, "Display"))
      {
 	if (Slrn_Display_Charset != NULL)

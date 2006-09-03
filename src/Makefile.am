@@ -37,7 +37,7 @@ uudecode.o: decode.c
 ## This is a hack
 slangversion_SOURCES =
 slangversion$(EXEEXT): chkslang$(EXEEXT)
-	./chkslang$(EXEEXT) slrn 10003 10400
+	./chkslang$(EXEEXT) slrn 10003 20000
 
 ## Another hack: Find out whether slrnpull support gets compiled in
 stamp2: config.h
