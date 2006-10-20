@@ -764,7 +764,8 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
    switch (parse_content_transfer_encoding_line (a))
      {
       case ENCODED_RAW:
-	return 0;
+	/*return 0;*/
+	/* Now falls through to the identity encoding. */
 
       case ENCODED_7BIT:
       case ENCODED_8BIT:

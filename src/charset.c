@@ -244,7 +244,7 @@ int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_char
 	return -1;
      }
    
-   while ((line != NULL) && (line->flags & HEADER_LINE)) /* Headers are handelt extra */
+   while ((line != NULL) && (line->flags & HEADER_LINE)) /* Headers are handled extra */
      {
 	line=line->next;
      }
