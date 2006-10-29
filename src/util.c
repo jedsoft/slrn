@@ -230,6 +230,67 @@ int slrn_case_strcmp (unsigned char *a, register unsigned char *b) /*{{{*/
 
 /*}}}*/
 
+#if SLANG_VERSION >= 20000
+size_t slrn_utf8_strlen (const char *str) /*{{{*/
+{
+  return SLutf8_strlen ((char*)str, 1);
+} /*}}}*/
+#endif
+
+size_t slrn_charset_strlen (const char *str, unsigned char *cset)
+{
+  if (cset && !slrn_case_strcmp(cset,"utf-8"))
+    return slrn_utf8_strlen (str);
+  else
+    return strlen (str);
+}
+
+/* Find out how many characters (columns) a string would use on screen.
+ * If len>=0, only the first len bytes are examined.
+ */
+int slrn_screen_strlen (const char *s, int len) /*{{{*/
+{
+   int retval = 0;
+
+   if (len<0)
+     len = strlen(s);
+   
+#if SLANG_VERSION >= 20000
+   if (Slrn_UTF8_Mode)
+     {
+	return SLsmg_strwidth ((SLuchar_Type *) s, (SLuchar_Type *) (s+len));
+     }
+   else
+#endif
+     {
+	int i;
+	retval = 0;
+	for (i = 0; i<len; i++)
+	  {
+	    unsigned char ch=s[i];
+	    if ((ch == '\t') && (SLsmg_Tab_Width > 0))
+	       {
+		  retval += SLsmg_Tab_Width;
+		  retval -= retval % SLsmg_Tab_Width;
+	       }
+	     else if (((ch >= ' ') && (ch < 127))
+		      || (ch >= (unsigned char) SLsmg_Display_Eight_Bit))
+	       retval++;
+	     else
+	       {
+		  retval += 2;
+#if SLANG_VERSION < 20000
+		  if (ch & 0x80) retval++;
+#else
+		  if (ch & 0x80) retval += 2;
+#endif
+	       }
+	  }
+     }
+   return retval;
+}
+/*}}}*/
+
 #if defined(IBMPC_SYSTEM)
 void slrn_os2_convert_path (char *path)
 {

@@ -501,6 +501,10 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 
    l = a->lines;
 
+#if SLANG_VERSION >= 20000
+   SLsmg_gotorc(0,0); /* used by Slsmg_strbytes later on */
+#endif
+
    while (l != NULL)
      {
 	unsigned char header_char_delimiter = 0;
@@ -534,6 +538,7 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 	ch = *buf;
 	while (ch != 0)
 	  {
+#if SLANG_VERSION < 20000
 	     if ((ch == '\t') && (SLsmg_Tab_Width > 0))
 	       {
 		  len += SLsmg_Tab_Width;
@@ -545,14 +550,16 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 	     else
 	       {
 		  len += 2;
-#if SLANG_VERSION < 20000
 		  if (ch & 0x80) len++;
-#else
-		  if (ch & 0x80) len += 2;
-#endif
 	       }
 
-	     if (len > (unsigned int) SLtt_Screen_Cols)
+	     if (len > (unsigned int) SLtt_Screen_Cols) /* we need to wrap */
+#else
+	     unsigned int bytes = SLsmg_strbytes (buf, buf+strlen(buf),
+						  (unsigned int) SLtt_Screen_Cols);
+	     buf += bytes;
+	     if (*buf) /* we need to wrap */
+#endif
 	       {
 		  Slrn_Article_Line_Type *new_l;
 		  unsigned char *buf0, *lbuf;

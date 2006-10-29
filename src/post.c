@@ -848,13 +848,13 @@ static Slrn_Mime_Error_Obj *prepare_body (VFILE *vp, int *linenum, /*{{{*/
 
 	if ( (Slrn_Netiquette_Warnings != 0) || (Slrn_Reject_Long_Lines != 0))
 	  {
-	     if ( !longline && (strlen (line) > 80))
-	       {
-		  longline = 1;
-		  slrn_malloc_mime_error(&err,
-			     _("Lines with more than 80 characters generally need to be wrapped. (only first one is shown)"),
-			     line, lineno, MIME_ERROR_NET);
-	       }
+	    if ( !longline && (slrn_charset_strlen (line, from_charset)>80))
+	      {
+		longline = 1;
+		slrn_malloc_mime_error(&err,
+				       _("Please wrap lines with more than 80 characters (only first one is shown)"),
+				       line, lineno, MIME_ERROR_NET);
+	      }
 	  }
 
 

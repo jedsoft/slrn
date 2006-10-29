@@ -577,37 +577,6 @@ void slrn_write_nbytes (char *s, unsigned int n) /*{{{*/
 }
 /*}}}*/
 
-/* Find out how many characters (columns) a string would use on screen.
- * If len>=0, only the first len bytes are examined.
- */
-static int screen_strlen (char *s, int len) /*{{{*/
-{
-   int retval = 0;
-
-   if (len<0)
-     len = strlen(s);
-   
-#if SLANG_VERSION >= 20000
-   if (Slrn_UTF8_Mode)
-     {
-	return SLsmg_strwidth ((SLuchar_Type *) s, (SLuchar_Type *) (s+len));
-     }
-   else
-#endif
-     {
-	int i;
-	retval = len;
-	for (i = 0; i<len; i++)
-	  {
-	     /* S-Lang uses two characters to represent control chars */
-	     if ((unsigned char) s[i] < 0x20)
-	       retval += 1;
-	  }
-     }
-   return retval;
-}
-/*}}}*/
-
 /* generic function to display format strings;
  * cb is called when a descriptor other than '%', '?' or 'g' is encountered */
 void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
@@ -735,9 +704,9 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 
 	/* In case of UTF-8 characters, it is important to distinguish between
 	 * the length in bytes and the length in characters. */
-	len = screen_strlen (s, len);
+	len = slrn_screen_strlen (s, len);
 	if (NULL != (p = slrn_strchr (s, '\n')))
-	  len -= screen_strlen (p, -1);
+	  len -= slrn_screen_strlen (p, -1);
 	
 	if (field_len != -1)
 	  {

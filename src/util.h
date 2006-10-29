@@ -61,6 +61,13 @@ extern char *slrn_bskip_whitespace (char *s);
 extern char *slrn_trim_string (char *s);
 extern int slrn_case_strncmp (unsigned char *, unsigned char *, unsigned int);
 extern int slrn_case_strcmp (unsigned char *, unsigned char *);
+#if SLANG_VERSION >= 20000
+extern size_t slrn_utf8_strlen (const char *);
+#else
+#define slrn_utf8_strlen strlen
+#endif
+extern size_t slrn_charset_strlen (const char *, unsigned char *);
+extern int slrn_screen_strlen (const char *, int);
 extern char *slrn_strbrk (char *, char *);
 
 extern char *slrn_safe_strmalloc (char *);
