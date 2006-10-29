@@ -558,6 +558,8 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 	     unsigned int bytes = SLsmg_strbytes (buf, buf+strlen(buf),
 						  (unsigned int) SLtt_Screen_Cols);
 	     buf += bytes;
+	     while ((*buf == ' ') || (*buf == '\t'))
+	       buf++;
 	     if (*buf) /* we need to wrap */
 #endif
 	       {
@@ -640,7 +642,9 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 		  len = 0;
 		  a->is_wrapped = 1;
 	       }
+#if SLANG_VERSION < 20000
 	     else buf++;
+#endif
 	     
 	     ch = *buf;
 	  }
