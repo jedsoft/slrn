@@ -398,7 +398,10 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 	     continue;
 	  }
 
-	/* Note: these functions return a pointer to the END of the decoded
+	if (s1 == after_whitespace)
+	  s1 = after_last_encoded_word;
+
+        /* Note: these functions return a pointer to the END of the decoded
 	 * text.
 	 */
 	s2 = s1;
@@ -414,25 +417,38 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 	*s1 = 0;
 	
 	count++;
-	
+
 	if (slrn_case_strncmp((unsigned char *)Slrn_Display_Charset,
 			   (unsigned char *)charset,
 			   (strlen(Slrn_Display_Charset) <= len) ? strlen(Slrn_Display_Charset) : len) != 0)
            {
+	     /* We really need the position _after_ the decoded word, so we
+	      * split the remainder of the string for charset conversion and
+	      * put it back together afterward. */
+	      char ch = *s;
+	      *s = 0;
 	      if ((s2 = slrn_convert_substring(*s_ptr, offset, 0, Slrn_Display_Charset, charset, 0)) != NULL)
 		{
+		   *s = ch;
+		   s = slrn_strdup_strcat(s2,s);
 		   slrn_free(*s_ptr);
-		   *s_ptr = s2;
-		   s = *s_ptr;
+		   *s_ptr = s;
+		   s += strlen(s2);
+		   slrn_free(s2);
 		}
 	      else
 		{
+		   *s = ch;
 		   /* decoding fails */
 		}
            }
 	
 	slrn_free(charset);
 	charset=NULL;
+
+	after_last_encoded_word = s;
+	s = slrn_skip_whitespace (s);
+	after_whitespace = s;
      }
    if (charset!=NULL)
 	slrn_free(charset);
