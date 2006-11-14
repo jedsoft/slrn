@@ -425,16 +425,13 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 	     /* We really need the position _after_ the decoded word, so we
 	      * split the remainder of the string for charset conversion and
 	      * put it back together afterward. */
-	      
-	     /* iconv appears to corrupt the input string on some systems, so
-	      * we better make a backup copy of s */	      
-	      char *backup = slrn_safe_strmalloc(s);
+	      char ch = *s;
 	      *s = 0;
 	      if ((s2 = slrn_convert_substring(*s_ptr, offset, 0, Slrn_Display_Charset, charset, 0)) != NULL)
 		{
-		   s = slrn_strdup_strcat(s2,backup);
+		   *s = ch;
+		   s = slrn_strdup_strcat(s2,s,NULL);
 		   slrn_free(*s_ptr);
-		   slrn_free(backup);
 		   *s_ptr = s;
 		   s += strlen(s2);
 		   slrn_free(s2);

@@ -60,6 +60,7 @@ static unsigned int printf_string_upper_bound (const char*, va_list);
 
 /*}}}*/
 
+/* Remember that you explicitly need to pass NULL as the final argument! */
 char *slrn_strdup_strcat (const char *str, ...) /*{{{*/
 {
    char *buffer, *cur;
