@@ -314,6 +314,8 @@ static char *decode_base64 (char *dest, char *src, char *srcmax) /*{{{*/
 
 /*}}}*/
 
+/* Warning: It must be ok to free *s_ptr and replace it with the converted
+ * string */
 int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 {
    char *s1, *s2, ch, *s;

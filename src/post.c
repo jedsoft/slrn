@@ -1507,7 +1507,6 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
    try_again:
 
    perform_cc = 0;
-   has_messageid == 0;
    if (msgid != NULL)
 	slrn_free(msgid);
    if (a != NULL)

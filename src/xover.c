@@ -149,11 +149,6 @@ static void parse_headers (void) /*{{{*/
 	      && (0 == slrn_case_strcmp ((unsigned char *)h,
 					 (unsigned char *) addh->name)))
 	    {
-	       if (slrn_case_strcmp ((unsigned char *)h,
-				     (unsigned char *)"Newsgroups") &&
-		   slrn_case_strcmp ((unsigned char *)h,
-				     (unsigned char *)"Followup-To"))
-		 slrn_rfc1522_decode_string (&colon);
 	       addh->value = colon;
 	       break;
 	    }
@@ -581,6 +576,7 @@ void slrn_request_additional_header (char *hdr, int expensive) /*{{{*/
 
 /*}}}*/
 
+/* now also takes care of the RFC1522 decoding */
 static Slrn_Header_Line_Type *copy_add_headers (Slrn_Header_Line_Type *l, /*{{{*/
 						char all)
 {
@@ -596,16 +592,28 @@ static Slrn_Header_Line_Type *copy_add_headers (Slrn_Header_Line_Type *l, /*{{{*
 	       if (all) value = "";
 	       else break;
 	    }
+
+	value = slrn_safe_strmalloc(value);
+	if (slrn_case_strcmp ((unsigned char *)name,
+			      (unsigned char *)"Newsgroups") &&
+	    slrn_case_strcmp ((unsigned char *)name,
+			      (unsigned char *)"Followup-To"))
+	   slrn_rfc1522_decode_string (&value);
+	
 	
 	if (NULL == (copy = (Slrn_Header_Line_Type*) slrn_malloc
 		     (sizeof (Slrn_Header_Line_Type), 0, 1)))
-	  continue;
+	  {
+	     slrn_free(value);
+	     continue;
+	  }
 	
 	len = strlen (name) + strlen (value) + 2;
 	
 	if (NULL == (buf = slrn_malloc (len, 0, 1)))
 	  {
 	     slrn_free ((char *) copy);
+	     slrn_free (value);
 	     continue;
 	  }
 	
@@ -615,6 +623,8 @@ static Slrn_Header_Line_Type *copy_add_headers (Slrn_Header_Line_Type *l, /*{{{*
 	
 	copy->value = buf; 
 	strcpy (buf, value); /* safe */
+
+	slrn_free(value);
 	
 	copy->name_len = l->name_len;
 	copy->next = NULL;
