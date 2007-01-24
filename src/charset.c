@@ -119,7 +119,16 @@ static char *iconv_convert_string(iconv_t cd, char *in_str, int offset, size_t l
 		  slrn_free(out_start);
 		  return NULL;
 	       }
-	     *in_str='?';
+	     if (out_len != 0)
+	       {
+		  *out_str='?';
+		  ++out_str;
+		  ++in_str;
+		  --out_len;
+		  --in_len;
+	       }
+	     else
+		break;
 	     iconv_ret=iconv (cd, &in_str, &in_len, &out_str, &out_len);
 	 }
        if (len != 0)

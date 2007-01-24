@@ -1715,7 +1715,7 @@ int main (int argc, char **argv) /*{{{*/
 {
    if (-1 == main_init_and_parse_args (argc, argv))
      return 1;
-   
+ 
    if (-1 == slrn_select_group_mode ())
      return 1;
 
