@@ -3058,11 +3058,12 @@ static int is_phrase (char *str)
 static char *make_quoted_string (char *src)
 {
    size_t extrachars =3;
-   char ch, *dest;
+   char ch, *p, *dest;
    
    if ((src == NULL) || (*src == 0)) return NULL;
-   
-   while (ch = *src++)
+
+   p = src;
+   while (ch = *p++)
      {
 	if ((ch == 0x0a) || (ch == 0x0d)) continue;
 	if ((ch == '\t') || (ch == '"') || (ch == '\\'))
@@ -3070,20 +3071,20 @@ static char *make_quoted_string (char *src)
 	    extrachars++;
 	  }
      }
-   dest= slrn_safe_malloc(strlen(src)+extrachars);
+   dest = p = slrn_safe_malloc(strlen(src)+extrachars);
    
-   *dest++ = '"';
+   *p++ = '"';
    while ((ch = *src++))
      {
 	if ((ch == 0x0a) || (ch == 0x0d)) continue;
 	if ((ch == '\t') || (ch == '"') || (ch == '\\'))
 	  {
-	     *dest++ = '\\';
+	     *p++ = '\\';
 	  }
-	*dest++ = ch;
+	*p++ = ch;
      }
    
-   *dest++ = '"'; *dest = '\0';
+   *p++ = '"'; *p = '\0';
    return dest;
 }
 
