@@ -1583,6 +1583,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 			    a->cline->next->prev=a->cline;
 			    a->cline=a->cline->next;
 			    a->cline->next=tmp;
+			    a->cline->next->prev=a->cline;
 			    a->cline->flags=HEADER_LINE;
 			    a->cline->buf=slrn_safe_malloc(14+strlen(canlock));
 			    sprintf(a->cline->buf, "Cancel-Lock: %s", canlock);
@@ -1600,6 +1601,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 			    a->cline->next->prev=a->cline;
 			    a->cline=a->cline->next;
 			    a->cline->next=tmp;
+			    a->cline->next->prev=a->cline;
 			    a->cline->flags=HEADER_LINE;
 			    a->cline->buf=slrn_safe_malloc(13+strlen(msgid));
 			    sprintf(a->cline->buf, "Message-ID: %s", msgid);
