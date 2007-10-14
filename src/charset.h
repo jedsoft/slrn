@@ -1,12 +1,12 @@
 #ifndef _SLRN_CHARSET_H
 #define _SLRN_CHARSET_H
 
-extern void slrn_init_charset();
-extern void slrn_prepare_charset();
+extern void slrn_init_charset(void);
+extern void slrn_prepare_charset(void);
 
 extern int slrn_string_nonascii(char *str);
 
-extern char *slrn_convert_substring(char *str, int offset, int len, char *to_charset, char *from_charset, int test);
+extern char *slrn_convert_substring(char *str, unsigned int offset, unsigned int len, char *to_charset, char *from_charset, int test);
 extern int slrn_test_and_convert_string(char *str, char **dest, char *to_charset, char *from_charset);
 extern int slrn_convert_fprintf(FILE *fp, char *to_charset, char *from_charset, const char *format, ... );
 

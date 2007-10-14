@@ -63,6 +63,8 @@
 #include "vfile.h"
 #include "snprintf.h"
 #include "hooks.h"
+#include "common.h"
+#include "strutil.h"
 
 /*}}}*/
 

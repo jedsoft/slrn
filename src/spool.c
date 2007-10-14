@@ -40,6 +40,7 @@
 #include "slrndir.h"
 #include "snprintf.h"
 #include "vfile.h"
+#include "strutil.h"
 
 #ifndef SLRN_SPOOL_ROOT
 # define SLRN_SPOOL_ROOT "/var/spool/news" /* a common place for the newsspool */
@@ -568,14 +569,15 @@ static int spool_nntp_newgroups (char *line, char *buf, unsigned int len)
 
    if (0 == fGMT)
      {
-	struct tm *t;
 #ifdef HAVE_TIMEZONE
+	struct tm *t;
 	(void) localtime (&threshold); /* This call sets timezone */
 	threshold += timezone;
 	t = localtime (&threshold);
 	if (t->tm_isdst) threshold -= (time_t) 3600;
 #else
 # ifdef HAVE_TM_GMTOFF
+	struct tm *t;
 	time_t tt;
 	
 	t = localtime (&threshold);
@@ -726,8 +728,8 @@ static int spool_put_server_cmd (char *line, char *buf, unsigned int len)
    nntpmap = Spool_NNTP_Maps;
    while (nntpmap->name != NULL)
      {
-	if (!slrn_case_strncmp ((unsigned char *)nntpmap->name,
-				(unsigned char *) line, nntpmap->len))
+	if (!slrn_case_strncmp (nntpmap->name,
+				 line, nntpmap->len))
 	  return (*nntpmap->f)(line, buf, len);
 
 	nntpmap++;
@@ -1266,7 +1268,7 @@ static int spool_xpat_cmd (char *hdr, int rmin, int rmax, char *pat)
 	     char *h = overview_headers [field];
 	     
 	     if (h == NULL) break;
-	     if (0 == slrn_case_strcmp ((unsigned char *) h, (unsigned char *) hdr))
+	     if (0 == slrn_case_strcmp ( h,  hdr))
 	       {
 		  Spool_XPat_Struct.xover_field = field;
 		  break;
@@ -1331,7 +1333,7 @@ static int spool_one_xhdr_command (char *hdr, int num, char *buf,
    while (1 == spool_read_fhlocal (tmpbuf, sizeof (tmpbuf)))
      {
 	char *b;
-	if (slrn_case_strncmp ((unsigned char *) tmpbuf, (unsigned char *) hdr, colon)
+	if (slrn_case_strncmp ( tmpbuf,  hdr, colon)
 	    || (tmpbuf[colon] != ':'))
 	  continue;
 
@@ -1395,7 +1397,7 @@ static int spool_read_xhdr (char *the_buf, unsigned int len)
 
 static int spool_list (char *what)
 {
-   if (!slrn_case_strcmp ((unsigned char*)what,(unsigned char*)"overview.fmt"))
+   if (!slrn_case_strcmp (what,"overview.fmt"))
      {
 	spool_fclose_local();
 	Spool_fh_local=fopen(Slrn_Overviewfmt_File,"r");

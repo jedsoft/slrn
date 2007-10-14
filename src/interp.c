@@ -52,10 +52,11 @@
 #include "print.h"
 #include "score.h"
 #include "snprintf.h"
-#include "mime.h"
 #include "version.h"
 #include "hooks.h"
 #include "help.h"
+#include "common.h"
+#include "strutil.h"
 
 /*}}}*/
 
@@ -1628,8 +1629,8 @@ static SLang_Intrin_Var_Type Intrin_Vars [] = /*{{{*/
    MAKE_VARIABLE("HEADER_TAGGED", &Interp_Header_Tagged, SLANG_INT_TYPE, 1),
    MAKE_VARIABLE("SCREEN_HEIGHT", &SLtt_Screen_Rows, SLANG_INT_TYPE, 1),
    MAKE_VARIABLE("SCREEN_WIDTH", &SLtt_Screen_Cols, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("_slrn_version", &Slrn_Version_Number, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("_slrn_version_string", &Slrn_Version, SLANG_STRING_TYPE, 1),
+   MAKE_VARIABLE("_slrn_version", &Slrn_Version, SLANG_INT_TYPE, 1),
+   MAKE_VARIABLE("_slrn_version_string", &Slrn_Version_String, SLANG_STRING_TYPE, 1),
 #ifdef HAVE_SETLOCALE
 # ifdef LC_CTYPE
    MAKE_VARIABLE("LC_CTYPE", &Interp_Lc_Ctype, SLANG_INT_TYPE, 1),

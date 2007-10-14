@@ -42,9 +42,8 @@
 #include "art.h"
 #include "snprintf.h"
 
-char *Slrn_Version = SLRN_VERSION;
-int Slrn_Version_Number = SLRN_VERSION_NUMBER;
-char *Slrn_Date = SLRN_RELEASE_DATE;
+char *Slrn_Version_String = SLRN_VERSION_STRING;
+int Slrn_Version = SLRN_VERSION;
 
 typedef struct 
 {
@@ -148,15 +147,14 @@ void slrn_show_version (void) /*{{{*/
    char *os;
    os = slrn_get_os_name ();
 
-   fprintf (stdout, "Slrn %s [%s]\n", Slrn_Version, Slrn_Date);
-#if defined(PATCH_LEVEL)
-   fprintf (stdout, _("\t* Note: This version is a developer preview.\n"));
-#endif
+   fprintf (stdout, "slrn %s\n", Slrn_Version_String);
+   if (*Slrn_Version_String == 'p')
+     fprintf (stdout, _("\t* Note: This version is a developer preview.\n"));
    fprintf (stdout, _("S-Lang Library Version: %s\n"), make_slang_version (SLang_Version));
    if (SLANG_VERSION != SLang_Version)
      {
 	fprintf (stdout, _("\t* Note: This program was compiled against version %s.\n"),
-		 make_slang_version (SLANG_VERSION));
+		 SLANG_VERSION_STRING);
      }
 #if defined(__DATE__) && defined(__TIME__)
    fprintf (stdout, _("Compiled at: %s %s\n"), __DATE__, __TIME__);

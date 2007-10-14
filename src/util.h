@@ -22,6 +22,7 @@
 #define _SLRN_UTIL_H
 #include <limits.h>
 #include <stdarg.h>
+
 #ifdef PATH_MAX
 # define SLRN_MAX_PATH_LEN PATH_MAX
 #else
@@ -54,30 +55,9 @@ extern int slrn_restore_backup (char *);
 
 extern unsigned int slrn_sleep (unsigned int);
 
-extern char *slrn_simple_strtok (char *, char *);
-extern char *slrn_strchr (char *, char);
-extern char *slrn_skip_whitespace (char *s);
-extern char *slrn_bskip_whitespace (char *s);
-extern char *slrn_trim_string (char *s);
-extern int slrn_case_strncmp (unsigned char *, unsigned char *, unsigned int);
-extern int slrn_case_strcmp (unsigned char *, unsigned char *);
-#if SLANG_VERSION >= 20000
-extern size_t slrn_utf8_strlen (const char *);
-#else
-#define slrn_utf8_strlen strlen
-#endif
-extern size_t slrn_charset_strlen (const char *, unsigned char *);
-extern int slrn_screen_strlen (const char *, int);
-extern char *slrn_strbrk (char *, char *);
+extern size_t slrn_charset_strlen (const char *, char *);
+extern int slrn_screen_strlen (const char *, const char *);
 
-extern char *slrn_safe_strmalloc (char *);
-extern char *slrn_safe_strnmalloc (char *, unsigned int);
-extern char *slrn_safe_malloc (unsigned int);
-extern char *slrn_strmalloc (char *, int);
-extern char *slrn_strnmalloc (char *, unsigned int, int);
-extern char *slrn_malloc (unsigned int, int, int);
-extern char *slrn_realloc (char *, unsigned int, int);
-extern void slrn_free (char *);
 extern void slrn_free_argc_argv_list (unsigned int, char **);
 
 extern char *slrn_fix_regexp (char *);
@@ -88,7 +68,6 @@ extern void slrn_stderr_strcat (const char *, ...);
 /* These declarations are here although the functions are not really defined 
  * in util.c.
  */
-extern void slrn_exit_error (char *, ...);
 char *slrn_make_from_string (void);
 
 typedef struct Slrn_Group_Range_Type

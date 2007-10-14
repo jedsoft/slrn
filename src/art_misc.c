@@ -44,6 +44,7 @@
 #include "slrn.h"
 #include "group.h"
 #include "util.h"
+#include "strutil.h"
 #include "server.h"
 #include "art.h"
 #include "misc.h"
@@ -517,11 +518,11 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 		  continue;
 	       }
 
-	     if (0 == slrn_case_strncmp ((unsigned char *)"Path: ",
-					 (unsigned char *)l->buf, 6))
+	     if (0 == slrn_case_strncmp ("Path: ",
+					 l->buf, 6))
 	       header_char_delimiter = '!';
-	     else if (0 == slrn_case_strncmp ((unsigned char *) "Newsgroups: ",
-					      (unsigned char *)l->buf, 12))
+	     else if (0 == slrn_case_strncmp ( "Newsgroups: ",
+					      l->buf, 12))
 	       header_char_delimiter = ',';
 	  }
 	else if (l->flags & QUOTE_LINE)
@@ -538,30 +539,12 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 	ch = *buf;
 	while (ch != 0)
 	  {
-#if SLANG_VERSION < 20000
-	     if ((ch == '\t') && (SLsmg_Tab_Width > 0))
-	       {
-		  len += SLsmg_Tab_Width;
-		  len -= len % SLsmg_Tab_Width;
-	       }
-	     else if (((ch >= ' ') && (ch < 127))
-		      || (ch >= (unsigned char) SLsmg_Display_Eight_Bit))
-	       len++;
-	     else
-	       {
-		  len += 2;
-		  if (ch & 0x80) len++;
-	       }
-
-	     if (len > (unsigned int) SLtt_Screen_Cols) /* we need to wrap */
-#else
-	     unsigned int bytes = SLsmg_strbytes (buf, buf+strlen(buf),
+	     unsigned int bytes = SLsmg_strbytes (buf, buf+strlen((char *)buf),
 						  (unsigned int) SLtt_Screen_Cols);
 	     buf += bytes;
 	     while ((*buf == ' ') || (*buf == '\t'))
 	       buf++;
 	     if (*buf) /* we need to wrap */
-#endif
 	       {
 		  Slrn_Article_Line_Type *new_l;
 		  unsigned char *buf0, *lbuf;
@@ -794,8 +777,8 @@ char *slrn_art_extract_header (char *hdr, unsigned int len) /*{{{*/
    while ((l != NULL)
 	  && (*l->buf != 0))
      {
-	if (0 == slrn_case_strncmp ((unsigned char *) hdr,
-				    (unsigned char *) l->buf, len))
+	if (0 == slrn_case_strncmp ( hdr,
+				     l->buf, len))
 	  {
 	     char *result;
 
@@ -926,8 +909,8 @@ void _slrn_art_hide_headers (Slrn_Article_Type *a) /*{{{*/
 	     char chv = (0x20 | v->header[hide]);
 	     
 	     if ((chv == ch)
-		 && (0 == slrn_case_strncmp ((unsigned char *)l->buf,
-					     (unsigned char *)v->header + hide,
+		 && (0 == slrn_case_strncmp (l->buf,
+					     v->header + hide,
 					     (v->len) - hide)))
 	       {
 		  hide_header = hide;

@@ -38,8 +38,9 @@
 #include "print.h"
 #include "misc.h"
 #include "util.h"
-#include "ttymsg.h"
 #include "snprintf.h"
+#include "strutil.h"
+#include "common.h"
 
 char *Slrn_Printer_Name;
 

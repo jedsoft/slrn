@@ -34,6 +34,7 @@
 #include <slang.h>
 #include "ranges.h"
 #include "util.h"
+#include "strutil.h"
 /*}}}*/
 
 /* line is expected to contain newsrc-style integer ranges. They are put

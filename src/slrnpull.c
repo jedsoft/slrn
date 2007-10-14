@@ -72,7 +72,7 @@
 #include "util.h"
 #include "snprintf.h"
 #if SLRN_USE_SLTCP
-# include "sltcp.c"
+/* # include "sltcp.c" */
 #else
 # include "clientlib.c"
 #endif
@@ -83,9 +83,8 @@
 #include "ranges.h"
 #include "vfile.h"
 
-#include "sortdate.c"
+/* #include "sortdate.c" */
 #include "score.c"
-#include "mime.c"
 
 #include "xover.c"
 
@@ -93,12 +92,13 @@
 #define SLRN_HAS_MSGID_CACHE 1
 
 #include "hash.c"
+#include "common.h"
 
 /*}}}*/
 
 /*{{{ slrnpull global variables and structures */
 
-static char *Slrnpull_Version = SLRN_VERSION;
+static char *Slrnpull_Version_String = SLRN_VERSION_STRING;
 
 #if SLANG_VERSION >= 20000
 int Slrn_UTF8_Mode = 0;
@@ -238,7 +238,7 @@ static void va_log (FILE *fp, char *pre, char *fmt, va_list ap) /*{{{*/
 {
    char buf[2048];   
 
-   slrn_vsnprintf (buf, sizeof (buf), fmt, ap);
+   (void) SLvsnprintf (buf, sizeof (buf), fmt, ap);
    
    write_log (fp, pre, buf);
    
@@ -607,13 +607,13 @@ static int read_active_groups (void) /*{{{*/
    fp = fopen (Active_Groups_File, "r");
    if (fp == NULL)
      {
-	if (NULL == (fp = fopen (SYSCONFDIR "/" SLRNPULL_CONF, "r")))
+	if (NULL == (fp = fopen (SLRN_CONF_DIR "/" SLRNPULL_CONF, "r")))
 	  {
 	     log_error (_("Unable to open active groups file %s"), Active_Groups_File);
 	     return -1;
 	  }
 	else
-	  Active_Groups_File = SYSCONFDIR "/" SLRNPULL_CONF;
+	  Active_Groups_File = SLRN_CONF_DIR "/" SLRNPULL_CONF;
      }
    
    log_message (_("Reading %s"), Active_Groups_File);
@@ -1128,7 +1128,7 @@ static int append_body (Active_Group_Type *g, int n, char *body) /*{{{*/
    char buf[128];
    FILE *fp;
    
-   slrn_snprintf (buf, sizeof(buf), "%d", n);
+   (void) SLsnprintf (buf, sizeof(buf), "%d", n);
    
    if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, g->dirname,
 			   file, sizeof (file)))
@@ -1181,8 +1181,8 @@ static int write_head_and_body (Active_Group_Type *g, int n, /*{{{*/
 	
 	return 0;
      }
-   
-   slrn_snprintf (buf, sizeof (buf), "%d", n);
+
+   (void) SLsnprintf (buf, sizeof (buf), "%d", n);
    
    if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, g->dirname,
 			   file, sizeof (file)))
@@ -1268,7 +1268,7 @@ static int get_bodies (NNTP_Type *s, int *numbers, /*{{{*/
 	if (heads[i] == NULL)
 	  continue;
 	
-	slrn_snprintf (b, sizeof (buf) - (size_t)(b - buf),
+	(void) SLsnprintf (b, sizeof (buf) - (size_t)(b - buf),
 		       "%sbody %d", crlf, numbers[i]);
 	b += strlen (b);
 	
@@ -1328,9 +1328,11 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
 
    h.subject = slrn_safe_strmalloc (xov->subject_malloced);
    h.from = slrn_safe_strmalloc (xov->from);
+#if 0
+   /* FIXME -- I need to think more about this, and check for errors */
    slrn_rfc1522_decode_string (&h.subject);
    slrn_rfc1522_decode_string (&h.from);
-   
+#endif
 #if 1
    (void) is_msgid_cached (h.msgid, Current_Group->name, (unsigned int) n, 1);
 #endif
@@ -1406,7 +1408,7 @@ static int get_heads (NNTP_Type *s,  Active_Group_Type *g, int *numbers, char **
 	unsigned int len = sizeof (buf) - (size_t) (b - buf);
 	if (len < 20)
 	  slrn_exit_error (_("Internal error: Buffer in get_heads not large enough!"));
-	slrn_snprintf (b, len, "%shead %d", crlf, numbers[i]);
+	(void) SLsnprintf (b, len, "%shead %d", crlf, numbers[i]);
 	crlf = "\r\n";
 	b += strlen (b);
 	
@@ -1931,7 +1933,7 @@ static int write_active (void) /*{{{*/
    FILE *fp;
    char file [SLRN_MAX_PATH_LEN + 5];
    
-   slrn_snprintf (file, sizeof (file), "%s.tmp", Active_File);
+   (void) SLsnprintf (file, sizeof (file), "%s.tmp", Active_File);
    
    fp = fopen (file, "w");
    if (fp == NULL)
@@ -1988,6 +1990,7 @@ static void connection_lost_hook (NNTP_Type *s)
 static int open_servers (char *host) /*{{{*/
 {
 #if SLRN_USE_SLTCP
+   SLtcp_Verror_Hook = va_log_error;
    if (-1 == sltcp_open_sltcp ())
      {
 	fprintf (stderr, _("Error opening sltcp interface.\n"));
@@ -2141,7 +2144,7 @@ static void usage (char *pgm) /*{{{*/
 
 static void show_version (char *pgm)
 {
-   log_error (_("%s version: %s\n"), pgm, Slrnpull_Version);
+   log_error (_("%s version: %s\n"), pgm, Slrnpull_Version_String);
    close_log_files ();
    exit (0);
 }
@@ -2185,8 +2188,8 @@ int main (int argc, char **argv) /*{{{*/
    (void) setlocale(LC_ALL, "");
 #endif
 #ifdef ENABLE_NLS
-   bindtextdomain(PACKAGE,LOCALEDIR);
-   textdomain(PACKAGE);
+   bindtextdomain(NLS_PACKAGE_NAME, NLS_LOCALEDIR);
+   textdomain (NLS_PACKAGE_NAME);
 #endif
 
 #if SLANG_VERSION >= 20000

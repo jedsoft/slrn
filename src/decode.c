@@ -45,6 +45,8 @@
 #include "snprintf.h"
 #include "ttymsg.h"
 #include "slrndir.h"
+#include "strutil.h"
+#include "common.h"
 
 #ifdef STANDALONE
 # include <stdarg.h>
@@ -347,7 +349,7 @@ static char *skip_header_string (char *p, char *name) /*{{{*/
    p = skip_whitespace (p);
    len = strlen (name);
    
-   if (0 != slrn_case_strncmp ((unsigned char *)p, (unsigned char *)name, len))
+   if (0 != slrn_case_strncmp (p, name, len))
      return NULL;
    
    return p + len;
@@ -368,7 +370,7 @@ static char *skip_beyond_name_eqs (char *p, char *name) /*{{{*/
 	p = skip_whitespace (p);
 	if (*p == 0) return NULL;
 	
-	if (0 != slrn_case_strncmp ((unsigned char *) p, (unsigned char *) name, len))
+	if (0 != slrn_case_strncmp ( p,  name, len))
 	  {
 	     while (((ch = *p) != 0) && (ch != ' ') && (ch != '\t') && (ch != '\n'))
 	       p++;
@@ -458,7 +460,7 @@ static void parse_content_disposition (char *p) /*{{{*/
 static int is_encoding_base64 (char *p) /*{{{*/
 {
    p = skip_whitespace (p);
-   if (slrn_case_strncmp ((unsigned char *)p, (unsigned char *)"base64", 6))
+   if (slrn_case_strncmp (p, "base64", 6))
      return 0;
    return 1;
 }
@@ -636,14 +638,14 @@ static int check_and_decode_base64 (FILE *fp, FILE *pipe_fp) /*{{{*/
 	
 	/* Look for 'Content-' */
 	
-	if (slrn_case_strncmp ((unsigned char *) "Content-", (unsigned char *) line, 8))
+	if (slrn_case_strncmp ( "Content-",  line, 8))
 	  continue;
 	
 	read_in_whole_header_line (line, fp);
 	
 	p = line + 8;
 	
-	if (0 == slrn_case_strncmp ((unsigned char *) p, (unsigned char *) "Transfer-Encoding: ", 19))
+	if (0 == slrn_case_strncmp ( p,  "Transfer-Encoding: ", 19))
 	  {
 	     if (is_encoding_base64 (p + 19))
 	       {
@@ -663,13 +665,13 @@ static int check_and_decode_base64 (FILE *fp, FILE *pipe_fp) /*{{{*/
 	     continue;
 	  }
 	    
-	if (0 == slrn_case_strncmp ((unsigned char *)p, (unsigned char *)"Disposition: ", 13))
+	if (0 == slrn_case_strncmp (p, "Disposition: ", 13))
 	  {
 	     parse_content_disposition (p + 13);
 	     continue;
 	  }
 	
-	if (0 == slrn_case_strncmp ((unsigned char *)p, (unsigned char *)"Type: ", 6))
+	if (0 == slrn_case_strncmp (p, "Type: ", 6))
 	  {
 	     Mime_Message_Partial_Type pmt;
 
@@ -705,10 +707,10 @@ static int check_and_decode_base64 (FILE *fp, FILE *pipe_fp) /*{{{*/
 
 /*}}}*/
 
-static int parse_uuencode_begin_line (unsigned char *b, char **file, int *mode) /*{{{*/
+static int parse_uuencode_begin_line (char *b, char **file, int *mode) /*{{{*/
 {
    int m = 0;
-   unsigned char *bmax;
+   char *bmax;
    
    while (*b == ' ') b++;
    if (0 == isdigit (*b)) return -1;
@@ -723,8 +725,8 @@ static int parse_uuencode_begin_line (unsigned char *b, char **file, int *mode) 
    
    if (*b < ' ') return -1;
 	
-   bmax = b + strlen ((char *) b);
-   while (*bmax <= ' ') *bmax-- = 0;
+   bmax = b + strlen (b);
+   while ((unsigned char)*bmax <= ' ') *bmax-- = 0;
    
    *mode = m;
    *file = (char *) b;
@@ -776,7 +778,7 @@ static int check_and_uudecode (FILE *fp, FILE *pipe_fp,
 	     continue;
 	  }
 
-	if (-1 == parse_uuencode_begin_line ((unsigned char *)buf + 6, &file, &mode))
+	if (-1 == parse_uuencode_begin_line (buf + 6, &file, &mode))
 	  continue;
 
 	if (NULL == (outfp = open_output_file (file, "uuencoded", mode, pipe_fp)))
@@ -836,7 +838,7 @@ static int check_and_uudecode (FILE *fp, FILE *pipe_fp,
 		  fprintf (stderr, "%s", buf);
 #endif
 		  if (strncmp (buf, "begin ", 6)
-		      || (-1 == parse_uuencode_begin_line ((unsigned char *)buf + 6,
+		      || (-1 == parse_uuencode_begin_line (buf + 6,
 							   &file, &mode)))
 		    continue;
 

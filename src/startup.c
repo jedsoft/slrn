@@ -57,6 +57,8 @@
 #include "print.h"
 #include "snprintf.h"
 #include "help.h"
+#include "strutil.h"
+#include "common.h"
 
 #ifdef VMS
 # include "vms.h"
@@ -467,9 +469,12 @@ static int set_group_format_fun (int argc, SLcmd_Cmd_Table_Type *table)
 
 static int set_charset_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
+   char *type, *value;
+
    (void) argc;
-   char *type=(table->string_args[1]);
-   char *value=(table->string_args[2]);
+   
+   type = table->string_args[1];
+   value = table->string_args[2];
 
 #if SLANG_VERSION < 20000
    /* we cannot use utf-8 */
@@ -522,6 +527,7 @@ static int set_charset_fun (int argc, SLcmd_Cmd_Table_Type *table)
 	return 0;
      }
     exit_unknown_object ();
+   return -1;
 }
 
 /*{{{ Setting/Getting Variable Functions */
@@ -736,7 +742,6 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      },
      
      {"metamail_command", &Slrn_MetaMail_Cmd},
-//#if SLRN_HAS_CHARACTER_MAP
 #if 0
      {"charset", &Slrn_Charset},
 #else
@@ -1477,9 +1482,8 @@ static Server_List_Type *find_server (char *host) /*{{{*/
 	     else if (0 == strncmp (this_host, "news://", 7))
 	       this_host += 7;
 	     
-	     if ((0 == slrn_case_strcmp ((unsigned char *)host, 
-					 (unsigned char *) this_host)) &&
-		 ((i == 2) || (has_ssl == this_has_ssl)))
+	     if ((0 == slrn_case_strcmp (host, this_host)) 
+		 && ((i == 2) || (has_ssl == this_has_ssl)))
 	       break;
 	     s = s->next;
 	  }
@@ -1661,7 +1665,7 @@ void slrn_startup_initialize (void) /*{{{*/
    int i;
 
 #if SLRN_HAS_SLANG
-   Slrn_Macro_Dir = slrn_strdup_strcat (SHAREDIR, "/macros", NULL);
+   Slrn_Macro_Dir = slrn_safe_strmalloc (SLRN_SLANG_DIR);
 #endif
 
    slrn_init_modes ();
@@ -1725,11 +1729,7 @@ int slrn_read_startup_file (char *name) /*{{{*/
 {
    FILE *fp;
    char line [512];
-#if SLANG_VERSION < 20000
-   SLPreprocess_Type pt;
-#else
    SLprep_Type *pt;
-#endif
    int save_this_line_num;
    int save_saw_charset;
    char *save_this_file;
@@ -1741,18 +1741,18 @@ int slrn_read_startup_file (char *name) /*{{{*/
 	slrn_exit_error (_("Unable to initialize S-Lang readline library."));
      }
    
-#if SLANG_VERSION < 20000
-   if (-1 == SLprep_open_prep (&pt))
-#else
    if (NULL == (pt = SLprep_new()))
-#endif
      {
 	slrn_exit_error (_("Error initializing S-Lang preprocessor."));
      }
    
    fp = fopen (name, "r");
-   if (fp == NULL) return -1;
-   
+   if (fp == NULL) 
+     {
+	SLprep_delete (pt);
+	return -1;
+     }
+
    slrn_message (_("Reading startup file %s."), name);
    
    save_this_file = This_File;
@@ -1772,22 +1772,19 @@ int slrn_read_startup_file (char *name) /*{{{*/
    while (NULL != fgets (line, sizeof(line) - 1, fp))
      {
 	This_Line_Num++;
-#if SLANG_VERSION < 20000
-	if (SLprep_line_ok (line, &pt))
-#else
 	if (SLprep_line_ok (line, pt))
-#endif
 	  (void) SLcmd_execute_string (line, &Slrn_Cmd_Table);
-	
-	if (SLang_get_error()) exit_unknown_object ();
+
+	if (SLang_get_error())
+	  {
+	     SLprep_delete (pt);
+	     slrn_fclose (fp);
+	     exit_unknown_object ();
+	  }
      }
+
    slrn_fclose (fp);
-   
-#if SLANG_VERSION < 20000
-   SLprep_close_prep (&pt);
-#else
    SLprep_delete (pt);
-#endif
    
    if ((Server_Object != NULL)
        && (-1 == (Slrn_Default_Server_Obj = slrn_map_name_to_object_id (0, Server_Object))))

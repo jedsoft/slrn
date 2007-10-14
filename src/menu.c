@@ -45,6 +45,8 @@
 #include "util.h"
 #include "slrndir.h"
 #include "snprintf.h"
+#include "common.h"
+#include "strutil.h"
 
 /*}}}*/
 
@@ -113,7 +115,7 @@ static void update_menu (Menu_Type *m) /*{{{*/
      SLsmg_gotorc (0, col);
    
    SLsmg_write_string ("slrn ");
-   SLsmg_write_string (Slrn_Version);
+   SLsmg_write_string (Slrn_Version_String);
    
    slrn_set_color (0);
 }

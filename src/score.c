@@ -44,9 +44,12 @@
 # include "hash.h"
 #endif
 
+#include "strutil.h"
 #include "art.h"
 #include "xover.h"
 #include "score.h"
+#include "sortdate.h"
+#include "common.h"
 
 /* The score file will implement article scoring for slrn.  Basically the idea 
  * is that the user will provide a set of regular expressions that
@@ -730,8 +733,8 @@ void slrn_close_score (void)
 
 
 
-static int add_group_regexp (PScore_Regexp_Type *psrt, unsigned char *str,
-			     unsigned char *keyword, unsigned int type,
+static int add_group_regexp (PScore_Regexp_Type *psrt, char *str,
+			     char *keyword, unsigned int type,
 			     int not_flag)
 {
    unsigned int len;
@@ -745,23 +748,23 @@ static int add_group_regexp (PScore_Regexp_Type *psrt, unsigned char *str,
    psrt->header_type = type;
    if ((type != SCORE_SUB_AND) && (type != SCORE_SUB_OR))
      {
-	len = (unsigned int) (slrn_trim_string ((char *) str) - (char *) str);
+	len = (unsigned int) (slrn_trim_string (str) - str);
 	if (0 == len) return -1;
 	
 	if ((type == SCORE_LINES) || (type == SCORE_BYTES) || (type == SCORE_HAS_BODY))
 	  {
-	     psrt->ireg.ival = atoi((char *)str);
+	     psrt->ireg.ival = atoi(str);
 	     psrt->flags |= USE_INTEGER;
 	  }
 	else if (type == SCORE_AGE)
 	  {
-	     psrt->ireg.ival = time(NULL) - atoi((char *)str) * 86400;
+	     psrt->ireg.ival = time(NULL) - atoi(str) * 86400;
 	     psrt->flags |= USE_INTEGER;
 	  }
 	else
-	  psrt->ireg.regexp_str = (unsigned char *) slrn_safe_strmalloc ((char *)str);
+	  psrt->ireg.regexp_str = (unsigned char *) slrn_safe_strmalloc (str);
 	
-	strncpy (psrt->keyword, (char *) keyword, MAX_KEYWORD_LEN);
+	strncpy (psrt->keyword, keyword, MAX_KEYWORD_LEN);
 	psrt->keyword[MAX_KEYWORD_LEN - 1] = 0;
      }
    else
@@ -961,16 +964,16 @@ static void free_group_scores (void)
      }
 }
 
-static int has_score_expired (unsigned char *s, unsigned long today)
+static int has_score_expired (char *s, unsigned long today)
 {
    unsigned long mm, dd, yyyy;
    unsigned long score_time;
    
-   s = (unsigned char *) slrn_skip_whitespace ((char *) s);
+   s = slrn_skip_whitespace (s);
    if (*s == 0) return 0;
    
-   if (((3 != sscanf ((char *) s, "%lu/%lu/%lu", &mm, &dd, &yyyy))
-	&& (3 != sscanf ((char *) s, "%lu-%lu-%lu", &dd, &mm, &yyyy)))
+   if (((3 != sscanf (s, "%lu/%lu/%lu", &mm, &dd, &yyyy))
+	&& (3 != sscanf (s, "%lu-%lu-%lu", &dd, &mm, &yyyy)))
        || (dd > 31)
        || (mm > 12)
        || (yyyy < 1900))
@@ -1072,7 +1075,7 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
     
     while (fgets (line, sizeof (line) - 1, fp))
      {
-	unsigned char *lp;
+	char *lp;
 	int ret, not_flag;
 	
 	(*linenum)++;
@@ -1086,15 +1089,15 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 #endif
 	  continue;
 
-	lp = (unsigned char *) slrn_skip_whitespace (line);
+	lp = slrn_skip_whitespace (line);
 	if ((*lp == '#') || (*lp == '%') || (*lp <= ' ')) continue;
 
 	if (sub_psrt == NULL)
 	  {
-	     if ((0 == slrn_case_strncmp (lp, (unsigned char *) "include", 7))
+	     if ((0 == slrn_case_strncmp (lp,  "include", 7))
 		 && ((lp[7] == ' ') || (lp[7] == '\t')))
 	       {
-		  if (0 == handle_include_line (file, (char *)lp + 7, c))
+		  if (0 == handle_include_line (file, lp + 7, c))
 		    continue;
 		  
 		  score_error (_("Error handling INCLUDE line"), line, *linenum,
@@ -1110,13 +1113,13 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 		  gmax = g + sizeof (c->group);
 		  
 		  lp++;
-		  lp = (unsigned char *) slrn_skip_whitespace ((char *)lp);
+		  lp = slrn_skip_whitespace (lp);
 		  
 		  c->gnt_not_flag = 0;
 		  if (*lp == '~')
 		    {
 		       c->gnt_not_flag = 1;
-		       lp = (unsigned char *) slrn_skip_whitespace ((char *)lp + 1);
+		       lp = slrn_skip_whitespace (lp + 1);
 		    }
 		  
 		  while (((ch = *lp++) != 0)
@@ -1136,22 +1139,22 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 		  continue;
 	       }
         
-	     if (!slrn_case_strncmp (lp, (unsigned char *)"Score:", 6))
+	     if (!slrn_case_strncmp (lp, "Score:", 6))
 	       {
-		  unsigned char *lpp = lp + 6, *eol;
+		  char *lpp = lp + 6, *eol;
 		  c->pscore_flags = 0;
 		  if (*lpp == ':')
 		    {
 		       lpp++;
 		       c->pscore_flags |= SCORE_IS_OR_TYPE;
 		    }
-		  lpp = (unsigned char *) slrn_skip_whitespace ((char *) lpp);
+		  lpp = slrn_skip_whitespace (lpp);
 		  if (*lpp == '=')
 		    {
 		       c->pscore_flags |= RETURN_THIS_SCORE;
 		       lpp++;
 		    }
-		  c->score = atoi ((char *)lpp);
+		  c->score = atoi (lpp);
 		  c->start_new_score = 1;
 
                   if (description != NULL)
@@ -1159,17 +1162,17 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 		       slrn_free (description);
 		       description = NULL;
 		    }
-                  eol = (unsigned char *) slrn_strchr ((char *)lpp, '#');
+                  eol = slrn_strchr (lpp, '#');
 		  if (eol == NULL)
-		    lpp = (unsigned char *) slrn_strchr ((char *)lpp, '%');
+		    lpp = slrn_strchr (lpp, '%');
 		  else lpp = eol;
                   if (lpp != NULL)
 		    {
-		       lpp = (unsigned char *) slrn_skip_whitespace ((char *)lpp + 1);
-		       eol = lpp + strlen ((char*)lpp) - 1;
-		       while ((eol >= lpp) && (*eol <= 32))
+		       lpp = slrn_skip_whitespace (lpp + 1);
+		       eol = lpp + strlen (lpp) - 1;
+		       while ((eol >= lpp) && ((unsigned char)*eol <= 32))
 			 *eol-- = '\0';
-		       description = slrn_safe_strmalloc ((char *)lpp);
+		       description = slrn_safe_strmalloc (lpp);
 		    }
 
 		  continue;
@@ -1177,7 +1180,7 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 	     
 	     if (c->start_new_score)
 	       {
-		  if (!slrn_case_strncmp (lp, (unsigned char *) "Expires:", 8))
+		  if (!slrn_case_strncmp (lp,  "Expires:", 8))
 		    {
 		       ret = has_score_expired (lp + 8, c->today);
 		       if (ret == -1)
@@ -1243,29 +1246,29 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 	ret = -1;
 	psrt = (PScore_Regexp_Type *) slrn_safe_malloc (sizeof (PScore_Regexp_Type));
 	/* Otherwise the line is a kill one */
-	if (!slrn_case_strncmp (lp, (unsigned char *)"Subject:", 8))
+	if (!slrn_case_strncmp (lp, "Subject:", 8))
 	  ret = add_group_regexp (psrt, lp + 7, lp, SCORE_SUBJECT, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"From:", 5))
+	else if (!slrn_case_strncmp (lp, "From:", 5))
 	  ret = add_group_regexp (psrt, lp + 4, lp, SCORE_FROM, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"Xref:", 5))
+	else if (!slrn_case_strncmp (lp, "Xref:", 5))
 	  ret = add_group_regexp (psrt, lp + 4, lp, SCORE_XREF, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"Newsgroup:", 10))
+	else if (!slrn_case_strncmp (lp, "Newsgroup:", 10))
 	  ret = add_group_regexp (psrt, lp + 9, lp, SCORE_NEWSGROUP, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"References:", 11))
+	else if (!slrn_case_strncmp (lp, "References:", 11))
 	  ret = add_group_regexp (psrt, lp + 10, lp, SCORE_REFERENCES, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"Lines:", 6))
+	else if (!slrn_case_strncmp (lp, "Lines:", 6))
 	  ret = add_group_regexp (psrt, lp + 5, lp, SCORE_LINES, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"Date:", 5))
+	else if (!slrn_case_strncmp (lp, "Date:", 5))
 	  ret = add_group_regexp (psrt, lp + 4, lp, SCORE_DATE, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"Age:", 4))
+	else if (!slrn_case_strncmp (lp, "Age:", 4))
 	  ret = add_group_regexp (psrt, lp + 3, lp, SCORE_AGE, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"Bytes:", 6))
+	else if (!slrn_case_strncmp (lp, "Bytes:", 6))
 	  ret = add_group_regexp (psrt, lp + 5, lp, SCORE_BYTES, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"Has-Body:", 9))
+	else if (!slrn_case_strncmp (lp, "Has-Body:", 9))
 	  ret = add_group_regexp (psrt, lp + 8, lp, SCORE_HAS_BODY, not_flag);
-	else if (!slrn_case_strncmp (lp, (unsigned char *)"Message-Id:", 11))
+	else if (!slrn_case_strncmp (lp, "Message-Id:", 11))
 	  ret = add_group_regexp (psrt, lp + 10, lp, SCORE_MESSAGE_ID, not_flag);
-        else if (!slrn_case_strncmp (lp, (unsigned char *)"{:", 2))
+        else if (!slrn_case_strncmp (lp, "{:", 2))
 	  {
             if (lp[2] ==':')
 	      {
@@ -1277,7 +1280,7 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 	      }
 	    if (phrase_score_file(file, fp, c, linenum, psrt))  return -1;
           }
-        else if (!slrn_case_strncmp (lp, (unsigned char *)"}", 1))
+        else if (!slrn_case_strncmp (lp, "}", 1))
 	  {
 	     SLFREE (psrt);
 	     if (sub_psrt != NULL)
@@ -1290,7 +1293,7 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 	  }
 	else
 	  {
-	     unsigned char *lpp = lp;
+	     char *lpp = lp;
 	     while (*lpp && (*lpp != ':')) lpp++;
 	     if (*lpp != ':')
 	       {

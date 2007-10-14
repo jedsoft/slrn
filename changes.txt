@@ -1,3 +1,21 @@
+Changes since 0.9.8.8pl1
+0. Removed the dependency on automake.  As a result, the configuration
+   options have changed.  Run `./configure --help` to see the current
+   options.
+1. Reorganized the code a bit by moving some of the code in util.c to
+   strutil.c.  Eventually I want to remove ugly constructs such as
+   '#include "score.c"' from slrnpull.c.  This is a step in that
+   direction.
+2. Code simplification in various places including the use of unsigned
+   variables where appropriate.
+3. When following-up on an article with no Newsgroups header, assume
+   it is from a mailing list and reply instead.
+4. Fixed some character-set encoding issues.
+5. Improved the email-address parser.  I also removed the check for a
+   domainname because some local mailing lists may not require them.
+   Moreover a domain name should not be required when forwarding an
+   article to a local user.
+
 Changes since 0.9.8.1
 
 0. Bug fixes include:

@@ -22,17 +22,22 @@
 #define _SLRN_SNPRINTF_H
 #include <stdarg.h>
 
+#ifdef __GNUC__
+# define ATTRIBUTE_(x) __attribute__ (x)
+#else
+# define ATTRIBUTE_(x)
+#endif
+#define ATTRIBUTE_PRINTF(a,b) ATTRIBUTE_((format(printf,a,b)))
+
 extern char *slrn_strdup_strcat (const char*, ...);
-extern char *slrn_strdup_printf (const char*, ...);
+extern char *slrn_strdup_printf (const char*, ...) ATTRIBUTE_PRINTF(1,2);
 extern char *slrn_strdup_vprintf (const char*, va_list);
 
-extern int slrn_snprintf (char *, size_t, const char *, ...);
+extern int slrn_snprintf (char *, size_t, const char *, ...) ATTRIBUTE_PRINTF(3,4);
 extern int slrn_vsnprintf (char *, size_t, const char *, va_list);
 
-extern char *slrn_strncpy (char *, const char*, size_t);
-
 #ifndef HAVE_VSNPRINTF
-extern int snprintf (char *, size_t, const char *, ...);
-extern int vsnprintf (char *, size_t, const char *, va_list);
+/* extern int snprintf (char *, size_t, const char *, ...); */
+/* extern int vsnprintf (char *, size_t, const char *, va_list); */
 #endif /* !HAVE_VSNPRINTF */
 #endif /* _SLRN_SNPRINTF_H */

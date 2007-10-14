@@ -1,0 +1,313 @@
+/*
+ This file is part of SLRN.
+
+ Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
+ Copyright (c) 2002-2006 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2007 John E. Davis <jed@jedsoft.org>
+
+ This program is free software; you can redistribute it and/or modify it
+ under the terms of the GNU General Public License as published by the Free
+ Software Foundation; either version 2 of the License, or (at your option)
+ any later version.
+
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+*/
+
+#include "config.h"
+#include "slrnfeat.h"
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#include <slang.h>
+#include "jdmacros.h"
+#include "strutil.h"
+#include "common.h"
+
+/* This function allows NULL as a parameter. This fact _is_ exploited */
+char *slrn_skip_whitespace (char *b) /*{{{*/
+{
+   if (b == NULL) return NULL;
+   
+   while (isspace (*b))
+     b++;
+
+   return b;
+}
+
+/*}}}*/
+
+char *slrn_bskip_whitespace (char *smin)
+{
+   char *s;
+
+   if (smin == NULL) return NULL;
+   s = smin + strlen (smin);
+
+   while (s > smin)
+     {
+	s--;
+	if (0 == isspace(*s))
+	  return s + 1;
+     }
+   return s;
+}
+
+   
+/* returns a pointer to the end of the string */
+char *slrn_trim_string (char *s) /*{{{*/
+{
+   s = slrn_bskip_whitespace (s);
+   if (s != NULL)
+     *s = 0;
+
+   return s;
+}
+/*}}}*/
+
+char *slrn_strchr (char *s, char ch) /*{{{*/
+{
+   register char ch1;
+   
+   while (((ch1 = *s) != 0) && (ch != ch1)) s++;
+   if (ch1 == 0) return NULL;
+   return s;
+}
+
+/*}}}*/
+
+/* Search for characters from list in string str.  If found, return a pointer
+ * to the first occurrence.  If not found, return NULL. */
+char *slrn_strbrk (char *str, char *list) /*{{{*/
+{
+   char ch, ch1, *p;
+   
+   while ((ch = *str) != 0)
+     {
+	p = list;
+	while ((ch1 = *p) != 0)
+	  {
+	     if (ch == ch1) return str;
+	     p++;
+	  }
+	str++;
+     }
+   return NULL;
+}
+
+/*}}}*/
+
+char *slrn_simple_strtok (char *s, char *chp) /*{{{*/
+{
+   static char *s1;
+   char ch = *chp;
+   
+   if (s == NULL)
+     {
+	if (s1 == NULL) return NULL;
+	s = s1;
+     }
+   else s1 = s;
+   
+   while (*s1 && (*s1 != ch)) s1++;
+   
+   if (*s1 == 0)
+     {
+	s1 = NULL;
+     }
+   else *s1++ = 0;
+   return s;
+}
+
+/*}}}*/
+
+
+int slrn_case_strncmp (char *a, char *b, unsigned int n) /*{{{*/
+{
+   char *bmax;
+   
+#if SLANG_VERSION >= 20000
+   if (Slrn_UTF8_Mode)
+     {
+	if (a == NULL)
+	  {
+	     if (b == NULL)
+	       return 0;
+	     else
+	       return -1;
+	  }
+	if (b == NULL)
+	  return 1;
+	
+	return SLutf8_compare((SLuchar_Type *)a, (SLuchar_Type *)a+strlen(a), 
+			      (SLuchar_Type *)b, (SLuchar_Type *)b+strlen(b), n , 0);
+     }
+#endif
+   bmax = b + n;
+   while (b < bmax)
+     {
+	unsigned char cha = UPPER_CASE(*a);
+	unsigned char chb = UPPER_CASE(*b);
+	if (cha != chb)
+	  {
+	     return (int) cha - (int) chb;
+	  }
+	else if (chb == 0) return 0;
+	b++;
+	a++;
+     }
+   return 0;
+}
+
+/*}}}*/
+
+int slrn_case_strcmp (char *a, char *b) /*{{{*/
+{
+   register unsigned char cha, chb;
+   int len_a,len_b,min;
+   
+#if SLANG_VERSION >= 20000
+   if (Slrn_UTF8_Mode)
+     {
+	if (a == NULL)
+	  {
+	     if (b == NULL)
+	       return 0;
+	     else
+	       return -1;
+	  }
+	if (b == NULL)
+	  return 1;
+	len_a=strlen(a);
+	len_b=strlen(b);
+	if (len_a > len_b)
+	  min = len_b;
+	else
+	  min = len_a;
+	return SLutf8_compare((SLuchar_Type *)a, (SLuchar_Type *)a+len_a, 
+			      (SLuchar_Type *)b, (SLuchar_Type *)b+len_b, min , 0);
+     }
+#endif
+   while (1)
+     {
+	cha = UPPER_CASE(*a);
+	chb = UPPER_CASE(*b);
+	if (cha != chb)
+	  {
+	     return (int) cha - (int) chb;
+	  }
+	else if (chb == 0) break;
+	b++;
+	a++;
+     }
+   return 0;
+}
+
+/*}}}*/
+
+
+char *slrn_strncpy (char *dest, const char *src, size_t n) /*{{{*/
+{
+   strncpy (dest, src, n);
+   dest[n-1] = '\0';
+   return dest;
+}
+/*}}}*/
+
+
+/*{{{ Memory Allocation Routines */
+
+static char *do_malloc_error (int do_error)
+{
+   if (do_error) slrn_error (_("Memory allocation failure."));
+   return NULL;
+}
+
+char *slrn_safe_strmalloc (char *s) /*{{{*/
+{
+   s = SLmake_string (s);
+   if (s == NULL) slrn_exit_error (_("Out of memory."));
+   return s;
+}
+
+/*}}}*/
+
+char *slrn_safe_strnmalloc (char *s, unsigned int len)
+{
+   s = SLmake_nstring (s, len);
+   if (s == NULL) slrn_exit_error (_("Out of memory."));
+   return s;
+}
+
+char *slrn_strnmalloc (char *s, unsigned int len, int do_error)
+{
+   s = SLmake_nstring (s, len);
+   
+   if (s == NULL)
+     return do_malloc_error (do_error);
+   
+   return s;
+}
+
+char *slrn_strmalloc (char *s, int do_error)
+{
+   if (s == NULL) return NULL;
+   return slrn_strnmalloc (s, strlen (s), do_error);
+}
+
+
+char *slrn_malloc (unsigned int len, int do_memset, int do_error)
+{   
+   char *s;
+   
+   s = (char *) SLmalloc (len);
+   if (s == NULL)
+     return do_malloc_error (do_error);
+
+   if (do_memset)
+     memset (s, 0, len);
+   
+   return s;
+}
+
+char *slrn_realloc (char *s, unsigned int len, int do_error)
+{
+   if (s == NULL)
+     return slrn_malloc (len, 0, do_error);
+   
+   s = SLrealloc (s, len);
+   if (s == NULL)
+     return do_malloc_error (do_error);
+	
+   return s;
+}
+
+char *slrn_safe_malloc (unsigned int len)
+{
+   char *s;
+   
+   s = slrn_malloc (len, 1, 0);
+
+   if (s == NULL)
+     slrn_exit_error (_("Out of memory"));
+   
+   return s;
+}
+
+void slrn_free (char *s)
+{
+   if (s != NULL) SLfree (s);
+}

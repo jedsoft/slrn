@@ -39,6 +39,7 @@
 
 #include "snprintf.h"
 #include "util.h"
+#include "strutil.h"
 
 /*}}}*/
 
@@ -163,14 +164,6 @@ int slrn_snprintf (char *str, size_t n, const char *format, ... ) /*{{{*/
    return retval;
 }
 
-/*}}}*/
-
-char *slrn_strncpy (char *dest, const char *src, size_t n) /*{{{*/
-{
-   strncpy (dest, src, n);
-   dest[n-1] = '\0';
-   return dest;
-}
 /*}}}*/
 
 #ifndef HAVE_VSNPRINTF

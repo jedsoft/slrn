@@ -65,6 +65,8 @@
 #include "mime.h"
 #include "hooks.h"
 #include "help.h"
+#include "strutil.h"
+#include "common.h"
 
 #if SLRN_HAS_UUDEVIEW
 # include <uudeview.h>
@@ -665,19 +667,19 @@ static char *extract_header (Slrn_Header_Type *h, char *hdr, unsigned int len) /
    if ((len > 2) && (hdr[len-1] == ' ') && (hdr[len-2] == ':'))
      len--;
 
-   if (0 == slrn_case_strncmp ((unsigned char *)"From: ", (unsigned char *)hdr, len))
+   if (0 == slrn_case_strncmp ("From: ", hdr, len))
      return slrn_skip_whitespace (h->from);
-   if (0 == slrn_case_strncmp ((unsigned char *)"Subject: ", (unsigned char *)hdr, len))
+   if (0 == slrn_case_strncmp ("Subject: ", hdr, len))
      return h->subject;
-   if (0 == slrn_case_strncmp ((unsigned char *)"Message-Id: ", (unsigned char *)hdr, len))
+   if (0 == slrn_case_strncmp ("Message-Id: ", hdr, len))
      return slrn_skip_whitespace (h->msgid);
-   if (0 == slrn_case_strncmp ((unsigned char *)"Date: ", (unsigned char *)hdr, len))
+   if (0 == slrn_case_strncmp ("Date: ", hdr, len))
      return h->date;
-   if (0 == slrn_case_strncmp ((unsigned char *)"References: ", (unsigned char *)hdr, len))
+   if (0 == slrn_case_strncmp ("References: ", hdr, len))
      return slrn_skip_whitespace (h->refs);
-   if (0 == slrn_case_strncmp ((unsigned char *)"Xref: ", (unsigned char *)hdr, len))
+   if (0 == slrn_case_strncmp ("Xref: ", hdr, len))
      return h->xref;
-   if (0 == slrn_case_strncmp ((unsigned char *)"Lines: ", (unsigned char *)hdr, len))
+   if (0 == slrn_case_strncmp ("Lines: ", hdr, len))
      {
 	static char lines_buf[32];
 	sprintf (lines_buf, "%d", h->lines); /* safe */
@@ -742,7 +744,7 @@ static void toggle_wrap_article (void)
 /*}}}*/
 
 /* selects the article that should be affected by interactive commands */
-static int select_affected_article () /*{{{*/
+static int select_affected_article (void) /*{{{*/
 {
    if ((Slrn_Current_Article == NULL) || !Article_Visible)
      {
@@ -2166,8 +2168,8 @@ Slrn_Header_Type *_art_find_header_from_msgid (char *r0, char *r1) /*{{{*/
    h = Header_Table[hash % HEADER_TABLE_SIZE];
    while (h != NULL)
      {
-	if (!slrn_case_strncmp ((unsigned char *) h->msgid,
-				(unsigned char *) r0,
+	if (!slrn_case_strncmp ( h->msgid,
+				 r0,
 				len))
 	  break;
 	
@@ -2434,6 +2436,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 /*}}}*/
 
 /* On errors, free a and return -1 */
+#if 0
 static int art_undo_modifications (Slrn_Article_Type *a)
 {
    unsigned int linenum = Slrn_Article_Window.line_num;
@@ -2465,6 +2468,7 @@ static int art_undo_modifications (Slrn_Article_Type *a)
 
    return 0;
 }
+#endif
 
 static int select_header (Slrn_Header_Type *h, int kill_refs) /*{{{*/
 {
@@ -2636,7 +2640,7 @@ int slrn_string_to_article (char *str)
 static int insert_followup_format (char *f, FILE *fp) /*{{{*/
 {
    char ch, *s, *m, *f_conv=NULL;
-   int i;
+   unsigned int i;
    char buf[256];
    
    if ((f == NULL) || (*f == 0))
@@ -2857,9 +2861,9 @@ static char *subject_skip_re (char *subject) /*{{{*/
 
 /* If from != NULL, it's taken as the address to send the reply to, otherwise
  * the reply address is taken from Reply-To: or From: */
-static void reply (char *from) /*{{{*/
+static void reply (char *from, int use_cc) /*{{{*/
 {
-   char *msgid, *subject, *from_t, *cc;
+   char *msgid, *subject, *from_t;
    Slrn_Article_Line_Type *l;
    FILE *fp;
    char file[256];
@@ -2881,8 +2885,8 @@ static void reply (char *from) /*{{{*/
    
    if ((from_t == NULL) 
        || ((strlen(from_buf) > 8) &&
-	   !(slrn_case_strcmp((unsigned char*)".invalid",
-			      (unsigned char*)from_buf+strlen(from_buf)-8))))
+	   !(slrn_case_strcmp(".invalid",
+			      from_buf+strlen(from_buf)-8))))
      {
 	if (0 == slrn_get_yesno (1, _("%s appears invalid.  Continue anyway"),
 				 (*from_buf) ? from_buf : _("Email address")))
@@ -2914,26 +2918,29 @@ static void reply (char *from) /*{{{*/
    else
 	fputs ("To: \n", fp);
    n++;
-   
-#if 0 /* I think that a reply is private by definition */
-   f = slrn_extract_header ("To: ", 4);
-   cc = slrn_extract_header ("Cc: ", 4);
-   if ((f != NULL) || (cc != NULL))
+
+   if (use_cc)
      {
-	fputs ("Cc: ", fp);
-	if (f != NULL)
+	char *cc, *f;
+
+	f = slrn_extract_header ("To: ", 4);
+	cc = slrn_extract_header ("Cc: ", 4);
+	if ((f != NULL) || (cc != NULL))
 	  {
-	     fputs (f, fp);
+	     fputs ("Cc: ", fp);
+	     if (f != NULL)
+	       {
+		  fputs (f, fp);
+		  if (cc != NULL)
+		    fputs (", ", fp);
+	       }
 	     if (cc != NULL)
-	       fputs (", ", fp);
+	       fputs (cc, fp);
+	     fputs ("\n", fp);
+	     n++;
 	  }
-	if (cc != NULL)
-	  fputs (cc, fp);
-	fputs ("\n", fp);
-	n++;
      }
-#endif
-   
+
    if (Slrn_Generate_Email_From)
      {
 	char *fromstr = slrn_make_from_string ();
@@ -2964,11 +2971,11 @@ static void reply (char *from) /*{{{*/
 
    if ((msgid != NULL) && (*msgid != 0))
      {
-	cc = slrn_extract_header("References: ", 12);
-	if ((cc == NULL) || (*cc == 0))
+	char *refs = slrn_extract_header("References: ", 12);
+	if ((refs == NULL) || (*refs == 0))
 	  fprintf (fp, "References: %s\n", msgid);
 	else 
-	  fprintf (fp, "References: %s %s\n", cc, msgid);
+	  fprintf (fp, "References: %s %s\n", refs, msgid);
 	n++;
      }
    
@@ -3040,11 +3047,12 @@ static void reply_cmd (void) /*{{{*/
    
    select_affected_article ();
    slrn_update_screen ();
-   
+
    if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST)
-       && (slrn_get_yesno (1, _("Are you sure you want to reply")) == 0))
+       && (0 == slrn_get_yesno (1, _("Are you sure you want to reply"))))
      return;
-   reply (NULL);
+
+   reply (NULL, 0);
 }
 
 /*}}}*/
@@ -3161,6 +3169,19 @@ static void forward_article (void) /*{{{*/
 /*}}}*/
 
 
+static void reply_to_mailing_list (void)
+{
+   /* Some mailing lists have a Mail-Followup-To header.  But do this if there
+    * is no Newsgroups header.
+    */
+   char *mail_followupto;
+
+   mail_followupto = slrn_extract_header ("Mail-Followup-To: ", 18);
+   if ((mail_followupto == NULL) || (*mail_followupto == 0))
+     reply (NULL, 1);
+   else
+     reply (mail_followupto, 0);
+}
 
 /* If prefix arg is 1, insert all headers.  If it is 2, insert all headers
  * but do not quote text nor attach signature.  2 is good for re-posting.
@@ -3181,13 +3202,26 @@ static void followup (void) /*{{{*/
    int free_cc_string = 0;
 #endif
    int strip_sig, rsp, wrap;
+   char *newsgroups_hdr;
 
    /* The perform_cc testing is ugly.  Is there an easier way?? */
 
+   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST)
+       && (slrn_get_yesno (1, _("Are you sure you want to followup")) == 0))
+     return;
+   
    if ((-1 == slrn_check_batch ()) ||
        (-1 == select_affected_article ()))
      return;
-   
+
+   if ((NULL == (newsgroups_hdr = slrn_extract_header ("Newsgroups: ", 12)))
+       || (*newsgroups_hdr == 0))
+     {
+	/* Must be a mailing list */
+	reply_to_mailing_list ();
+	return;
+     }
+
    if (Slrn_Prefix_Arg_Ptr != NULL)
      {
 	prefix_arg = *Slrn_Prefix_Arg_Ptr;
@@ -3202,10 +3236,6 @@ static void followup (void) /*{{{*/
      }
 
    strip_sig = ((prefix_arg == -1) && Slrn_Followup_Strip_Sig);
-
-   if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_POST)
-       && (slrn_get_yesno (1, _("Are you sure you want to followup")) == 0))
-     return;
    
 #if SLRN_HAS_SLANG
    if (-1 == run_article_hook (HOOK_FOLLOWUP))
@@ -3235,8 +3265,8 @@ static void followup (void) /*{{{*/
 	if (cc_address != NULL)
 	  {
 	     int is_poster;
-	     is_poster = (0 == slrn_case_strcmp ((unsigned char *) cc_address,
-						 (unsigned char *) "poster"));
+	     is_poster = (0 == slrn_case_strcmp ( cc_address,
+						  "poster"));
 	     if (is_poster
 		 || (NULL != slrn_strchr (cc_address, '@')))
 	       /* The GNU newsgroups appear to have email addresses in the
@@ -3248,7 +3278,7 @@ static void followup (void) /*{{{*/
 		  if ((Slrn_Warn_Followup_To == 0) ||
 		      slrn_get_yesno (1, _("Do you want to reply to POSTER as poster prefers")))
 		    {
-		       reply (cc_address);
+		       reply (cc_address, 0);
 		       return;
 		    }
 		  newsgroups = NULL;
@@ -3289,33 +3319,14 @@ static void followup (void) /*{{{*/
 	  } /* if (Slrn_Warn_Followup_To) */
      }
 
-   /* Some mailing lists have a Mail-Followup-To header.  But do this if there
-    * is no Newsgroups header.
-    */
-   if (newsgroups == NULL)
-     {
-	char *mail_followupto;
-
-	if (NULL == (newsgroups = slrn_extract_header ("Newsgroups: ", 12)))
-	  newsgroups = "";
-	
-	if ((*newsgroups == 0) 
-	    && (NULL != (mail_followupto = slrn_extract_header ("Mail-Followup-To: ", 18)))
-	    && (0 != *mail_followupto))
-	  {
-	     /* This looks like a mailing list.  Just reply */
-	     reply (mail_followupto);
-	     return;
-	  }
-     }
-   
    if ((newsgroups == NULL)
        /* Hmm..  I have also seen an empty Followup-To: header on a GNU
 	* newsgroup.
 	*/
        || (*newsgroups == 0))
      {
-	if (NULL == (newsgroups = slrn_extract_header ("Newsgroups: ", 12)))
+	newsgroups = newsgroups_hdr;
+	if (newsgroups == NULL)
 	  newsgroups = "";
      }
    
@@ -3359,17 +3370,17 @@ static void followup (void) /*{{{*/
 	     /* Original poster has requested a certain cc-ing behaviour
 	      * which should override whatever default the user has set */
 	     perform_cc = 1;
-	     if ((0 == slrn_case_strcmp ((unsigned char *) cc_address,
-					 (unsigned char *) "always"))
-		 || (0 == slrn_case_strcmp ((unsigned char *) cc_address,
-					    (unsigned char *) "poster")))
+	     if ((0 == slrn_case_strcmp ( cc_address,
+					  "always"))
+		 || (0 == slrn_case_strcmp ( cc_address,
+					     "poster")))
 	       {
 		  cc_address = NULL;
 	       }
-	     else if ((0 == slrn_case_strcmp ((unsigned char *) cc_address,
-					      (unsigned char *) "never"))
-		      || (0 == slrn_case_strcmp ((unsigned char *) cc_address,
-						 (unsigned char *) "nobody")))
+	     else if ((0 == slrn_case_strcmp ( cc_address,
+					       "never"))
+		      || (0 == slrn_case_strcmp ( cc_address,
+						  "nobody")))
 	       {
 		  perform_cc = 0;
 		  cc_address = NULL;
@@ -3429,8 +3440,8 @@ static void followup (void) /*{{{*/
 	  {
 	     if ((NULL == cc_address_t)
 		 || ((strlen(cc_address_buf) > 8) &&
-		     !(slrn_case_strcmp((unsigned char*)".invalid",
-					(unsigned char*)cc_address_buf+
+		     !(slrn_case_strcmp(".invalid",
+					cc_address_buf+
 					strlen(cc_address_buf)-8))))
 	       {
 		  perform_cc = slrn_get_yesno_cancel (_("%s appears invalid.  CC anyway"), *cc_address_buf ? cc_address_buf : _("Email address"));
@@ -3682,7 +3693,7 @@ static void supersede (void) /*{{{*/
    if (NULL == (me = slrn_make_from_string())) return;
    (void) parse_from (me+6, me_buf, sizeof(me_buf));
    
-   if (slrn_case_strcmp ((unsigned char *) from_buf, (unsigned char *) me_buf))
+   if (slrn_case_strcmp ( from_buf,  me_buf))
      {
         slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from_buf);
         return;
@@ -4243,7 +4254,7 @@ int slrn_save_current_article (char *file) /*{{{*/
 
 static int save_article_as_unix_mail (Slrn_Header_Type *h, FILE *fp) /*{{{*/
 {
-   int is_wrapped = 0, undo_mime = 0;
+   int is_wrapped = 0;
    Slrn_Article_Line_Type *l = NULL;
    Slrn_Article_Type *a = Slrn_Current_Article;
    char *from;
@@ -6881,7 +6892,10 @@ static void art_xpunge (void) /*{{{*/
 
 static void cancel_article (void) /*{{{*/
 {
-   char *me, *msgid, *newsgroups, *dist, *can_key;
+   char *me, *msgid, *newsgroups, *dist;
+#if SLRN_HAS_CANLOCK
+   char *can_key;
+#endif
    char from_buf[512], me_buf[512], *from;
    Slrn_Mime_Error_Obj *err;
    
@@ -6901,7 +6915,7 @@ static void cancel_article (void) /*{{{*/
    if (NULL == (me = slrn_make_from_string ())) return;
    (void) parse_from (me+6, me_buf, sizeof(me_buf));
    
-   if (slrn_case_strcmp ((unsigned char *) from_buf, (unsigned char *) me_buf))
+   if (slrn_case_strcmp ( from_buf,  me_buf))
      {
         slrn_error (_("Failed: Your name: '%s' is not '%s'"), me_buf, from_buf);
         slrn_free(me);
@@ -8542,7 +8556,7 @@ static void disp_write_grplens (Slrn_Header_Type *h)
 	  }
      }
    slrn_set_color (GROUPLENS_DISPLAY_COLOR);
-   slrn_write_nchars (buf, SLRN_GROUPLENS_DISPLAY_WIDTH);
+   slrn_write_nchars (buf, buf + sizeof(buf), SLRN_GROUPLENS_DISPLAY_WIDTH);
    slrn_set_color (0);
 }
 #endif

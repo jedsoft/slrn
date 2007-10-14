@@ -1,8 +1,8 @@
 src/art.c
 src/art_misc.c
 src/art_sort.c
+src/charset.c
 src/chkslang.c
-src/chmap.c
 src/clientlib.c
 src/decode.c
 src/editscore.c
@@ -10,6 +10,7 @@ src/group.c
 src/grplens.c
 src/hash.c
 src/help.c
+src/hooks.c
 src/interp.c
 src/menu.c
 src/mime.c
@@ -18,6 +19,7 @@ src/nntp.c
 src/nntplib.c
 src/post.c
 src/print.c
+src/ranges.c
 src/score.c
 src/server.c
 src/slrn.c
@@ -28,6 +30,7 @@ src/snprintf.c
 src/sortdate.c
 src/spool.c
 src/startup.c
+src/strutil.c
 src/ttymsg.c
 src/util.c
 src/version.c

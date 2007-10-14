@@ -20,6 +20,8 @@
 */
 #ifndef _SLRN_NNTPLIB_H
 #define _SLRN_NNTPLIB_H
+#include "sltcp.h"
+
 typedef struct 
 {
 #define NNTP_RECONNECT_OK	0x1

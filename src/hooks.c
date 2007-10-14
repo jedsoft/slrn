@@ -25,6 +25,7 @@
 #include "slrn.h"
 #include "util.h"
 #include "hooks.h"
+#include "strutil.h"
 
 typedef struct Slrn_Hook_Function_Type {
    char *function;

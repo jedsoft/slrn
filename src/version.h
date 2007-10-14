@@ -19,22 +19,12 @@
  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-/* Keep this separate from autoconf's settings for now */
-#define MY_VERSION "0.9.8.1"
-#define SLRN_VERSION_NUMBER 90802
-#define PATCH_LEVEL "2"
-#define SLRN_RELEASE_DATE "2005-02-17"
-
-#ifdef PATCH_LEVEL
-# define SLRN_VERSION (MY_VERSION "pl" PATCH_LEVEL)
-#else  
-# define SLRN_VERSION (MY_VERSION)
-#endif
+#define SLRN_VERSION_STRING "pre0.9.9-5"
+#define SLRN_VERSION 990
 
 #ifndef SLRNPULL_CODE
-extern char *Slrn_Version;
-extern int Slrn_Version_Number;
-extern char *Slrn_Date;
+extern char *Slrn_Version_String;
+extern int Slrn_Version;
 extern char *slrn_get_os_name (void);
 extern void slrn_show_version (void);
 #endif

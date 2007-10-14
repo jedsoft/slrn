@@ -47,8 +47,10 @@
 #include "menu.h"
 #include "hash.h"
 #include "util.h"
+#include "strutil.h"
 #include "snprintf.h"
 #include "hooks.h"
+#include "common.h"
 
 /*}}}*/
 
@@ -1037,23 +1039,23 @@ static void compile_function_list(char *order, sort_function_type **Functions) /
    
    while (-1 != SLextract_list_element (order, nth, ',', buf, sizeof(buf)))
      {
-	if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Subject"))
+	if (! slrn_case_strcmp(buf, "Subject"))
 	  add_sort_function(Functions, header_subject_cmp, isupper(buf[0]));
-	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Score"))
+	else if (! slrn_case_strcmp(buf, "Score"))
 	  add_sort_function(Functions, header_score_cmp, isupper(buf[0]));
-	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Highscore"))
+	else if (! slrn_case_strcmp(buf, "Highscore"))
 	  add_sort_function(Functions, header_highscore_cmp, isupper(buf[0]));
-	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Date"))
+	else if (! slrn_case_strcmp(buf, "Date"))
 	  add_sort_function(Functions, header_date_cmp, isupper(buf[0]));
-	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Author"))
+	else if (! slrn_case_strcmp(buf, "Author"))
 	  add_sort_function(Functions, header_author_cmp, isupper(buf[0]));
-	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Lines"))
+	else if (! slrn_case_strcmp(buf, "Lines"))
 	  add_sort_function(Functions, header_lines_cmp, isupper(buf[0]));
-	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Number"))
+	else if (! slrn_case_strcmp(buf, "Number"))
 	  add_sort_function(Functions, header_num_cmp, isupper(buf[0]));
-	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Id"))
+	else if (! slrn_case_strcmp(buf, "Id"))
 	  add_sort_function(Functions, header_msgid_cmp, isupper(buf[0]));
-	else if (! slrn_case_strcmp((unsigned char*)buf, (unsigned char*)"Body"))
+	else if (! slrn_case_strcmp(buf, "Body"))
 	  add_sort_function(Functions, header_has_body_cmp, isupper(buf[0]));
 	else /* Nonexistant sorting method */
 	  {

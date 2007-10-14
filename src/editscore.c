@@ -40,6 +40,8 @@
 #include "score.h"
 #include "util.h"
 #include "slrn.h"
+#include "common.h"
+#include "strutil.h"
 
 /* In pathological situations, "Subject" or "From" header fields may include
  * (MIME-encoded) linebreaks that would lead to invalid scorefile entries, so

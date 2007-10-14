@@ -30,6 +30,7 @@
 
 #include "hash.h"
 #include "snprintf.h"
+#include "strutil.h"
 
 unsigned long slrn_compute_hash (unsigned char *s, unsigned char *smax)
 {

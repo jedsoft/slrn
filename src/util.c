@@ -50,225 +50,39 @@
 #include "ttymsg.h"
 #include "snprintf.h"
 #include "slrn.h"
+#include "strutil.h"
+#include "common.h"
 
-/* This function allows NULL as a parameter. This fact _is_ exploited */
-char *slrn_skip_whitespace (char *b) /*{{{*/
+size_t slrn_charset_strlen (const char *str, char *cset)
 {
-   if (b == NULL) return NULL;
-   
-   while (isspace (*b))
-     b++;
-
-   return b;
-}
-
-/*}}}*/
-
-char *slrn_bskip_whitespace (char *smin)
-{
-   char *s;
-
-   if (smin == NULL) return NULL;
-   s = smin + strlen (smin);
-
-   while (s > smin)
-     {
-	s--;
-	if (0 == isspace(*s))
-	  return s + 1;
-     }
-   return s;
-}
-
-   
-/* returns a pointer to the end of the string */
-char *slrn_trim_string (char *s) /*{{{*/
-{
-   s = slrn_bskip_whitespace (s);
-   if (s != NULL)
-     *s = 0;
-
-   return s;
-}
-/*}}}*/
-
-char *slrn_strchr (char *s, char ch) /*{{{*/
-{
-   register char ch1;
-   
-   while (((ch1 = *s) != 0) && (ch != ch1)) s++;
-   if (ch1 == 0) return NULL;
-   return s;
-}
-
-/*}}}*/
-
-/* Search for characters from list in string str.  If found, return a pointer
- * to the first occurrence.  If not found, return NULL. */
-char *slrn_strbrk (char *str, char *list) /*{{{*/
-{
-   char ch, ch1, *p;
-   
-   while ((ch = *str) != 0)
-     {
-	p = list;
-	while ((ch1 = *p) != 0)
-	  {
-	     if (ch == ch1) return str;
-	     p++;
-	  }
-	str++;
-     }
-   return NULL;
-}
-
-/*}}}*/
-
-char *slrn_simple_strtok (char *s, char *chp) /*{{{*/
-{
-   static char *s1;
-   char ch = *chp;
-   
-   if (s == NULL)
-     {
-	if (s1 == NULL) return NULL;
-	s = s1;
-     }
-   else s1 = s;
-   
-   while (*s1 && (*s1 != ch)) s1++;
-   
-   if (*s1 == 0)
-     {
-	s1 = NULL;
-     }
-   else *s1++ = 0;
-   return s;
-}
-
-/*}}}*/
-
-
-int slrn_case_strncmp (unsigned char *a, register unsigned char *b, register unsigned int n) /*{{{*/
-{
-   register unsigned char cha, chb, *bmax;
-   
-#if SLANG_VERSION >= 20000
-   if (Slrn_UTF8_Mode)
-     {
-	if (a == NULL)
-	  {
-	     if (b == NULL)
-	       return 0;
-	     else
-	       return -1;
-	  }
-	if (b == NULL)
-	  return 1;
-	
-	return SLutf8_compare(a, a+strlen(a), b, b+strlen(b), n , 0);
-     }
-#endif
-   bmax = b + n;
-   while (b < bmax)
-     {
-	cha = UPPER_CASE(*a);
-	chb = UPPER_CASE(*b);
-	if (cha != chb)
-	  {
-	     return (int) cha - (int) chb;
-	  }
-	else if (chb == 0) return 0;
-	b++;
-	a++;
-     }
-   return 0;
-}
-
-/*}}}*/
-
-int slrn_case_strcmp (unsigned char *a, register unsigned char *b) /*{{{*/
-{
-   register unsigned char cha, chb;
-   int len_a,len_b,min;
-   
-#if SLANG_VERSION >= 20000
-   if (Slrn_UTF8_Mode)
-     {
-	if (a == NULL)
-	  {
-	     if (b == NULL)
-	       return 0;
-	     else
-	       return -1;
-	  }
-	if (b == NULL)
-	  return 1;
-	len_a=strlen(a);
-	len_b=strlen(b);
-	if (len_a > len_b)
-	  min = len_b;
-	else
-	  min = len_a;
-	return SLutf8_compare(a, a+len_a, b, b+len_b, min , 0);
-     }
-#endif
-   while (1)
-     {
-	cha = UPPER_CASE(*a);
-	chb = UPPER_CASE(*b);
-	if (cha != chb)
-	  {
-	     return (int) cha - (int) chb;
-	  }
-	else if (chb == 0) break;
-	b++;
-	a++;
-     }
-   return 0;
-}
-
-/*}}}*/
-
-#if SLANG_VERSION >= 20000
-size_t slrn_utf8_strlen (const char *str) /*{{{*/
-{
-  return SLutf8_strlen ((char*)str, 1);
-} /*}}}*/
-#endif
-
-size_t slrn_charset_strlen (const char *str, unsigned char *cset)
-{
-  if (cset && !slrn_case_strcmp(cset,"utf-8"))
-    return slrn_utf8_strlen (str);
+  if ((cset != NULL) && !slrn_case_strcmp(cset,"utf-8"))
+     return SLutf8_strlen ((SLuchar_Type *)str, 1);
   else
-    return strlen (str);
+     return strlen (str);
 }
 
 /* Find out how many characters (columns) a string would use on screen.
  * If len>=0, only the first len bytes are examined.
  */
-int slrn_screen_strlen (const char *s, int len) /*{{{*/
+int slrn_screen_strlen (const char *s, const char *smax) /*{{{*/
 {
-   int retval = 0;
-
-   if (len<0)
-     len = strlen(s);
+   if (smax == NULL)
+     smax = s + strlen (s);
    
 #if SLANG_VERSION >= 20000
    if (Slrn_UTF8_Mode)
      {
-	return SLsmg_strwidth ((SLuchar_Type *) s, (SLuchar_Type *) (s+len));
+	return SLsmg_strwidth ((SLuchar_Type *) s, (SLuchar_Type *) smax);
      }
    else
 #endif
      {
-	int i;
-	retval = 0;
-	for (i = 0; i<len; i++)
+	int retval = 0;
+	while (s < smax)
 	  {
-	    unsigned char ch=s[i];
-	    if ((ch == '\t') && (SLsmg_Tab_Width > 0))
+	     unsigned char ch= (unsigned char) *s++;
+
+	     if ((ch == '\t') && (SLsmg_Tab_Width > 0))
 	       {
 		  retval += SLsmg_Tab_Width;
 		  retval -= retval % SLsmg_Tab_Width;
@@ -278,16 +92,12 @@ int slrn_screen_strlen (const char *s, int len) /*{{{*/
 	       retval++;
 	     else
 	       {
-		  retval += 2;
-#if SLANG_VERSION < 20000
-		  if (ch & 0x80) retval++;
-#else
-		  if (ch & 0x80) retval += 2;
-#endif
+		  retval += 2;	       /* ^X */
+		  if (ch & 0x80) retval += 2;   /* <XX> */
 	       }
 	  }
+	return retval;
      }
-   return retval;
 }
 /*}}}*/
 
@@ -464,90 +274,6 @@ int slrn_dircat (char *dir, char *name, char *file, size_t n)
    return 0;
 }
 
-/*{{{ Memory Allocation Routines */
-
-static char *do_malloc_error (int do_error)
-{
-   if (do_error) slrn_error (_("Memory allocation failure."));
-   return NULL;
-}
-
-char *slrn_safe_strmalloc (char *s) /*{{{*/
-{
-   s = SLmake_string (s);
-   if (s == NULL) slrn_exit_error (_("Out of memory."));
-   return s;
-}
-
-/*}}}*/
-
-char *slrn_safe_strnmalloc (char *s, unsigned int len)
-{
-   s = SLmake_nstring (s, len);
-   if (s == NULL) slrn_exit_error (_("Out of memory."));
-   return s;
-}
-
-char *slrn_strnmalloc (char *s, unsigned int len, int do_error)
-{
-   s = SLmake_nstring (s, len);
-   
-   if (s == NULL)
-     return do_malloc_error (do_error);
-   
-   return s;
-}
-
-char *slrn_strmalloc (char *s, int do_error)
-{
-   if (s == NULL) return NULL;
-   return slrn_strnmalloc (s, strlen (s), do_error);
-}
-
-
-char *slrn_malloc (unsigned int len, int do_memset, int do_error)
-{   
-   char *s;
-   
-   s = (char *) SLmalloc (len);
-   if (s == NULL)
-     return do_malloc_error (do_error);
-
-   if (do_memset)
-     memset (s, 0, len);
-   
-   return s;
-}
-
-char *slrn_realloc (char *s, unsigned int len, int do_error)
-{
-   if (s == NULL)
-     return slrn_malloc (len, 0, do_error);
-   
-   s = SLrealloc (s, len);
-   if (s == NULL)
-     return do_malloc_error (do_error);
-	
-   return s;
-}
-
-char *slrn_safe_malloc (unsigned int len)
-{
-   char *s;
-   
-   s = slrn_malloc (len, 1, 0);
-
-   if (s == NULL)
-     slrn_exit_error (_("Out of memory"));
-   
-   return s;
-}
-
-void slrn_free (char *s)
-{
-   if (s != NULL) SLfree (s);
-}
-
 void slrn_free_argc_argv_list (unsigned int argc, char **argv)
 {
    while (argc)
@@ -557,7 +283,6 @@ void slrn_free_argc_argv_list (unsigned int argc, char **argv)
      }
 }
 
-/*}}}*/
 
 char *slrn_fix_regexp (char *pat) /*{{{*/
 {
@@ -855,17 +580,24 @@ int slrn_move_file (char *infile, char *outfile)
  * that flags backup files. */
 char *slrn_make_backup_filename (char *filename)
 {
-#ifdef VMS
-   return slrn_strdup_printf ("%s-bak", filename);
-#else
-# ifdef SLRN_USE_OS2_FAT
+#ifdef SLRN_USE_OS2_FAT
    unsigned int len = strlen(filename)+5;
    char *retval = slrn_safe_malloc (len);
    slrn_os2_make_fat (retval, len, filename, ".bak");
    return retval;
+#else
+   unsigned int len;
+   char *suffix;
+   char *retval;
+# ifdef VMS
+   suffix = "-bak";
 # else
-   return slrn_strdup_printf ("%s~", filename);
+   suffix = "~";
 # endif
+   len = 1 + strlen (suffix) + strlen (filename);
+   retval = slrn_safe_malloc (len);
+   (void) sprintf (retval, "%s%s", filename, suffix);
+   return retval;
 #endif
 }
 

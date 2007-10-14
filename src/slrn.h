@@ -28,7 +28,6 @@ extern int Slrn_Use_Flow_Control;
 extern int Slrn_Simulate_Graphic_Chars;
 extern int Slrn_Saw_Warning;
 #if SLANG_VERSION >= 20000
-extern int Slrn_UTF8_Mode;
 # ifndef SLRL_DISPLAY_BUFFER_SIZE
 #  define SLRL_DISPLAY_BUFFER_SIZE 256
 # endif

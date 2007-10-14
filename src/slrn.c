@@ -73,6 +73,7 @@
 
 #include <errno.h>
 
+#include "common.h"
 #include "util.h"
 #include "server.h"
 #include "slrn.h"
@@ -87,6 +88,7 @@
 #include "xover.h"
 #include "mime.h"
 #include "hooks.h"
+#include "strutil.h"
 
 #if SLRN_USE_SLTCP
 # include "sltcp.h"
@@ -917,6 +919,18 @@ void slrn_exit_error (char *fmt, ...) /*{{{*/
 
 /*}}}*/
 
+void slrn_error (char *fmt, ...) /*{{{*/
+{
+   va_list ap;
+
+   va_start(ap, fmt);
+   slrn_verror (fmt, ap);
+   va_end (ap);
+}
+
+/*}}}*/
+
+
 static void usage (char *extra) /*{{{*/
 {
    printf (_("\
@@ -1026,8 +1040,8 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
    (void) setlocale(LC_ALL, "");
 #endif
 #ifdef ENABLE_NLS
-   bindtextdomain(PACKAGE,LOCALEDIR);
-   textdomain(PACKAGE);
+   bindtextdomain(NLS_PACKAGE_NAME, NLS_LOCALEDIR);
+   textdomain (NLS_PACKAGE_NAME);
 #endif
 
    check_for_suspension ();
@@ -1136,7 +1150,7 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
 	  }
      }
    
-   fprintf (stdout, "slrn %s [%s]\n", Slrn_Version, Slrn_Date);
+   fprintf (stdout, "slrn %s\n", Slrn_Version_String);
 
    if (dsc_flag && create_flag)
      {
@@ -1145,16 +1159,14 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
    
    if (Slrn_Batch == 0)
      {
-#if SLANG_VERSION >= 20000
 	Slrn_UTF8_Mode = SLutf8_enable (-1);
-#endif
-	
 	SLtt_get_terminfo ();
 	if (use_color == 1) SLtt_Use_Ansi_Colors = 1;
 	else if (use_color == -1) SLtt_Use_Ansi_Colors = 0;
      }
 
 #if SLRN_USE_SLTCP && SLRN_HAS_NNTP_SUPPORT
+   SLtcp_Verror_Hook = slrn_verror;
    /* This is necessary to ensure that gethostname works on Win32 */
    if (-1 == sltcp_open_sltcp ())
      slrn_exit_error (_("Error initializing SLtcp interface"));
@@ -1183,9 +1195,9 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
    slrn_init_hangup_signals (1);
 
 #ifdef VMS
-   slrn_snprintf (file, sizeof (file), "%s%s", SYSCONFDIR, "slrn.rc");
+   slrn_snprintf (file, sizeof (file), "%s%s", SLRN_CONF_DIR, "slrn.rc");
 #else
-   slrn_snprintf (file, sizeof (file), "%s/%s", SYSCONFDIR, "slrn.rc");
+   slrn_snprintf (file, sizeof (file), "%s/%s", SLRN_CONF_DIR, "slrn.rc");
 #endif
 
    /* Make sure terminal is initialized before setting colors.  The 
@@ -1277,9 +1289,9 @@ cannot be constructed.  Try setting the USER environment variable.\n"));
      {
 	hlp_file = file;
 #ifdef VMS
-	slrn_snprintf (file, sizeof (file), "%s%s", SYSCONFDIR, "help.txt");
+	slrn_snprintf (file, sizeof (file), "%s%s", SLRN_CONF_DIR, "help.txt");
 #else
-	slrn_snprintf (file, sizeof (file), "%s/%s", SYSCONFDIR, "help.txt");
+	slrn_snprintf (file, sizeof (file), "%s/%s", SLRN_CONF_DIR, "help.txt");
 #endif
      }
 	

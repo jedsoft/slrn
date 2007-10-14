@@ -18,7 +18,7 @@
 # include <langinfo.h>
 #endif
 
-#ifdef HAVE_ICONV_H
+#ifdef HAVE_ICONV
 # include <iconv.h>
 #endif
 
@@ -30,13 +30,16 @@
 #include "util.h"
 #include "snprintf.h"
 #include "mime.h"
+#include "strutil.h"
+#include "charset.h"
+#include "common.h"
 
 char *Slrn_Config_Charset  = NULL;
 char *Slrn_Display_Charset  = NULL;
 char *Slrn_Editor_Charset  = NULL;
 char *Slrn_Outgoing_Charset  = NULL;
 
-void slrn_init_charset()
+void slrn_init_charset (void)
 {
 #if defined(HAVE_LOCALE_H) && defined(HAVE_LANGINFO_H)
   if (Slrn_Display_Charset == NULL)
@@ -47,11 +50,14 @@ void slrn_init_charset()
 #endif
 }
 
-void slrn_prepare_charset()
+void slrn_prepare_charset (void)
 {
   if (Slrn_Display_Charset == NULL)
     {
-       Slrn_Display_Charset = slrn_safe_strmalloc ("US-ASCII");
+       char *charset = "US-ASCII";
+       if (Slrn_UTF8_Mode)
+	 charset = "UTF-8";
+       Slrn_Display_Charset = slrn_safe_strmalloc (charset);
     }
   if (Slrn_Outgoing_Charset == NULL)
     {
@@ -76,111 +82,155 @@ int slrn_string_nonascii(char *str)
   return 0;
 }
 
-#ifdef HAVE_ICONV_H
+#ifdef HAVE_ICONV
 /* returns the converted string, or NULL on error or if no convertion is needed*/
-static char *iconv_convert_string(iconv_t cd, char *in_str, int offset, size_t len, int test, int *error)
+/* Returns 1 if iconv succeeded, 0 if it failed, or -1 upon some other error.
+ * This function returns 0 only if test is 1.  Otherwise, if test is 0 and
+ * illegal bytes are encountered, they will be replaced by ?s.
+ */
+static int iconv_convert_string (iconv_t cd, char *str, size_t len, int test, char **outstrp)
 {
-  char *in_start=in_str;
-  char *out_str,*out_start;
-  char *ret;
-  int n=2;
-  size_t in_len, out_len, iconv_ret;
-  
-  while (n <= 42)
-    {
-       if (offset != 0)
-	 {
-	    in_str+= offset;
-	 }
-       in_len=strlen(in_str);
-       if(len)
-	 {
-	    out_len=in_len + (n-1)*len + offset;
-	    in_len=len;
-	 }
-       else
-	 {
-	    out_len=n*in_len + offset;
-	 }
-       out_start=out_str=slrn_safe_malloc(out_len+2);
-       if (offset > 0)
-	 {
-	     strncpy(out_str, in_start, offset);
-	     out_str=out_str+(offset);
-	     out_len=out_len-offset;
-	 }
-       iconv_ret=iconv (cd, &in_str, &in_len, &out_str, &out_len);
-       while ((in_len != 0) && ((iconv_ret == (size_t) (-1)) && (errno != E2BIG)) )
-	 {
+   char *buf, *bufp;
+   unsigned int buflen;
+   size_t inbytesleft;
+   size_t outbytesleft;
+   int fail_error;
+   int need_realloc;
+
+   if (len == 0)
+     return 0;
+
+   if (test)
+     fail_error = 0;
+   else
+     fail_error = -1;
+
+   *outstrp = NULL;
+   inbytesleft = len;
+   bufp = buf = NULL;
+   buflen = 0;
+   outbytesleft = 0;
+   need_realloc = 1;
+
+   while (inbytesleft)
+     {
+	size_t ret;
+	
+	if (need_realloc)
+	  {
+	     char *tmpbuf;
+	     unsigned int dsize = 2*len;
+	     buflen += dsize;
+	     outbytesleft += dsize;
+	     if (NULL == (tmpbuf = slrn_realloc (buf, buflen+1, test==0)))
+	       {
+		  slrn_free (buf);
+		  return fail_error;
+	       }
+	     bufp = tmpbuf + (bufp - buf);
+	     buf = tmpbuf;
+	     need_realloc = 0;
+	  }
+
+	errno = 0;
+	ret = iconv (cd, &str, &inbytesleft, &bufp, &outbytesleft);
+	if (ret != (size_t) -1)
+	  break;
+
+	switch (errno)
+	  {
+	   default:
+	   case EINVAL:
+	   case EILSEQ:	       /* invalid byte sequence */
 	     if (test)
 	       {
-		  if (error != NULL)
-		       *error =1;
-		  slrn_free(out_start);
-		  return NULL;
+		  slrn_free (buf);
+		  return 0;
 	       }
-	     if (out_len != 0)
-	       {
-		  *out_str='?';
-		  ++out_str;
-		  ++in_str;
-		  --out_len;
-		  --in_len;
-	       }
-	     else
-		break;
-	     iconv_ret=iconv (cd, &in_str, &in_len, &out_str, &out_len);
-	 }
-       if (len != 0)
-	    in_len=strlen(in_str);
-       if ( ( (iconv_ret == (size_t) (-1)) && (errno == E2BIG) )||
-		 ((len != 0) && (in_len +1> out_len )) )
-	 {
-	    in_str=in_start;
-	    n++;
-	    slrn_free(out_start);
-	    out_start=NULL;
-	    continue;
-	 }
-       if (len != 0)
-	 {
-	    strncpy(out_str, in_str, in_len);
-	    out_len -= in_len;
-	    out_str += in_len;
-	 }
-       if(*out_str != '\0')
-	 {
-	     *out_str='\0';
-	     out_str++;
-	 }
-       break;
-    }
-  if (out_start==NULL)
-    {
-       slrn_error (_("Not enough room to store converted string"));
-       return NULL;
-    }
-       
-  ret = slrn_safe_strmalloc (out_start);/* one more malloc, but less memory needed */
-  slrn_free(out_start);
-  return ret;
+	     *bufp++ = '?';
+	     str++;
+	     inbytesleft--;
+	     outbytesleft--;
+	     /* FIXME: Should the shift-state be reset? */
+	     break;
+	     
+	   case 0:		       /* windows bug */
+	   case E2BIG:
+	     need_realloc = 1;
+	     break;
+	  }
+     }
+   
+   len = (unsigned int) (bufp - buf);
+   bufp = slrn_realloc (buf, len+1, 1);
+   if (bufp == NULL)
+     {
+	slrn_free (buf);
+	return fail_error;
+     }
+   bufp[len] = 0;
+   *outstrp = bufp;
+
+   return 1;
 }
 #endif
 
-char *slrn_convert_substring(char *str, int offset, int len, char *to_charset, char *from_charset, int test)
+char *slrn_convert_substring(char *str, unsigned int offset, unsigned int len, char *to_charset, char *from_charset, int test)
 {
-#ifdef HAVE_ICONV_H
+#ifdef HAVE_ICONV
    iconv_t cd;
-   char *tmp;
+   char *substr;
+   int status;
+   char *new_str;
+   unsigned int new_len;
+   unsigned int dlen;
+
+   new_len = strlen (str);
+   if (len == 0)
+     return NULL;
+
+   if (offset + len > new_len)
+     {
+	slrn_error ("Internal Error in slrn_convert_substring");
+	return NULL;		       /* internal error */
+     }
 
    if ((cd = iconv_open(to_charset, from_charset)) == (iconv_t)(-1))
      {
 	slrn_error (_("Can't convert %s -> %s\n"), from_charset, to_charset);
 	return NULL;
      }
-   tmp = iconv_convert_string(cd, str, offset, len, test, NULL);
+
+   status = iconv_convert_string (cd, str+offset, len, test, &substr);
    iconv_close(cd);
-   return tmp;
+
+   if (status == 0)
+     return NULL;
+
+   if (status == -1)
+     return NULL;
+   
+   dlen = strlen (substr);
+   new_len = (new_len - len) + dlen;
+   new_str = slrn_malloc (new_len + 1, 0, 1);
+   if (new_str == NULL)
+     {
+	slrn_free (substr);
+	return NULL;
+     }
+   strncpy (new_str, str, offset);
+   strcpy (new_str + offset, substr);
+   strcpy (new_str + offset + dlen, str + offset + len);
+   slrn_free (substr);
+   return new_str;
+#else
+   (void) str;
+   (void) offset;
+   (void) len;
+   (void) to_charset;
+   (void) from_charset;
+   (void) test;
+   return NULL;
 #endif
 }
 
@@ -197,8 +247,9 @@ int slrn_test_and_convert_string(char *str, char **dest, char *to_charset, char 
    if (!slrn_string_nonascii(str))
 	return 0;
 
-   if((*dest = slrn_convert_substring(str, 0, 0, to_charset, from_charset, 0)) == NULL)
-	return -1;
+   if(NULL == (*dest = slrn_convert_substring(str, 0, 0, to_charset, from_charset, 0)))
+     return -1;
+
    return 0;
 }
 
@@ -227,7 +278,7 @@ int slrn_convert_fprintf(FILE *fp, char *to_charset, char *from_charset, const c
 	return retval;
      }
    
-   if ((tmp = slrn_convert_substring(str, 0, 0, to_charset, from_charset, 0)) == NULL)
+   if (NULL == (tmp = slrn_convert_substring(str, 0, 0, to_charset, from_charset, 0)))
      {
 	slrn_free(str);
 	return -1;
@@ -242,7 +293,7 @@ int slrn_convert_fprintf(FILE *fp, char *to_charset, char *from_charset, const c
 /* converts a->lines */
 int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_charset)
 {
-#ifdef HAVE_ICONV_H
+#ifdef HAVE_ICONV
    iconv_t cd;
    char *tmp;
    struct Slrn_Article_Line_Type *line=a->lines;
@@ -260,7 +311,7 @@ int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_char
    
    while (line != NULL)
      {
-	if ((tmp = iconv_convert_string(cd, line->buf, 0, 0, 0, NULL)) != NULL)
+	if (1 == iconv_convert_string(cd, line->buf, strlen (line->buf), 0, &tmp)) 
 	  {
 	     slrn_free((char *) line->buf);
 	     line->buf=tmp;
@@ -269,14 +320,18 @@ int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_char
 	line=line->next;
      }
    iconv_close(cd);
-   return 0;
+#else
+   (void) a;
+   (void) to_charset;
+   (void) from_charset;
 #endif
+   return 0;
 }
 
 /* converts a->raw_lines and stores the encoded lines in a->lines*/
 int slrn_test_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_charset)
 {
-#ifdef HAVE_ICONV_H
+#ifdef HAVE_ICONV
    Slrn_Article_Line_Type *rline, *elines=NULL, *tmp;
    char *nline;
    int error=0;
@@ -295,49 +350,48 @@ int slrn_test_convert_article(Slrn_Article_Type *a, char *to_charset, char *from
 	if (slrn_string_nonascii(rline->buf))
 	  {
 	     error=0;
-	     if ((nline = iconv_convert_string(cd, rline->buf, 0, 0, 1, &error)) != NULL)
+	     
+	     switch (iconv_convert_string(cd, rline->buf, strlen (rline->buf), 1, &nline))
 	       {
+		case 1:
 		  if (elines==NULL)
 		    {
-		       elines = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+		       elines = (Slrn_Article_Line_Type *) slrn_safe_malloc (sizeof(Slrn_Article_Line_Type));
 		    }
 		  else
 		    {
-		       elines->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+		       elines->next = (Slrn_Article_Line_Type *) slrn_safe_malloc (sizeof(Slrn_Article_Line_Type));
 		       elines->next->prev=elines;
 		       elines = elines->next;
 		    }
 		  elines->buf=nline;
-	       }
-	     else
-	       {
-		  if (error==0)
+		  break;
+
+		case 0:
+		  if (elines==NULL)
 		    {
-		       if (elines==NULL)
-			 {
-			    elines = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-			 }
-		       else
-			 {
-			    elines->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-			    elines->next->prev=elines;
-			    elines = elines->next;
-			 }
-		       elines->buf=slrn_safe_strmalloc(rline->buf);
+		       elines = (Slrn_Article_Line_Type *) slrn_safe_malloc (sizeof(Slrn_Article_Line_Type));
 		    }
 		  else
 		    {
-		       if (elines != NULL)
-			 {
-			    while (elines->prev != NULL)
-			      {
-				 elines = elines->prev;
-			      }
-		       
-			    slrn_art_free_article_line(elines);
-			 }
-		       return -1;
+		       elines->next = (Slrn_Article_Line_Type *) slrn_safe_malloc (sizeof(Slrn_Article_Line_Type));
+		       elines->next->prev=elines;
+		       elines = elines->next;
 		    }
+		  elines->buf=slrn_safe_strmalloc (rline->buf);
+		  break;
+		  
+		default:
+		  if (elines != NULL)
+		    {
+		       while (elines->prev != NULL)
+			 {
+			    elines = elines->prev;
+			 }
+		       slrn_art_free_article_line(elines);
+		    }
+		  return -1;
+		  break;
 	       }
 	  }
 	rline=rline->next;
@@ -376,6 +430,11 @@ int slrn_test_convert_article(Slrn_Article_Type *a, char *to_charset, char *from
 	a->cline->next=NULL;
      }
    a->raw_lines=NULL;
+   return 0;
+#else
+   (void) a;
+   (void) to_charset;
+   (void) from_charset;
    return 0;
 #endif
 }

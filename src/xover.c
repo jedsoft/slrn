@@ -46,6 +46,8 @@
 #endif /* NOT SLRNPULL_CODE */
 
 #include "xover.h"
+#include "strutil.h"
+#include "common.h"
 
 #ifndef SLRNPULL_CODE
 # include "server.h"
@@ -130,14 +132,14 @@ static void parse_headers (void) /*{{{*/
 	  {
 	     if ((Xover_Headers[i].value == NULL)
 		 && (len == Xover_Headers[i].name_len)
-		 && (!slrn_case_strcmp ((unsigned char *)h, 
-					(unsigned char *) Xover_Headers[i].name)))
+		 && (!slrn_case_strcmp (h, 
+					 Xover_Headers[i].name)))
 	       {
 		  Xover_Headers[i].value = colon;
 		  break;
 	       }
 	     else if ((Xref == NULL) && (len == 4) &&
-		      (!slrn_case_strcmp ((unsigned char *)h, (unsigned char *)"Xref")))
+		      (!slrn_case_strcmp (h, "Xref")))
 	       {
 		  Xref = colon;
 		  break;
@@ -146,8 +148,8 @@ static void parse_headers (void) /*{{{*/
 	
 	for (addh = Additional_Headers; addh != NULL; addh = addh->next)
 	  if ((len == addh->name_len)
-	      && (0 == slrn_case_strcmp ((unsigned char *)h,
-					 (unsigned char *) addh->name)))
+	      && (0 == slrn_case_strcmp (h,
+					  addh->name)))
 	    {
 	       addh->value = colon;
 	       break;
@@ -155,8 +157,8 @@ static void parse_headers (void) /*{{{*/
 	
 #if SLRN_HAS_FAKE_REFS
 	if ((In_Reply_To == NULL) && (len == 11) &&
-	    (0 == slrn_case_strcmp ((unsigned char *)h,
-				    (unsigned char *) "In-Reply-To")))
+	    (0 == slrn_case_strcmp (h,
+				     "In-Reply-To")))
 	  In_Reply_To = colon;
 #endif
 	
@@ -343,8 +345,8 @@ char *slrn_extract_add_header (Slrn_Header_Type *h, char *hdr) /*{{{*/
    for (l = h->add_hdrs; l != NULL; l = l->next)
      {
 	if ((l->name_len == len) &&
-	    (0 == slrn_case_strncmp ((unsigned char *) l->name,
-				     (unsigned char *) hdr, len)))
+	    (0 == slrn_case_strncmp ( l->name,
+				      hdr, len)))
 	  return l->value;
      }
    
@@ -396,8 +398,8 @@ void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h)
      }
    else h->msgid = xov->message_id;
    
-   h->hash = slrn_compute_hash ((unsigned char *) h->msgid,
-				(unsigned char *) h->msgid + strlen (h->msgid));
+   h->hash = slrn_compute_hash ( (unsigned char *)h->msgid,
+				 (unsigned char *)h->msgid + strlen (h->msgid));
 }
 
 typedef struct Overview_Fmt_Type
@@ -436,8 +438,8 @@ int slrn_read_overview_fmt (void) /*{{{*/
 	  {
 	     if ((len = strlen (line)) && (line[len-1] == ':'))
 	       line[len-1] = 0;
-	     if (slrn_case_strcmp ((unsigned char*) line,
-				   (unsigned char*) Xover_Headers[i++].name))
+	     if (slrn_case_strcmp ( line,
+				    Xover_Headers[i++].name))
 	       {
 		  while (Slrn_Server_Obj->sv_read_line (line, sizeof (line)) == 1)
 		    continue; /* discard remaining output */
@@ -471,7 +473,7 @@ int slrn_read_overview_fmt (void) /*{{{*/
 		  break;
 	       }
 	     
-	     if (!slrn_case_strcmp ((unsigned char*) line, (unsigned char*)"Xref"))
+	     if (!slrn_case_strcmp ( line, "Xref"))
 	       new_entry->value = &Xref;
 	     if (!strcmp (p, "full"))
 	       new_entry->full = 1;
@@ -533,8 +535,8 @@ void slrn_request_additional_header (char *hdr, int expensive) /*{{{*/
    while (h != NULL)
      {
 	if ((h->name_len == len) &&
-	    (0 == slrn_case_strcmp ((unsigned char*) hdr,
-				    (unsigned char*) h->name)))
+	    (0 == slrn_case_strcmp ( hdr,
+				     h->name)))
 	  return; /* This one was already requested. */
 	hh = &h->next;
 	h = h->next;
@@ -547,8 +549,7 @@ void slrn_request_additional_header (char *hdr, int expensive) /*{{{*/
    for (o = Overview_Fmt; o != NULL; o = o->next)
      {
 	if ((o->value == NULL) &&
-	    !slrn_case_strcmp ((unsigned char*)hdr,
-			       (unsigned char*)o->name))
+	    !slrn_case_strcmp (hdr, o->name))
 	  {
 	     o->value = &h->value;
 	     break;
@@ -594,12 +595,13 @@ static Slrn_Header_Line_Type *copy_add_headers (Slrn_Header_Line_Type *l, /*{{{*
 	    }
 
 	value = slrn_safe_strmalloc(value);
-	if (slrn_case_strcmp ((unsigned char *)name,
-			      (unsigned char *)"Newsgroups") &&
-	    slrn_case_strcmp ((unsigned char *)name,
-			      (unsigned char *)"Followup-To"))
+#ifndef SLRNPULL_CODE /* FIXME */
+	if (slrn_case_strcmp (name,
+			      "Newsgroups") &&
+	    slrn_case_strcmp (name,
+			      "Followup-To"))
 	   slrn_rfc1522_decode_string (&value);
-	
+#endif
 	
 	if (NULL == (copy = (Slrn_Header_Line_Type*) slrn_malloc
 		     (sizeof (Slrn_Header_Line_Type), 0, 1)))
@@ -644,7 +646,6 @@ static Slrn_Header_Line_Type *copy_add_headers (Slrn_Header_Line_Type *l, /*{{{*
 /*}}}*/
 
 #ifndef SLRNPULL_CODE
-
 static int XOver_Done;
 static int XOver_Min;
 static int XOver_Max;
@@ -848,8 +849,7 @@ static int parse_xover_line (char *buf, Slrn_XOver_Type *xov) /*{{{*/
 	     while (*b && (*b != '\t')) b++;
 	     if (*b) *b++ = 0;
 	     
-	     if (0 == slrn_case_strncmp ((unsigned char *) xb, 
-					 (unsigned char *) "Xref: ", 6))
+	     if (0 == slrn_case_strncmp ( xb, "Xref: ", 6))
 	       {
 		  Xref = xb + 6;
 		  break;

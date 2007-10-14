@@ -1,0 +1,153 @@
+/* -*- C -*- */
+
+/* Note: this is for unix only.  See slrnconf.h for other systems.  
+ * Also edit slrnfeat.h for slrn features.
+ */
+
+#ifndef SLRN_CONFIG_H
+#define SLRN_CONFIG_H
+
+/* define if you want to hard-code the domain */
+#undef USE_DOMAIN_NAME
+ 
+/* set your domain here */
+#undef MY_DOMAIN_NAME
+
+/* Define to 1 if translation of program messages to the user's native
+ * language is requested. 
+ */
+#undef ENABLE_NLS
+#define PACKAGE "slrn"
+
+/* define if you want SSL support */
+#undef USE_SSL
+
+/* define if you have stdlib.h */
+#undef HAVE_STDLIB_H
+
+/* define if you have unistd.h */
+#undef HAVE_UNISTD_H
+
+/* define if you have fcntl.h */
+#undef HAVE_FCNTL_H
+
+/* define if you have termios.h */
+#undef HAVE_TERMIOS_H
+
+/* define if you have memory.h */
+#undef HAVE_MEMORY_H
+
+/* define if you have malloc.h */
+#undef HAVE_MALLOC_H
+
+/* define if you have memset */
+#undef HAVE_MEMSET
+
+/* define if you have memcpy */
+#undef HAVE_MEMCPY
+
+#undef HAVE_SYS_UTSNAME_H
+#undef HAVE_UNAME
+
+#undef HAVE_SIGLONGJMP
+
+/* define if you have this. */
+#undef HAVE_PUTENV
+#undef HAVE_GETCWD
+
+#undef HAVE_VSNPRINTF
+
+#undef HAVE_DIRENT_H
+#undef HAVE_SYS_NDIR_H
+#undef HAVE_SYS_DIR_H
+#undef HAVE_NDIR_H
+
+#undef HAVE_SYS_WAIT_H
+
+/* define if you have <sys/socket.h> */
+#undef HAVE_SYS_SOCKET_H
+
+/* define if you have <socket.h> */
+#undef HAVE_SOCKET_H
+
+/* define if you have <netinet/in.h> */
+#undef HAVE_NETINET_IN_H
+
+/* define if you have <arpa/inet.h> */
+#undef HAVE_ARPA_INET_H
+
+#undef HAVE_LOCALE_H
+
+#undef HAVE_GETDOMAINNAME
+
+/* Do we have posix signals? */
+#undef HAVE_SIGACTION
+#undef HAVE_SIGPROCMASK
+#undef HAVE_SIGEMPTYSET
+#undef HAVE_SIGADDSET
+
+#undef HAVE_ISALPHA
+#undef HAVE_ISSPACE
+#undef HAVE_ISDIGIT
+#undef HAVE_ISALNUM
+#undef HAVE_ISPUNCT
+#undef HAVE_SETLOCALE
+
+#undef HAVE_ICONV
+#undef HAVE_UUDEVIEW_H
+
+#if defined(HAVE_SIGADDSET) && defined(HAVE_SIGEMPTYSET)
+# if defined(HAVE_SIGACTION) && defined(HAVE_SIGPROCMASK)
+#  define SLRN_POSIX_SIGNALS
+# endif
+#endif
+
+#undef mode_t
+#undef pid_t
+#undef uid_t
+#undef pid_t
+
+
+#if defined(ultrix) && !defined(__GNUC__)
+# ifndef NO_PROTOTYPES
+#  define NO_PROTOTYPES
+# endif
+#endif
+
+#ifndef REAL_UNIX_SYSTEM
+# define REAL_UNIX_SYSTEM
+#endif
+
+#ifdef _AIX
+# ifndef _POSIX_SOURCE
+#  define _POSIX_SOURCE
+# endif
+# ifndef _ALL_SOURCE
+#  define _ALL_SOURCE
+# endif
+/* This may generate warnings but the fact is that without it, xlc will 
+ * INCORRECTLY inline many str* functions. */
+# undef __STR__
+#endif
+
+#ifndef __unix__
+# define __unix__ 1
+#endif
+
+#ifdef USE_SSL
+# define SLRN_HAS_SSL_SUPPORT	1
+#else
+# define SLRN_HAS_SSL_SUPPORT	0
+#endif
+#define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_SSL_SUPPORT
+
+#define SLRN_SERVER_ID_NNTP 1
+#define SLRN_SERVER_ID_SPOOL 2
+
+#define SLRN_POST_ID_NNTP 1
+#define SLRN_POST_ID_INEWS 2
+#define SLRN_POST_ID_PULL 3
+
+#define SLRN_PATH_SLASH_CHAR	'/'
+
+#endif /* SLRN_CONFIG_H */

@@ -64,9 +64,12 @@
 #define DIR int
 #endif
 
+#include <slang.h>
+
 #include "util.h"
 #include "slrndir.h"
-#include "ttymsg.h"
+#include "strutil.h"
+#include "common.h"
 
 struct _Slrn_Dir_Type 
 {

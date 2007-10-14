@@ -108,11 +108,12 @@ extern int h_errno;
 #include "art.h"
 #include "post.h"
 #include "snprintf.h"
-#include "mime.h"
 #include "slrndir.h"
 #include "menu.h"
 #include "hooks.h"
 #include "startup.h"
+#include "strutil.h"
+#include "common.h"
 
 #ifdef VMS
 /* valid filname chars for unix equiv of vms filename */
@@ -259,7 +260,7 @@ static char *top_status_line_cb (char ch, void *data, int *len, int *color) /*{{
 	break;
 	
       case 'v':
-	retval = Slrn_Version;
+	retval = Slrn_Version_String;
 	break;
 	
      }
@@ -345,7 +346,7 @@ static void vmessage (FILE *fp, char *fmt, va_list ap)
      slrn_tty_vmessage (fp, fmt, ap);
 }
 
-static void verror (char *fmt, va_list ap)
+void slrn_verror (char *fmt, va_list ap)
 {
    if ((Slrn_TT_Initialized & SLRN_SMG_INIT) == 0)
      {
@@ -417,17 +418,6 @@ int slrn_message_now (char *fmt, ...) /*{{{*/
 
 /*}}}*/
 
-void slrn_error (char *fmt, ...) /*{{{*/
-{
-   va_list ap;
-
-   va_start(ap, fmt);
-   verror (fmt, ap);
-   va_end (ap);
-}
-
-/*}}}*/
-
 void slrn_error_now (unsigned secs, char *fmt, ...) /*{{{*/
 {
    va_list ap;
@@ -435,7 +425,7 @@ void slrn_error_now (unsigned secs, char *fmt, ...) /*{{{*/
    if (fmt != NULL)
      {
 	va_start(ap, fmt);
-	verror (fmt, ap);
+	slrn_verror (fmt, ap);
 	va_end (ap);
      }
    slrn_smg_refresh ();
@@ -450,43 +440,49 @@ void slrn_error_now (unsigned secs, char *fmt, ...) /*{{{*/
  * Assumes that s contains at least n screen characters. If the last
  * character cannot be fully written, pad with spaces instead.
  */
-void slrn_write_nchars (char *s, unsigned int n) /*{{{*/
+void slrn_write_nchars (char *s, char *smax, unsigned int n) /*{{{*/
 {
    unsigned char *s1;
    unsigned int eight_bit;
-   int len = 0;
+   unsigned int len = 0;
    SLuchar_Type *next = (SLuchar_Type *) s;
-   SLuchar_Type *prev;
+
+   if (n == 0)
+     return;
 
 #if SLANG_VERSION >= 20000
    if (Slrn_UTF8_Mode)
      {
 	/* Skip past n characters. */
-	int prevlen;
-	SLwchar_Type w;
+	unsigned int prevlen = 0;
+	SLuchar_Type *prev = next;
 	
-	while (len<n)
+	while ((len<n) && (next < (SLuchar_Type *)smax))
 	  {
-	     int consumed;
-	     SLuchar_Type *post = SLutf8_decode (next, next+SLUTF8_MAX_MBLEN,
-						 &w, &consumed);
-	     if (w == 0) /* never output past end of the string */
-	       break;
+	     unsigned int nconsumed;
+	     SLwchar_Type w;
+	     unsigned int nskipped;
+
 	     prev = next;
 	     prevlen = len;
-	     next += consumed;
-	     if (post != NULL)
-	       len += SLwchar_wcwidth (w);
+
+	     next = SLutf8_skip_chars (prev, (SLuchar_Type *)smax, 1, &nskipped, 1);
+	     if (NULL == SLutf8_decode (prev, (SLuchar_Type *)smax, &w, &nconsumed))
+	       len += 4*nconsumed;     /* <XX> */
 	     else
-	       len += 1;
+	       len += SLwchar_wcwidth (w);
 	  }
-	
-	if (len>n) /* We have to truncate the last character */
+
+	/* Note: prevlen < n */
+
+	if (len > n) /* We have to truncate the last character */
 	  {
-	     int i;
 	     SLsmg_write_nchars (s, prev-(SLuchar_Type*)s);
-	     for (i = 0; i < (n-prevlen); i++)
-	       SLsmg_write_nchars (" ", 1);
+	     while (prevlen < n)
+	       {
+		  SLsmg_write_nchars (" ", 1);
+		  prevlen++;
+	       }
 	  }
 	else
 	  SLsmg_write_nchars (s, next-(SLuchar_Type*)s);
@@ -583,13 +579,13 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 			 int row, int def_color)
 {
    char ch, *cond_end = NULL, *elsepart = NULL;
-   
+
    SLsmg_gotorc (row, 0);
    slrn_set_color (def_color);
    
    while ((ch = *fmt) != 0)
      {
-	char *s, *p;
+	char *s, *smax, *p;
 	int color = def_color;
 	int len = -1, field_len = -1;
 	int justify, spaces = 0;
@@ -704,14 +700,13 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 
 	/* In case of UTF-8 characters, it is important to distinguish between
 	 * the length in bytes and the length in characters. */
-	len = slrn_screen_strlen (s, len);
+	smax = s + strlen (s);
+	len = slrn_screen_strlen (s, smax);
 	if (NULL != (p = slrn_strchr (s, '\n')))
-	  len -= slrn_screen_strlen (p, -1);
+	  len = slrn_screen_strlen (s, p);
 	
 	if (field_len != -1)
 	  {
-	     int i;
-	     
 	     if (field_len > len)
 	       spaces = field_len - len;
 	     else
@@ -728,7 +723,7 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 		  spaces--;
 	       }
 	  }
-        slrn_write_nchars (s, len);
+        slrn_write_nchars (s, smax, len);
 	while (spaces)
 	  {
 	     SLsmg_write_nchars (" ", 1);
@@ -1166,12 +1161,10 @@ VFILE *slrn_open_home_vfile (char *name, char *file, size_t n)
    
 int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char *subject) /*{{{*/
 {
-   char *buf;
    FILE *pp;
    Slrn_Article_Type *a = NULL;
-   int rsp;
-   char *responses;
 #if defined(IBMPC_SYSTEM)
+   char *buf;
    char outfile [SLRN_MAX_PATH_LEN];
 #endif
    
@@ -1205,6 +1198,8 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
    
    while (1)
      {
+	int rsp;
+
 	if (a!= NULL)
 	    slrn_art_free_article(a);
 	a=(Slrn_Article_Type*) slrn_malloc (sizeof(Slrn_Article_Type), 1, 1);
@@ -1225,14 +1220,14 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
 * "cC" is "cancel" and "fF" means "force". The usual rules apply.
 */
-	     responses = _("yYeEnNcC");
+	     char *responses = _("yYeEnNcC");
 	     if (strlen (responses) != 8)
 	       responses = "";
 	     rsp = slrn_get_response ("yYEenNcC\007", responses, _("re-\001Edit,  or \001Cancel"));
 	  }
 	else
 	  {
-	     responses = _("yYeEnNcCfF");
+	     char *responses = _("yYeEnNcCfF");
 	     if (strlen (responses) != 10)
 	       responses = "";
 	     rsp = slrn_get_response ("EeyYnNcC\007Ff", responses, _("re-\001Edit, \001Cancel, or \001Force the mailing (not recommended)"));
@@ -1272,8 +1267,12 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 # if defined(IBMPC_SYSTEM)
    slrn_fclose (pp);
    buf = slrn_strdup_strcat (Slrn_SendMail_Command, " ", outfile, NULL);
-   slrn_posix_system (buf, 0);
-   slrn_free (buf);
+   /* FIXME */
+   if (buf != NULL)
+     {
+	slrn_posix_system (buf, 0);
+	slrn_free (buf);
+     }
 # else
    slrn_pclose (pp);
 # endif
@@ -2945,6 +2944,10 @@ void slrn_get_user_info (void) /*{{{*/
    /* I cannot use getlogin under Unix because some implementations 
     * truncate the username to 8 characters.  Besides, I suspect that
     * it is equivalent to the following line.
+    * 
+    * Also it is not clear if the valued returned by getpwuid is malloced.
+    * The man page indicates that it _may_ point to a static area.  Valgrind
+    * reports a leak.  Sigh.
     */
    pw = getpwuid (getuid ());
    if (pw != NULL)
@@ -3063,7 +3066,7 @@ static char *make_quoted_string (char *src)
    if ((src == NULL) || (*src == 0)) return NULL;
 
    p = src;
-   while (ch = *p++)
+   while (0 != (ch = *p++))
      {
 	if ((ch == 0x0a) || (ch == 0x0d)) continue;
 	if ((ch == '\t') || (ch == '"') || (ch == '\\'))

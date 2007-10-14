@@ -49,8 +49,8 @@ int main (int argc, char **argv)
    (void) setlocale(LC_ALL, "");
 #endif
 #ifdef ENABLE_NLS
-   bindtextdomain(PACKAGE,LOCALEDIR);
-   textdomain(PACKAGE);
+   bindtextdomain(NLS_PACKAGE_NAME, NLS_LOCALEDIR);
+   textdomain (NLS_PACKAGE_NAME);
 #endif
 
    if ((argc < 3) || (argc > 4))

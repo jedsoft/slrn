@@ -19,10 +19,10 @@
  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 extern int slrn_add_signature (FILE *);
-extern char *slrn_gen_date_header ();
+extern char *slrn_gen_date_header (void);
 extern int slrn_add_custom_headers (FILE *, char *, int (*)(char *, FILE *));
 extern char *slrn_trim_references_header (char *);
-extern int slrn_prepare_file_for_posting (char *, int *, Slrn_Article_Type *, char *, int);
+extern int slrn_prepare_file_for_posting (char *, unsigned int *, Slrn_Article_Type *, char *, int);
 extern int slrn_post (char *, char *, char *);
 extern int slrn_post_file (char *, char *, int);
 extern void slrn_post_postponed (void);

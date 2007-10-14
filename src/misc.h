@@ -39,7 +39,7 @@ extern char *slrn_print_percent (char *, SLscroll_Window_Type *, int);
 
 typedef char *(PRINTF_CB)(char, void *, int *, int *);
 extern void slrn_custom_printf (char *, PRINTF_CB, void *, int, int);
-extern void slrn_write_nchars (char *, unsigned int);
+extern void slrn_write_nchars (char *, char *s, unsigned int);
 extern void slrn_write_nbytes (char *, unsigned int);
 
 extern int slrn_set_display_format (char **, unsigned int, char *);
@@ -100,12 +100,12 @@ void slrn_set_input_chars (char *);
 
 extern int Slrn_Message_Present;
 
-#define SLRN_CONFIRM_CATCHUP	0x1
-#define SLRN_CONFIRM_PRINT	0x2
-#define SLRN_CONFIRM_POST	0x4
-#define SLRN_CONFIRM_URL	0x8
+#define SLRN_CONFIRM_CATCHUP	0x01
+#define SLRN_CONFIRM_PRINT	0x02
+#define SLRN_CONFIRM_POST	0x04
+#define SLRN_CONFIRM_URL	0x08
 #define SLRN_CONFIRM_QUIT	0x10
-#define SLRN_CONFIRM_ALL	0x1F
+#define SLRN_CONFIRM_ALL	0xFF
 extern int Slrn_User_Wants_Confirmation;
 extern void slrn_get_mouse_rc (int *, int *);
 #ifndef VMS

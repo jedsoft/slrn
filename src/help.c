@@ -37,6 +37,7 @@
 #include "snprintf.h"
 #include "misc.h"
 #include "util.h"
+#include "strutil.h"
 
 static char *Global_Help [] = 
 {
@@ -840,8 +841,8 @@ char *slrn_help_string_to_keyseq (char *s) /*{{{*/
 	     for (i = 0; i < NUMBER_OF_KEYNAMES; i++)
 	       {
 		  if ((KeyNameLengths[i] == len+2) &&
-		      !slrn_case_strncmp ((unsigned char*)s+1,
-					  (unsigned char*)KeyNames[i]+1, len))
+		      !slrn_case_strncmp (s+1,
+					  KeyNames[i]+1, len))
 		    break;
 	       }
 	     if (i < NUMBER_OF_KEYNAMES)

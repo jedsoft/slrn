@@ -1,0 +1,199 @@
+# Unix Makefile for slrn                               -*- sh -*-
+#-----------------------------------------------------------------------------
+# C compiler.  It must understand prototypes.
+#-----------------------------------------------------------------------------
+CC = @CC@
+CFLAGS = @CFLAGS@ @X_CFLAGS@
+LDFLAGS = @LDFLAGS@
+#-----------------------------------------------------------------------------
+# Required Libraries
+#-----------------------------------------------------------------------------
+SLANG_INC	= @SLANG_INC@
+SLANG_LIB	= @SLANG_LIB@ -lslang
+#-----------------------------------------------------------------------------
+# Optional Libraries
+#-----------------------------------------------------------------------------
+UUDEVIEW_LIB	= @UU_LIB@ @LINK_LIBUU@
+UUDEVIEW_INC	= @UU_INC@
+CANLOCK_LIB	= @CANLOCK_LIB@ @LINK_LIBCANLOCK@
+CANLOCK_INC	= @CANLOCK_INC@
+SSL_INC		= @SSLINC@
+SSL_LIB		= @SSLLIB@
+ICONV_INC       = @INCICONV@
+ICONV_LIB       = @LIBICONV@ @LIBINTL@
+#-----------------------------------------------------------------------------
+# System Libraries
+#-----------------------------------------------------------------------------
+SYSLIBS = @X_EXTRA_LIBS@ @TERMCAP@
+
+#-----------------------------------------------------------------------------
+RPATH		= @RPATH@
+
+#---------------------------------------------------------------------------
+# Installation Directories
+#---------------------------------------------------------------------------
+prefix = @prefix@
+sysconfdir = @sysconfdir@
+exec_prefix = @exec_prefix@
+datarootdir = @datarootdir@
+
+BINDIR = @bindir@
+DOCDIR = @docdir@
+MANDIR = @mandir@
+CONFDIR = $(sysconfdir)
+LOCALEDIR = @LOCALEDIR@
+SLRN_LIB_DIR = @SLRN_LIB_DIR@
+SLRN_SLANG_DIR = $(SLRN_LIB_DIR)/slang
+
+INSTALL_OWNER = # -o root -g root
+INSTALL = @INSTALL@ $(INSTALL_OWNER)
+INSTALL_DATA = @INSTALL_DATA@ $(INSTALL_OWNER)
+MKINSDIR = ../autoconf/mkinsdir.sh
+
+#-----------------------------------------------------------------------------
+# Location where object files are placed (Absolute pathnames!!)
+#-----------------------------------------------------------------------------
+OBJDIR = @OBJDIR@
+SRCDIR = @SRCDIR@
+
+# DESTDIR is designed to facilitate making packages.  Normally it is empty
+DESTDIR =
+DEST_BINDIR = $(DESTDIR)$(BINDIR)
+DEST_DOCDIR = $(DESTDIR)$(DOCDIR)
+DEST_MANDIR = $(DESTDIR)$(MANDIR)
+DEST_CONFDIR = $(DESTDIR)$(CONFDIR)
+DEST_SLRN_LIB_DIR = $(DESTDIR)$(SLRN_LIB_DIR)
+DEST_SLRN_SLANG_DIR = $(DESTDIR)$(SLRN_SLANG_DIR)
+# Directory where macros will be located.
+
+DEFINES = -DSLRN_SLANG_DIR=\"$(SLRN_SLANG_DIR)\" \
+ -DSLRN_LIB_DIR=\"$(SLRN_LIB_DIR)\" -DSLRN_CONF_DIR=\"$(SLRN_CONF_DIR)\" \
+ -DNLS_LOCALEDIR=\"$(LOCALEDIR)\"
+
+# Files to install in DOC_DIR:
+DOCDIR_FILES = `cat ../doc/INSTFILES`
+UP_DOC_FILES = COPYRIGHT COPYING README changes.txt
+MAN_FILES = ../doc/slrn.1
+SLANG_FILES = `cat ../macros/INSTFILES`
+SLRNPULL_DOCS = ../slrnpull/*
+
+#----------------------------------------------------------------------------
+# Nothing below here should require changing.
+#----------------------------------------------------------------------------
+SHELL = /bin/sh
+OBJS = @PROGRAM_OBJECTS@
+OFILES = @PROGRAM_OFILES@
+
+EXEC = slrn
+CONFIG_H = config.h
+INCS = $(SLANG_INC) $(CANLOCK_INC) $(ICONV_INC) $(UUDEVIEW_INC) $(SSL_INC) $(MISCINCLUDES)
+ALL_CFLAGS = $(CFLAGS) -Dunix $(INCS) $(DEFINES)
+EXECLIBS = $(SLANG_LIB) $(UUDEVIEW_LIB) $(CANLOCK_LIB) $(SSL_LIB) $(ICONV_LIB) $(SYSLIBS)
+DOT_O_DEPS = slrnfeat.h
+server_O_DEP = clientlib.c spool.c nntp.c sltcp.c nntplib.c
+chmap_O_DEP = chmap.h charmaps.h
+chkslang_O_DEP = config.h Makefile
+version_O_DEP = version.h
+
+slrnpull_O_DEP = score.c xover.c hash.c version.h
+slrnpull_DEPS = $(OBJDIR)/util.o $(OBJDIR)/strutil.o $(OBJDIR)/sortdate.o \
+ $(OBJDIR)/sltcp.o $(OBJDIR)/nntplib.o $(OBJDIR)/slrndir.o $(OBJDIR)/ranges.o \
+ $(OBJDIR)/vfile.o
+
+slrnpull_LIBS = $(slrnpull_DEPS)
+
+UUDECODE_OBJS = $(OBJDIR)/util.o $(OBJDIR)/ttymsg.o $(OBJDIR)/slrndir.o
+
+#
+COMPILE_CMD = $(CC) -c $(ALL_CFLAGS)
+#
+all: $(EXEC)
+$(EXEC): $(OBJDIR) $(CONFIG_H) slangversion $(OBJDIR)/$(EXEC)
+	@echo $(EXEC) created in $(OBJDIR)
+$(OBJDIR)/$(EXEC): $(OBJS)
+	cd $(OBJDIR); $(CC) $(OFILES) -o $(EXEC) $(LDFLAGS) $(RPATH) $(EXECLIBS)
+#
+$(OBJDIR):
+	-mkdir $(OBJDIR)
+#
+$(CONFIG_H) : $(SRCDIR)/sysconf.h
+	/bin/cp $(SRCDIR)/sysconf.h $(CONFIG_H)
+	touch $(CONFIG_H)
+#
+slangversion: $(OBJDIR)/chkslang
+	$(OBJDIR)/chkslang $(EXEC) 10003
+#
+$(OBJDIR)/chkslang: $(OBJDIR)/chkslang.o
+	$(CC) $(OBJDIR)/chkslang.o $(LDFLAGS) -o $(OBJDIR)/chkslang $(RPATH) $(EXECLIBS)
+uudecode: uudecode.c $(UUDECODE_OBJS)
+	$(CC) $(ALL_CFLAGS) -DSTANDALONE $(LDFLAGS) -o uudecode uudecode.c $(UUDECODE_OBJS) $(EXECLIBS)
+	touch uudecode.c
+clean:
+	/bin/rm -f $(OBJDIR)/* *~
+distclean: clean
+	/bin/rm -rf $(OBJDIR) Makefile sysconf.h
+installdirs:
+	$(MKINSDIR) $(DEST_BINDIR)
+	$(MKINSDIR) $(DEST_DOCDIR)
+	$(MKINSDIR) $(DEST_DOCDIR)/slrnpull
+	$(MKINSDIR) $(DEST_MANDIR)/man1
+	$(MKINSDIR) $(DEST_SLRN_LIB_DIR)
+	$(MKINSDIR) $(DEST_SLRN_SLANG_DIR)
+installdocs:
+	@for i in $(MAN_FILES); \
+	do \
+		echo $(INSTALL_DATA) $$i $(DEST_MANDIR)/man1/; \
+		$(INSTALL_DATA) $$i $(DEST_MANDIR)/man1/; \
+		if [ "$$?" != "0" ]; then \
+		  exit 1; \
+		fi; \
+	done
+	@for i in $(UP_DOC_FILES); \
+	do \
+		echo $(INSTALL_DATA) ../$$i $(DEST_DOCDIR); \
+		$(INSTALL_DATA) ../$$i $(DEST_DOCDIR); \
+		if [ "$$?" != "0" ]; then \
+		  exit 1; \
+		fi; \
+	done
+	@for i in $(DOCDIR_FILES); \
+	do \
+		echo $(INSTALL_DATA) ../doc/$$i $(DEST_DOCDIR); \
+		$(INSTALL_DATA) ../doc/$$i $(DEST_DOCDIR); \
+		if [ "$$?" != "0" ]; then \
+		  exit 1; \
+		fi; \
+	done
+	@for i in $(SLRNPULL_DOCS); \
+	do \
+		echo $(INSTALL_DATA) ../doc/slrnpull/$$i $(DEST_DOCDIR)/slrnpull; \
+		$(INSTALL_DATA) ../doc/slrnpull/$$i $(DEST_DOCDIR)/slrnpull; \
+		if [ "$$?" != "0" ]; then \
+		  exit 1; \
+		fi; \
+	done
+installslang:
+	@for i in $(SLANG_FILES); \
+	do \
+		echo $(INSTALL_DATA) ../macros/$$i $(DEST_SLRN_SLANG_DIR); \
+		$(INSTALL_DATA) ../macros/$$i $(DEST_SLRN_SLANG_DIR); \
+		if [ "$$?" != "0" ]; then \
+		  exit 1; \
+		fi; \
+	done
+installlocales:
+	cd ../po; $(MAKE) DESTDIR=$(DESTDIR) LOCALEDIR=$(LOCALEDIR) install 
+installbin:
+	$(INSTALL) -m 755 -s $(OBJDIR)/slrn $(DEST_BINDIR)
+	-$(INSTALL) -m 755 -s $(OBJDIR)/slrnpull $(DEST_BINDIR)
+install: all installbin installdirs installdocs installslang installlocales
+
+# The symlinks target is for my own private use.  It simply creates the object
+# directory as a symbolic link to a local disk instead of an NFS mounted one.
+symlinks:
+	-/bin/rm -f $(ARCH)objs
+	mkdir -p $(HOME)/sys/$(ARCH)/objs/slrn/src
+	ln -s $(HOME)/sys/$(ARCH)/objs/slrn/src $(ARCH)objs
+#---------------------------------------------------------------------------
+# Rules (automatically generated)
+#---------------------------------------------------------------------------

@@ -24,6 +24,7 @@
 #include <string.h>
 
 #include "ttymsg.h"
+#include "common.h"
 
 void slrn_tty_vmessage (FILE *fp, char *fmt, va_list ap)
 {
@@ -54,3 +55,4 @@ void slrn_tty_error (char *fmt, ...)
    slrn_tty_vmessage (stderr, fmt, ap);
    va_end (ap);
 }
+

@@ -47,6 +47,8 @@
 #include "ttymsg.h"
 #include "snprintf.h"
 #include "server.h"
+#include "strutil.h"
+#include "common.h"
 
 void (*NNTP_Connection_Lost_Hook) (NNTP_Type *);
 int (*NNTP_Authorization_Hook) (char *, char **, char **);
@@ -370,7 +372,7 @@ int nntp_server_vcmd (NNTP_Type *s, char *fmt, ...)
    va_list ap;
 
    va_start (ap, fmt);
-   slrn_vsnprintf (buf, sizeof (buf), fmt, ap);
+   (void) SLvsnprintf (buf, sizeof (buf), fmt, ap);
    va_end (ap);
 
    return nntp_server_cmd (s, buf);
@@ -382,7 +384,7 @@ int nntp_start_server_vcmd (NNTP_Type *s, char *fmt, ...)
    va_list ap;
 
    va_start (ap, fmt);
-   slrn_vsnprintf (buf, sizeof (buf), fmt, ap);
+   (void) SLvsnprintf (buf, sizeof (buf), fmt, ap);
    va_end (ap);
 
    return nntp_start_server_cmd (s, buf);
@@ -1056,7 +1058,7 @@ int nntp_one_xhdr_cmd (NNTP_Type *s, char *hdr, int num, char *buf, unsigned int
 	char *b;
 
 	if (found
-	    || slrn_case_strncmp ((unsigned char *) tmpbuf, (unsigned char *) hdr, colon)
+	    || slrn_case_strncmp ( tmpbuf,  hdr, colon)
 	    || (tmpbuf[colon] != ':'))
 	  continue;
 

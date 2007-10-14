@@ -39,6 +39,7 @@ extern int sltcp_fgets (SLTCP_Type *, char *, unsigned int);
 
 extern int sltcp_open_sltcp (void);
 extern int sltcp_close_sltcp (void);
+extern void (*SLtcp_Verror_Hook) (char *, va_list);
 
 extern unsigned int sltcp_get_num_input_bytes (SLTCP_Type *);
 extern unsigned int sltcp_get_num_output_bytes (SLTCP_Type *);

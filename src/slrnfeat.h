@@ -1,3 +1,4 @@
+/*-*-C-*-*/
 #ifndef _SLRN_FEATURES_H
 #define _SLRN_FEATURES_H
 /* Note!!!
@@ -6,6 +7,37 @@
  * '1' indicates that the feature will be turned on, and '0' indicates that
  * the feature will be turned off.
  */
+
+/* If you enable local SPOOL support, you must also enable NNTP support
+ * or INEWS support.  Also, see below for filenames regarding the location
+ * of the local spool and inews.  Currently only unix supports this.
+ * 
+ * NOTE: if you intend to use slrnpull, make sure you enable SPOOL_SUPPORT
+ *       in addition to PULL_SUPPORT.
+ */
+#define SLRN_HAS_PULL_SUPPORT	0
+#define SLRN_HAS_NNTP_SUPPORT	1
+#define SLRN_HAS_SPOOL_SUPPORT	1
+#define SLRN_HAS_INEWS_SUPPORT	0
+
+/* Set this to 1 to force the user to use INEWS for posting.  This also means
+ * that slrn will use the hardcoded inews program pathname.
+ */
+#define SLRN_FORCE_INEWS	0
+#define SLRN_INEWS_COMMAND	"/usr/local/bin/inews -S -h"
+
+#define SLRN_HAS_UUDEVIEW	0
+#define SLRN_HAS_CANLOCK	0
+
+#define SLRN_HAS_STRICT_FROM	0
+#define SLRN_HAS_CHARACTER_MAP	1
+#define SLRNPULL_USE_SETGID_POSTS	1
+#define SLRN_HAS_SPOILERS	1
+#define SLRN_HAS_EMPHASIZED_TEXT	1
+#define SLRN_HAS_GEN_MSGID	1
+#define SLRN_HAS_MSGID_CACHE	1
+#define SLRN_HAS_FAKE_REFS	1
+#define SLRN_HAS_GROUPLENS	0
 
 /* If non-zero, a special message will be displayed when article is the last
  * one in a thread.
@@ -138,7 +170,7 @@
  *                                                             Unix filenames
  */
 #   define SLRN_FAILED_POST_FILE	"slrn-failed-post.txt"
-#   define SLRN_USER_SLRNRC_FILENAME	".slrnrc"
+#   define SLRN_USER_SLRNRC_FILENAME	".slrnrcv2"
 #   define SLRN_LETTER_FILENAME	".letter"
 #   define SLRN_ARTICLE_FILENAME	".article"
 #   define SLRN_FOLLOWUP_FILENAME	".followup"
@@ -207,6 +239,9 @@
 # else
 #  define N_(a) (a)
 # endif
+# ifndef NLS_PACKAGE_NAME
+#  define NLS_PACKAGE_NAME "slrn"
+# endif
 #else
 # define _(a) (a)
 # define N_(a) a
@@ -226,5 +261,7 @@
 # undef SLRN_DEFAULT_POST_OBJ
 # define SLRN_DEFAULT_POST_OBJ SLRN_POST_ID_INEWS
 #endif
+
+#define SLRN_HAS_SLANG 1
 
 #endif				       /* _SLRN_FEATURES_H */

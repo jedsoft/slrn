@@ -19,22 +19,13 @@
  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 #include "config.h"
-#ifndef SLRNPULL_CODE
-# include "slrnfeat.h"
-#endif
+#include "slrnfeat.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
-#ifndef SLRNPULL_CODE
-# include "slrn.h"
-# include "util.h"
-#else
-extern long slrn_date_to_order_parm (char *);
-extern void slrn_strftime (char *, size_t, const char *, char *, int);
-#endif
-
 #include "jdmacros.h"
+#include "sortdate.h"
+#include "strutil.h"
 
 /* This routine parses the date field of a header and returns it as a time_t
  * object.  The main difficulity is the lack of uniformity in the date formats
