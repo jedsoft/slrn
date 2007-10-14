@@ -5470,7 +5470,7 @@ echo $ECHO_N "checking for the uu library and header files uudeview.h... $ECHO_C
     fi
   fi
 
-  if test X"jd_uu_include_dir" != X -a "$jd_uu_library_dir" != X
+  if test X"$jd_uu_include_dir" != X -a "$jd_uu_library_dir" != X
   then
     { echo "$as_me:$LINENO: result: yes: $jd_uu_library_dir and $jd_uu_include_dir" >&5
 echo "${ECHO_T}yes: $jd_uu_library_dir and $jd_uu_include_dir" >&6; }
@@ -5738,7 +5738,7 @@ echo $ECHO_N "checking for the canlock library and header files ... $ECHO_C" >&6
     fi
   fi
 
-  if test X"jd_canlock_include_dir" != X -a "$jd_canlock_library_dir" != X
+  if test X"$jd_canlock_include_dir" != X -a "$jd_canlock_library_dir" != X
   then
     { echo "$as_me:$LINENO: result: yes: $jd_canlock_library_dir and $jd_canlock_include_dir" >&5
 echo "${ECHO_T}yes: $jd_canlock_library_dir and $jd_canlock_include_dir" >&6; }
@@ -9472,7 +9472,7 @@ echo $ECHO_N "checking for the slang library and header files ... $ECHO_C" >&6; 
     fi
   fi
 
-  if test X"jd_slang_include_dir" != X -a "$jd_slang_library_dir" != X
+  if test X"$jd_slang_include_dir" != X -a "$jd_slang_library_dir" != X
   then
     { echo "$as_me:$LINENO: result: yes: $jd_slang_library_dir and $jd_slang_include_dir" >&5
 echo "${ECHO_T}yes: $jd_slang_library_dir and $jd_slang_include_dir" >&6; }

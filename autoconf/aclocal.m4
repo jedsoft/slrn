@@ -916,7 +916,7 @@ AC_DEFUN(JD_CHECK_FOR_LIBRARY, dnl#{{{
     fi
   fi
 
-  if test X"jd_$1_include_dir" != X -a "$jd_$1_library_dir" != X
+  if test X"$jd_$1_include_dir" != X -a "$jd_$1_library_dir" != X
   then
     AC_MSG_RESULT(yes: $jd_$1_library_dir and $jd_$1_include_dir)
     jd_with_$1_library="yes"
