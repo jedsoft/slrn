@@ -94,7 +94,7 @@ static int postpone_file (char *);
 /*}}}*/
 
 /* This function needs to be called directly after po_start! */
-static char *create_message_id (int *error)/*{{{*/
+static int create_message_id (char **msgidp)/*{{{*/
 {
    char *t, *msgid;
 #if SLRN_HAS_GEN_MSGID
@@ -106,26 +106,25 @@ static char *create_message_id (int *error)/*{{{*/
    size_t malloc_len;
 #endif
 
-   *error=0; /* default: create_message_id() has success*/
+   *msgidp = NULL;
 
-   if (Slrn_Use_Recom_Id) /* Try to find the Id the server recommends*/
-     {
-	msgid = Slrn_Post_Obj->po_get_recom_id ();
-	if (msgid != NULL)
-	  return msgid;
-     }
+   /* Try to find the Id the server recommends*/
+   if (Slrn_Use_Recom_Id
+       && (NULL != (*msgidp = Slrn_Post_Obj->po_get_recom_id ())))
+     return 0;
 
-#if ! SLRN_HAS_GEN_MSGID
-   return NULL;
+#if !SLRN_HAS_GEN_MSGID
+   return 0;
 #else
+
    if (Slrn_Generate_Message_Id == 0)
-     return NULL;
+     return 0;
    
    while (1)
      {
 	if ((Slrn_User_Info.posting_host == NULL)
 	    || ((time_t) -1 == time ((time_t *)&now)))
-	  return NULL;
+	  return 0;
 
 	if (now != last_now) break;
 	slrn_sleep (1);
@@ -180,14 +179,13 @@ static char *create_message_id (int *error)/*{{{*/
    *b = 0;
 
    malloc_len=(strlen(baseid)+strlen(Slrn_User_Info.posting_host)+8);
-   if ((msgid=slrn_malloc (malloc_len,0,1)) == NULL)
-     {
-	*error=1;
-	return NULL;
-     }
-   slrn_snprintf(msgid, malloc_len,"<slrn%s@%s>", baseid, Slrn_User_Info.posting_host);
+   if (NULL == (msgid=slrn_malloc (malloc_len,0,1)))
+     return -1;
 
-   return msgid;
+   (void) SLsnprintf (msgid, malloc_len, "<slrn%s@%s>", baseid, Slrn_User_Info.posting_host);
+
+   *msgidp = msgid;
+   return 0;
 #endif /*SLRN_HAS_GEN_MSGID*/
 }
 /*}}}*/
@@ -1094,7 +1092,7 @@ int slrn_save_article_to_mail_file (Slrn_Article_Type *a, char *save_file) /*{{{
 }
 /*}}}*/
 
-static int saved_failed_post (char *file, char *msg) /*{{{*/
+static int save_failed_post (char *file, char *msg) /*{{{*/
 {
    FILE *fp, *outfp;
    char filebuf[SLRN_MAX_PATH_LEN];
@@ -1135,53 +1133,6 @@ static int saved_failed_post (char *file, char *msg) /*{{{*/
 /*}}}*/
 
 /*{{{ Post functions*/
-
-#if SLRN_HAS_CANLOCK
-/* This function returns a malloced string or NULL on failure. */
-static char *gen_cancel_lock (char *msgid) /*{{{*/
-{
-   FILE *cansecret;
-   unsigned char *buf, *canlock;
-   long filelen;
-   char canfile[SLRN_MAX_PATH_LEN];
-   
-   if (0 == *Slrn_User_Info.cancelsecret)
-     return NULL;
-   
-   if ((cansecret = slrn_open_home_file(Slrn_User_Info.cancelsecret,
-			"r", canfile, SLRN_MAX_PATH_LEN, 0)) == NULL)
-     {
-	slrn_error (_("Cannot open file: %s"), Slrn_User_Info.cancelsecret);
-	return NULL;
-     }
-   
-   fseek (cansecret, 0, SEEK_END);
-   if ((filelen = ftell(cansecret)) == 0)
-     {
-	slrn_error (_("Zero length file: %s"), Slrn_User_Info.cancelsecret);
-	fclose (cansecret);
-	return NULL;
-     }
-   if (NULL == (buf = slrn_malloc (filelen, 0, 1)))
-     {
-	fclose (cansecret);
-	return NULL;
-     }
-   
-   (void) fseek (cansecret, 0, SEEK_SET);
-   fread (buf, filelen, 1, cansecret);
-   
-# if 0
-   canlock = md5_lock(buf, filelen, msgid, strlen(msgid));
-# else /* by default we use SHA-1 */
-   canlock = sha_lock(buf, filelen, msgid, strlen(msgid));
-# endif
-   fclose(cansecret);
-   SLFREE(buf);
-   return canlock;
-}
-/*}}}*/
-#endif /* SLRN_HAS_CANLOCK */
 
 /* Does not yet accept any percent escapes */
 static int insert_custom_header (char *fmt, FILE *fp) /*{{{*/
@@ -1399,16 +1350,120 @@ static int post_user_confirm (Slrn_Article_Type *a, char *to, char *file, int is
 }
 /*}}}*/
 
+static Slrn_Article_Line_Type *append_header_line (Slrn_Article_Type *a, char *key, char *value)
+{
+   Slrn_Article_Line_Type *hline, *bline;
+   Slrn_Article_Line_Type *line;
+   unsigned int buflen;
+
+   hline = a->lines;
+   bline = NULL;
+   
+   while ((hline != NULL)
+	  && (hline->flags & HEADER_LINE)
+	  && (NULL != (bline = hline->next))
+	  && (bline->flags & HEADER_LINE))
+     hline = bline;
+
+   if (hline == NULL)
+     {
+	slrn_error (_("The article has an empty header"));
+	return NULL;
+     }
+   
+   line = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+   if (line == NULL)
+     return NULL;
+   
+   line->flags = HEADER_LINE;
+
+   buflen = strlen (key) + strlen(value) + 3;
+   if (NULL == (line->buf = slrn_malloc (buflen, 0, 1)))
+     {
+	slrn_free ((char *) line);
+	return NULL;
+     }
+   (void) SLsnprintf (line->buf, buflen, "%s: %s", key, value);
+   
+   hline->next = line;
+   line->prev = hline;
+   line->next = bline;
+   if (bline != NULL)
+     bline->prev = line;
+
+   return line;
+}
+
+#if SLRN_HAS_CANLOCK
+/* This function returns a malloced string or NULL on failure. */
+static char *gen_cancel_lock (char *msgid, char *file) /*{{{*/
+{
+   FILE *cansecret;
+   char *buf, *canlock;
+   unsigned int filelen;
+   char canfile[SLRN_MAX_PATH_LEN];
+   
+   cansecret = slrn_open_home_file (file, "r", canfile, SLRN_MAX_PATH_LEN, 0);
+   if (cansecret == NULL)
+     {
+	slrn_error (_("Cannot open file: %s"), file);
+	return NULL;
+     }
+   
+   (void) fseek (cansecret, 0, SEEK_END);
+   if ((filelen = ftell(cansecret)) == 0)
+     {
+	slrn_error (_("Zero length file: %s"), Slrn_User_Info.cancelsecret);
+	fclose (cansecret);
+	return NULL;
+     }
+
+   if (NULL == (buf = slrn_malloc (filelen+1, 0, 1)))
+     {
+	fclose (cansecret);
+	return NULL;
+     }
+   
+   (void) fseek (cansecret, 0, SEEK_SET);
+   (void) fread (buf, filelen, 1, cansecret);
+   (void) fclose(cansecret);
+   
+# if 0
+   canlock = md5_lock(buf, filelen, msgid, strlen(msgid));
+# else /* by default we use SHA-1 */
+   canlock = sha_lock ((unsigned char *) buf, filelen, (unsigned char *)msgid, strlen(msgid));
+# endif
+   slrn_free (buf);
+   return canlock;
+}
+/*}}}*/
+
+static Slrn_Article_Line_Type *add_cancel_lock_to_header (Slrn_Article_Type *a, char *msgid, char *file)
+{
+   char *canlock;
+   Slrn_Article_Line_Type *l;
+
+   if (NULL == (canlock = gen_cancel_lock (msgid, file)))
+     return NULL;
+   
+   l = append_header_line (a, "Cancel-Lock", canlock);
+   slrn_free (canlock);
+   
+   return l;
+}
+#endif
+   
 /* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
 int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 {
    Slrn_Article_Type *a = NULL;
-   Slrn_Article_Line_Type *tmp;
+   Slrn_Article_Line_Type *cline;
    int header;
    int rsp;
    int perform_cc;
    int status;
    char *msgid = NULL;
+   char *errmsg = NULL;
    int has_messageid = 0;
    char *responses;
 
@@ -1416,9 +1471,9 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 
    perform_cc = 0;
    if (msgid != NULL)
-	slrn_free(msgid);
+     slrn_free(msgid);
    if (a != NULL)
-	slrn_art_free_article(a);
+     slrn_art_free_article(a);
    a=(Slrn_Article_Type*) slrn_malloc (sizeof(Slrn_Article_Type), 1, 1);
 
    if (Slrn_Batch == 0)
@@ -1454,107 +1509,94 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
    status = Slrn_Post_Obj->po_start ();
    if (status != CONT_POST)
      {
-	(void) saved_failed_post (file, (status != -1) ?
-				  _("Posting not allowed.") :
-				  _("Could not reach server."));
-	slrn_art_free_article(a);
-	return -1;
+	errmsg = (status != -1) 
+	  ?  _("Posting not allowed.") : _("Could not reach server.");
+	goto return_error;
      }
 
-    msgid = create_message_id (&rsp);
-    if (rsp)
+   if (-1 == create_message_id (&msgid))
       {
-	(void) saved_failed_post (file, _("Could not generate Message-ID."));
-	slrn_free(msgid);
-	slrn_art_free_article(a);
-	return -1;
+	 errmsg = _("Could not generate Message-ID.");
+	 goto return_error;
       }
 
-   a->cline=a->lines;
+   cline = a->lines;
    
    header=1;
-   while (a->cline != NULL)
+   while (cline != NULL)
      {
 	if (header)
 	  {
-	     if (a->cline->flags != HEADER_LINE) /* Header ends, body begins */
+	     if (cline->flags != HEADER_LINE) /* Header ends, body begins */
 	       {
 		  if (msgid != NULL)
 		    {
 #if SLRN_HAS_CANLOCK
-		       char *canlock;
-		       if (NULL != (canlock = gen_cancel_lock (msgid)))
+		       if (0 != *Slrn_User_Info.cancelsecret)
 			 {
-			    a->cline=a->cline->prev;
-			    tmp=a->cline->next;
-			    a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-			    a->cline->next->prev=a->cline;
-			    a->cline=a->cline->next;
-			    a->cline->next=tmp;
-			    a->cline->next->prev=a->cline;
-			    a->cline->flags=HEADER_LINE;
-			    a->cline->buf=slrn_safe_malloc(14+strlen(canlock));
-			    sprintf(a->cline->buf, "Cancel-Lock: %s", canlock);
-			    SLFREE (canlock);
-			    Slrn_Post_Obj->po_puts(a->cline->buf);
+			    if (NULL == (cline = add_cancel_lock_to_header (a, msgid, Slrn_User_Info.cancelsecret)))
+			      {
+				 errmsg = _("Failed to add cancel-lock header");
+				 goto return_error;
+			      }
+			    Slrn_Post_Obj->po_puts(cline->buf);
 			    Slrn_Post_Obj->po_puts("\n");
-			    a->cline=a->cline->next;
 			 }
 #endif /* SLRN_HAS_CANLOCK */
+
 		       if (has_messageid == 0)
 			 {
-			    a->cline=a->cline->prev;
-			    tmp=a->cline->next;
-			    a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-			    a->cline->next->prev=a->cline;
-			    a->cline=a->cline->next;
-			    a->cline->next=tmp;
-			    a->cline->next->prev=a->cline;
-			    a->cline->flags=HEADER_LINE;
-			    a->cline->buf=slrn_safe_malloc(13+strlen(msgid));
-			    sprintf(a->cline->buf, "Message-ID: %s", msgid);
-			    SLFREE (msgid);
-			    Slrn_Post_Obj->po_puts(a->cline->buf);
+			    if (NULL == (cline = append_header_line (a, "Message-ID", msgid)))
+			      {
+				 errmsg = _("Unable to append a header line");
+				 goto return_error;
+			      }
+			    Slrn_Post_Obj->po_puts(cline->buf);
 			    Slrn_Post_Obj->po_puts("\n");
-			    a->cline=a->cline->next;
 			 }
 		    }
+		  cline = cline->next;
 		  header = 0;
 		  continue;
 	       }
 
-	     if (!Slrn_Generate_Date_Header &&
-		       (!slrn_case_strncmp ("Date: ",
-					    a->cline->buf, 4)))
+	     if (!Slrn_Generate_Date_Header
+		 && (0 == slrn_case_strncmp ("Date: ", cline->buf, 4)))
 	       {
 		  /* skip generated date header for posting */
-		  a->cline=a->cline->next;
+		  cline = cline->next;
 		  continue;
 	       }
-	     if (!slrn_case_strncmp ("Cc: ",
-				     a->cline->buf, 4))
+
+	     if (0 == slrn_case_strncmp ("Cc: ", cline->buf, 4))
 	       {
 		  perform_cc = 1;
-		  a->cline=a->cline->next; /* The 'Cc:' header is only needed in the cc-file.*/
+		  cline = cline->next; /* The 'Cc:' header is only needed in the cc-file.*/
 		  continue;
 	       }
 
 #if SLRN_HAS_GEN_MSGID
-	     if (!slrn_case_strncmp ("Message-ID: ",
-				     a->cline->buf, 12))
+	     if (!slrn_case_strncmp ("Message-ID: ", cline->buf, 12))
 	       {
-		  slrn_free(msgid);
+		  if (msgid != NULL) slrn_free(msgid);
 		  msgid = slrn_strmalloc (a->cline->buf+12, 0);
+		  if (msgid == NULL)
+		    {
+		       errmsg = _("Out of memory.");
+		       goto return_error;
+		    }
 		  has_messageid = 1;
+		  /* drop */
 	       }
 #endif
 	  } /* if (header) */
 
-	if (a->cline->buf[0] == '.')
+	if (cline->buf[0] == '.')
 	  Slrn_Post_Obj->po_puts("."); /* double leading dots for posting */
-	Slrn_Post_Obj->po_puts(a->cline->buf);
+
+	Slrn_Post_Obj->po_puts(cline->buf);
 	Slrn_Post_Obj->po_puts("\n");
-	a->cline=a->cline->next;
+	cline = cline->next;
      } /*while (a->cline != NULL)*/
 
    if (0 == Slrn_Post_Obj->po_end ())
@@ -1565,7 +1607,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
      {
 	if (Slrn_Batch)
 	  {
-	     saved_failed_post (file, NULL);
+	     save_failed_post (file, NULL);
 	     slrn_art_free_article(a);
 	     return -1;
 	  }
@@ -1589,11 +1631,8 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	if ((rsp == 'c')
 	    || ((rsp == 'e')
 		&& (slrn_edit_file (Slrn_Editor_Post, file, 1, 0) < 0)))
-	  {
-	     (void) saved_failed_post (file, NULL);
-	     slrn_art_free_article(a);
-	     return -1;
-	  }
+	  goto return_error;
+
 	goto try_again;
      } /* (0 == Slrn_Post_Obj->po_end ()) */
 
@@ -1609,7 +1648,14 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
      }
 
    slrn_art_free_article(a);
+   if (msgid != NULL) slrn_free (msgid);
    return 0;
+   
+return_error:
+   if (msgid != NULL) slrn_free (msgid);
+   (void) save_failed_post (file, errmsg);
+   slrn_art_free_article(a);
+   return -1;
 }
 
 /*}}}*/

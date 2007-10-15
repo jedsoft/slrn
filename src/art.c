@@ -3618,8 +3618,8 @@ static void followup (void) /*{{{*/
 static char* gen_cancel_key (char* msgid) /*{{{*/
 {
    FILE *cansecret;
-   unsigned char *buf, *cankey;
-   long filelen;
+   char *buf, *cankey;
+   unsigned int filelen;
    char canfile[SLRN_MAX_PATH_LEN];
    
    if (0 == *Slrn_User_Info.cancelsecret)
@@ -3632,7 +3632,7 @@ static char* gen_cancel_key (char* msgid) /*{{{*/
 	return NULL;
      }
 
-   fseek (cansecret, 0, SEEK_END);
+   (void) fseek (cansecret, 0, SEEK_END);
    if ((filelen = ftell(cansecret)) == 0)
      {
         slrn_error (_("Zero length file: %s"), Slrn_User_Info.cancelsecret);
@@ -3640,22 +3640,22 @@ static char* gen_cancel_key (char* msgid) /*{{{*/
         return NULL;
      }
    
-   if (NULL == (buf = slrn_malloc (filelen, 0, 1)))
+   if (NULL == (buf = slrn_malloc (filelen+1, 0, 1)))
      {
 	fclose (cansecret);
 	return NULL;
      }
    (void) fseek (cansecret, 0, SEEK_SET);
-   fread (buf, filelen, 1, cansecret);
+   (void) fread (buf, filelen, 1, cansecret);
 
 # if 0
    cankey = md5_key (buf, filelen, msgid, strlen(msgid));
 # else /* by default we use SHA-1 */
-   cankey = sha_key (buf, filelen, msgid, strlen(msgid));
+   cankey = sha_key ((unsigned char *) buf, filelen, (unsigned char *)msgid, strlen(msgid));
 # endif
    
    fclose (cansecret);
-   SLFREE (buf);
+   slrn_free (buf);
    return cankey;
 }
 /*}}}*/
@@ -3751,7 +3751,7 @@ static void supersede (void) /*{{{*/
    if (NULL != (from = gen_cancel_key(msgid)))
      {
 	fprintf (fp, "Cancel-Key: %s\n", from);
-	SLFREE (from);
+	slrn_free (from);
      }
 #endif
     
@@ -6972,7 +6972,7 @@ static void cancel_article (void) /*{{{*/
      }
 #endif
    
-   Slrn_Post_Obj->po_printf("\nignore\nArticle cancelled by slrn %s\n", Slrn_Version);
+   Slrn_Post_Obj->po_printf("\nignore\nArticle cancelled by slrn %s\n", Slrn_Version_String);
    
    if (0 == Slrn_Post_Obj->po_end ())
      {

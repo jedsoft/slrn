@@ -150,4 +150,11 @@
 
 #define SLRN_PATH_SLASH_CHAR	'/'
 
+#ifdef __GNUC__
+# define ATTRIBUTE_(x) __attribute__ (x)
+#else
+# define ATTRIBUTE_(x)
+#endif
+#define ATTRIBUTE_PRINTF(a,b) ATTRIBUTE_((format(printf,a,b)))
+
 #endif /* SLRN_CONFIG_H */

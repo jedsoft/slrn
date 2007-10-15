@@ -15,6 +15,11 @@ Changes since 0.9.8.8pl1
    domainname because some local mailing lists may not require them.
    Moreover a domain name should not be required when forwarding an
    article to a local user.
+6. src/jdmacros.h: On FreeBSD do not include malloc.h
+7. src/config.hin: Add __attribute__ check for printf-style functions
+8. src/post.c: Some cleanup and reorganization of the post-functions
+9. src/art.c: Fixed a SEGV in the cancel lock code.  Slrn_Version was
+   being used instead of Slrn_Version_String.
 
 Changes since 0.9.8.1
 
