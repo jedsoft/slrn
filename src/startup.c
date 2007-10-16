@@ -1464,7 +1464,7 @@ static Server_List_Type *find_server (char *host) /*{{{*/
     * fails, find a match without it.
     */
    host = slrn_safe_strmalloc (host);
-   port = slrn_strchr (host, ':');
+   port = slrn_strbyte (host, ':');
 
    for (i = 0; i < 2; i++)
      {

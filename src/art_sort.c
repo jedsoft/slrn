@@ -1073,7 +1073,7 @@ static void recompile_sortorder(char *sort_order) /*{{{*/
 {
     char *separator;
 
-    separator=strchr(sort_order, '|');
+    separator = slrn_strbyte(sort_order, '|');
     if (separator) {
         *separator='\0';
         compile_function_list(sort_order, &Sort_Functions);

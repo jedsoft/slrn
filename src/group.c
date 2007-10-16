@@ -1753,7 +1753,7 @@ void slrn_post_cmd (void) /*{{{*/
      name = "";
    slrn_strncpy (group, name, sizeof (group));
    if (slrn_read_input (_("Newsgroup: "), NULL, group, 1, 1) <= 0) return;
-   if (strchr (group, ',') != NULL)
+   if (slrn_strbyte (group, ',') != NULL)
      {
 	slrn_strncpy (followupto, name, sizeof (followupto));
 	(void) slrn_read_input (_("Followup-To: "), NULL, followupto, 1, 1);

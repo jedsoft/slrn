@@ -389,13 +389,13 @@ static int spool_find_artnum_from_msgid (char *msgid)
 
 	/* 5th field is message id. */
 
-	if (NULL == (p = slrn_strchr(buf, '\t'))) continue;
-	if (NULL == (p = slrn_strchr(p + 1, '\t'))) continue;
-	if (NULL == (p = slrn_strchr(p + 1, '\t'))) continue;
-	if (NULL == (p = slrn_strchr(p + 1, '\t'))) continue;
+	if (NULL == (p = slrn_strbyte(buf, '\t'))) continue;
+	if (NULL == (p = slrn_strbyte(p + 1, '\t'))) continue;
+	if (NULL == (p = slrn_strbyte(p + 1, '\t'))) continue;
+	if (NULL == (p = slrn_strbyte(p + 1, '\t'))) continue;
 
 	p++; /* skip tab */
-	q = slrn_strchr(p,'\t');
+	q = slrn_strbyte(p,'\t');
 	if (q != NULL) *q='\0';
 
 	if (0 == strcmp(msgid, p))
@@ -1195,7 +1195,7 @@ static int spool_read_xpat (char *buf, unsigned int len)
 	     
 	     while (field)
 	       {
-		  b = strchr (b, '\t');
+		  b = slrn_strbyte (b, '\t');
 		  /* If we reach the end of the overview line before finding
 		   * the correct field, the overview file must be corrupt. */
 		  if (b == NULL)
@@ -1209,7 +1209,7 @@ static int spool_read_xpat (char *buf, unsigned int len)
 		  b++;
 		  field--;
 	       }
-	     end = strchr (b, '\t');
+	     end = slrn_strbyte (b, '\t');
 	     if (end != NULL)
 	       *end = '\0';
 	     

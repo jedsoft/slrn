@@ -1265,7 +1265,7 @@ Please see the \"slrn reference manual\" for full details.\n"),
      }
    if ((NULL == Slrn_User_Info.username)
        || (0 == *Slrn_User_Info.username)
-       || (NULL != slrn_strchr (Slrn_User_Info.username, '@')))
+       || (NULL != slrn_strbyte (Slrn_User_Info.username, '@')))
      {
 	slrn_exit_error (_("\
 Unable to find your user name.  This means that a valid 'From' header line\n\

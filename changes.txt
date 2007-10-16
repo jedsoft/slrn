@@ -1,3 +1,4 @@
+-*- mode: text; mode: fold -*-
 Changes since 0.9.8.8pl1
 0. Removed the dependency on automake.  As a result, the configuration
    options have changed.  Run `./configure --help` to see the current
@@ -20,6 +21,18 @@ Changes since 0.9.8.8pl1
 8. src/post.c: Some cleanup and reorganization of the post-functions
 9. src/art.c: Fixed a SEGV in the cancel lock code.  Slrn_Version was
    being used instead of Slrn_Version_String.
+10. src/*.c: Renamed slrn_strchr to slrn_strbyte to emphasize that
+    this function does not work with wide characters.
+11. src/strutil.c: slrn_case_str[n]cmp were not handling NULL pointers
+    in non-utf-8 mode (Thomas Wiegner).
+12. src/art.c: non-7 bit characters were not be displayed properly in
+    UTF-8 mode after rot13. (Thomas Wiegner).
+13. src/mime.c: When decoding mime, do not allow \n characters in the
+    header, and if they occur in the body, split lines accordingly
+    (Thomas Wiegner).
+
+
+{{{ Previous Versions 
 
 Changes since 0.9.8.1
 
@@ -2363,3 +2376,5 @@ Changes since 0.4.0
 5.  The `L' key in the group menu may now be used to toggle the display of
     unsubscribed groups on and off.  
 
+
+}}}

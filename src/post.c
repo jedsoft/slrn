@@ -169,7 +169,7 @@ static int create_message_id (char **msgidp)/*{{{*/
 	while ((*t != 0) && (b < baseid + sizeof(baseid) - 2))
 	  {
 	     if (((ch = *t) > ' ') && ((ch & 0x80) == 0)
-		 && (NULL == strchr ("<>()@,;:\\\"[]", ch)))
+		 && (NULL == slrn_strbyte ("<>()@,;:\\\"[]", ch)))
 	       *b++ = ch;
 	     t++;
 	  }
@@ -326,10 +326,10 @@ char *slrn_trim_references_header (char *line) /*{{{*/
    /* Make sure line does not end in whitespace */
    (void) slrn_trim_string (line);
 
-   if ((NULL == (l = slrn_strchr (line, '<'))) ||
-       (NULL == (r = slrn_strchr (l+1, '>'))))
+   if ((NULL == (l = slrn_strbyte (line, '<'))) ||
+       (NULL == (r = slrn_strbyte (l+1, '>'))))
      return NULL;
-   while ((NULL != (nextid = slrn_strchr (l+1, '<'))) &&
+   while ((NULL != (nextid = slrn_strbyte (l+1, '<'))) &&
 	  (nextid < r))
      l = nextid;
 
@@ -338,20 +338,20 @@ char *slrn_trim_references_header (char *line) /*{{{*/
    if (nextid != NULL) /* Skip enough IDs to fit into our limit */
      {
 	tmp=nextid;
-	while (NULL != (tmp = slrn_strchr (tmp+1, '>')))
+	while (NULL != (tmp = slrn_strbyte (tmp+1, '>')))
 	/* make sure that we have enough space for missing whitespaces
 	 * between Message-Ids */
 	  {
 	     if (*(tmp+1) != ' ') extra_whitespaces++;
 	  }
         nextid--;
-	while (NULL != (nextid = slrn_strchr (nextid + 1, '<')))
+	while (NULL != (nextid = slrn_strbyte (nextid + 1, '<')))
 	  {
 	     if (strlen (nextid) + extra_whitespaces + len < GNKSA_LENGTH)
 	       break;
 	     else
 	       {
-		  tmp = slrn_strchr (nextid, '>');
+		  tmp = slrn_strbyte (nextid, '>');
 		  if (*(tmp+1) != ' ') extra_whitespaces--;
 	       }
 	  }
@@ -372,9 +372,9 @@ char *slrn_trim_references_header (char *line) /*{{{*/
    /* Copy the rest, dropping chopped IDs */
    while (l != NULL)
      {
-	if (NULL == (r = slrn_strchr (l+1, '>')))
+	if (NULL == (r = slrn_strbyte (l+1, '>')))
 	  break;
-	while ((NULL != (nextid = slrn_strchr (l+1, '<'))) &&
+	while ((NULL != (nextid = slrn_strbyte (l+1, '<'))) &&
 	       (nextid < r))
 	  l = nextid;
 	len = r - l + 1;
@@ -396,7 +396,7 @@ static int is_empty_header (char *line) /*{{{*/
 
    if ((*line == ' ') || (*line == '\t')) return 0;
 
-   b = slrn_strchr (line, ':');
+   b = slrn_strbyte (line, ':');
    if (b == NULL) return 0;
 
    b = slrn_skip_whitespace (b + 1);
@@ -411,7 +411,7 @@ static void insert_cc_post_message (char *newsgroups, FILE* ofile) /*{{{*/
    
    do
      {
-	percnt = slrn_strchr (message, '%');
+	percnt = slrn_strbyte (message, '%');
 	if (percnt == NULL)
 	  fputs (message, ofile);
 	else if (percnt[1] == 0)
@@ -610,7 +610,7 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
 	     continue;
 	  }
 
-	if (NULL == (colon = slrn_strchr (line, ':')))
+	if (NULL == (colon = slrn_strbyte (line, ':')))
 	  {
 	     err = slrn_add_mime_error(err, _("Expecting a header. This is not a header line."), line, lineno, MIME_ERROR_CRIT);
 	  }
@@ -1154,7 +1154,7 @@ static int insert_custom_header (char *fmt, FILE *fp) /*{{{*/
 	
 	if (ch != '%')
 	  {
-	     if (NULL == (s = strchr (fmt, '%')))
+	     if (NULL == (s = slrn_strbyte (fmt, '%')))
 	       return fputs (fmt, fp);
 	     else
 	       {

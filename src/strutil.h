@@ -22,7 +22,7 @@
 #ifndef _SLRN_STRUTIL_H_
 #define _SLRN_STRUTIL_H_
 extern char *slrn_simple_strtok (char *, char *);
-extern char *slrn_strchr (char *, char);
+extern char *slrn_strbyte (char *, char);
 extern char *slrn_skip_whitespace (char *s);
 extern char *slrn_bskip_whitespace (char *s);
 extern char *slrn_trim_string (char *s);

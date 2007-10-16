@@ -218,7 +218,7 @@ static char *fake_refs_from_inreply_to (char *buf, unsigned int buflen)
    if (*p != '<')
      {
 	p1 = p;
-	while ((p1 = slrn_strchr (p1, '<')) != NULL)
+	while ((p1 = slrn_strbyte (p1, '<')) != NULL)
 	  {
 	     p = p1;
 	     p1++;
@@ -229,7 +229,7 @@ static char *fake_refs_from_inreply_to (char *buf, unsigned int buflen)
      }
    
    /* found a message-id */
-   if (NULL == (p1 = slrn_strchr (p, '>')))
+   if (NULL == (p1 = slrn_strbyte (p, '>')))
      return NULL;
    
    len = 1 + (p1 - p); /* include the '>' */
@@ -393,7 +393,7 @@ void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h)
    if (*m != 0)
      {
 	h->msgid = m;
-	m = slrn_strchr (m, '>');
+	m = slrn_strbyte (m, '>');
 	if (m != NULL) *(m + 1) = 0;
      }
    else h->msgid = xov->message_id;
@@ -459,7 +459,7 @@ int slrn_read_overview_fmt (void) /*{{{*/
 	     char *p;
 	     Overview_Fmt_Type* new_entry;
 	     
-	     if (NULL == (p = strchr (line, ':')))
+	     if (NULL == (p = slrn_strbyte (line, ':')))
 	       p = "";
 	     else
 	       *p++ = 0;
@@ -869,7 +869,7 @@ static int parse_xover_line (char *buf, Slrn_XOver_Type *xov) /*{{{*/
 	       {
 		  if (t->full)
 		    {
-		       if ((NULL != (xb = strchr (xb, ':'))) && (0 != *(++xb)))
+		       if ((NULL != (xb = slrn_strbyte (xb, ':'))) && (0 != *(++xb)))
 			 *t->value = ++xb;
 		       else
 			 *t->value = "";

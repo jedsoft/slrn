@@ -853,7 +853,7 @@ static char *find_url (char *l_buf, unsigned int *p_len) /*{{{*/
 {
    char *ptr, *tmp, ch;
    
-   while (NULL != (ptr = slrn_strchr (l_buf, ':')))
+   while (NULL != (ptr = slrn_strbyte (l_buf, ':')))
      {
 	int is_news;
 	tmp = ptr;
@@ -883,19 +883,19 @@ static char *find_url (char *l_buf, unsigned int *p_len) /*{{{*/
 		  ptr++;
 		  saw_opening_bracket = 1;
 	       }
-	     while ((ch = *ptr) && (NULL == slrn_strchr (" \t\n<>", ch)))
+	     while ((ch = *ptr) && (NULL == slrn_strbyte (" \t\n<>", ch)))
 	       ptr++;
 	     if ((*ptr == '>') && saw_opening_bracket)
 	       ptr++;
 	  }
 	else
 	  {
-	     while ((ch = *ptr) && (NULL == slrn_strchr (" \t\n\"{}<>", ch)))
+	     while ((ch = *ptr) && (NULL == slrn_strbyte (" \t\n\"{}<>", ch)))
 	       ptr++;
 	  }
 	
 	/* at the end of the URL, these are probably punctuation */
-	while ((tmp < ptr) && (NULL != slrn_strchr (".,;:()", *(ptr - 1))))
+	while ((tmp < ptr) && (NULL != slrn_strbyte (".,;:()", *(ptr - 1))))
 	  ptr--;
 	
 	l_buf = ptr;
@@ -1105,7 +1105,7 @@ static void launch_url (char *url, int want_edit) /*{{{*/
 	  url += 2; /* not RFC compliant, but accept it anyway */
 	if (*url == '<')
 	  url++; /* not RFC compliant either */
-	if (NULL != strchr (url, '@'))
+	if (NULL != slrn_strbyte (url, '@'))
 	  {
 	     char *msgid = slrn_strdup_printf ("<%s%c", url, bracket);
 	     if (NULL == msgid)
@@ -1161,7 +1161,7 @@ static void launch_url (char *url, int want_edit) /*{{{*/
      }
    
    /* Perform a simple-minded syntax check. */
-   has_percent = slrn_strchr (browser, '%');
+   has_percent = slrn_strbyte (browser, '%');
    if (has_percent != NULL)
      {
 	if ((has_percent[1] != 's') 
@@ -1895,7 +1895,7 @@ static size_t read_dotatom (char *start, char *dest, size_t max) /*{{{*/
 	     start++;
 	  }
 	if ((*start == '\0') ||
-	    (NULL != strchr ("\t \"(),.:;<>@[\\]", *start)))
+	    (NULL != slrn_strbyte ("\t \"(),.:;<>@[\\]", *start)))
 	   break;
 	if (len + dot < max)
 	  {
@@ -1931,7 +1931,7 @@ static char *read_localpart (char *start, char *dest, size_t max) /*{{{*/
      {
 	len = read_quotedstring (start, dest, max ? max-1 : 0);
      }
-   else if (*start && (NULL == strchr ("\t \"(),.:;<>@[\\]", *start)))
+   else if (*start && (NULL == slrn_strbyte ("\t \"(),.:;<>@[\\]", *start)))
      {
 	len = read_dotatom (start, dest, max ? max-1 : 0);
      }
@@ -2015,7 +2015,7 @@ static char *read_domain (char *start, char *dest, size_t max) /*{{{*/
 	len++;
 	start++;
      }
-   else if (*start && (NULL == strchr ("\t \"(),.:;<>@\\]", *start)))
+   else if (*start && (NULL == slrn_strbyte ("\t \"(),.:;<>@\\]", *start)))
      {
 	len = read_dotatom (start, dest, max);
 	start += len;
@@ -2568,7 +2568,7 @@ int slrn_string_to_article (char *str)
      {
 	unsigned int len;
 
-	estr = slrn_strchr (str, '\n');
+	estr = slrn_strbyte (str, '\n');
 	if (estr == NULL)
 	  estr = str + strlen (str);
 
@@ -3268,7 +3268,7 @@ static void followup (void) /*{{{*/
 	     is_poster = (0 == slrn_case_strcmp ( cc_address,
 						  "poster"));
 	     if (is_poster
-		 || (NULL != slrn_strchr (cc_address, '@')))
+		 || (NULL != slrn_strbyte (cc_address, '@')))
 	       /* The GNU newsgroups appear to have email addresses in the
 		* Followup-To header.  Yuk.
 		*/
@@ -3298,7 +3298,7 @@ static void followup (void) /*{{{*/
 		  while (rpos < epos)
 		    {
 		       lpos = rpos;
-		       rpos = slrn_strchr(lpos, ',');
+		       rpos = slrn_strbyte(lpos, ',');
 		       if (rpos == NULL)
 			 rpos = epos;
 		       if ((strlen(Slrn_Current_Group_Name) == (unsigned int) (rpos-lpos)) &&
@@ -3330,7 +3330,8 @@ static void followup (void) /*{{{*/
 	  newsgroups = "";
      }
    
-   if (Slrn_Netiquette_Warnings && (strchr(newsgroups, ',') != NULL))
+   if (Slrn_Netiquette_Warnings 
+       && (NULL != slrn_strbyte(newsgroups, ',')))
      {
 	/* Note to translators: Here, "fF" means "Followup-To", "aA" is for
 	 * "all groups", "tT" is "this group only" and "cC" means "cancel".
@@ -6347,7 +6348,7 @@ static void show_spoilers (void) /*{{{*/
 	
 	while (n-- != 0)
 	  {
-	     if (NULL == (s = strchr (s, 12)))
+	     if (NULL == (s = slrn_strbyte (s, 12)))
 	       break;
 	     else
 	       s++;
@@ -6364,7 +6365,7 @@ static void show_spoilers (void) /*{{{*/
 		  l->flags &= ~SPOILER_LINE;
 		  l = l->next;
 	       }
-	     while ((l != NULL) && (NULL == strchr (l->buf, 12)));
+	     while ((l != NULL) && (NULL == slrn_strbyte (l->buf, 12)));
 	  }
      }
    
@@ -8228,17 +8229,22 @@ static void init_rot13 (void) /*{{{*/
 
 static void write_rot13 (unsigned char *buf, int color, int use_emph) /*{{{*/
 {
-   unsigned char ch;
+   char *buf_rot13;
 
-   (void) color;
-   (void) use_emph;
    init_rot13();
    
-   while ((ch = *buf++) != 0)
-     {
-	ch = Rot13buf[ch];
-	slrn_write_nbytes ((char *) &ch, 1);
-     }
+   if (NULL == (buf_rot13 = slrn_strmalloc ((char *)buf, 1)))
+     return;
+
+   decode_rot13 ((unsigned char *)buf_rot13);
+#if SLRN_HAS_EMPHASIZED_TEXT
+   if (use_emph)
+     smg_write_emphasized_text (buf_rot13, color);
+   else
+#endif
+     smg_write_string (buf_rot13);
+
+   slrn_free(buf_rot13);
 }
 /*}}}*/
 
@@ -8277,7 +8283,7 @@ static void write_spoiler (char *buf, int first_line) /*{{{*/
 	
 	while (n-- != 0)
 	  {
-	     if (NULL == (s = strchr (s, 12)))
+	     if (NULL == (s = slrn_strbyte (s, 12)))
 	       break;
 	     else
 	       s++;
@@ -8864,7 +8870,7 @@ static void display_article_line (Slrn_Article_Line_Type *l)
       case HEADER_LINE:
 	if ((unsigned char)*lbuf > (unsigned char) ' ')
 	  {
-	     lbuf = slrn_strchr (lbuf, ':');
+	     lbuf = slrn_strbyte (lbuf, ':');
 	     if (lbuf != NULL)
 	       {
 		  lbuf++;
@@ -8920,10 +8926,10 @@ static void display_article_line (Slrn_Article_Line_Type *l)
 
    if (Do_Rot13 && use_rot13)
      {
-	write_rot13 ((unsigned char *) lbuf, use_emph_mask, color);
+	write_rot13 ((unsigned char *) lbuf, color, use_emph_mask);
 	return;
      }
-   
+
    if (use_emph_mask)
      {
 #if SLRN_HAS_EMPHASIZED_TEXT

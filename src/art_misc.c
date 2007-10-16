@@ -223,7 +223,7 @@ void slrn_art_mark_spoilers (Slrn_Article_Type *a) /*{{{*/
    while ((l != NULL) && (l->flags & HEADER_LINE))
      l = l->next; /* skip header */
    
-   while ((l != NULL) && (NULL == strchr (l->buf, 12)))
+   while ((l != NULL) && (NULL == slrn_strbyte (l->buf, 12)))
      l = l->next; /* skip to first formfeed */
    
    while (l != NULL)
@@ -789,7 +789,7 @@ char *slrn_art_extract_header (char *hdr, unsigned int len) /*{{{*/
 	       }
 
 	     /* Return the data after the colon */
-	     result = slrn_strchr (l->buf, ':');
+	     result = slrn_strbyte (l->buf, ':');
 	     if (result == NULL) 
 	       result = l->buf + len;
 	     else result += 1;

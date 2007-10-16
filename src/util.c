@@ -466,12 +466,12 @@ char *slrn_basename (char *file)
 {
    char *f;
 #ifdef VMS
-   f = slrn_strchr (file, ']');
+   f = slrn_strbyte (file, ']');
    if (f != NULL) return f + 1;
    return file;
 #else
 
-   while (NULL != (f = slrn_strchr (file, SLRN_PATH_SLASH_CHAR)))
+   while (NULL != (f = slrn_strbyte (file, SLRN_PATH_SLASH_CHAR)))
      file = f + 1;
    
    return file;

@@ -795,7 +795,7 @@ static int compile_group_names (char *group, Group_Score_Type *gst)
 #endif
 	group = slrn_skip_whitespace (group);
 	
-	comma = slrn_strchr ((char *) group, ',');
+	comma = slrn_strbyte ((char *) group, ',');
 	if (comma != NULL) 
 	  {
 	     *comma++ = 0;
@@ -1162,9 +1162,9 @@ static int phrase_score_file (char *file, FILE *fp, Score_Context_Type *c,
 		       slrn_free (description);
 		       description = NULL;
 		    }
-                  eol = slrn_strchr (lpp, '#');
+                  eol = slrn_strbyte (lpp, '#');
 		  if (eol == NULL)
-		    lpp = slrn_strchr (lpp, '%');
+		    lpp = slrn_strbyte (lpp, '%');
 		  else lpp = eol;
                   if (lpp != NULL)
 		    {

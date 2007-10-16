@@ -924,7 +924,7 @@ int slrn_popup_win_mode (char *title, char *text)
 	  }
 	last = curr;
 	
-	if (NULL != (newline = strchr (text, '\n')))
+	if (NULL != (newline = slrn_strbyte (text, '\n')))
 	  {
 	     *newline++ = 0;
 	     if (*newline == 0)
@@ -934,7 +934,7 @@ int slrn_popup_win_mode (char *title, char *text)
 	
 	/* Here, we handle TABs (expand to spaces): */
 	tab = text;
-	while (NULL != (tab = strchr (tab, '\t')))
+	while (NULL != (tab = slrn_strbyte (tab, '\t')))
 	  {
 	     tab++;
 	     len += 8;

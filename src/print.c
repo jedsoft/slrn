@@ -141,7 +141,7 @@ Slrn_Print_Type *win32_open_printer (void)
    if (NULL == (printer_name = Slrn_Printer_Name))
      {
 	(void) GetProfileString("windows", "device", "LPT1,,", printer_name_buf, sizeof(printer_name_buf));
-	printer_name = slrn_strchr (printer_name_buf, ',');
+	printer_name = slrn_strbyte (printer_name_buf, ',');
 	if (NULL != printer_name)
 	  *printer_name = 0;
 	

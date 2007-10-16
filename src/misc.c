@@ -305,7 +305,7 @@ static void redraw_message (void)
    
    while (1)
      {
-	mmax = slrn_strchr (m, 1);
+	mmax = slrn_strbyte (m, 1);
 	if (mmax == NULL)
 	  mmax = m + strlen(m);
 	
@@ -599,7 +599,7 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	
 	if (ch != '%')
 	  {
-	     if ((NULL == (s = strchr (fmt, '%'))) && (elsepart == NULL))
+	     if ((NULL == (s = slrn_strbyte (fmt, '%'))) && (elsepart == NULL))
 	       {
 		  SLsmg_write_string (fmt);
 		  break;
@@ -624,9 +624,9 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	     char *res;
 	     
 	     if (((ch = *fmt++) == '\0') || (*fmt++ != '?') ||
-		 (NULL == (cond_end = strchr (fmt, '?'))))
+		 (NULL == (cond_end = slrn_strbyte (fmt, '?'))))
 	       break; /* syntax error; stop here */
-	     if ((NULL == (elsepart = strchr (fmt, '&'))) ||
+	     if ((NULL == (elsepart = slrn_strbyte (fmt, '&'))) ||
 		 (elsepart > cond_end))
 	       elsepart = cond_end;
 	     
@@ -702,7 +702,7 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	 * the length in bytes and the length in characters. */
 	smax = s + strlen (s);
 	len = slrn_screen_strlen (s, smax);
-	if (NULL != (p = slrn_strchr (s, '\n')))
+	if (NULL != (p = slrn_strbyte (s, '\n')))
 	  len = slrn_screen_strlen (s, p);
 	
 	if (field_len != -1)
@@ -858,7 +858,7 @@ void slrn_make_home_filename (char *name, char *file, size_t n) /*{{{*/
    int rc, idx;
    
    slrn_strncpy (fn1, name, sizeof (fn1));
-   if (NULL != slrn_strchr (name, ':'))
+   if (NULL != slrn_strbyte (name, ':'))
      {
 	slrn_strncpy (file, name, n);
 	return;
@@ -868,7 +868,7 @@ void slrn_make_home_filename (char *name, char *file, size_t n) /*{{{*/
      home = getenv ("HOME");
    
    *file = 0;
-   if (NULL != (cp = slrn_strchr (fn1, '/')))
+   if (NULL != (cp = slrn_strbyte (fn1, '/')))
      {
 # ifdef __DECC
 	*cp = '\0'; cp++;
@@ -939,14 +939,14 @@ void slrn_make_home_dirname (char *name, char *dir, size_t n) /*{{{*/
    static char fname[SLRN_MAX_PATH_LEN];
    int rc, idx, len;
    
-   if (NULL != slrn_strchr (name, ':'))
+   if (NULL != slrn_strbyte (name, ':'))
      {
 	slrn_strncpy (dir, name, n);
 	return;
      }
    home = getenv ("HOME");
    *dir = 0;
-   if (cp = strchr(name,'/'))
+   if (cp = strbyte(name,'/'))
      {
 #ifdef __DECC
 	cp = decc$translate_vms(home);
@@ -1727,7 +1727,7 @@ static int read_from_input_string (char *str)
    
    if (Input_String == NULL) return -1;
    
-   s = slrn_strchr (Input_String_Ptr, '\n');
+   s = slrn_strbyte (Input_String_Ptr, '\n');
    if (s != NULL) 
      *s = 0;
    
@@ -2518,8 +2518,8 @@ char slrn_map_translated_char (char *native_chars, /*{{{*/
 {
    char *pos;
    if ((strlen (native_chars) != strlen (translated_chars)) ||
-       (NULL != slrn_strchr (native_chars, rsp)) ||
-       (NULL == (pos = slrn_strchr (translated_chars, rsp))))
+       (NULL != slrn_strbyte (native_chars, rsp)) ||
+       (NULL == (pos = slrn_strbyte (translated_chars, rsp))))
      return rsp;
    return native_chars[pos - translated_chars];
 }
@@ -2792,7 +2792,7 @@ int slrn_is_fqdn (char *h) /*{{{*/
    if (NULL != slrn_strbrk (h, "~`!@#$%^&*()=+|\\[]{}/?;"))
      return 0;
    
-   p = slrn_strchr (h, '.');
+   p = slrn_strbyte (h, '.');
    if ((p == NULL) || (p == h))
      return 0;
    
@@ -3033,17 +3033,17 @@ void slrn_get_user_info (void) /*{{{*/
 
 /*}}}*/
 
-#define is_atext(x) (((x) > 0x20) && ((x) < 0x7f) && \
-			(NULL == strchr ("\"(),.:;<>@[\\]", (x))))
+#define IS_ATEXT(x) (((x) > 0x20) && ((x) < 0x7f) && \
+			(NULL == slrn_strbyte ("\"(),.:;<>@[\\]", (x))))
 
 static int is_dot_atom (char *str)
 {
    char ch = *str++;
-   if (!is_atext (ch)) return 0;
+   if (!IS_ATEXT (ch)) return 0;
    while ((ch = *str++))
      {
 	if (ch == '.') ch = *str++;
-	if (!is_atext (ch)) return 0;
+	if (!IS_ATEXT (ch)) return 0;
      }
    return 1;
 }
@@ -3052,7 +3052,7 @@ static int is_phrase (char *str)
 {
    char ch;
    while ((ch = *str++))
-     if ((!is_atext (ch)) && (0 == (ch & 0x80)) &&
+     if ((!IS_ATEXT (ch)) && (0 == (ch & 0x80)) &&
 	 (ch != ' ') && (ch != '\t')) return 0;
    /* Note: 8bit characters are encoded later and become atext */
    return 1;

@@ -834,7 +834,7 @@ char *slrn_help_string_to_keyseq (char *s) /*{{{*/
    while (slen && (ind <= SLANG_MAX_KEYMAP_KEY_SEQ))
      {
 	char *end;
-	if ((*s == '<') && (NULL != (end = slrn_strchr (s,'>'))))
+	if ((*s == '<') && (NULL != (end = slrn_strbyte (s,'>'))))
 	  {
 	     int i;
 	     int len = end-s-1;

@@ -78,7 +78,7 @@ char *slrn_trim_string (char *s) /*{{{*/
 }
 /*}}}*/
 
-char *slrn_strchr (char *s, char ch) /*{{{*/
+char *slrn_strbyte (char *s, char ch) /*{{{*/
 {
    register char ch1;
    
@@ -139,23 +139,20 @@ int slrn_case_strncmp (char *a, char *b, unsigned int n) /*{{{*/
 {
    char *bmax;
    
-#if SLANG_VERSION >= 20000
-   if (Slrn_UTF8_Mode)
+   if (a == NULL)
      {
-	if (a == NULL)
-	  {
-	     if (b == NULL)
-	       return 0;
-	     else
-	       return -1;
-	  }
 	if (b == NULL)
-	  return 1;
-	
-	return SLutf8_compare((SLuchar_Type *)a, (SLuchar_Type *)a+strlen(a), 
-			      (SLuchar_Type *)b, (SLuchar_Type *)b+strlen(b), n , 0);
+	  return 0;
+	else
+	  return -1;
      }
-#endif
+   if (b == NULL)
+     return 1;
+	
+   if (Slrn_UTF8_Mode)
+     return SLutf8_compare((SLuchar_Type *)a, (SLuchar_Type *)a+strlen(a),
+			   (SLuchar_Type *)b, (SLuchar_Type *)b+strlen(b),
+			   n, 0);
    bmax = b + n;
    while (b < bmax)
      {
@@ -177,30 +174,29 @@ int slrn_case_strncmp (char *a, char *b, unsigned int n) /*{{{*/
 int slrn_case_strcmp (char *a, char *b) /*{{{*/
 {
    register unsigned char cha, chb;
-   int len_a,len_b,min;
+   int len_a,len_b;
    
-#if SLANG_VERSION >= 20000
+   if (a == NULL)
+     {
+	if (b == NULL)
+	  return 0;
+	else
+	  return -1;
+     }
+
+   if (b == NULL)
+     return 1;
+
    if (Slrn_UTF8_Mode)
      {
-	if (a == NULL)
-	  {
-	     if (b == NULL)
-	       return 0;
-	     else
-	       return -1;
-	  }
-	if (b == NULL)
-	  return 1;
 	len_a=strlen(a);
 	len_b=strlen(b);
-	if (len_a > len_b)
-	  min = len_b;
-	else
-	  min = len_a;
+
 	return SLutf8_compare((SLuchar_Type *)a, (SLuchar_Type *)a+len_a, 
-			      (SLuchar_Type *)b, (SLuchar_Type *)b+len_b, min , 0);
+			      (SLuchar_Type *)b, (SLuchar_Type *)b+len_b, 
+			      ((len_a > len_b) ? len_a : len_b), 0);
      }
-#endif
+
    while (1)
      {
 	cha = UPPER_CASE(*a);

@@ -156,7 +156,7 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
    
    do
      {
-	while (NULL != (b = slrn_strchr (b, ';')))
+	while (NULL != (b = slrn_strbyte (b, ';')))
 	  {
 	     char *charset;
 	     unsigned int len;
@@ -257,10 +257,10 @@ static int Index_Hex[128] =/*{{{*/
 static char *decode_quoted_printable (char *dest,/*{{{*/
 				      char *src, char *srcmax,
 				      int treat_underscore_as_space,
-				      int strip_8bit)
+				      int keep_nl)
 {
    char *allowed_in_qp = "0123456789ABCDEFabcdef";
-   unsigned char ch, mask = 0x0;
+   unsigned char ch;
 /*
 #ifndef SLRNPULL_CODE
    if (strip_8bit && (NULL == Char_Set))
@@ -272,11 +272,12 @@ static char *decode_quoted_printable (char *dest,/*{{{*/
      {
 	ch = (unsigned char) *src++;
 	if ((ch == '=') && (src + 1 < srcmax)
-	    && (NULL != slrn_strchr (allowed_in_qp, src[0]))
-	    && (NULL != slrn_strchr (allowed_in_qp, src[1])))
+	    && (NULL != slrn_strbyte (allowed_in_qp, src[0]))
+	    && (NULL != slrn_strbyte (allowed_in_qp, src[1])))
 	  {
 	     ch = (16 * HEX(src[0])) + HEX(src[1]);
-	     if (ch & mask) ch = '?';
+	     if ((ch == '\n') && (keep_nl == 0))
+	       ch = '?';
 	     *dest++ = (char) ch;
 	     src += 2;
 	  }
@@ -284,7 +285,10 @@ static char *decode_quoted_printable (char *dest,/*{{{*/
 	  {
 	     *dest++ = ' ';
 	  }
-	else *dest++ = (char) ch;
+	else if ((ch == '\n') && (keep_nl == 0))
+	  *dest++ = '?';
+	else 
+	  *dest++ = (char) ch;
      }
    return dest;
 }
@@ -305,17 +309,24 @@ static int Index_64[128] =/*{{{*/
 /*}}}*/
 #define BASE64(c) (Index_64[(unsigned char)(c) & 0x7F])
 
-static char *decode_base64 (char *dest, char *src, char *srcmax) /*{{{*/
+static char *decode_base64 (char *dest, char *src, char *srcmax, int keep_nl) /*{{{*/
 {
    while (src + 3 < srcmax)
      {
-	*dest++ = (BASE64(src[0]) << 2) | (BASE64(src[1]) >> 4);
+	char ch = (BASE64(src[0]) << 2) | (BASE64(src[1]) >> 4);
+	if ((ch == '\n') && (keep_nl == 0)) ch = '?';
+	*dest++ = ch;
 	
 	if (src[2] == '=') break;
-	*dest++ = ((BASE64(src[1]) & 0xf) << 4) | (BASE64(src[2]) >> 2);
-	
+	ch = ((BASE64(src[1]) & 0xf) << 4) | (BASE64(src[2]) >> 2);
+	if ((ch == '\n') && (keep_nl == 0)) ch = '?';
+	*dest++ = ch;
+
 	if (src[3] == '=') break;
-	*dest++ = ((BASE64(src[2]) & 0x3) << 6) | BASE64(src[3]);
+	ch = ((BASE64(src[2]) & 0x3) << 6) | BASE64(src[3]);
+	if ((ch == '\n') && (keep_nl == 0)) ch = '?';
+	*dest++ = ch;
+
 	src += 4;
      }
    return dest;
@@ -333,7 +344,8 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
    char *after_whitespace;
    unsigned int count;
    unsigned int len;
-   
+   int keep_nl = 0;
+
    count = 0;
    after_whitespace = NULL;
    after_last_encoded_word = NULL;
@@ -347,7 +359,7 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
      {
 	char *decoded_start, *decoded_end;
 
-	while ((NULL != (s = slrn_strchr (s, '=')))
+	while ((NULL != (s = slrn_strbyte (s, '=')))
 	       && (s[1] != '?')) s++;
 	if (s == NULL) break;
 	
@@ -420,8 +432,8 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 	decoded_start = s1;
 
 	if (method == 'B')
-	  s1 = decode_base64 (s1, txt, s);
-	else s1 = decode_quoted_printable (s1, txt, s, 1, 0);
+	  s1 = decode_base64 (s1, txt, s, keep_nl);
+	else s1 = decode_quoted_printable (s1, txt, s, 1, keep_nl);
 
 	decoded_end = s1;
 
@@ -507,8 +519,9 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
    Slrn_Article_Line_Type *body_start, *next;
    char *buf_src, *buf_dest, *buf_pos;
    char *base;
+   int keep_nl = 1;
    int len;
-   
+
    if (a == NULL) return;
    
    l = a->lines;
@@ -544,7 +557,7 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
      }
    
    /* put decoded article into buf_dest */
-   buf_pos = decode_base64(buf_dest, buf_src, buf_src+len);
+   buf_pos = decode_base64(buf_dest, buf_src, buf_src+len, keep_nl);
    *buf_pos = '\0';
    
    if (a->mime.charset == NULL)
@@ -576,7 +589,7 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
    buf_pos = buf_dest;
    
    /* put decoded article back into article structure */
-   while ( (buf_pos=strchr(buf_dest, '\n')) != NULL )
+   while ( (buf_pos = slrn_strbyte(buf_dest, '\n')) != NULL )
      {
 	len = buf_pos - buf_dest;
 	
@@ -661,19 +674,83 @@ static int merge_if_soft_linebreak (Slrn_Article_Line_Type *curr_line)/*{{{*/
 
 /*}}}*/
 
-static void decode_mime_quoted_printable (Slrn_Article_Type *a)/*{{{*/
+static int split_qp_lines (Slrn_Article_Type *a)
 {
    Slrn_Article_Line_Type *line;
    
+   line = a->lines;
+
+   /* skip header lines */
+   while ((line != NULL) 
+	  && (line->flags & HEADER_LINE))
+     line=line->next;
+
+   while (line != NULL)
+     {
+	Slrn_Article_Line_Type *new_line, *next;
+	char *p = line->buf;
+	char *buf0, *buf1;
+	char ch;
+
+	next = line->next;
+
+	while ((0 != (ch = *p)) && (ch != '\n'))
+	  p++;
+	
+	if (ch == 0)
+	  {
+	     line = next;
+	     continue;
+	  }
+
+	new_line = (Slrn_Article_Line_Type *) slrn_malloc (sizeof(Slrn_Article_Line_Type), 1, 1);
+	if (new_line == NULL)
+	  return -1;
+
+	if (NULL == (buf1 = slrn_strmalloc (p+1, 1)))
+	  {
+	     slrn_free ((char *) new_line);
+	     return -1;
+	  }
+	
+	if (NULL == (buf0 = slrn_realloc (line->buf, p-line->buf, 1)))
+	  {
+	     slrn_free ((char *) new_line);
+	     slrn_free (buf1);
+	     return -1;
+	  }
+	line->buf = buf0;
+
+	new_line->buf = buf1;
+	new_line->flags = line->flags;
+	new_line->next = next;
+	new_line->prev = line;
+	if (next != NULL)
+	  next->prev = new_line;
+	line->next = new_line;
+
+	line = next;
+     }
+
+   return 0;
+}
+
+static int decode_mime_quoted_printable (Slrn_Article_Type *a)/*{{{*/
+{
+   Slrn_Article_Line_Type *line;
+   int keep_nl = 1;
+
    if (a == NULL)
-     return;
+     return -1;
    
    line = a->lines;
 
    /* skip to body */
    while ((line != NULL) && (line->flags & HEADER_LINE))
      line = line->next;
-   if (line == NULL) return;
+
+   if (line == NULL) 
+     return 0;
    
    while (line != NULL)
      {
@@ -690,7 +767,7 @@ static void decode_mime_quoted_printable (Slrn_Article_Type *a)/*{{{*/
 	     len = strlen (b);
 	  }
 
-	b = decode_quoted_printable (b, b, b + len, 0, 1);
+	b = decode_quoted_printable (b, b, b + len, 0, keep_nl);
 	if (b < line->buf + len)
 	  {
 	     *b = 0;
@@ -700,6 +777,8 @@ static void decode_mime_quoted_printable (Slrn_Article_Type *a)/*{{{*/
 	
 	line = line->next;
      }
+   
+   return split_qp_lines (a);
 }
 
 /*}}}*/
@@ -849,7 +928,8 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
 	break;
 	
       case ENCODED_QUOTED:
-	decode_mime_quoted_printable (a);
+	if (-1 == decode_mime_quoted_printable (a))
+	  return -1;
 	break;
 	
       default:
@@ -992,7 +1072,7 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, int *hibin, 
     {
        do
 	 {
-	    if ((charset_end=slrn_strchr(charset, ',')) != NULL)
+	    if ((charset_end=slrn_strbyte(charset, ',')) != NULL)
 	      {
 		 *charset_end = '\0';
 	      }
@@ -1163,7 +1243,7 @@ static Slrn_Mime_Error_Obj *encode_string (char **s_ptr, unsigned int offset,/*{
    /* Loop through the list of character sets converting the substring */
   do
     {
-       if ((charset_end=slrn_strchr(charset, ',')) != NULL)
+       if ((charset_end=slrn_strbyte(charset, ',')) != NULL)
 	 {
 	    *charset_end = '\0';
 	 }
@@ -1364,7 +1444,7 @@ static Slrn_Mime_Error_Obj *encode_comment (char **s_ptr, char *from_charset, un
 	     continue;
 	  }
 
-	if (NULL != slrn_strchr(RFC_2882_NOT_COMMENT_CHARS, s[pos]))
+	if (NULL != slrn_strbyte(RFC_2882_NOT_COMMENT_CHARS, s[pos]))
 	  {
 	     return slrn_mime_error (_("Illegal char in displayname of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
 	  }
@@ -1450,14 +1530,14 @@ static Slrn_Mime_Error_Obj *encode_phrase (char **s_ptr, char *from_charset, uns
 		  *start= pos;
 		  return NULL;
 	       }
-	     if (NULL != slrn_strchr(RFC_2882_NOT_ATOM_CHARS, s[pos]))
+	     if (NULL != slrn_strbyte(RFC_2882_NOT_ATOM_CHARS, s[pos]))
 	       {
 		  return slrn_mime_error (_("Illegal char in displayname of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
 	       }
 	  }
 	else
 	  {
-	     if (NULL != slrn_strchr(RFC_2882_NOT_QUOTED_CHARS, s[pos]))
+	     if (NULL != slrn_strbyte(RFC_2882_NOT_QUOTED_CHARS, s[pos]))
 	       {
 		  return slrn_mime_error (_("Illegal char in quoted displayname of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
 	       }
@@ -1509,7 +1589,7 @@ static Slrn_Mime_Error_Obj *encode_localpart (char **s_ptr, char *from_charset, 
 	if (in_quote)
 	  {
 	     if ((ch == ' ')
-		 || (NULL != slrn_strchr(RFC_2882_NOT_QUOTED_CHARS, ch)))
+		 || (NULL != slrn_strbyte(RFC_2882_NOT_QUOTED_CHARS, ch)))
 	       return slrn_mime_error (_("Illegal char in quoted localpart of address header."), str, 0, MIME_ERROR_CRIT);
 	     
 	     continue;
@@ -1525,7 +1605,7 @@ static Slrn_Mime_Error_Obj *encode_localpart (char **s_ptr, char *from_charset, 
 	  }
 
 	if ((ch == ' ')
-	    || (NULL != slrn_strchr(RFC_2882_NOT_DOTATOM_CHARS, ch)))
+	    || (NULL != slrn_strbyte(RFC_2882_NOT_DOTATOM_CHARS, ch)))
 	  return slrn_mime_error (_("Illegal char in localpart of address header."), str, 0, MIME_ERROR_CRIT);
 
 	nchars++;
@@ -1579,7 +1659,7 @@ static Slrn_Mime_Error_Obj *encode_domain (char **s_ptr, char *from_charset, uns
 		  return NULL;
 	       }
 	  }
-	if (NULL != slrn_strchr(RFC_2882_NOT_DOTATOM_CHARS, s[pos]))
+	if (NULL != slrn_strbyte(RFC_2882_NOT_DOTATOM_CHARS, s[pos]))
 	  {
 	     return slrn_mime_error (_("Illegal char in domain of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
 	  }
@@ -1610,7 +1690,7 @@ static Slrn_Mime_Error_Obj *encode_domainlit (char **s_ptr, char *from_charset, 
 	     *start=pos;
 	     return NULL;
 	  }
-	if (NULL != slrn_strchr(RFC_2882_NOT_DOMLIT_CHARS, s[pos]))
+	if (NULL != slrn_strbyte(RFC_2882_NOT_DOMLIT_CHARS, s[pos]))
 	  {
 	     return slrn_mime_error (_("Illegal char in domain-literal of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
 	  }

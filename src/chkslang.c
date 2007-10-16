@@ -70,6 +70,10 @@ slang.h does not match slang library version.  Did you install slang as\n\
 as a shared library?  Did you run ldconfig?  You have an installation problem\n\
 and you will need to check the SLANG variables in the Makefile and properly\n\
 set them.  Also try: make clean; make\n******\n\n"));
+	
+	fprintf (stderr, "slang.h version: %d\nlibslang version %d\n",
+		 SLANG_VERSION, SLang_Version);
+
 	return FAILURE;
      }
 #endif

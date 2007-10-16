@@ -285,7 +285,7 @@ static int _nntp_po_puts (char *buf)
    
    /* make sure \n --> \r\n */
    b = buf;
-   while (NULL != (b = slrn_strchr (buf, '\n')))
+   while (NULL != (b = slrn_strbyte (buf, '\n')))
      {
 	unsigned int len;
 	

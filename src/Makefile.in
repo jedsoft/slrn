@@ -104,6 +104,8 @@ slrnpull_LIBS = $(slrnpull_DEPS)
 
 UUDECODE_OBJS = $(OBJDIR)/util.o $(OBJDIR)/ttymsg.o $(OBJDIR)/slrndir.o
 
+UPDATE_VERSION_SCRIPT = $(HOME)/bin/update_changes_version
+
 #
 COMPILE_CMD = $(CC) -c $(ALL_CFLAGS)
 #
@@ -121,10 +123,15 @@ $(CONFIG_H) : $(SRCDIR)/sysconf.h
 	touch $(CONFIG_H)
 #
 slangversion: $(OBJDIR)/chkslang
-	$(OBJDIR)/chkslang $(EXEC) 10003
+	$(OBJDIR)/chkslang $(EXEC) 20000
 #
 $(OBJDIR)/chkslang: $(OBJDIR)/chkslang.o
 	$(CC) $(OBJDIR)/chkslang.o $(LDFLAGS) -o $(OBJDIR)/chkslang $(RPATH) $(EXECLIBS)
+version.h: $(SRCDIR)/../changes.txt
+	if [ -x $(UPDATE_VERSION_SCRIPT) ]; then \
+	  $(UPDATE_VERSION_SCRIPT) $(SRCDIR)/../changes.txt $(SRCDIR)/version.h; \
+	fi
+#
 uudecode: uudecode.c $(UUDECODE_OBJS)
 	$(CC) $(ALL_CFLAGS) -DSTANDALONE $(LDFLAGS) -o uudecode uudecode.c $(UUDECODE_OBJS) $(EXECLIBS)
 	touch uudecode.c

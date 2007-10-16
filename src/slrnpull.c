@@ -960,13 +960,13 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
 	char *b1, *b2;
 	
 	num = (int) atoi (buf);
-	b1 = slrn_strchr (buf, '<');
+	b1 = slrn_strbyte (buf, '<');
 	if (b1 == NULL)
 	  {
 	     /* defective server?? */
 	     continue;
 	  }
-	b2 = slrn_strchr (b1, '>');
+	b2 = slrn_strbyte (b1, '>');
 	if (b2 == NULL) continue;
 	
 	b2++;
