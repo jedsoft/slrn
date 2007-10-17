@@ -30,7 +30,13 @@ Changes since 0.9.8.8pl1
 13. src/mime.c: When decoding mime, do not allow \n characters in the
     header, and if they occur in the body, split lines accordingly
     (Thomas Wiegner).
-
+14. src/post.c: In the prepare_header function, sizeof(buf) was being
+    used for a char *buf.  This was causing Cc addresses to get
+    truncated to 3 characters.  Also the some unchecked malloc
+    failures were caught.
+15. src/art.c: Added support for Mail-Reply-To.  If it exists, it
+    takes precedence over a Reply-To header.  This header is used by
+    mailing lists.
 
 {{{ Previous Versions 
 

@@ -590,8 +590,8 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
 	if (vline[vlen-1] == '\n')
 	  vlen--;
 	
-	line = slrn_strnmalloc(vline, vlen, 1);
-	
+	line = slrn_safe_strnmalloc (vline, vlen);
+
 	ch = *line;
 	lineno++;
 	if ((ch == ' ') || (ch == '\t') || (ch == '\0'))
@@ -692,19 +692,21 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
 	/* prepare Cc: header:
 	 * This line consists of a comma separated list of addresses.  In
 	 * particular, "poster" will be replaced by 'to'. */
-	if ((to != NULL) && (0 == slrn_case_strncmp ( line,
-						     "Cc: ",
-						     4)))
+	if ((to != NULL) 
+	    && (0 == slrn_case_strncmp (line, "Cc: ", 4)))
 	  {
 	     unsigned int  nth = 0;
 	     char *l = line + 4;
 	     char *t, *buf;
-	     
-	     buf=slrn_safe_malloc(strlen(line));
-	     t=tmp=slrn_safe_malloc(strlen(line) + strlen(to)+1);
+	     unsigned int buflen;
+
+	     buflen = strlen (line) + 1;   /* is big enough for any substring of line */
+	     buf = slrn_safe_malloc (buflen);
+	     t = tmp = slrn_safe_malloc (buflen + strlen(to) + 1);
+
 	     strncpy(t, "Cc: ", 4);
 	     t +=4;
-	     while (0 == SLextract_list_element (l, nth, ',', buf, sizeof (buf)))
+	     while (0 == SLextract_list_element (l, nth, ',', buf, buflen))
 	       {
 		  char *b;
 
@@ -713,21 +715,16 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
 		  slrn_trim_string (b);
 
 		  if (nth != 0)
-		       *(t++)= ',';
+		    *t++ = ',';
 
 		  if (0 == slrn_case_strcmp (b, "poster"))
-		    {
-		       strcpy(t, to); /*safe*/
-		       t += strlen(to);
-		    }
-		  else
-		    {
-		       strcpy(t, b);
-		       t += strlen(b);
-		    }
+		    b = to;
+
+		  strcpy (t, b); /*safe*/
+		  t += strlen(b);
 		  nth++;
 	       }
-	     *t='\0';
+	     *t = 0;
 	     slrn_free(buf);
 	  }
 
@@ -744,12 +741,12 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
 	
 	if (a->lines == NULL)
 	  {
-	     a->cline=a->lines = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+	     a->cline=a->lines = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
 	     a->lines->prev = NULL;
 	  }
 	else
 	  {
-	     a->cline->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+	     a->cline->next = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
 	     a->cline->next->prev = a->cline;
 	     a->cline=a->cline->next;
 	  }
@@ -759,20 +756,20 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
      } /*while (NULL != (vline = vgets (vp, &vlen)))*/
 
    /* Insert other headers */
-   a->cline->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+   a->cline->next = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
    a->cline->next->prev = a->cline;
    a->cline=a->cline->next;
    a->cline->flags=HEADER_LINE;
    a->cline->buf=slrn_gen_date_header();
    
-   a->cline->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+   a->cline->next = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
    a->cline->next->prev = a->cline;
    a->cline=a->cline->next;
    a->cline->flags=HEADER_LINE;
    a->cline->buf = slrn_strdup_printf("User-Agent: slrn/%s (%s)", Slrn_Version_String, system_os_name);
    
    /* Insert empty line between headers and body */
-   a->raw_lines = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+   a->raw_lines = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
    a->raw_lines->prev = NULL;
    a->raw_lines->buf=slrn_safe_strmalloc("");
 
@@ -830,7 +827,7 @@ static Slrn_Mime_Error_Obj *prepare_body (VFILE *vp, unsigned int *linenum, /*{{
 	if (vline[vlen-1] == '\n')
 	  vlen--;
 	
-	line = slrn_strnmalloc(vline, vlen, 1);
+	line = slrn_safe_strnmalloc (vline, vlen);
 	lineno++;
 	
 	if (!hibin && slrn_string_nonascii(line))
@@ -855,7 +852,7 @@ static Slrn_Mime_Error_Obj *prepare_body (VFILE *vp, unsigned int *linenum, /*{{
 	  }
 
 
-	cline->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
+	cline->next = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
         cline->next->prev = cline;
 	cline = cline->next;
 	cline->buf = line;

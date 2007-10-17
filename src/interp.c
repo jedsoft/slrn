@@ -266,9 +266,9 @@ int slrn_eval_slang_file (char *name) /*{{{*/
 	while (1)
 	  {
 	     if (-1 == SLextract_list_element (Slrn_Macro_Dir, n, ',',
-						   file, sizeof (file)))
+					       file, sizeof (file)))
 	       break;
-	     
+
 	     slrn_make_home_dirname (file, dir, sizeof (dir));
 	     if ((-1 != slrn_dircat (dir, name, file, sizeof (file)))
 		 && (1 == slrn_file_exists (file)))

@@ -2745,11 +2745,15 @@ static char *extract_reply_address (void)
 {
    char *from;
    
-   if ((NULL == (from = slrn_extract_header ("Reply-To: ", 10))) ||
-       (0 == *from))
-     from = slrn_extract_header ("From: ", 6);
-   
-   return from;
+   if ((NULL != (from = slrn_extract_header ("Mail-Reply-To: ", 15)))
+       && (*from != 0))
+     return from;
+
+   if ((NULL != (from = slrn_extract_header ("Reply-To: ", 10)))
+       && (*from != 0))
+     return from;
+     
+   return slrn_extract_header ("From: ", 6);
 }
 
 #if SLRN_HAS_SLANG
