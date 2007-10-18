@@ -889,6 +889,52 @@ void slrn_free_mime_error(Slrn_Mime_Error_Obj *obj) /*{{{*/
 
 /*}}}*/
 
+static char *guess_unknown_charset (Slrn_Article_Type *a)
+{
+   Slrn_Article_Line_Type *line;
+   char *charset = "us-ascii";
+
+   /* FIXME: Add a hook here for the user to specify a character set */
+
+   line = a->lines;
+     
+   /* Skip header */
+   while ((line != NULL) && (line->flags & HEADER_LINE))
+     line = line->next;
+   
+   while (line != NULL)
+     {
+	unsigned char *p, *pmax, ch;
+	unsigned int nconsumed;
+	SLwchar_Type wch;
+
+	p = (unsigned char *)line->buf;
+	while (((ch = *p) != 0) && ((ch & 0x80) == 0))
+	  p++;
+	
+	if (ch == 0)
+	  {
+	     line = line->next;
+	     continue;
+	  }
+
+	pmax = p + strlen ((char *)p);
+
+	/* First see if it looks like UTF-8 */
+	if (NULL != SLutf8_decode (p, pmax, &wch, &nconsumed))
+	  {
+	     charset = "UTF-8";
+	     break;
+	  }
+	
+	/* Otherwise, assume iso-latin */
+	charset = "ISO_8859-1";
+	break;
+     }
+
+   return slrn_strmalloc (charset, 1);
+}
+
 int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
 {
    if (a == NULL)
@@ -940,8 +986,8 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
    if ((a->mime.needs_metamail == 0) &&
 	     (a->mime.charset == NULL))
      {
-	a->mime.charset = slrn_safe_strmalloc("us-ascii");
-	return 0;
+	if (NULL == (a->mime.charset = guess_unknown_charset (a)))
+	  return -1;
      }
  
    if ((a->mime.needs_metamail == 0) &&

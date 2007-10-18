@@ -37,6 +37,8 @@ Changes since 0.9.8.8pl1
 15. src/art.c: Added support for Mail-Reply-To.  If it exists, it
     takes precedence over a Reply-To header.  This header is used by
     mailing lists.
+16. src/mime.c: Added a routine to "guess" an unknown character set.
+    Eventually this will be replaced by a slang-hook.
 
 {{{ Previous Versions 
 
