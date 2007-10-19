@@ -39,6 +39,8 @@ Changes since 0.9.8.8pl1
     mailing lists.
 16. src/mime.c: Added a routine to "guess" an unknown character set.
     Eventually this will be replaced by a slang-hook.
+17. src/post.c: User-generated message-ids were getting corrupted.
+18. src/misc.c: Removed the slang-1 specific code.
 
 {{{ Previous Versions 
 

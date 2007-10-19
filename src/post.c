@@ -1576,7 +1576,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	     if (!slrn_case_strncmp ("Message-ID: ", cline->buf, 12))
 	       {
 		  if (msgid != NULL) slrn_free(msgid);
-		  msgid = slrn_strmalloc (a->cline->buf+12, 0);
+		  msgid = slrn_strmalloc (cline->buf+12, 0);
 		  if (msgid == NULL)
 		    {
 		       errmsg = _("Out of memory.");

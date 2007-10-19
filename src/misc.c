@@ -450,7 +450,6 @@ void slrn_write_nchars (char *s, char *smax, unsigned int n) /*{{{*/
    if (n == 0)
      return;
 
-#if SLANG_VERSION >= 20000
    if (Slrn_UTF8_Mode)
      {
 	/* Skip past n characters. */
@@ -489,7 +488,7 @@ void slrn_write_nchars (char *s, char *smax, unsigned int n) /*{{{*/
 
 	return;
      }
-#endif
+
    /* Skip past n characters. */
    while (len<n)
      {
@@ -543,13 +542,11 @@ void slrn_write_nbytes (char *s, unsigned int n) /*{{{*/
    unsigned char *s1, *smax;
    unsigned int eight_bit;
 
-#if SLANG_VERSION >= 20000
    if (Slrn_UTF8_Mode)
      {
 	SLsmg_write_nchars (s, n);
 	return;
      }
-#endif
    
    s1 = (unsigned char *) s;
    smax = s1 + n;
@@ -1619,26 +1616,12 @@ int slrn_edit_file (char *editor, char *file, unsigned int line,
 
 /*{{{ Get Input From User Related Functions */
 
-#if SLANG_VERSION < 20000
-static void rline_update (unsigned char *buf, int len, int col) /*{{{*/
-{
-   slrn_push_suspension (0);
-   SLsmg_gotorc (SLtt_Screen_Rows - 1, 0);
-   SLsmg_write_nchars ((char *) buf, len);
-   SLsmg_erase_eol ();
-   SLsmg_gotorc (SLtt_Screen_Rows - 1, col);
-   slrn_smg_refresh ();
-   slrn_pop_suspension ();
-}
-
-/*}}}*/
-#else
-static void rline_update (SLrline_Type *rli, char *prompt, 
+static void rline_update (SLrline_Type *rli, char *prompt,
 			  char *buf, unsigned int len, unsigned int point,
 			  VOID_STAR client_data)
 {
    int col;
-
+       
    (void) client_data;
    (void) rli;
    slrn_push_suspension (0);
@@ -1653,7 +1636,7 @@ static void rline_update (SLrline_Type *rli, char *prompt,
    slrn_pop_suspension ();
 }
 
-#endif
+
 
 /* If 1, redraw read_line.  If 2, redraw message */
 static int Reading_Input;
@@ -1670,41 +1653,6 @@ static void redraw_mini_buffer (void) /*{{{*/
 
 static SLang_RLine_Info_Type *init_readline (void) /*{{{*/
 {
-#if SLANG_VERSION < 20000
-   unsigned char *buf;
-   SLang_RLine_Info_Type *rli;
-   
-   rli = (SLang_RLine_Info_Type *) slrn_malloc (sizeof(SLang_RLine_Info_Type),
-						1, 1);
-   if (rli == NULL)
-     return NULL;
-   
-   if (NULL == (buf = (unsigned char *) slrn_malloc (SLRL_DISPLAY_BUFFER_SIZE, 0, 1)))
-     {
-	SLFREE (rli);
-	return NULL;
-     }
-
-   rli->buf = buf;
-   rli->buf_len = SLRL_DISPLAY_BUFFER_SIZE - 1;
-   rli->tab = 8;
-   rli->dhscroll = 20;
-   rli->getkey = SLang_getkey;
-   rli->tt_goto_column = NULL;
-   rli->update_hook = rline_update;
-#ifdef SL_RLINE_BLINK_MATCH
-   rli->flags |= SL_RLINE_BLINK_MATCH;
-   rli->input_pending = SLang_input_pending;
-#endif
-   if (SLang_init_readline (rli) < 0)
-     {
-	SLFREE (rli);
-	SLFREE (buf);
-	rli = NULL;
-     }
-   
-   return rli;
-#else				       /* slang 2 */
    SLrline_Type *rli;
    unsigned int flags = SL_RLINE_BLINK_MATCH;
    
@@ -1716,7 +1664,6 @@ static SLang_RLine_Info_Type *init_readline (void) /*{{{*/
    
    (void) SLrline_set_update_hook (rli, rline_update, NULL);
    return rli;
-#endif
 }
 
 /*}}}*/
@@ -1903,74 +1850,10 @@ static void rli_self_insert (void) /*{{{*/
    char last_char [2];
    last_char[0] = (char) SLang_Last_Key_Char;
    last_char[1] = '\0';
-#if SLANG_VERSION >= 20000
    (void) SLrline_ins (Slrn_Keymap_RLI, last_char, 1);
-#else
-   SLang_rline_insert (last_char);
-#endif
    SLrline_redraw (Slrn_Keymap_RLI);
 }
 /*}}}*/
-
-#if SLANG_VERSION < 20000
-static int SLrline_get_point (SLrline_Type *rli, unsigned int *p)
-{
-   *p = rli->point;
-   return 0;
-}
-static int SLrline_set_point (SLrline_Type *rli, unsigned int p)
-{
-   rli->point = p;
-   return 0;
-}
-
-static char *SLrline_get_line (SLrline_Type *rli)
-{
-   return SLmake_string (rli->buf);
-}
-static int SLrline_set_line (SLrline_Type *rli, char *buf)
-{
-   slrn_strncpy ((char *)rli->buf, buf, rli->buf_len);
-   return 0;
-}
-
-static int SLrline_save_line (SLrline_Type *rli)
-{
-   (void) SLang_rline_save_line (rli);
-   return 0;
-}
-
-static int SLrline_set_echo (SLrline_Type *rli, int state)
-{
-# ifdef SL_RLINE_NO_ECHO
-   if (state == 0)
-     rli->flags |= SL_RLINE_NO_ECHO;
-   else
-     rli->flags &= ~SL_RLINE_NO_ECHO;
-# endif
-   return 0;
-}
-
-static char *SLrline_read_line (SLrline_Type *rli, char *prompt, unsigned int *lenp)
-{
-   int i;
-   
-   rli->prompt = prompt;
-   i = SLang_read_line (rli);
-   if (i < 0)
-     {
-	*lenp = 0;
-	return NULL;
-     }
-   *lenp = i;
-   return SLmake_string (rli->buf);
-}
-
-SLkeymap_Type *SLrline_get_keymap (SLrline_Type *rli)
-{
-   return rli->keymap;
-}
-#endif
 
 static void generic_mini_complete (int cycle) /*{{{*/
 {
@@ -2142,62 +2025,7 @@ static void generic_mini_complete (int cycle) /*{{{*/
 }
 
 /*}}}*/
-#if SLANG_VERSION < 20000
-static int mini_complete (void)
-{
-   generic_mini_complete (0);
-   return 0;
-}
 
-static int mini_cycle (void)
-{
-   generic_mini_complete (1);
-   return 0;
-}
-static int rli_del_bol (void) /*{{{*/
-{
-   unsigned char *d, *s;
-   
-   d = Slrn_Keymap_RLI->buf;
-   s = Slrn_Keymap_RLI->buf + Slrn_Keymap_RLI->point;
-   
-   while (0 != (*d++ = *s++));
-   Slrn_Keymap_RLI->len -= Slrn_Keymap_RLI->point;
-   Slrn_Keymap_RLI->point = 0;
-   SLrline_redraw (Slrn_Keymap_RLI);
-   return 0;
-}
-/*}}}*/
-
-static int rli_del_bow (void) /*{{{*/
-{
-   unsigned char *d, *s;
-   
-   if (Slrn_Keymap_RLI->point == 0) return 0;
-   
-   d = Slrn_Keymap_RLI->buf + Slrn_Keymap_RLI->point - 1;
-   while ((d != Slrn_Keymap_RLI->buf) && ((*d == ' ') || (*d == '\t')))
-     d--;
-   while (d != Slrn_Keymap_RLI->buf)
-     {
-	if ((*d == ' ') || (*d == '\t'))
-	  {
-	     d++;
-	     break;
-	  }
-	else d--;
-     }
-   s = Slrn_Keymap_RLI->buf + Slrn_Keymap_RLI->point;
-   
-   Slrn_Keymap_RLI->len -= (s - d);
-   Slrn_Keymap_RLI->point -= (s - d);
-   while (0 != (*d++ = *s++));
-   SLrline_redraw (Slrn_Keymap_RLI);
-   return 0;
-}
-/*}}}*/
-
-#else
 static int mini_complete (SLrline_Type *rli)
 {
    (void) rli;
@@ -2260,8 +2088,6 @@ static int rli_del_bow (SLrline_Type *rli) /*{{{*/
 }
 /*}}}*/
 
-#endif
-
 #define A_KEY(s, f)  {s, (int (*)(void)) f}
 
 static SLKeymap_Function_Type Slrn_Custom_Readline_Functions [] =
@@ -2319,15 +2145,7 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
 
    if ((str == NULL) && (dfl == NULL)) return -1;
    
-#if SLANG_VERSION < 20000
-   Slrn_Keymap_RLI->edit_width = SLtt_Screen_Cols - 1;
-   if (Slrn_Keymap_RLI->edit_width > Slrn_Keymap_RLI->buf_len)
-	   Slrn_Keymap_RLI->edit_width = Slrn_Keymap_RLI->buf_len;
-   *Slrn_Keymap_RLI->buf = 0;
-#else
    SLrline_set_display_width (Slrn_Keymap_RLI, SLtt_Screen_Cols);
-#endif
-
 
    /* slrn_set_suspension (1); */   
 
@@ -2355,17 +2173,11 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
    else
      SLrline_set_echo (Slrn_Keymap_RLI, 1);
 
-#if SLANG_VERSION < 20000
-   if (tt_init_state & SLRN_SMG_INIT)
-     Slrn_Keymap_RLI->update_hook = rline_update;
-   else
-     Slrn_Keymap_RLI->update_hook = NULL;
-#else
    if (tt_init_state & SLRN_SMG_INIT)
      (void) SLrline_set_update_hook (Slrn_Keymap_RLI, rline_update, NULL);
    else
      (void) SLrline_set_update_hook (Slrn_Keymap_RLI, NULL, NULL);
-#endif
+
    slrn_enable_mouse (0);
    
    
@@ -2729,22 +2541,6 @@ void slrn_evaluate_cmd (void) /*{{{*/
 
 SLRegexp_Type *slrn_compile_regexp_pattern (char *pat) /*{{{*/
 {
-#if SLANG_VERSION < 20000
-   static unsigned char compiled_pattern_buf [512];
-   static SLRegexp_Type re;
-   
-   re.pat = (unsigned char *) pat;
-   re.buf = compiled_pattern_buf;
-   re.buf_len = sizeof (compiled_pattern_buf);
-   re.case_sensitive = 0;
-   
-   if (0 != SLang_regexp_compile (&re))
-     {
-	slrn_error (_("Invalid regular expression or expression too long."));
-	return NULL;
-     }
-   return &re;
-#else
    SLRegexp_Type *re;
    unsigned int flags = SLREGEXP_CASELESS;
 
@@ -2755,24 +2551,13 @@ SLRegexp_Type *slrn_compile_regexp_pattern (char *pat) /*{{{*/
 	return NULL;
      }
    return re;
-#endif
 }
 
 /*}}}*/
 
 unsigned char *slrn_regexp_match (SLRegexp_Type *re, char *str) /*{{{*/
 {
-#if SLANG_VERSION < 20000
-   unsigned int len;
-
-   if ((str == NULL)
-       || (re->min_length > (len = strlen (str))))
-     return NULL;
-
-   return SLang_regexp_match ((unsigned char *)str, len, re);
-#else
    return (unsigned char *)SLregexp_match (re, str, strlen (str));
-#endif
 }
 
 /*}}}*/
@@ -3168,14 +2953,3 @@ char *slrn_make_from_string (void)
    return buf;
 }
 
-#if SLANG_VERSION < 20000
-int SLang_get_error (void)
-{
-   return SLang_Error;
-}
-int SLang_set_error (int err)
-{
-   SLang_Error = err;
-   return 0;
-}
-#endif
