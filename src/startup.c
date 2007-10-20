@@ -747,6 +747,8 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 #else
      {"charset", NULL},
 #endif
+   {"fallback_charset", &Slrn_Fallback_Input_Charset},
+
 #ifndef VMS
      {"sendmail_command", &Slrn_SendMail_Command},
 #endif

@@ -40,4 +40,6 @@ extern char *slrn_malloc (unsigned int, int, int);
 extern char *slrn_realloc (char *, unsigned int, int);
 extern void slrn_free (char *);
 
+extern char *slrn_strjoin (char *a, char *b, char *s);
+
 #endif

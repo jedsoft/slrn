@@ -38,6 +38,7 @@ char *Slrn_Config_Charset  = NULL;
 char *Slrn_Display_Charset  = NULL;
 char *Slrn_Editor_Charset  = NULL;
 char *Slrn_Outgoing_Charset  = NULL;
+char *Slrn_Fallback_Input_Charset = NULL;
 
 void slrn_init_charset (void)
 {
@@ -175,12 +176,113 @@ static int iconv_convert_string (iconv_t cd, char *str, size_t len, int test, ch
 }
 #endif
 
-char *slrn_convert_substring(char *str, unsigned int offset, unsigned int len, char *to_charset, char *from_charset, int test)
+/* Guess a character set from the bytes in the string -- it returns a 
+ * malloced string.
+ */
+char *slrn_guess_charset (char *str, char *strmax)
+{
+   char *charset = "us-ascii";
+
+   while (str < strmax)
+     {
+	unsigned int nconsumed;
+	SLwchar_Type wch;
+
+	if ((*str & 0x80) == 0)
+	  {
+	     str++;
+	     continue;
+	  }
+	
+	/* First see if it looks like UTF-8 */
+	if (NULL != SLutf8_decode ((SLuchar_Type *)str, (SLuchar_Type *)strmax, &wch, &nconsumed))
+	  {
+	     charset = "UTF-8";
+	     break;
+	  }
+	
+	charset = Slrn_Fallback_Input_Charset;
+	if (charset == NULL)
+	  charset = "iso-8859-1";
+	
+	break;
+     }
+   return slrn_strmalloc (charset, 1);
+}
+
+
+char *slrn_convert_string (char *from, char *str, char *strmax, char *to, int test)
 {
 #ifdef HAVE_ICONV
    iconv_t cd;
-   char *substr;
    int status;
+   char *substr;
+   int free_from = 0;
+
+   if (from == NULL)
+     {
+	from = slrn_guess_charset (str, strmax);
+	if (from == NULL)
+	  return NULL;
+	free_from = 1;
+     }
+
+   if ((cd = iconv_open(to, from)) == (iconv_t)(-1))
+     {
+	if (test == 0)
+	  slrn_error (_("Can't convert %s -> %s\n"), from, to);
+	
+	if (free_from)
+	  slrn_free (from);
+	  
+	return NULL;
+     }
+
+   status = iconv_convert_string (cd, str, strmax-str, test, &substr);
+   iconv_close(cd);
+
+   if (free_from)
+     slrn_free (from);
+
+   if (status == 0)
+     return NULL;
+
+   if (status == -1)
+     return NULL;
+
+   return substr;
+#else /* no iconv */
+
+   char *s;
+
+   if (from != NULL)
+     {
+	if (0 == strcmp (to, from))
+	  return slrn_strnmalloc (str, strmax-str, 1);
+     }
+   
+   if (test)
+     return NULL;
+   
+   /* Force it to us-ascii */
+   s = slrn_strnmalloc (str, strmax-str, 1);
+   if (s == NULL)
+     return NULL;
+   
+   str = s;
+   while (*s)
+     {
+	if (*s & 0x80)
+	  *s = '?';
+	s++;
+     }
+   return str;
+#endif
+}
+
+char *slrn_convert_substring(char *str, unsigned int offset, unsigned int len, char *to_charset, char *from_charset, int test)
+{
+   char *substr;
    char *new_str;
    unsigned int new_len;
    unsigned int dlen;
@@ -195,19 +297,10 @@ char *slrn_convert_substring(char *str, unsigned int offset, unsigned int len, c
 	return NULL;		       /* internal error */
      }
 
-   if ((cd = iconv_open(to_charset, from_charset)) == (iconv_t)(-1))
-     {
-	slrn_error (_("Can't convert %s -> %s\n"), from_charset, to_charset);
-	return NULL;
-     }
-
-   status = iconv_convert_string (cd, str+offset, len, test, &substr);
-   iconv_close(cd);
-
-   if (status == 0)
-     return NULL;
-
-   if (status == -1)
+   substr = slrn_convert_string (from_charset, str+offset, str+offset+len,
+				 to_charset, test);
+   
+   if (substr == NULL)
      return NULL;
    
    dlen = strlen (substr);
@@ -223,15 +316,6 @@ char *slrn_convert_substring(char *str, unsigned int offset, unsigned int len, c
    strcpy (new_str + offset + dlen, str + offset + len);
    slrn_free (substr);
    return new_str;
-#else
-   (void) str;
-   (void) offset;
-   (void) len;
-   (void) to_charset;
-   (void) from_charset;
-   (void) test;
-   return NULL;
-#endif
 }
 
 int slrn_test_and_convert_string(char *str, char **dest, char *to_charset, char *from_charset)
@@ -247,7 +331,7 @@ int slrn_test_and_convert_string(char *str, char **dest, char *to_charset, char 
    if (!slrn_string_nonascii(str))
 	return 0;
 
-   if(NULL == (*dest = slrn_convert_substring(str, 0, 0, to_charset, from_charset, 0)))
+   if(NULL == (*dest = slrn_convert_substring(str, 0, strlen (str), to_charset, from_charset, 0)))
      return -1;
 
    return 0;

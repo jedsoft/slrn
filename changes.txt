@@ -41,6 +41,12 @@ Changes since 0.9.8.8pl1
     Eventually this will be replaced by a slang-hook.
 17. src/post.c: User-generated message-ids were getting corrupted.
 18. src/misc.c: Removed the slang-1 specific code.
+19. src/mime.c: Better support for long header lines and long encoded
+    words.  Does this break X-Face?
+20. src/misc.c: In the rli_self_insert function, do not call
+    SLrline_redraw, which is buggy in slang-2.0.7.  The function is
+    not needed here anyway.
+21. src/charset.c, mime.c: Add Thomas Wiegner's fallback-charset patch.
 
 {{{ Previous Versions 
 

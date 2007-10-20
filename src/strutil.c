@@ -307,3 +307,29 @@ void slrn_free (char *s)
 {
    if (s != NULL) SLfree (s);
 }
+
+char *slrn_strjoin (char *a, char *b, char *s)
+{
+   unsigned int len_a, len_b, len_s;
+   char *c;
+
+   if (a == NULL) a = "";
+   if (b == NULL) b = "";
+   if (s == NULL) s = "";
+   
+   len_a = strlen (a);
+   len_b = strlen (b);
+   len_s = strlen (s);
+   
+   c = slrn_malloc (len_a + len_b + len_s + 1, 0, 1);
+   if (c == NULL)
+     return NULL;
+   
+   strcpy (c, a);
+   strcpy (c+len_a, b);
+   strcpy (c+len_a+len_b, s);
+   
+   return c;
+}
+
+   

@@ -113,15 +113,11 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
    
    b = slrn_skip_whitespace (line->buf + 13);
    
-   if (0 == slrn_case_strncmp (b,
-			        "text/",
-			       5))
+   if (0 == slrn_case_strncmp (b, "text/", 5))
      {
 	a->mime.content_type = CONTENT_TYPE_TEXT;
 	b += 5;
-	if (0 != slrn_case_strncmp (b,
-				     "plain",
-				    5))
+	if (0 != slrn_case_strncmp (b, "plain", 5))
 	  {
 	     a->mime.content_subtype = CONTENT_SUBTYPE_UNSUPPORTED;
 	     return -1;
@@ -132,17 +128,13 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 	  }
 	b += 5;
      }
-   else if (0 == slrn_case_strncmp (b,
-				     "message/",
-				    5))
+   else if (0 == slrn_case_strncmp (b, "message/", 5))
      {
 	a->mime.content_type = CONTENT_TYPE_MESSAGE;
 	a->mime.content_subtype = CONTENT_SUBTYPE_UNKNOWN;
 	b += 8;
      }
-   else if (0 == slrn_case_strncmp (b,
-				     "multipart/",
-				    5))
+   else if (0 == slrn_case_strncmp (b, "multipart/", 5))
      {
 	a->mime.content_type = CONTENT_TYPE_MULTIPART;
 	a->mime.content_subtype = CONTENT_SUBTYPE_UNKNOWN;
@@ -163,9 +155,7 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 	     
 	     b = slrn_skip_whitespace (b + 1);
 	     
-	     if (0 != slrn_case_strncmp (b,
-					 "charset",
-					 7))
+	     if (0 != slrn_case_strncmp (b, "charset", 7))
 	       continue;
 	     
 	     b = slrn_skip_whitespace (b + 7);
@@ -352,9 +342,20 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
    charset = NULL;
    s= *s_ptr;
 
-   if (slrn_string_nonascii(s))
-	return -1;
-   
+   if (slrn_string_nonascii (s))
+     {
+       /* Only ascii is allowed in headers, if we find unencoded 8 bit chars
+        * convert them with the fallback charset.
+	*/
+	if (NULL == (s = slrn_convert_string (NULL, s, s+strlen(s), 
+					       Slrn_Display_Charset, 0)))
+	  return -1;
+
+	slrn_free (*s_ptr);
+	*s_ptr = s;
+	return 0;
+     }
+
    while (1)
      {
 	char *decoded_start, *decoded_end;
@@ -889,10 +890,9 @@ void slrn_free_mime_error(Slrn_Mime_Error_Obj *obj) /*{{{*/
 
 /*}}}*/
 
-static char *guess_unknown_charset (Slrn_Article_Type *a)
+static char *guess_body_charset (Slrn_Article_Type *a)
 {
    Slrn_Article_Line_Type *line;
-   char *charset = "us-ascii";
 
    /* FIXME: Add a hook here for the user to specify a character set */
 
@@ -904,35 +904,22 @@ static char *guess_unknown_charset (Slrn_Article_Type *a)
    
    while (line != NULL)
      {
-	unsigned char *p, *pmax, ch;
-	unsigned int nconsumed;
-	SLwchar_Type wch;
+	char *p, ch;
 
-	p = (unsigned char *)line->buf;
+	p = line->buf;
 	while (((ch = *p) != 0) && ((ch & 0x80) == 0))
 	  p++;
-	
+
 	if (ch == 0)
 	  {
 	     line = line->next;
 	     continue;
 	  }
 
-	pmax = p + strlen ((char *)p);
-
-	/* First see if it looks like UTF-8 */
-	if (NULL != SLutf8_decode (p, pmax, &wch, &nconsumed))
-	  {
-	     charset = "UTF-8";
-	     break;
-	  }
-	
-	/* Otherwise, assume iso-latin */
-	charset = "ISO_8859-1";
-	break;
+	return slrn_guess_charset (p, p + strlen(p));
      }
 
-   return slrn_strmalloc (charset, 1);
+   return slrn_strmalloc ("us-ascii", 1);
 }
 
 int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
@@ -945,17 +932,22 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
 
    a->mime.was_parsed = 1;	       /* or will be */
    
-   rfc1522_decode_headers (a);
-
 /* Is there a reason to use the following line? */
 /*   if (NULL == find_header_line (a, "Mime-Version:")) return;*/
 /*   if ((-1 == parse_content_type_line (a))
        || (-1 == parse_content_transfer_encoding_line (a)))*/
+
    if (-1 == parse_content_type_line (a))
      {
 	a->mime.needs_metamail = 1;
 	return 0;
      }
+   
+   if ((a->mime.charset == NULL)
+       && (NULL == (a->mime.charset = guess_body_charset (a))))
+     return -1;
+
+   rfc1522_decode_headers (a);
 
    switch (parse_content_transfer_encoding_line (a))
      {
@@ -983,13 +975,6 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
 	return 0;
      }
    
-   if ((a->mime.needs_metamail == 0) &&
-	     (a->mime.charset == NULL))
-     {
-	if (NULL == (a->mime.charset = guess_unknown_charset (a)))
-	  return -1;
-     }
- 
    if ((a->mime.needs_metamail == 0) &&
 	(slrn_case_strncmp("us-ascii",
 			   a->mime.charset,8) != 0) &&
@@ -1198,6 +1183,9 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, int *hibin, 
 
 /*}}}*/
 
+#define MAX_CONTINUED_HEADER_SIZE 77
+#define MAX_RFC2047_WORD_SIZE	75
+
 static Slrn_Mime_Error_Obj *fold_line (char **s_ptr)/*{{{*/
 {
    int fold=0, pos=0, last_ws=0;
@@ -1249,7 +1237,7 @@ static Slrn_Mime_Error_Obj *fold_line (char **s_ptr)/*{{{*/
      {
 	if ((s[pos] == ' ') || (s[pos] == '\0'))
 	  {
-	     if (pos > 77)
+	     if (pos > MAX_CONTINUED_HEADER_SIZE)
 	       {
 		  strncpy(tmp, s, last_ws);
 		  tmp+=last_ws;
@@ -1274,8 +1262,10 @@ static Slrn_Mime_Error_Obj *fold_line (char **s_ptr)/*{{{*/
  * Note: This function does not generate encoded-words that are longer
  *       than max_len chars. The line folding is performed by
  *       a separate function. */
-static Slrn_Mime_Error_Obj *encode_string (char **s_ptr, unsigned int offset,/*{{{*/
-			  unsigned int len, char *from_charset, unsigned int max_len, unsigned int *chars_more)
+static Slrn_Mime_Error_Obj *
+  encode_string (char **s_ptr, unsigned int offset,/*{{{*/
+		 unsigned int len, char *from_charset, 
+		 unsigned int max_len, unsigned int *chars_more)
 {
    unsigned int extralen[2];
    char *s=*s_ptr + offset;
@@ -1317,6 +1307,7 @@ static Slrn_Mime_Error_Obj *encode_string (char **s_ptr, unsigned int offset,/*{
 	    charset = charset_end + 1;
 	 }
     } while(charset_end != NULL);
+
   if (tmp == NULL)
     {
        /* if we get here, no encoding was possible*/
@@ -1374,60 +1365,309 @@ static Slrn_Mime_Error_Obj *encode_string (char **s_ptr, unsigned int offset,/*{
 }
 /*}}}*/
 
+static char *
+  rfc1522_encode_word (char *from_charset, char *str, char *strmax, 
+		       unsigned int max_encoded_size)
+{
+   /* For a simple single-byte character set, a character is exactly one byte.
+    * In such a case, encoding exactly one character is simple.  For a 
+    * multibyte character set, it is not as simple to determine how many bytes
+    * constitute a single character.  For UTF-8, the SLutf8* functions are 
+    * available for this.  For other charactersets, something like mbrlen 
+    * would have to be used, but that may not be available on all systems.
+    * 
+    * For this reason, UTF-8 will be used for the character set.
+    */
+   unsigned int len;
+   char *charset = "UTF-8";
+   unsigned int max_nbytes;
+   unsigned int len_charset;
+   char buf[MAX_RFC2047_WORD_SIZE + 1], *b, *b0, *bmax;
+   SLuchar_Type *ustr, *u, *ustrmax;
+   char *encoded_word = NULL;
+   char *tmp;
+
+   len = strmax - str;
+   if ((NULL == (ustr = (SLuchar_Type *) slrn_convert_string (from_charset, str, strmax, charset, 1))))
+     return NULL;
+
+   len_charset = strlen (charset);
+   len = SLutf8_strlen (ustr, 0);      /* number of characters */
+   
+   /* The encoding looks like: "=?UTF-8?Q?xx...x?=".  This encoded word has to
+    * be less than max_encoded_size.  This means that at most N bytes can be
+    * put in the FIRST word where N is given by:
+    *
+    *    max_encoded_size = 2 + strlen(charset) + 3 + N + 2
+    */
+   max_nbytes = 7 + len_charset;
+   if (max_nbytes + 12 > MAX_RFC2047_WORD_SIZE)
+     {
+	slrn_error (_("Character set name set is too long."));
+	slrn_free ((char *)ustr);
+	return NULL;
+     }
+   /* This will leave 12 bytes to represent a character,
+    * which is ok since UTF-8 will use at most 6. 
+    */
+   if (max_nbytes >= max_encoded_size)
+     max_encoded_size = max_encoded_size;
+   max_nbytes = max_encoded_size - max_nbytes;
+
+   (void) SLsnprintf (buf, sizeof(buf), "=?%s?Q?", charset);
+   b0 = buf + strlen (buf);
+
+   b = b0;
+   bmax = b0 + max_nbytes;
+
+   u = ustr;
+   ustrmax = ustr + strlen ((char *)ustr);
+
+   while (u < ustrmax)
+     {
+	SLuchar_Type ch, *u1;
+	unsigned int dnum;
+	unsigned int dnbytes;
+
+	ch = *u;
+	u1 = SLutf8_skip_chars (u, ustrmax, 1, &dnum, 0);
+
+	dnum = u1 - u;
+	if (dnum == 0)
+	  break; /* should not happen */
+	
+	if (dnum == 1)
+	  {
+	     dnbytes = 1;
+	     if (ch & 0x80) ch = '?';  /* should not have happened */
+	     else if (ch == ' ')
+	       ch = '_';
+	     else if (0 == isalnum (ch))
+	       dnbytes = 3;
+	  }
+	else dnbytes = 3 * dnum;
+
+	if (b + dnbytes >= bmax)
+	  {
+	     *b++ = '?'; *b++ = '='; *b++ = 0;
+	     tmp = slrn_strjoin (encoded_word, buf, " ");
+	     if (tmp == NULL)
+	       goto return_error;
+	     
+	     slrn_free (encoded_word);
+	     encoded_word = tmp;
+
+	     max_nbytes = MAX_RFC2047_WORD_SIZE - (len_charset+7);
+	     b = b0;
+	     bmax = b0 + max_nbytes;
+	  }
+	
+	if (dnbytes == 1)
+	  {
+	     *b++ = ch;
+	     u = u1;
+	     continue;
+	  }
+
+	while (u < u1)
+	  {
+	     sprintf (b, "=%02X", (int) *u);
+	     b += 3;
+	     u++;
+	  }
+     }
+
+   *b++ = '?'; *b++ = '=';  *b++ = 0;
+
+   if (NULL == (tmp = slrn_strjoin (encoded_word, buf, " ")))
+     goto return_error;
+   slrn_free ((char *)ustr);
+   slrn_free (encoded_word);
+   return tmp;
+
+return_error:
+   slrn_free ((char *)ustr);
+   slrn_free (encoded_word);
+   return NULL;
+}
+
+static char *skip_ascii_whitespace (char *s, char *smax)
+{
+   while (s < smax)
+     {
+	char ch = *s;
+	if ((ch != ' ') && (ch != '\t') && (ch != '\n'))
+	  break;
+	s++;
+     }
+   return s;
+}
+
+static char *skip_non_ascii_whitespace (char *s, char *smax)
+{
+   while (s < smax)
+     {
+	char ch = *s;
+	if ((ch == ' ') || (ch == '\t') || (ch == '\n'))
+	  break;
+	s++;
+     }
+   return s;
+}
+
+#define MIME_MEM_ERROR(s) \
+   slrn_mime_error(_("Out of memory."), (s), 0, MIME_ERROR_CRIT)
+#define MIME_UNKNOWN_ERROR(s) \
+   slrn_mime_error(_("Unknown Error."), (s), 0, MIME_ERROR_CRIT)
+
 /* This function encodes a header, i.e.,  HeaderName: value.... */
 /* Try to cause minimal overhead when encoding. */
 static Slrn_Mime_Error_Obj *min_encode (char **s_ptr, char *from_charset) /*{{{*/
 {
-  char *s=*s_ptr;
-   unsigned int pos;
-   unsigned int encode_pos;
-   unsigned int extralen;
+   char *str, *encoded_str, *strmax;
+   char *s0, *s, *s1;
    unsigned int encode_len;
-   unsigned int max_pos;
-   int encode = 0;
-  Slrn_Mime_Error_Obj *ret;
+   int last_word_was_encoded, encode;
 
-   max_pos = strlen (s);
-   while (max_pos > 0)
+   /* This is a quick hack until something more sophisticated comes along */
+
+   str = *s_ptr;
+   strmax = str + strlen (str);
+
+   /* Find the start of the field --- no detailed syntax check is performed here */
+   s = str;
+   while ((s < strmax) && (*s != ':'))
+     s++;
+   
+   if (s == strmax)
+     return slrn_mime_error (_("Header line lacks a colon"), str, 0, MIME_ERROR_CRIT);
+   
+   s++; /* skip colon */
+   
+   /* And skip leading whitespace */
+   s = skip_ascii_whitespace (s, strmax);
+   if (s == strmax)
+     return NULL;
+
+   if ((s - str) + 12 > MAX_RFC2047_WORD_SIZE)
+     encode_len = MAX_RFC2047_WORD_SIZE;
+   else
+     encode_len = MAX_RFC2047_WORD_SIZE - (s-str);
+
+   s0 = s;			       /* start of keyword-value */
+
+   /* Determine whether or not to decode.  Encode if there are long ascii words
+    * or if there are 8-bit characters
+    */
+
+   /* Find the size of the first word */
+   s1 = skip_non_ascii_whitespace (s0, strmax);
+
+   encode = 0;
+
+   if (s1 >= s0 + encode_len)
+     encode = 1;
+   else
      {
-	max_pos--;
-	if (s[max_pos] & 0x80)
+	/* Look at all the other words */
+	while ((s1 < strmax) && (encode == 0))
 	  {
-	     max_pos++;
-	     break;
+	     s = skip_ascii_whitespace (s1, strmax);
+	     s1 = skip_non_ascii_whitespace (s, strmax);
+	     if (s - s1 > MAX_CONTINUED_HEADER_SIZE)
+	       encode = 1;
 	  }
      }
 
-   encode_pos = 0;
-   encode_len = 75;
-   pos = 0;
-
-   while ((pos < max_pos) || encode)
+   /* Now look for non-ascii characters */
+   if (encode == 0)
      {
-	if ((s[pos] == ' ') || (s[pos] == '\0') || (s[pos] == '\n'))
+	s = s0;
+	while (s < strmax)
 	  {
-	    if (encode)
-	      {
-		 ret = encode_string(s_ptr, encode_pos, pos - encode_pos, from_charset,encode_len, &extralen);
-		 if (ret != NULL)
-		   return ret;
-		 pos += extralen;
-		 max_pos += extralen;
-		 s = *s_ptr;
-		 encode = 0;
-	      }
-	     while ((s[pos] == ' ') || (s[pos] == '\n'))
-	       pos++;
-	     encode_pos = pos;
+	     if (*s & 0x80)
+	       {
+		  encode = 1;
+		  break;
+	       }
+	     s++;
+	  }
+	if (encode == 0)
+	  return NULL;
+     }
+   
+   if (NULL == (encoded_str = slrn_strnmalloc (str, s0-str, 1)))
+     return MIME_MEM_ERROR(str);
+   
+   encode = 0;
+   last_word_was_encoded = 0;
+   s = s0;
+   /* Here, whitespace is preserved if possible.
+    * Suppose the line looks like:
+    *   www eee eee www eee www
+    * where www represents a word that will not be encoded, and eee represents
+    * one that will be.  The above will be encoded as
+    *   WWW "EEE" "_EEE" www "EEE" www
+    */
+   while (1)
+     {
+	char ch;
+	
+	if ((s == strmax) 
+	    || ((ch = *s) == ' ') || (ch == '\t') || (ch == '\n'))
+	  {
+	     char *word, *tmp, *sep = "";
+
+	     if (encode || (s > s0 + encode_len))
+	       {
+		  word = rfc1522_encode_word (from_charset, s0, s, encode_len);
+		  if (last_word_was_encoded)
+		    sep = " ";
+		  s0 = s;
+		  s = skip_ascii_whitespace (s, strmax);
+		  last_word_was_encoded = 1;
+	       }
+	     else
+	       {
+		  s = skip_ascii_whitespace (s, strmax);
+		  word = slrn_strnmalloc (s0, s-s0, 1);
+		  s0 = s;
+		  last_word_was_encoded = 0;
+	       }
+	     
+	     if (word == NULL)
+	       goto return_error;
+	     
+	     tmp = slrn_strjoin (encoded_str, word, sep);
+	     slrn_free (word);
+	     if (tmp == NULL)
+	       goto return_error;
+	     slrn_free (encoded_str);
+	     encoded_str = tmp;
+	     encode_len = MAX_RFC2047_WORD_SIZE;
+	     
+	     if (s0 == strmax)
+	       break;
+
 	     continue;
-	 }
-
-	if (s[pos] & 0x80)
+	  }
+	
+	if (ch & 0x80)
 	  encode = 1;
+	s++;
+     }
+   
+   slrn_free (*s_ptr);
+   *s_ptr = encoded_str;
+   return NULL;
+   
+return_error:
+   if (encoded_str != NULL)
+     slrn_free (encoded_str);
+   if (SLang_get_error () == SL_Malloc_Error)
+     return MIME_MEM_ERROR(str);
 
-       pos++;
-    }
-  return NULL;
+   return MIME_UNKNOWN_ERROR(str);
 }/*}}}*/
 
 /* Encode structured header fields ("From:", "To:", "Cc:" and such) {{{ */
@@ -1943,10 +2183,7 @@ Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **s_ptr, char *from_charset) 
      }   
    else
      {
-	if (slrn_string_nonascii(s))
-	  {
-	     ret = min_encode (s_ptr, from_charset);
-	  }
+	ret = min_encode (s_ptr, from_charset);
      }
    if (ret != NULL)
 	return ret;

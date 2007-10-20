@@ -1851,7 +1851,10 @@ static void rli_self_insert (void) /*{{{*/
    last_char[0] = (char) SLang_Last_Key_Char;
    last_char[1] = '\0';
    (void) SLrline_ins (Slrn_Keymap_RLI, last_char, 1);
-   SLrline_redraw (Slrn_Keymap_RLI);
+   /* SLrline_redraw in slang-2.0.x did not use the redraw-hook.  So
+    * avoid using this here.  It is not needed anyway.
+    */
+   /* SLrline_redraw (Slrn_Keymap_RLI); */
 }
 /*}}}*/
 
