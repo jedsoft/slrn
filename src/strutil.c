@@ -308,28 +308,33 @@ void slrn_free (char *s)
    if (s != NULL) SLfree (s);
 }
 
-char *slrn_strjoin (char *a, char *b, char *s)
+char *slrn_substrjoin (char *a, char *amax, char *b, char *bmax, char *s)
 {
-   unsigned int len_a, len_b, len_s;
+   unsigned int len_a, len_b, len_s, len;
    char *c;
 
-   if (a == NULL) a = "";
-   if (b == NULL) b = "";
+   if (a == NULL) a = amax = "";
+   if (b == NULL) b = bmax = "";
    if (s == NULL) s = "";
-   
-   len_a = strlen (a);
-   len_b = strlen (b);
+
+   len_a = (amax == NULL) ? strlen (a) : (unsigned int)(amax - a);
+   len_b = (bmax == NULL) ? strlen (b) : (unsigned int)(bmax - b);
    len_s = strlen (s);
-   
-   c = slrn_malloc (len_a + len_b + len_s + 1, 0, 1);
+
+   len = len_a + len_s + len_b;
+   c = slrn_malloc (len+1, 0, 1);
    if (c == NULL)
      return NULL;
    
-   strcpy (c, a);
-   strcpy (c+len_a, b);
-   strcpy (c+len_a+len_b, s);
-   
+   strncpy (c, a, len_a);
+   strcpy (c+len_a, s);
+   strncpy (c+len_a+len_s, b, len_b);
+   c[len] = 0;
    return c;
 }
 
+char *slrn_strjoin (char *a, char *b, char *s)
+{
+   return slrn_substrjoin (a, NULL, b, NULL, s);
+}
    

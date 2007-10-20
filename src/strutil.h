@@ -41,5 +41,7 @@ extern char *slrn_realloc (char *, unsigned int, int);
 extern void slrn_free (char *);
 
 extern char *slrn_strjoin (char *a, char *b, char *s);
+extern char *slrn_substrjoin (char *a, char *amax, char *b, char *bmax, char *s);
+
 
 #endif

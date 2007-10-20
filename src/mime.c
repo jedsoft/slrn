@@ -1183,79 +1183,112 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, int *hibin, 
 
 /*}}}*/
 
-#define MAX_CONTINUED_HEADER_SIZE 77
+#define MAX_CONTINUED_HEADER_SIZE 77   /* does not include leading space char */
 #define MAX_RFC2047_WORD_SIZE	75
+
+
+static char *skip_ascii_whitespace (char *s, char *smax)
+{
+   while (s < smax)
+     {
+	char ch = *s;
+	if ((ch != ' ') && (ch != '\t') && (ch != '\n'))
+	  break;
+	s++;
+     }
+   return s;
+}
+
+static char *skip_non_ascii_whitespace (char *s, char *smax)
+{
+   while (s < smax)
+     {
+	char ch = *s;
+	if ((ch == ' ') || (ch == '\t') || (ch == '\n'))
+	  break;
+	s++;
+     }
+   return s;
+}
+
+#define MIME_MEM_ERROR(s) \
+   slrn_mime_error(_("Out of memory."), (s), 0, MIME_ERROR_CRIT)
+#define MIME_UNKNOWN_ERROR(s) \
+   slrn_mime_error(_("Unknown Error."), (s), 0, MIME_ERROR_CRIT)
+
 
 static Slrn_Mime_Error_Obj *fold_line (char **s_ptr)/*{{{*/
 {
-   int fold=0, pos=0, last_ws=0;
-   char *s=*s_ptr;
-   char *tmp, *ret;
+   char *s0, *s, *smax;
+   int long_words = 0;
+   char *folded_text;
+   unsigned int line_len;
+
+   s0 = *s_ptr;
+   smax = s0 + strlen (s0);
    
-   if (strlen(s) <= 78)
-     {
-	/* nothing to do */
-	return NULL;
-     }
-	
-   /* First step: counting. */
+   if (s0 + MAX_CONTINUED_HEADER_SIZE + 1 >= smax)
+     return NULL;
+
+   /* skip the first word */
+   s = skip_non_ascii_whitespace (s0, smax);
+   s = skip_ascii_whitespace (s, smax);
    
-   /* skip the first word and all ws after it
-    * (folding after the keyword is not allowed) */
+   /* (folding after the keyword is not allowed) */
    /* I'm not sure about that FS */
-   while (((last_ws) || (s[pos] != ' ')) && (s[pos] != '\0'))
-     {
-	if (s[pos] == ' ')
-	     last_ws = pos;
-	pos++;
-     }
-   if (pos > 77)
-     return slrn_add_mime_error(NULL, _("First word of header is too long."), *s_ptr, 0,MIME_ERROR_WARN);
+   /* Play it safe for now */
+   s = skip_non_ascii_whitespace (s, smax);
+   
+   line_len = s - s0;
+   if (line_len >= MAX_CONTINUED_HEADER_SIZE)
+     long_words++;
 
-   do
+   if (NULL == (folded_text = slrn_strnmalloc (s0, line_len, 1)))
+     return MIME_MEM_ERROR(*s_ptr);
+
+   /* Note: RFC-822 states:
+    *    Unfolding is accomplished by regarding CRLF immediately
+    *    followed by a LWSP-char as equivalent to the LWSP-char.
+    * This suggests that we can simply insert newlines before the linear
+    * whitespace character.
+    */
+   s0 = s;
+   while (s < smax)
      {
-	if ((s[pos] == ' ') || (s[pos] == '\0'))
+	unsigned int dlen, new_line_len;
+	
+	s = skip_ascii_whitespace (s, smax);
+	s = skip_non_ascii_whitespace (s, smax);
+
+	dlen = s - s0;
+	new_line_len = line_len + dlen;
+	if ((new_line_len >= MAX_CONTINUED_HEADER_SIZE)
+	    || (s == smax))
 	  {
-	     if (pos > 77)
+	     char *tmp = slrn_substrjoin (folded_text, NULL, s0, s, "\n");
+	     if (tmp == NULL)
 	       {
-		  if (last_ws == 0)
-		    return slrn_add_mime_error(NULL, _("One word of the header is too long to get folded."), *s_ptr, 0,MIME_ERROR_WARN);
-		  fold++;
-		  s += last_ws;
-		  pos=0;
+		  slrn_free (folded_text);
+		  return MIME_MEM_ERROR(*s_ptr);
 	       }
-	     last_ws=pos;
+	     slrn_free (folded_text);
+	     folded_text = tmp;
+	     line_len = 0;
+	     s0 = s;
+	     if (dlen >= MAX_CONTINUED_HEADER_SIZE)
+	       long_words++;
 	  }
+	line_len += dlen;
      }
-   while (s[pos++] != '\0');
-  
-   /* Second step: Folding */
-   s=*s_ptr;
-   ret=tmp=slrn_safe_malloc(strlen(s)+1+fold);
-   last_ws=pos=0;
-   do
-     {
-	if ((s[pos] == ' ') || (s[pos] == '\0'))
-	  {
-	     if (pos > MAX_CONTINUED_HEADER_SIZE)
-	       {
-		  strncpy(tmp, s, last_ws);
-		  tmp+=last_ws;
-		  *(tmp++)='\n';
-		  s+=last_ws;
-		  pos=0;
-	       }
-	     last_ws=pos;
-	  }
-     }
-   while (s[pos++] != '\0');
-
-   strncpy(tmp, s, strlen(s)+1);
-
-   slrn_free(*s_ptr);
-   *s_ptr=ret;
-   return NULL;
+   
+   slrn_free (*s_ptr);
+   *s_ptr = folded_text;
+   if (long_words)
+     return slrn_add_mime_error(NULL, _("One word of the header is too long to get folded."), *s_ptr, 0, MIME_ERROR_WARN);
+   else
+     return NULL;
 }
+
 /*}}}*/
 
 /* Do the actual encoding.
@@ -1490,35 +1523,6 @@ return_error:
    slrn_free (encoded_word);
    return NULL;
 }
-
-static char *skip_ascii_whitespace (char *s, char *smax)
-{
-   while (s < smax)
-     {
-	char ch = *s;
-	if ((ch != ' ') && (ch != '\t') && (ch != '\n'))
-	  break;
-	s++;
-     }
-   return s;
-}
-
-static char *skip_non_ascii_whitespace (char *s, char *smax)
-{
-   while (s < smax)
-     {
-	char ch = *s;
-	if ((ch == ' ') || (ch == '\t') || (ch == '\n'))
-	  break;
-	s++;
-     }
-   return s;
-}
-
-#define MIME_MEM_ERROR(s) \
-   slrn_mime_error(_("Out of memory."), (s), 0, MIME_ERROR_CRIT)
-#define MIME_UNKNOWN_ERROR(s) \
-   slrn_mime_error(_("Unknown Error."), (s), 0, MIME_ERROR_CRIT)
 
 /* This function encodes a header, i.e.,  HeaderName: value.... */
 /* Try to cause minimal overhead when encoding. */
@@ -2151,42 +2155,49 @@ static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset) /*{{{
 
 /*}}}*/
 
+typedef struct
+{
+   char *keyword;
+   Slrn_Mime_Error_Obj *(*encode)(char **, char *);
+}
+Header_Encode_Info_Type;
+
+Header_Encode_Info_Type Header_Encode_Table [] = 
+{
+   {"Newsgroups: ", NULL},
+   {"Followup-To: ", NULL},
+   {"Message-ID: ", NULL},
+   {"References: ", NULL},
+   {"From: ", from_encode},
+   {"Cc: ", from_encode},
+   {"To: ", from_encode},
+   {"Reply-To: ", NULL},
+   {"Mail-Copies-To: ", from_encode},
+
+   /* This must be the last entry.  It serves as a default */
+   {"", min_encode},
+};
+
+
 Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **s_ptr, char *from_charset) /*{{{*/
 {
-   char *s=*s_ptr;
-   Slrn_Mime_Error_Obj *ret=NULL;
+   Header_Encode_Info_Type *h;
+   char *s = *s_ptr;
 
-   
-   /* preserve 8bit characters in those headers */
-   if (!slrn_case_strncmp ( s,
-			    "Newsgroups: ", 12) ||
-       !slrn_case_strncmp ( s,
-			    "Followup-To: ", 13))
-     return NULL; /* folding?*/
-   
-   if (!slrn_case_strncmp ( s,
-			    "From: ", 6) ||
-       !slrn_case_strncmp ( s,
-			    "Cc: ", 4) ||
-       !slrn_case_strncmp ( s,
-			    "To: ", 4))
-     ret = from_encode (s_ptr, from_charset);
-   else if (!slrn_case_strncmp ( s,
-				 "Mail-Copies-To: ", 16))
+   h = Header_Encode_Table;
+   while (*h->keyword != 0)
      {
-	char *b = slrn_skip_whitespace (s + 16);
-	if ((!slrn_case_strncmp(b,  "nobody", 6) ||
-	     !slrn_case_strncmp(b,  "poster", 6)) &&
-	    (0 == *slrn_skip_whitespace(b+6)))
-	  return NULL; /* nothing to convert */
-	ret = from_encode (s_ptr, from_charset);
-     }   
-   else
-     {
-	ret = min_encode (s_ptr, from_charset);
+	if (0 == slrn_case_strncmp (s, h->keyword, strlen (h->keyword)))
+	  break;
+	h++;
      }
-   if (ret != NULL)
-	return ret;
+
+   if (h->encode != NULL)
+     {
+	Slrn_Mime_Error_Obj *err = (*h->encode)(s_ptr, from_charset);
+	if (err != NULL)
+	  return err;
+     }	     
 
    return fold_line(s_ptr);
 }
