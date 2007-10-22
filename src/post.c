@@ -69,6 +69,8 @@
 #include "hooks.h"
 #include "strutil.h"
 #include "common.h"
+#include "hdrutils.h"
+
 /*}}}*/
 
 #define MAX_LINE_BUFLEN	2048
@@ -316,6 +318,7 @@ int slrn_add_custom_headers (FILE *fp, char *headers, int (*write_fun)(char *, F
 }
 /*}}}*/
 
+/* Returns a malloced string */
 char *slrn_trim_references_header (char *line) /*{{{*/
 {
 #define GNKSA_LENGTH 986 /* 998 - strlen ("References: ") */
@@ -548,79 +551,114 @@ static int cc_article (Slrn_Article_Type *a) /*{{{*/
 }
 /*}}}*/
 
-/* Returns -1 upon error, 0, if ok, 1 if needs repair, 2 is warning is issued */
-static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Slrn_Article_Type *a, char *to, char *from_charset, int mail) /*{{{*/
+
+/* Returns 0 if at EOF or end of header, -1 upon error, and 1 if something read */
+static int vread_header_line (VFILE *vp, char **bufp, unsigned int *linenump)
 {
-   char *vline;
    unsigned int vlen;
-   char *tmp=NULL;
-   unsigned int lineno=0;
+   char *buf = NULL;
+   char *vline;
+
+   *bufp = NULL;
+   vline = vgets (vp, &vlen);
+   if (vline == NULL)
+     return 0;
+   
+   *linenump = *linenump + 1;
+
+   if (vlen && (vline[vlen-1] == '\n'))
+     vlen--;
+
+   if (vlen == 0)
+     return 0;			       /* end of header */
+
+   if (NULL == (buf = slrn_strnmalloc (vline, vlen, 1)))
+     return -1;
+   
+
+   while (NULL != (vline = vgets (vp, &vlen)))
+     {
+	char *tmp;
+
+	if (vline[vlen-1] == '\n')
+	  vlen--;
+
+	if ((vlen == 0)
+	    || ((vline[0] != ' ') && (vline [0] != '\t')))
+	  break;
+
+	/* Continuation line */
+	*linenump = *linenump + 1;
+	
+	tmp = slrn_substrjoin (buf, NULL, vline, vline+vlen, "");
+	slrn_free (buf);
+	if (tmp == NULL)
+	  return -1; 
+	
+	buf = tmp;
+     }
+   
+   vungets (vp);
+   *bufp = buf;
+   return 1;
+}
+
+static int prepare_header (VFILE *vp, unsigned int *linenum, Slrn_Article_Type *a, char *to, char *from_charset, int mail,
+			   Slrn_Mime_Error_Obj **errp) /*{{{*/
+{
+   unsigned int lineno;
    int newsgroups_found=0, subject_found=0, followupto_found=0;
    Slrn_Mime_Error_Obj *err=NULL;
    Slrn_Mime_Error_Obj *mime_err;
-   char ch;
-   char *colon;
-   char *system_os_name;
+   char *tmp, *system_os_name;
 
    system_os_name = slrn_get_os_name ();
 
 #if SLRN_HAS_STRICT_FROM
-   if (NULL != (tmp = slrn_make_from_string ()))
+   if (NULL != (tmp = slrn_make_from_header_string ()))
      {
-	if ((err = slrn_mime_header_encode(&tmp, from_charset)) != NULL)
+	if (NULL != (err = slrn_mime_header_encode (&tmp, from_charset)))
+	  err->lineno = 0;
+	
+	if (-1 == append_to_header (a, tmp))
 	  {
-	     err->lineno=0;
+	     slrn_add_mime_error (err, _("Out of memory."), tmp, 0, MIME_ERROR_CRIT);
+	     slrn_free (tmp);
+	     goto return_error;
 	  }
-	a->cline=a->lines = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-	a->lines->prev = NULL;
-	a->cline->flags=HEADER_LINE;
-	a->cline->buf=tmp;
-	tmp=NULL;
      }
    else
-     {
-	slrn_malloc_mime_error(&ret, &err, _("Could not generate From header."), NULL, 0, MIME_ERROR_CRIT);
-     }
+     err = slrn_add_mime_error (err, _("Could not generate From header."), NULL, 0, MIME_ERROR_CRIT);
 #endif
-   /* scan the header */
-   while (NULL != (vline = vgets (vp, &vlen)))
-     {
-	char *line;
-	/* remove trailing \n */
-	if (vline[vlen-1] == '\n')
-	  vlen--;
-	
-	line = slrn_safe_strnmalloc (vline, vlen);
 
-	ch = *line;
-	lineno++;
-	if ((ch == ' ') || (ch == '\t') || (ch == '\0'))
+   lineno = 0;
+
+   while (1)
+     {
+	char *line, *colon;
+	int status;
+
+	status = vread_header_line (vp, &line, &lineno);
+	if (status == -1)
+	  {
+	     err = slrn_add_mime_error (err, _("Error reading file."), line, lineno, MIME_ERROR_CRIT);
+	     goto return_error;
+	  }
+
+	if (status == 0)	       /* end of header */
 	  {
 	     if (lineno == 1)
-	       {
-		  err = slrn_add_mime_error (err, _("The first line must begin with a header."), line, lineno, MIME_ERROR_CRIT);
-	       }
-	     if (ch == '\0')
-	       {
-		  slrn_free(line);
-		  break; /* header ends */
-	       }
-	     
-	     slrn_free(line);
-	     continue;
+	       err = slrn_add_mime_error (err, _("The first line must begin with a header."), line, lineno, MIME_ERROR_CRIT);
+	     break;
 	  }
 
 	if (NULL == (colon = slrn_strbyte (line, ':')))
-	  {
-	     err = slrn_add_mime_error(err, _("Expecting a header. This is not a header line."), line, lineno, MIME_ERROR_CRIT);
-	  }
+	  err = slrn_add_mime_error(err, _("Expecting a header. This is not a header line."), line, lineno, MIME_ERROR_CRIT);
 
 	if (!slrn_case_strncmp ( line,  "Subject:", 8))
 	  {
 	     if (is_empty_header (line))
-	       {
-		  err = slrn_add_mime_error(err, _("The Subject: header is not allowed be to empty."), line, lineno, MIME_ERROR_CRIT);
-	       }
+	       err = slrn_add_mime_error(err, _("The Subject: header is not allowed be to empty."), line, lineno, MIME_ERROR_CRIT);
 	     subject_found = 1;
 	  }
 
@@ -664,28 +702,26 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
 
 #if SLRN_HAS_STRICT_FROM
 	if (!slrn_case_strncmp ( line,  "From:", 5))
-	  {
-	     err = slrn_add_mime_error (err, _("This news reader will not accept user generated From lines."), line, lineno, MIME_ERROR_CRIT);
-	  }
+	  err = slrn_add_mime_error (err, _("This news reader will not accept user generated From lines."), line, lineno, MIME_ERROR_CRIT);
 #endif
 #if ! SLRN_HAS_GEN_MSGID
 	if (!slrn_case_strncmp ( line,  "Message-Id:", 11))
-	  {
-	     err = slrn_add_mime_error (err, _("This news reader will not accept user generated Message-IDs."), line, lineno, MIME_ERROR_CRIT);
-	  }
+	  err = slrn_add_mime_error (err, _("This news reader will not accept user generated Message-IDs."), line, lineno, MIME_ERROR_CRIT);
 #endif
+
 	/* Check the references header.  Rumor has it that many
 	 * servers choke on long references lines.  In fact, to be
 	 * GNKSA compliant, references headers cannot be longer than
 	 * 998 characters.  Sigh.
 	 */
-	if (0 == slrn_case_strncmp ( line,
-				    "References: ",
-					12))
+	if (0 == slrn_case_strncmp (line, "References: ", 12))
 	  {
 	     if ((tmp=slrn_trim_references_header (line)) == NULL)
+	       err = slrn_add_mime_error (err, _("Error trimming References header."), line, lineno, MIME_ERROR_CRIT);
+	     else
 	       {
-		  err = slrn_add_mime_error (err, _("Error trimming References header."), line, lineno, MIME_ERROR_CRIT);
+		  slrn_free (line);
+		  line = tmp;
 	       }
 	  }
    
@@ -699,7 +735,7 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
 	     char *l = line + 4;
 	     char *t, *buf;
 	     unsigned int buflen;
-
+	     
 	     buflen = strlen (line) + 1;   /* is big enough for any substring of line */
 	     buf = slrn_safe_malloc (buflen);
 	     t = tmp = slrn_safe_malloc (buflen + strlen(to) + 1);
@@ -726,52 +762,32 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
 	       }
 	     *t = 0;
 	     slrn_free(buf);
+	     slrn_free (line);
+	     line = tmp;
 	  }
 
 	/* encode and put into a */
-	if (tmp == NULL)
-	  tmp=line;
-	else
-	  slrn_free(line);
 
-	if (NULL != (mime_err = slrn_mime_header_encode (&tmp, from_charset)))
-	  {
-	     err = slrn_mime_concat_errors (err, mime_err);
-	  }
+	if (NULL != (mime_err = slrn_mime_header_encode (&line, from_charset)))
+	  err = slrn_mime_concat_errors (err, mime_err);
 	
-	if (a->lines == NULL)
+	if (NULL == slrn_append_to_header (a, line, 0))
 	  {
-	     a->cline=a->lines = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
-	     a->lines->prev = NULL;
+	     err = slrn_add_mime_error (err, _("Out of memory."), line, 0, MIME_ERROR_CRIT);
+	     slrn_free (line);
+	     goto return_error;
 	  }
-	else
-	  {
-	     a->cline->next = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
-	     a->cline->next->prev = a->cline;
-	     a->cline=a->cline->next;
-	  }
-	a->cline->flags=HEADER_LINE;
-	a->cline->buf=tmp;
-	tmp=NULL;
-     } /*while (NULL != (vline = vgets (vp, &vlen)))*/
+     }
 
-   /* Insert other headers */
-   a->cline->next = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
-   a->cline->next->prev = a->cline;
-   a->cline=a->cline->next;
-   a->cline->flags=HEADER_LINE;
-   a->cline->buf=slrn_gen_date_header();
-   
-   a->cline->next = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
-   a->cline->next->prev = a->cline;
-   a->cline=a->cline->next;
-   a->cline->flags=HEADER_LINE;
-   a->cline->buf = slrn_strdup_printf("User-Agent: slrn/%s (%s)", Slrn_Version_String, system_os_name);
-   
-   /* Insert empty line between headers and body */
-   a->raw_lines = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
-   a->raw_lines->prev = NULL;
-   a->raw_lines->buf=slrn_safe_strmalloc("");
+   if ((NULL == (tmp = slrn_gen_date_header ()))
+       || (NULL == slrn_append_to_header (a, tmp, 1))
+       || (NULL == (tmp = slrn_strdup_printf("User-Agent: slrn/%s (%s)", Slrn_Version_String, system_os_name)))
+       || (NULL == slrn_append_to_header (a, tmp, 1))
+       || (NULL == slrn_append_to_header (a, NULL,0)))   /* separator */
+     {
+	err = slrn_add_mime_error (err, _("Out of memory."), "Headers", 0, MIME_ERROR_CRIT);
+	goto return_error;
+     }
 
    if (subject_found == 0)
      {
@@ -799,13 +815,20 @@ static Slrn_Mime_Error_Obj *prepare_header (VFILE *vp, unsigned int *linenum, Sl
 			       NULL, 0, MIME_ERROR_NET);
 
    *linenum=lineno;
-   return err;
+
+   *errp = err;
+   return 0;
+
+return_error:
+   *errp = err;
+   return -1;
 }
 
 /*}}}*/
 
-static Slrn_Mime_Error_Obj *prepare_body (VFILE *vp, unsigned int *linenum, /*{{{*/
-	  Slrn_Article_Type *a, char *from_charset, int mail)
+static Slrn_Mime_Error_Obj *
+  prepare_body (VFILE *vp, unsigned int *linenum, /*{{{*/
+		Slrn_Article_Type *a, char *from_charset, int mail)
 {
    char *vline, *line;
    unsigned int vlen;
@@ -813,8 +836,7 @@ static Slrn_Mime_Error_Obj *prepare_body (VFILE *vp, unsigned int *linenum, /*{{
    char *qs = Slrn_Quote_String;
    int qlen, not_quoted=0, sig_lines=-1, longline=0, hibin=0;
    Slrn_Mime_Error_Obj *err = NULL;
-   Slrn_Mime_Error_Obj *mime_err;
-   Slrn_Article_Line_Type *cline=a->raw_lines;
+   Slrn_Article_Line_Type *raw_line=a->raw_lines;
 
 
    if (qs == NULL) qs = ">";
@@ -823,6 +845,8 @@ static Slrn_Mime_Error_Obj *prepare_body (VFILE *vp, unsigned int *linenum, /*{{
    /* put body into a->raw_lines */
    while (NULL != (vline = vgets (vp, &vlen)))
      {
+	Slrn_Article_Line_Type *tmp;
+
 	/*remove trailing \n*/
 	if (vline[vlen-1] == '\n')
 	  vlen--;
@@ -850,24 +874,25 @@ static Slrn_Mime_Error_Obj *prepare_body (VFILE *vp, unsigned int *linenum, /*{{
 					  line, lineno, MIME_ERROR_NET);
 	      }
 	  }
+	
+	tmp = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
 
-
-	cline->next = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
-        cline->next->prev = cline;
-	cline = cline->next;
-	cline->buf = line;
+	tmp->prev = raw_line;
+	if (raw_line == NULL)
+	  a->raw_lines = tmp;
+	else 
+	  raw_line->next = tmp;
+	tmp->next = NULL;
+	tmp->flags = 0;
+	tmp->buf = line;
+	
+	raw_line = tmp;
      }
 
    if (sig_lines > 4)
      err = slrn_add_mime_error(err,
 			       _("Please keep your signature short. 4 lines is a commonly accepted limit."), 
 			       NULL, lineno, MIME_ERROR_NET);
-
-   if (NULL != (mime_err = slrn_mime_encode_article(a, &hibin, from_charset)))
-     {
-	err = slrn_mime_concat_errors (err, mime_err);
-     }
-
    *linenum=lineno;
    return err;
 }
@@ -931,6 +956,7 @@ int slrn_prepare_file_for_posting (char *file, unsigned int *line, Slrn_Article_
    Slrn_Mime_Error_Obj *mime_errors, *tmp;
    char *from_charset;
    int ret, row, has_crit, has_warn, has_net;
+   int status;
 
    if (Slrn_Editor_Charset != NULL)
      from_charset = Slrn_Editor_Charset;
@@ -943,18 +969,23 @@ int slrn_prepare_file_for_posting (char *file, unsigned int *line, Slrn_Article_
 	return -1;
      }
 
-   mime_errors = prepare_header (vp, line, a, to, from_charset, mail);
-   
-   mime_errors = slrn_mime_concat_errors (mime_errors, 
-					  prepare_body (vp, line, a, from_charset, mail));
+   if (0 == (status = prepare_header (vp, line, a, to, from_charset, mail, &mime_errors)))
+     {
+	tmp = prepare_body (vp, line, a, from_charset, mail);
+	if (tmp != NULL)
+	  mime_errors = slrn_mime_concat_errors (mime_errors, tmp);
+	tmp = slrn_mime_encode_article(a, from_charset);
+	if (tmp != NULL)
+	  mime_errors = slrn_mime_concat_errors (mime_errors, tmp);
+     }
    vclose (vp);
 
    if (mime_errors == NULL)
      {
 	*line = 0;
-	return 0;
+	return status;
      }
-   
+
    has_crit = has_warn = has_net = 0;
 
    tmp = mime_errors;
@@ -1181,216 +1212,6 @@ static int insert_custom_header (char *fmt, FILE *fp) /*{{{*/
 }
 /*}}}*/
 
-/* This function returns:
- * -1 => user does not want to post article
- *  0 => user wants to delete postponed article
- *  1 => user postponed the article
- *  2 => user wants to post article */
-/* Be warned: This function now also transfers "file" into "a", which will be
- * used for the actual posting process later on. */
-static int post_user_confirm (Slrn_Article_Type *a, char *to, char *file, int is_postponed) /*{{{*/
-{
-   int rsp;
-   int once_more=1;
-   char *responses;
-#if SLRN_HAS_SLANG
-   int filter_hook;
-
-    filter_hook = slrn_is_hook_defined (HOOK_POST_FILTER);
-#endif
-
-   while (once_more)
-     {
-	unsigned int linenum = 1;
-#if SLRN_HAS_SLANG
-	if (filter_hook != 0)
-	  {
-	     if (is_postponed)
-	       {
-  /* Note to translators:
-   * In the following strings, "yY" will mean "yes", "nN" is for "no",
-   * "eE" for "edit", "sS" for "postpone", "dD" for "delete" and "fF"
-   * for "filter". Please use the same letter for the same field everywhere,
-   * or your users will get unexpected results. As always, you can't use the
-   * default letters for other fields than those they originally stood for.
-   * Be careful not to change the length of these strings!
-   */
-		  responses = _("yYnNeEsSdDfF");
-		  if (strlen (responses) != 12)
-		       responses = "";
-		  rsp = slrn_get_response ("yYnNeEsSDdFf", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone, \001Delete, \001Filter"));
-	       }
-	     else
-	       {
-		  responses = _("yYnNeEsSfF");
-		  if (strlen (responses) != 10)
-		       responses = "";
-		  rsp = slrn_get_response ("yYnNeEsSFf", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone, \001Filter"));
-	       }
-	  }
-	else
-	  {
-#endif
-	     if (is_postponed)
-	       {
-		  responses = _("yYnNeEsSdD");
-		  if (strlen (responses) != 10)
-		    responses = "";
-		  rsp = slrn_get_response ("yYnNeEsSDd", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone, \001Delete"));
-	       }
-	     else
-	       {
-		  responses = _("yYnNeEsS");
-		  if (strlen (responses) != 8)
-		    responses = "";
-		  rsp = slrn_get_response ("yYnNeEsS", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone"));
-	       }
-#if SLRN_HAS_SLANG
-	  }
-#endif
-	rsp = slrn_map_translated_char ("yYnNeEsSdDfF", _("yYnNeEsSdDfF"), rsp) | 0x20;
-
-	switch (rsp)
-	  {
-	   case 'n':
-	     return -1;
-
-	   case 's':
-
-	     if (is_postponed
-		 || (0 == postpone_file (file)))
-	       return 1;
-
-	     /* Instead of returning, let user have another go at it */
-	     slrn_sleep (1);
-	     break;
-
-	   case 'd':
-	     rsp = slrn_get_yesno_cancel (_("Sure you want to delete it"));
-	     if (rsp == 0)
-	       continue;
-	     if (rsp == -1)
-	       return 1;
-	     /* Calling routine will delete it. */
-	     return 0;
-
-	   case 'y':
-	     if (0 == (rsp = slrn_prepare_file_for_posting (file, &linenum, a, to, 0)))
-	       {
-		  once_more = 0;
-		  break;
-	       }
-	     if (rsp == -1)
-	       return -1;
-
-	     SLtt_beep ();
-	     if (rsp == 1)
-	       {
-  /* Note to translators:
-   * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
-   * "cC" is "cancel" and "fF" means "force". The usual rules apply.
-   */
-		  responses = _("yYeEnNcC");
-		  if (strlen (responses) != 8)
-		    responses = "";
-		  rsp = slrn_get_response ("yYEenNcC\007", responses, _("re-\001Edit,  or \001Cancel"));
-	       }
-	     else
-	       {
-		  responses = _("yYeEnNcCfF");
-		  if (strlen (responses) != 10)
-		    responses = "";
-		  rsp = slrn_get_response ("EeyYnNcC\007Ff", responses, _("re-\001Edit, \001Cancel, or \001Force the posting (not recommended)"));
-	       }
-
-	     rsp = slrn_map_translated_char ("yYeEnNcCfF", _("yYeEnNcCfF"), rsp) | 0x20;
-
-	     switch (rsp)
-	       {
-		case 'y': case 'e':
-		  rsp = 'y'; break;
-
-		case 'c': case 7:
-		  return -1;
-
-		case 'f':
-		  once_more = 0;
-	       }
-
-	     if (rsp != 'y')
-	       break;
-
-	     /* Drop */
-
-	   case 'e':
-	     if (slrn_edit_file (Slrn_Editor_Post, file, linenum, 0) < 0)
-	       return -1;
-	     break;
-
-#if SLRN_HAS_SLANG
-	   case 'f':
-	     if (filter_hook != 0)
-	       {
-                  slrn_run_hooks (HOOK_POST_FILTER, 1, file);
-		  if (SLang_get_error ())
-		    filter_hook = 0;
-	       }
-#endif
-	  }
-	if (once_more) 
-	  {
-	     slrn_mime_free(&a->mime);
-	     slrn_art_free_article_lines(a);
-	  }
-     } /* while (once_more) */
-   return 2;
-}
-/*}}}*/
-
-static Slrn_Article_Line_Type *append_header_line (Slrn_Article_Type *a, char *key, char *value)
-{
-   Slrn_Article_Line_Type *hline, *bline;
-   Slrn_Article_Line_Type *line;
-   unsigned int buflen;
-
-   hline = a->lines;
-   bline = NULL;
-   
-   while ((hline != NULL)
-	  && (hline->flags & HEADER_LINE)
-	  && (NULL != (bline = hline->next))
-	  && (bline->flags & HEADER_LINE))
-     hline = bline;
-
-   if (hline == NULL)
-     {
-	slrn_error (_("The article has an empty header"));
-	return NULL;
-     }
-   
-   line = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-   if (line == NULL)
-     return NULL;
-   
-   line->flags = HEADER_LINE;
-
-   buflen = strlen (key) + strlen(value) + 3;
-   if (NULL == (line->buf = slrn_malloc (buflen, 0, 1)))
-     {
-	slrn_free ((char *) line);
-	return NULL;
-     }
-   (void) SLsnprintf (line->buf, buflen, "%s: %s", key, value);
-   
-   hline->next = line;
-   line->prev = hline;
-   line->next = bline;
-   if (bline != NULL)
-     bline->prev = line;
-
-   return line;
-}
-
 #if SLRN_HAS_CANLOCK
 /* This function returns a malloced string or NULL on failure. */
 static char *gen_cancel_lock (char *msgid, char *file) /*{{{*/
@@ -1443,173 +1264,391 @@ static Slrn_Article_Line_Type *add_cancel_lock_to_header (Slrn_Article_Type *a, 
    if (NULL == (canlock = gen_cancel_lock (msgid, file)))
      return NULL;
    
-   l = append_header_line (a, "Cancel-Lock", canlock);
+   l = slrn_append_header_keyval (a, "Cancel-Lock", canlock);
    slrn_free (canlock);
    
    return l;
 }
 #endif
-   
-/* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
-int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
+
+static Slrn_Article_Line_Type *next_header_line (Slrn_Article_Line_Type *line)
 {
-   Slrn_Article_Type *a = NULL;
-   Slrn_Article_Line_Type *cline;
-   int header;
-   int rsp;
-   int perform_cc;
-   int status;
-   char *msgid = NULL;
-   char *errmsg = NULL;
-   int has_messageid = 0;
-   char *responses;
+   line = line->next;
+   while ((line != NULL)
+	  && (line->flags & HEADER_LINE)
+	  && ((line->buf[0] == ' ') || (line->buf[0] == '\t')))
+     line = line->next;
+   return line;
+}
 
-   try_again:
+static Slrn_Article_Line_Type *find_header_line (Slrn_Article_Type *a, char *key)
+{
+   Slrn_Article_Line_Type *line;
+   unsigned int len;
 
-   perform_cc = 0;
-   if (msgid != NULL)
-     slrn_free(msgid);
-   if (a != NULL)
-     slrn_art_free_article(a);
-   a=(Slrn_Article_Type*) slrn_malloc (sizeof(Slrn_Article_Type), 1, 1);
-
-   if (Slrn_Batch == 0)
+   len = strlen (key);
+   line = a->lines;
+   while ((line != NULL) && (line->flags & HEADER_LINE))
      {
-	if ((rsp=post_user_confirm(a, to, file, is_postponed)) != 2)
-	  {
-	     slrn_art_free_article(a);
-	     return rsp;
-	  }	
+	if (0 == slrn_case_strncmp (line->buf, key, len))
+	  return line;
+	line = line->next;
      }
+   return NULL;
+}
+
+     
+static int post_line (Slrn_Article_Line_Type *line)
+{
+   if (line->buf[0] == '.')
+     Slrn_Post_Obj->po_puts("."); /* double leading dots for posting */
+
+   (void) Slrn_Post_Obj->po_puts(line->buf);
+   (void) Slrn_Post_Obj->po_puts("\n");
+   return 0;
+}
+
+/* Returns -1 upon fatal error, 0 if not posted, or 1 if ok */
+static int post_article (Slrn_Article_Type *a, char **errmsgp)
+{
+   Slrn_Article_Line_Type *line;
+   int has_msgid = 0;
+   char *msgid = NULL;
+   int status;
+
+   *errmsgp = NULL;
 
    slrn_message_now (_("Posting ..."));
 
-   /* XXX
-#if SLRN_HAS_SLANG
-   if (1 == slrn_is_hook_defined (HOOK_POST_FILE))
+   line = find_header_line (a, "Message-ID: ");
+   if (line != NULL)
      {
-	(void) slrn_run_hooks (HOOK_POST_FILE, 1, file);
-	if (SLang_get_error ())
+	msgid = slrn_strmalloc (line->buf+12, 0);
+	if (msgid == NULL)
 	  {
-	     if (!Slrn_Editor_Uses_Mime_Charset)
-	       slrn_chmap_fix_file (file, 1);
-	     (void) saved_failed_post (file, _("post_file_hook returned error."));
+	     *errmsgp = _("Out of memory.");
 	     return -1;
 	  }
-
-	slrn_message_now (_("Posting ..."));
+	has_msgid = 1;
      }
-#endif
-    */
 
-   /* slrn_set_suspension (1); */
    status = Slrn_Post_Obj->po_start ();
    if (status != CONT_POST)
      {
-	errmsg = (status != -1) 
+	slrn_free (msgid);	       /* NULL ok */
+	*errmsgp = (status != -1) 
 	  ?  _("Posting not allowed.") : _("Could not reach server.");
-	goto return_error;
+	return -1;
      }
 
-   if (-1 == create_message_id (&msgid))
-      {
-	 errmsg = _("Could not generate Message-ID.");
-	 goto return_error;
-      }
-
-   cline = a->lines;
-   
-   header=1;
-   while (cline != NULL)
+   if (has_msgid == 0)
      {
-	if (header)
+	/* Generate the message-id only after po_start has been called */
+	if (-1 == create_message_id (&msgid))
 	  {
-	     if (cline->flags != HEADER_LINE) /* Header ends, body begins */
-	       {
-		  if (msgid != NULL)
-		    {
+	     *errmsgp = _("Could not generate Message-ID.");
+	     return -1;
+	  }
+
+	if ((msgid != NULL)
+	    && (NULL == slrn_append_header_keyval (a, "Message-ID", msgid)))
+	  {
+	     slrn_free (msgid);	       /* NULL ok */
+	     *errmsgp = _("Unable to append a header line");
+	     return -1;
+	  }
+     }
+
+   /* Note: msgid could be NULL if it is to be provided by the server */
 #if SLRN_HAS_CANLOCK
-		       if (0 != *Slrn_User_Info.cancelsecret)
-			 {
-			    if (NULL == (cline = add_cancel_lock_to_header (a, msgid, Slrn_User_Info.cancelsecret)))
-			      {
-				 errmsg = _("Failed to add cancel-lock header");
-				 goto return_error;
-			      }
-			    Slrn_Post_Obj->po_puts(cline->buf);
-			    Slrn_Post_Obj->po_puts("\n");
-			 }
+   if ((msgid != NULL)
+       && (0 != *Slrn_User_Info.cancelsecret)
+       && (NULL == add_cancel_lock_to_header (a, msgid, Slrn_User_Info.cancelsecret)))
+     {
+	slrn_free (msgid);	       /* NULL ok */
+	*errmsgp = _("Failed to add cancel-lock header");
+	return -1;
+     }
 #endif /* SLRN_HAS_CANLOCK */
+   
+   slrn_free (msgid);/* NULL ok */
+   msgid = NULL;
 
-		       if (has_messageid == 0)
-			 {
-			    if (NULL == (cline = append_header_line (a, "Message-ID", msgid)))
-			      {
-				 errmsg = _("Unable to append a header line");
-				 goto return_error;
-			      }
-			    Slrn_Post_Obj->po_puts(cline->buf);
-			    Slrn_Post_Obj->po_puts("\n");
-			 }
-		    }
-		  cline = cline->next;
-		  header = 0;
-		  continue;
-	       }
+   line = a->lines;
+   while ((line != NULL)
+	  && (line->flags & HEADER_LINE))
+     {
+	if (!Slrn_Generate_Date_Header
+	    && (0 == slrn_case_strncmp ("Date: ", line->buf, 4)))
+	  {
+	     /* skip generated date header for posting */
+	     line = next_header_line (line);
+	     continue;
+	  }
 
-	     if (!Slrn_Generate_Date_Header
-		 && (0 == slrn_case_strncmp ("Date: ", cline->buf, 4)))
-	       {
-		  /* skip generated date header for posting */
-		  cline = cline->next;
-		  continue;
-	       }
+	if (0 == slrn_case_strncmp ("Cc: ", line->buf, 4))
+	  {
+	     line = next_header_line (line);
+	     continue;
+	  }
 
-	     if (0 == slrn_case_strncmp ("Cc: ", cline->buf, 4))
-	       {
-		  perform_cc = 1;
-		  cline = cline->next; /* The 'Cc:' header is only needed in the cc-file.*/
-		  continue;
-	       }
+	(void) post_line (line);
+	line = line->next;
+     }
 
-#if SLRN_HAS_GEN_MSGID
-	     if (!slrn_case_strncmp ("Message-ID: ", cline->buf, 12))
-	       {
-		  if (msgid != NULL) slrn_free(msgid);
-		  msgid = slrn_strmalloc (cline->buf+12, 0);
-		  if (msgid == NULL)
-		    {
-		       errmsg = _("Out of memory.");
-		       goto return_error;
-		    }
-		  has_messageid = 1;
-		  /* drop */
-	       }
-#endif
-	  } /* if (header) */
+   /* Now the body */
+   if ((line != NULL)
+       && (line->buf[0] != 0))
+     {
+	*errmsgp = "Internal Error: Expected to see header-separation line";
+	return -1;
+     }
 
-	if (cline->buf[0] == '.')
-	  Slrn_Post_Obj->po_puts("."); /* double leading dots for posting */
-
-	Slrn_Post_Obj->po_puts(cline->buf);
-	Slrn_Post_Obj->po_puts("\n");
-	cline = cline->next;
-     } /*while (a->cline != NULL)*/
+   while (line != NULL)
+     {
+	(void) post_line (line);
+	line = line->next;
+     }
 
    if (0 == Slrn_Post_Obj->po_end ())
      {
 	slrn_message (_("Posting...done."));
+	return 0;
+     }
+
+   return -1;
+}
+
+
+#define POST_CONFIRM_ERROR     -1
+#define POST_CONFIRM_DELETE	1
+#define POST_CONFIRM_POST	2
+#define POST_CONFIRM_NOPOST	3
+#define POST_CONFIRM_POSTPONE	4
+
+/* This function returns:
+ * -1 => user does not want to post article
+ *  0 => user wants to delete postponed article
+ *  1 => user postponed the article
+ *  2 => user wants to post article */
+/* Be warned: This function now also transfers "file" into "a", which will be
+ * used for the actual posting process later on. */
+static int post_user_confirm (char *file, int is_postponed, unsigned int linenum) /*{{{*/
+{
+   int rsp;
+   char *responses;
+   int filter_hook;
+
+   if (Slrn_Batch)
+     return POST_CONFIRM_POST;
+
+   filter_hook = slrn_is_hook_defined (HOOK_POST_FILTER);
+
+   while (1)
+     {
+	if (filter_hook != 0)
+	  {
+	     if (is_postponed)
+	       {
+  /* Note to translators:
+   * In the following strings, "yY" will mean "yes", "nN" is for "no",
+   * "eE" for "edit", "sS" for "postpone", "dD" for "delete" and "fF"
+   * for "filter". Please use the same letter for the same field everywhere,
+   * or your users will get unexpected results. As always, you can't use the
+   * default letters for other fields than those they originally stood for.
+   * Be careful not to change the length of these strings!
+   */
+		  responses = _("yYnNeEsSdDfF");
+		  if (strlen (responses) != 12)
+		       responses = "";
+		  rsp = slrn_get_response ("yYnNeEsSDdFf", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone, \001Delete, \001Filter"));
+	       }
+	     else
+	       {
+		  responses = _("yYnNeEsSfF");
+		  if (strlen (responses) != 10)
+		       responses = "";
+		  rsp = slrn_get_response ("yYnNeEsSFf", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone, \001Filter"));
+	       }
+	  }
+	else
+	  {
+	     if (is_postponed)
+	       {
+		  responses = _("yYnNeEsSdD");
+		  if (strlen (responses) != 10)
+		    responses = "";
+		  rsp = slrn_get_response ("yYnNeEsSDd", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone, \001Delete"));
+	       }
+	     else
+	       {
+		  responses = _("yYnNeEsS");
+		  if (strlen (responses) != 8)
+		    responses = "";
+		  rsp = slrn_get_response ("yYnNeEsS", responses, _("Post the message? \001Yes, \001No, \001Edit, po\001Stpone"));
+	       }
+	  }
+
+	rsp = slrn_map_translated_char ("yYnNeEsSdDfF", _("yYnNeEsSdDfF"), rsp);
+
+	switch (rsp | 0x20)
+	  {
+	   case 'n':
+	     return POST_CONFIRM_NOPOST;
+
+	   case 's':
+	     if (is_postponed
+		 || (0 == postpone_file (file)))
+	       return POST_CONFIRM_POSTPONE;
+
+	     /* Instead of returning, let user have another go at it */
+	     slrn_sleep (1);
+	     break;
+
+	   case 'd':
+	     rsp = slrn_get_yesno_cancel (_("Sure you want to delete it"));
+	     if (rsp == 0)
+	       continue;
+	     if (rsp == -1)
+	       return POST_CONFIRM_POSTPONE;
+	     /* Calling routine will delete it. */
+	     return POST_CONFIRM_DELETE;
+
+	   case 'y':
+	     return POST_CONFIRM_POST;
+
+	   case 'e':
+	     if (slrn_edit_file (Slrn_Editor_Post, file, linenum, 0) < 0)
+	       return POST_CONFIRM_ERROR;
+	     break;
+
+	   case 'f':
+	     if (filter_hook != 0)
+	       {
+                  slrn_run_hooks (HOOK_POST_FILTER, 1, file);
+		  if (SLang_get_error ())
+		    filter_hook = 0;
+	       }
+	  }
+     }
+}
+/*}}}*/
+
+
+/* Returns -1 upon error, 0 if not edit, 1 is edit */
+static int request_user_edit (char *file, unsigned int line, int is_serious)
+{
+   char *responses;
+   int rsp;
+
+   SLtt_beep ();
+
+   if (is_serious)
+     {
+	/* Note to translators:
+	 * In the next two strings, "yY" is "yes", "eE" is "edit", "nN" is "no",
+	 * "cC" is "cancel" and "fF" means "force". The usual rules apply.
+	 */
+	responses = _("yYeEnNcC");
+	if (strlen (responses) != 8)
+	  responses = "";
+	rsp = slrn_get_response ("yYEenNcC\007", responses, _("re-\001Edit,  or \001Cancel"));
      }
    else
      {
-	if (Slrn_Batch)
+	responses = _("yYeEnNcCfF");
+	if (strlen (responses) != 10)
+	  responses = "";
+	rsp = slrn_get_response ("EeyYnNcC\007Ff", responses, _("re-\001Edit, \001Cancel, or \001Force the posting (not recommended)"));
+     }
+
+   rsp = slrn_map_translated_char ("yYeEnNcCfF", _("yYeEnNcCfF"), rsp);
+
+   switch (rsp)
+     {
+      case 'f': case 'F':
+	return 0;
+	
+      case 'y': case 'Y':
+      case 'e': case 'E':
+	if (slrn_edit_file (Slrn_Editor_Post, file, line, 0) < 0)
+	  return -1;
+	return 1;
+	
+      default:
+	break;
+     }
+   return -1;
+}
+
+
+/* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
+int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
+{
+   Slrn_Article_Type *a = NULL;
+   int rsp;
+   int status;
+   char *errmsg = NULL;
+   char *responses;
+
+   while (1)
+     {
+	unsigned int linenum = 1;
+	errmsg = NULL;
+
+	if (a != NULL)
 	  {
-	     save_failed_post (file, NULL);
-	     slrn_art_free_article(a);
-	     return -1;
+	     slrn_art_free_article (a);
+	     a = NULL;
 	  }
 
-	/* slrn_set_suspension (0); */
+	switch (post_user_confirm (file, is_postponed, linenum))
+	  {
+	   case POST_CONFIRM_POST:
+	     break;
+	     
+	   case POST_CONFIRM_DELETE:
+	     (void) slrn_delete_file (file);
+	     return 0;
+
+	   case POST_CONFIRM_POSTPONE:
+	     return 1;
+
+	   case POST_CONFIRM_NOPOST:
+	     return 0;
+	     
+	   case POST_CONFIRM_ERROR:
+	   default:
+	     goto return_error;
+	  }
+
+	a = (Slrn_Article_Type*) slrn_malloc (sizeof(Slrn_Article_Type), 1, 1);
+	if (a == NULL)
+	  goto return_error;
+
+	status = slrn_prepare_file_for_posting (file, &linenum, a, to, 0);
+
+	if (status == -1)
+	  goto return_error;
+	
+	if (status != 0)
+	  {
+	     status = request_user_edit (file, linenum, status == 1);
+	     if (status == -1)
+	       goto return_error;
+	     
+	     if (status == 1)
+	       continue;
+
+	     /* forced -- drop */
+	  }
+
+	if (0 == post_article (a, &errmsg))
+	  break;
+
+	if (Slrn_Batch)
+	  goto return_error;
+	
 	slrn_smg_refresh ();
 	slrn_sleep (2);
 	slrn_clear_message (); 
@@ -1620,18 +1659,31 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	 * cannot re-use any of the default characters for different fields. */
 	responses = _("rReEcC");
 	if (strlen (responses) != 6)
-	     responses = "";
+	  responses = "";
+	
 	rsp = slrn_get_response ("rReEcC\007", responses, _("Select one: \001Repost, \001Edit, \001Cancel"));
-	if (rsp == 7) rsp = 'c';
-	else rsp = slrn_map_translated_char ("rReEcC", responses, rsp) | 0x20;
+	if (rsp == 7)
+	  rsp = 'c';
 
-	if ((rsp == 'c')
-	    || ((rsp == 'e')
-		&& (slrn_edit_file (Slrn_Editor_Post, file, 1, 0) < 0)))
-	  goto return_error;
+	switch (slrn_map_translated_char ("rReEcC", responses, rsp))
+	  {
+	   default:
+	     goto return_error;
+	     
+	   case 'e': case 'E':
+	     if (slrn_edit_file (Slrn_Editor_Post, file, 1, 0) < 0)
+	       goto return_error;
+	     break;
+	     
+	   case 'r': case 'R':
+	     break;		       /* try again */
+	  } 
+     }
 
-	goto try_again;
-     } /* (0 == Slrn_Post_Obj->po_end ()) */
+   /* get here if it posted ok */
+
+   if (NULL != find_header_line (a, "Cc: "))
+     (void) cc_article (a);
 
    if (-1 == slrn_save_article_to_mail_file (a, Slrn_Save_Posts_File))
      {
@@ -1639,17 +1691,10 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	return -1;
      }
 
-   if (perform_cc)
-     {
-	cc_article (a);
-     }
-
    slrn_art_free_article(a);
-   if (msgid != NULL) slrn_free (msgid);
    return 0;
-   
+
 return_error:
-   if (msgid != NULL) slrn_free (msgid);
    (void) save_failed_post (file, errmsg);
    slrn_art_free_article(a);
    return -1;
@@ -1716,7 +1761,8 @@ int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
 
    if (slrn_edit_file (Slrn_Editor_Post, file, header_lines, 1) >= 0)
      ret = slrn_post_file (file, NULL, 0);
-   else ret = -1;
+   else 
+     ret = -1;
 
    if (Slrn_Use_Tmpdir) (void) slrn_delete_file (file);
    return ret;
@@ -1834,8 +1880,7 @@ void slrn_post_postponed (void) /*{{{*/
 	return;
      }
 
-   if (0 == slrn_post_file (file, NULL, 1))
-     slrn_delete_file (file);
+   (void) slrn_post_file (file, NULL, 1);
 
    slrn_free (file);
 }

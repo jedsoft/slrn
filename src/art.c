@@ -460,7 +460,21 @@ static void remove_from_hash_table (Slrn_Header_Type *h) /*{{{*/
 }
 /*}}}*/
 
-static void free_header (Slrn_Header_Type *h)
+static void free_this_header (Slrn_Header_Type *h)
+{
+   slrn_free (h->tree_ptr);
+   slrn_free (h->subject);
+   slrn_free (h->from);
+   slrn_free (h->date);
+   slrn_free (h->msgid);
+   slrn_free (h->refs);
+   slrn_free (h->xref);
+   slrn_free (h->realname);
+   slrn_free_additional_headers (h->add_hdrs);
+   slrn_free ((char *) h);
+}
+
+static void free_killed_header (Slrn_Header_Type *h)
 {
    Number_Total--;
    if (h->flags & HEADER_READ)
@@ -470,31 +484,21 @@ static void free_header (Slrn_Header_Type *h)
    if (h->flags & HEADER_LOW_SCORE)
      Number_Low_Scored--;
    remove_from_hash_table (h);
-   slrn_free (h->tree_ptr);
-   slrn_free (h->subject);
-   slrn_free (h->date);
-   slrn_free (h->realname);
-   slrn_free (h->from);
-   slrn_free_additional_headers (h->add_hdrs);
-   slrn_free ((char *) h);
+   free_this_header (h);
 }
 
-static void free_headers (void)
+static void free_all_headers (void)
 {
-   Slrn_Header_Type *next, *h = _art_Headers;
+   Slrn_Header_Type *h = _art_Headers;
    
    while (h != NULL)
      {
-	next = h->next;
-	slrn_free (h->tree_ptr);
-	slrn_free (h->subject);
-	slrn_free (h->date);
-	slrn_free (h->realname);
-	slrn_free (h->from);
-	slrn_free_additional_headers (h->add_hdrs);
-	slrn_free ((char *) h);
+	Slrn_Header_Type *next = h->next;
+	free_this_header (h);
 	h = next;
      }
+   
+   _art_Headers = NULL;
 }
 
 /*}}}*/
@@ -2149,7 +2153,8 @@ static void get_header_real_name (Slrn_Header_Type *h) /*{{{*/
 	     *f-- = '\0';
 	  }
      }
-   
+   if (h->realname != NULL)
+     slrn_free (h->realname);
    h->realname = slrn_strmalloc (buf, 0);
 }
 
@@ -2517,9 +2522,17 @@ static int select_header (Slrn_Header_Type *h, int kill_refs) /*{{{*/
    if ((NULL != subj) && (NULL != from) &&
        (strcmp (subj, h->subject) || strcmp (from, h->from)))
      {
-	h->subject = slrn_safe_strmalloc(subj);
-	h->from = slrn_safe_strmalloc(from);
-	slrn_free (h->realname);
+	subj = slrn_strmalloc (subj, 1);
+	if (subj == NULL)
+	  return -1;
+	slrn_free (h->subject);
+	h->subject = subj;
+	
+	from = slrn_strmalloc (from, 1);
+	if (from == NULL)
+	  return -1;
+	slrn_free (h->from);
+	h->from = from;
 	get_header_real_name (h);
      }
    
@@ -3601,7 +3614,7 @@ static void followup (void) /*{{{*/
    
    if (slrn_edit_file (Slrn_Editor_Post, file, n, 1) >= 0)
      {
-	slrn_post_file (file, cc_address, 0);
+	(void) slrn_post_file (file, cc_address, 0);
      }
    
    if (Slrn_Use_Tmpdir) (void) slrn_delete_file (file);
@@ -5285,7 +5298,7 @@ Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *h,
 		  fprintf (Slrn_Kill_Log_FP, _("  Newsgroup: %s\n  From: %s\n  Subject: %s\n\n"),
 			   Slrn_Current_Group_Name, h->from, h->subject);
 	       }
-	     free_header (h);
+	     free_killed_header (h);
 	     add_to_kill_list (number);
 	     Number_Score_Killed++;
 	     h = NULL;
@@ -5663,6 +5676,7 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
 	
 	if (SLang_get_error () == USER_BREAK)
 	  {
+	     slrn_free_xover_data (&xov);
 	     if (Slrn_Server_Obj->sv_reset != NULL)
 	       Slrn_Server_Obj->sv_reset ();
 	     return -1;
@@ -5682,7 +5696,7 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
 	
 	expected_num = this_num + 1;
 	num++;
-	h = process_xover (&xov);
+	h = process_xover (&xov);      /* steals the xover data -- nothing to free */
 
 	if ((1 == (num % reads_per_update))
 	    && (SLang_get_error () == 0))
@@ -5979,7 +5993,7 @@ static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
 	     if (bad_h != NULL)
 	       {
 		  bad_h->number = h->number;
-		  free_header (h);
+		  free_killed_header (h);
 		  h = bad_h;
 		  continue;
 	       }
@@ -6659,7 +6673,7 @@ static void art_quit (void) /*{{{*/
      {
 	update_ranges ();
 	update_requests ();
-	free_headers ();
+	free_all_headers ();
      }
    
    Slrn_First_Header = _art_Headers = Slrn_Current_Header = NULL;
@@ -6843,7 +6857,7 @@ static void art_xpunge (void) /*{{{*/
 	if ((0 == (h->flags & HEADER_READ)) ||
 	    (h->flags & HEADER_DONT_DELETE_MASK))
 	  break;
-	free_header (h);
+	free_killed_header (h);
 	h = next;
      }
    Slrn_First_Header = h;
@@ -6861,7 +6875,7 @@ static void art_xpunge (void) /*{{{*/
 	     if ((0 == (next->flags & HEADER_READ)) ||
 		 (next->flags & HEADER_DONT_DELETE_MASK))
 	       break;
-	     free_header (next);
+	     free_killed_header (next);
 	     next = next_next;
 	  }
 	h->real_next = next;

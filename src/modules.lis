@@ -29,3 +29,4 @@ snprintf
 ranges
 decode
 strutil
+hdrutils

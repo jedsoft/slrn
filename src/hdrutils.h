@@ -1,8 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
- Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
+ Copyright (c) 2007 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -19,12 +18,9 @@
  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#define SLRN_VERSION_STRING "pre0.9.9-28"
-#define SLRN_VERSION 990
-
-#ifndef SLRNPULL_CODE
-extern char *Slrn_Version_String;
-extern int Slrn_Version;
-extern char *slrn_get_os_name (void);
-extern void slrn_show_version (void);
+#ifndef SLRN_HDRUTILS_H
+#define SLRN_HDRUTILS_H
+extern Slrn_Article_Line_Type *slrn_find_header_line (Slrn_Article_Type *a, char *header);
+extern Slrn_Article_Line_Type *slrn_append_to_header (Slrn_Article_Type *a, char *buf, int free_on_error);
+extern Slrn_Article_Line_Type *slrn_append_header_keyval (Slrn_Article_Type *a, char *key, char *value);
 #endif

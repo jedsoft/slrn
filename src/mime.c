@@ -50,6 +50,7 @@
 #include "mime.h"
 #include "charset.h"
 #include "common.h"
+#include "hdrutils.h"
 
 int Slrn_Use_Meta_Mail = 1;
 int Slrn_Fold_Headers = 1;
@@ -66,29 +67,6 @@ char *Slrn_MetaMail_Cmd;
 #define CONTENT_SUBTYPE_UNSUPPORTED	0x10
 
 
-static Slrn_Article_Line_Type *find_header_line (Slrn_Article_Type *a, char *header)/*{{{*/
-{
-   Slrn_Article_Line_Type *line;
-   unsigned char ch = (unsigned char) UPPER_CASE(*header);
-   unsigned int len = strlen (header);
-
-   if (a == NULL)
-     return NULL;
-   line = a->lines;
-
-   while ((line != NULL) && (line->flags & HEADER_LINE))
-     {
-	unsigned char ch1 = (unsigned char) *line->buf;
-	if ((ch == UPPER_CASE(ch1))
-	    && (0 == slrn_case_strncmp (header,
-					line->buf,
-					len)))
-	  return line;
-	line = line->next;
-     }
-   return NULL;
-}
-/*}}}*/
 #endif /* NOT SLRNPULL_CODE */
 
 #ifndef SLRNPULL_CODE
@@ -108,7 +86,7 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
      return -1;
    line = a->lines;
    
-   if (NULL == (line = find_header_line (a, "Content-Type:")))
+   if (NULL == (line = slrn_find_header_line (a, "Content-Type:")))
      return 0;
    
    b = slrn_skip_whitespace (line->buf + 13);
@@ -207,7 +185,7 @@ static int parse_content_transfer_encoding_line (Slrn_Article_Type *a)/*{{{*/
    if (a == NULL)
      return -1;
 
-   line = find_header_line (a, "Content-Transfer-Encoding:");
+   line = slrn_find_header_line (a, "Content-Transfer-Encoding:");
    if (line == NULL) return ENCODED_RAW;
 
    buf = slrn_skip_whitespace (line->buf + 26);
@@ -1070,115 +1048,100 @@ int slrn_mime_call_metamail (void)/*{{{*/
  * MIME encoding routines.
  * -------------------------------------------------------------------------*/
 
-/* expexts a->cline pointing to the last headerline, and the body in a->raw_lines */
-Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, int *hibin, char *from_charset) /*{{{*/
+#define MIME_MEM_ERROR(s) \
+   slrn_mime_error(_("Out of memory."), (s), 0, MIME_ERROR_CRIT)
+#define MIME_UNKNOWN_ERROR(s) \
+   slrn_mime_error(_("Unknown Error."), (s), 0, MIME_ERROR_CRIT)
+
+static void steal_raw_lines (Slrn_Article_Type *a, Slrn_Article_Line_Type *line)
 {
-  char *charset = Slrn_Outgoing_Charset;
-  char *charset_end=NULL;
-  Slrn_Article_Line_Type *endofheader, *rline=a->raw_lines;
+   Slrn_Article_Line_Type *rline;
+
+   rline = a->raw_lines;
+   line->next = rline;
+   if (rline != NULL)
+     {
+	rline->prev = line;
+     }
+   a->raw_lines=NULL;
+}
+
+
+/* When this function gets called, the header is already encoded and is in in
+ * a->lines, whereas the body is in a->raw_lines.  Clearly this needs to be
+ * corrected.
+ */
+/* expexts a->cline pointing to the last headerline, and the body in a->raw_lines */
+Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, char *from_charset) /*{{{*/
+{
+   Slrn_Article_Line_Type *header_sep, *rline;
+   int eightbit = 0;
+   char *charset;
+   unsigned int n, len;
+
+   rline = a->raw_lines;
+   while (rline != NULL)
+     {
+	if (slrn_string_nonascii(rline->buf))
+	  {
+	     eightbit = 1;
+	     break;
+	  }
+	rline = rline->next;
+     }
+
+   /* Append header separator line */
+   if (NULL == (header_sep = slrn_append_to_header (a, NULL, 0)))
+     return MIME_MEM_ERROR("Header separation line");
+
+   if (eightbit == 0)
+     {
+	if ((NULL == slrn_append_header_keyval (a, "Mime-Version", "1.0"))
+	    || (NULL == slrn_append_header_keyval (a, "Content-Type", "text/plain; charset=us-ascii"))
+	    || (NULL == slrn_append_header_keyval (a, "Content-Transfer-Encoding", "7bit")))
+	  return MIME_MEM_ERROR("Mime Headers");
+
+	steal_raw_lines (a, header_sep);
+	return NULL;
+     }
+
+   rline=a->raw_lines;
+
+   len = 1 + strlen (Slrn_Outgoing_Charset);
+   if (NULL == (charset = slrn_malloc (len, 0, 1)))
+     return MIME_MEM_ERROR("Mime Headers");
+
+   n = 0;
+   while (1)
+     {
+	if (-1 == SLextract_list_element (Slrn_Outgoing_Charset, n, ',', charset, len))
+	  {
+	     slrn_free (charset);
+	     return slrn_add_mime_error(NULL, _("Can't determine suitable charset for body"), NULL, -1 , MIME_ERROR_CRIT);
+	  }
+
+	if (0 == slrn_case_strcmp (charset, from_charset))
+	  {
+	     /* No recoding needed */
+	     steal_raw_lines (a, header_sep);
+	     break;
+	  }
+	if (0 == slrn_test_convert_article(a, charset, from_charset))
+	  break;
+	
+	n++;
+     }
+
+   if ((NULL == slrn_append_header_keyval (a, "Mime-Version", "1.0"))
+       || (NULL == slrn_append_to_header (a, slrn_strdup_printf ("Content-Type: text/plain; charset=%s", charset),1))
+       || (NULL == slrn_append_header_keyval (a, "Content-Transfer-Encoding", "8bit")))
+     {
+	slrn_free (charset);
+	return MIME_MEM_ERROR("Mime Headers");
+     }
    
-  a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-  a->cline->next->prev=a->cline;
-  a->cline=a->cline->next;
-  a->cline->flags=HEADER_LINE;
-  a->cline->buf=slrn_safe_strmalloc("Mime-Version: 1.0");
-  endofheader = a->cline;
-  
-  if (*hibin == -1)
-    {
-       *hibin = 0;
-       while(rline != NULL)
-	 {
-	    if (slrn_string_nonascii(rline->buf))
-	      {
-		 *hibin = 1;
-		 break;
-	      }
-	    rline=rline->next;
-	 }
-       rline=a->raw_lines;
-    }
-
-  if (*hibin)
-    {
-       do
-	 {
-	    if ((charset_end=slrn_strbyte(charset, ',')) != NULL)
-	      {
-		 *charset_end = '\0';
-	      }
-
-	    if (slrn_case_strcmp(charset, from_charset) == 0)
-	    /* No recoding needed */
-	      {
-		 while(rline != NULL)
-		   {
-		      a->cline->next=rline;
-		      a->cline->next->prev=a->cline;
-		      a->cline=a->cline->next;
-		      rline=rline->next;
-		   }
-		 a->raw_lines=NULL;
-		 break;
-	      }
-
-	    if ( slrn_test_convert_article(a, charset, from_charset)  == 0)
-	      {
-		 break;
-	      }
-	    if (charset_end != NULL)
-	      {
-		 *charset_end=',';
-		 charset = charset_end + 1;
-	      }
-	 } while(charset_end != NULL);
-       if (endofheader == a->cline)
-	 {
-	    /* if we get here, no encoding was possible*/
-	    return slrn_add_mime_error(NULL, _("Can't determine suitable charset for body"), NULL, -1 , MIME_ERROR_CRIT);
-	 }
-    }
-  else
-    {
-       a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-       a->cline->next->prev=a->cline;
-       a->cline=a->cline->next;
-       a->cline->flags=HEADER_LINE;
-       a->cline->buf=slrn_safe_strmalloc("Content-Type: text/plain; charset=us-ascii");
-       a->cline->next=(Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-       a->cline->next->prev=a->cline;
-       a->cline=a->cline->next;
-       a->cline->flags=HEADER_LINE;
-       a->cline->buf=slrn_safe_strmalloc("Content-Transfer-Encoding: 7bit");
-
-       while(rline != NULL)
-	 {
-	    a->cline->next=rline;
-	    a->cline->next->prev=a->cline;
-	    a->cline=a->cline->next;
-	    rline=rline->next;
-	 }
-       a->raw_lines=NULL;
-       return NULL;
-    }
-  /* if we get here, the posting contains 8bit chars */
-  a->cline = endofheader;
-  
-  endofheader = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-  endofheader->flags=HEADER_LINE;
-  endofheader->buf=slrn_strdup_printf ("Content-Type: text/plain; charset=%s", charset);
-  
-  endofheader->next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
-  endofheader->next->flags=HEADER_LINE;
-  endofheader->next->buf=slrn_safe_strmalloc("Content-Transfer-Encoding: 8bit");
-  endofheader->next->next = a->cline->next;
-  a->cline->next->prev= endofheader->next;
-  endofheader->prev = a->cline;
-  a->cline->next = endofheader;
-  
-  if (charset_end != NULL) *charset_end=',';
-  
-  return NULL;
+   slrn_free (charset);
+   return NULL;
 }
 
 /*}}}*/
@@ -1210,11 +1173,6 @@ static char *skip_non_ascii_whitespace (char *s, char *smax)
      }
    return s;
 }
-
-#define MIME_MEM_ERROR(s) \
-   slrn_mime_error(_("Out of memory."), (s), 0, MIME_ERROR_CRIT)
-#define MIME_UNKNOWN_ERROR(s) \
-   slrn_mime_error(_("Unknown Error."), (s), 0, MIME_ERROR_CRIT)
 
 
 static Slrn_Mime_Error_Obj *fold_line (char **s_ptr)/*{{{*/

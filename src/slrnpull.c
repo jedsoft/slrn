@@ -1295,6 +1295,19 @@ static int get_bodies (NNTP_Type *s, int *numbers, /*{{{*/
 
 /*}}}*/
 
+static void free_header_data (Slrn_Header_Type *h)
+{
+   slrn_free (h->tree_ptr);
+   slrn_free (h->subject);
+   slrn_free (h->from);
+   slrn_free (h->date);
+   slrn_free (h->msgid);
+   slrn_free (h->refs);
+   slrn_free (h->xref);
+   slrn_free (h->realname);
+   slrn_free_additional_headers (h->add_hdrs);
+}
+
 static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **headers, Slrn_XOver_Type *xov) /*{{{*/
 {
    int status;
@@ -1326,8 +1339,6 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
    
    slrn_map_xover_to_header (xov, &h);
 
-   h.subject = slrn_safe_strmalloc (xov->subject_malloced);
-   h.from = slrn_safe_strmalloc (xov->from);
 #if 0
    /* FIXME -- I need to think more about this, and check for errors */
    slrn_rfc1522_decode_string (&h.subject);
@@ -1372,16 +1383,16 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
 	  g->requests = slrn_ranges_add (g->requests, n, n);
 /*	return 0; */
      }
+
    while (sdi != NULL)
      {
 	Slrn_Score_Debug_Info_Type *hlp = sdi->next;
 	slrn_free ((char *)sdi);
 	sdi = hlp;
      }
-   slrn_free (h.subject);
-   h.subject = xov->subject_malloced;
-   slrn_free (h.from);
-   h.from = slrn_safe_strmalloc(xov->from);
+
+   free_header_data (&h);
+
 #if 0
    /* This next call should add the message id to the cache. */
    (void) is_msgid_cached (h.msgid, Current_Group->name, (unsigned int) n, 1);
@@ -1624,9 +1635,7 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 	if (!g->headers_only)
 	  slrn_free (bodies[i]);
 	slrn_free (heads[i]);
-	slrn_free (xovs[i].subject_malloced);
-	slrn_free (xovs[i].date_malloced);
-	slrn_free_additional_headers (xovs[i].add_hdrs);
+	slrn_free_xover_data (xovs+i);
      }
    return ret;
 }
@@ -2765,13 +2774,11 @@ static int write_overview_entry(FILE *xov_fp, int id, char *dir)
    if (-1 == write_xover_line (xov_fp, &xov))
      {
         slrn_free (header);
-        slrn_free (xov.subject_malloced);
-        slrn_free (xov.date_malloced);
+	slrn_free_xover_data (&xov);
         return -1;
      }
    slrn_free (header);
-   slrn_free (xov.subject_malloced);
-   slrn_free (xov.date_malloced);
+   slrn_free_xover_data (&xov);
    return has_body;
 }
 

@@ -122,12 +122,12 @@ typedef struct Slrn_Header_Type
    int number;			       /* server number */
    int lines;
    int bytes;
-   char *subject;		       /* malloced separately */
+   char *subject;		       /* malloced */
    char *from;			       /* malloced */
    char *date;			       /* malloced */
-   char *msgid;			       /* pointers to above space */
-   char *refs;
-   char *xref;
+   char *msgid;			       /* malloced */
+   char *refs;			       /* malloced */
+   char *xref;			       /* malloced */
    char *realname;		       /* malloced */
    unsigned int tag_number;
    Slrn_Header_Line_Type *add_hdrs;

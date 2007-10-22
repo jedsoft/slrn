@@ -53,6 +53,15 @@ Changes since 0.9.8.8pl1
     avoids that.
 23. src/mime.c: rewrote "fold_line" to fold a header even if one of the
     words is too long.
+24. src/art.c+xover.c: Changed the way header fields are allocated to
+    avoid some memory leaks.
+25. src/post.c: large overhaul of code that converts the to-be-posted
+    file to the linked list for conversion to mime.
+26. src/hdrutils.c: new file.
+27. src/mime.c: rewrote the routine that mime-enocodes the body of a
+    post.
+28. src/slrnpull.c: Updated to reflect changes in #24.  NOTE: slrnpull
+    has not been tested in any way.
 
 {{{ Previous Versions 
 

@@ -30,17 +30,18 @@ typedef struct
 {
    int id;
    char *subject_malloced; /* keep these separate from the rest */
-   char *from;
+   char *from;			       /* points into subject_malloced */
    char *date_malloced;
-   char *message_id;
-   char *references;
-   char *xref;
+   char *message_id;		       /* points into date_malloced */
+   char *references;		       /* points into date_malloced */
+   char *xref;			       /* points into date_malloced */
    int bytes;
    int lines;
    Slrn_Header_Line_Type *add_hdrs;
 }
 Slrn_XOver_Type;
 
+extern void slrn_free_xover_data (Slrn_XOver_Type *);
 extern void slrn_map_xover_to_header (Slrn_XOver_Type *, Slrn_Header_Type *);
 extern void slrn_free_additional_headers (Slrn_Header_Line_Type *);
 extern void slrn_clear_requested_headers (void);

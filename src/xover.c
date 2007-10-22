@@ -292,6 +292,7 @@ static int parsed_headers_to_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
    if (buf == NULL)
      {
 	slrn_free (xov->subject_malloced);
+	xov->subject_malloced = NULL;
 	return -1;
      }
    
@@ -359,31 +360,44 @@ char *slrn_extract_add_header (Slrn_Header_Type *h, char *hdr) /*{{{*/
 static int xover_parse_head (int id, char *headers, Slrn_XOver_Type *xov) /*{{{*/
 {
    slrn_free (Malloced_Headers);
-   
+
    if (NULL == (Malloced_Headers = slrn_strmalloc (headers, 1)))
      return -1;
-   
+
    parse_headers ();
-   
+
    return parsed_headers_to_xover (id, xov);
 }
 /*}}}*/
 #endif
 
+void slrn_free_xover_data (Slrn_XOver_Type *xov)
+{
+   slrn_free (xov->subject_malloced);
+   slrn_free (xov->date_malloced);
+   slrn_free_additional_headers (xov->add_hdrs);
+
+   xov->subject_malloced = NULL;
+   xov->date_malloced = NULL;
+   xov->add_hdrs = NULL;
+}
+
+
 void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h)
 {   
    char *m;
-   
-   h->subject = xov->subject_malloced;
+
    h->number = xov->id;
+   h->subject = slrn_safe_strmalloc (xov->subject_malloced);
    h->from = slrn_safe_strmalloc(xov->from);
-   h->date = xov->date_malloced;
-   h->refs = xov->references;
+   h->date = slrn_safe_strmalloc (xov->date_malloced);
+   h->refs = slrn_safe_strmalloc (xov->references);
+   h->xref = slrn_safe_strmalloc (xov->xref);
+
    h->lines = xov->lines;
    h->bytes = xov->bytes;
-   h->xref = xov->xref;
-   h->add_hdrs = xov->add_hdrs;
-   
+   h->add_hdrs = xov->add_hdrs; xov->add_hdrs = NULL;
+
    /* Since the strings have been malloced, the message_id pointer can be changed.
     */
    m = xov->message_id;
@@ -398,8 +412,12 @@ void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h)
      }
    else h->msgid = xov->message_id;
    
+   h->msgid = slrn_safe_strmalloc (h->msgid);
+
    h->hash = slrn_compute_hash ( (unsigned char *)h->msgid,
 				 (unsigned char *)h->msgid + strlen (h->msgid));
+   
+   slrn_free_xover_data (xov);
 }
 
 typedef struct Overview_Fmt_Type
@@ -745,12 +763,12 @@ static char *server_read_and_malloc (void) /*{{{*/
 static int read_head_into_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
 {
    slrn_free (Malloced_Headers);
-   
+
    if (NULL == (Malloced_Headers = server_read_and_malloc ()))
      return -1;
-   
+
    parse_headers ();
-   
+
    return parsed_headers_to_xover (id, xov);
 }
 /*}}}*/
@@ -1129,9 +1147,7 @@ int slrn_read_add_xover (Slrn_Header_Line_Type **l) /*{{{*/
    *l = Current_Add_Header;
    if (status == 1)
      {
-	slrn_free (xov.subject_malloced);
-	slrn_free (xov.date_malloced);
-	slrn_free_additional_headers (xov.add_hdrs);
+	slrn_free_xover_data (&xov);
 	return xov.id;
      }
    return -1;

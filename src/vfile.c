@@ -77,6 +77,27 @@
 
 unsigned int VFile_Mode = VFILE_TEXT;
 
+
+struct VFILE
+{
+   /* If has_unget is set, then next call to vgets will return with
+    * ungetbuf and unget_len.
+    */
+   int has_unget;
+   char *unget_buf;
+   unsigned int unget_len;
+
+   char *buf;			       /* buffer for stream */
+   char *bmax;			       /* pointer to end buffer */
+   char *bp;			       /* current pointer in stream */
+   char *eof;			       /* pointer to EOF if non NULL */
+   int fd;			       /* file descrip for stream */
+   unsigned int size;		       /* default buffer size */
+   unsigned int mode;
+   unsigned int cr_flag;	       /* true if lines end in cr */
+};
+
+
 VFILE *vopen(char *file, unsigned int size, unsigned int fmode) /*{{{*/
 {
    int fd;
@@ -108,6 +129,7 @@ VFILE *vstream(int fd, unsigned int size, unsigned int mode) /*{{{*/
    VFILE *v;
    
    if (NULL == (v = (VFILE *) SLmalloc(sizeof(VFILE)))) return(NULL);
+   v->has_unget = 0;
    v->bmax = v->bp = v->buf = NULL;
    v->fd = fd;
    v->eof = NULL;
@@ -130,16 +152,25 @@ VFILE *vstream(int fd, unsigned int size, unsigned int mode) /*{{{*/
  * write there, but make sure you save and restore the character.)
  */
 /* I malloc one extra so that I can always add a null character to last line */
-char *vgets(VFILE *vp, unsigned int *num) /*{{{*/
+static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 {
    register char *bp, *bp1;
    register char *bmax, *bpmax;
    char *neew;
-   int fd = vp->fd;
-   unsigned int n, max, fmode = vp->mode;
+   int fd;
+   unsigned int n, max, fmode;
    int doread = 0;
+
+   if (vp == NULL)
+     {
+	*num = 0;
+	return NULL;
+     }
+
+   fd = vp->fd;
    n = vp->size;
-   
+   fmode = vp->mode;
+
    *num = 0;
    if (NULL == vp->buf)
      {
@@ -321,3 +352,39 @@ char *vgets(VFILE *vp, unsigned int *num) /*{{{*/
 }
 
 /*}}}*/
+
+
+char *vgets (VFILE *vp, unsigned int *nump)
+{
+   if (vp == NULL)
+     {
+	*nump = (unsigned int)-1;
+	return NULL;
+     }
+
+   if (vp->has_unget)
+     {
+	vp->has_unget = 0;
+	*nump = vp->unget_len;
+	return vp->unget_buf;
+     }
+   
+   vp->unget_buf = vgets_internal (vp, &vp->unget_len);
+   *nump = vp->unget_len;
+   return vp->unget_buf;
+}
+
+
+int vungets (VFILE *v)
+{
+   if (v == NULL)
+     return -1;
+
+   if (v->has_unget)
+     return -1;
+
+   v->has_unget = 1;
+   return 0;
+}
+
+   

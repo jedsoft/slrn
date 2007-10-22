@@ -27,7 +27,7 @@ extern Slrn_Mime_Error_Obj *slrn_mime_error (char *msg, char *line, int lineno, 
 
 
 extern int slrn_mime_call_metamail (void);
-extern Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *, int *, char *);
+extern Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *, char *);
 extern Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **, char *);
 
 
