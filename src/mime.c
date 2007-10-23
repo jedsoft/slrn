@@ -1214,29 +1214,36 @@ static Slrn_Mime_Error_Obj *fold_line (char **s_ptr)/*{{{*/
    while (s < smax)
      {
 	unsigned int dlen, new_line_len;
-	
+	char *tmp, *sep;
+
 	s = skip_ascii_whitespace (s, smax);
 	s = skip_non_ascii_whitespace (s, smax);
 
 	dlen = s - s0;
 	new_line_len = line_len + dlen;
-	if ((new_line_len >= MAX_CONTINUED_HEADER_SIZE)
-	    || (s == smax))
+
+	if (new_line_len >= MAX_CONTINUED_HEADER_SIZE)
 	  {
-	     char *tmp = slrn_substrjoin (folded_text, NULL, s0, s, "\n");
-	     if (tmp == NULL)
-	       {
-		  slrn_free (folded_text);
-		  return MIME_MEM_ERROR(*s_ptr);
-	       }
-	     slrn_free (folded_text);
-	     folded_text = tmp;
+	     sep = "\n";
 	     line_len = 0;
-	     s0 = s;
-	     if (dlen >= MAX_CONTINUED_HEADER_SIZE)
-	       long_words++;
 	  }
+	else
+	  sep = "";
+
+	tmp = slrn_substrjoin (folded_text, NULL, s0, s, sep);
+	if (tmp == NULL)
+	  {
+	     slrn_free (folded_text);
+	     return MIME_MEM_ERROR(*s_ptr);
+	  }
+	slrn_free (folded_text);
+	folded_text = tmp;
+	
+	s0 = s;
 	line_len += dlen;
+
+	if (line_len >= MAX_CONTINUED_HEADER_SIZE)
+	  long_words++;
      }
    
    slrn_free (*s_ptr);

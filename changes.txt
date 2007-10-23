@@ -62,6 +62,8 @@ Changes since 0.9.8.8pl1
     post.
 28. src/slrnpull.c: Updated to reflect changes in #24.  NOTE: slrnpull
     has not been tested in any way.
+29. src/mime.c: Error in fold-line permitted it to generate lines
+    larger than the 75 character maximum.
 
 {{{ Previous Versions 
 
