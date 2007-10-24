@@ -2120,27 +2120,73 @@ static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset) /*{{{
 
 /*}}}*/
 
+static Slrn_Mime_Error_Obj *fold_xface (char **s_ptr)
+{
+   char *s0, *smax;
+   char *folded_text;
+   unsigned int len;
+
+   s0 = *s_ptr;
+   len = strlen (s0);
+   if (len <= MAX_CONTINUED_HEADER_SIZE)
+     return NULL;
+   
+   smax = s0 + len;
+   
+   len = MAX_CONTINUED_HEADER_SIZE;
+
+   if (NULL == (folded_text = slrn_strnmalloc (s0, len, 1)))
+     return MIME_MEM_ERROR(*s_ptr);
+   s0 += len;
+   
+   while (s0 < smax)
+     {
+	char *tmp;
+	char *s = s0 + len;
+
+	if (s >= smax)
+	  s = smax;
+
+	tmp = slrn_substrjoin (folded_text, NULL, s0, s, "\n ");
+	if (tmp == NULL)
+	  {
+	     slrn_free (folded_text);
+	     return MIME_MEM_ERROR(*s_ptr);
+	  }
+	slrn_free (folded_text);
+	folded_text = tmp;
+
+	s0 = s;
+     }
+   
+   slrn_free (*s_ptr);
+   *s_ptr = folded_text;
+   return NULL;
+}
+
 typedef struct
 {
    char *keyword;
    Slrn_Mime_Error_Obj *(*encode)(char **, char *);
+   Slrn_Mime_Error_Obj *(*fold) (char **);
 }
 Header_Encode_Info_Type;
 
 Header_Encode_Info_Type Header_Encode_Table [] = 
 {
-   {"Newsgroups: ", NULL},
-   {"Followup-To: ", NULL},
-   {"Message-ID: ", NULL},
-   {"References: ", NULL},
-   {"From: ", from_encode},
-   {"Cc: ", from_encode},
-   {"To: ", from_encode},
-   {"Reply-To: ", NULL},
-   {"Mail-Copies-To: ", from_encode},
+   {"Newsgroups: ", NULL, fold_line},
+   {"Followup-To: ", NULL, fold_line},
+   {"Message-ID: ", NULL, fold_line},
+   {"References: ", NULL, fold_line},
+   {"From: ", from_encode, fold_line},
+   {"Cc: ", from_encode, fold_line},
+   {"To: ", from_encode, fold_line},
+   {"Reply-To: ", NULL, fold_line},
+   {"Mail-Copies-To: ", from_encode, fold_line},
+   {"X-Face: ", NULL, fold_xface},
 
    /* This must be the last entry.  It serves as a default */
-   {"", min_encode},
+   {"", min_encode, fold_line},
 };
 
 
@@ -2164,7 +2210,10 @@ Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **s_ptr, char *from_charset) 
 	  return err;
      }	     
 
-   return fold_line(s_ptr);
+   if (h->fold != NULL)
+     return (*h->fold) (s_ptr);
+   
+   return NULL;
 }
 
 /*}}}*/

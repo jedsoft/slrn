@@ -64,6 +64,9 @@ Changes since 0.9.8.8pl1
     has not been tested in any way.
 29. src/mime.c: Error in fold-line permitted it to generate lines
     larger than the 75 character maximum.
+30. src/mime.c: It appears that a mime-encoded X-Face header is not
+    very well supported.  After reviewing the source code to compface,
+    it appears that a naive folding will work.  Time will tell...
 
 {{{ Previous Versions 
 
