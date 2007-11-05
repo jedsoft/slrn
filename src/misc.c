@@ -1159,7 +1159,7 @@ VFILE *slrn_open_home_vfile (char *name, char *file, size_t n)
 int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char *subject) /*{{{*/
 {
    FILE *pp;
-   Slrn_Article_Type *a = NULL;
+   Slrn_Article_Type *a;
 #if defined(IBMPC_SYSTEM)
    char *buf;
    char outfile [SLRN_MAX_PATH_LEN];
@@ -1197,19 +1197,19 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
      {
 	int rsp;
 
-	if (a!= NULL)
-	    slrn_art_free_article(a);
-	a=(Slrn_Article_Type*) slrn_malloc (sizeof(Slrn_Article_Type), 1, 1);
-   
+	a = (Slrn_Article_Type*) slrn_malloc (sizeof(Slrn_Article_Type), 1, 1);
+	if (a == NULL)
+	  return -1;
+
 	if (0 == (rsp = slrn_prepare_file_for_posting(file, &editline, a, to, 1)))
-	  {
-	     break;
-	  }
+	  break;
+
 	if (rsp == -1)
 	  {
 	     slrn_art_free_article(a);
 	     return -1;
 	  }
+
 	SLtt_beep ();
 	if (rsp == 1)
 	  {
@@ -1239,11 +1239,14 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 	  }
 	if (rsp == 'f')
 	  break;
+
 	if (slrn_edit_file (Slrn_Editor_Mail, file, editline, 1) < 0)
 	  {
 	     slrn_art_free_article(a);
 	     return -1;
 	  }
+	/* try again */
+	slrn_art_free_article (a);
      } /* while (1)*/
 
    slrn_message_now (_("Sending ..."));
@@ -1947,7 +1950,7 @@ static void generic_mini_complete (int cycle) /*{{{*/
 		       argv = newargv;
 		    }
 		  if ((NULL != argv) &&
-		      (NULL != (argv[argc] = slrn_strmalloc (buf, 0))))
+		      (NULL != (argv[argc] = slrn_safe_strmalloc (buf))))
 		    argc++;
 	       }
 	     
@@ -2908,7 +2911,7 @@ char *slrn_make_from_string (void)
    static char *buf;
    char *localpart, *realname, *msg;
 
-#if SLRN_HAS_SLANG && ! SLRN_HAS_STRICT_FROM
+#if ! SLRN_HAS_STRICT_FROM
    if ((1 == slrn_run_hooks (HOOK_MAKE_FROM_STRING, 0))
        && (0 == SLang_pop_slstring (&msg)))
      {

@@ -419,15 +419,18 @@ int slrn_parse_helpfile (char *helpfile)
    char **current_help = NULL;
    int num_lines = 0;
    unsigned char *b;
+   int status;
 
    if (Slrn_Batch)
      return 0;
-   
+
    if (NULL == (fp = fopen (helpfile, "r"))) return -1;
-   while (fgets (buf, sizeof (buf) - 1, fp) != NULL)
+
+   status = -1;
+   while (NULL != fgets (buf, sizeof (buf) - 1, fp))
      {
 	ch = *buf;
-	
+
 	/* Skip over common comments */
 	if ((ch == '#') || (ch == '%') || (ch == ';') || (ch == '!'))
 	  continue;
@@ -467,18 +470,24 @@ int slrn_parse_helpfile (char *helpfile)
 	
 	slrn_free (current_help [num_lines]);
 	
-	if (NULL != (current_help [num_lines] = (char *) slrn_strmalloc (buf, 0)))
-	  num_lines++;
+	if (NULL == (current_help [num_lines] = (char *) slrn_strmalloc (buf, 0)))
+	  goto return_error;
+
+	num_lines++;
      }
+
+   status = 0;
+   /* drop */
+
+return_error:
    if (current_help != NULL)
      {
 	slrn_free (current_help[num_lines]);
 	current_help[num_lines] = NULL;
      }
    slrn_fclose (fp);
-   return 0;
+   return status;
 }
-
 
 void slrn_article_help (void)
 {

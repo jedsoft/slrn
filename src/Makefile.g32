@@ -1,19 +1,24 @@
 # Makefile for slrn                               -*- sh -*-
-# Makefile for MINGW32
-# Since slang 1.4.5, you can (and should) use ./configure && make on Cygwin
+# This is not meant for use by cygwin.  It assumes the mingw32 toolset
 
-CC = gcc
+CC = /usr/bin/i586-mingw32msvc-gcc
 CCFLAGS = -O2 -fno-strength-reduce -W -Wall
 LDFLAGS = -Wl,--subsystem,console
 MISCLIBS = -lwsock32 -lwinspool
+SLSH = slsh
 
 #-----------------------------------------------------------------------------
-#   Directory where the slang library, slanglib.a, is located.
-#   BUILD SLANG FIRST!!!!  If you do not have it, get it from its public FTP
-#   space.  The current home is space.mit.edu:/pub/davis/slang.
+# Directory where the slang library, slanglib.a, is located.
+# BUILD SLANG FIRST!!!!  If you do not have it, get it from
+# <http://www.jedsoft.org/slang/>.  Note: Also build and _install_ slsh.
 #-----------------------------------------------------------------------------
-SDIR = ../../slang/src#                  Location of slang.h
-SLIBDIR = $(SDIR)/gw32objs#              Location of libslang.a
+#SDIR = /path/to/slang.h#                  Location of slang.h
+#SLANG_LIB = -L/path/to/slang -lslang#              Location of libslang.a
+SLANG_INC = -I$(HOME)/sys/i686/include#                  Location of slang.h
+SLANG_LIB = -L$(HOME)/sys/i686/lib -Wl,-R,$(HOME)/sys/i686/lib -lslang#              Location of libslang.a
+SLRN_LIB_DIR = /specify/a/lib/dir
+SLRN_SLANG_DIR = $(SLRN_LIB_DIR)/slang
+SLRN_CONF_DIR = /specify/a/conf/dir
 #-----------------------------------------------------------------------------
 #   Location where object files are placed.
 #-----------------------------------------------------------------------------
@@ -22,8 +27,8 @@ OBJDIR = gw32objs#
 #-----------------------------------------------------------------------------
 #   Misc Programs
 #-----------------------------------------------------------------------------
-CP = copy
-#CP = cp
+#CP = copy
+CP = cp
 RM = del
 #RM = rm
 
@@ -34,10 +39,13 @@ RM = del
 OBJS = $(OBJDIR)/art.o \
        $(OBJDIR)/art_misc.o \
        $(OBJDIR)/art_sort.o \
-       $(OBJDIR)/chmap.o \
+       $(OBJDIR)/charset.o \
+       $(OBJDIR)/decode.o \
        $(OBJDIR)/editscore.o \
        $(OBJDIR)/group.o \
+       $(OBJDIR)/grplens.o \
        $(OBJDIR)/hash.o \
+       $(OBJDIR)/hdrutils.o \
        $(OBJDIR)/help.o \
        $(OBJDIR)/hooks.o \
        $(OBJDIR)/interp.o \
@@ -45,19 +53,19 @@ OBJS = $(OBJDIR)/art.o \
        $(OBJDIR)/mime.o \
        $(OBJDIR)/misc.o \
        $(OBJDIR)/post.o \
+       $(OBJDIR)/print.o \
        $(OBJDIR)/ranges.o \
        $(OBJDIR)/score.o \
-       $(OBJDIR)/snprintf.o \
        $(OBJDIR)/server.o \
        $(OBJDIR)/slrn.o \
+       $(OBJDIR)/slrndir.o \
+       $(OBJDIR)/snprintf.o \
        $(OBJDIR)/sortdate.o \
        $(OBJDIR)/startup.o \
+       $(OBJDIR)/strutil.o \
        $(OBJDIR)/ttymsg.o \
        $(OBJDIR)/util.o \
-       $(OBJDIR)/decode.o \
-       $(OBJDIR)/slrndir.o \
        $(OBJDIR)/version.o \
-       $(OBJDIR)/print.o \
        $(OBJDIR)/vfile.o \
        $(OBJDIR)/xover.o
 
@@ -71,13 +79,45 @@ OBJSpull = \
 	$(OBJDIR)/nntplib.o \
 	$(OBJDIR)/vfile.o
 
-UUDECODE_OBJS = $(OBJDIR)/util.o $(OBJDIR)/ttymsg.o $(OBJDIR)/slrndir.o $(OBJDIR)/snprintf.o
+UUDECODE_OBJS = $(OBJDIR)/util.o $(OBJDIR)/ttymsg.o $(OBJDIR)/slrndir.o \
+ $(OBJDIR)/snprintf.o
 
-CFLAGS = $(CCFLAGS) -I$(SDIR) $(SLRNLIBDIR)
+CFLAGS = $(CCFLAGS) $(SLANG_INC) $(SLRNLIBDIR)
 
+COMMON_DEPS = config.h slrnfeat.h
+server_O_DEP = clientlib.c spool.c nntp.c sltcp.c nntplib.c
+chmap_O_DEP = chmap.h charmaps.h
+chkslang_O_DEP = config.h Makefile
+version_O_DEP = version.h
+group_C_CFLAGS = -DSLRN_LIB_DIR='"$(SLRN_LIB_DIR)"'
+slrn_C_CFLAGS = -DSLRN_CONF_DIR='"$(SLRN_CONF_DIR)"'
+startup_C_CFLAGS = -DSLRN_SLANG_DIR='"$(SLRN_SLANG_DIR)"'
+
+#---------------------------------------------------------------------------
+# Rules
+#---------------------------------------------------------------------------
 slrn.exe: $(OBJDIR) config.h slangversion $(OBJS)
-	$(CC) $(OBJS) -o slrn.exe $(LDFLAGS) -L$(SLIBDIR) -lslang $(MISCLIBS)
-
+	$(CC) $(OBJS) -o slrn.exe $(LDFLAGS) $(SLANG_LIB) $(MISCLIBS)
+#
+$(OBJDIR):
+	@mkdir $(OBJDIR)
+config.h: slrnconf.h
+	$(CP) slrnconf.h config.h
+win32/slrnfeat.h: win32/slrnfeat.def slrnfeat.hin
+	$(SLSH) win32/subst.sl win32/slrnfeat.def slrnfeat.hin win32/slrnfeat.h
+slrnfeat.h: win32/slrnfeat.h
+	$(CP) win32/slrnfeat.h .
+#
+slangversion: $(OBJDIR)/chkslang.exe
+	echo ./$(OBJDIR)/chkslang.exe slrn 20000
+$(OBJDIR)/chkslang.exe: $(OBJDIR)/chkslang.o
+	$(CC) $(OBJDIR)/chkslang.o -o $(OBJDIR)/chkslang.exe $(SLANG_LIB)
+$(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h
+	$(CC) -c $(SLANG_INC) chkslang.c -o $(OBJDIR)/chkslang.o
+clean:
+	$(RM) -rf *.o *~ $(OBJDIR) slrn.exe uudecode.exe *.log \
+	core out out.* typescript files.pck* config.h
+#
 slrnpull.exe: $(OBJDIR) config.h slangversion $(OBJSpull)
 	$(CC) $(OBJSpull) -o slrnpull.exe -L$(SLIBDIR) -lslang $(MISCLIBS)
 
@@ -86,131 +126,70 @@ uudecode.exe: $(OBJDIR)/uudecode.o $(UUDECODE_OBJS)
  $(UUDECODE_OBJS) -L$(SLIBDIR) -lslang
 
 all:      slrn.exe slrnpull.exe uudecode.exe
-
-$(OBJDIR):
-	@mkdir $(OBJDIR)
-
-config.h: slrnconf.h
-	$(CP) slrnconf.h config.h
-
-$(OBJDIR)/art.o: art.c config.h slrnfeat.h jdmacros.h slrn.h group.h server.h \
-                 nntpcodes.h art.h misc.h ttymsg.h post.h startup.h hash.h \
-                 score.h menu.h util.h xover.h chmap.h decode.h mime.h \
-                 snprintf.h hooks.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/art.o art.c
-$(OBJDIR)/art_misc.o: art.c config.h slrnfeat.h jdmacros.h slrn.h group.h server.h \
-                 nntpcodes.h art.h misc.h ttymsg.h post.h startup.h hash.h \
-                 score.h menu.h util.h xover.h chmap.h decode.h mime.h \
-                 snprintf.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/art_misc.o art_misc.c
-$(OBJDIR)/art_sort.o: art_sort.c jdmacros.h slrn.h group.h art.h art_sort.h \
-                 misc.h hash.h util.h snprintf.h hooks.h menu.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/art_sort.o art_sort.c
-$(OBJDIR)/chmap.o: chmap.c config.h slrnfeat.h jdmacros.h misc.h ttymsg.h \
-                 util.h chmap.h group.h art.h charmaps.h \
-                 snprintf.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/chmap.o chmap.c
-$(OBJDIR)/editscore.o: editscore.c config.h slrnfeat.h jdmacros.h group.h \
-                 art.h startup.h misc.h ttymsg.h score.h util.h snprintf.h \
-		 ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/editscore.o editscore.c
-$(OBJDIR)/group.o: group.c config.h slrnfeat.h jdmacros.h slrn.h group.h \
-                 art.h misc.h ttymsg.h post.h server.h nntpcodes.h hash.h \
-                 score.h menu.h util.h startup.h snprintf.h hooks.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/group.o group.c
-$(OBJDIR)/hash.o: hash.c config.h slrnfeat.h jdmacros.h hash.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/hash.o hash.c
-$(OBJDIR)/help.o: help.c config.h slrnfeat.h jdmacros.h slrn.h misc.h \
-                 ttymsg.h util.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/help.o help.c
-$(OBJDIR)/hooks.o: hooks.c hooks.h slrn.h util.h config.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/hooks.o hooks.c
-$(OBJDIR)/interp.o: interp.c config.h slrnfeat.h jdmacros.h slrn.h group.h \
-                 art.h misc.h ttymsg.h startup.h server.h nntpcodes.h menu.h \
-                 interp.h util.h snprintf.h hooks.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/interp.o interp.c
-$(OBJDIR)/menu.o: menu.c config.h slrnfeat.h jdmacros.h slrn.h menu.h misc.h \
-                 ttymsg.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/menu.o menu.c
-$(OBJDIR)/mime.o: mime.c config.h slrnfeat.h jdmacros.h server.h nntpcodes.h \
-                 slrn.h misc.h ttymsg.h group.h art.h util.h mime.h snprintf.h \
-		 ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/mime.o mime.c
-$(OBJDIR)/misc.o: misc.c config.h slrnfeat.h jdmacros.h misc.h ttymsg.h \
-                 group.h slrn.h post.h server.h nntpcodes.h util.h chmap.h \
-                 mime.h snprintf.h hooks.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/misc.o misc.c
-$(OBJDIR)/post.o: post.c config.h slrnfeat.h jdmacros.h slrn.h server.h \
-                 nntpcodes.h misc.h ttymsg.h post.h group.h art.h decode.h \
-                 util.h chmap.h mime.h snprintf.h hooks.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/post.o post.c
-$(OBJDIR)/score.o: score.c config.h slrnfeat.h jdmacros.h slrn.h group.h \
-                 misc.h ttymsg.h server.h nntpcodes.h hash.h util.h art.h \
-                 xover.h score.h snprintf.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/score.o score.c
-$(OBJDIR)/server.o: server.c config.h slrnfeat.h jdmacros.h slrn.h server.h \
-                 nntpcodes.h misc.h ttymsg.h util.h startup.h spool.c \
-                 snprintf.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/server.o server.c
-$(OBJDIR)/slrn.o: slrn.c config.h slrnfeat.h jdmacros.h server.h nntpcodes.h \
-                 slrn.h group.h misc.h ttymsg.h startup.h art.h score.h \
-                 util.h chmap.h interp.h snprintf.h hooks.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/slrn.o slrn.c
-$(OBJDIR)/snprintf.o: snprintf.h config.h util.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/snprintf.o snprintf.c
-$(OBJDIR)/sortdate.o: sortdate.c config.h slrnfeat.h slrn.h util.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/sortdate.o sortdate.c
-$(OBJDIR)/startup.o: startup.c config.h slrnfeat.h jdmacros.h slrn.h group.h \
-                 misc.h ttymsg.h art.h post.h startup.h score.h util.h \
-                 decode.h mime.h interp.h server.h nntpcodes.h chmap.h \
-                 snprintf.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/startup.o startup.c
-$(OBJDIR)/ranges.o: ranges.c ranges.h util.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/ranges.o ranges.c
-$(OBJDIR)/ttymsg.o: ttymsg.c config.h ttymsg.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/ttymsg.o ttymsg.c
-$(OBJDIR)/util.o: util.c config.h jdmacros.h util.h ttymsg.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/util.o util.c
-$(OBJDIR)/version.o: version.c version.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/version.o version.c
-$(OBJDIR)/decode.o: decode.c config.h slrnfeat.h decode.h util.h \
-                 ttymsg.h jdmacros.h slrn.h misc.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/decode.o decode.c
-$(OBJDIR)/uudecode.o: decode.c config.h slrnfeat.h decode.h util.h \
-                 ttymsg.h jdmacros.h slrn.h misc.h snprintf.h
-	$(CC) -c $(CFLAGS) -DSTANDALONE -o $(OBJDIR)/uudecode.o decode.c
-$(OBJDIR)/xover.o: xover.c config.h slrnfeat.h jdmacros.h util.h ttymsg.h \
-                 hash.h group.h art.h xover.h server.h nntpcodes.h \
-                 snprintf.h ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/xover.o xover.c
-$(OBJDIR)/vfile.o: vfile.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/vfile.o vfile.c
-$(OBJDIR)/slrndir.o: slrndir.c config.h slrnfeat.h jdmacros.h util.h ttymsg.h \
-                 hash.h group.h art.h slrndir.h server.h nntpcodes.h snprintf.h \
-		 ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/slrndir.o slrndir.c
-$(OBJDIR)/slrnpull.o: slrnpull.c config.h slrnfeat.h jdmacros.h ttymsg.h \
-                 util.h sltcp.h nntplib.h nntpcodes.h score.c art.h xover.h \
-                 score.h xover.c hash.h hash.c sortdate.c snprintf.h mime.c \
-		 ranges.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/slrnpull.o slrnpull.c
-$(OBJDIR)/sltcp.o: sltcp.c config.h sltcp.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/sltcp.o sltcp.c
-$(OBJDIR)/nntplib.o: nntplib.c config.h jdmacros.h sltcp.h nntpcodes.h \
-                 nntplib.h util.h ttymsg.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/nntplib.o nntplib.c
-$(OBJDIR)/print.o: print.c config.h slrnfeat.h snprintf.h
-	$(CC) -c $(CFLAGS) -o $(OBJDIR)/print.o print.c
-
-slangversion: $(OBJDIR)/chkslang.exe
-	./$(OBJDIR)/chkslang.exe slrn 10003 10400
-
-$(OBJDIR)/chkslang.exe: $(OBJDIR)/chkslang.o
-	$(CC) $(OBJDIR)/chkslang.o -o $(OBJDIR)/chkslang.exe
-
-$(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h
-	$(CC) -c -I$(SDIR) chkslang.c -o $(OBJDIR)/chkslang.o
-clean:
-	$(RM) -rf *.o *~ $(OBJDIR) slrn.exe uudecode.exe *.log \
-	core out out.* typescript files.pck* config.h
+#---------------------------------------------------------------------------
+$(OBJDIR)/art.o: art.c $(art_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(art_C_CFLAGS) -o $(OBJDIR)/art.o art.c
+$(OBJDIR)/art_misc.o: art_misc.c $(art_misc_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(art_misc_C_CFLAGS) -o $(OBJDIR)/art_misc.o art_misc.c
+$(OBJDIR)/art_sort.o: art_sort.c $(art_sort_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(art_sort_C_CFLAGS) -o $(OBJDIR)/art_sort.o art_sort.c
+$(OBJDIR)/charset.o: charset.c $(charset_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(charset_C_CFLAGS) -o $(OBJDIR)/charset.o charset.c
+$(OBJDIR)/decode.o: decode.c $(decode_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(decode_C_CFLAGS) -o $(OBJDIR)/decode.o decode.c
+$(OBJDIR)/editscore.o: editscore.c $(editscore_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(editscore_C_CFLAGS) -o $(OBJDIR)/editscore.o editscore.c
+$(OBJDIR)/group.o: group.c $(group_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(group_C_CFLAGS) -o $(OBJDIR)/group.o group.c
+$(OBJDIR)/grplens.o: grplens.c $(grplens_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(grplens_C_CFLAGS) -o $(OBJDIR)/grplens.o grplens.c
+$(OBJDIR)/hash.o: hash.c $(hash_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(hash_C_CFLAGS) -o $(OBJDIR)/hash.o hash.c
+$(OBJDIR)/hdrutils.o: hdrutils.c $(hdrutils_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(hdrutils_C_CFLAGS) -o $(OBJDIR)/hdrutils.o hdrutils.c
+$(OBJDIR)/help.o: help.c $(help_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(help_C_CFLAGS) -o $(OBJDIR)/help.o help.c
+$(OBJDIR)/hooks.o: hooks.c $(hooks_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(hooks_C_CFLAGS) -o $(OBJDIR)/hooks.o hooks.c
+$(OBJDIR)/interp.o: interp.c $(interp_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(interp_C_CFLAGS) -o $(OBJDIR)/interp.o interp.c
+$(OBJDIR)/menu.o: menu.c $(menu_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(menu_C_CFLAGS) -o $(OBJDIR)/menu.o menu.c
+$(OBJDIR)/mime.o: mime.c $(mime_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(mime_C_CFLAGS) -o $(OBJDIR)/mime.o mime.c
+$(OBJDIR)/misc.o: misc.c $(misc_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(misc_C_CFLAGS) -o $(OBJDIR)/misc.o misc.c
+$(OBJDIR)/post.o: post.c $(post_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(post_C_CFLAGS) -o $(OBJDIR)/post.o post.c
+$(OBJDIR)/print.o: print.c $(print_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(print_C_CFLAGS) -o $(OBJDIR)/print.o print.c
+$(OBJDIR)/ranges.o: ranges.c $(ranges_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(ranges_C_CFLAGS) -o $(OBJDIR)/ranges.o ranges.c
+$(OBJDIR)/score.o: score.c $(score_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(score_C_CFLAGS) -o $(OBJDIR)/score.o score.c
+$(OBJDIR)/server.o: server.c $(server_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(server_C_CFLAGS) -o $(OBJDIR)/server.o server.c
+$(OBJDIR)/slrn.o: slrn.c $(slrn_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(slrn_C_CFLAGS) -o $(OBJDIR)/slrn.o slrn.c
+$(OBJDIR)/slrndir.o: slrndir.c $(slrndir_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(slrndir_C_CFLAGS) -o $(OBJDIR)/slrndir.o slrndir.c
+$(OBJDIR)/snprintf.o: snprintf.c $(snprintf_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(snprintf_C_CFLAGS) -o $(OBJDIR)/snprintf.o snprintf.c
+$(OBJDIR)/sortdate.o: sortdate.c $(sortdate_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(sortdate_C_CFLAGS) -o $(OBJDIR)/sortdate.o sortdate.c
+$(OBJDIR)/startup.o: startup.c $(startup_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(startup_C_CFLAGS) -o $(OBJDIR)/startup.o startup.c
+$(OBJDIR)/strutil.o: strutil.c $(strutil_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(strutil_C_CFLAGS) -o $(OBJDIR)/strutil.o strutil.c
+$(OBJDIR)/ttymsg.o: ttymsg.c $(ttymsg_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(ttymsg_C_CFLAGS) -o $(OBJDIR)/ttymsg.o ttymsg.c
+$(OBJDIR)/util.o: util.c $(util_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(util_C_CFLAGS) -o $(OBJDIR)/util.o util.c
+$(OBJDIR)/version.o: version.c $(version_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(version_C_CFLAGS) -o $(OBJDIR)/version.o version.c
+$(OBJDIR)/vfile.o: vfile.c $(vfile_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(vfile_C_CFLAGS) -o $(OBJDIR)/vfile.o vfile.c
+$(OBJDIR)/xover.o: xover.c $(xover_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(xover_C_CFLAGS) -o $(OBJDIR)/xover.o xover.c
+#
 

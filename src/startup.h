@@ -28,7 +28,7 @@ extern int Slrn_Saw_Obsolete;
 
 extern int slrn_set_string_variable (char *, char *);
 extern int slrn_set_integer_variable (char *, int);
-extern int slrn_get_variable_value (char *, int *, char ***, int **);
+extern int slrn_get_variable_value (char *, SLtype *, char **, int *);
 extern int slrn_get_authorization (char *, char **, char **);
 extern int slrn_set_object_color (char *, char *, char *, SLtt_Char_Type);
 extern char *slrn_get_object_color (char *, int);
@@ -38,17 +38,19 @@ struct SLcmd_Cmd_Table_Type;
 struct SLRegexp_Type;
 extern void slrn_generic_regexp_fun (int, SLcmd_Cmd_Table_Type *, SLRegexp_Type **);
 
-typedef struct
+typedef struct Slrn_Int_Var_Type
 {
    char *what;
-   int *valuep;
+   int *ivalp;
+   int (*get_set_func)(struct Slrn_Int_Var_Type *, int, int *);
 }
 Slrn_Int_Var_Type;
 
-typedef struct
+typedef struct Slrn_Str_Var_Type
 {
    char *what;
-   char **svaluep;
+   char **svalp;
+   int (*get_set_func)(struct Slrn_Str_Var_Type *, int, char **);
 }
 Slrn_Str_Var_Type;
 

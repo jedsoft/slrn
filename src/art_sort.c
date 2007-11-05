@@ -796,8 +796,8 @@ static Slrn_Header_Type *fixup_thread_node (Slrn_Header_Type *h, char *tree) /*{
 	h->tree_ptr = NULL;
 	
 	if (*tree)
-	  h->tree_ptr = slrn_strmalloc (tree, 0);
-	
+	  h->tree_ptr = slrn_strmalloc (tree, 0);   /* NULL ok here */
+
 	h = h->sister;
 	last->next = h;
 	if (h == NULL) break;

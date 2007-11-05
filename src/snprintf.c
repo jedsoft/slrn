@@ -37,6 +37,7 @@
 # include <stdlib.h>
 #endif
 
+#include "jdmacros.h"
 #include "snprintf.h"
 #include "util.h"
 #include "strutil.h"

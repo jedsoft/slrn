@@ -35,6 +35,9 @@
 # include <unistd.h>
 #endif
 
+#include <slang.h>
+
+#include "jdmacros.h"
 #include "print.h"
 #include "misc.h"
 #include "util.h"

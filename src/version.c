@@ -35,6 +35,7 @@
 #endif
 
 #include <slang.h>
+#include "jdmacros.h"
 #include "version.h"
 #include "util.h"
 #include "server.h"
@@ -73,7 +74,6 @@ static Compile_Option_Type Compile_Options [] =
      {"msgid_cache", 		SLRN_HAS_MSGID_CACHE},
      {"piping",	     		SLRN_HAS_PIPING},
      {"rnlock",	     		SLRN_HAS_RNLOCK},
-     {"slang",		     	SLRN_HAS_SLANG},
      {"spoilers",    		SLRN_HAS_SPOILERS},
      {"strict_from",		SLRN_HAS_STRICT_FROM},
      {NULL, 0}

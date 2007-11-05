@@ -815,9 +815,7 @@ Visible_Header_Type;
 
 static Visible_Header_Type *Visible_Headers;
 
-#if SLRN_HAS_SLANG
 char *Slrn_Visible_Headers_String;     /* for interpreter */
-#endif
 
 static void free_visible_header_list (void) /*{{{*/
 {
@@ -829,9 +827,8 @@ static void free_visible_header_list (void) /*{{{*/
 	SLfree ((char *) Visible_Headers);
 	Visible_Headers = next;
      }
-#if SLRN_HAS_SLANG
    SLang_free_slstring (Slrn_Visible_Headers_String);
-#endif
+   Slrn_Visible_Headers_String = NULL;
 }
 
 /*}}}*/
@@ -844,11 +841,9 @@ int slrn_set_visible_headers (char *headers) /*{{{*/
 
    free_visible_header_list ();
    
-#if SLRN_HAS_SLANG
    Slrn_Visible_Headers_String = SLang_create_slstring (headers);
    if (Slrn_Visible_Headers_String == NULL)
      return -1;
-#endif
 
    nth = 0;
    while (-1 != SLextract_list_element (headers, nth, ',', buf, sizeof(buf)))

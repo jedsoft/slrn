@@ -67,6 +67,21 @@ Changes since 0.9.8.8pl1
 30. src/mime.c: It appears that a mime-encoded X-Face header is not
     very well supported.  After reviewing the source code to compface,
     it appears that a naive folding will work.  Time will tell...
+31. src/art.c: If the reply function is called with a prefix-argument
+    of 2, then also use the Cc and To header values.
+32. src/interp.c: Removed set_utf8_conversion_table since it did
+    nothing.
+33. src/mime.c: Corrected a possible memory corruption error where
+    strcat was used instead of strcpy when decoding base64 articles.
+34. src/*.c: Corrected various unchecked calls to malloc.
+35. src/Makefile.in: installbin and installdirs swapped in the install
+    target (Joerg Sommer).
+36. src/mime.c: From-type headers were not being properly encoded when
+    the first word of the header contained an 8 bit character.
+37. src/win32/: new directory for win32 port
+38. src/Makefile.g32: rewrote
+39. autoconf/configure.ac: SLRN_LIB_DIR changed from lib/slrn to
+    share/slrn
 
 {{{ Previous Versions 
 

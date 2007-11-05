@@ -75,7 +75,7 @@ typedef struct Slrn_Group_Type
 			 * slrnpull ran in the background */
    
    int unread;
-   char *descript;		       /* description of the group */
+   char *descript;		       /* description of the group -- malloced, could be NULL */
 }
 Slrn_Group_Type;
 

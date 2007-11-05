@@ -48,9 +48,9 @@ AC_ARG_WITH(slrnlib,
     [  --with-slrnlib=DIR       Place for the slrn library files])
 if test -z "$with_slrnlib" || test "x$with_slrnlib" = xyes || test "x$with_slrnlib" = xno; then
 	if test "x$prefix" = xNONE; then
-		slrn_lib_dir="${ac_default_prefix}/lib/slrn"
+		slrn_lib_dir="${ac_default_prefix}/share/slrn"
 	else
-		slrn_lib_dir="${prefix}/lib/slrn"
+		slrn_lib_dir="${prefix}/share/slrn"
 	fi
 else
 	slrn_lib_dir="$with_slrnlib"

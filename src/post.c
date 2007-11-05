@@ -440,6 +440,7 @@ static int cc_article (Slrn_Article_Type *a) /*{{{*/
 #else
 #if defined(IBMPC_SYSTEM)
    char outfile [SLRN_MAX_PATH_LEN];
+   char cmdbuf [2*SLRN_MAX_PATH_LEN];
 #endif
    FILE *pp;
    unsigned int cc_line = 0;
@@ -478,9 +479,11 @@ static int cc_article (Slrn_Article_Type *a) /*{{{*/
 	return -1;
      }
 
-   fputs ("To: ", pp);
-   fputs (a->cline->buf + 4, pp);
-   fputs ("\n", pp);
+   /* FIXME: fputs can (and eventually will) fail */
+
+   (void) fputs ("To: ", pp);
+   (void) fputs (a->cline->buf + 4, pp);
+   (void) fputs ("\n", pp);
    
    /* rewind */
    a->cline=a->lines;
@@ -510,39 +513,46 @@ static int cc_article (Slrn_Article_Type *a) /*{{{*/
 
 	/* There is some discussion of this extension to mail headers.  For
 	 * now, assume that this extension will be adopted.
+	 * 
+	 * JED: I think it is a bad idea.  What distinguishes a mail header
+	 * from a Usenet header?
 	 */
 	if (0 == slrn_case_strncmp ( a->cline->buf,
 				     "Newsgroups: ", 12))
 	  {
-	     fputs ("X-Posted-To: ", pp);
-	     fputs (a->cline->buf + 12, pp);
-	     fputs ("\n", pp);
+	     (void) fputs ("X-Posted-To: ", pp);
+	     (void) fputs (a->cline->buf + 12, pp);
+	     (void) fputs ("\n", pp);
 	     if (newsgroups == NULL)
-	       newsgroups = slrn_strmalloc (a->cline->buf + 12, 1);
-	     a->cline=a->cline->next;
+	       newsgroups = slrn_strmalloc (a->cline->buf + 12, 1);   /* NULL ok */
+
+	     a->cline = a->cline->next;
 	     continue;
 	  }
-	fputs (a->cline->buf, pp);
-	fputs ("\n", pp);
+	(void) fputs (a->cline->buf, pp);
+	(void) fputs ("\n", pp);
 	a->cline=a->cline->next;
      }
 
-   fputs ("\n", pp);
+   (void) fputs ("\n", pp);
    a->cline=a->cline->next;
 
-   insert_cc_post_message (newsgroups, pp);
-   slrn_free (newsgroups);
+   if (newsgroups != NULL)
+     {
+	insert_cc_post_message (newsgroups, pp);
+	slrn_free (newsgroups);
+     }
 
    while (NULL != a->cline)
      {
-	fputs (a->cline->buf, pp);
-	fputs ("\n", pp);
+	(void) fputs (a->cline->buf, pp);
+	(void) fputs ("\n", pp);
 	a->cline=a->cline->next;
      }
 # if defined(IBMPC_SYSTEM)
    slrn_fclose (pp);
-   slrn_snprintf (buf, sizeof (buf), "%s %s", Slrn_SendMail_Command, outfile);
-   slrn_posix_system (buf, 0);
+   slrn_snprintf (cmdbuf, sizeof (cmdbuf), "%s %s", Slrn_SendMail_Command, outfile);
+   slrn_posix_system (cmdbuf, 0);
 # else
    slrn_pclose (pp);
 # endif
@@ -1111,7 +1121,7 @@ int slrn_save_article_to_mail_file (Slrn_Article_Type *a, char *save_file) /*{{{
 	    && ((unsigned char)a->cline->buf[4] <= ' '))
 	  putc ('>', outfp);
 
-	  fputs (a->cline->buf, outfp);
+	  (void) fputs (a->cline->buf, outfp);
 	  putc ('\n', outfp);
 	  a->cline=a->cline->next;
      }
@@ -1753,7 +1763,7 @@ int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
    else
 	header_lines += ret;
 
-   fputs ("\n", fp);
+   (void) fputs ("\n", fp);
 
    if (slrn_add_signature (fp) == -1)
 	return -1;

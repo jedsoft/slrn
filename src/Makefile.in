@@ -67,7 +67,7 @@ DEST_SLRN_SLANG_DIR = $(DESTDIR)$(SLRN_SLANG_DIR)
 # Directory where macros will be located.
 
 DEFINES = -DSLRN_SLANG_DIR=\"$(SLRN_SLANG_DIR)\" \
- -DSLRN_LIB_DIR=\"$(SLRN_LIB_DIR)\" -DSLRN_CONF_DIR=\"$(SLRN_CONF_DIR)\" \
+ -DSLRN_LIB_DIR=\"$(SLRN_LIB_DIR)\" -DSLRN_CONF_DIR=\"$(CONFDIR)\" \
  -DNLS_LOCALEDIR=\"$(LOCALEDIR)\"
 
 # Files to install in DOC_DIR:
@@ -76,6 +76,7 @@ UP_DOC_FILES = COPYRIGHT COPYING README changes.txt
 MAN_FILES = ../doc/slrn.1
 SLANG_FILES = `cat ../macros/INSTFILES`
 SLRNPULL_DOCS = ../slrnpull/*
+CONF_FILES = ../lib/slrn.conf
 
 #----------------------------------------------------------------------------
 # Nothing below here should require changing.
@@ -146,6 +147,7 @@ installdirs:
 	$(MKINSDIR) $(DEST_MANDIR)/man1
 	$(MKINSDIR) $(DEST_SLRN_LIB_DIR)
 	$(MKINSDIR) $(DEST_SLRN_SLANG_DIR)
+	$(MKINSDIR) $(DEST_CONFDIR)
 installdocs:
 	@for i in $(MAN_FILES); \
 	do \
@@ -180,6 +182,14 @@ installdocs:
 		fi; \
 	done
 installslang:
+	@for i in $(CONF_FILES); \
+	do \
+		echo $(INSTALL_DATA) $$i $(DEST_CONFDIR); \
+		$(INSTALL_DATA) $$i $(DEST_CONFDIR); \
+		if [ "$$?" != "0" ]; then \
+		  exit 1; \
+		fi; \
+	done
 	@for i in $(SLANG_FILES); \
 	do \
 		echo $(INSTALL_DATA) ../macros/$$i $(DEST_SLRN_SLANG_DIR); \
@@ -193,7 +203,7 @@ installlocales:
 installbin:
 	$(INSTALL) -m 755 -s $(OBJDIR)/slrn $(DEST_BINDIR)
 	-$(INSTALL) -m 755 -s $(OBJDIR)/slrnpull $(DEST_BINDIR)
-install: all installbin installdirs installdocs installslang installlocales
+install: all installdirs installbin installdocs installslang installlocales
 
 # The symlinks target is for my own private use.  It simply creates the object
 # directory as a symbolic link to a local disk instead of an NFS mounted one.

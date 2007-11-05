@@ -106,4 +106,11 @@
 # define ispunct(x)  (((x)=='.')||((x)==',')||((x)==';')||((x)=='!')||((x)=='?'))
 #endif
 
+#ifdef __GNUC__
+# define ATTRIBUTE_(x) __attribute__ (x)
+#else
+# define ATTRIBUTE_(x)
+#endif
+#define ATTRIBUTE_PRINTF(a,b) ATTRIBUTE_((format(printf,a,b)))
+
 #endif				       /* _JD_MACROS_H_ */

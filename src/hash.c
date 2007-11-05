@@ -110,11 +110,11 @@ static char *allocate_newsgroup (char *newsgroup)
 	node = node->next;
      }
    
-   node = (Newsgroup_Cache_Type *) SLMALLOC (sizeof (Newsgroup_Cache_Type));
+   node = (Newsgroup_Cache_Type *) slrn_malloc (sizeof (Newsgroup_Cache_Type),1,1);
    if (node == NULL) return NULL;
-   if (NULL == (node->newsgroup = (char *) SLMALLOC (len + 1)))
+   if (NULL == (node->newsgroup = (char *) slrn_malloc (len + 1,0,1)))
      {
-	SLFREE (node);
+	slrn_free ((char *)node);
 	return NULL;
      }
    strcpy (node->newsgroup, newsgroup); /* safe */
@@ -137,14 +137,14 @@ static Msg_Id_Cache_Type *allocate_msgid_node (char *msgid, unsigned int msgid_l
    if (newsgroup == NULL)
      return NULL;
    
-   buf = (char *) SLMALLOC (msgid_len + 1);
+   buf = (char *) slrn_malloc (msgid_len + 1, 0, 1);
    if (buf == NULL) return NULL;
    slrn_strncpy (buf, msgid, msgid_len);
    
-   node = (Msg_Id_Cache_Type *) SLMALLOC (sizeof (Msg_Id_Cache_Type));
+   node = (Msg_Id_Cache_Type *) slrn_malloc (sizeof (Msg_Id_Cache_Type), 1, 1);
    if (node == NULL)
      {
-	SLFREE (buf);
+	slrn_free (buf);
 	return NULL;
      }
    node->msgid = buf;

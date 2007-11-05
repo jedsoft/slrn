@@ -1,0 +1,3 @@
+
+subst.sl is an slsh script that will replace @CONSTRUCTS@ in a file
+with definitions from another file.

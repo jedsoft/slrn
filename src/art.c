@@ -308,7 +308,6 @@ static void art_winch (void) /*{{{*/
 {
    static int rows = 0;
    
-#if SLRN_HAS_SLANG
    /* Check to see if rows is still 0. If so, this is the first
     * call here and we should run resize_screen_hook to allow it
     * to change the initial Article_Window_Nrows.
@@ -318,7 +317,6 @@ static void art_winch (void) /*{{{*/
 	rows = SLtt_Screen_Rows;
 	slrn_run_hooks (HOOK_RESIZE_SCREEN, 0);
      }
-#endif
 
    if ((rows != SLtt_Screen_Rows) 
        || (Article_Window_Nrows <= 0)
@@ -2155,6 +2153,7 @@ static void get_header_real_name (Slrn_Header_Type *h) /*{{{*/
      }
    if (h->realname != NULL)
      slrn_free (h->realname);
+
    h->realname = slrn_strmalloc (buf, 0);
 }
 
@@ -2551,9 +2550,7 @@ static int select_header (Slrn_Header_Type *h, int kill_refs) /*{{{*/
    
    init_article_window_struct ();
    
-#if SLRN_HAS_SLANG
    (void) slrn_run_hooks (HOOK_READ_ARTICLE, 0);
-#endif
 
    /* slrn_set_suspension (0); */
    return 0;
@@ -2769,7 +2766,6 @@ static char *extract_reply_address (void)
    return slrn_extract_header ("From: ", 6);
 }
 
-#if SLRN_HAS_SLANG
 /* This function is called after an article hook has been called to make 
  * sure the user did not delete the article.
  */
@@ -2790,7 +2786,6 @@ static int run_article_hook (unsigned int hook)
    slrn_run_hooks (hook, 0);
    return check_for_current_article ();
 }
-#endif
 
 /* This function strips the old subject included with "(was: <old sub>)" */
 void slrn_subject_strip_was (char *subject) /*{{{*/
@@ -2805,11 +2800,7 @@ void slrn_subject_strip_was (char *subject) /*{{{*/
      {
 	SLRegexp_Type *re;
 	re = *r++;
-#if SLANG_VERSION < 20000
-	was = SLang_regexp_match ((unsigned char*) subject, len, re);
-#else
 	was = (unsigned char *)SLregexp_match (re, subject, len);
-#endif
 	if (NULL != was)
 	  {
 	     if (was == (unsigned char*) subject)
@@ -2888,12 +2879,10 @@ static void reply (char *from, int use_cc) /*{{{*/
    unsigned int n, wrap;
    char *quote_str;
 
-   if ((-1 == slrn_check_batch ()) ||
-       (-1 == select_affected_article ())
-#if SLRN_HAS_SLANG
+   if ((-1 == slrn_check_batch ()) 
+       || (-1 == select_affected_article ())
        || (-1 == run_article_hook (HOOK_REPLY))
-#endif
-       )
+      )
      return;
    
    /* Check for FQDN.  If it appear bogus, warn user */
@@ -2975,7 +2964,9 @@ static void reply (char *from, int use_cc) /*{{{*/
    else subject = subject_skip_re (subject);
    
    /* We need a copy of subject as slrn_subject_strip_was() might change it */
-   subject = slrn_safe_strmalloc (subject);
+   if (NULL == (subject = slrn_safe_strmalloc (subject)))
+     return;
+
    slrn_subject_strip_was (subject);
 
    if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Subject: Re: %s\n", subject) < 0)
@@ -3018,12 +3009,12 @@ static void reply (char *from, int use_cc) /*{{{*/
    (void) _slrn_art_unwrap_article (Slrn_Current_Article);
    
    l = Slrn_Current_Article->lines;
-   if (Slrn_Prefix_Arg_Ptr == NULL)
+   if ((Slrn_Prefix_Arg_Ptr == NULL) || ((*Slrn_Prefix_Arg_Ptr & 1) == 0))
      {
 	while ((l != NULL) && (*l->buf != 0)) l = l->next;
 	if (l != NULL) l = l->next;
      }
-   
+
    if (NULL == (quote_str = Slrn_Quote_String))
      quote_str = ">";
 
@@ -3069,7 +3060,7 @@ static void reply_cmd (void) /*{{{*/
        && (0 == slrn_get_yesno (1, _("Are you sure you want to reply"))))
      return;
 
-   reply (NULL, 0);
+   reply (NULL, (Slrn_Prefix_Arg_Ptr != NULL) ? (*Slrn_Prefix_Arg_Ptr & 2) : 0);
 }
 
 /*}}}*/
@@ -3110,10 +3101,8 @@ static void forward_article (void) /*{{{*/
 	Slrn_Editor_Charset=NULL;
      }
 
-#if SLRN_HAS_SLANG
    if (-1 == run_article_hook (HOOK_FORWARD))
      return;
-#endif
 
    if (Slrn_Use_Tmpdir)
      {
@@ -3215,9 +3204,7 @@ static void followup (void) /*{{{*/
    unsigned int n;
    int prefix_arg;
    int perform_cc;
-#if SLRN_HAS_SLANG
    int free_cc_string = 0;
-#endif
    int strip_sig, rsp, wrap;
    char *newsgroups_hdr;
 
@@ -3254,10 +3241,8 @@ static void followup (void) /*{{{*/
 
    strip_sig = ((prefix_arg == -1) && Slrn_Followup_Strip_Sig);
    
-#if SLRN_HAS_SLANG
    if (-1 == run_article_hook (HOOK_FOLLOWUP))
      return;
-#endif
    
    /* Here is the logic:
     * If followup-to contains an email address, use that as a CC.
@@ -3424,7 +3409,6 @@ static void followup (void) /*{{{*/
    if ((perform_cc != 0)
        && (cc_address_t != NULL))
      {
-#if SLRN_HAS_SLANG
 	int cc_hook_status;
 
 	if (-1 == (cc_hook_status = slrn_run_hooks (HOOK_CC, 1, cc_address)))
@@ -3441,7 +3425,6 @@ static void followup (void) /*{{{*/
 	     if (*cc_address == 0)
 	       perform_cc = 0;
 	  }
-#endif
 	if ((perform_cc == 1) && (Slrn_Auto_CC_To_Poster & 0x01))
 	  {
 	     if (-1 == (perform_cc = slrn_get_yesno_cancel (_("Cc message as requested by poster"))))
@@ -3500,7 +3483,9 @@ static void followup (void) /*{{{*/
    n++;
 #endif
    
-   subject = slrn_safe_strmalloc (subject);
+   if (NULL == (subject = slrn_safe_strmalloc (subject)))
+     goto free_and_return;
+
    slrn_subject_strip_was (subject);
    if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Subject: Re: %s\n", subject) < 0)
      {
@@ -3508,7 +3493,7 @@ static void followup (void) /*{{{*/
 	goto free_and_return;
      }
    slrn_free (subject);
-   
+
    xref = slrn_extract_header("References: ", 12);
    if ((msgid != NULL) && (*msgid != 0))
      {
@@ -3620,12 +3605,8 @@ static void followup (void) /*{{{*/
    if (Slrn_Use_Tmpdir) (void) slrn_delete_file (file);
    
    free_and_return:
-#if SLRN_HAS_SLANG
    if (free_cc_string && (cc_address != NULL))
      SLang_free_slstring (cc_address);
-#else
-   return;
-#endif
 }
 
 /*}}}*/
@@ -3721,10 +3702,8 @@ static void supersede (void) /*{{{*/
        && (slrn_get_yesno (1, _("Are you sure you want to supersede")) == 0))
      return;
    
-#if SLRN_HAS_SLANG
    if (-1 == run_article_hook (HOOK_SUPERSEDE))
      return;
-#endif
    
    if (NULL == (newsgroups = slrn_extract_header ("Newsgroups: ", 12)))
      newsgroups = "";
@@ -4181,9 +4160,7 @@ static void goto_header_number (void) /*{{{*/
    
    diff = i - Last_Cursor_Row;
    if (diff > 0) slrn_header_down_n (diff, 0); else slrn_header_up_n (-diff, 0);
-#if SLRN_HAS_SLANG
    slrn_run_hooks (HOOK_HEADER_NUMBER, 0);
-#endif
    Slrn_Full_Screen_Update = 1;
 }
 
@@ -4386,12 +4363,10 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	  }
 	strcpy (p, ".txt"); /* safe */
 #else
-# if SLRN_HAS_SLANG
 	if ((1 != slrn_run_hooks (HOOK_MAKE_SAVE_FILENAME, 0))
 	    || (0 != SLang_pop_slstring (&filename))
 	    || (*filename == 0))
 	  filename = Slrn_Current_Group_Name;
-# endif
 	if ((filename == Slrn_Current_Group_Name) ||
 	    (0 == slrn_is_absolute_path(filename)))
 	  slrn_snprintf (name, sizeof (name), "%s/%s", file,
@@ -4399,7 +4374,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	else
 	  slrn_strncpy (name, filename, sizeof (name));
 #endif
-	
+
 #if !defined(VMS) && !defined(IBMPC_SYSTEM)
 	if (filename == Slrn_Current_Group_Name)
 	  {
@@ -4659,17 +4634,18 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
   
    switch (Slrn_Pipe_Type)
      {
-	  case PIPE_RAW:
-	     lines = Slrn_Current_Article->raw_lines;
-	     convert=0;
-	     break;
-	  case PIPE_DECODED:
-	     return -1;
-	     break;
-	  case PIPE_CONVERTED:
-	     lines = Slrn_Current_Article->lines;
-	     convert = 1;
-	     break;
+      default:
+      case PIPE_RAW:
+	lines = Slrn_Current_Article->raw_lines;
+	convert=0;
+	break;
+      case PIPE_DECODED:
+	return -1;
+	break;
+      case PIPE_CONVERTED:
+	lines = Slrn_Current_Article->lines;
+	convert = 1;
+	break;
      }
    
    if (NULL == (fp = slrn_popen (cmd, "w")))
@@ -6446,12 +6422,10 @@ static void toggle_quotes (void) /*{{{*/
 
 /*}}}*/
 
-#if SLRN_HAS_SLANG
 int slrn_is_hidden_headers_mode ()
 {
    return Headers_Hidden_Mode;
 }
-#endif
 
 static void toggle_headers (void) /*{{{*/
 {
@@ -6651,9 +6625,7 @@ static void art_quit (void) /*{{{*/
 {
    Slrn_Header_Type *h = _art_Headers;
    
-#if SLRN_HAS_SLANG
    (void) slrn_run_hooks (HOOK_ARTICLE_MODE_QUIT, 0);
-#endif
 
    slrn_init_hangup_signals (0);
 
@@ -7761,11 +7733,9 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
    if (Slrn_Server_Obj->sv_reset_has_xover)
      Slrn_Server_Obj->sv_has_xover = 1;
 
-#if SLRN_HAS_SLANG
    slrn_run_hooks (HOOK_PRE_ARTICLE_MODE, 0);
    if (SLang_get_error ())
      return -1;
-#endif
    
    if (score && (1 == slrn_open_score (Slrn_Current_Group_Name)))
      Perform_Scoring = 1;
@@ -7970,17 +7940,13 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
    /* slrn_set_suspension (0); */
 #endif
 
-#if SLRN_HAS_SLANG
    (void) slrn_run_hooks (HOOK_ARTICLE_MODE, 0);
-#endif   
    slrn_sort_headers ();
    header_bob ();
 
    quick_help ();
    
-#if SLRN_HAS_SLANG
    (void) slrn_run_hooks (HOOK_ARTICLE_MODE_STARTUP, 0);
-#endif
 
    if (Slrn_Startup_With_Article) art_pagedn ();
    if (SLang_get_error () == 0)

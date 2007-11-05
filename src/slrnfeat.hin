@@ -262,6 +262,4 @@
 # define SLRN_DEFAULT_POST_OBJ SLRN_POST_ID_INEWS
 #endif
 
-#define SLRN_HAS_SLANG 1
-
 #endif				       /* _SLRN_FEATURES_H */

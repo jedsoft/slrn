@@ -25,6 +25,7 @@
 
 #include <slang.h>
 
+#include "jdmacros.h"
 #include "group.h"
 #include "art.h"
 #include "util.h"

@@ -198,10 +198,10 @@ static Slrn_Score_Debug_Info_Type *append_score_debug_info
 {
    Slrn_Score_Debug_Info_Type *newentry;
    
-   if ((newentry = (Slrn_Score_Debug_Info_Type *)slrn_malloc
-	(sizeof (Slrn_Score_Debug_Info_Type), 0, 0)) == NULL)
+   if (NULL == (newentry = (Slrn_Score_Debug_Info_Type *)
+		slrn_malloc (sizeof (Slrn_Score_Debug_Info_Type), 0, 0)))
      return NULL;
-   
+
    newentry->filename = sc->filename;
    newentry->description = sc->description;
    newentry->linenumber = sc->linenumber;
@@ -543,8 +543,10 @@ static int compile_psrt (PScore_Regexp_Type *psrt, Score_Regexp_Type *srt,
         psrt = psrt->next;
         if (psrt == NULL) break;
 
-        srt->next = (Score_Regexp_Type *) slrn_malloc (sizeof (Score_Regexp_Type), 1, 0);
-        if (NULL == (srt = srt->next)) return -1;
+        if (NULL == (srt->next = (Score_Regexp_Type *) slrn_malloc (sizeof (Score_Regexp_Type), 1, 0)))
+	  return -1;
+
+        srt = srt->next;
      } /* while (psrt != NULL)*/
    return 0;
 }

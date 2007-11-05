@@ -515,12 +515,12 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
    
    /* let's calculate how much space we need... */
    len = 0;
-   while ( l )
+   while (l != NULL)
      {
 	len += strlen(l->buf);
 	l = l->next;
      }
-   
+
    /* get some memory */
    buf_src = slrn_safe_malloc (len + 1);
    buf_dest = slrn_safe_malloc (len + 1);
@@ -528,15 +528,15 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
    /* collect all base64 encoded lines into buf_src */
    l = body_start;
    buf_pos = buf_src;
-   while ( l )
+   while (l != NULL)
      {
-	strcat (buf_pos, l->buf); /* safe */
+	strcpy (buf_pos, l->buf); /* safe */
 	buf_pos += strlen(l->buf);
 	l = l->next;
      }
    
    /* put decoded article into buf_dest */
-   buf_pos = decode_base64(buf_dest, buf_src, buf_src+len, keep_nl);
+   buf_pos = decode_base64 (buf_dest, buf_src, buf_src+len, keep_nl);
    *buf_pos = '\0';
    
    if (a->mime.charset == NULL)
@@ -551,9 +551,9 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
    
    l = body_start;
    body_start = body_start->prev;
-   
+
    /* free old body */
-   while ( l )
+   while (l != NULL)
      {
 	slrn_free(l->buf);
 	next = l->next;
@@ -561,40 +561,49 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
 	l = next;
      }
    body_start->next = NULL;
-   
+
+   a->is_modified = 1;
+   a->mime.was_modified = 1;
+
    l = body_start;
-   
    base = buf_dest;
    buf_pos = buf_dest;
    
    /* put decoded article back into article structure */
-   while ( (buf_pos = slrn_strbyte(buf_dest, '\n')) != NULL )
+   while (NULL != (buf_pos = slrn_strbyte(buf_dest, '\n')))
      {
 	len = buf_pos - buf_dest;
 	
-	l->next = (Slrn_Article_Line_Type *)
-	  slrn_malloc(sizeof(Slrn_Article_Line_Type), 1, 1);
-	
-	l->next->prev = l;
-	l->next->next = NULL;
-	l = l->next;
-	l->buf = slrn_malloc(sizeof(char) * len + 1, 0, 1);
+	next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type), 1, 1);
+	if ((next == NULL)
+	    || (NULL == (next->buf = slrn_malloc(sizeof(char) * len + 1, 0, 1))))
+	  {
+	     slrn_free ((char *) next);/* NULL ok */
+	     goto return_error;
+	  }
+	next->next = NULL; /* Unnecessary since slrn_malloc as used 
+			    * above will guarantee that next->next is NULL.
+			    */
+	next->prev = l;
+	l->next = next;
+	l = next;
 	
 	strncpy(l->buf, buf_dest, len);
 	/* terminate string and strip '\r' if necessary */
-	if ( l->buf[len-1] == '\r' )
-	  l->buf[len-1] = '\0';
-	else
-	  l->buf[len] = '\0';
+	if (len && (l->buf[len-1] == '\r'))
+	  len--;
+
+	l->buf[len] = 0;
 	
 	buf_dest = buf_pos + 1;
      }
+
+   /* drop */
+
+return_error:
    
    slrn_free(buf_src);
    slrn_free(base);
-   
-   a->is_modified = 1;
-   a->mime.was_modified = 1;
 }
 
 /*}}}*/
@@ -1714,13 +1723,14 @@ static Slrn_Mime_Error_Obj *encode_comment (char **s_ptr, char *from_charset, un
 static Slrn_Mime_Error_Obj *encode_phrase (char **s_ptr, char *from_charset, unsigned int *start, unsigned int *max) /*{{{*/
 {
    char *s =*s_ptr;
-   unsigned int encode_pos = 0;
+   unsigned int encode_pos;
    unsigned int pos = *start;
    unsigned int extralen;
    int in_quote=0;
    int encode=0;
    Slrn_Mime_Error_Obj *err;
 
+   encode_pos = pos;
    while (pos < *max)
      {
 	if ((s[pos]== ' ') || (s[pos]== '"'))
@@ -2181,7 +2191,7 @@ Header_Encode_Info_Type Header_Encode_Table [] =
    {"From: ", from_encode, fold_line},
    {"Cc: ", from_encode, fold_line},
    {"To: ", from_encode, fold_line},
-   {"Reply-To: ", NULL, fold_line},
+   {"Reply-To: ", from_encode, fold_line},
    {"Mail-Copies-To: ", from_encode, fold_line},
    {"X-Face: ", NULL, fold_xface},
 

@@ -1739,11 +1739,9 @@ void slrn_post_cmd (void) /*{{{*/
        (slrn_get_yesno (1, _("Are you sure that you want to post")) <= 0))
      return;
    
-#if SLRN_HAS_SLANG
    slrn_run_hooks (HOOK_POST, 0);
    if (SLang_get_error ())
      return;
-#endif
    
    if (Slrn_Group_Current_Group == NULL)
      name = "";
@@ -1841,9 +1839,7 @@ static void enter_group_mode_hook (void)
      Group_Window.cannot_scroll = 2;
    else
      Group_Window.cannot_scroll = SLtt_Term_Cannot_Scroll;
-#if SLRN_HAS_SLANG
    slrn_run_hooks (HOOK_GROUP_MODE, 0);
-#endif
 }
 
 static void group_winch_sig (int old_r, int old_c)
@@ -3117,12 +3113,8 @@ static void group_update_screen (void) /*{{{*/
 /*}}}*/
 
 /* intrinsic functions */
-#if SLRN_HAS_SLANG
 void slrn_intr_get_group_order (void) /*{{{*/
 {
-# if SLANG_VERSION < 10400
-   slrn_error (_("To use this feature, please update s-lang and recompile slrn."));
-# else
    Slrn_Group_Type *g;
    SLang_Array_Type *retval;
    int n = 0;
@@ -3152,15 +3144,11 @@ void slrn_intr_get_group_order (void) /*{{{*/
      }
    
    (void) SLang_push_array (retval, 1);
-# endif /* SLANG_VERSION */
 }
 /*}}}*/
 
 void slrn_intr_set_group_order (void) /*{{{*/
 {
-#if SLANG_VERSION < 10400
-   slrn_error (_("To use this feature, please update s-lang and recompile slrn."));
-# else
    SLang_Array_Type *at;
    Slrn_Group_Type *last = NULL, *rest = Groups;
    int i, rows;
@@ -3214,7 +3202,5 @@ void slrn_intr_set_group_order (void) /*{{{*/
    find_line_num ();
    Slrn_Full_Screen_Update = 1;
    Slrn_Groups_Dirty = 1;
-# endif /* SLANG_VERSION */
 }
 /*}}}*/
-#endif /* SLRN_HAS_SLANG */

@@ -97,9 +97,7 @@
 #if SLRN_HAS_GROUPLENS
 # include "grplens.h"
 #endif
-#if SLRN_HAS_SLANG
-# include "interp.h"
-#endif
+#include "interp.h"
 #ifdef __os2__
 # define INCL_VIO
 # include <os2.h>
@@ -861,11 +859,9 @@ static void perform_cleanup (void)
    slrn_close_grouplens ();
 #endif
 
-#if SLRN_HAS_SLANG
    if (Ran_Startup_Hook)
      (void) slrn_run_hooks (HOOK_QUIT, 0);
    (void) slrn_reset_slang ();
-#endif
 
 #if SLRN_USE_SLTCP && SLRN_HAS_NNTP_SUPPORT
    (void) sltcp_close_sltcp ();
@@ -1049,27 +1045,6 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
    (void) umask (077);
 #endif
    
-   /* These are already available if the interpreter is available */
-#if !SLRN_HAS_SLANG
-# ifdef __os2__
-   SLdefine_for_ifdef ("OS2");
-# else
-#  ifdef VMS
-   SLdefine_for_ifdef ("VMS");
-#  else
-#   ifdef __NT__
-   SLdefine_for_ifdef ("NT");
-#   else
-#    ifdef __WIN32__
-   SLdefine_for_ifdef ("WIN32");
-#    else
-   SLdefine_for_ifdef ("UNIX");
-#    endif
-#   endif
-#  endif
-# endif
-#endif
-
 #if 0
    if (NULL != getenv ("AUTOSUBSCRIBE"))
      Slrn_Unsubscribe_New_Groups = 0;
@@ -1172,10 +1147,8 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
      slrn_exit_error (_("Error initializing SLtcp interface"));
 #endif
 
-#if SLRN_HAS_SLANG
    if (-1 == slrn_init_slang ())
      fprintf (stderr, _("Error initializing S-Lang interpreter.\n"));
-#endif
 
    slrn_startup_initialize ();
 
@@ -1363,11 +1336,8 @@ If you want to create %s, add command line options:\n\
    
    lock_file (1);
 
-#if SLRN_HAS_SLANG
    (void) slrn_run_hooks (HOOK_STARTUP, 0);
    Ran_Startup_Hook = 1;
-#endif
-   
    
 #if SLRN_HAS_GROUPLENS
    if (Slrn_Server_Id != SLRN_SERVER_ID_NNTP)
@@ -1498,10 +1468,8 @@ static void run_winch_functions (int old_r, int old_c)
 	  (*mode->sigwinch_fun) (old_r, old_c);
      }
 
-#if SLRN_HAS_SLANG
    if (SLang_get_error() == 0)
      slrn_run_hooks (HOOK_RESIZE_SCREEN, 0);
-#endif
 }
 
 
@@ -1624,9 +1592,7 @@ void slrn_do_keymap_key (SLKeyMap_List_Type *map) /*{{{*/
 
    if (Slrn_Message_Present || SLang_get_error()) 
      {
-#if SLRN_HAS_SLANG
 	if (SLang_get_error()) SLang_restart (0);
-#endif
 	slrn_clear_message ();
      }
    SLKeyBoard_Quit = 0;
@@ -1655,8 +1621,6 @@ void slrn_do_keymap_key (SLKeyMap_List_Type *map) /*{{{*/
      }
 
    /* Otherwise we have interpreted key. */
-#if SLRN_HAS_SLANG
-   
    last_key = key;
    last_map = map;
 
@@ -1665,7 +1629,6 @@ void slrn_do_keymap_key (SLKeyMap_List_Type *map) /*{{{*/
    if ((*key->f.s == '.')
        || !SLang_execute_function (key->f.s))
      SLang_load_string(key->f.s);
-#endif
 }
 
 /*}}}*/
@@ -1733,9 +1696,7 @@ int main (int argc, char **argv) /*{{{*/
 
    slrn_push_suspension (1);
 
-#if SLRN_HAS_SLANG
    (void) slrn_run_hooks (HOOK_GROUP_MODE_STARTUP, 0);
-#endif
 
    if (Slrn_Batch) return 1;
    

@@ -50,9 +50,7 @@
 #if SLRN_HAS_GROUPLENS
 # include "grplens.h"
 #endif
-#if SLRN_HAS_SLANG
-# include "interp.h"
-#endif
+#include "interp.h"
 #include "server.h"
 #include "print.h"
 #include "snprintf.h"
@@ -534,196 +532,196 @@ static int set_charset_fun (int argc, SLcmd_Cmd_Table_Type *table)
 
 Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
 {
-     {"hide_verbatim_marks",	&Slrn_Verbatim_Marks_Hidden},
-     {"hide_verbatim_text",	&Slrn_Verbatim_Hidden},
-     {"hide_signature",	&Slrn_Signature_Hidden},
-     {"hide_pgpsignature",	&Slrn_Pgp_Signature_Hidden},
-     {"hide_quotes",            &Slrn_Quotes_Hidden_Mode},
-     {"emphasized_text_mask",	&Slrn_Emphasized_Text_Mask},
-     {"emphasized_text_mode",	&Slrn_Emphasized_Text_Mode},
-     {"process_verbatim_marks", &Slrn_Process_Verbatim_Marks},
+     {"hide_verbatim_marks",	&Slrn_Verbatim_Marks_Hidden, NULL},
+     {"hide_verbatim_text",	&Slrn_Verbatim_Hidden, NULL},
+     {"hide_signature",	&Slrn_Signature_Hidden, NULL},
+     {"hide_pgpsignature",	&Slrn_Pgp_Signature_Hidden, NULL},
+     {"hide_quotes",            &Slrn_Quotes_Hidden_Mode, NULL},
+     {"emphasized_text_mask",	&Slrn_Emphasized_Text_Mask, NULL},
+     {"emphasized_text_mode",	&Slrn_Emphasized_Text_Mode, NULL},
+     {"process_verbatim_marks", &Slrn_Process_Verbatim_Marks, NULL},
 
-     {"use_flow_control",	&Slrn_Use_Flow_Control},
-     {"abort_unmodified_edits", &Slrn_Abort_Unmodified},
-     {"editor_uses_mime_charset", &Slrn_Editor_Uses_Mime_Charset},
-     {"mail_editor_is_mua",	&Slrn_Mail_Editor_Is_Mua},
-     {"auto_mark_article_as_read", &Slrn_Del_Article_Upon_Read},
-     {"simulate_graphic_chars", &Slrn_Simulate_Graphic_Chars},
+     {"use_flow_control",	&Slrn_Use_Flow_Control, NULL},
+     {"abort_unmodified_edits", &Slrn_Abort_Unmodified, NULL},
+     {"editor_uses_mime_charset", &Slrn_Editor_Uses_Mime_Charset, NULL},
+     {"mail_editor_is_mua",	&Slrn_Mail_Editor_Is_Mua, NULL},
+     {"auto_mark_article_as_read", &Slrn_Del_Article_Upon_Read, NULL},
+     {"simulate_graphic_chars", &Slrn_Simulate_Graphic_Chars, NULL},
 #if 0 /* This does not work yet */
-     {"article_window_page_overlap", &Slrn_Article_Window_Border},
+     {"article_window_page_overlap", &Slrn_Article_Window_Border, NULL},
 #endif
-     {"new_subject_breaks_threads",	&Slrn_New_Subject_Breaks_Threads},
-     {"scroll_by_page", &Slrn_Scroll_By_Page},
-     {"use_color", &SLtt_Use_Ansi_Colors},
-     {"ignore_signature", &Slrn_Sig_Is_End_Of_Article},
-     {"reject_long_lines", &Slrn_Reject_Long_Lines},
-     {"netiquette_warnings", &Slrn_Netiquette_Warnings},
-     {"generate_date_header", &Slrn_Generate_Date_Header},
-     {"generate_message_id", &Slrn_Generate_Message_Id},
-     {"use_recommended_msg_id", &Slrn_Use_Recom_Id},
-     {"pipe_type", &Slrn_Pipe_Type},
+     {"new_subject_breaks_threads",	&Slrn_New_Subject_Breaks_Threads, NULL},
+     {"scroll_by_page", &Slrn_Scroll_By_Page, NULL},
+     {"use_color", &SLtt_Use_Ansi_Colors, NULL},
+     {"ignore_signature", &Slrn_Sig_Is_End_Of_Article, NULL},
+     {"reject_long_lines", &Slrn_Reject_Long_Lines, NULL},
+     {"netiquette_warnings", &Slrn_Netiquette_Warnings, NULL},
+     {"generate_date_header", &Slrn_Generate_Date_Header, NULL},
+     {"generate_message_id", &Slrn_Generate_Message_Id, NULL},
+     {"use_recommended_msg_id", &Slrn_Use_Recom_Id, NULL},
+     {"pipe_type", &Slrn_Pipe_Type, NULL},
 #if SLRN_HAS_STRICT_FROM
-     {"generate_email_from", NULL},
+     {"generate_email_from", NULL, NULL},
 #else
-     {"generate_email_from", &Slrn_Generate_Email_From},
+     {"generate_email_from", &Slrn_Generate_Email_From, NULL},
 #endif
-     {"display_cursor_bar", &Slrn_Display_Cursor_Bar},
+     {"display_cursor_bar", &Slrn_Display_Cursor_Bar, NULL},
 #if SLRN_HAS_NNTP_SUPPORT
-     {"broken_xref", &Slrn_Broken_Xref},
-     {"force_authentication", &Slrn_Force_Authentication},
+     {"broken_xref", &Slrn_Broken_Xref, NULL},
+     {"force_authentication", &Slrn_Force_Authentication, NULL},
 #else
-     {"broken_xref", NULL},
-     {"force_authentication", NULL},
+     {"broken_xref", NULL, NULL},
+     {"force_authentication", NULL, NULL},
 #endif
-     {"color_by_score", &Slrn_Color_By_Score},
-     {"highlight_unread_subjects", &Slrn_Highlight_Unread},
-     {"highlight_urls", &Slrn_Highlight_Urls},
-     {"show_article", &Slrn_Startup_With_Article},
-     {"smart_quote", &Slrn_Smart_Quote},
-     {"no_backups", &Slrn_No_Backups},
-     {"no_autosave", &Slrn_No_Autosave},
-     {"beep", &SLtt_Ignore_Beep},
-     {"unsubscribe_new_groups", &Slrn_Unsubscribe_New_Groups},
-     {"check_new_groups", &Slrn_Check_New_Groups},
-     {"show_thread_subject", &Slrn_Show_Thread_Subject},
-     {"mouse", &Slrn_Use_Mouse},
-     {"query_next_group", &Slrn_Query_Next_Group},
-     {"query_next_article", &Slrn_Query_Next_Article},
-     {"confirm_actions", &Slrn_User_Wants_Confirmation},
-     {"cc_followup", &Slrn_Auto_CC_To_Poster},
-     {"use_tmpdir", &Slrn_Use_Tmpdir},
-     {"sorting_method", &Slrn_Sorting_Mode},
-     {"custom_sort_by_threads", &Slrn_Sort_By_Threads},
-     {"uncollapse_threads", &Slrn_Uncollapse_Threads},
-     {"read_active", &Slrn_List_Active_File},
-     {"drop_bogus_groups", &Slrn_Drop_Bogus_Groups},
-     {"prefer_head", &Slrn_Prefer_Head},
-     {"use_metamail", &Slrn_Use_Meta_Mail},
+     {"color_by_score", &Slrn_Color_By_Score, NULL},
+     {"highlight_unread_subjects", &Slrn_Highlight_Unread, NULL},
+     {"highlight_urls", &Slrn_Highlight_Urls, NULL},
+     {"show_article", &Slrn_Startup_With_Article, NULL},
+     {"smart_quote", &Slrn_Smart_Quote, NULL},
+     {"no_backups", &Slrn_No_Backups, NULL},
+     {"no_autosave", &Slrn_No_Autosave, NULL},
+     {"beep", &SLtt_Ignore_Beep, NULL},
+     {"unsubscribe_new_groups", &Slrn_Unsubscribe_New_Groups, NULL},
+     {"check_new_groups", &Slrn_Check_New_Groups, NULL},
+     {"show_thread_subject", &Slrn_Show_Thread_Subject, NULL},
+     {"mouse", &Slrn_Use_Mouse, NULL},
+     {"query_next_group", &Slrn_Query_Next_Group, NULL},
+     {"query_next_article", &Slrn_Query_Next_Article, NULL},
+     {"confirm_actions", &Slrn_User_Wants_Confirmation, NULL},
+     {"cc_followup", &Slrn_Auto_CC_To_Poster, NULL},
+     {"use_tmpdir", &Slrn_Use_Tmpdir, NULL},
+     {"sorting_method", &Slrn_Sorting_Mode, NULL},
+     {"custom_sort_by_threads", &Slrn_Sort_By_Threads, NULL},
+     {"uncollapse_threads", &Slrn_Uncollapse_Threads, NULL},
+     {"read_active", &Slrn_List_Active_File, NULL},
+     {"drop_bogus_groups", &Slrn_Drop_Bogus_Groups, NULL},
+     {"prefer_head", &Slrn_Prefer_Head, NULL},
+     {"use_metamail", &Slrn_Use_Meta_Mail, NULL},
 #if SLRN_HAS_UUDEVIEW
-     {"use_uudeview", &Slrn_Use_Uudeview},
+     {"use_uudeview", &Slrn_Use_Uudeview, NULL},
 #else
-     {"use_uudeview", NULL},
+     {"use_uudeview", NULL, NULL},
 #endif
-     {"lines_per_update", &Slrn_Reads_Per_Update},
-     {"min_high_score", &Slrn_High_Score_Min},
-     {"max_low_score", &Slrn_Low_Score_Max},
-     {"kill_score", &Slrn_Kill_Score_Max},
-     {"followup_strip_signature", &Slrn_Followup_Strip_Sig},
+     {"lines_per_update", &Slrn_Reads_Per_Update, NULL},
+     {"min_high_score", &Slrn_High_Score_Min, NULL},
+     {"max_low_score", &Slrn_Low_Score_Max, NULL},
+     {"kill_score", &Slrn_Kill_Score_Max, NULL},
+     {"followup_strip_signature", &Slrn_Followup_Strip_Sig, NULL},
 #if !defined(IBMPC_SYSTEM)
-     {"use_blink", &SLtt_Blink_Mode},
+     {"use_blink", &SLtt_Blink_Mode, NULL},
 #endif
-     {"warn_followup_to", &Slrn_Warn_Followup_To},
-     {"wrap_flags", &Slrn_Wrap_Mode},
-     {"wrap_method", &Slrn_Wrap_Method},
-     {"write_newsrc_flags", &Slrn_Write_Newsrc_Flags},
-     {"query_read_group_cutoff", &Slrn_Query_Group_Cutoff},
-     {"max_queued_groups", &Slrn_Max_Queued_Groups},
-     {"use_header_numbers", &Slrn_Use_Header_Numbers},
-     {"use_localtime", &Slrn_Use_Localtime},
+     {"warn_followup_to", &Slrn_Warn_Followup_To, NULL},
+     {"wrap_flags", &Slrn_Wrap_Mode, NULL},
+     {"wrap_method", &Slrn_Wrap_Method, NULL},
+     {"write_newsrc_flags", &Slrn_Write_Newsrc_Flags, NULL},
+     {"query_read_group_cutoff", &Slrn_Query_Group_Cutoff, NULL},
+     {"max_queued_groups", &Slrn_Max_Queued_Groups, NULL},
+     {"use_header_numbers", &Slrn_Use_Header_Numbers, NULL},
+     {"use_localtime", &Slrn_Use_Localtime, NULL},
 #if SLRN_HAS_SPOILERS
-     {"spoiler_char", &Slrn_Spoiler_Char},
-     {"spoiler_display_mode", &Slrn_Spoiler_Display_Mode},
+     {"spoiler_char", &Slrn_Spoiler_Char, NULL},
+     {"spoiler_display_mode", &Slrn_Spoiler_Display_Mode, NULL},
 #else
-     {"spoiler_display_mode", NULL},
-     {"spoiler_char", NULL},
+     {"spoiler_display_mode", NULL, NULL},
+     {"spoiler_char", NULL, NULL},
 #endif
-     {"fold_headers", &Slrn_Fold_Headers},
+     {"fold_headers", &Slrn_Fold_Headers, NULL},
 #if SLRN_HAS_GROUPLENS
-     {"use_grouplens", &Slrn_Use_Group_Lens},
-     {"grouplens_port", &Slrn_GroupLens_Port},
+     {"use_grouplens", &Slrn_Use_Group_Lens, NULL},
+     {"grouplens_port", &Slrn_GroupLens_Port, NULL},
 #else
-     {"use_grouplens", NULL},
+     {"use_grouplens", NULL, NULL},
 #endif
 #if 0
 #if SLRN_HAS_INEWS_SUPPORT
-     {"use_inews", &Slrn_Use_Inews},
+     {"use_inews", &Slrn_Use_Inews, NULL},
 #else
-     {"use_inews", NULL},
+     {"use_inews", NULL, NULL},
 #endif
 #endif
 #if SLRN_HAS_PULL_SUPPORT
-     {"use_slrnpull", &Slrn_Use_Pull_Post},
+     {"use_slrnpull", &Slrn_Use_Pull_Post, NULL},
 #else
-     {"use_slrnpull", NULL},
+     {"use_slrnpull", NULL, NULL},
 #endif
-     {"use_tilde", &Slrn_Use_Tildes},
+     {"use_tilde", &Slrn_Use_Tildes, NULL},
 #if SLRN_HAS_SPOOL_SUPPORT
-     {"spool_check_up_on_nov", &Slrn_Spool_Check_Up_On_Nov},
+     {"spool_check_up_on_nov", &Slrn_Spool_Check_Up_On_Nov, NULL},
 #else
-     {"spool_check_up_on_nov", NULL},
+     {"spool_check_up_on_nov", NULL, NULL},
 #endif
 #if 1 /* FIXME: These will be removed before 1.0 */
-     {"author_display", NULL},
-     {"display_author_realname", NULL},
-     {"display_score", NULL},
-     {"group_dsc_start_column", NULL},
-     {"process_verbatum_marks", &Slrn_Process_Verbatim_Marks},
-     {"prompt_next_group", NULL},
-     {"query_reconnect", NULL},
-     {"show_descriptions", NULL},
-     {"use_xgtitle", NULL},
-     {"use_mime", NULL},
+     {"author_display", NULL, NULL},
+     {"display_author_realname", NULL, NULL},
+     {"display_score", NULL, NULL},
+     {"group_dsc_start_column", NULL, NULL},
+     {"process_verbatum_marks", &Slrn_Process_Verbatim_Marks, NULL},
+     {"prompt_next_group", NULL, NULL},
+     {"query_reconnect", NULL, NULL},
+     {"show_descriptions", NULL, NULL},
+     {"use_xgtitle", NULL, NULL},
+     {"use_mime", NULL, NULL},
 #endif
-     {NULL, NULL}
+     {NULL, NULL, NULL}
 };
 
 /*}}}*/
 
 Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 {
-     {"failed_posts_file", &Slrn_Failed_Post_Filename},
+     {"failed_posts_file", &Slrn_Failed_Post_Filename, NULL},
 #if ! SLRN_HAS_STRICT_FROM
-     {"hostname", &Slrn_User_Info.hostname},
-     {"realname", &Slrn_User_Info.realname},
-     {"username", &Slrn_User_Info.username},
+     {"hostname", &Slrn_User_Info.hostname, NULL},
+     {"realname", &Slrn_User_Info.realname, NULL},
+     {"username", &Slrn_User_Info.username, NULL},
 #else
-     {"hostname", NULL},
-     {"realname", NULL},
-     {"username", NULL},
+     {"hostname", NULL, NULL},
+     {"realname", NULL, NULL},
+     {"username", NULL, NULL},
 #endif
 #if SLRN_HAS_CANLOCK
-     {"cansecret_file", &Slrn_User_Info.cancelsecret},
+     {"cansecret_file", &Slrn_User_Info.cancelsecret, NULL},
 #else
-     {"cansecret_file", NULL},
+     {"cansecret_file", NULL, NULL},
 #endif
-     {"art_help_line", &Slrn_Art_Help_Line},
-     {"art_status_line", &Slrn_Art_Status_Line},
-     {"header_help_line", &Slrn_Header_Help_Line},
-     {"header_status_line", &Slrn_Header_Status_Line},
-     {"group_help_line", &Slrn_Group_Help_Line},
-     {"quote_string", &Slrn_Quote_String},
-     {"replyto", &Slrn_User_Info.replyto},
-     {"organization", &Slrn_User_Info.org},
-     {"followup", &Slrn_User_Info.followup_string}, /* FIXME: obsolete */
-     {"followup_string", &Slrn_User_Info.followup_string},
-     {"followupto_string", &Slrn_User_Info.followupto_string},
-     {"reply_string", &Slrn_User_Info.reply_string},
-     {"cc_followup_string", NULL}, /* FIXME: obsolete */
-     {"cc_post_string", &Slrn_CC_Post_Message},
-     {"followup_date_format", &Slrn_Followup_Date_Format},
-     {"overview_date_format", &Slrn_Overview_Date_Format},
-     {"editor_command", &Slrn_Editor},
-     {"post_editor_command", &Slrn_Editor_Post},
-     {"score_editor_command", &Slrn_Editor_Score},
-     {"mail_editor_command", &Slrn_Editor_Mail},
-     {"non_Xbrowser", &Slrn_NonX_Browser},
-     {"Xbrowser", &Slrn_X_Browser},
-     {"save_posts", &Slrn_Save_Posts_File},
-     {"save_replies", &Slrn_Save_Replies_File},
-     {"save_directory", &Slrn_Save_Directory},
-     {"postpone_directory", &Slrn_Postpone_Dir},
-     {"signature", &Slrn_User_Info.signature},
-     {"signoff_string", &Slrn_Signoff_String},
-     {"custom_headers", &Slrn_Post_Custom_Headers},
-     {"followup_custom_headers", &Slrn_Followup_Custom_Headers},
-     {"reply_custom_headers", &Slrn_Reply_Custom_Headers},
-     {"supersedes_custom_headers", &Slrn_Supersedes_Custom_Headers},
+     {"art_help_line", &Slrn_Art_Help_Line, NULL},
+     {"art_status_line", &Slrn_Art_Status_Line, NULL},
+     {"header_help_line", &Slrn_Header_Help_Line, NULL},
+     {"header_status_line", &Slrn_Header_Status_Line, NULL},
+     {"group_help_line", &Slrn_Group_Help_Line, NULL},
+     {"quote_string", &Slrn_Quote_String, NULL},
+     {"replyto", &Slrn_User_Info.replyto, NULL},
+     {"organization", &Slrn_User_Info.org, NULL},
+     {"followup", &Slrn_User_Info.followup_string, NULL}, /* FIXME: obsolete */
+     {"followup_string", &Slrn_User_Info.followup_string, NULL},
+     {"followupto_string", &Slrn_User_Info.followupto_string, NULL},
+     {"reply_string", &Slrn_User_Info.reply_string, NULL},
+     {"cc_followup_string", NULL, NULL}, /* FIXME: obsolete */
+     {"cc_post_string", &Slrn_CC_Post_Message, NULL},
+     {"followup_date_format", &Slrn_Followup_Date_Format, NULL},
+     {"overview_date_format", &Slrn_Overview_Date_Format, NULL},
+     {"editor_command", &Slrn_Editor, NULL},
+     {"post_editor_command", &Slrn_Editor_Post, NULL},
+     {"score_editor_command", &Slrn_Editor_Score, NULL},
+     {"mail_editor_command", &Slrn_Editor_Mail, NULL},
+     {"non_Xbrowser", &Slrn_NonX_Browser, NULL},
+     {"Xbrowser", &Slrn_X_Browser, NULL},
+     {"save_posts", &Slrn_Save_Posts_File, NULL},
+     {"save_replies", &Slrn_Save_Replies_File, NULL},
+     {"save_directory", &Slrn_Save_Directory, NULL},
+     {"postpone_directory", &Slrn_Postpone_Dir, NULL},
+     {"signature", &Slrn_User_Info.signature, NULL},
+     {"signoff_string", &Slrn_Signoff_String, NULL},
+     {"custom_headers", &Slrn_Post_Custom_Headers, NULL},
+     {"followup_custom_headers", &Slrn_Followup_Custom_Headers, NULL},
+     {"reply_custom_headers", &Slrn_Reply_Custom_Headers, NULL},
+     {"supersedes_custom_headers", &Slrn_Supersedes_Custom_Headers, NULL},
 #if SLRN_HAS_GROUPLENS
-     {"grouplens_pseudoname", &Slrn_GroupLens_Pseudoname},
-     {"grouplens_host", &Slrn_GroupLens_Host},
+     {"grouplens_pseudoname", &Slrn_GroupLens_Pseudoname, NULL},
+     {"grouplens_host", &Slrn_GroupLens_Host, NULL},
 #else
-     {"grouplens_pseudoname", NULL},
-     {"grouplens_host", NULL},
+     {"grouplens_pseudoname", NULL, NULL},
+     {"grouplens_host", NULL, NULL},
 #endif
      {"decode_directory", 
 #if SLRN_HAS_DECODE
@@ -731,7 +729,7 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 #else
 	  NULL
 #endif
-     },
+     , NULL},
    
      {"inews_program",
 #if SLRN_HAS_INEWS_SUPPORT && SLRN_HAS_USER_INEWS
@@ -739,18 +737,18 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 #else
 	  NULL
 #endif
-     },
+     , NULL},
      
-     {"metamail_command", &Slrn_MetaMail_Cmd},
+     {"metamail_command", &Slrn_MetaMail_Cmd, NULL},
 #if 0
-     {"charset", &Slrn_Charset},
+     {"charset", &Slrn_Charset, NULL},
 #else
-     {"charset", NULL},
+     {"charset", NULL, NULL},
 #endif
-   {"fallback_charset", &Slrn_Fallback_Input_Charset},
+   {"fallback_charset", &Slrn_Fallback_Input_Charset, NULL},
 
 #ifndef VMS
-     {"sendmail_command", &Slrn_SendMail_Command},
+     {"sendmail_command", &Slrn_SendMail_Command, NULL},
 #endif
      {"spool_inn_root", 
 #if SLRN_HAS_SPOOL_SUPPORT
@@ -758,77 +756,90 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 #else
      NULL
 #endif
-     },
+     , NULL},
      {"spool_root",
 #if SLRN_HAS_SPOOL_SUPPORT
      &Slrn_Spool_Root
 #else
      NULL
 #endif
-     },
+     , NULL},
      {"spool_nov_root",
 #if SLRN_HAS_SPOOL_SUPPORT
      &Slrn_Nov_Root
 #else
      NULL
 #endif
-     },
+     , NULL},
      {"spool_nov_file",
 #if SLRN_HAS_SPOOL_SUPPORT
      &Slrn_Nov_File
 #else
      NULL
 #endif
-     },
+     , NULL},
      {"spool_active_file",
 #if SLRN_HAS_SPOOL_SUPPORT
      &Slrn_Active_File
 #else
      NULL
 #endif
-     },
+     , NULL},
      {"spool_activetimes_file",
 #if SLRN_HAS_SPOOL_SUPPORT
      &Slrn_ActiveTimes_File
 #else
      NULL
 #endif
-     },
+     , NULL},
      {"spool_newsgroups_file",
 #if SLRN_HAS_SPOOL_SUPPORT
      &Slrn_Newsgroups_File
 #else
      NULL
 #endif
-     },
+     , NULL},
      {"spool_overviewfmt_file",
 #if SLRN_HAS_SPOOL_SUPPORT
      &Slrn_Overviewfmt_File
 #else
      NULL
 #endif
-     },
-     {"macro_directory",
-#if SLRN_HAS_SLANG
-	&Slrn_Macro_Dir
-#else
-	  NULL
-#endif
-     },
-     {"server_object", &Server_Object},
-     {"post_object", &Post_Object},
-     {"printer_name", &Slrn_Printer_Name},
-     {"top_status_line", &Slrn_Top_Status_Line},
-     {"group_status_line", &Slrn_Group_Status_Line},
-     {"scorefile", &Slrn_Score_File},
-     {"custom_sort_order", &Slrn_Sort_Order},
+     , NULL},
+     {"macro_directory", &Slrn_Macro_Dir, NULL},
+     {"server_object", &Server_Object, NULL},
+     {"post_object", &Post_Object, NULL},
+     {"printer_name", &Slrn_Printer_Name, NULL},
+     {"top_status_line", &Slrn_Top_Status_Line, NULL},
+     {"group_status_line", &Slrn_Group_Status_Line, NULL},
+     {"scorefile", &Slrn_Score_File, NULL},
+     {"custom_sort_order", &Slrn_Sort_Order, NULL},
 #if 1 /* FIXME: These will be removed before 1.0 */
-     {"mime_charset", NULL},
+     {"mime_charset", NULL, NULL},
 #endif
-     {NULL, NULL}
+     {NULL, NULL, NULL}
 };
 
 /*}}}*/
+
+static int do_set_string_value (Slrn_Str_Var_Type *sp, char *value)
+{
+   char *ss;
+   
+   if (NULL != sp->get_set_func)
+     return (*sp->get_set_func)(sp, 1, &value);
+   
+   if (sp->svalp == NULL)
+     return 0;
+
+   ss = SLmake_string (value);
+   if (ss == NULL)
+     exit_malloc_error ();
+
+   slrn_free (*sp->svalp);
+   *sp->svalp = ss;
+   return 0;
+}
 
 int slrn_set_string_variable (char *name, char *value) /*{{{*/
 {
@@ -863,7 +874,7 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 		    }
 	       }
 	     
-	     if (sp->svaluep == NULL)
+	     if ((sp->svalp == NULL) && (sp->get_set_func == NULL))
 	       {
 		  if (This_File != NULL)
 		    slrn_message (_("%s: In this version of slrn, setting variable\n"
@@ -873,9 +884,6 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 		  return 0;
 	       }
 	     
-	     ss = *sp->svaluep;
-		  
-	     slrn_free (ss);
 	     ss=NULL;
 	     if (slrn_string_nonascii(value))
 	       {
@@ -891,19 +899,21 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 				 This_File);
 		       return -1;
 		    }
-		  if ( slrn_test_and_convert_string(value, &ss, Slrn_Display_Charset, Slrn_Config_Charset) == -1)
+		  if (-1 == slrn_test_and_convert_string(value, &ss, Slrn_Display_Charset, Slrn_Config_Charset))
 		    {
 		       slrn_message (_("%s: charset convertion error\n"), This_File);
 		       return -1;
 		    }
+		  if (-1 == do_set_string_value (sp, ss))
+		    {
+		       slrn_free (ss);
+		       return -1;
+		    }
+		  slrn_free (ss);
+		  continue;
 	       }
-	     if (ss == NULL)
-	       {
-		  if (NULL == (ss = SLmake_string (value)))
-		    exit_malloc_error ();
-	       }
-	     *sp->svaluep = ss;
-	     return 0;
+
+	     return do_set_string_value (sp, value);
 	  }
 	sp++;
      }
@@ -956,7 +966,7 @@ int slrn_set_integer_variable (char *name, int value) /*{{{*/
 		       Slrn_Saw_Obsolete = 1;
 		    }
 	       } /*}}}*/
-	     if (ip->valuep == NULL)
+	     if ((ip->ivalp == NULL) && (ip->get_set_func == NULL))
 	       {
 		  if (This_File != NULL)
 		    slrn_message (_("%s: In this version of slrn, setting variable\n"
@@ -965,7 +975,10 @@ int slrn_set_integer_variable (char *name, int value) /*{{{*/
 		  Slrn_Saw_Warning = 1;
 		  return 0;
 	       }
-	     *ip->valuep = value;
+	     if (ip->get_set_func != NULL)
+	       return (*ip->get_set_func) (ip, 1, &value);
+
+	     *ip->ivalp = value;
 	     return 0;
 	  }
 	ip++;
@@ -975,7 +988,7 @@ int slrn_set_integer_variable (char *name, int value) /*{{{*/
 
 /*}}}*/
 
-int slrn_get_variable_value (char *name, int *type, char ***sval, int **ival) /*{{{*/
+int slrn_get_variable_value (char *name, SLtype *type, char **sval, int *ival) /*{{{*/
 {
    Slrn_Str_Var_Type *sp;
    Slrn_Int_Var_Type *ip;
@@ -985,8 +998,18 @@ int slrn_get_variable_value (char *name, int *type, char ***sval, int **ival) /*
      {
 	if (!strcmp (sp->what, name))
 	  {
-	     *sval = sp->svaluep;
-	     *type = STRING_TYPE;
+	     char *s;
+
+	     *type = SLANG_STRING_TYPE;
+	     if (sp->get_set_func != NULL)
+	       return (*sp->get_set_func)(sp, 0, sval);
+	     
+	     if ((sp->svalp == NULL) || (NULL == (s = *sp->svalp)))
+	       s = "";
+
+	     if (NULL == (*sval = SLmake_string (s)))
+	       return -1;
+
 	     return 0;
 	  }
 	sp++;
@@ -997,13 +1020,20 @@ int slrn_get_variable_value (char *name, int *type, char ***sval, int **ival) /*
      {
 	if (!strcmp (ip->what, name))
 	  {
-	     *ival = ip->valuep;
-	     *type = INT_TYPE;
+	     *type = SLANG_INT_TYPE;
+	     if (ip->get_set_func != NULL)
+	       return (*ip->get_set_func) (ip, 0, ival);
+
+	     if (ip->ivalp == NULL)
+	       *ival = 0;
+	     else
+	       *ival = *ip->ivalp;
 	     return 0;
 	  }
 	ip++;
      }
-   
+
+   SLang_verror (SL_INVALID_PARM, _("%s is not a valid variable name."), name);
    return -1;
 }
 
@@ -1666,9 +1696,7 @@ void slrn_startup_initialize (void) /*{{{*/
    Color_Handle_Type *h;
    int i;
 
-#if SLRN_HAS_SLANG
    Slrn_Macro_Dir = slrn_safe_strmalloc (SLRN_SLANG_DIR);
-#endif
 
    slrn_init_modes ();
    SLang_init_case_tables ();
@@ -1825,16 +1853,11 @@ static int include_file_fun (int argc, SLcmd_Cmd_Table_Type *table)
      
 static int interpret_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 {
-#if SLRN_HAS_SLANG
    char *file = table->string_args [1];
    
    (void) argc;
    if (Slrn_Use_Slang == 0) return 0;
    return slrn_eval_slang_file (file);
-#else
-   (void) argc; (void) table;
-   return 0;
-#endif
 }
 
 /*}}}*/

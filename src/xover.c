@@ -485,6 +485,7 @@ int slrn_read_overview_fmt (void) /*{{{*/
 	     if (NULL == (new_entry = (Overview_Fmt_Type*)
 			  slrn_malloc (sizeof (Overview_Fmt_Type), 1, 0)))
 	       break;
+
 	     if (NULL == (new_entry->name = slrn_strmalloc (line, 0)))
 	       {
 		  slrn_free ((char*)new_entry);

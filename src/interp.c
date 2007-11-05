@@ -24,9 +24,6 @@
 
 #include <stdio.h>
 
-/* rest of file inside this #if statement */
-#if SLRN_HAS_SLANG
-
 /*{{{ Include files */
 
 #if HAVE_STDLIB_H
@@ -315,29 +312,20 @@ static void set_integer_variable (char *s1, int *val) /*{{{*/
 
 static void get_variable_value (char *name) /*{{{*/
 {
-   char **s;
-   int *ip;
-   int type;
+   char *s;
+   int i;
+   SLtype type;
    
-   if (-1 == slrn_get_variable_value (name, &type, &s, &ip))
+   if (-1 == slrn_get_variable_value (name, &type, &s, &i))
+     return;
+
+   if (type == SLANG_STRING_TYPE)
      {
-	slrn_error (_("%s is not a valid variable name."), name);
+	(void) SLang_push_malloced_string (s);
 	return;
      }
-   
-   if (type == STRING_TYPE)
-     {
-	char *str;
-	if ((s == NULL) || (*s == NULL)) str = "";
-	else str = *s;
-	SLang_push_string (str);
-     }
-   else if (type == INT_TYPE)
-     {
-	int i;
-	if (ip == NULL) i = 0; else i = *ip;
-	SLang_push_integer (i);
-     }
+
+   (void) SLang_push_integer (i);
 }
 
 /*}}}*/
@@ -356,79 +344,8 @@ static char *interp_setlocale (int *category, char *locale) /*{{{*/
 
 /*}}}*/
 
-static void set_utf8_conversion_table (void) /*{{{*/
-{
-#if SLANG_VERSION < 10400
-   slrn_error (_("To use this feature, please update s-lang and recompile slrn."));
-#else
-# if 0
-   SLang_Array_Type *at;
-   int rows;
-   
-   if (-1 == SLang_pop_array_of_type (&at, SLANG_INT_TYPE))
-     {
-	slrn_error (_("Array of integer expected."));
-	return;
-     }
-   
-   if ((at->num_dims != 2) || (at->dims[0] != 2))
-     {
-	slrn_error (_("Two-dimensional array with two columns expected."));
-	goto free_and_return;
-     }
-   
-   slrn_free (Slrn_Utf8_Table);
-   Slrn_Utf8_Table = NULL;
-   
-   if ((rows = at->dims[1]) == 0)
-     goto free_and_return; /* no data, so set default (iso-8859-1) */
-   
-   if (NULL == (Slrn_Utf8_Table = slrn_malloc (65536, 1, 0)))
-     {
-	slrn_error (_("Could not get memory for conversion table."));
-	goto free_and_return;
-     }
-   
-   while (rows-- != 0)
-     {
-	int dims[2];
-	int unicode, local;
-	
-	dims[0] = 0;
-	dims[1] = rows;
-	(void) SLang_get_array_element (at, dims, &unicode);
-	
-	if (((unicode != 0) && (unicode < 128)) || (unicode > 65535))
-	  {
-	     slrn_error (_("Unicode value in row %d out of range."), rows);
-	     goto free_and_return;
-	  }
-	
-	dims[0] = 1;
-	(void) SLang_get_array_element (at, dims, &local);
-	
-	if ((local < 1) || (local > 255))
-	  {
-	     slrn_error (_("Local charset value in row %d out of range."),
-			 rows);
-	     goto free_and_return;
-	  }
-	
-	Slrn_Utf8_Table[unicode] = (char) local;
-     }
-   
-   free_and_return:
-   SLang_free_array (at);
-# endif
-#endif /* SLANG_VERSION */
-}
-/*}}}*/
-
 static void generic_set_regexp (SLRegexp_Type **regexp_table) /*{{{*/
 {
-#if SLANG_VERSION < 10400
-   slrn_error (_("To use this feature, please update s-lang and recompile slrn."));
-#else
    SLang_Array_Type *at;
    SLcmd_Cmd_Table_Type cmd_table;
    int argc, i;
@@ -456,11 +373,8 @@ static void generic_set_regexp (SLRegexp_Type **regexp_table) /*{{{*/
    
    if (NULL == (cmd_table.string_args = (char**) slrn_malloc
 		((argc+1)*sizeof(char*), 0, 0)))
-     {
-	slrn_error (_("Failed to allocate memory."));
-	goto free_and_return;
-     }
-   
+     goto free_and_return;
+
    for (i = 0; i < argc; i++)
      {
 	(void) SLang_get_array_element (at, &i, &(cmd_table.string_args[i+1]));
@@ -472,7 +386,6 @@ static void generic_set_regexp (SLRegexp_Type **regexp_table) /*{{{*/
    
    free_and_return:
    SLang_free_array (at);
-#endif   
 }/*}}}*/
 
 static void set_ignore_quotes (void) /*{{{*/
@@ -1596,7 +1509,6 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("set_strip_re_regexp", set_strip_re_regexp, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("set_strip_sig_regexp", set_strip_sig_regexp, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("set_strip_was_regexp", set_strip_was_regexp, SLANG_VOID_TYPE),
-   MAKE_INTRINSIC_0("set_utf8_conversion_table", set_utf8_conversion_table, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("get_group_order", slrn_intr_get_group_order, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("set_group_order", slrn_intr_set_group_order, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_IS("setlocale", interp_setlocale, SLANG_STRING_TYPE),
@@ -1663,10 +1575,7 @@ int slrn_init_slang (void) /*{{{*/
        || (-1 == SLang_init_posix_io ())
        || (-1 == SLang_init_ospath ())
        || (-1 == SLang_init_slassoc ())
-#if SLANG_VERSION >= 10400
        || (-1 == SLang_init_import ()) /* enable dynamic linking */
-#endif
-       
        /* Now add intrinsics for this application */
        || (-1 == SLadd_intrin_fun_table(Slrn_Intrinsics, NULL))
        || (-1 == SLadd_intrin_var_table(Intrin_Vars, NULL)))
@@ -1692,5 +1601,3 @@ int slrn_reset_slang (void)
    close_log_file ();
    return 0;
 }
-
-#endif

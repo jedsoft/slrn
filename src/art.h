@@ -132,7 +132,7 @@ typedef struct Slrn_Header_Type
    unsigned int tag_number;
    Slrn_Header_Line_Type *add_hdrs;
 #define MAX_TREE_SIZE 256
-   char *tree_ptr;
+   char *tree_ptr;		       /* malloced -- could be NULL */
 #if SLRN_HAS_GROUPLENS
    int gl_rating;
    int gl_pred;
@@ -211,10 +211,8 @@ extern Slrn_Article_Type *Slrn_Current_Article;
 extern Slrn_Header_Type *slrn_find_header_with_msgid (char *);
 extern int slrn_set_visible_headers (char *);
 
-#if SLRN_HAS_SLANG
 extern char *Slrn_Visible_Headers_String;
 extern int slrn_is_hidden_headers_mode (void);
-#endif
 
 extern SLRegexp_Type *Slrn_Ignore_Quote_Regexp[];
 extern SLRegexp_Type *Slrn_Strip_Re_Regexp[];

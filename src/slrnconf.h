@@ -9,61 +9,6 @@
  * See also slrnfeat.h for the rest of slrn features.
  */
 
-/* define if you want slrnpull support */
-#define SLRN_HAS_PULL_SUPPORT		1
-
-/* define if you want NNTP support */
-#define SLRN_HAS_NNTP_SUPPORT		1
-
-/* define if you want support for reading from a news spool */
-#define SLRN_HAS_SPOOL_SUPPORT		1
-
-/* define if you want support for posting via inews */
-#define SLRN_HAS_INEWS_SUPPORT		1
-
-/* define if you want to force the use of inews */
-#define SLRN_FORCE_INEWS		0
-
-/* define if you want to disallow custom From headers
- * Works only on unix and VMS! */
-#define SLRN_HAS_STRICT_FROM 0
-
-/* define if you want SSL support */
-#define SLRN_HAS_SSL_SUPPORT	0
-
-/* define if you want SSL support using GNU TLS */
-#define SLRN_HAS_GNUTLS_SUPPORT		0
-
-/* define if you want uudeview support */
-#define SLRN_HAS_UUDEVIEW	0
-
-/* define if you want cancel lock support using libcanlock */
-#define SLRN_HAS_CANLOCK  0
-
-/* define if you want slang interpreter support */
-#define SLRN_HAS_SLANG			1
-
-/* define if you want slrn to map between ISO-Latin and native charsets */
-#define SLRN_HAS_CHARACTER_MAP		1
-
-/* define if you want spoiler support */
-#define SLRN_HAS_SPOILERS		1
-
-/* define if you want emphasized text support */
-#define SLRN_HAS_EMPHASIZED_TEXT	1
-
-/* define if you want grouplens (R.I.P.) support */
-#define SLRN_HAS_GROUPLENS		0
-
-/* define if you want slrn to generate Message-IDs */
-#define SLRN_HAS_GEN_MSGID		1
-
-/* define to make slrn cache Message-IDs to eliminate cross-posts */
-#define SLRN_HAS_MSGID_CACHE		0
-
-/* define if slrn should use In-Reply-To if no References are available */
-#define SLRN_HAS_FAKE_REFS		1
-
 /* hostname of a default NNTP server to use */
 /* #define NNTPSERVER_NAME	"my.server.name" */
 

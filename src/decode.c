@@ -40,6 +40,7 @@
 #include <slang.h>
 
 #define MAX_ARTICLE_LINE_LEN 4096
+#include "jdmacros.h"
 #include "decode.h"
 #include "util.h"
 #include "snprintf.h"
