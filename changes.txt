@@ -81,7 +81,11 @@ Changes since 0.9.8.8pl1
 37. src/win32/: new directory for win32 port
 38. src/Makefile.g32: rewrote
 39. autoconf/configure.ac: SLRN_LIB_DIR changed from lib/slrn to
-    share/slrn
+    share/slrn.
+40. src/startup.c: Rewrote the character-set specific code to avoid a
+    SEGV.
+41. src/snprintf.h: include jdmacros.h to ensure ATTRIBUTE_PRINTF is
+    defined (Joerg Sommer).
 
 {{{ Previous Versions 
 

@@ -22,6 +22,8 @@
 #define _SLRN_SNPRINTF_H
 #include <stdarg.h>
 
+#include "jdmacros.h"
+
 extern char *slrn_strdup_strcat (const char*, ...);
 extern char *slrn_strdup_printf (const char*, ...) ATTRIBUTE_PRINTF(1,2);
 extern char *slrn_strdup_vprintf (const char*, va_list);

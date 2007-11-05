@@ -91,7 +91,6 @@ static int set_posting_host (int, SLcmd_Cmd_Table_Type *);
 /*{{{ Static Global Variables */
 
 static int This_Line_Num;	       /* current line number in startup file */
-static int Saw_Charset;
 static char *This_File;
 static char *This_Line;		       /* line being parsed */
 
@@ -465,66 +464,49 @@ static int set_group_format_fun (int argc, SLcmd_Cmd_Table_Type *table)
    return slrn_set_group_format (table->int_args[1], table->string_args[2]);
 }
 
+typedef struct
+{
+   char *name;
+   char **charsetp;
+}
+Charset_Table_Type;
+
+static Charset_Table_Type Charset_Table[] =
+{
+   {"display", &Slrn_Display_Charset},
+   {"config", &Slrn_Config_Charset},
+   {"outgoing", &Slrn_Outgoing_Charset},
+   {"editor", &Slrn_Editor_Charset},
+   {NULL, NULL}
+};
+
+
+  
 static int set_charset_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
-   char *type, *value;
+   char *name, *value;
+   Charset_Table_Type *tbl = Charset_Table;
 
    (void) argc;
    
-   type = table->string_args[1];
+   name = table->string_args[1];
    value = table->string_args[2];
-
-#if SLANG_VERSION < 20000
-   /* we cannot use utf-8 */
-   if (!slrn_case_strcmp(value, "utf-8"))
-     slrn_exit_error(_("For UTF-8 support, please update s-lang to 2.0 or higher and recompile slrn."));
-#endif
    
-   if (0 == slrn_case_strcmp(type, "Display"))
+   while (tbl->name != NULL)
      {
-	if (Slrn_Display_Charset != NULL)
-	     slrn_free(Slrn_Display_Charset);
-	if ((Slrn_Config_Charset != NULL) && (0 == slrn_case_strcmp(Slrn_Config_Charset, value)))
+	if (0 == slrn_case_strcmp(name, tbl->name))
 	  {
-	     Slrn_Display_Charset = Slrn_Config_Charset;
-	     Slrn_Config_Charset = NULL;
+	     if (*tbl->charsetp != NULL)
+	       slrn_free (*tbl->charsetp);
+	     
+	     if (NULL == (*tbl->charsetp = SLmake_string (value)))
+	       exit_malloc_error ();
 	     return 0;
 	  }
-	if (NULL == (Slrn_Display_Charset = SLmake_string (value)))
-	     exit_malloc_error ();
-	return 0;
+	tbl++;
      }
-   if (0 == slrn_case_strcmp(type, "Config"))
-     {
-	Saw_Charset=1;
-	if (Slrn_Config_Charset != NULL)
-	     slrn_free(Slrn_Config_Charset);
-	if ((Slrn_Display_Charset != NULL) && (0 == slrn_case_strcmp(Slrn_Display_Charset, value)))
-	  {
-	     Slrn_Config_Charset = NULL;
-	     return 0;
-	  }
-	if (NULL == (Slrn_Config_Charset = SLmake_string (value)))
-	     exit_malloc_error ();
-	return 0;
-     }
-   if (0 == slrn_case_strcmp(type, "Outgoing"))
-     {
-	if (Slrn_Outgoing_Charset != NULL)
-	     slrn_free(Slrn_Outgoing_Charset);
-	if (NULL == (Slrn_Outgoing_Charset = SLmake_string (value)))
-	     exit_malloc_error ();
-	return 0;
-     }
-   if (0 == slrn_case_strcmp(type, "Editor"))
-     {
-	if (Slrn_Editor_Charset != NULL)
-	     slrn_free(Slrn_Editor_Charset);
-	if (NULL == (Slrn_Editor_Charset = SLmake_string (value)))
-	     exit_malloc_error ();
-	return 0;
-     }
-    exit_unknown_object ();
+
+   exit_unknown_object ();
    return -1;
 }
 
@@ -887,13 +869,13 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 	     ss=NULL;
 	     if (slrn_string_nonascii(value))
 	       {
-		  if (!Saw_Charset)
+		  if (Slrn_Config_Charset == NULL)
 		    {
 		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset config CONFIG_CHARSET\"\n"),
 				 This_File);
 		       return -1;
 		    }
-		  if (Slrn_Display_Charset == 0)
+		  if (Slrn_Display_Charset == NULL)
 		    {
 		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset display DISPLAY_CHARSET\"\n"),
 				 This_File);
@@ -910,9 +892,8 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 		       return -1;
 		    }
 		  slrn_free (ss);
-		  continue;
+		  return 0;
 	       }
-
 	     return do_set_string_value (sp, value);
 	  }
 	sp++;
@@ -1761,7 +1742,6 @@ int slrn_read_startup_file (char *name) /*{{{*/
    char line [512];
    SLprep_Type *pt;
    int save_this_line_num;
-   int save_saw_charset;
    char *save_this_file;
    char *save_this_line;
    char *save_config_charset;
@@ -1788,13 +1768,11 @@ int slrn_read_startup_file (char *name) /*{{{*/
    save_this_file = This_File;
    save_this_line = This_Line;
    save_this_line_num = This_Line_Num;
-   save_saw_charset = Saw_Charset;
    save_config_charset = Slrn_Config_Charset;
    
    This_File = name;
    This_Line = line;
    This_Line_Num = 0;
-   Saw_Charset = 0;
    Slrn_Config_Charset=NULL;
 
    Slrn_Cmd_Table.table = Slrn_Startup_File_Cmds;
@@ -1827,7 +1805,6 @@ int slrn_read_startup_file (char *name) /*{{{*/
    This_File = save_this_file;
    This_Line = save_this_line;
    This_Line_Num = save_this_line_num;
-   Saw_Charset = save_saw_charset;
    slrn_free(Slrn_Config_Charset);
    Slrn_Config_Charset=save_config_charset;
    return 0;

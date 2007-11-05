@@ -76,7 +76,7 @@ UP_DOC_FILES = COPYRIGHT COPYING README changes.txt
 MAN_FILES = ../doc/slrn.1
 SLANG_FILES = `cat ../macros/INSTFILES`
 SLRNPULL_DOCS = ../slrnpull/*
-CONF_FILES = ../lib/slrn.conf
+CONF_FILES = #../lib/slrn.conf
 
 #----------------------------------------------------------------------------
 # Nothing below here should require changing.
