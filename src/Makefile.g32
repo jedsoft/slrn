@@ -14,9 +14,9 @@ SLSH = slsh
 # BUILD AND INSTALL SLANG FIRST!!!!  If you do not have it, get it from
 # <http://www.jedsoft.org/slang/>.  Note: Also build and INSTALL slsh.
 #-----------------------------------------------------------------------------
-SLANGINC = /dir/containing/slang/dot/h                 #<--- edit this
-SLANGLIB = /dir/containing/lib/slang                   #<--- edit this
-SLRN_CONF_DIR = /specify/a/conf/dir                    #<--- edit this
+SLANGINC = /dir/containing/slang/dot/h#                 <--- edit this
+SLANGLIB = /dir/containing/lib/slang#                   <--- edit this
+SLRN_CONF_DIR = /specify/a/conf/dir#                    <--- edit this
 SLANG_INC = -I$(SLANGINC)
 SLANG_LIB = -L$(SLANGLIB) -lslang
 #-----------------------------------------------------------------------------
@@ -27,8 +27,8 @@ OBJDIR = gw32objs#
 #-----------------------------------------------------------------------------
 #   Misc Programs
 #-----------------------------------------------------------------------------
-CP = cp  # copy                                       #<--- edit this
-RM = del # rm                                         #<--- edit this
+CP = cp  # copy                                       <--- edit this
+RM = del # rm                                         <--- edit this
 
 #----------------------------------------------------------------------------
 #   Nothing below here should require changing.
