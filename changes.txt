@@ -86,6 +86,11 @@ Changes since 0.9.8.8pl1
     SEGV.
 41. src/snprintf.h: include jdmacros.h to ensure ATTRIBUTE_PRINTF is
     defined (Joerg Sommer).
+42. src/startup.c,interp.c: Removed slang-specific variables from
+    compile-time tables to run-time functions because of windows DLL
+    limitations.
+43. Modified src/Makefile.g32 to compile with the mingw32
+    cross-compiler.
 
 {{{ Previous Versions 
 

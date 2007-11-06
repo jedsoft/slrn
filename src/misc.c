@@ -66,7 +66,8 @@
 #  include <winsock.h>
 # else
 #  if defined(__WIN32__)
-#   define Win32_Winsock
+/* #   define Win32_Winsock */
+#   define __USE_W32_SOCKETS
 #   include <windows.h>
 #   ifdef __MINGW32__
 #    include <process.h>

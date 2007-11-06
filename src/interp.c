@@ -1539,8 +1539,6 @@ static SLang_Intrin_Var_Type Intrin_Vars [] = /*{{{*/
    MAKE_VARIABLE("HEADER_LOW_SCORE", &Interp_Header_Low_Score, SLANG_INT_TYPE, 1),
    MAKE_VARIABLE("HEADER_READ", &Interp_Header_Read, SLANG_INT_TYPE, 1),
    MAKE_VARIABLE("HEADER_TAGGED", &Interp_Header_Tagged, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("SCREEN_HEIGHT", &SLtt_Screen_Rows, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("SCREEN_WIDTH", &SLtt_Screen_Cols, SLANG_INT_TYPE, 1),
    MAKE_VARIABLE("_slrn_version", &Slrn_Version, SLANG_INT_TYPE, 1),
    MAKE_VARIABLE("_slrn_version_string", &Slrn_Version_String, SLANG_STRING_TYPE, 1),
 #ifdef HAVE_SETLOCALE
@@ -1564,6 +1562,17 @@ static int interp_system (char *s) /*{{{*/
 
 /*}}}*/
 
+static int add_intrinsic_variables (void)
+{
+   /* This is necessary because of the windows DLL limitations */
+   if ((-1 == SLadd_intrinsic_variable ("SCREEN_HEIGHT", (VOID_STAR)&SLtt_Screen_Rows, SLANG_INT_TYPE, 1))
+       || ((-1 == SLadd_intrinsic_variable ("SCREEN_WIDTH", (VOID_STAR)&SLtt_Screen_Cols, SLANG_INT_TYPE, 1)))
+      )
+     return -1;
+
+   return 0;
+}
+
 int slrn_init_slang (void) /*{{{*/
 {
    Slrn_Use_Slang = 0;
@@ -1578,9 +1587,10 @@ int slrn_init_slang (void) /*{{{*/
        || (-1 == SLang_init_import ()) /* enable dynamic linking */
        /* Now add intrinsics for this application */
        || (-1 == SLadd_intrin_fun_table(Slrn_Intrinsics, NULL))
-       || (-1 == SLadd_intrin_var_table(Intrin_Vars, NULL)))
+       || (-1 == SLadd_intrin_var_table(Intrin_Vars, NULL))
+       || (-1 == add_intrinsic_variables ()))
      return -1;
-   
+
    SLadd_intrinsic_function ("system", (FVOID_STAR) interp_system, SLANG_INT_TYPE, 1, SLANG_STRING_TYPE);
    SLadd_intrinsic_function ("evalfile", (FVOID_STAR) evalfile, SLANG_INT_TYPE, 1, SLANG_STRING_TYPE);
 

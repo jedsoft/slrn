@@ -607,6 +607,7 @@ static char *KeyNames[NUMBER_OF_KEYNAMES] = /*{{{*/
 static unsigned char KeyNameLengths[NUMBER_OF_KEYNAMES] =
 {8,10,4,6,7,6,8,11,8,6,5,7,8,5,9,7,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5};
 
+#ifdef REAL_UNIX_SYSTEM
 /* Symbolic names of keys in the termcap database */
 static char *TermcapNames[NUMBER_OF_KEYNAMES] = /*{{{*/
 {
@@ -648,6 +649,7 @@ static char *TermcapNames[NUMBER_OF_KEYNAMES] = /*{{{*/
      "FA",
      ""
 }; /*}}}*/
+#endif
 
 /* Default key sequences as fallbacks when termcap lookup has no result */
 static char *DefaultSequences[NUMBER_OF_KEYNAMES] = /*{{{*/

@@ -512,6 +512,27 @@ static int set_charset_fun (int argc, SLcmd_Cmd_Table_Type *table)
 
 /*{{{ Setting/Getting Variable Functions */
 
+/* These callbacks are necessary to deal with limitations of windows DLLs */
+static int get_set_use_color_callback (Slrn_Int_Var_Type *iv, int set, int *valp)
+{
+   (void) iv;
+   if (set)
+     SLtt_Use_Ansi_Colors = *valp;
+   else
+     *valp = SLtt_Use_Ansi_Colors;
+   return 0;
+}
+
+static int get_set_beep_callback (Slrn_Int_Var_Type *iv, int set, int *valp)
+{
+   (void) iv;
+   if (set)
+     SLtt_Ignore_Beep = *valp;
+   else
+     *valp = SLtt_Ignore_Beep;
+   return 0;
+}
+
 Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
 {
      {"hide_verbatim_marks",	&Slrn_Verbatim_Marks_Hidden, NULL},
@@ -522,7 +543,6 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"emphasized_text_mask",	&Slrn_Emphasized_Text_Mask, NULL},
      {"emphasized_text_mode",	&Slrn_Emphasized_Text_Mode, NULL},
      {"process_verbatim_marks", &Slrn_Process_Verbatim_Marks, NULL},
-
      {"use_flow_control",	&Slrn_Use_Flow_Control, NULL},
      {"abort_unmodified_edits", &Slrn_Abort_Unmodified, NULL},
      {"editor_uses_mime_charset", &Slrn_Editor_Uses_Mime_Charset, NULL},
@@ -534,7 +554,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
 #endif
      {"new_subject_breaks_threads",	&Slrn_New_Subject_Breaks_Threads, NULL},
      {"scroll_by_page", &Slrn_Scroll_By_Page, NULL},
-     {"use_color", &SLtt_Use_Ansi_Colors, NULL},
+     {"use_color", NULL, get_set_use_color_callback},
      {"ignore_signature", &Slrn_Sig_Is_End_Of_Article, NULL},
      {"reject_long_lines", &Slrn_Reject_Long_Lines, NULL},
      {"netiquette_warnings", &Slrn_Netiquette_Warnings, NULL},
@@ -562,7 +582,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"smart_quote", &Slrn_Smart_Quote, NULL},
      {"no_backups", &Slrn_No_Backups, NULL},
      {"no_autosave", &Slrn_No_Autosave, NULL},
-     {"beep", &SLtt_Ignore_Beep, NULL},
+     {"beep", NULL, get_set_beep_callback},
      {"unsubscribe_new_groups", &Slrn_Unsubscribe_New_Groups, NULL},
      {"check_new_groups", &Slrn_Check_New_Groups, NULL},
      {"show_thread_subject", &Slrn_Show_Thread_Subject, NULL},
@@ -1133,7 +1153,9 @@ int slrn_set_object_color (char *name, char *fg, char *bg,
 			   SLtt_Char_Type attr) /*{{{*/
 {
    Color_Handle_Type *ct = Color_Handles;
-
+#ifdef IBMPC_SYSTEM
+   (void) attr;
+#endif
    while (ct->name != NULL)
      {
 	if (!strcmp (ct->name, name))

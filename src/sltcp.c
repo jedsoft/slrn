@@ -57,7 +57,8 @@
 # define USE_WINSOCK_SLTCP	1
 #else
 # if defined(__WIN32__)
-#  define Win32_Winsock
+/* #  define Win32_Winsock */
+#  define __USE_W32_SOCKETS
 #  include <windows.h>
 #  define USE_WINSOCK_SLTCP	1
 # endif

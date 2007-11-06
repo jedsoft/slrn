@@ -1,24 +1,24 @@
 # Makefile for slrn                               -*- sh -*-
 # This is not meant for use by cygwin.  It assumes the mingw32 toolset
 
-CC = /usr/bin/i586-mingw32msvc-gcc
+TOOL_PREFIX =
+CC = $(TOOL_PREFIX)gcc
+DLL_FLAGS = -DSLANG_DLL=1
 CCFLAGS = -O2 -fno-strength-reduce -W -Wall
 LDFLAGS = -Wl,--subsystem,console
 MISCLIBS = -lwsock32 -lwinspool
 SLSH = slsh
 
 #-----------------------------------------------------------------------------
-# Directory where the slang library, slanglib.a, is located.
-# BUILD SLANG FIRST!!!!  If you do not have it, get it from
-# <http://www.jedsoft.org/slang/>.  Note: Also build and _install_ slsh.
+# Directory where the slang library, once installed  is located.
+# BUILD AND INSTALL SLANG FIRST!!!!  If you do not have it, get it from
+# <http://www.jedsoft.org/slang/>.  Note: Also build and INSTALL slsh.
 #-----------------------------------------------------------------------------
-#SDIR = /path/to/slang.h#                  Location of slang.h
-#SLANG_LIB = -L/path/to/slang -lslang#              Location of libslang.a
-SLANG_INC = -I$(HOME)/sys/i686/include#                  Location of slang.h
-SLANG_LIB = -L$(HOME)/sys/i686/lib -Wl,-R,$(HOME)/sys/i686/lib -lslang#              Location of libslang.a
-SLRN_LIB_DIR = /specify/a/lib/dir
-SLRN_SLANG_DIR = $(SLRN_LIB_DIR)/slang
-SLRN_CONF_DIR = /specify/a/conf/dir
+SLANGINC = /dir/containing/slang/dot/h                 #<--- edit this
+SLANGLIB = /dir/containing/lib/slang                   #<--- edit this
+SLRN_CONF_DIR = /specify/a/conf/dir                    #<--- edit this
+SLANG_INC = -I$(SLANGINC)
+SLANG_LIB = -L$(SLANGLIB) -lslang
 #-----------------------------------------------------------------------------
 #   Location where object files are placed.
 #-----------------------------------------------------------------------------
@@ -27,10 +27,8 @@ OBJDIR = gw32objs#
 #-----------------------------------------------------------------------------
 #   Misc Programs
 #-----------------------------------------------------------------------------
-#CP = copy
-CP = cp
-RM = del
-#RM = rm
+CP = cp  # copy                                       #<--- edit this
+RM = del # rm                                         #<--- edit this
 
 #----------------------------------------------------------------------------
 #   Nothing below here should require changing.
@@ -82,7 +80,7 @@ OBJSpull = \
 UUDECODE_OBJS = $(OBJDIR)/util.o $(OBJDIR)/ttymsg.o $(OBJDIR)/slrndir.o \
  $(OBJDIR)/snprintf.o
 
-CFLAGS = $(CCFLAGS) $(SLANG_INC) $(SLRNLIBDIR)
+CFLAGS = $(CCFLAGS) $(DLL_FLAGS) $(SLANG_INC) $(SLRNLIBDIR)
 
 COMMON_DEPS = config.h slrnfeat.h
 server_O_DEP = clientlib.c spool.c nntp.c sltcp.c nntplib.c
@@ -103,16 +101,14 @@ $(OBJDIR):
 	@mkdir $(OBJDIR)
 config.h: slrnconf.h
 	$(CP) slrnconf.h config.h
-win32/slrnfeat.h: win32/slrnfeat.def slrnfeat.hin
-	$(SLSH) win32/subst.sl win32/slrnfeat.def slrnfeat.hin win32/slrnfeat.h
-slrnfeat.h: win32/slrnfeat.h
-	$(CP) win32/slrnfeat.h .
+slrnfeat.h: win32/slrnfeat.def slrnfeat.hin
+	$(SLSH) win32/subst.sl win32/slrnfeat.def slrnfeat.hin slrnfeat.h
 #
 slangversion: $(OBJDIR)/chkslang.exe
 	echo ./$(OBJDIR)/chkslang.exe slrn 20000
 $(OBJDIR)/chkslang.exe: $(OBJDIR)/chkslang.o
 	$(CC) $(OBJDIR)/chkslang.o -o $(OBJDIR)/chkslang.exe $(SLANG_LIB)
-$(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h
+$(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h $(COMMON_DEPS)
 	$(CC) -c $(SLANG_INC) chkslang.c -o $(OBJDIR)/chkslang.o
 clean:
 	$(RM) -rf *.o *~ $(OBJDIR) slrn.exe uudecode.exe *.log \
