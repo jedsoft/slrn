@@ -53,126 +53,105 @@ typedef struct
 }
 Compile_Option_Type;
 
-static Compile_Option_Type Compile_Options [] =
+static Compile_Option_Type Backend_Options [] =
 {
-     {"nntp",			SLRN_HAS_NNTP_SUPPORT},
-     {"slrnpull",		SLRN_HAS_PULL_SUPPORT},
-     {"spool",			SLRN_HAS_SPOOL_SUPPORT},
-#define EXTERNAL_PROG_OFFSET 3
-     {"canlock",		SLRN_HAS_CANLOCK},
-     {"inews",			SLRN_HAS_INEWS_SUPPORT},
-     {"ssl",			SLTCP_HAS_SSL_SUPPORT},
-     {"uudeview",    		SLRN_HAS_UUDEVIEW},
-#define FEATURES_OFFSET 7
-     {"charset_mapping",	SLRN_HAS_CHARACTER_MAP},
-     {"decoding",		SLRN_HAS_DECODE},
-     {"emphasized_text",	SLRN_HAS_EMPHASIZED_TEXT},
-     {"end_of_thread",		SLRN_HAS_END_OF_THREAD},
-     {"fake_refs",   		SLRN_HAS_FAKE_REFS},
-     {"gen_msgid",   		SLRN_HAS_GEN_MSGID},
-     {"grouplens",   		SLRN_HAS_GROUPLENS},
-     {"msgid_cache", 		SLRN_HAS_MSGID_CACHE},
-     {"piping",	     		SLRN_HAS_PIPING},
-     {"rnlock",	     		SLRN_HAS_RNLOCK},
-     {"spoilers",    		SLRN_HAS_SPOILERS},
-     {"strict_from",		SLRN_HAS_STRICT_FROM},
-     {NULL, 0}
+   {"nntp",			SLRN_HAS_NNTP_SUPPORT},
+   {"slrnpull",			SLRN_HAS_PULL_SUPPORT},
+   {"spool",			SLRN_HAS_SPOOL_SUPPORT},
+   {NULL, 0}
 };
 
-static void show_compile_time_options (void)
+static Compile_Option_Type External_Lib_Options [] = 
 {
-   Compile_Option_Type *opt;
-   unsigned int len, n = 0;
+   {"canlock",			SLRN_HAS_CANLOCK},
+   {"inews",			SLRN_HAS_INEWS_SUPPORT},
+   {"ssl",			SLTCP_HAS_SSL_SUPPORT},
+   {"uudeview",    		SLRN_HAS_UUDEVIEW},
+#ifdef HAVE_ICONV
+   {"iconv",			1},
+#else
+   {"iconv",			0},
+#endif
+   {NULL, 0}
+};
 
-   fputs (_("\n COMPILE TIME OPTIONS:"), stdout);
-   
-   opt = Compile_Options;
-   len = 1;
-   while (opt->name != NULL)
+static Compile_Option_Type Feature_Options [] =
+{
+   {"decoding",			SLRN_HAS_DECODE},
+   {"emphasized_text",		SLRN_HAS_EMPHASIZED_TEXT},
+   {"end_of_thread",		SLRN_HAS_END_OF_THREAD},
+   {"fake_refs",   		SLRN_HAS_FAKE_REFS},
+   {"gen_msgid",   		SLRN_HAS_GEN_MSGID},
+   {"grouplens",   		SLRN_HAS_GROUPLENS},
+   {"msgid_cache", 		SLRN_HAS_MSGID_CACHE},
+   {"piping",	     		SLRN_HAS_PIPING},
+   {"rnlock",	     		SLRN_HAS_RNLOCK},
+   {"spoilers",    		SLRN_HAS_SPOILERS},
+   {"strict_from",		SLRN_HAS_STRICT_FROM},
+   {NULL, 0}
+};
+
+static void print_options (FILE *fp, Compile_Option_Type *opts, char *title)
+{
+   unsigned int len;
+
+   (void) fprintf (fp, " %s:", title);
+   len = strlen (title);
+   while (opts->name != NULL)
      {
-	unsigned int dlen = strlen (opt->name) + 3;
-	
-	switch (n)
-	  {
-	   case 0:
-	     fputs (_("\n  Backends:"), stdout);
-	     len = 11;
-	     break;
-	   case EXTERNAL_PROG_OFFSET:
-	     fputs (_("\n  External programs / libs:"), stdout);
-	     len = 27;
-	     break;
-	   case FEATURES_OFFSET:
-	     fputs (_("\n  Features:"), stdout);
-	     len = 11;
-	     break;
-	  }
+	unsigned int dlen = strlen (opts->name) + 2;
 
-	len += dlen;
+   	len += dlen;
 	if (len >= 80)
 	  {
-	     fputs ("\n   ", stdout);
+	     (void) fputs ("\n   ", fp);
 	     len = dlen + 3;
 	  }
-	fprintf (stdout, " %c%s", (opt->value ? '+' : '-'), opt->name);
-	opt++; n++;
+	(void) fprintf (fp, " %c%s", (opts->value ? '+' : '-'), opts->name);
+	opts++; 
      }
-   fputc ('\n', stdout);
+   (void) fputc ('\n', fp);
 }
 
-
-
-static char *make_slang_version (int v)
+static void show_compile_time_options (FILE *fp)
 {
-#if SLANG_VERSION >= 10307
-   if (v == SLang_Version)
-     return SLang_Version_String;
-   else
-     return SLANG_VERSION_STRING;
-#else
-   int a, b, c;
-   static char buf[32];
-   
-   a = v/10000;
-   b = (v - a * 10000) / 100;
-   c = v - (a * 10000) - (b * 100);
-
-   slrn_snprintf (buf, sizeof (buf), "%d.%d.%d", a, b, c);
-   return buf;
-#endif
+   (void) fprintf (fp, "%s:\n", _("COMPILE TIME OPTIONS"));
+   print_options (fp, Backend_Options, _("Backends"));
+   print_options (fp, External_Lib_Options, _("External programs / libs"));
+   print_options (fp, Feature_Options, _("Features"));
 }
 
 void slrn_show_version (void) /*{{{*/
 {
    char *os;
+   FILE *fp = stdout;
+
    os = slrn_get_os_name ();
 
-   fprintf (stdout, "slrn %s\n", Slrn_Version_String);
+   fprintf (fp, "slrn %s\n", Slrn_Version_String);
    if (*Slrn_Version_String == 'p')
-     fprintf (stdout, _("\t* Note: This version is a developer preview.\n"));
-   fprintf (stdout, _("S-Lang Library Version: %s\n"), make_slang_version (SLang_Version));
+     fprintf (fp, _("\t* Note: This version is a developer preview.\n"));
+   fprintf (fp, _("S-Lang Library Version: %s\n"), SLang_Version_String);
    if (SLANG_VERSION != SLang_Version)
      {
-	fprintf (stdout, _("\t* Note: This program was compiled against version %s.\n"),
+	fprintf (fp, _("\t* Note: This program was compiled against version %s.\n"),
 		 SLANG_VERSION_STRING);
      }
 #if defined(__DATE__) && defined(__TIME__)
-   fprintf (stdout, _("Compiled at: %s %s\n"), __DATE__, __TIME__);
+   fprintf (fp, _("Compiled at: %s %s\n"), __DATE__, __TIME__);
 #endif
-   fprintf (stdout, _("Operating System: %s\n"), os);
-   
-   show_compile_time_options ();
+   fprintf (fp, _("Operating System: %s\n"), os);
 
-   fprintf (stdout, _(" DEFAULTS:\n  Default server object:     %s\n"),
+   (void) fputs ("\n", fp);
+   show_compile_time_options (fp);
+
+   (void) fputs ("\n", fp);
+   fprintf (fp, _("DEFAULTS:\n Default server object:     %s\n"),
 	    slrn_map_object_id_to_name (0, SLRN_DEFAULT_SERVER_OBJ));
    
-   fprintf (stdout, _("  Default posting mechanism: %s\n"),
+   fprintf (fp, _(" Default posting mechanism: %s\n"),
 	    slrn_map_object_id_to_name (1, SLRN_DEFAULT_POST_OBJ));
 
-/*
-#if SLRN_HAS_CHARACTER_MAP
-   slrn_chmap_show_supported ();
-#endif*/
    exit (0);
 }
 

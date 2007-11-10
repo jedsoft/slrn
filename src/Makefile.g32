@@ -1,6 +1,10 @@
 # Makefile for slrn                               -*- sh -*-
 # This is not meant for use by cygwin.  It assumes the mingw32 toolset
 
+# TODO
+#  slrn will not work unless installed.  An install target needs to be written.
+#  Volunteers??
+#
 TOOL_PREFIX =
 CC = $(TOOL_PREFIX)gcc
 DLL_FLAGS = -DSLANG_DLL=1
@@ -14,9 +18,12 @@ SLSH = slsh
 # BUILD AND INSTALL SLANG FIRST!!!!  If you do not have it, get it from
 # <http://www.jedsoft.org/slang/>.  Note: Also build and INSTALL slsh.
 #-----------------------------------------------------------------------------
-SLANGINC = /dir/containing/slang/dot/h#                 <--- edit this
-SLANGLIB = /dir/containing/lib/slang#                   <--- edit this
-SLRN_CONF_DIR = /specify/a/conf/dir#                    <--- edit this
+prefix = C:/prefix#                           <--- edit this
+SLANGINC = $(prefix)/include#                 <--- edit this
+SLANGLIB = $(prefix)/lib#                     <--- edit this
+SLRN_CONF_DIR = $(prefix)/etc#                <--- maybe edit this
+SLRN_LIB_DIR = $(prefix)/share/slrn#
+SLRN_SLANG_DIR = $(SLRN_LIB_DIR)/slang#
 SLANG_INC = -I$(SLANGINC)
 SLANG_LIB = -L$(SLANGLIB) -lslang
 #-----------------------------------------------------------------------------
@@ -111,7 +118,7 @@ $(OBJDIR)/chkslang.exe: $(OBJDIR)/chkslang.o
 $(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h $(COMMON_DEPS)
 	$(CC) -c $(SLANG_INC) chkslang.c -o $(OBJDIR)/chkslang.o
 clean:
-	$(RM) -rf *.o *~ $(OBJDIR) slrn.exe uudecode.exe *.log \
+	$(RM) -rf *~ $(OBJDIR) slrn.exe uudecode.exe *.log \
 	core out out.* typescript files.pck* config.h
 #
 slrnpull.exe: $(OBJDIR) config.h slangversion $(OBJSpull)

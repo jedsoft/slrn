@@ -91,6 +91,19 @@ Changes since 0.9.8.8pl1
     limitations.
 43. Modified src/Makefile.g32 to compile with the mingw32
     cross-compiler.
+44. macros/slrn.sl: New file. This file gets loaded when slrn runs.
+    It sets up paths and defines some callback functions.
+45. src/interp.c: Removed the slrn-specific evalfile function in favor
+    of the stock slang function, which is aware of slang's load path.
+46. src/hooks.c: Rewrote to support adding hooks via function
+    references, e.g.,  register_hook ("foo_hook", &callback);
+47. src/version.c: Added iconv and rewrote for easier maintenance.
+48. src/startup.c: Setting macro_directory variable will invoke a
+    callback function defined in slrn.sl.
+49. src/Makefile.in: Since slrn will try to load a file called
+    help.txt from CONFDIR, this variable was changed to
+    $(sysconfdir)/slrn, e.g., /etc/slrn/.  This change is also
+    consistent with the recommendations of FHS 2.3.
 
 {{{ Previous Versions 
 

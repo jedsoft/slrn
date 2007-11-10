@@ -4363,7 +4363,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	  }
 	strcpy (p, ".txt"); /* safe */
 #else
-	if ((1 != slrn_run_hooks (HOOK_MAKE_SAVE_FILENAME, 0))
+	if ((slrn_run_hooks (HOOK_MAKE_SAVE_FILENAME, 0) <= 0)
 	    || (0 != SLang_pop_slstring (&filename))
 	    || (*filename == 0))
 	  filename = Slrn_Current_Group_Name;

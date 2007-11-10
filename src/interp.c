@@ -59,9 +59,6 @@
 
 /*{{{ Public Global Variables */
 
-int Slrn_Use_Slang = 0;
-char *Slrn_Macro_Dir;
-
 /*}}}*/
 
 
@@ -242,17 +239,9 @@ static void make_home_filename (char *name) /*{{{*/
 
 /*}}}*/
 
-static int evalfile (char *file)
-{
-   if (-1 == slrn_eval_slang_file (file))
-     return 0;
-
-   return 1;
-}
-
-
 int slrn_eval_slang_file (char *name) /*{{{*/
 {
+#if 0
    char file [SLRN_MAX_PATH_LEN];
    
    if (Slrn_Macro_Dir != NULL)
@@ -281,11 +270,40 @@ int slrn_eval_slang_file (char *name) /*{{{*/
    
    slrn_make_home_filename (name, file, sizeof (file));
    slrn_message_now (_("loading %s"), file);
-   if (0 == SLang_load_file (file))
+   if (0 != SLang_load_file (file))
      return -1;
+   
+   return 0;
+#else
+
+   if (0 != SLang_load_file (name))
+     return -1;
+
+   return 0;
+#endif
+}
+
+int slrn_set_macro_dir (char *dir)
+{
+   if (-1 == SLang_run_hooks ("slrn_set_macro_dir_hook", 1, dir))
+     return -1;
+
    return 0;
 }
 
+char *slrn_get_macro_dir (void)
+{
+   char *str;
+
+   if (1 != SLang_run_hooks ("slrn_get_macro_dir_hook", 0))
+     return NULL;
+
+   if (-1 == SLpop_string (&str))
+     return NULL;
+   
+   return str;
+}
+     
 /*}}}*/
 
 
@@ -1316,10 +1334,12 @@ static void log_message (char *buf)
    FILE *fp;
    
    fp = Log_File_Ptr;
-   /* Avoid messing up the screen for now. */
-   if (fp == NULL) return;
-/*   if (fp == NULL) fp = stderr;*/
-   
+   if (fp == NULL) 
+     {
+	if (Slrn_TT_Initialized & SLRN_SMG_INIT)
+	  return;
+	fp = stderr;
+     }
    fputs (buf, fp);
    fflush (fp);
 }
@@ -1399,6 +1419,41 @@ static void reload_scorefile (int *apply_now) /*{{{*/
 }
 
 /*}}}*/
+
+static int do_register_unregister_hook (int reg)
+{
+   SLang_Name_Type *func;
+   char *name;
+   int status;
+
+   if (NULL == (func = SLang_pop_function ()))
+     return -1;
+   
+   if (-1 == SLang_pop_slstring (&name))
+     {
+	SLang_free_function (func);
+	return -1;
+     }
+   
+   if (reg)
+     status = slrn_register_hook (name, func);
+   else
+     status = slrn_unregister_hook (name, func);
+   
+   SLang_free_function (func);
+   SLang_free_slstring (name);
+   return status;
+}
+
+static int register_hook (void)
+{
+   return do_register_unregister_hook (1);
+}
+
+static int unregister_hook (void)
+{
+   return do_register_unregister_hook (0);
+}
 
 static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
 {
@@ -1482,7 +1537,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_SSS("read_mini_filename", read_mini_filename, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SSS("read_mini_variable", read_mini_variable, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SI("read_mini_integer", read_mini_integer, SLANG_INT_TYPE),
-   MAKE_INTRINSIC_SS("register_hook", slrn_register_hook_by_name, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_0("register_hook", register_hook, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("reload_scorefile", reload_scorefile, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_I("request_body", request_body, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_S("save_current_article", save_current_article, SLANG_INT_TYPE),
@@ -1519,7 +1574,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("uncollapse_threads", uncollapse_threads, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SS("undefinekey", undefinekey, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_I("ungetkey", ungetkey, SLANG_VOID_TYPE),
-   MAKE_INTRINSIC_SS("unregister_hook", slrn_unregister_hook_by_name, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_0("unregister_hook", unregister_hook, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("update", update, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0(NULL, NULL, 0)
 };
@@ -1573,17 +1628,41 @@ static int add_intrinsic_variables (void)
    return 0;
 }
 
+static int load_startup_file (void)
+{
+   char *dir;
+
+   if (NULL == (dir = getenv (ENV_SLRN_SLANG_DIR)))
+     dir = SLRN_SLANG_DIR;
+   
+   if ((dir == NULL) || (dir == ""))
+     {
+	slrn_error (_("The SLRN_SLANG_DIR variable is either NULL or empty"));
+	return -1;
+     }
+   
+   if (-1 == SLpath_set_load_path (dir))
+     return -1;
+   
+   if (-1 == SLang_load_file ("slrn.sl"))
+     {
+	slrn_error (_("Configuration error: Unable to load startup file"));
+	return -1;
+     }
+   
+   return 0;
+}
+
 int slrn_init_slang (void) /*{{{*/
 {
-   Slrn_Use_Slang = 0;
    if ((-1 == SLang_init_slang ())
        || (-1 == SLang_init_slmath ())
+       || (-1 == SLang_init_array ())
        || (-1 == SLang_init_posix_process ())
        || (-1 == SLang_init_posix_dir ())
        || (-1 == SLang_init_stdio ())
        || (-1 == SLang_init_posix_io ())
        || (-1 == SLang_init_ospath ())
-       || (-1 == SLang_init_slassoc ())
        || (-1 == SLang_init_import ()) /* enable dynamic linking */
        /* Now add intrinsics for this application */
        || (-1 == SLadd_intrin_fun_table(Slrn_Intrinsics, NULL))
@@ -1592,15 +1671,19 @@ int slrn_init_slang (void) /*{{{*/
      return -1;
 
    SLadd_intrinsic_function ("system", (FVOID_STAR) interp_system, SLANG_INT_TYPE, 1, SLANG_STRING_TYPE);
-   SLadd_intrinsic_function ("evalfile", (FVOID_STAR) evalfile, SLANG_INT_TYPE, 1, SLANG_STRING_TYPE);
+   /* SLadd_intrinsic_function ("evalfile", (FVOID_STAR) evalfile, SLANG_INT_TYPE, 1, SLANG_STRING_TYPE); */
 
+   (void) SLang_load_file_verbose (1);
+   
    SLang_Error_Hook = error;
-
-   Slrn_Use_Slang = 1;
    SLang_User_Clear_Error = slrn_clear_message;
    SLang_Exit_Error_Hook = slrn_va_exit_error;
    SLang_Dump_Routine = log_message;
    SLang_VMessage_Hook = slrn_va_message;
+   
+   if (-1 == load_startup_file ())
+     return -1;
+
    return 0;
 }
 

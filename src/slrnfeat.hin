@@ -30,7 +30,6 @@
 #define SLRN_HAS_CANLOCK	@SLRN_HAS_CANLOCK@
 
 #define SLRN_HAS_STRICT_FROM	@SLRN_HAS_STRICT_FROM@
-#define SLRN_HAS_CHARACTER_MAP	@SLRN_HAS_CHARACTER_MAP@
 #define SLRNPULL_USE_SETGID_POSTS	@SLRNPULL_USE_SETGID_POSTS@
 #define SLRN_HAS_SPOILERS	@SLRN_HAS_SPOILERS@
 #define SLRN_HAS_EMPHASIZED_TEXT	@SLRN_HAS_EMPHASIZED_TEXT@
@@ -190,6 +189,11 @@
 # undef SLRN_USE_SLTCP
 # define SLRN_USE_SLTCP 1
 #endif
+
+/* Environment variables */
+#define ENV_SLRN_SLANG_DIR	"SLRN_SLANG_DIR"
+
+/* --------------------------------------------------------------------------- */
 
 /* The rest of the files apply to slrnpull. */
 

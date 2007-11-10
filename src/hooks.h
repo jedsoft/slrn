@@ -44,9 +44,8 @@
 /* Number of different hooks */
 #define HOOK_NUMBER                22
 
+/* return -1 upon error, or number of hook functions called */
 extern int slrn_run_hooks( unsigned int hook, unsigned int num_args, ... );
 extern int slrn_is_hook_defined( unsigned int hook );
-extern int slrn_register_hook( unsigned int hook, const char *func );   
-extern int slrn_register_hook_by_name( const char *hook, const char *func );   
-extern int slrn_unregister_hook( unsigned int hook, const char *func );   
-extern int slrn_unregister_hook_by_name( const char *hook, const char *func );   
+extern int slrn_register_hook (char *name, SLang_Name_Type *nt);
+extern int slrn_unregister_hook (char *name, SLang_Name_Type *nt);

@@ -641,12 +641,11 @@ static void link_same_subjects (void) /*{{{*/
 	  {
 	     int rslt;
 	     
-	     (void) slrn_run_hooks (HOOK_SUBJECT_COMPARE, 2, h->subject, h1->subject);
-	     
-	     if (-1 != SLang_pop_integer (&rslt))
+	     if ((1 == slrn_run_hooks (HOOK_SUBJECT_COMPARE, 2, h->subject, h1->subject))
+		 && (-1 != SLang_pop_integer (&rslt)))
 	       differ = rslt;
 	  }
-	
+
 	if (differ == 0)
 	  {
 	     /* h and h1 have the same subject. Now make h1 a (faked) child of h. */ 

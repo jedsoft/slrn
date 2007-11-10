@@ -27,23 +27,26 @@
 #include "hooks.h"
 #include "strutil.h"
 
-typedef struct Slrn_Hook_Function_Type {
-   char *function;
-   struct Slrn_Hook_Function_Type *next;
-   } Slrn_Hook_Function_Type;
+typedef struct Hook_Function_Type
+{
+   SLang_Name_Type *func;
+   struct Hook_Function_Type *next;
+} 
+Hook_Function_Type;
 
-typedef struct Slrn_Hook_Type {
+typedef struct Hook_Type 
+{
    const char *name;
    int multi; /* whether multiple hooks may be registered */
-   Slrn_Hook_Function_Type *first;
-   } Slrn_Hook_Type;
-
-typedef Slrn_Hook_Type Slrn_Hook_Table_Type[HOOK_NUMBER];
+   Hook_Function_Type *first;
+} 
+Hook_Type;
 
 /* Order as given by constants HOOK_*
  * Define whether or not multiple registration is allowed: */
 
-static Slrn_Hook_Table_Type Hooks = {
+static Hook_Type Hooks [HOOK_NUMBER+1] =
+{
    { "article_mode_hook", 1, NULL },
    { "article_mode_quit_hook", 1, NULL },
    { "article_mode_startup_hook", 1, NULL },
@@ -65,129 +68,192 @@ static Slrn_Hook_Table_Type Hooks = {
    { "reply_hook", 1, NULL },
    { "startup_hook", 1, NULL },
    { "subject_compare_hook", 0, NULL },
-   { "supersede_hook", 1, NULL }
-   
+   { "supersede_hook", 1, NULL },
+
+   {NULL, 0, NULL}
 };
 
-int slrn_register_hook( unsigned int hook, const char *func )
+static Hook_Type *find_hook (char *name)
 {
-   Slrn_Hook_Function_Type *h = Hooks[hook].first;
-   Slrn_Hook_Function_Type **ins = &(Hooks[hook].first);
-   
-   while (h != NULL)
+   Hook_Type *h;
+
+   h = Hooks;
+   while (h->name != NULL)
      {
-	if (!strcmp (h->function, func))
-	  return 2; /* Was already registered. */
-	ins = &h->next;
-	h = h->next;
+	if (0 == strcmp (name, h->name))
+	  return h;
+	h++;
+     }
+   return NULL;
+}
+
+static void free_hook_function_type (Hook_Function_Type *f)
+{
+   if (f == NULL)
+     return;
+
+   if (f->func != NULL)
+     SLang_free_function (f->func);
+   
+   slrn_free ((char *) f);
+}
+
+int slrn_register_hook (char *name, SLang_Name_Type *func)
+{
+   Hook_Type *h;
+   Hook_Function_Type *f;
+
+   if (NULL == (h = find_hook (name)))
+     return -1;
+
+   /* Do not register the same hook more than once */
+   f = h->first;
+   while (f != NULL)
+     {
+	if (f->func == func)
+	  return 1;
+	f = f->next;
+     }
+
+   f = (Hook_Function_Type *) SLmalloc (sizeof (Hook_Function_Type));
+   if (f == NULL)
+     return -1;
+   
+   if (NULL == (f->func = SLang_copy_function (func)))
+     {
+	SLfree ((char *) f);
+	return -1;
      }
    
-   if ((Hooks[hook].multi == 0) && slrn_is_hook_defined (hook))
-     return 0;
+   if (h->multi == 0)
+     {
+	free_hook_function_type (h->first);
+	h->first = NULL;
+     }
    
-   h = (Slrn_Hook_Function_Type *)slrn_safe_malloc( sizeof( Slrn_Hook_Function_Type ) );
-   h->function = slrn_safe_strmalloc( (char *)func );
-   h->next = NULL;
-   *ins = h;
-   return (0 < SLang_is_defined(h->function)) ? 1 : 3;
+   f->next = h->first;
+   h->first = f;
+   
+   return 1;
 }
 
-int slrn_register_hook_by_name( const char *hook, const char *func )
+int slrn_unregister_hook (char *name, SLang_Name_Type *func)
 {
-   int i;
-   for( i = 0; i < HOOK_NUMBER; i++ )
-      if( strcmp( hook, Hooks[i].name ) == 0  )
-         return slrn_register_hook( i, func );
+   Hook_Type *h;
+   Hook_Function_Type *f, *prev;
+
+   if (NULL == (h = find_hook (name)))
+     return -1;
+   
+   prev = NULL;
+   f = h->first;
+   while (f != NULL) 
+     {
+	if (f->func != func)
+	  {
+	     prev = f;
+	     f = f->next;
+	     continue;
+	  }
+
+	if (prev != NULL)
+	  prev->next = f->next;
+	else
+	  h->first = f->next;
+	
+	free_hook_function_type (f);
+	return 1;
+     }
+   
    return 0;
 }
 
-int slrn_unregister_hook( unsigned int hook, const char *func )
-{
-   Slrn_Hook_Function_Type *h, **prev;
-   
-   prev = &Hooks[hook].first;
-   
-   for( h = Hooks[hook].first; h; h = h->next ){
-      if( strcmp( h->function, func ) == 0 ){
-         *prev = h->next;
-	 slrn_free( h->function );
-         slrn_free( (char *)h );
-         return 1;
-      }
-      prev = &h->next;
-   }
-      
-   return 0;
-}
 
-int slrn_unregister_hook_by_name( const char *hook, const char *func )
-{
-   int i;
-   for( i = 0; i < HOOK_NUMBER; i++ )
-      if( strcmp( hook, Hooks[i].name ) == 0 )
-         return slrn_unregister_hook( i, func );
-   return 0;
-}
-
-/* Copied and pasted from slang 
- * Modified to take va_list as arg (instead of "...")
- */
-static int my_SLang_run_hooks(char *hook, unsigned int num_args, va_list ap)
+static int call_slang_function (SLang_Name_Type *func, unsigned int num_args, va_list ap)
 {
    unsigned int i;
 
-   if (SLang_get_error ()) return -1;
-  
-   if (0 == SLang_is_defined (hook))
-     return 0;
+   if (-1 == SLang_start_arg_list ())
+     return -1;
 
    for (i = 0; i < num_args; i++)
      {
-        char *arg;
-        arg = va_arg (ap, char *);
-        if (-1 == SLang_push_string (arg))
-          break;
+	char *arg = va_arg (ap, char *);
+	if (-1 == SLang_push_string (arg))
+	  return -1;
      }
 
-   if (SLang_get_error ()) return -1;
-   return SLang_execute_function (hook);
+   if ((-1 == SLang_end_arg_list ())
+       || (-1 == SLexecute_function (func)))
+     return -1;
+   
+   return 0;
 }
 
 
-int slrn_run_hooks( unsigned int hook, unsigned int num_args, ... )
+int slrn_run_hooks (unsigned int hook, unsigned int num_args, ...)
 {
-   Slrn_Hook_Function_Type *h;
+   SLang_Name_Type *func;
+   Hook_Function_Type *f;
+   Hook_Type *h;
    va_list ap;
-   int hook_defined, error = 1;
+   int num_called;
+
+   num_called = 0;
+
+   if (hook > HOOK_NUMBER)
+     return num_called;
    
-   hook_defined = SLang_is_defined ((char *)Hooks[hook].name);
-   
-   if (!hook_defined && (NULL == Hooks[hook].first))
+   h = Hooks + hook;
+   if (h->name == NULL)
+     return num_called;
+
+   f = h->first;
+   while (f != NULL)
+     {
+	va_start (ap, num_args);
+	if (-1 == call_slang_function (f->func, num_args, ap))
+	  {
+	     va_end (ap);
+	     return -1;
+	  }
+	va_end (ap);
+	f = f->next;
+	num_called++;
+     }
+	
+   if (num_called && (h->multi == 0))
+     return num_called;
+
+   /* Compatibility */
+   if (NULL == (func = SLang_get_function ((char *)h->name)))
+     return num_called;
+
+   va_start (ap, num_args);
+   if (-1 == call_slang_function (func, num_args, ap))
+     {
+	va_end (ap);
+	SLang_free_function (func);
+	return -1;
+     }
+   va_end (ap);
+   SLang_free_function (func);
+   num_called++;
+
+   return num_called;
+}
+
+int slrn_is_hook_defined (unsigned int hook)
+{
+   Hook_Type *h;
+
+   if (hook >= HOOK_NUMBER)
      return 0;
    
-   if (!hook_defined || Hooks[hook].multi)
-     for( h = Hooks[hook].first; h; h = h->next ){
-	va_start( ap, num_args );
-	if( my_SLang_run_hooks( h->function, num_args, ap ) <= 0 )
-	  error = -1;
-	va_end( ap );
-     }
+   h = Hooks + hook;
    
-   /* For compatibility */
-   if (hook_defined){
-      va_start( ap, num_args );
-      if( my_SLang_run_hooks( (char *)Hooks[hook].name, num_args, ap ) <= 0 )
-	error = -1;
-      va_end( ap );
-   }
-   
-   return error;
-}
+   if (h->first != NULL)
+     return 1;
 
-int slrn_is_hook_defined( unsigned int hook )
-{
-   if( Hooks[hook].first ) 
-      return 1;
-   
-   return (2 == SLang_is_defined( (char *)Hooks[hook].name ));
+   return ((h->name != NULL) && (SLang_is_defined ((char *)h->name) > 0));
 }

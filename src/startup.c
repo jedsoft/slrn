@@ -190,9 +190,14 @@ static void exit_unknown_object (void) /*{{{*/
 
 static void issue_obsolete_message (void) /*{{{*/
 {
+   char *file = This_File;
+
+   if (file == NULL) 
+     file = "??";
+   
    Slrn_Saw_Obsolete = 1;
    slrn_message (_("%s: Command is obsolete on line %d:\n%s"),
-		 This_File, This_Line_Num, This_Line);
+		 file, This_Line_Num, This_Line);
    slrn_message (_("The new usage is:\nset %s\n"), This_Line);
 }
 
@@ -669,6 +674,20 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
 
 /*}}}*/
 
+
+static int get_set_macro_dir (Slrn_Str_Var_Type *sv, int set, char **valp)
+{
+   (void) sv;
+
+   if (set)
+     return slrn_set_macro_dir (*valp);
+  
+   if (NULL == (*valp = slrn_get_macro_dir ()))
+     return -1;
+   
+   return 0;
+}
+
 Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 {
      {"failed_posts_file", &Slrn_Failed_Post_Filename, NULL},
@@ -808,7 +827,7 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      NULL
 #endif
      , NULL},
-     {"macro_directory", &Slrn_Macro_Dir, NULL},
+     {"macro_directory", NULL, get_set_macro_dir},
      {"server_object", &Server_Object, NULL},
      {"post_object", &Post_Object, NULL},
      {"printer_name", &Slrn_Printer_Name, NULL},
@@ -866,7 +885,7 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 		       oldname = "cc_followup_string";
 		       newname = "cc_post_string";
 		    }
-		  
+
 		  if (oldname != NULL)
 		    {
 		       slrn_message (_("%s: Obsolete variable name on line %d: %s\n"
@@ -1699,8 +1718,6 @@ void slrn_startup_initialize (void) /*{{{*/
    Color_Handle_Type *h;
    int i;
 
-   Slrn_Macro_Dir = slrn_safe_strmalloc (SLRN_SLANG_DIR);
-
    slrn_init_modes ();
    SLang_init_case_tables ();
    slrn_help_init_keysym_table ();
@@ -1855,7 +1872,6 @@ static int interpret_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    char *file = table->string_args [1];
    
    (void) argc;
-   if (Slrn_Use_Slang == 0) return 0;
    return slrn_eval_slang_file (file);
 }
 
