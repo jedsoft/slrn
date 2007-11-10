@@ -1148,7 +1148,7 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
 #endif
 
    if (-1 == slrn_init_slang ())
-     fprintf (stderr, _("Error initializing S-Lang interpreter.\n"));
+     slrn_exit_error (_("Error initializing S-Lang interpreter.\n"));
 
    slrn_startup_initialize ();
 
