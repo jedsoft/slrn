@@ -96,7 +96,7 @@ chkslang_O_DEP = config.h Makefile
 version_O_DEP = version.h
 group_C_CFLAGS = -DSLRN_LIB_DIR='"$(SLRN_LIB_DIR)"'
 slrn_C_CFLAGS = -DSLRN_CONF_DIR='"$(SLRN_CONF_DIR)"'
-startup_C_CFLAGS = -DSLRN_SLANG_DIR='"$(SLRN_SLANG_DIR)"'
+interp_C_CFLAGS = -DSLRN_SLANG_DIR='"$(SLRN_SLANG_DIR)"'
 
 #---------------------------------------------------------------------------
 # Rules

@@ -19,7 +19,7 @@
  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#define SLRN_VERSION_STRING "pre0.9.9-50"
+#define SLRN_VERSION_STRING "pre0.9.9-52"
 #define SLRN_VERSION 990
 
 #ifndef SLRNPULL_CODE

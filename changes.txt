@@ -105,6 +105,11 @@ Changes since 0.9.8.8pl1
     $(sysconfdir)/slrn, e.g., /etc/slrn/.  This change is also
     consistent with the recommendations of FHS 2.3.
 50. src/slrn.c: If slang fails to initialize, then exit.
+51. src/slrnfeat.hin: If slrnpull has been enabled, then enable spool
+    support.
+52. src/mime.c: Off by 1 bug in split_qp_lines would sometimes cause a
+    call to realloc with a length of 0, which had the effect of
+    freeing the buffer.
 
 {{{ Previous Versions 
 

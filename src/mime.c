@@ -690,18 +690,19 @@ static int split_qp_lines (Slrn_Article_Type *a)
 	     line = next;
 	     continue;
 	  }
+	*p++ = 0;
 
 	new_line = (Slrn_Article_Line_Type *) slrn_malloc (sizeof(Slrn_Article_Line_Type), 1, 1);
 	if (new_line == NULL)
 	  return -1;
 
-	if (NULL == (buf1 = slrn_strmalloc (p+1, 1)))
+	if (NULL == (buf1 = slrn_strmalloc (p, 1)))
 	  {
 	     slrn_free ((char *) new_line);
 	     return -1;
 	  }
 	
-	if (NULL == (buf0 = slrn_realloc (line->buf, p-line->buf, 1)))
+	if (NULL == (buf0 = slrn_realloc (line->buf, p - line->buf, 1)))
 	  {
 	     slrn_free ((char *) new_line);
 	     slrn_free (buf1);
@@ -717,7 +718,7 @@ static int split_qp_lines (Slrn_Article_Type *a)
 	  next->prev = new_line;
 	line->next = new_line;
 
-	line = next;
+	line = new_line;
      }
 
    return 0;
