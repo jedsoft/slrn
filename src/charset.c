@@ -363,7 +363,7 @@ int slrn_convert_fprintf(FILE *fp, char *to_charset, char *from_charset, const c
 	return retval;
      }
    
-   if (NULL == (tmp = slrn_convert_substring(str, 0, 0, to_charset, from_charset, 0)))
+   if (NULL == (tmp = slrn_convert_substring(str, 0, strlen (str), to_charset, from_charset, 0)))
      {
 	slrn_free(str);
 	return -1;

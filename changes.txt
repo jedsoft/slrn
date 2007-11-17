@@ -118,6 +118,9 @@ Changes since 0.9.8.8pl1
     properly handled.
 56. src/art.c: Added a separate field to the article line structure
     for the quote-level.
+57. src/charset.c: slrn_convert_substring was being called with a
+    length of 0 instead of the length of the string.  This was causing
+    the conversion to the editor characterset to fail.
 
 {{{ Previous Versions 
 
