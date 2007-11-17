@@ -388,8 +388,9 @@ int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_char
 	slrn_error (_("Can't convert %s -> %s\n"), from_charset, to_charset);
 	return -1;
      }
-   
-   while ((line != NULL) && (line->flags & HEADER_LINE)) /* Headers are handled extra */
+
+   /* Headers are handled elsewhere */
+   while ((line != NULL) && (line->flags & HEADER_LINE)) 
      {
 	line=line->next;
      }
@@ -413,114 +414,101 @@ int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_char
    return 0;
 }
 
-/* converts a->raw_lines and stores the encoded lines in a->lines*/
-int slrn_test_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_charset)
+ /* It returns 0 if it did not convert, 1 if it did, -1 upon error.
+  * Only those lines that have the 8bit flag set will be converted.
+  */
+int slrn_test_convert_lines (Slrn_Article_Line_Type *rlines, char *to_charset, char *from_charset)
 {
 #ifdef HAVE_ICONV
-   Slrn_Article_Line_Type *rline, *elines=NULL, *tmp;
-   char *nline;
-   int error=0;
-   
+   Slrn_Article_Line_Type *rline;
+   Slrn_Article_Line_Type *elines, *eline;
    iconv_t cd;
-   
+   int status;
+
    if ((cd = iconv_open(to_charset, from_charset)) == (iconv_t)(-1))
-     {
-	slrn_error (_("Can't convert %s -> %s\n"), from_charset, to_charset);
-	return -1;
-     }
-   
-   rline=a->raw_lines;
+     return 0;
+
+   elines = eline = NULL;
+   rline = rlines;
+
+   status = 0;
    while (rline != NULL)
      {
-	if (slrn_string_nonascii(rline->buf))
-	  {
-	     error=0;
-	     
-	     switch (iconv_convert_string(cd, rline->buf, strlen (rline->buf), 1, &nline))
-	       {
-		case 1:
-		  if (elines==NULL)
-		    {
-		       elines = (Slrn_Article_Line_Type *) slrn_safe_malloc (sizeof(Slrn_Article_Line_Type));
-		    }
-		  else
-		    {
-		       elines->next = (Slrn_Article_Line_Type *) slrn_safe_malloc (sizeof(Slrn_Article_Line_Type));
-		       elines->next->prev=elines;
-		       elines = elines->next;
-		    }
-		  elines->buf=nline;
-		  break;
+	Slrn_Article_Line_Type *next;
 
-		case 0:
-		  if (elines==NULL)
-		    {
-		       elines = (Slrn_Article_Line_Type *) slrn_safe_malloc (sizeof(Slrn_Article_Line_Type));
-		    }
-		  else
-		    {
-		       elines->next = (Slrn_Article_Line_Type *) slrn_safe_malloc (sizeof(Slrn_Article_Line_Type));
-		       elines->next->prev=elines;
-		       elines = elines->next;
-		    }
-		  elines->buf=slrn_safe_strmalloc (rline->buf);
-		  break;
-		  
-		default:
-		  if (elines != NULL)
-		    {
-		       while (elines->prev != NULL)
-			 {
-			    elines = elines->prev;
-			 }
-		       slrn_art_free_article_line(elines);
-		    }
-		  return -1;
-		  break;
-	       }
+	if (0 == (rline->flags & LINE_HAS_8BIT_FLAG))
+	  {
+	     rline = rline->next;
+	     continue;
+	  }
+
+	next = (Slrn_Article_Line_Type *) slrn_malloc (sizeof(Slrn_Article_Line_Type), 1, 1);
+	if (next == NULL)
+	  {
+	     status = -1;
+	     goto free_return;
+	  }
+
+	switch (iconv_convert_string (cd, rline->buf, strlen (rline->buf), 1, &next->buf))
+	  {
+	   case 1:		       /* line converted ok */
+	     if (eline == NULL)
+	       elines = next;
+	     else
+	       eline->next = next;
+	     eline = next;	     
+	     break;
+	     
+	   case 0:		       /* failed to convert */
+	     status = 0;
+	     slrn_art_free_line (next);
+	     goto free_return;
+
+	   default:
+	     status = -1;
+	     slrn_art_free_line (next);
+	     goto free_return;
 	  }
 	rline=rline->next;
      }
 
-   if (elines != NULL)
-     {
-	while (elines->prev != NULL)
-	  {
-	     elines = elines->prev;
-	  }
-     }
-   
-   rline=a->raw_lines;
+   /* Converted ok if we get here */
+   eline = elines;
+   rline = rlines;
    while (rline != NULL)
      {
-	if (slrn_string_nonascii(rline->buf))
+	if (0 == (rline->flags & LINE_HAS_8BIT_FLAG))
 	  {
-	     a->cline->next=elines;
-	     elines=elines->next;
-	     if (elines != NULL)
-		  elines->prev=NULL;
-	     tmp=rline;
-	     rline=rline->next;
-	     tmp->next=NULL;
-	     tmp->prev=NULL;
-	     slrn_art_free_article_line(tmp);
+	     rline = rline->next;
+	     continue;
 	  }
-	else
-	  {
-	     a->cline->next=rline;
-	     rline=rline->next;
-	  }
-	a->cline->next->prev=a->cline;
-	a->cline=a->cline->next;
-	a->cline->next=NULL;
+	slrn_free (rline->buf);
+	rline->buf = eline->buf;
+	eline->buf = NULL;
+
+	rline->flags &= ~LINE_HAS_8BIT_FLAG;
+
+	rline = rline->next;
+	eline = eline->next;
      }
-   a->raw_lines=NULL;
-   return 0;
+   status = 1;
+   /* drop */
+   
+free_return:
+   iconv_close (cd);
+   while (elines != NULL)
+     {
+	eline = elines;
+	elines = elines->next;
+	slrn_art_free_line (eline);
+     }
+   return status;
+
 #else
    (void) a;
    (void) to_charset;
    (void) from_charset;
-   return 0;
+   return 1;
 #endif
 }
 

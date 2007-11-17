@@ -173,7 +173,7 @@ int _slrn_art_hide_quotes (Slrn_Article_Type *a, int reset) /*{{{*/
 	  {
 	     if (Art_Hide_Quote_Level > 1)
 	       {
-		  if (QUOTE_LEVEL(l->flags) >= (unsigned int) Art_Hide_Quote_Level - 1)
+		  if (l->v.quote_level + 1 >= (unsigned int) Art_Hide_Quote_Level)
 		    l->flags |= HIDDEN_LINE;
 	       }
 	     /* Show first line of quoted material; try to pick one that
@@ -294,13 +294,9 @@ static int try_supercite (Slrn_Article_Line_Type *l) /*{{{*/
 	if ((l == NULL) || (count == 0)) return ret;
 	
 	/* Now find out what is used for citing. */
-#if SLANG_VERSION < 20000
-	ofs = re->beg_matches[1];
-	len = re->end_matches[1];
-#else
 	if (-1 == SLregexp_nth_match (re, 1, &ofs, &len))
 	  return ret;
-#endif
+
 	b = (unsigned char *) l->buf + ofs;
 	if (len > sizeof (name) - 2) return ret;
 
@@ -379,7 +375,7 @@ void slrn_art_mark_quotes (Slrn_Article_Type *a) /*{{{*/
 	       (NULL != (b = is_matching_line (b, Slrn_Ignore_Quote_Regexp))))
 	  level++;
 
-	l->flags |= ((level-1) << QUOTE_LEVEL_SHIFT);
+	l->v.quote_level = level;
 	l = l->next;
      }
    a->is_modified = 1;
@@ -518,11 +514,9 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 		  continue;
 	       }
 
-	     if (0 == slrn_case_strncmp ("Path: ",
-					 l->buf, 6))
+	     if (0 == slrn_case_strncmp ("Path: ", l->buf, 6))
 	       header_char_delimiter = '!';
-	     else if (0 == slrn_case_strncmp ( "Newsgroups: ",
-					      l->buf, 12))
+	     else if (0 == slrn_case_strncmp ( "Newsgroups: ", l->buf, 12))
 	       header_char_delimiter = ',';
 	  }
 	else if (l->flags & QUOTE_LINE)
@@ -620,6 +614,10 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 		  if (new_l->next != NULL) new_l->next->prev = new_l;
 
 		  new_l->flags = l->flags | WRAPPED_LINE;
+
+		  if (new_l->flags & QUOTE_LINE)
+		    new_l->v.quote_level = l->v.quote_level;
+
 		  l = new_l;
 		  buf = (unsigned char *) new_l->buf;
 		  len = 0;

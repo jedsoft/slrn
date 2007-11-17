@@ -36,6 +36,7 @@ OBJDIR = gw32objs#
 #-----------------------------------------------------------------------------
 CP = cp  # copy                                       <--- edit this
 RM = del # rm                                         <--- edit this
+RMDIR = rmdir #                                       <--- edit this
 
 #----------------------------------------------------------------------------
 #   Nothing below here should require changing.
@@ -112,14 +113,14 @@ slrnfeat.h: win32/slrnfeat.def slrnfeat.hin
 	$(SLSH) win32/subst.sl win32/slrnfeat.def slrnfeat.hin slrnfeat.h
 #
 slangversion: $(OBJDIR)/chkslang.exe
-	echo ./$(OBJDIR)/chkslang.exe slrn 20000
+	.\$(OBJDIR)\chkslang.exe slrn 20000
 $(OBJDIR)/chkslang.exe: $(OBJDIR)/chkslang.o
 	$(CC) $(OBJDIR)/chkslang.o -o $(OBJDIR)/chkslang.exe $(SLANG_LIB)
 $(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h $(COMMON_DEPS)
 	$(CC) -c $(SLANG_INC) chkslang.c -o $(OBJDIR)/chkslang.o
 clean:
-	$(RM) -rf *~ $(OBJDIR) slrn.exe uudecode.exe *.log \
-	core out out.* typescript files.pck* config.h
+	$(RM) *~ $(OBJS) slrn.exe uudecode.exe *.log config.h
+	$(RMDIR) $(OBJDIR)
 #
 slrnpull.exe: $(OBJDIR) config.h slangversion $(OBJSpull)
 	$(CC) $(OBJSpull) -o slrnpull.exe -L$(SLIBDIR) -lslang $(MISCLIBS)

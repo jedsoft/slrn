@@ -1647,9 +1647,15 @@ static int load_startup_file (void)
    if (-1 == SLang_load_file ("slrn.sl"))
      {
 	slrn_error (_("Configuration error: Unable to load startup file"));
+
+	if (SLang_get_error () == SL_Open_Error)
+	  {
+	     slrn_error (_("The hardcoded load path is set to: %s"), SLRN_SLANG_DIR);
+	     slrn_error (_("You make need to set the %s environment variable."), ENV_SLRN_SLANG_DIR);
+	  }
 	return -1;
      }
-   
+
    return 0;
 }
 

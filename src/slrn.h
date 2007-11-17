@@ -153,8 +153,7 @@ extern int Graphic_Chars_Mode;
 #define UNDERLINE_COLOR		31
 #define ITALICS_COLOR		32
 #define URL_COLOR		33
-#define QUOTE_COLOR	50
+#define QUOTE_COLOR		50
 
-#define MAX_QUOTE_LEVELS   8
-
+#define MAX_QUOTE_LEVELS	 8
 #endif				       /* _SLRN_SLRN_H_ */

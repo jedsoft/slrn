@@ -110,6 +110,14 @@ Changes since 0.9.8.8pl1
 52. src/mime.c: Off by 1 bug in split_qp_lines would sometimes cause a
     call to realloc with a length of 0, which had the effect of
     freeing the buffer.
+53. src/interp.c: If slrn.sl is not found, then print the value of the
+    load-path.
+54. src/Makefile.g32: mingw32 tweaks (Rudy Taraschi).
+55. src/charset.c: Rewrote the high-level character-set conversion
+    routine.  Previously, the outgoing character set was not being
+    properly handled.
+56. src/art.c: Added a separate field to the article line structure
+    for the quote-level.
 
 {{{ Previous Versions 
 

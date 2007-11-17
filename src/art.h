@@ -154,24 +154,25 @@ typedef struct Slrn_Article_Line_Type
 {
    struct Slrn_Article_Line_Type *next, *prev;
    unsigned int flags;
-#define LINE_TYPE_MASK		0x00FF
 #define HEADER_LINE		0x0001
 #define QUOTE_LINE		0x0002
 #define SIGNATURE_LINE		0x0004
 #define PGP_SIGNATURE_LINE	0x0008
 #define VERBATIM_LINE		0x0010
 #define VERBATIM_MARK_LINE	0x0020
+#define LINE_TYPE_MASK		0x00FF
 
-#define LINE_ATTRIBUTES_MASK	0x0700
 #define WRAPPED_LINE		0x0100
 #define SPOILER_LINE		0x0200
 #define HIDDEN_LINE		0x0400
+#define LINE_ATTRIBUTES_MASK	0x0700
 
-#define QUOTES_LEVEL_MASK	0x1000
-   /* The last few bits are devoted to quote levels. */
-#define QUOTE_LEVEL_SHIFT 12	       /* do NOT change this */
-#define QUOTE_LEVEL(flags) ((flags) >> QUOTE_LEVEL_SHIFT)
-
+#define LINE_HAS_8BIT_FLAG	0x8000
+   union
+     {
+	unsigned int quote_level;
+     }
+   v;
    char *buf;
 }
 Slrn_Article_Line_Type;
@@ -268,8 +269,8 @@ extern int Slrn_Highlight_Unread;
 extern int slrn_set_header_format (unsigned int, char *);
 
 extern void slrn_art_sync_article (Slrn_Article_Type *);
-extern void slrn_art_free_article_line (Slrn_Article_Line_Type *);
-extern void slrn_art_free_article_lines (Slrn_Article_Type *);
+extern void slrn_art_free_line (Slrn_Article_Line_Type *);
+extern void slrn_art_free_article_line_list (Slrn_Article_Line_Type *);
 extern void slrn_art_free_article (Slrn_Article_Type *);
 extern int slrn_art_get_unread (void);
 

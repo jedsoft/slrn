@@ -16,7 +16,7 @@ extern int slrn_test_and_convert_string(char *str, char **dest, char *to_charset
 extern int slrn_convert_fprintf(FILE *fp, char *to_charset, char *from_charset, const char *format, ... );
 
 extern int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_charset);
-extern int slrn_test_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_charset);
+extern int slrn_test_convert_lines (Slrn_Article_Line_Type *lines, char *to_charset, char *from_charset);
 
 extern char *Slrn_Config_Charset;
 extern char *Slrn_Display_Charset;

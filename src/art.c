@@ -561,16 +561,19 @@ static void init_article_window_struct (void) /*{{{*/
 
 /*}}}*/
 
-void slrn_art_free_article_line (Slrn_Article_Line_Type *l)
+void slrn_art_free_line (Slrn_Article_Line_Type *l)
 {
-   Slrn_Article_Line_Type *next;
-   
-   while (l != NULL)
+   slrn_free ((char *) l->buf);
+   slrn_free ((char *) l);
+}
+
+void slrn_art_free_article_line_list (Slrn_Article_Line_Type *lines)
+{
+   while (lines != NULL)
      {
-	slrn_free ((char *) l->buf);
-	next = l->next;
-	slrn_free ((char *) l);
-	l = next;
+	Slrn_Article_Line_Type *next = lines->next;
+	slrn_art_free_line (lines);
+	lines = next;
      }
 }   
 
@@ -584,11 +587,16 @@ static Slrn_Article_Line_Type *copy_article_line (Slrn_Article_Line_Type *l)
 	if ((r == NULL) ||
 	    (NULL == (r->buf = slrn_strmalloc (l->buf, 0))))
 	  {
-	     slrn_art_free_article_line (retval);
+	     slrn_art_free_article_line_list (retval);
 	     slrn_free ((char *)r);
 	     return NULL;
 	  }
 	r->flags = l->flags;
+	if (l->flags & QUOTE_LINE)
+	  {
+	     r->v.quote_level = l->v.quote_level;
+	  }
+
 	r->next = NULL;
 	if (retval == NULL)
 	  {
@@ -606,13 +614,13 @@ static Slrn_Article_Line_Type *copy_article_line (Slrn_Article_Line_Type *l)
    return retval;
 }
 
-void slrn_art_free_article_lines (Slrn_Article_Type *a)
+static void free_article_lines (Slrn_Article_Type *a)
 {
    if (a == NULL)
      return;
    
-   slrn_art_free_article_line(a->lines);
-   slrn_art_free_article_line(a->raw_lines);
+   slrn_art_free_article_line_list (a->lines);
+   slrn_art_free_article_line_list (a->raw_lines);
    a->lines = NULL;
    a->raw_lines = NULL;
    a->cline=NULL;
@@ -627,7 +635,7 @@ void slrn_art_free_article (Slrn_Article_Type *a)
      Slrn_Current_Article = NULL;
 
    slrn_mime_free(&a->mime);
-   slrn_art_free_article_lines (a);
+   free_article_lines (a);
    slrn_free ((char *) a);
 }
 
@@ -2570,7 +2578,7 @@ int slrn_string_to_article (char *str)
    if (NULL == (a = Slrn_Current_Article))
      return -1;
 
-   slrn_art_free_article_lines (a);
+   free_article_lines (a);
    a->is_modified = 1;
    a->needs_sync = 1;
 
@@ -8868,7 +8876,7 @@ static void display_article_line (Slrn_Article_Line_Type *l)
 	break;
 
       case QUOTE_LINE:
-	color = QUOTE_COLOR + QUOTE_LEVEL(l->flags);
+	color = QUOTE_COLOR + l->v.quote_level;
 	use_emph_mask = EMPHASIZE_QUOTES;
 	use_rot13 = 1;
 	break;

@@ -712,6 +712,9 @@ static int split_qp_lines (Slrn_Article_Type *a)
 
 	new_line->buf = buf1;
 	new_line->flags = line->flags;
+	if (line->flags & QUOTE_LINE)
+	  new_line->v.quote_level = line->v.quote_level;
+
 	new_line->next = next;
 	new_line->prev = line;
 	if (next != NULL)
@@ -1081,8 +1084,7 @@ static void steal_raw_lines (Slrn_Article_Type *a, Slrn_Article_Line_Type *line)
  * a->lines, whereas the body is in a->raw_lines.  Clearly this needs to be
  * corrected.
  */
-/* expexts a->cline pointing to the last headerline, and the body in a->raw_lines */
-Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, char *from_charset) /*{{{*/
+Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_charset) /*{{{*/
 {
    Slrn_Article_Line_Type *header_sep, *rline;
    int eightbit = 0;
@@ -1095,7 +1097,7 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, char *from_c
 	if (slrn_string_nonascii(rline->buf))
 	  {
 	     eightbit = 1;
-	     break;
+	     rline->flags |= LINE_HAS_8BIT_FLAG;
 	  }
 	rline = rline->next;
      }
@@ -1115,8 +1117,6 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, char *from_c
 	return NULL;
      }
 
-   rline=a->raw_lines;
-
    len = 1 + strlen (Slrn_Outgoing_Charset);
    if (NULL == (charset = slrn_malloc (len, 0, 1)))
      return MIME_MEM_ERROR("Mime Headers");
@@ -1124,6 +1124,8 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, char *from_c
    n = 0;
    while (1)
      {
+	int status;
+
 	if (-1 == SLextract_list_element (Slrn_Outgoing_Charset, n, ',', charset, len))
 	  {
 	     slrn_free (charset);
@@ -1131,16 +1133,23 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article(Slrn_Article_Type *a, char *from_c
 	  }
 
 	if (0 == slrn_case_strcmp (charset, from_charset))
+	  break; /* No recoding needed */
+	
+	status = slrn_test_convert_lines (a->raw_lines, charset, from_charset);
+	if (status == -1)
 	  {
-	     /* No recoding needed */
-	     steal_raw_lines (a, header_sep);
-	     break;
+	     slrn_free (charset);
+	     /* This error message may not be correct */
+	     return slrn_add_mime_error(NULL, _("Can't determine suitable charset for body"), NULL, -1 , MIME_ERROR_CRIT);
 	  }
-	if (0 == slrn_test_convert_article(a, charset, from_charset))
-	  break;
+
+	if (status == 1)
+	  break;		       /* converted ok */
 	
 	n++;
      }
+
+   steal_raw_lines (a, header_sep);
 
    if ((NULL == slrn_append_header_keyval (a, "Mime-Version", "1.0"))
        || (NULL == slrn_append_to_header (a, slrn_strdup_printf ("Content-Type: text/plain; charset=%s", charset),1))
