@@ -319,16 +319,22 @@ char *slrn_substrjoin (char *a, char *amax, char *b, char *bmax, char *s)
 
    len_a = (amax == NULL) ? strlen (a) : (unsigned int)(amax - a);
    len_b = (bmax == NULL) ? strlen (b) : (unsigned int)(bmax - b);
-   len_s = strlen (s);
+   
+   if ((len_a == 0) || (len_b == 0))
+     len_s = 0;
+   else
+     len_s = strlen (s);
 
    len = len_a + len_s + len_b;
    c = slrn_malloc (len+1, 0, 1);
    if (c == NULL)
      return NULL;
-   
+
    strncpy (c, a, len_a);
-   strcpy (c+len_a, s);
+   if (len_s != 0)
+     strcpy (c+len_a, s);
    strncpy (c+len_a+len_s, b, len_b);
+
    c[len] = 0;
    return c;
 }

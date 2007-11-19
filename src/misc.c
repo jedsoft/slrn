@@ -2827,7 +2827,6 @@ void slrn_get_user_info (void) /*{{{*/
 
 #define IS_ATEXT(x) (((x) > 0x20) && ((x) < 0x7f) && \
 			(NULL == slrn_strbyte ("\"(),.:;<>@[\\]", (x))))
-
 static int is_dot_atom (char *str)
 {
    char ch = *str++;
@@ -2840,47 +2839,79 @@ static int is_dot_atom (char *str)
    return 1;
 }
 
-static int is_phrase (char *str)
+static char *make_escaped_string (char *src, int is_comment)
 {
-   char ch;
-   while ((ch = *str++))
-     if ((!IS_ATEXT (ch)) && (0 == (ch & 0x80)) &&
-	 (ch != ' ') && (ch != '\t')) return 0;
-   /* Note: 8bit characters are encoded later and become atext */
-   return 1;
-}
+   unsigned int len, dlen;
+   char ch, *p, *pmax;
+   char *dest;
 
-static char *make_quoted_string (char *src)
-{
-   size_t extrachars =3;
-   char ch, *p, *dest;
-   
    if ((src == NULL) || (*src == 0)) return NULL;
 
+   len = strlen (src);
    p = src;
-   while (0 != (ch = *p++))
+   pmax = p + len;
+   dlen = 0;
+
+   while (p < pmax)
      {
-	if ((ch == 0x0a) || (ch == 0x0d)) continue;
-	if ((ch == '\t') || (ch == '"') || (ch == '\\'))
+	switch (*p++)
 	  {
-	    extrachars++;
+	   case '\\':
+	     dlen++;
+	     break;
+	     
+	   case '"':
+	     if (is_comment == 0)
+	       dlen++;
+	     break;
+	     
+	   case '(': case ')':
+	     if (is_comment)
+	       dlen++;
+	     break;
 	  }
      }
-   dest = p = slrn_safe_malloc(strlen(src)+extrachars);
    
-   *p++ = '"';
-   while ((ch = *src++))
+   dest = slrn_malloc (len + dlen + 3, 0, 1);
+   if (dest == NULL)
+     return NULL;
+   
+   p = dest;
+   if (is_comment)
+     *p++ = '(';
+   else
+     *p++ = '"';
+   
+   while (1)
      {
-	if ((ch == 0x0a) || (ch == 0x0d)) continue;
-	if ((ch == '\t') || (ch == '"') || (ch == '\\'))
+	ch = *src++;
+	switch (ch)
 	  {
+	   case 0:
+	     if (is_comment)
+	       *p++ = ')';
+	     else
+	       *p++ = '"';
+	     *p = 0;
+	     return dest;
+
+	   case '\\':
 	     *p++ = '\\';
+	     break;
+	     
+	   case '"':
+	     if (is_comment == 0)
+	       *p++ = '\\';
+	     break;
+	     
+	   case '(': case ')':
+	     if (is_comment)
+	       *p++ = '\\';
+	     break;
 	  }
+
 	*p++ = ch;
      }
-   
-   *p++ = '"'; *p = '\0';
-   return dest;
 }
 
 /* returns NULL upon failure */
@@ -2890,22 +2921,76 @@ static char *make_localpart (char *username)
      return NULL;
    if (is_dot_atom (username))
      {
-	
 	return slrn_safe_strmalloc(username);
      }
-   return make_quoted_string (username);
+   return make_escaped_string (username, 0);
 }
+
 
 static char *make_realname (char *realname)
 {
+   char *p, *pmax;
+   int flags;
+#define REALNAME_HAS_8BIT	0x1
+#define REALNAME_HAS_CTRL	0x2
+#define REALNAME_HAS_SPEC	0x4
+
    if ((realname == NULL) || (*realname == 0) )
      return NULL;
-   if (is_phrase (realname))
+   /*
+    * If realname consists only of atom-text, or 8-bit, then it may
+    * be encoded as an atom.  If it contains specials, it must be encoded
+    * as a quoted-string, or a comment.  It illegal for an 8 bit character
+    * to be in a quoted string since the text of a quoted string cannot
+    * be mime-encoded.
+    */
+   p = realname;
+   pmax = p + strlen (realname);
+   flags = 0;
+   while (p < pmax)
      {
-	return slrn_safe_strmalloc(realname);
+	unsigned char ch = (unsigned char) *p++;
+	if (ch & 0x80)
+	  {
+	     flags |= REALNAME_HAS_8BIT;
+	     continue;
+	  }
+	switch (ch)
+	  {
+	   case '\r':
+	   case '\n':
+	   case 127:
+	     return NULL;
+
+	   case '(': case ')': case '<': case '>': case '[':
+	   case ']': case ':': case '@': case '\\': case ',':
+	   case '.':
+	   case '"':		       /* not a special, but treated like one here */
+	     flags |= REALNAME_HAS_SPEC;
+	     break;
+	     
+	   case ' ': case '\t':
+	     break;
+	     
+	   default:
+	     if (ch < 32)
+	       {
+		  flags |= REALNAME_HAS_CTRL;
+		  break;
+	       }
+	     break;
+	  }
      }
-   return make_quoted_string (realname);
+   
+   if ((flags == 0) || (flags == REALNAME_HAS_8BIT))
+     return slrn_strmalloc (realname, 1);
+   
+   if (flags & REALNAME_HAS_8BIT)
+     return make_escaped_string (realname, 1);
+   
+   return make_escaped_string (realname, 0);
 }
+
 
 char *slrn_make_from_string (void)
 {

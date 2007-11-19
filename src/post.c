@@ -625,7 +625,7 @@ static int prepare_header (VFILE *vp, unsigned int *linenum, Slrn_Article_Type *
    system_os_name = slrn_get_os_name ();
 
 #if SLRN_HAS_STRICT_FROM
-   if (NULL != (tmp = slrn_make_from_header_string ()))
+   if (NULL != (tmp = slrn_make_from_string ()))
      {
 	if (NULL != (err = slrn_mime_header_encode (&tmp, from_charset)))
 	  err->lineno = 0;

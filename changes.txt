@@ -121,6 +121,11 @@ Changes since 0.9.8.8pl1
 57. src/charset.c: slrn_convert_substring was being called with a
     length of 0 instead of the length of the string.  This was causing
     the conversion to the editor characterset to fail.
+58. src/mime.c: Rewrote all the email-address encoding routines
+    in an effort to address some encoding bugs.
+59. src/misc.c: Rewrote the email address generation routines to
+    comply with the MIME requirement that no encoding should take
+    place in a quoted-string. 
 
 {{{ Previous Versions 
 
