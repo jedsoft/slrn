@@ -8876,7 +8876,7 @@ static void display_article_line (Slrn_Article_Line_Type *l)
 	break;
 
       case QUOTE_LINE:
-	color = QUOTE_COLOR + l->v.quote_level;
+	color = QUOTE_COLOR + (l->v.quote_level % MAX_QUOTE_COLORS);
 	use_emph_mask = EMPHASIZE_QUOTES;
 	use_rot13 = 1;
 	break;

@@ -371,8 +371,7 @@ void slrn_art_mark_quotes (Slrn_Article_Type *a) /*{{{*/
 	  }
 	l->flags |= QUOTE_LINE;
 	level = 1;
-	while ((level < MAX_QUOTE_LEVELS) &&
-	       (NULL != (b = is_matching_line (b, Slrn_Ignore_Quote_Regexp))))
+	while (NULL != (b = is_matching_line (b, Slrn_Ignore_Quote_Regexp)))
 	  level++;
 
 	l->v.quote_level = level;

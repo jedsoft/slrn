@@ -1226,7 +1226,7 @@ int slrn_set_object_color (char *name, char *fg, char *bg,
    if (!strncmp (name, "quotes", 6))
      {
 	int level = atoi (name+6);
-	if ((0<=level) && (level<MAX_QUOTE_LEVELS))
+	if ((0<=level) && (level<MAX_QUOTE_COLORS))
 	  {
 	     SLtt_set_color (QUOTE_COLOR + level, name, fg, bg);
 #ifndef IBMPC_SYSTEM
@@ -1276,7 +1276,7 @@ char *slrn_get_object_color (char *name, int want_bg) /*{{{*/
    if (!strncmp (name, "quotes", 6))
      {
 	int level = atoi (name+6);
-	if ((0<=level) && (level<MAX_QUOTE_LEVELS))
+	if ((0<=level) && (level<MAX_QUOTE_COLORS))
 	  {
 	     SLtt_Char_Type color = SLtt_get_color_object (QUOTE_COLOR + level);
 	     return get_name_for_color (color, want_bg);
@@ -1745,7 +1745,7 @@ void slrn_startup_initialize (void) /*{{{*/
 	SLtt_set_mono (h->value, NULL, h->mono);
 	h++;
      }
-   for (i = 1; i < MAX_QUOTE_LEVELS; i++)
+   for (i = 1; i < MAX_QUOTE_COLORS; i++)
      {
 	SLtt_set_color (QUOTE_COLOR + i, NULL, "red", DEF_BG);
 	SLtt_set_mono (QUOTE_COLOR + i, NULL, 0);

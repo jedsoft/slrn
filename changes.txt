@@ -125,7 +125,8 @@ Changes since 0.9.8.8pl1
     in an effort to address some encoding bugs.
 59. src/misc.c: Rewrote the email address generation routines to
     comply with the MIME requirement that no encoding should take
-    place in a quoted-string. 
+    place in a quoted-string.
+60. src/art.c: Respect MAX_QUOTE_COLORS when setting the quote color.
 
 {{{ Previous Versions 
 
