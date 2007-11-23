@@ -127,6 +127,10 @@ Changes since 0.9.8.8pl1
     comply with the MIME requirement that no encoding should take
     place in a quoted-string.
 60. src/art.c: Respect MAX_QUOTE_COLORS when setting the quote color.
+61. src/art.c: The color index for quotes was off by 1.
+62. src/post.c: When configured with --enable-strict-from, a
+    non-existent function append_to_header was being
+    called instead of slrn_append_to_header.
 
 {{{ Previous Versions 
 

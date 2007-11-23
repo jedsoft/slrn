@@ -3202,7 +3202,7 @@ static void reply_to_mailing_list (void)
  */
 static void followup (void) /*{{{*/
 {
-   char *msgid, *newsgroups, *subject, *from, *xref, *quote_str;
+   char *msgid, *newsgroups, *subject, *xref, *quote_str;
    char *cc_address, *cc_address_t;
    char cc_address_buf[256];
    char *followupto = NULL;
@@ -3480,15 +3480,17 @@ static void followup (void) /*{{{*/
    fprintf (fp, "Newsgroups: %s\n", newsgroups);  n = 3;
 
 #if ! SLRN_HAS_STRICT_FROM
-   from = slrn_make_from_string ();
-   if (from == NULL) return;
-   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) < 0)
      {
+	char *from = slrn_make_from_string ();
+	if (from == NULL) return;
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) < 0)
+	  {
+	     slrn_free(from);
+	     goto free_and_return;
+	  }
 	slrn_free(from);
-	goto free_and_return;
+	n++;
      }
-   slrn_free(from);
-   n++;
 #endif
    
    if (NULL == (subject = slrn_safe_strmalloc (subject)))
@@ -8876,7 +8878,7 @@ static void display_article_line (Slrn_Article_Line_Type *l)
 	break;
 
       case QUOTE_LINE:
-	color = QUOTE_COLOR + (l->v.quote_level % MAX_QUOTE_COLORS);
+	color = QUOTE_COLOR + ((l->v.quote_level-1) % MAX_QUOTE_COLORS);
 	use_emph_mask = EMPHASIZE_QUOTES;
 	use_rot13 = 1;
 	break;

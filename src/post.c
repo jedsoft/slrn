@@ -629,8 +629,8 @@ static int prepare_header (VFILE *vp, unsigned int *linenum, Slrn_Article_Type *
      {
 	if (NULL != (err = slrn_mime_header_encode (&tmp, from_charset)))
 	  err->lineno = 0;
-	
-	if (-1 == append_to_header (a, tmp))
+
+	if (NULL == slrn_append_to_header (a, tmp, 0))
 	  {
 	     slrn_add_mime_error (err, _("Out of memory."), tmp, 0, MIME_ERROR_CRIT);
 	     slrn_free (tmp);
@@ -1715,7 +1715,7 @@ return_error:
 int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
 {
    FILE *fp;
-   char file[SLRN_MAX_PATH_LEN], *from;
+   char file[SLRN_MAX_PATH_LEN];
    unsigned int header_lines;
    int ret;
 
@@ -1733,15 +1733,19 @@ int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
    header_lines = 8;
    fprintf (fp, "Newsgroups: %s\n", newsgroup);
 #if ! SLRN_HAS_STRICT_FROM
-   if (NULL == (from = slrn_make_from_string ()))
-	return -1;
-   if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) <0)
      {
+	char *from;
+	
+	if (NULL == (from = slrn_make_from_string ()))
+	  return -1;
+	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) <0)
+	  {
+	     slrn_free(from);
+	     return -1;
+	  }
 	slrn_free(from);
-	return -1;
+	header_lines++;
      }
-   slrn_free(from);
-   header_lines++;
 #endif
    if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "Subject: %s\n", subj)<0)
 	return -1;
