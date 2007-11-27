@@ -56,3 +56,5 @@ Slrn_Str_Var_Type;
 
 extern Slrn_Int_Var_Type Slrn_Int_Variables [];
 extern Slrn_Str_Var_Type Slrn_Str_Variables [];
+
+extern void slrn_print_config (FILE *);

@@ -36,11 +36,11 @@ define slrn_set_macro_dir_hook (dirs)
      }
 }
 
-define slrn_get_macro_dir_hook (dir)
+define slrn_get_macro_dir_hook ()
 {
    variable path = get_slang_load_path ();
    variable delim = char (path_get_delimiter ());
-   return strtrans (dir, delim, ",");
+   return strtrans (path, delim, ",");
 }
 
 define search_path_for_file (path, file, delim)

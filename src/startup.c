@@ -485,8 +485,22 @@ static Charset_Table_Type Charset_Table[] =
    {NULL, NULL}
 };
 
+static void print_charsets (FILE *fp)
+{
+   Charset_Table_Type *c;
 
-  
+   fputs (_("Character set configuration:\n"), fp);
+   c = Charset_Table;
+   while (c->name != NULL)
+     {
+	char *value = *c->charsetp;
+	if (value == NULL)
+	  value = "";
+	fprintf (fp, "\t%s=%s\n", c->name, value);
+	c++;
+     }
+}
+
 static int set_charset_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
    char *name, *value;
@@ -1007,6 +1021,64 @@ int slrn_set_integer_variable (char *name, int value) /*{{{*/
 }
 
 /*}}}*/
+
+static void print_int_vars (FILE *fp)
+{
+   Slrn_Int_Var_Type *ip;
+
+   (void) fputs (_("Integer variables:\n"), fp);
+
+   ip = Slrn_Int_Variables;
+   while (ip->what != NULL)
+     {
+	int val;
+
+	if (ip->get_set_func != NULL)
+	  {
+	     if (-1 == (*ip->get_set_func) (ip, 0, &val))
+	       val = -1;
+	  }
+	else if (ip->ivalp == NULL)
+	  val = 0;
+	else
+	  val = *ip->ivalp;
+
+	fprintf (fp, "\t%s=%d\n", ip->what, val);
+	ip++;
+     }
+}
+
+static void print_string_vars (FILE *fp)
+{
+   Slrn_Str_Var_Type *sp;
+
+   (void) fputs (_("String variables:\n"), fp);
+
+   sp = Slrn_Str_Variables;
+   while (sp->what != NULL)
+     {
+	char *val;
+
+	if (sp->get_set_func != NULL)
+	  {
+	     if (-1 == (*sp->get_set_func)(sp, 0, &val))
+	       (void) fprintf (fp, "\t%s=\n", sp->what);
+	     else
+	       {
+		  (void) fprintf (fp, "\t%s=\"%s\"\n", sp->what, val);
+		  slrn_free (val);
+	       }
+	  }
+	else 
+	  {
+	     if ((sp->svalp == NULL) || (NULL == (val = *sp->svalp)))
+	       (void) fprintf (fp, "\t%s=NULL\n", sp->what);
+	     else
+	       (void) fprintf (fp, "\t%s=\"%s\"\n", sp->what, val);
+	  }
+	sp++;
+     }
+}
 
 int slrn_get_variable_value (char *name, SLtype *type, char **sval, int *ival) /*{{{*/
 {
@@ -1803,7 +1875,7 @@ int slrn_read_startup_file (char *name) /*{{{*/
      }
 
    slrn_message (_("Reading startup file %s."), name);
-   
+
    save_this_file = This_File;
    save_this_line = This_Line;
    save_this_line_num = This_Line_Num;
@@ -1876,3 +1948,47 @@ static int interpret_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 }
 
 /*}}}*/
+
+static void print_env_vars (FILE *fp)
+{
+   static char *env_vars[] = 
+     {
+	"DISPLAY", "SLRNHOME", "HOME","COLORTERM", ENV_SLRN_SLANG_DIR,
+	"TMP", "TMPDIR", "SLRN_EDITOR", "SLANG_EDITOR", "EDITOR", "VISUAL",
+	"HOSTNAME", "USER", "LOGNAME", "REPLYTO", "NAME", "ORGANIZATION",
+	"NNTPSERVER", "PRINTER", "AUTOSUBSCRIBE", "AUTOUNSUBSCRIBE",
+	"SLRNHELP", "LANG",
+	NULL
+     };
+   char **var;
+
+   fputs (_("Environment variables:\n"), fp);
+
+   var = env_vars;
+   while (*var != NULL)
+     {
+	char *val = getenv (*var);
+	if (val == NULL)
+	  val = "";
+	fprintf (stdout, "\t%s=%s\n", *var, val);
+	var++;
+     }
+}
+
+static void print_utf8_vars (FILE *fp)
+{
+   (void) fputs (_("S-Lang UTF-8 configuration:\n"), fp);
+   fprintf (fp, "\tGlobal:   %d\n", SLutf8_is_utf8_mode ());
+   fprintf (fp, "\tSLinterp: %d\n", SLinterp_is_utf8_mode ());
+   fprintf (fp, "\tSLsmg:    %d\n", SLsmg_is_utf8_mode ());
+   fprintf (fp, "\tSLtt:     %d\n", SLtt_is_utf8_mode ());
+}
+
+void slrn_print_config (FILE *fp)
+{
+   print_env_vars (fp);
+   print_string_vars (fp);
+   print_int_vars (fp);
+   print_charsets (fp);
+   print_utf8_vars (fp);
+}

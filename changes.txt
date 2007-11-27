@@ -131,6 +131,11 @@ Changes since 0.9.8.8pl1
 62. src/post.c: When configured with --enable-strict-from, a
     non-existent function append_to_header was being
     called instead of slrn_append_to_header.
+63. src/misc.c: Allow the readline buffer to horizontally scroll when editing
+    long lines.
+64. macros/slrn.sl: slrn_get_macro_dir_hook was defined as taking an
+    argument.
+65. src/startup.c,src/slrn.c: Added a --show-config option.
 
 {{{ Previous Versions 
 

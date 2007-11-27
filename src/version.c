@@ -121,10 +121,9 @@ static void show_compile_time_options (FILE *fp)
    print_options (fp, Feature_Options, _("Features"));
 }
 
-void slrn_show_version (void) /*{{{*/
+void slrn_show_version (FILE *fp) /*{{{*/
 {
    char *os;
-   FILE *fp = stdout;
 
    os = slrn_get_os_name ();
 
@@ -151,8 +150,6 @@ void slrn_show_version (void) /*{{{*/
    
    fprintf (fp, _(" Default posting mechanism: %s\n"),
 	    slrn_map_object_id_to_name (1, SLRN_DEFAULT_POST_OBJ));
-
-   exit (0);
 }
 
 /*}}}*/

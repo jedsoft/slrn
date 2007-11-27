@@ -1625,15 +1625,41 @@ static void rline_update (SLrline_Type *rli, char *prompt,
 			  VOID_STAR client_data)
 {
    int col;
-       
+   char *ubuf, *u, *umax, *upoint;
+   unsigned int prompt_len;
+
    (void) client_data;
    (void) rli;
+
    slrn_push_suspension (0);
-   SLsmg_gotorc (SLtt_Screen_Rows - 1, 0);
-   SLsmg_write_string (prompt);
-   SLsmg_write_nchars (buf, point);
-   col = SLsmg_get_column ();
-   SLsmg_write_nchars (buf + point, len - point);
+   
+   prompt_len = strlen (prompt);
+   ubuf = slrn_safe_malloc (prompt_len + len + 1);
+   strcpy (ubuf, prompt);
+   strncpy (ubuf + prompt_len, buf, len);
+   
+   len += prompt_len;
+   ubuf[len] = 0;
+
+   umax = ubuf + len;
+   upoint = ubuf + prompt_len + point;
+
+   u = ubuf;
+   do
+     {
+	SLsmg_gotorc (SLtt_Screen_Rows - 1, 0);
+	SLsmg_write_nchars (u, (unsigned int) (upoint - u));
+	col = SLsmg_get_column ();
+	if (col < SLtt_Screen_Cols)
+	  break;
+
+	u = (char *)SLutf8_skip_chars ((SLuchar_Type *)u, (SLuchar_Type *)upoint, 1, NULL, 1);
+     }
+   while (u < upoint);
+
+   SLsmg_write_nchars (upoint, (unsigned int) (umax-upoint));
+   slrn_free (ubuf);
+
    SLsmg_erase_eol ();
    SLsmg_gotorc (SLtt_Screen_Rows - 1, col);
    slrn_smg_refresh ();

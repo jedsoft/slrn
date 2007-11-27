@@ -950,6 +950,7 @@ Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n\
 --debug FILE    Write debugging information to FILE\n\
 --help          Print this usage.\n\
 --kill-log FILE Keep a log of all killed articles in FILE\n\
+--show-config   Print configuration\n\
 --version       Show version and supported features\n\
 \n\
 NNTP mode has additional options; use \"slrn --nntp --help\" to display them.\n\
@@ -1031,6 +1032,7 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
    char file [SLRN_MAX_PATH_LEN];
    char *init_file = NULL;
    char *kill_logfile = NULL;
+   int print_config = 0;
 
 #if defined(HAVE_SETLOCALE) && defined(LC_ALL)
    (void) setlocale(LC_ALL, "");
@@ -1070,7 +1072,12 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
 #endif
 	     else if (!strcmp ("create", argv_i)) create_flag = 1;
 	     else if (!strcmp ("version", argv_i))
-	       slrn_show_version ();
+	       {
+		  slrn_show_version (fp);
+		  exit (0);
+	       }
+	     else if (!strcmp ("show-config", argv_i))
+	       print_config = 1;
 	     else if ((!strcmp ("kill-log", argv_i)) &&
 		      (i + 1 < (unsigned int) argc))
 	       kill_logfile = argv[++i];
@@ -1205,6 +1212,14 @@ Could not read specified config file %s\n"), init_file);
    if (no_new_groups) Slrn_Check_New_Groups = 0;
 
    slrn_prepare_charset();
+
+   if (print_config)
+     {
+	(void) putc ('\n', stdout);
+	slrn_show_version (stdout);
+	slrn_print_config (stdout);
+	slrn_quit (0);
+     }
 
 #ifdef SIGINT
    if (Slrn_TT_Initialized == 0)
