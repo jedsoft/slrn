@@ -1073,7 +1073,7 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
 	     else if (!strcmp ("create", argv_i)) create_flag = 1;
 	     else if (!strcmp ("version", argv_i))
 	       {
-		  slrn_show_version (fp);
+		  slrn_show_version (stdout);
 		  exit (0);
 	       }
 	     else if (!strcmp ("show-config", argv_i))

@@ -136,6 +136,8 @@ Changes since 0.9.8.8pl1
 64. macros/slrn.sl: slrn_get_macro_dir_hook was defined as taking an
     argument.
 65. src/startup.c,src/slrn.c: Added a --show-config option.
+66. src/slrn.c: Wrong file pointer passed to slrn_show_version,
+    causing a SEGV.
 
 {{{ Previous Versions 
 
