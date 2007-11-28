@@ -876,7 +876,7 @@ static int do_set_string_value (Slrn_Str_Var_Type *sp, char *value)
    return 0;
 }
 
-int slrn_set_string_variable (char *name, char *value) /*{{{*/
+int slrn_set_string_variable (char *name, char *value, char *charset) /*{{{*/
 {
    Slrn_Str_Var_Type *sp = Slrn_Str_Variables;
 	
@@ -922,21 +922,21 @@ int slrn_set_string_variable (char *name, char *value) /*{{{*/
 	     ss=NULL;
 	     if (slrn_string_nonascii(value))
 	       {
-		  if (Slrn_Config_Charset == NULL)
+		  if (charset == NULL)
 		    {
-		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset config CONFIG_CHARSET\"\n"),
+		       slrn_error (_("%s: if you use non ascii chars, you have to use \"charset config CONFIG_CHARSET\"\n"),
 				 This_File);
 		       return -1;
 		    }
 		  if (Slrn_Display_Charset == NULL)
 		    {
-		       slrn_message (_("%s: if you use non ascii chars, you have to use \"charset display DISPLAY_CHARSET\"\n"),
-				 This_File);
+		       slrn_error (_("%s: if you use non ascii chars, you have to use \"charset display DISPLAY_CHARSET\"\n"),
+				   This_File);
 		       return -1;
 		    }
-		  if (-1 == slrn_test_and_convert_string(value, &ss, Slrn_Display_Charset, Slrn_Config_Charset))
+		  if (-1 == slrn_test_and_convert_string(value, &ss, Slrn_Display_Charset, charset))
 		    {
-		       slrn_message (_("%s: charset convertion error\n"), This_File);
+		       slrn_error (_("%s: charset conversion error\n"), This_File);
 		       return -1;
 		    }
 		  if (-1 == do_set_string_value (sp, ss))
@@ -1142,7 +1142,7 @@ static int set_variable_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    (void) argc;
    
    if (type == STRING_TYPE)
-     ret = slrn_set_string_variable (what, svalue);
+     ret = slrn_set_string_variable (what, svalue, Slrn_Config_Charset);
    else if (type == INT_TYPE) 
      ret = slrn_set_integer_variable (what, ivalue);
    else ret = -1;

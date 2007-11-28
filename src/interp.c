@@ -52,6 +52,7 @@
 #include "version.h"
 #include "hooks.h"
 #include "help.h"
+#include "charset.h"
 #include "common.h"
 #include "strutil.h"
 
@@ -314,7 +315,12 @@ char *slrn_get_macro_dir (void)
 
 static void set_string_variable (char *s1, char *s2) /*{{{*/
 {
-   if (-1 == slrn_set_string_variable (s1, s2))
+   char *charset = Slrn_Display_Charset;
+
+   if (SLinterp_is_utf8_mode ())
+     charset = "utf-8";
+     
+   if (-1 == slrn_set_string_variable (s1, s2, charset))
      slrn_error (_("%s is not a valid variable name."), s1);
 }
 

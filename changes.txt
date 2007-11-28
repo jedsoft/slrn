@@ -138,6 +138,9 @@ Changes since 0.9.8.8pl1
 65. src/startup.c,src/slrn.c: Added a --show-config option.
 66. src/slrn.c: Wrong file pointer passed to slrn_show_version,
     causing a SEGV.
+67. src/interp.c: When setting slrn configuration variables via the
+    set_string_variable function, use the display-character-set when
+    not in UTF-8 mode.  If in UTF-8 mode, then use UTF-8.
 
 {{{ Previous Versions 
 
