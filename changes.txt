@@ -141,6 +141,9 @@ Changes since 0.9.8.8pl1
 67. src/interp.c: When setting slrn configuration variables via the
     set_string_variable function, use the display-character-set when
     not in UTF-8 mode.  If in UTF-8 mode, then use UTF-8.
+68. configure: probe for a timezone variable and tm_gmtoff field in
+    a "struct tm".
+69. src/slrn.c: When called with --help, exit with status=0
 
 {{{ Previous Versions 
 

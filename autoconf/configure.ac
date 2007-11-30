@@ -267,6 +267,20 @@ setlocale \
 isalpha isspace isdigit isalnum ispunct \
 )
 
+AC_MSG_CHECKING(for timezone in time.h)
+AC_TRY_LINK([#include <time.h>],
+	[long int tz; tz = timezone % 1],
+	[AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes)],
+	AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(for tm_gmtoff in struct tm)
+AH_TEMPLATE([HAVE_TM_GMTOFF],
+[define if you have "tm_gmtoff" in struct tm])
+AC_TRY_LINK([#include <time.h>],
+	[struct tm t; t.tm_gmtoff = 0],
+	[AC_DEFINE(HAVE_TM_GMTOFF) AC_MSG_RESULT(yes)],
+	AC_MSG_RESULT(no))
+
 AC_CACHE_CHECK(for domain in /etc/resolv.conf, slrn_cv_domain,
 [if test -f /etc/resolv.conf; then
 	slrn_cv_domain=`(grep "^domain" /etc/resolv.conf ||

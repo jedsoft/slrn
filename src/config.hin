@@ -78,6 +78,12 @@
 
 #undef HAVE_LOCALE_H
 
+/* define if you have a "timezone" variable in time.h */
+#undef HAVE_TIMEZONE
+
+/* define if you have "tm_gmtoff" in struct tm */
+#undef HAVE_TM_GMTOFF
+
 #undef HAVE_GETDOMAINNAME
 
 /* Do we have posix signals? */

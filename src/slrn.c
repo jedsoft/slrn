@@ -927,7 +927,7 @@ void slrn_error (char *fmt, ...) /*{{{*/
 /*}}}*/
 
 
-static void usage (char *extra) /*{{{*/
+static void usage (char *extra, int exit_status) /*{{{*/
 {
    printf (_("\
 Usage: slrn [--inews] [--nntp ...] [--spool] OPTIONS\n\
@@ -960,7 +960,7 @@ NNTP mode has additional options; use \"slrn --nntp --help\" to display them.\n\
      {
 	printf ("\n%s\n", extra);
      }
-   exit (1);
+   exit (exit_status);
 }
 
 /*}}}*/
@@ -986,7 +986,7 @@ static int parse_object_args (char *obj, char **argv, int argc) /*{{{*/
 	  slrn_exit_error (_("%s is not supported."), obj);
      }
    if ((num_parsed == 0) && (zero_ok == 0))
-     usage (NULL);
+     usage (NULL, 1);
    
    return num_parsed;
 }
@@ -1091,7 +1091,9 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
                     slrn_exit_error (_("Unable to open %s for debugging."), argv[i]);
                   setbuf (Slrn_Debug_Fp, (char *) NULL);
                }
-	     else usage (NULL);
+	     else if (!strcmp ("help", argv_i))
+	       usage (NULL, 0);
+	     else usage (NULL, 1);
 	  }
 	else if (!strcmp ("-create", argv_i)) create_flag = 1;
 	else if (!strcmp ("-C", argv_i)) use_color = 1;
@@ -1136,7 +1138,7 @@ static int main_init_and_parse_args (int argc, char **argv) /*{{{*/
 
    if (dsc_flag && create_flag)
      {
-	usage (_("The -d and --create flags must not be specified together."));
+	usage (_("The -d and --create flags must not be specified together."), 1);
      }
    
    if (Slrn_Batch == 0)
