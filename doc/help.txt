@@ -78,7 +78,7 @@ General movement:
   ESC LEFT           Go to previous group.
   !                  Go to the next article with a high score.
   =                  Go to the next article with the same subject.
-  L                  Go to the last read article and display it.
+  L                  Go to the last displayed article and display it.
 
 Actions:
   P                  Post a new article (no followup).

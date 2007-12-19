@@ -505,7 +505,7 @@ free_return:
    return status;
 
 #else
-   (void) a;
+   (void) rlines;
    (void) to_charset;
    (void) from_charset;
    return 1;

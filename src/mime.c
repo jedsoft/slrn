@@ -225,7 +225,7 @@ static int Index_Hex[128] =/*{{{*/
 static char *decode_quoted_printable (char *dest,/*{{{*/
 				      char *src, char *srcmax,
 				      int treat_underscore_as_space,
-				      int keep_nl)
+				      int keep_nl, int convert_null)
 {
    char *allowed_in_qp = "0123456789ABCDEFabcdef";
    unsigned char ch;
@@ -255,7 +255,9 @@ static char *decode_quoted_printable (char *dest,/*{{{*/
 	  }
 	else if ((ch == '\n') && (keep_nl == 0))
 	  *dest++ = '?';
-	else 
+	else if ((ch == 0) && convert_null)
+	  *dest++ = '?';
+	else
 	  *dest++ = (char) ch;
      }
    return dest;
@@ -277,22 +279,25 @@ static int Index_64[128] =/*{{{*/
 /*}}}*/
 #define BASE64(c) (Index_64[(unsigned char)(c) & 0x7F])
 
-static char *decode_base64 (char *dest, char *src, char *srcmax, int keep_nl) /*{{{*/
+static char *decode_base64 (char *dest, char *src, char *srcmax, int keep_nl, int convert_null) /*{{{*/
 {
    while (src + 3 < srcmax)
      {
 	char ch = (BASE64(src[0]) << 2) | (BASE64(src[1]) >> 4);
 	if ((ch == '\n') && (keep_nl == 0)) ch = '?';
+	else if ((ch == 0) && convert_null) ch = '?';
 	*dest++ = ch;
 	
 	if (src[2] == '=') break;
 	ch = ((BASE64(src[1]) & 0xf) << 4) | (BASE64(src[2]) >> 2);
 	if ((ch == '\n') && (keep_nl == 0)) ch = '?';
+	else if ((ch == 0) && convert_null) ch = '?';
 	*dest++ = ch;
 
 	if (src[3] == '=') break;
 	ch = ((BASE64(src[2]) & 0x3) << 6) | BASE64(src[3]);
 	if ((ch == '\n') && (keep_nl == 0)) ch = '?';
+	else if ((ch == 0) && convert_null) ch = '?';
 	*dest++ = ch;
 
 	src += 4;
@@ -411,8 +416,8 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 	decoded_start = s1;
 
 	if (method == 'B')
-	  s1 = decode_base64 (s1, txt, s, keep_nl);
-	else s1 = decode_quoted_printable (s1, txt, s, 1, keep_nl);
+	  s1 = decode_base64 (s1, txt, s, keep_nl, 1);
+	else s1 = decode_quoted_printable (s1, txt, s, 1, keep_nl, 1);
 
 	decoded_end = s1;
 
@@ -536,7 +541,7 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
      }
    
    /* put decoded article into buf_dest */
-   buf_pos = decode_base64 (buf_dest, buf_src, buf_src+len, keep_nl);
+   buf_pos = decode_base64 (buf_dest, buf_src, buf_src+len, keep_nl, 1);
    *buf_pos = '\0';
    
    if (a->mime.charset == NULL)
@@ -759,7 +764,7 @@ static int decode_mime_quoted_printable (Slrn_Article_Type *a)/*{{{*/
 	     len = strlen (b);
 	  }
 
-	b = decode_quoted_printable (b, b, b + len, 0, keep_nl);
+	b = decode_quoted_printable (b, b, b + len, 0, keep_nl, 1);
 	if (b < line->buf + len)
 	  {
 	     *b = 0;

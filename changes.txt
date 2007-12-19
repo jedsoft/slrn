@@ -144,6 +144,13 @@ Changes since 0.9.8.8pl1
 68. configure: probe for a timezone variable and tm_gmtoff field in
     a "struct tm".
 69. src/slrn.c: When called with --help, exit with status=0
+70. src/charset.c: An undefined variable was being referenced when
+    compiled without iconv support (Rudy Taraschi).
+71. src/Makefile.g32: clean target corrected for mingw32 build (Rudy
+    Taraschi).
+72. src/mime.c: Convert null characters ('\0') to '?' when encoded in
+    a header (they are illegal in headers).
+73. doc/help.txt: Changed "read" to "displayed" (Rudy Taraschi).
 
 {{{ Previous Versions 
 

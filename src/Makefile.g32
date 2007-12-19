@@ -34,9 +34,9 @@ OBJDIR = gw32objs#
 #-----------------------------------------------------------------------------
 #   Misc Programs
 #-----------------------------------------------------------------------------
-CP = cp  # copy                                       <--- edit this
-RM = del # rm                                         <--- edit this
-RMDIR = rmdir #                                       <--- edit this
+CP = copy
+RM = del
+RMDIR = rmdir /s /q
 
 #----------------------------------------------------------------------------
 #   Nothing below here should require changing.
@@ -119,7 +119,7 @@ $(OBJDIR)/chkslang.exe: $(OBJDIR)/chkslang.o
 $(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h $(COMMON_DEPS)
 	$(CC) -c $(SLANG_INC) chkslang.c -o $(OBJDIR)/chkslang.o
 clean:
-	$(RM) *~ $(OBJS) slrn.exe uudecode.exe *.log config.h
+	$(RM) *~ slrn.exe uudecode.exe *.log config.h
 	$(RMDIR) $(OBJDIR)
 #
 slrnpull.exe: $(OBJDIR) config.h slangversion $(OBJSpull)
