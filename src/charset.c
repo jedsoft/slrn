@@ -220,7 +220,9 @@ char *slrn_convert_string (char *from, char *str, char *strmax, char *to, int te
    char *substr;
    int free_from = 0;
 
-   if (from == NULL)
+   if ((from == NULL)
+       || (0 == slrn_case_strcmp (from, "unknown-8bit"))
+       || (0 == slrn_case_strcmp (from, "x-user-defined")))
      {
 	from = slrn_guess_charset (str, strmax);
 	if (from == NULL)

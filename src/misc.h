@@ -39,7 +39,6 @@ extern char *slrn_print_percent (char *, SLscroll_Window_Type *, int);
 
 typedef char *(PRINTF_CB)(char, void *, int *, int *);
 extern void slrn_custom_printf (char *, PRINTF_CB, void *, int, int);
-extern void slrn_write_nchars (char *, char *s, unsigned int);
 extern void slrn_write_nbytes (char *, unsigned int);
 
 extern int slrn_set_display_format (char **, unsigned int, char *);

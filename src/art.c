@@ -8532,7 +8532,8 @@ static char get_body_status (Slrn_Header_Type *h) /*{{{*/
 # define SLRN_GROUPLENS_DISPLAY_WIDTH 5
 static void disp_write_grplens (Slrn_Header_Type *h)
 {
-   char buf [SLRN_GROUPLENS_DISPLAY_WIDTH], *b, *bmax;
+   char buf [SLRN_GROUPLENS_DISPLAY_WIDTH+1], *b, *bmax;
+   int pred;
 
    if (Num_GroupLens_Rated == -1)
      return;
@@ -8540,23 +8541,23 @@ static void disp_write_grplens (Slrn_Header_Type *h)
    b = buf;
    bmax = b + SLRN_GROUPLENS_DISPLAY_WIDTH;   
    while (b < bmax) *b++ = ' ';
-     {
-	int pred = h->gl_pred;
+   *b = 0;
 
-	if (pred < 0)
-	  buf [SLRN_GROUPLENS_DISPLAY_WIDTH / 2] = '?';
-	else
+   pred = h->gl_pred;
+   if (pred < 0)
+     buf [SLRN_GROUPLENS_DISPLAY_WIDTH / 2] = '?';
+   else
+     {
+	b = buf;
+	while ((pred > 0) && (b < bmax))
 	  {
-	     b = buf;
-	     while ((pred > 0) && (b < bmax))
-	       {
-		  pred--;
-		  *b++ = '*';
-	       }
+	     pred--;
+	     *b++ = '*';
 	  }
      }
+
    slrn_set_color (GROUPLENS_DISPLAY_COLOR);
-   slrn_write_nchars (buf, buf + sizeof(buf), SLRN_GROUPLENS_DISPLAY_WIDTH);
+   SLsmg_write_nstring (buf, SLRN_GROUPLENS_DISPLAY_WIDTH);
    slrn_set_color (0);
 }
 #endif

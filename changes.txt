@@ -151,6 +151,10 @@ Changes since 0.9.8.8pl1
 72. src/mime.c: Convert null characters ('\0') to '?' when encoded in
     a header (they are illegal in headers).
 73. doc/help.txt: Changed "read" to "displayed" (Rudy Taraschi).
+74. src/charset.c: If a charset is unknown-64 or x-user-defined, use
+    the fallback character set.
+75. src/misc.c: Replaced calls to slrn_write_nchars by calls to
+    SLsmg_write_nstring (slrn_write_nchars did not quite work right).
 
 {{{ Previous Versions 
 

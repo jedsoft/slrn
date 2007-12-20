@@ -437,102 +437,6 @@ void slrn_error_now (unsigned secs, char *fmt, ...) /*{{{*/
 /*}}}*/
 
 /* Wrapper around the SLsmg routine.
- * This writes n screen characters (_not_ bytes).
- * Assumes that s contains at least n screen characters. If the last
- * character cannot be fully written, pad with spaces instead.
- */
-void slrn_write_nchars (char *s, char *smax, unsigned int n) /*{{{*/
-{
-   unsigned char *s1;
-   unsigned int eight_bit;
-   unsigned int len = 0;
-   SLuchar_Type *next = (SLuchar_Type *) s;
-
-   if (n == 0)
-     return;
-
-   if (Slrn_UTF8_Mode)
-     {
-	/* Skip past n characters. */
-	unsigned int prevlen = 0;
-	SLuchar_Type *prev = next;
-	
-	while ((len<n) && (next < (SLuchar_Type *)smax))
-	  {
-	     unsigned int nconsumed;
-	     SLwchar_Type w;
-	     unsigned int nskipped;
-
-	     prev = next;
-	     prevlen = len;
-
-	     next = SLutf8_skip_chars (prev, (SLuchar_Type *)smax, 1, &nskipped, 1);
-	     if (NULL == SLutf8_decode (prev, (SLuchar_Type *)smax, &w, &nconsumed))
-	       len += 4*nconsumed;     /* <XX> */
-	     else
-	       len += SLwchar_wcwidth (w);
-	  }
-
-	/* Note: prevlen < n */
-
-	if (len > n) /* We have to truncate the last character */
-	  {
-	     SLsmg_write_nchars (s, prev-(SLuchar_Type*)s);
-	     while (prevlen < n)
-	       {
-		  SLsmg_write_nchars (" ", 1);
-		  prevlen++;
-	       }
-	  }
-	else
-	  SLsmg_write_nchars (s, next-(SLuchar_Type*)s);
-
-	return;
-     }
-
-   /* Skip past n characters. */
-   while (len<n)
-     {
-	if (*next < 0x20)
-	  len += 2;
-	else
-	  len += 1;
-	next++;
-     }
-   
-   if (len>n) /* We have to omit the last character */
-     {
-	next--;
-	len -= 2;
-     }
-      
-   s1 = (unsigned char *) s;
-   eight_bit = SLsmg_Display_Eight_Bit;
-   
-   while (s1 < next)
-     {
-	if ((*s1 & 0x80) && (eight_bit > (unsigned int) *s1))
-	  {
-	     if (s != (char *) s1)
-	       SLsmg_write_nchars (s, (unsigned int) ((char *)s1 - s));
-	     SLsmg_write_char ('?');
-	     s1++;
-	     s = (char *) s1;
-	  }
-	else s1++;
-     }
-   
-   if (s != (char *)s1)
-     SLsmg_write_nchars (s, (unsigned int) ((char *)s1 - s));
-   
-   /* If we omitted the last char, pad with a space. */
-   if (len<n)
-     SLsmg_write_nchars (" ", 1);
-}
-/*}}}*/
-
-
-/* Wrapper around the SLsmg routine.
  * This writes n bytes (not necessarily screen characters), replacing
  * unprintable 8bit chars with question marks.
  */
@@ -721,7 +625,7 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 		  spaces--;
 	       }
 	  }
-        slrn_write_nchars (s, smax, len);
+	SLsmg_write_nstring (s, len);
 	while (spaces)
 	  {
 	     SLsmg_write_nchars (" ", 1);
