@@ -297,6 +297,96 @@ if test "$slrn_cv_domain" != no; then
 	AC_DEFINE_UNQUOTED(MY_DOMAIN_NAME, "${slrn_cv_domain}")
 fi
 
+AC_DEFUN(CF_VA_COPY,
+[
+ dnl# va_copy checks taken from glib 1.2.8
+ dnl#
+ dnl# we currently check for all three va_copy possibilities, so we get
+ dnl# all results in config.log for bug reports.
+AC_MSG_CHECKING(for an implementation of va_copy())
+AC_CACHE_VAL(slrn_cv_va_copy,[
+	AC_TRY_RUN([
+	#include <stdarg.h>
+	void f (int i, ...) {
+	va_list args1, args2;
+	va_start (args1, i);
+	va_copy (args2, args1);
+	if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
+	  exit (1);
+	va_end (args1); va_end (args2);
+	}
+	int main() {
+	  f (0, 42);
+	  return 0;
+	}],
+	slrn_cv_va_copy=yes
+	,
+	slrn_cv_va_copy=no
+	,)
+])
+AC_MSG_RESULT($slrn_cv_va_copy)
+AC_MSG_CHECKING(for an implementation of __va_copy())
+AC_CACHE_VAL(slrn_cv___va_copy,[
+	AC_TRY_RUN([
+	#include <stdarg.h>
+	void f (int i, ...) {
+	va_list args1, args2;
+	va_start (args1, i);
+	__va_copy (args2, args1);
+	if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
+	  exit (1);
+	va_end (args1); va_end (args2);
+	}
+	int main() {
+	  f (0, 42);
+	  return 0;
+	}],
+	slrn_cv___va_copy=yes
+	,
+	slrn_cv___va_copy=no
+	,)
+])
+AC_MSG_RESULT($slrn_cv___va_copy)
+AC_MSG_CHECKING(whether va_lists can be copied by value)
+AC_CACHE_VAL(slrn_cv_va_val_copy,[
+	AC_TRY_RUN([
+	#include <stdarg.h>
+	void f (int i, ...) {
+	va_list args1, args2;
+	va_start (args1, i);
+	args2 = args1;
+	if (va_arg (args2, int) != 42 || va_arg (args1, int) != 42)
+	  exit (1);
+	va_end (args1); va_end (args2);
+	}
+	int main() {
+	  f (0, 42);
+	  return 0;
+	}],
+	slrn_cv_va_val_copy=yes
+	,
+	slrn_cv_va_val_copy=no
+	,)
+])
+
+if test "x$slrn_cv_va_copy" = "xyes"
+then
+  AC_DEFINE(VA_COPY, va_copy)
+else 
+  if test "x$slrn_cv___va_copy" = "xyes"
+  then
+    AC_DEFINE(VA_COPY, __va_copy)
+  fi
+fi
+
+if test "x$slrn_cv_va_val_copy" = "xno"
+then
+  AC_DEFINE(VA_COPY_AS_ARRAY)
+fi
+AC_MSG_RESULT($slrn_cv_va_val_copy)
+])
+
+CF_VA_COPY
 
 JD_SET_OBJ_SRC_DIR
 JD_TERMCAP

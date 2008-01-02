@@ -102,6 +102,12 @@
 #undef HAVE_ICONV
 #undef HAVE_UUDEVIEW_H
 
+/* define if you have va_copy() in stdarg.h */
+#undef VA_COPY
+
+/* define if va_lists can't be copied by value */
+#undef VA_COPY_AS_ARRAY
+
 #if defined(HAVE_SIGADDSET) && defined(HAVE_SIGEMPTYSET)
 # if defined(HAVE_SIGACTION) && defined(HAVE_SIGPROCMASK)
 #  define SLRN_POSIX_SIGNALS

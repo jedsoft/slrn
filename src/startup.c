@@ -1984,10 +1984,21 @@ static void print_utf8_vars (FILE *fp)
    fprintf (fp, "\tSLtt:     %d\n", SLtt_is_utf8_mode ());
 }
 
+static void print_header_formats (FILE *fp)
+{
+   int i;
+
+   (void) fputs (_("Header Formats:\n"), fp);
+   
+   for (i = 0; i < SLRN_MAX_DISPLAY_FORMATS; i++)
+     (void) fprintf (fp, "\t%d: \"%s\"\n", i, slrn_get_header_format (i));
+}
+
 void slrn_print_config (FILE *fp)
 {
    print_env_vars (fp);
    print_string_vars (fp);
+   print_header_formats (fp);
    print_int_vars (fp);
    print_charsets (fp);
    print_utf8_vars (fp);

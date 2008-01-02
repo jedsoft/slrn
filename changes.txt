@@ -155,6 +155,9 @@ Changes since 0.9.8.8pl1
     the fallback character set.
 75. src/misc.c: Replaced calls to slrn_write_nchars by calls to
     SLsmg_write_nstring (slrn_write_nchars did not quite work right).
+76. configure: test for va_copy
+77. src/startup.c,art.c: Changes to permit --show-config to print the
+    header format strings.
 
 {{{ Previous Versions 
 

@@ -267,6 +267,7 @@ extern int Slrn_Color_By_Score;
 extern int Slrn_Highlight_Unread;
 
 extern int slrn_set_header_format (unsigned int, char *);
+extern char *slrn_get_header_format (int num);   /* un-malloced */
 
 extern void slrn_art_sync_article (Slrn_Article_Type *);
 extern void slrn_art_free_line (Slrn_Article_Line_Type *);

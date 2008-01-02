@@ -5848,7 +5848,7 @@ static int get_header_by_message_id (char *msgid,
    if (query_server == 0)
      return -1;
 
-   slrn_message_now (_("Finding %s from server..."), msgid);
+   slrn_message_now (_("Retrieving %s from server..."), msgid);
    
    /* Try reading it from the server */
    if (-1 == slrn_xover_for_msgid (msgid, &xov))
@@ -5889,7 +5889,7 @@ static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
    char buf[NNTP_BUFFER_SIZE];
    int id_array[1000];
    int num_ids, i, id;
-   char *fmt = _("Finding children from server...[%c]");
+   char *fmt = _("Retrieving children from server...[%c]");
    char *meter_chars = "|/-\\";
    static unsigned int last_meter_char;
 
@@ -7993,10 +7993,25 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 
 static char *Header_Display_Formats [SLRN_MAX_DISPLAY_FORMATS];
 static unsigned int Header_Format_Number;
+static char *Default_Header_Format = "%F%B%-5S%G%-5l:[%12r]%t%s";
 
 int slrn_set_header_format (unsigned int num, char *fmt)
 {
    return slrn_set_display_format (Header_Display_Formats, num, fmt);
+}
+
+char *slrn_get_header_format (int num)
+{
+   char *fmt;
+
+   if ((num < 0) || (num >= SLRN_MAX_DISPLAY_FORMATS))
+     num = (int) Header_Format_Number;
+   
+   fmt = Header_Display_Formats[num];
+   if ((fmt == NULL) || (*fmt == 0))
+     fmt = Default_Header_Format;
+   
+   return fmt;
 }
 
 static void toggle_header_formats (void)
@@ -8848,7 +8863,7 @@ static void display_header_line (Slrn_Header_Type *h, int row)
    char *fmt = Header_Display_Formats[Header_Format_Number];
    
    if ((fmt == NULL) || (*fmt == 0))
-     fmt = "%F%B%-5S%G%-5l:[%12r]%t%s";
+     fmt = Default_Header_Format;
    
    slrn_custom_printf (fmt, display_header_cb, (void *) h, row, 0);
 }
