@@ -237,7 +237,7 @@ sys/wait.h \
 netinet/in.h \
 arpa/inet.h \
 sys/utsname.h \
-locale.h \
+locale.h langinfo.h \
 )
 
 #AC_CHECK_LIB(socket, socket, [LIBSOCKET="-lnsl -lsocket"]) dnl for Solaris

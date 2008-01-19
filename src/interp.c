@@ -1641,7 +1641,7 @@ static int load_startup_file (void)
    if (NULL == (dir = getenv (ENV_SLRN_SLANG_DIR)))
      dir = SLRN_SLANG_DIR;
    
-   if ((dir == NULL) || (dir == ""))
+   if ((dir == NULL) || (*dir == 0))
      {
 	slrn_error (_("The SLRN_SLANG_DIR variable is either NULL or empty"));
 	return -1;

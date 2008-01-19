@@ -8,27 +8,27 @@
 .\" -------------------------------------------------------------------
 .\"
 .SH NAME
-slrn - An easy to use NNTP / spool based newsreader.
+slrn \- An easy to use NNTP / spool based newsreader.
 .\"
 .\" -------------------------------------------------------------------
 .\"
 .SH SYNOPSIS
 .B slrn
-[-aCdknmw]
-[-C-]
-.RI [-D name ]
-.RI "[-f\ " newsrc-file ]
-.RI "[-i\ " config-file ]
-[-k0]
-[--create]
-[-create]
-.RI "[--debug\ " file ]
-[--help]
-[--inews]
-.RI "[--kill-log " file ]
-.RI "[--nntp [-h\ " server "] [-p\ " port ]]
-[--spool]
-[--version]
+[\-aCdknmw]
+[\-C\-]
+.RI [\-D name ]
+.RI "[\-f\ " newsrc-file ]
+.RI "[\-i\ " config-file ]
+[\-k0]
+[\-\-create]
+[\-create]
+.RI "[\-\-debug\ " file ]
+[\-\-help]
+[\-\-inews]
+.RI "[\-\-kill\-log " file ]
+.RI "[\-\-nntp [\-h\ " server "] [\-p\ " port ]]
+[\-\-spool]
+[\-\-version]
 .\"
 .\" -------------------------------------------------------------------
 .\"
@@ -37,7 +37,7 @@ slrn - An easy to use NNTP / spool based newsreader.
 is an easy to use but powerful NNTP / spool based newsreader.
 .PP
 It is highly customizable, supports scoring, free key bindings and can be
-extended using the s-lang macro language.
+extended using the embedded S-Lang interpreter.
 .PP
 To use slrn, you either need to set the
 .I NNTPSERVER
@@ -46,7 +46,7 @@ server on the command line.
 A
 .I newsrc
 file is needed, too.  In case you do not yet have one, you can create it
-using ``slrn -f ~/.jnewsrc --create''.
+using ``slrn \-f ~/.jnewsrc \-\-create''.
 .PP
 Inside slrn, online help is available via the '?' key.
 .\"
@@ -57,28 +57,28 @@ Inside slrn, online help is available via the '?' key.
 The following options can be used when calling slrn from the command line.
 They override both environment variables and settings in private and global
 configuration files.
-.IP "-a"
+.IP "\-a"
 Read active file when checking for new news.
-.IP "-C"
+.IP "\-C"
 Use colors without checking if the terminal supports it.
-.IP "-C-"
+.IP "\-C\-"
 Don't use colors, even if the terminal supports it.
-.IP "-d"
+.IP "\-d"
 Get group descriptions (taglines) from the news server.  Please note that
 this may cause a download of several hundred kilobytes and thus can take a
 long time.  The output is saved to a local file, so you only need to do this
 once.  May not be specified in combination with
-.IR --create .
-.IP "-D\fIname\fP"
+.IR \-\-create .
+.IP "\-D\fIname\fP"
 Add name to the list of predefined preprocessing tokens, which can be used
 in your slrnrc file to have conditionally interpreted lines.  See the slrn
 reference manual for details.
-.IP "-f \fInewsrc-file\fP"
+.IP "\-f \fInewsrc-file\fP"
 Use file as the newsrc file for this session.  This is permanently set via
 the
 .I server
 configuration command.
-.IP "-h \fIhost[:port]\fP"
+.IP "\-h \fIhost[:port]\fP"
 Connect to the NNTP server on
 .IR host ,
 overriding the
@@ -87,57 +87,57 @@ environment variable.  If no
 .I port
 is given, the default NNTP port (119) will be used.  This option is only
 accepted after
-.I --nntp
+.I \-\-nntp
 or when NNTP is the default mode.
-.IP "-i \fIconfig-file\fP"
+.IP "\-i \fIconfig-file\fP"
 Read file as the initialization (slrnrc) file.  The default is
 to use .slrnrc (or slrn.rc on VMS, OS/2 and Windows) in your
 home directory.
-.IP "-k"
+.IP "\-k"
 Don't read the
 .IR "score file" .
-.IP "-k0"
+.IP "\-k0"
 Read the score file, but inhibit
 .I expensive
 scoring. A scoring rule is
 .I expensive
 if it contains header lines that are not included in the server's overview
 files.  This makes applying them slow.
-.IP "-m"
+.IP "\-m"
 Force mouse support (without checking if it works on the current terminal).
-.IP "-n"
+.IP "\-n"
 Do not check for new groups (usually resulting in a faster startup).
-.IP "-p \fIN\fP"
+.IP "\-p \fIN\fP"
 Use port N to connect to the NNTP server.
-.IP "-w"
+.IP "\-w"
 Wait for a key before switching to full screen mode, allowing the user to
 read startup messages.
-.IP "--create"
+.IP "\-\-create"
 Read the active file (the list of all groups) from the news server to create
 an initial newsrc file.
-.IP "-create"
+.IP "\-create"
 Obsolete version of
-.IR --create .
-.IP "--debug \fIfile\fP"
+.IR \-\-create .
+.IP "\-\-debug \fIfile\fP"
 Write debugging output to
 .IR file .
-.IP "--help"
+.IP "\-\-help"
 Show help for command line switches.
-.IP "--inews"
+.IP "\-\-inews"
 Use an external
 .I "inews program"
 to post articles.
-.IP "--kill-log \fIfile\fP"
+.IP "\-\-kill\-log \fIfile\fP"
 Keep a log of all articles that were killed by the scorefile in
 .IR file .
-.IP "--nntp"
+.IP "\-\-nntp"
 Use builtin NNTP support for reading and posting (an external program is
-used to post if slrn was compiled with --enable-force-inews).
-.IP "--pull"
+used to post if slrn was compiled with \-\-enable\-force\-inews).
+.IP "\-\-pull"
 Spool outgoing articles locally for slrnpull to send.
-.IP "--spool"
+.IP "\-\-spool"
 Read directly from spool.
-.IP "--version"
+.IP "\-\-version"
 Print version and some compile time settings.
 .\"
 .\" -------------------------------------------------------------------
@@ -180,13 +180,13 @@ Set it to your realname, if slrn can't determine it otherwise.
 .TP
 .B NNTPSERVER
 You can use this variable to tell slrn which NNTP server to
-connect to.  It can be overridden by the command line option -h.
+connect to.  It can be overridden by the command line option \-h.
 .TP
 .B ORGANIZATION
 The name of your organization.
 .TP
 .B PRINTER
-On unix systems, slrn pipes the current article to ``lpr -P
+On unix systems, slrn pipes the current article to ``lpr \-P
 .IR $PRINTER "''"
 to print it.
 .TP
@@ -266,7 +266,7 @@ Global newsgroup descriptions. share_dir is set at compile time
 The documentation that comes with
 .IR slrn ,
 especially FIRST_STEPS, manual.txt, FAQ and score.txt.  If you consider
-writing s-lang macros, also look at README.macros and slrnfuns.txt.
+writing S-Lang macros, also look at README.macros and slrnfuns.txt.
 
 Recent versions of the slrn manual and the FAQ as well as additional
 information can also be found on slrn's official home page:

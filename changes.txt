@@ -158,6 +158,13 @@ Changes since 0.9.8.8pl1
 76. configure: test for va_copy
 77. src/startup.c,art.c: Changes to permit --show-config to print the
     header format strings.
+78. configure: check for langinfo.h (Thomas Wiegner).
+79. src/charset.c: commented out call to setlocale in
+    slrn_init_charset since it was already called.
+80. src/Makefile.in: minor cleanups (Joerg Sommer)
+81. doc/slrn*.1: Escape hyphens and s-lang -> S-Lang changes (Joerg
+    Sommer)
+82. src/post.c: Strip whitespace from Newsgroups and Follow-To headers.
 
 {{{ Previous Versions 
 

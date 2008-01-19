@@ -46,8 +46,11 @@ void slrn_init_charset (void)
 #if defined(HAVE_LOCALE_H) && defined(HAVE_LANGINFO_H)
   if (Slrn_Display_Charset == NULL)
     {
-       setlocale(LC_ALL, "");
-       Slrn_Display_Charset = slrn_safe_strmalloc (nl_langinfo (CODESET));
+       /* setlocale has already been called when this function is called */
+       /* setlocale(LC_ALL, ""); */
+       char *charset = nl_langinfo (CODESET);
+       if ((charset != NULL) && (*charset != 0))
+	 Slrn_Display_Charset = slrn_safe_strmalloc (nl_langinfo (CODESET));
     }
 #endif
 }

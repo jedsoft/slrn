@@ -514,8 +514,8 @@ static int cc_article (Slrn_Article_Type *a) /*{{{*/
 	/* There is some discussion of this extension to mail headers.  For
 	 * now, assume that this extension will be adopted.
 	 * 
-	 * JED: I think it is a bad idea.  What distinguishes a mail header
-	 * from a Usenet header?
+	 * I think it is a bad idea.  What distinguishes a mail header
+	 * from a Usenet header?  --JED
 	 */
 	if (0 == slrn_case_strncmp ( a->cline->buf,
 				     "Newsgroups: ", 12))
@@ -560,6 +560,52 @@ static int cc_article (Slrn_Article_Type *a) /*{{{*/
 #endif /* NOT VMS */
 }
 /*}}}*/
+
+
+/* This assumes that s is malloed and is positioned after the header colon.
+ * It removes all whitespace and collapses commas.
+ */
+static void process_newsgroups_field (char *s, int *num_valuesp)
+{
+   char *p, ch;
+   int num_commas = 0;
+   int value_seen;
+   int has_pending_comma;
+
+   if (*s != 0)			       /* skip the leading space */
+     s++;
+
+   p = s;
+
+   value_seen = 0;
+   has_pending_comma = 0;
+   while (0 != (ch = *s++))
+     {
+	if (isspace (ch))
+	  continue;
+
+	if (ch == ',')
+	  {
+	     while (*s == ',') s++;
+	     if (value_seen == 0)
+	       continue;
+
+	     has_pending_comma = 1;
+	     continue;
+	  }
+	
+	value_seen = 1;
+	if (has_pending_comma)
+	  {
+	     has_pending_comma = 0;
+	     num_commas++;
+	     *p++ = ',';
+	  }
+	*p++ = ch;
+     }
+   *num_valuesp = value_seen + num_commas;
+   *p = 0;
+}
 
 
 /* Returns 0 if at EOF or end of header, -1 upon error, and 1 if something read */
@@ -674,27 +720,15 @@ static int prepare_header (VFILE *vp, unsigned int *linenum, Slrn_Article_Type *
 
 	if ((!mail) && (!slrn_case_strncmp ( line,  "Newsgroups:", 11)))
 	  {
-	     char *p = line;
-	     if (is_empty_header (line))
-	       {
-		  err = slrn_add_mime_error(err, _("The Newsgroups header is not allowed be to empty."), line, lineno, MIME_ERROR_CRIT);
-	       }
-	     newsgroups_found = 1;
-	     while (*(++p))
-	       {
-		  if (*p == ',') newsgroups_found++;
-	       }
+	     process_newsgroups_field (line+11, &newsgroups_found);
+
+	     if (newsgroups_found == 0)
+	       err = slrn_add_mime_error(err, _("The Newsgroups header is not allowed be to empty."), line, lineno, MIME_ERROR_CRIT);
 	  }
 
-	if ((!mail) && (!slrn_case_strncmp ( line,  "Followup-To:", 12))
-	    && (!is_empty_header (line)))
+	if ((!mail) && (!slrn_case_strncmp ( line,  "Followup-To:", 12)))
 	  {
-	     char *p = line;
-	     followupto_found = 1;
-	     while (*(++p))
-	       {
-		  if (*p == ',') followupto_found++;
-	       }
+	     process_newsgroups_field (line+12, &followupto_found);
 	  }
 
 	/* Remove empty header */

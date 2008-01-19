@@ -76,7 +76,7 @@ UP_DOC_FILES = COPYRIGHT COPYING README changes.txt
 MAN_FILES = ../doc/slrn.1
 SLANG_FILES = `cat ../macros/INSTFILES`
 SLRNPULL_DOCS = ../slrnpull/*
-CONF_FILES = #../lib/slrn.conf
+CONF_FILES = #../lib/slrn.conf (Note: uncomment DEST_CONFDIR setting if non-empty)
 
 #----------------------------------------------------------------------------
 # Nothing below here should require changing.
@@ -138,8 +138,10 @@ uudecode: uudecode.c $(UUDECODE_OBJS)
 	touch uudecode.c
 clean:
 	/bin/rm -f $(OBJDIR)/* *~
+	cd ../po; $(MAKE) clean
 distclean: clean
-	/bin/rm -rf $(OBJDIR) Makefile sysconf.h
+	/bin/rm -rf $(OBJDIR) Makefile sysconf.h config.h slrnfeat.h
+	cd ../po; $(MAKE) distclean
 installdirs:
 	$(MKINSDIR) $(DEST_BINDIR)
 	$(MKINSDIR) $(DEST_DOCDIR)
@@ -147,7 +149,7 @@ installdirs:
 	$(MKINSDIR) $(DEST_MANDIR)/man1
 	$(MKINSDIR) $(DEST_SLRN_LIB_DIR)
 	$(MKINSDIR) $(DEST_SLRN_SLANG_DIR)
-	$(MKINSDIR) $(DEST_CONFDIR)
+#	$(MKINSDIR) $(DEST_CONFDIR)
 installdocs:
 	@for i in $(MAN_FILES); \
 	do \
