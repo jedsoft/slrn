@@ -336,7 +336,7 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 
 	slrn_free (*s_ptr);
 	*s_ptr = s;
-	return 0;
+	/* return 0; */
      }
 
    while (1)

@@ -1139,18 +1139,21 @@ static int re_header_search (char *pat, unsigned int offset, int dir) /*{{{*/
 {
    SLRegexp_Type *re;
    Slrn_Header_Type *h = Slrn_Current_Header;
-   
+   int status;
+
    if ((-1 == check_article_mode ())
        || (h == NULL)
        || (NULL == (re = slrn_compile_regexp_pattern (pat))))
      return 0;
    
+   status = 0;
    while (h != NULL)
      {
 	if (NULL != slrn_regexp_match (re, *(char **) ((char *)h + offset)))
 	  {
 	     slrn_goto_header (h, 0);
-	     return 1;
+	     status = 1;
+	     break;
 	  }
 	
 	if (dir > 0)
@@ -1158,7 +1161,8 @@ static int re_header_search (char *pat, unsigned int offset, int dir) /*{{{*/
 	else
 	  h = h->prev;
      }
-   return 0;   
+   SLregexp_free (re);
+   return status;   
 }
 
 /*}}}*/

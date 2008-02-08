@@ -165,6 +165,9 @@ Changes since 0.9.8.8pl1
 81. doc/slrn*.1: Escape hyphens and s-lang -> S-Lang changes (Joerg
     Sommer)
 82. src/post.c: Strip whitespace from Newsgroups and Follow-To headers.
+83. src/interp.c: re_header_search was leaking memory
+84. src/mime.c: Parse a header for mime encoded 8 bit characters even
+    if the header contains unencoded 8 bit characters.
 
 {{{ Previous Versions 
 
