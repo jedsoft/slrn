@@ -3,7 +3,7 @@
 .\" This manpage has been completely rewritten by Matthias Friedrich
 .\" <matt@mafr.de> based on the slrn reference manual
 .\"
-.TH slrn 1 "January 2007" Unix "User Manuals"
+.TH slrn 1 "February 2008" Unix "User Manuals"
 .\"
 .\" -------------------------------------------------------------------
 .\"
@@ -21,12 +21,12 @@ slrn \- An easy to use NNTP / spool based newsreader.
 .RI "[\-i\ " config-file ]
 [\-k0]
 [\-\-create]
-[\-create]
 .RI "[\-\-debug\ " file ]
 [\-\-help]
 [\-\-inews]
 .RI "[\-\-kill\-log " file ]
 .RI "[\-\-nntp [\-h\ " server "] [\-p\ " port ]]
+[\-\-show-config]
 [\-\-spool]
 [\-\-version]
 .\"
@@ -115,9 +115,6 @@ read startup messages.
 .IP "\-\-create"
 Read the active file (the list of all groups) from the news server to create
 an initial newsrc file.
-.IP "\-create"
-Obsolete version of
-.IR \-\-create .
 .IP "\-\-debug \fIfile\fP"
 Write debugging output to
 .IR file .
@@ -135,6 +132,8 @@ Use builtin NNTP support for reading and posting (an external program is
 used to post if slrn was compiled with \-\-enable\-force\-inews).
 .IP "\-\-pull"
 Spool outgoing articles locally for slrnpull to send.
+.IP "\-\-show-config"
+Print detailed information about slrn configuration.
 .IP "\-\-spool"
 Read directly from spool.
 .IP "\-\-version"
@@ -289,7 +288,4 @@ is available from http://prdownloads.sourceforge.net/slrn/
 .\" -------------------------------------------------------------------
 .\"
 .SH AUTHOR
-John E. Davis <davis@space.mit.edu>
-
-Please send any bug reports to the current maintainer,
-Thomas Schultz <tststs@gmx.de>
+John E. Davis <jed@jedsoft.org>

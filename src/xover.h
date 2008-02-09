@@ -42,7 +42,7 @@ typedef struct
 Slrn_XOver_Type;
 
 extern void slrn_free_xover_data (Slrn_XOver_Type *);
-extern void slrn_map_xover_to_header (Slrn_XOver_Type *, Slrn_Header_Type *);
+extern void slrn_map_xover_to_header (Slrn_XOver_Type *, Slrn_Header_Type *, int);
 extern void slrn_free_additional_headers (Slrn_Header_Line_Type *);
 extern void slrn_clear_requested_headers (void);
 extern void slrn_request_additional_header (char *, int);

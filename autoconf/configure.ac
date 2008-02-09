@@ -72,16 +72,21 @@ fi
 AC_SUBST(LOCALEDIR)
 
 optionvalue=0
+SLRNPULL_ROOT_DIR="/var/spool/news/slrnpull"
 AC_ARG_WITH(slrnpull,
-    [  --with-slrnpull         Build slrnpull and add support for it to slrn],
-    [if test "x$withval" = "xyes" ; then
+    [  --with-slrnpull=[[DIR]]        Build slrnpull and use DIR as the slrnpull root],
+    [if test "x$withval" != "xno" ; then
       optionvalue=1
       SLRNPULL="slrnpull\$(EXEEXT)"
       MAN_SLRNPULL="slrnpull.1"
+      if test "x$withval" != "xyes" -a "x$withval" != "x"; then
+        SLRNPULL_ROOT_DIR="$withval"
+      fi
      fi
     ])dnl
 AC_SUBST(SLRN_HAS_PULL_SUPPORT, $optionvalue)
 AC_SUBST(SLRNPULL)
+AC_SUBST(SLRNPULL_ROOT_DIR)
 AC_SUBST(MAN_SLRNPULL)
 
 CF_COMPILE_OPTION(nntp,

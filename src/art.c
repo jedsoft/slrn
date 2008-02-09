@@ -5549,7 +5549,7 @@ static Slrn_Header_Type *process_xover (Slrn_XOver_Type *xov)
    
    h = (Slrn_Header_Type *) slrn_safe_malloc (sizeof (Slrn_Header_Type));
    
-   slrn_map_xover_to_header (xov, h);
+   slrn_map_xover_to_header (xov, h, 1);
    Number_Total++;
    
    slrn_rfc1522_decode_string (&h->subject);

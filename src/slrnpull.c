@@ -1316,6 +1316,7 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
    Slrn_Score_Debug_Info_Type *sdi = NULL;
    
    *headers = NULL;
+   memset ((char *) &h, 0, sizeof (Slrn_Header_Type));
 
    print_time_stats (s, 0);
 
@@ -1337,7 +1338,7 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
 	return 0;
      }
    
-   slrn_map_xover_to_header (xov, &h);
+   slrn_map_xover_to_header (xov, &h, 0);
 
 #if 0
    /* FIXME -- I need to think more about this, and check for errors */
@@ -2654,10 +2655,11 @@ int slrn_message (char *fmt, ...) /*{{{*/
 
 /*}}}*/
 
+#if 0
 /* For now, we need this to link against charset.o
  * Maybe seek a cleaner alternative later. */
 
-void slrn_art_free_article_line (Slrn_Article_Line_Type *l)
+static void slrn_art_free_article_line (Slrn_Article_Line_Type *l)
 {
    Slrn_Article_Line_Type *next;
    
@@ -2670,6 +2672,7 @@ void slrn_art_free_article_line (Slrn_Article_Line_Type *l)
      }
 }   
 
+#endif
 /*}}}*/
 
 static char *read_header_from_file (char *file, int *has_body)

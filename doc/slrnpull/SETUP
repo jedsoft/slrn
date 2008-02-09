@@ -13,6 +13,9 @@ news server.
 
        mkdir /var/spool/slrnpull
        
+    The --with-slrnpull option allows a different directory to be
+    used.  /var/spool/slrnpull is the default value.
+
 3.  Create a file called `slrnpull.conf' in that directory.  Use the
     example provided in the slrn/slrnpull distribution as a template:
     

@@ -201,7 +201,7 @@
 /* The rest of the files apply to slrnpull. */
 
 /* This must be set to an absolute pathname. */
-#define SLRNPULL_ROOT_DIR	"/var/spool/news/slrnpull"
+#define SLRNPULL_ROOT_DIR	"@SLRNPULL_ROOT_DIR@"
 
 /* The remaing variables are specified as relative names with respect to the
  * SLRNPULL_ROOT_DIR.

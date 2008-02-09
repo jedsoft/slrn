@@ -168,6 +168,11 @@ Changes since 0.9.8.8pl1
 83. src/interp.c: re_header_search was leaking memory
 84. src/mime.c: Parse a header for mime encoded 8 bit characters even
     if the header contains unencoded 8 bit characters.
+85. doc/slrn.1: Updated (Peter J. Ross)
+86. src/slrnpull.c: Fixed a couple of bugs involving the reading of
+    previously freed or uninitialized memory.
+87. configure: --with-slrnpull now takes an optional argument giving
+    the location of the slrnpull root directory.
 
 {{{ Previous Versions 
 

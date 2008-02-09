@@ -684,6 +684,7 @@ SLRN_LIB_DIR
 LOCALEDIR
 SLRN_HAS_PULL_SUPPORT
 SLRNPULL
+SLRNPULL_ROOT_DIR
 MAN_SLRNPULL
 SLRN_HAS_NNTP_SUPPORT
 SLRN_HAS_SPOOL_SUPPORT
@@ -1355,7 +1356,7 @@ Optional Packages:
   --with-docdir=DIR       Where to put the documentation
   --with-slrnlib=DIR       Place for the slrn library files
   --with-localedir=DIR    Where to put locale files
-  --with-slrnpull         Build slrnpull and add support for it to slrn
+  --with-slrnpull=[DIR]        Build slrnpull and use DIR as the slrnpull root
   --with-uu=DIR      Use DIR/lib and DIR/include for uu
   --with-uulib=DIR   uu library in DIR
   --with-uuinc=DIR   uu include files in DIR
@@ -4980,17 +4981,22 @@ fi
 
 
 optionvalue=0
+SLRNPULL_ROOT_DIR="/var/spool/news/slrnpull"
 
 # Check whether --with-slrnpull was given.
 if test "${with_slrnpull+set}" = set; then
-  withval=$with_slrnpull; if test "x$withval" = "xyes" ; then
+  withval=$with_slrnpull; if test "x$withval" != "xno" ; then
       optionvalue=1
       SLRNPULL="slrnpull\$(EXEEXT)"
       MAN_SLRNPULL="slrnpull.1"
+      if test "x$withval" != "xyes" -a "x$withval" != "x"; then
+        SLRNPULL_ROOT_DIR="$withval"
+      fi
      fi
 
 fi
 SLRN_HAS_PULL_SUPPORT=$optionvalue
+
 
 
 
@@ -10683,6 +10689,7 @@ SLRN_LIB_DIR!$SLRN_LIB_DIR$ac_delim
 LOCALEDIR!$LOCALEDIR$ac_delim
 SLRN_HAS_PULL_SUPPORT!$SLRN_HAS_PULL_SUPPORT$ac_delim
 SLRNPULL!$SLRNPULL$ac_delim
+SLRNPULL_ROOT_DIR!$SLRNPULL_ROOT_DIR$ac_delim
 MAN_SLRNPULL!$MAN_SLRNPULL$ac_delim
 SLRN_HAS_NNTP_SUPPORT!$SLRN_HAS_NNTP_SUPPORT$ac_delim
 SLRN_HAS_SPOOL_SUPPORT!$SLRN_HAS_SPOOL_SUPPORT$ac_delim
@@ -10709,7 +10716,6 @@ LINK_LIBCANLOCK!$LINK_LIBCANLOCK$ac_delim
 SLRN_HAS_CANLOCK!$SLRN_HAS_CANLOCK$ac_delim
 LIBICONV!$LIBICONV$ac_delim
 LTLIBICONV!$LTLIBICONV$ac_delim
-mkdir_p!$mkdir_p$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -10751,6 +10757,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+mkdir_p!$mkdir_p$ac_delim
 USE_NLS!$USE_NLS$ac_delim
 MSGFMT!$MSGFMT$ac_delim
 GMSGFMT!$GMSGFMT$ac_delim
@@ -10784,7 +10791,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 31; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 32; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
@@ -12040,6 +12047,7 @@ SLRN_LIB_DIR!$SLRN_LIB_DIR$ac_delim
 LOCALEDIR!$LOCALEDIR$ac_delim
 SLRN_HAS_PULL_SUPPORT!$SLRN_HAS_PULL_SUPPORT$ac_delim
 SLRNPULL!$SLRNPULL$ac_delim
+SLRNPULL_ROOT_DIR!$SLRNPULL_ROOT_DIR$ac_delim
 MAN_SLRNPULL!$MAN_SLRNPULL$ac_delim
 SLRN_HAS_NNTP_SUPPORT!$SLRN_HAS_NNTP_SUPPORT$ac_delim
 SLRN_HAS_SPOOL_SUPPORT!$SLRN_HAS_SPOOL_SUPPORT$ac_delim
@@ -12066,7 +12074,6 @@ LINK_LIBCANLOCK!$LINK_LIBCANLOCK$ac_delim
 SLRN_HAS_CANLOCK!$SLRN_HAS_CANLOCK$ac_delim
 LIBICONV!$LIBICONV$ac_delim
 LTLIBICONV!$LTLIBICONV$ac_delim
-mkdir_p!$mkdir_p$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12108,6 +12115,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+mkdir_p!$mkdir_p$ac_delim
 USE_NLS!$USE_NLS$ac_delim
 MSGFMT!$MSGFMT$ac_delim
 GMSGFMT!$GMSGFMT$ac_delim
@@ -12141,7 +12149,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 31; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 32; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
@@ -13398,6 +13406,7 @@ SLRN_LIB_DIR!$SLRN_LIB_DIR$ac_delim
 LOCALEDIR!$LOCALEDIR$ac_delim
 SLRN_HAS_PULL_SUPPORT!$SLRN_HAS_PULL_SUPPORT$ac_delim
 SLRNPULL!$SLRNPULL$ac_delim
+SLRNPULL_ROOT_DIR!$SLRNPULL_ROOT_DIR$ac_delim
 MAN_SLRNPULL!$MAN_SLRNPULL$ac_delim
 SLRN_HAS_NNTP_SUPPORT!$SLRN_HAS_NNTP_SUPPORT$ac_delim
 SLRN_HAS_SPOOL_SUPPORT!$SLRN_HAS_SPOOL_SUPPORT$ac_delim
@@ -13424,7 +13433,6 @@ LINK_LIBCANLOCK!$LINK_LIBCANLOCK$ac_delim
 SLRN_HAS_CANLOCK!$SLRN_HAS_CANLOCK$ac_delim
 LIBICONV!$LIBICONV$ac_delim
 LTLIBICONV!$LTLIBICONV$ac_delim
-mkdir_p!$mkdir_p$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -13466,6 +13474,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+mkdir_p!$mkdir_p$ac_delim
 USE_NLS!$USE_NLS$ac_delim
 MSGFMT!$MSGFMT$ac_delim
 GMSGFMT!$GMSGFMT$ac_delim
@@ -13499,7 +13508,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 31; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 32; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

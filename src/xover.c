@@ -383,8 +383,8 @@ void slrn_free_xover_data (Slrn_XOver_Type *xov)
 }
 
 
-void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h)
-{   
+void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h, int free_xover)
+{
    char *m;
 
    h->number = xov->id;
@@ -417,7 +417,8 @@ void slrn_map_xover_to_header (Slrn_XOver_Type *xov, Slrn_Header_Type *h)
    h->hash = slrn_compute_hash ( (unsigned char *)h->msgid,
 				 (unsigned char *)h->msgid + strlen (h->msgid));
    
-   slrn_free_xover_data (xov);
+   if (free_xover)
+     slrn_free_xover_data (xov);
 }
 
 typedef struct Overview_Fmt_Type
