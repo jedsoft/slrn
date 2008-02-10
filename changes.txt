@@ -175,6 +175,8 @@ Changes since 0.9.8.8pl1
     the location of the slrnpull root directory.
 88. src/print.c: On Unix, if the PRINTER environment variable is NULL
     or empty, then do not use the "-P" lpr option.
+89. src/menu.c: When drawing a box, the simulate_graphic_chars setting
+    was not being respected.
 
 {{{ Previous Versions 
 

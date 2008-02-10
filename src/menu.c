@@ -232,6 +232,42 @@ static void center_string_column (char *title, int row, int col, int num_columns
 
 /*}}}*/
 
+static void draw_box (int r0, int c0, unsigned int dr, unsigned int dc)
+{
+   unsigned int i;
+   int r1, c1;
+
+   if (Slrn_Simulate_Graphic_Chars == 0)
+     {
+	SLsmg_draw_box (r0, c0, dr, dc);
+	return;
+     }
+   
+   if ((dr == 0) || (dc == 0))
+     return;
+   dr--; dc--;
+
+   r1 = r0 + (int) dr;
+   c1 = c0 + (int) dc;
+
+   SLsmg_gotorc (r0, c0);
+   for (i = 0; i < dc; i++)
+     SLsmg_write_char ('-');
+   SLsmg_gotorc (r0+dr, c0);
+   for (i = 0; i < dc; i++)
+     SLsmg_write_char ('-');
+   for (i = 1; i < dr; i++)
+     {
+	SLsmg_gotorc (r0+i, c0);  SLsmg_write_char ('|');
+	SLsmg_gotorc (r0+i, c1);  SLsmg_write_char ('|');
+     }
+   SLsmg_gotorc (r0, c0);  SLsmg_write_char ('+');
+   SLsmg_gotorc (r0, c1);  SLsmg_write_char ('+');
+   SLsmg_gotorc (r1, c0);  SLsmg_write_char ('+');
+   SLsmg_gotorc (r1, c1);  SLsmg_write_char ('+');
+   SLsmg_gotorc (r0, c0);
+}
+
 static int draw_select_box (Slrn_Select_Box_Type *sb) /*{{{*/
 {
    int num_selections, max_selection_len;
@@ -299,7 +335,7 @@ static int draw_select_box (Slrn_Select_Box_Type *sb) /*{{{*/
    center_string_column (_("(Select One)"), r, column, num_columns);
 				      
    slrn_set_color (FRAME_COLOR);
-   SLsmg_draw_box (row, column, num_rows, num_columns);
+   draw_box (row, column, num_rows, num_columns);
    slrn_set_color (0);
    
    slrn_smg_refresh ();
@@ -420,7 +456,7 @@ static void draw_select_list (void)
    column = (SLtt_Screen_Cols - num_columns) / 2;
    
    slrn_set_color (FRAME_COLOR);
-   SLsmg_draw_box (row, column, num_rows + 2, num_columns + 2);
+   draw_box (row, column, num_rows + 2, num_columns + 2);
    SLsmg_gotorc (row + num_rows + 1, column + num_columns - 10);
    if (Is_Popup_Window)
      {
