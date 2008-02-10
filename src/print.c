@@ -287,10 +287,14 @@ Slrn_Print_Type *popen_open_printer (void)
    if (NULL == (print_cmd = Slrn_Printer_Name))
      {
 	print_cmd = getenv ("PRINTER");
-	if (print_cmd == NULL) print_cmd = "";
-	slrn_snprintf (print_cmd_buf, sizeof (print_cmd_buf), "lpr -P%s",
-		       print_cmd);
-	print_cmd = print_cmd_buf;
+	if ((print_cmd == NULL) || (*print_cmd == 0))
+	  print_cmd = "lpr";
+	else
+	  {
+	     slrn_snprintf (print_cmd_buf, sizeof (print_cmd_buf), "lpr -P%s",
+			    print_cmd);
+	     print_cmd = print_cmd_buf;
+	  }
      }
 
    if (NULL == (p = (Slrn_Print_Type *) SLmalloc (sizeof (Slrn_Print_Type))))

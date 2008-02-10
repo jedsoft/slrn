@@ -173,6 +173,8 @@ Changes since 0.9.8.8pl1
     previously freed or uninitialized memory.
 87. configure: --with-slrnpull now takes an optional argument giving
     the location of the slrnpull root directory.
+88. src/print.c: On Unix, if the PRINTER environment variable is NULL
+    or empty, then do not use the "-P" lpr option.
 
 {{{ Previous Versions 
 

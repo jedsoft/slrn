@@ -224,6 +224,10 @@ The editor to start for editing articles.
 If this variable is unset, slrn subsequently looks at
 .IR $SLANG_EDITOR ", " $EDITOR " and " $VISUAL .
 .TP
+.B SLRN_SLANG_DIR
+If set, slrn will search for slang macros here. If not set slrn will search in
+the default path, which is defined at compile time (usually share_dir/slang).
+.TP
 .B TMP
 Indicates the directory in which slrn should save temporary
 files.
