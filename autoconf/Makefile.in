@@ -16,8 +16,8 @@ clean:
 	cd src; $(MAKE) clean
 #
 distclean:
-	/bin/rm -f *~ Makefile config.status config.log config.cache files.pck
 	cd src; $(MAKE) distclean
+	/bin/rm -f *~ Makefile config.status config.log config.cache files.pck
 #
 install:
 	cd src; $(MAKE) install

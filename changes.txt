@@ -177,6 +177,12 @@ Changes since 0.9.8.8pl1
     or empty, then do not use the "-P" lpr option.
 89. src/menu.c: When drawing a box, the simulate_graphic_chars setting
     was not being respected.
+90. autoconf/Makefile.in: distclean the subdirectories before removing
+    the Makefile.  po/Makefile.in.in: remove stamp-po in the distclean
+    target. (Joerg Sommer)
+91. src/startup.c: Check the number of arguments to the unsetkey
+    function and exit if not the expected number.
+92. src/post.c: POST_FILE_HOOK was not getting called.
 
 {{{ Previous Versions 
 

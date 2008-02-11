@@ -1002,6 +1002,13 @@ int slrn_prepare_file_for_posting (char *file, unsigned int *line, Slrn_Article_
    int ret, row, has_crit, has_warn, has_net;
    int status;
 
+   if (1 == slrn_is_hook_defined (HOOK_POST_FILE))
+     {
+	if ((-1 == slrn_run_hooks (HOOK_POST_FILE, 1, file))
+	    || (0 != SLang_get_error ()))
+	  return -1;
+     }
+
    if (Slrn_Editor_Charset != NULL)
      from_charset = Slrn_Editor_Charset;
    else

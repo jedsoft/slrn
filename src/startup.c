@@ -100,7 +100,7 @@ char *Post_Object;
 static SLcmd_Cmd_Table_Type Slrn_Cmd_Table;
 static SLcmd_Cmd_Type Slrn_Startup_File_Cmds[] = /*{{{*/
 {
-     {unsetkey_fun, "unsetkey", "SS"},
+     {unsetkey_fun, "unsetkey", "SSs"},/* the 's' is a hack that permits an optional argument */
      {setkey_fun, "setkey", "SSS"},
      {server_fun, "server", "SS"},
      {color_fun, "color", "SSSssss"},
@@ -315,12 +315,17 @@ static int setkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 
 static int unsetkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 {
-   char *map = table->string_args[1];
-   char *key = table->string_args[2];
+   char *map, *key;
    SLKeyMap_List_Type *kmap = NULL;
    
-   (void) argc;
+   if (argc != 3)
+     {
+	slrn_exit_error (_("%s: line %d:\n%sExpecting exactly two arguments for the unsetkey function"),
+			 This_File, This_Line_Num, This_Line);
+     }
 
+   map = table->string_args[1];
+   key = table->string_args[2];
    if (NULL == (key = slrn_help_string_to_keyseq(key)))
      key = table->string_args[2];   
    

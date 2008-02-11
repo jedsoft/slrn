@@ -1,6 +1,6 @@
 % This file illustrates the use of 'post_file_hook', which gets called
 % immediately before a message is posted.  In this example, the header
-% and body part of the message is separated, and a shell command is run
+% and body parts of the message are separated, and a shell command is run
 % on the body part, finally the head and body are re-assembled.
 
 define post_file_hook_command (cmd, file)
