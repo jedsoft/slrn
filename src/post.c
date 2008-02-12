@@ -1633,7 +1633,9 @@ static int request_user_edit (char *file, unsigned int line, int is_serious)
 }
 
 
-/* This function returns 1 if postponed, 0 upon sucess, -1 upon error */
+/* This function returns 1 if postponed, 0 upon sucess, -1 upon error,
+ * and 2 if the user declined to post it.
+ */
 int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 {
    Slrn_Article_Type *a = NULL;
@@ -1666,7 +1668,7 @@ int slrn_post_file (char *file, char *to, int is_postponed) /*{{{*/
 	     return 1;
 
 	   case POST_CONFIRM_NOPOST:
-	     return 0;
+	     return 2;
 	     
 	   case POST_CONFIRM_ERROR:
 	   default:
@@ -1753,6 +1755,9 @@ return_error:
 
 /*}}}*/
 
+/* Returns -1 upon error, 0 if posted, 1 if postponed, 2 if user
+ * declined to post the file
+ */
 int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
 {
    FILE *fp;
@@ -1935,7 +1940,8 @@ void slrn_post_postponed (void) /*{{{*/
 	return;
      }
 
-   (void) slrn_post_file (file, NULL, 1);
+   if (0 == slrn_post_file (file, NULL, 1))
+     slrn_delete_file (file);
 
    slrn_free (file);
 }

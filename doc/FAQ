@@ -398,7 +398,7 @@
 
   2.8.  How can I rotate signatures in slrn?
 
-  There are different ways to do this - chose one:
+  There are different ways to do this - choose one:
 
   The easiest way is probably to call a sig rotation program in the
   post_editor_command in your slrnrc file. In the following example, the
@@ -408,7 +408,7 @@
 
 
 
-  If you want to chose the signature depending on the group you are
+  If you want to choose the signature depending on the group you are
   posting to, you can set the config variable signature using a macro;
   in the following example, .signature.german gets selected for all
   newsgroups in de.* and .signature.english gets selected for any other

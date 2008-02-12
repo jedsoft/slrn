@@ -54,12 +54,12 @@ typedef struct Slrn_Group_Type
    struct Slrn_Group_Type *next;
    struct Slrn_Group_Type *prev;
    unsigned int flags;
-#define GROUP_UNSUBSCRIBED		0x001
-#define GROUP_NEW_GROUP_FLAG		0x002
-#define GROUP_HARMLESS_FLAGS_MASK 	0x0FF
-#define GROUP_HIDDEN			0x100
-#define GROUP_TOUCHED			0x200
-#define GROUP_PROCESSED			0x400
+#define GROUP_UNSUBSCRIBED		0x0001
+#define GROUP_NEW_GROUP_FLAG		0x0002
+#define GROUP_HARMLESS_FLAGS_MASK 	0x00FF
+#define GROUP_HIDDEN			0x0100
+#define GROUP_TOUCHED			0x0200
+#define GROUP_PROCESSED			0x0400
 
    char *group_name;
    unsigned long hash;

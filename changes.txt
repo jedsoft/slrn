@@ -183,6 +183,11 @@ Changes since 0.9.8.8pl1
 91. src/startup.c: Check the number of arguments to the unsetkey
     function and exit if not the expected number.
 92. src/post.c: POST_FILE_HOOK was not getting called.
+93. src/post.c: After sucessfully posting a postponed file, the file
+    was not getting removed.
+94. src/group.c: A SEGV could occur if the array passed to the
+    set_group_order function contained multiple occurances of a group
+    name.
 
 {{{ Previous Versions 
 

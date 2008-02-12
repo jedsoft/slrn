@@ -3810,9 +3810,7 @@ static void supersede (void) /*{{{*/
 
    if (slrn_edit_file (Slrn_Editor_Post, file, n, 1) >= 0)
      {
-	if (0 == slrn_post_file (file, NULL, 0))
-	  {
-	  }
+	(void) slrn_post_file (file, NULL, 0);
      }
    if (Slrn_Use_Tmpdir) (void) slrn_delete_file (file);
 }

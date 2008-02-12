@@ -342,8 +342,8 @@ static int group_sync_group_with_server (Slrn_Group_Type *g, int *minp, int *max
    
    if (status == ERR_NOGROUP)
      {
-	slrn_error (_("Group %s is bogus%s."), group,
-		    Slrn_Drop_Bogus_Groups ? _(" - dropping it") : "");
+	slrn_message_now (_("Group %s is bogus%s."), group,
+			  Slrn_Drop_Bogus_Groups ? _(" - dropping it") : "");
 	Slrn_Saw_Warning = 1;
 	if (Slrn_Drop_Bogus_Groups)
 	  remove_group_entry (g);
@@ -475,7 +475,7 @@ static Slrn_Group_Type *create_group_entry (char *name, unsigned int len, /*{{{*
 	status = Slrn_Server_Obj->sv_select_group (g->group_name, &min, &max);
 	if (status == ERR_NOGROUP)
 	  {
-	     slrn_error (_("Group %s is bogus%s."), g->group_name,
+	     slrn_message_now (_("Group %s is bogus%s."), g->group_name,
 			 Slrn_Drop_Bogus_Groups ? _(" - ignoring it") : "");
 	     if (Slrn_Drop_Bogus_Groups)
 	       {
@@ -1174,7 +1174,7 @@ static void refresh_groups_cmd (void) /*{{{*/
 		  a = b;
 	       }
 	     
-	     group_sync_group_with_server (a, &min, &max);
+	     (void) group_sync_group_with_server (a, &min, &max);
 	  }
      }
    
@@ -3150,7 +3150,7 @@ void slrn_intr_get_group_order (void) /*{{{*/
 void slrn_intr_set_group_order (void) /*{{{*/
 {
    SLang_Array_Type *at;
-   Slrn_Group_Type *last = NULL, *rest = Groups;
+   Slrn_Group_Type *last, *rest, *g;
    int i, rows;
    
    if (-1 == SLang_pop_array_of_type (&at, SLANG_STRING_TYPE))
@@ -3165,40 +3165,67 @@ void slrn_intr_set_group_order (void) /*{{{*/
 	SLang_free_array (at);
 	return;
      }
-   
+
+   if ((Groups == NULL) || (Groups->next == NULL))
+     {
+	SLang_free_array (at);
+	return;
+     }
+
    rows = at->dims[0];
-   
+   last = NULL;
+   rest = Groups;
+
    for (i = 0; i < rows; i++)
      {
 	char *name;
-	Slrn_Group_Type *g;
 	
-	(void) SLang_get_array_element (at, &i, &name);
-	
+	if ((-1 == SLang_get_array_element (at, &i, &name))
+	    || (name == NULL))
+	  continue;
+
 	if (NULL == (g = find_group_entry (name, strlen (name))))
 	  continue;
-	
+
+	/* It is possible for name to occur multiple times in the array.
+	 * So we have to be careful.  There are two lists here: the part
+	 * that runs from Groups to last, and the rest. The first group 
+	 * is the already sorted part, and the second is unsorted. 
+	 * Ordinarily g will come from the second (rest), but if name appears
+	 * more than once in the array, it will come from the first part when
+	 * seen the second time.
+	 */
+	if (g == last)		       /* at tail of first part */
+	  continue;
+
+	if (g == Groups)	       /* at head of first part */
+	  Groups = g->next;
+
+	if (g == rest)		       /* at head of second part */
+	  rest = rest->next;
+
+	/* Remove it from its current location */
 	if (g->next != NULL)
 	  g->next->prev = g->prev;
 	if (g->prev != NULL)
 	  g->prev->next = g->next;
-	g->prev = last;
-	if (last == NULL)
+
+	g->prev = last;		       /* append it to first part */
+	
+	if (last == NULL)	       /* the head of the first part */
 	  Groups = g;
 	else
 	  last->next = g;
-	if (g == rest)
-	  rest = rest->next;
+
+	g->next = rest;		       /* connect up the rest */
+	if (rest != NULL)
+	  rest->prev = g;
+
 	last = g;
      }
-   
-   if (last != NULL)
-     last->next = rest;
-   if (rest != NULL)
-     rest->prev = last;
-   
+
    SLang_free_array (at);
-   
+
    find_line_num ();
    Slrn_Full_Screen_Update = 1;
    Slrn_Groups_Dirty = 1;
