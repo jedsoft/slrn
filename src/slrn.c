@@ -1573,6 +1573,9 @@ int slrn_getkey (void)
      }
    
    ch = SLang_getkey ();
+   if (ch == SLANG_GETKEY_ERROR)
+     slrn_exit_error (_("SLang_getkey failed"));
+	
    if (buf_len + 4 < sizeof (buf))
      {
 	if (ch == 0) 

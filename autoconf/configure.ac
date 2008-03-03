@@ -78,7 +78,7 @@ AC_ARG_WITH(slrnpull,
     [if test "x$withval" != "xno" ; then
       optionvalue=1
       SLRNPULL="slrnpull\$(EXEEXT)"
-      MAN_SLRNPULL="slrnpull.1"
+      MAN_SLRNPULL="../doc/slrnpull.1"
       if test "x$withval" != "xyes" -a "x$withval" != "x"; then
         SLRNPULL_ROOT_DIR="$withval"
       fi

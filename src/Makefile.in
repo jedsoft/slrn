@@ -73,7 +73,7 @@ DEFINES = -DSLRN_SLANG_DIR=\"$(SLRN_SLANG_DIR)\" \
 # Files to install in DOC_DIR:
 DOCDIR_FILES = `cat ../doc/INSTFILES`
 UP_DOC_FILES = COPYRIGHT COPYING README changes.txt
-MAN_FILES = ../doc/slrn.1
+MAN_FILES = ../doc/slrn.1 @MAN_SLRNPULL@
 SLANG_FILES = `cat ../macros/INSTFILES`
 SLRNPULL_DOCS = ../slrnpull/*
 CONF_FILES = #../lib/slrn.conf (Note: uncomment DEST_CONFDIR setting if non-empty)
@@ -86,6 +86,7 @@ OBJS = @PROGRAM_OBJECTS@
 OFILES = @PROGRAM_OFILES@
 
 EXEC = slrn
+OTHER_EXECS = @SLRNPULL@
 CONFIG_H = config.h
 INCS = $(SLANG_INC) $(CANLOCK_INC) $(ICONV_INC) $(UUDEVIEW_INC) $(SSL_INC) $(MISCINCLUDES)
 ALL_CFLAGS = $(CFLAGS) -Dunix $(INCS) $(DEFINES)
@@ -110,7 +111,7 @@ UPDATE_VERSION_SCRIPT = $(HOME)/bin/update_changes_version
 #
 COMPILE_CMD = $(CC) -c $(ALL_CFLAGS)
 #
-all: $(EXEC)
+all: $(EXEC) $(OTHER_EXECS)
 $(EXEC): $(OBJDIR) $(CONFIG_H) slangversion $(OBJDIR)/$(EXEC)
 	@echo $(EXEC) created in $(OBJDIR)
 $(OBJDIR)/$(EXEC): $(OBJS)

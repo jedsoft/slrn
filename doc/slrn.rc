@@ -11,14 +11,14 @@
 %
 
 % The "From:" header will be generated from the following three variables.
-% With the example settings, it would read "john@doe.com (John Doe)".
+% With the example settings, it would read "John Doe <john@doe.com>"
 %set username "john"
 %set hostname "doe.com"
 %set realname "John Doe"
 
 % Set this if you want replies to your articles to go to a address different
 % from the one in "From:".
-%set replyto  "jd@something.com"
+%set replyto  "John Doe <jdoe@something.com>"
 
 % What to put into the "Organization:" header line.
 %set organization "Doe inc."
@@ -89,6 +89,7 @@
 % Set your favourite editor.  Use %s for the file name and %d for the line
 % where the cursor should be placed (usually at the beginning of the body).
 %set editor_command "jed '%s' -g %d -tmp"
+%set editor_command "vim -c %d '%s'"
 
 % You can have separate commands for editing posts, mail, and score files.
 %set mail_editor_command "jed '%s' -g %d -tmp --mail-mode"
@@ -105,7 +106,7 @@
 % WWW browser to use. Xbrowser is used when the DISPLAY environment variable
 % is set; non_Xbrowser otherwise.
 %set non_Xbrowser "lynx '%s'"
-%set Xbrowser "netscape '%s' &"
+%set Xbrowser "firefox '%s' &"
 
 % Command to use for printing
 % Note: On Win32, this variable defines the name of the printer queue to use.
@@ -171,26 +172,19 @@
 %set reply_custom_headers "X-newsgroup: %n\nX-realname: %r"
 %set supersedes_custom_headers "X-Superseded-Date: %d"
 
-% These are inserted when sending email CCs of your postings.
-% cc_post_string currently does not support any % escapes.
-%set cc_followup_string "[This message has also been posted to %n.]"
-%set cc_post_string "[This message has also been posted.]"
+% This is inserted when sending email CCs of your postings.
+%set cc_post_string "[This message has also been posted to %n.]"
 
 %
 %% 6. Character mapping / MIME support
 %
 
-% Character set used for the local display; valid values are:
-%   isolatin, ibm850, ibm852, next, koi8
-%set charset isolatin
+% Character set used for the display or terminal; valid values include:
+%   utf8, iso-8859-1, ibm850, ibm852, koi8,
+%charset display utf8
 
-% Character set to declare when posting 8bit characters. Do *not* use
-% the same value as for "charset" here.
-%set mime_charset "iso-8859-1"
-
-% You may set this to a comma-separated list of MIME charsets your terminal
-% is capable to display. The example adds two Chinese charsets:
-%compatible_charsets "Big5,gb2312"
+% the character set used for outgoing articles
+%charset outgoing "utf8"
 
 % If non-zero, call metamail for MIME formats slrn cannot handle.
 %set use_metamail 1
@@ -209,6 +203,7 @@
 % If 9, thread, then sort by date with most recent first.
 % If 10, sort by date with most recent last.
 % If 11, thread then sort by date with most recent last.
+% If 12, use the value of the custom_sort_order variable.
 %set sorting_method 3
 
 % If non-zero, a header with a new subject will start a new thread.
@@ -225,16 +220,16 @@
 %visible_headers "From:,Subject:,Newsgroups:,Followup-To:,Reply-To:"
 
 % If non-zero, #v+ and #v- will be interpreted as markers of verbatim lines.
-%set process_verbatim_marks	1
+%set process_verbatim_marks 1
 
 % If non-zero, hide #v+/#v- verbatim marks.
 %set hide_verbatim_marks 0
   
 % If non-zero, hide signature in articles.
-%set hide_signature		0
+%set hide_signature 0
 
 % If non-zero, hide PGP signature in articles.
-%set hide_pgpsignature		0
+%set hide_pgpsignature 0
 
 %
 %% 9. Display / color settings

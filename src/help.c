@@ -48,9 +48,8 @@ static char *Global_Help [] =
    N_(" Questions not covered by the documentation can be posted to"),
    N_("   news.software.readers"),
    "",
-   N_(" Please email bug reports, suggestions or comments to the current maintainer,"),
-   N_("   Thomas Schultz <tststs@gmx.de>"),
-   N_(" The original author of this program is John E. Davis <davis@space.mit.edu>"),
+   N_(" Please email bug reports, suggestions or comments to the author of this"),
+   N_(" program, John E. Davis <jed@jedsoft.org>"),
    NULL
 };
 

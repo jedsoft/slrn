@@ -188,6 +188,9 @@ Changes since 0.9.8.8pl1
 94. src/group.c: A SEGV could occur if the array passed to the
     set_group_order function contained multiple occurances of a group
     name.
+95. doc/slrn.rc: updated (Peter J Ross)
+96. src/help.c: Updated maintainer name (Peter J Ross).
+97. src/slrn.c: If SLang_getkey fails, then exit.
 
 {{{ Previous Versions 
 

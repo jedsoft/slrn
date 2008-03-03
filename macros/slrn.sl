@@ -108,4 +108,4 @@ autoload ("reverse", "arrayfuns");
 autoload ("shift", "arrayfuns");
 
 % Prepend the $HOME directory as a path for backward-compatibility
-prepend_to_slang_load_path (path_dirname (make_home_filename ("foo")));
+prepend_to_slang_load_path (path_dirname (make_home_filename (".")));
