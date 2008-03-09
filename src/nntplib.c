@@ -687,14 +687,28 @@ NNTP_Type *nntp_open_server (char *host, int port)
    return s;
 }
 
+/* This function removes the leading '.' from dot-escaped lines */
 int nntp_read_line (NNTP_Type *s, char *buf, unsigned int len)
 {
    if (-1 == nntp_gets_server (s, buf, len))
      return -1;
 
-   if ((buf[0] == '.') && (buf[1] == 0))
-     return 0;
-
+   if (buf[0] == '.')
+     {
+	char ch = buf[1];
+	if (ch == 0)
+	  return 0;
+	if (ch == '.')
+	  {
+	     char *b = buf;
+	     do
+	       {
+		  ch = b[1];
+		  *b++ = ch;
+	       }
+	     while (ch != 0);
+	  }
+     }
    return 1;
 }
 

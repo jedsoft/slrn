@@ -191,6 +191,10 @@ Changes since 0.9.8.8pl1
 95. doc/slrn.rc: updated (Peter J Ross)
 96. src/help.c: Updated maintainer name (Peter J Ross).
 97. src/slrn.c: If SLang_getkey fails, then exit.
+98. src/nntplib.c: nntp_read_line will strip the leading dot when
+    doubled.  art.c modified accordingly.  (Based on a patch by Rocco
+    Caputo).
+99. src/config.hin: Added a definition for SLRN_HAS_GNUTLS_SUPPORT.
 
 {{{ Previous Versions 
 

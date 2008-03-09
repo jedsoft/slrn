@@ -2397,10 +2397,15 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	
 	/* Note: I no longer remove _^H combinations, as it corrupts yenc-
 	 * encoded data and seems unnecessary in today's usenet.
-	 * We still check whether the server doubled a leading dot. */
+	 * 
+	 * The processsing of the leading doubled dot took place here.  
+	 * However, that is now handled at the protocol layer.
+	 */
+#if 0
 	if ((*buf == '.') && (*(buf + 1) == '.'))
 	  strcpy (l->buf, buf + 1); /* safe */
 	else
+#endif
 	  strcpy (l->buf, buf); /* safe */
 	
 	l->next = l->prev = NULL;
