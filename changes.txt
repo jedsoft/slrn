@@ -199,6 +199,8 @@ Changes since 0.9.8.8pl1
      IPv6 support (Joerg Sommer)
 101. src/misc.c: In queries, the default values of response characters
      were not being properly highlighted.
+102. src/slrn.c: If an error was encountered during initialization,
+     then exit.
 
 {{{ Previous Versions 
 

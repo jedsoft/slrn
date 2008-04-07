@@ -1719,7 +1719,13 @@ int main (int argc, char **argv) /*{{{*/
    (void) slrn_run_hooks (HOOK_GROUP_MODE_STARTUP, 0);
 
    if (Slrn_Batch) return 1;
-   
+
+   if (SLang_get_error ())
+     {
+	SLang_restart (1);	       /* prints any queued messages */
+	slrn_exit_error (_("An error was encountered during initialization."));
+     }
+
    while (Slrn_Current_Mode != NULL)
      {
 	if (SLKeyBoard_Quit)
