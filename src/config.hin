@@ -30,6 +30,7 @@
 
 /* define if you have fcntl.h */
 #undef HAVE_FCNTL_H
+#undef HAVE_SYS_FCNTL_H
 
 /* define if you have termios.h */
 #undef HAVE_TERMIOS_H
@@ -45,6 +46,8 @@
 
 /* define if you have memcpy */
 #undef HAVE_MEMCPY
+#undef HAVE_MEMCMP
+#undef HAVE_MEMCHR
 
 #undef HAVE_SYS_UTSNAME_H
 #undef HAVE_UNAME
@@ -79,6 +82,8 @@
 #undef HAVE_LOCALE_H
 #undef HAVE_LANGINFO_H
 
+#undef HAVE_SYS_TIME_H
+
 /* define if you have a "timezone" variable in time.h */
 #undef HAVE_TIMEZONE
 
@@ -86,6 +91,10 @@
 #undef HAVE_TM_GMTOFF
 
 #undef HAVE_GETDOMAINNAME
+
+/* functions for IPv6 */
+#undef HAVE_GETADDRINFO
+#undef HAVE_GETNAMEINFO
 
 /* Do we have posix signals? */
 #undef HAVE_SIGACTION
@@ -120,6 +129,8 @@
 #undef uid_t
 #undef pid_t
 
+/* This is here to support snprintf.  We don't use long doubles. */
+#undef HAVE_LONG_DOUBLE
 
 #if defined(ultrix) && !defined(__GNUC__)
 # ifndef NO_PROTOTYPES

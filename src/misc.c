@@ -284,6 +284,17 @@ void slrn_update_top_status_line (void) /*{{{*/
 /*}}}*/
 /*{{{ Message/Error Functions */
 
+static char *skip_char (char *s, char *smax, int ignore_combining)
+{
+   if (s >= smax)
+     return s;
+   
+   if (Slrn_UTF8_Mode == 0)
+     return s+1;
+   
+   return (char *)SLutf8_skip_chars ((SLuchar_Type *)s, (SLuchar_Type *)smax, 1, NULL, ignore_combining);
+}
+
 /* The first character is the color */
 static char Message_Buffer[1024];
 
@@ -303,24 +314,27 @@ static void redraw_message (void)
    
    color = Message_Buffer [0];
    m = Message_Buffer + 1;
-   
+   mmax = m + strlen (m);
+
    while (1)
      {
-	mmax = slrn_strbyte (m, 1);
-	if (mmax == NULL)
-	  mmax = m + strlen(m);
-	
+	char *m1 = slrn_strbyte (m, 1);
+	if (m1 == NULL)
+	  m1 = mmax;
+
 	slrn_set_color (color);
-	SLsmg_write_nchars (m, (unsigned int) (mmax - m));
-	if (*mmax == 0)
+	SLsmg_write_nchars (m, (unsigned int) (m1 - m));
+	if (m1 == mmax)
 	  break;
-	mmax++;
-	if (*mmax == 0)
+	m1++;
+	if (m1 == mmax)
 	  break;
 	
 	slrn_set_color (RESPONSE_CHAR_COLOR);
-	SLsmg_write_nchars (mmax, 1);
-	m = mmax + 1;
+	m = m1;
+	m1 = skip_char (m, mmax, 1);
+	SLsmg_write_nchars (m, m1-m);
+	m = m1;
      }
    
    SLsmg_erase_eol ();
@@ -1557,7 +1571,7 @@ static void rline_update (SLrline_Type *rli, char *prompt,
 	if (col < SLtt_Screen_Cols)
 	  break;
 
-	u = (char *)SLutf8_skip_chars ((SLuchar_Type *)u, (SLuchar_Type *)upoint, 1, NULL, 1);
+	u = skip_char (u, upoint, 1);
      }
    while (u < upoint);
 

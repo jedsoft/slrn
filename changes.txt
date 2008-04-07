@@ -195,6 +195,10 @@ Changes since 0.9.8.8pl1
     doubled.  art.c modified accordingly.  (Based on a patch by Rocco
     Caputo).
 99. src/config.hin: Added a definition for SLRN_HAS_GNUTLS_SUPPORT.
+100. src/config.hin,configure: Added the appropriate checks to enable
+     IPv6 support (Joerg Sommer)
+101. src/misc.c: In queries, the default values of response characters
+     were not being properly highlighted.
 
 {{{ Previous Versions 
 

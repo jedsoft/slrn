@@ -230,13 +230,19 @@ fi
 #---------------------------------------------------------------------------
 
 AC_CHECK_HEADERS( \
+direct.h \
 stdlib.h \
 unistd.h \
 memory.h \
 fcntl.h \
+sys/fcntl.h \
+sys/dir.h \
+ndir.h \
+sys/ndir.h \
 malloc.h \
 termios.h \
 sys/socket.h \
+sys/time.h \
 socket.h \
 sys/wait.h \
 netinet/in.h \
@@ -255,12 +261,21 @@ AC_TYPE_MODE_T
 AC_TYPE_PID_T
 AC_TYPE_UID_T
 
+#dnl Eventually, this should go away.  We don't need long doubles.  It is 
+#dnl here for the snprintf code.
+AC_CHECK_TYPE(long double)
+
 AC_CHECK_FUNCS(\
 memset \
 memcpy \
+memcmp \
+memchr \
 putenv \
 getcwd \
 getdomainname \
+getaddrinfo \
+getnameinfo \
+gettimeofday \
 sigaction \
 sigemptyset \
 sigprocmask \
