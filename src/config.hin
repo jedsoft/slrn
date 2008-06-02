@@ -7,12 +7,6 @@
 #ifndef SLRN_CONFIG_H
 #define SLRN_CONFIG_H
 
-/* define if you want to hard-code the domain */
-#undef USE_DOMAIN_NAME
- 
-/* set your domain here */
-#undef MY_DOMAIN_NAME
-
 /* Define to 1 if translation of program messages to the user's native
  * language is requested. 
  */

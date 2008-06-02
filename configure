@@ -5399,49 +5399,22 @@ echo $ECHO_N "checking for the uu library and header files uudeview.h... $ECHO_C
     then
        jd_uu_inc_file=uu.h
     fi
+
     if test X"$jd_uu_include_dir" = X
     then
-       lib_include_dirs="\
-            $jd_prefix_incdir \
-            /usr/local/uu/include \
-            /usr/local/include/uu \
-  	  /usr/local/include \
-  	  /usr/include/uu \
-  	  /usr/uu/include \
-  	  /usr/include \
-  	  /opt/include/uu \
-  	  /opt/uu/include \
-  	  /opt/include"
+      inc_and_lib_dirs="\
+         $jd_prefix_incdir,$jd_prefix_libdir \
+	 /usr/local/uu/include,/usr/local/uu/lib \
+	 /usr/local/include/uu,/usr/local/lib \
+	 /usr/local/include,/usr/local/lib \
+	 /usr/include/uu,/usr/lib \
+	 /usr/uu/include,/usr/uu/lib \
+	 /usr/include,/usr/lib \
+	 /opt/include/uu,/opt/lib \
+	 /opt/uu/include,/opt/uu/lib \
+	 /opt/include,/opt/lib"
 
-       for X in $lib_include_dirs
-       do
-          if test -r "$X/$jd_uu_inc_file"
-	  then
-  	  jd_uu_include_dir="$X"
-            break
-          fi
-       done
-       if test X"$jd_uu_include_dir" = X
-       then
-         jd_with_uu_library="no"
-       fi
-    fi
-
-    if test X"$jd_uu_library_dir" = X
-    then
-       lib_library_dirs="\
-            $jd_prefix_libdir \
-            /usr/local/lib \
-            /usr/local/lib/uu \
-            /usr/local/uu/lib \
-  	  /usr/lib \
-  	  /usr/lib/uu \
-  	  /usr/uu/lib \
-  	  /opt/lib \
-  	  /opt/lib/uu \
-  	  /opt/uu/lib"
-
-       case "$host_os" in
+      case "$host_os" in
          *darwin* )
 	   exts="dylib so a"
 	   ;;
@@ -5450,29 +5423,37 @@ echo $ECHO_N "checking for the uu library and header files uudeview.h... $ECHO_C
 	   ;;
 	 * )
 	   exts="so a"
-       esac
+      esac
 
-       found=0
-       for X in $lib_library_dirs
-       do
-         for E in $exts
-	 do
-           if test -r "$X/libuu.$E"
-	   then
-  	     jd_uu_library_dir="$X"
-	     found=1
-	     break
-           fi
-         done
-	 if test $found -eq 1
-	 then
-	   break
-	 fi
-       done
-       if test X"$jd_uu_library_dir" = X
-       then
-         jd_with_uu_library="no"
-       fi
+      xincfile="$jd_uu_inc_file"
+      xlibfile="libuu"
+      jd_with_uu_library="no"
+
+      for include_and_lib in $inc_and_lib_dirs
+      do
+        # Yuk.  Is there a better way to set these variables??
+        xincdir=`echo $include_and_lib | tr ',' ' ' | awk '{print $1}'`
+	xlibdir=`echo $include_and_lib | tr ',' ' ' | awk '{print $2}'`
+	found=0
+	if test -r $xincdir/$xincfile
+	then
+	  for E in $exts
+	  do
+	    if test -r "$xlibdir/$xlibfile.$E"
+	    then
+	      jd_uu_include_dir="$xincdir"
+	      jd_uu_library_dir="$xlibdir"
+	      jd_with_uu_library="yes"
+	      found=1
+	      break
+	    fi
+	  done
+	fi
+	if test $found -eq 1
+	then
+	  break
+	fi
+      done
     fi
   fi
 
@@ -5667,49 +5648,22 @@ echo $ECHO_N "checking for the canlock library and header files ... $ECHO_C" >&6
     then
        jd_canlock_inc_file=canlock.h
     fi
+
     if test X"$jd_canlock_include_dir" = X
     then
-       lib_include_dirs="\
-            $jd_prefix_incdir \
-            /usr/local/canlock/include \
-            /usr/local/include/canlock \
-  	  /usr/local/include \
-  	  /usr/include/canlock \
-  	  /usr/canlock/include \
-  	  /usr/include \
-  	  /opt/include/canlock \
-  	  /opt/canlock/include \
-  	  /opt/include"
+      inc_and_lib_dirs="\
+         $jd_prefix_incdir,$jd_prefix_libdir \
+	 /usr/local/canlock/include,/usr/local/canlock/lib \
+	 /usr/local/include/canlock,/usr/local/lib \
+	 /usr/local/include,/usr/local/lib \
+	 /usr/include/canlock,/usr/lib \
+	 /usr/canlock/include,/usr/canlock/lib \
+	 /usr/include,/usr/lib \
+	 /opt/include/canlock,/opt/lib \
+	 /opt/canlock/include,/opt/canlock/lib \
+	 /opt/include,/opt/lib"
 
-       for X in $lib_include_dirs
-       do
-          if test -r "$X/$jd_canlock_inc_file"
-	  then
-  	  jd_canlock_include_dir="$X"
-            break
-          fi
-       done
-       if test X"$jd_canlock_include_dir" = X
-       then
-         jd_with_canlock_library="no"
-       fi
-    fi
-
-    if test X"$jd_canlock_library_dir" = X
-    then
-       lib_library_dirs="\
-            $jd_prefix_libdir \
-            /usr/local/lib \
-            /usr/local/lib/canlock \
-            /usr/local/canlock/lib \
-  	  /usr/lib \
-  	  /usr/lib/canlock \
-  	  /usr/canlock/lib \
-  	  /opt/lib \
-  	  /opt/lib/canlock \
-  	  /opt/canlock/lib"
-
-       case "$host_os" in
+      case "$host_os" in
          *darwin* )
 	   exts="dylib so a"
 	   ;;
@@ -5718,29 +5672,37 @@ echo $ECHO_N "checking for the canlock library and header files ... $ECHO_C" >&6
 	   ;;
 	 * )
 	   exts="so a"
-       esac
+      esac
 
-       found=0
-       for X in $lib_library_dirs
-       do
-         for E in $exts
-	 do
-           if test -r "$X/libcanlock.$E"
-	   then
-  	     jd_canlock_library_dir="$X"
-	     found=1
-	     break
-           fi
-         done
-	 if test $found -eq 1
-	 then
-	   break
-	 fi
-       done
-       if test X"$jd_canlock_library_dir" = X
-       then
-         jd_with_canlock_library="no"
-       fi
+      xincfile="$jd_canlock_inc_file"
+      xlibfile="libcanlock"
+      jd_with_canlock_library="no"
+
+      for include_and_lib in $inc_and_lib_dirs
+      do
+        # Yuk.  Is there a better way to set these variables??
+        xincdir=`echo $include_and_lib | tr ',' ' ' | awk '{print $1}'`
+	xlibdir=`echo $include_and_lib | tr ',' ' ' | awk '{print $2}'`
+	found=0
+	if test -r $xincdir/$xincfile
+	then
+	  for E in $exts
+	  do
+	    if test -r "$xlibdir/$xlibfile.$E"
+	    then
+	      jd_canlock_include_dir="$xincdir"
+	      jd_canlock_library_dir="$xlibdir"
+	      jd_with_canlock_library="yes"
+	      found=1
+	      break
+	    fi
+	  done
+	fi
+	if test $found -eq 1
+	then
+	  break
+	fi
+      done
     fi
   fi
 
@@ -9317,34 +9279,7 @@ fi
 rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
       conftest$ac_exeext conftest.$ac_ext
 
-{ echo "$as_me:$LINENO: checking for domain in /etc/resolv.conf" >&5
-echo $ECHO_N "checking for domain in /etc/resolv.conf... $ECHO_C" >&6; }
-if test "${slrn_cv_domain+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  if test -f /etc/resolv.conf; then
-	slrn_cv_domain=`(grep "^domain" /etc/resolv.conf ||
-	                 grep "^search" /etc/resolv.conf) |
-			awk '{ print $2 }' | head -1`
- fi
- if test -z "$slrn_cv_domain"; then
-	slrn_cv_domain=no
- fi
 
-fi
-{ echo "$as_me:$LINENO: result: $slrn_cv_domain" >&5
-echo "${ECHO_T}$slrn_cv_domain" >&6; }
-
-if test "$slrn_cv_domain" != no; then
-	cat >>confdefs.h <<\_ACEOF
-#define USE_DOMAIN_NAME 1
-_ACEOF
-
-	cat >>confdefs.h <<_ACEOF
-#define MY_DOMAIN_NAME "${slrn_cv_domain}"
-_ACEOF
-
-fi
 
 
 
@@ -9835,49 +9770,22 @@ echo $ECHO_N "checking for the slang library and header files ... $ECHO_C" >&6; 
     then
        jd_slang_inc_file=slang.h
     fi
+
     if test X"$jd_slang_include_dir" = X
     then
-       lib_include_dirs="\
-            $jd_prefix_incdir \
-            /usr/local/slang/include \
-            /usr/local/include/slang \
-  	  /usr/local/include \
-  	  /usr/include/slang \
-  	  /usr/slang/include \
-  	  /usr/include \
-  	  /opt/include/slang \
-  	  /opt/slang/include \
-  	  /opt/include"
+      inc_and_lib_dirs="\
+         $jd_prefix_incdir,$jd_prefix_libdir \
+	 /usr/local/slang/include,/usr/local/slang/lib \
+	 /usr/local/include/slang,/usr/local/lib \
+	 /usr/local/include,/usr/local/lib \
+	 /usr/include/slang,/usr/lib \
+	 /usr/slang/include,/usr/slang/lib \
+	 /usr/include,/usr/lib \
+	 /opt/include/slang,/opt/lib \
+	 /opt/slang/include,/opt/slang/lib \
+	 /opt/include,/opt/lib"
 
-       for X in $lib_include_dirs
-       do
-          if test -r "$X/$jd_slang_inc_file"
-	  then
-  	  jd_slang_include_dir="$X"
-            break
-          fi
-       done
-       if test X"$jd_slang_include_dir" = X
-       then
-         jd_with_slang_library="no"
-       fi
-    fi
-
-    if test X"$jd_slang_library_dir" = X
-    then
-       lib_library_dirs="\
-            $jd_prefix_libdir \
-            /usr/local/lib \
-            /usr/local/lib/slang \
-            /usr/local/slang/lib \
-  	  /usr/lib \
-  	  /usr/lib/slang \
-  	  /usr/slang/lib \
-  	  /opt/lib \
-  	  /opt/lib/slang \
-  	  /opt/slang/lib"
-
-       case "$host_os" in
+      case "$host_os" in
          *darwin* )
 	   exts="dylib so a"
 	   ;;
@@ -9886,29 +9794,37 @@ echo $ECHO_N "checking for the slang library and header files ... $ECHO_C" >&6; 
 	   ;;
 	 * )
 	   exts="so a"
-       esac
+      esac
 
-       found=0
-       for X in $lib_library_dirs
-       do
-         for E in $exts
-	 do
-           if test -r "$X/libslang.$E"
-	   then
-  	     jd_slang_library_dir="$X"
-	     found=1
-	     break
-           fi
-         done
-	 if test $found -eq 1
-	 then
-	   break
-	 fi
-       done
-       if test X"$jd_slang_library_dir" = X
-       then
-         jd_with_slang_library="no"
-       fi
+      xincfile="$jd_slang_inc_file"
+      xlibfile="libslang"
+      jd_with_slang_library="no"
+
+      for include_and_lib in $inc_and_lib_dirs
+      do
+        # Yuk.  Is there a better way to set these variables??
+        xincdir=`echo $include_and_lib | tr ',' ' ' | awk '{print $1}'`
+	xlibdir=`echo $include_and_lib | tr ',' ' ' | awk '{print $2}'`
+	found=0
+	if test -r $xincdir/$xincfile
+	then
+	  for E in $exts
+	  do
+	    if test -r "$xlibdir/$xlibfile.$E"
+	    then
+	      jd_slang_include_dir="$xincdir"
+	      jd_slang_library_dir="$xlibdir"
+	      jd_with_slang_library="yes"
+	      found=1
+	      break
+	    fi
+	  done
+	fi
+	if test $found -eq 1
+	then
+	  break
+	fi
+      done
     fi
   fi
 
@@ -14170,11 +14086,6 @@ slrnpull : \$(OBJDIR)/slrnpull
  echo "$PROGRAM_OBJECT_RULES" >> src/Makefile
 
 
-if test "$slrn_cv_domain" != no; then
-  echo ""
-  echo "Your DOMAIN appears to be: $slrn_cv_domain"
-  echo "If this is not correct, edit src/sysconf.h!!!"
-fi
 
 echo ""
 echo "For some INSTALLATION options,  edit src/Makefile."

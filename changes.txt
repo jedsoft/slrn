@@ -201,6 +201,15 @@ Changes since 0.9.8.8pl1
      were not being properly highlighted.
 102. src/slrn.c: If an error was encountered during initialization,
      then exit.
+103. contrib/slrnrc-conv: Updates (Joerg Sommer)
+104. src/art.c: Changed the crosspost query message to something a bit
+     less confusing.
+105. src/misc.c: If OUR_ORGANIZATION is defined and looks like a
+     filename but the file does not exist, then do not use it. (Joerg
+     Sommer)
+106. src/config.hin: Removed unused USE_DOMAIN_NAME and MY_DOMAIN_NAME
+     variables. (Joerg Sommer)
+107. autoconf/aclocal.m4: Updated to version 0.2.3
 
 {{{ Previous Versions 
 

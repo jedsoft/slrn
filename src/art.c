@@ -3356,7 +3356,8 @@ static void followup (void) /*{{{*/
         char *responses=_("fFaAtTcC");
 	if (strlen (responses) != 8)
 	  responses = "";
-	rsp = slrn_get_response ("fFaAtTcC", responses, _("Crossposting. Set \"\001Followup-To\", Post to \001all groups / \001this group only, \001Cancel?"));
+	rsp = slrn_get_response ("fFaAtTcC", responses, 
+				 _("Crosspost using: (\001F)ollowup-To, (\001A)ll groups, (\001T)his group, (\001C)ancel ?"));
 	rsp = slrn_map_translated_char ("fFaAtTcC", responses, rsp) | 0x20;
 	switch (rsp)
 	  {

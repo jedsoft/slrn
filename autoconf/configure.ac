@@ -301,21 +301,21 @@ AC_TRY_LINK([#include <time.h>],
 	[AC_DEFINE(HAVE_TM_GMTOFF) AC_MSG_RESULT(yes)],
 	AC_MSG_RESULT(no))
 
-AC_CACHE_CHECK(for domain in /etc/resolv.conf, slrn_cv_domain,
-[if test -f /etc/resolv.conf; then
-	slrn_cv_domain=`(grep "^domain" /etc/resolv.conf ||
-	                 grep "^search" /etc/resolv.conf) |
-			awk '{ print [$]2 }' | head -1`
- fi
- if test -z "$slrn_cv_domain"; then
-	slrn_cv_domain=no
- fi
-])
+dnl # AC_CACHE_CHECK(for domain in /etc/resolv.conf, slrn_cv_domain,
+dnl # [if test -f /etc/resolv.conf; then
+dnl # 	slrn_cv_domain=`(grep "^domain" /etc/resolv.conf ||
+dnl # 	                 grep "^search" /etc/resolv.conf) |
+dnl # 			awk '{ print [$]2 }' | head -1`
+dnl #  fi
+dnl #  if test -z "$slrn_cv_domain"; then
+dnl # 	slrn_cv_domain=no
+dnl #  fi
+dnl # ])
 
-if test "$slrn_cv_domain" != no; then
-	AC_DEFINE(USE_DOMAIN_NAME)
-	AC_DEFINE_UNQUOTED(MY_DOMAIN_NAME, "${slrn_cv_domain}")
-fi
+dnl # if test "X$slrn_cv_domain" != Xno; then
+dnl # 	AC_DEFINE(USE_DOMAIN_NAME)
+dnl # 	AC_DEFINE_UNQUOTED(MY_DOMAIN_NAME, "${slrn_cv_domain}")
+dnl # fi
 
 AC_DEFUN(CF_VA_COPY,
 [
@@ -430,11 +430,11 @@ JD_CREATE_EXEC_RULE(slrnpull)
 
 JD_APPEND_RULES(src/Makefile)
 
-if test "$slrn_cv_domain" != no; then
-  echo ""
-  echo "Your DOMAIN appears to be: $slrn_cv_domain"
-  echo "If this is not correct, edit src/sysconf.h!!!"
-fi
+dnl #if test "$slrn_cv_domain" != no; then
+dnl #  echo ""
+dnl #  echo "Your DOMAIN appears to be: $slrn_cv_domain"
+dnl #  echo "If this is not correct, edit src/sysconf.h!!!"
+dnl #fi
 
 echo ""
 echo "For some INSTALLATION options,  edit src/Makefile."

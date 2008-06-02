@@ -2614,7 +2614,10 @@ static char *get_host_from_filename (char *file)
 
 void slrn_get_user_info (void) /*{{{*/
 {
-   char *name, *host, *host1;
+   char *name, *host, *host1, *org;
+#ifdef OUR_ORGANIZATION
+   char *our_org = OUR_ORGANIZATION;
+#endif
 #ifdef HAS_PASSWORD_CODE
    struct passwd *pw;
 #endif
@@ -2731,32 +2734,37 @@ void slrn_get_user_info (void) /*{{{*/
    while (*name && (*name != ',')) name++;
    *name = 0;
    
-   Slrn_User_Info.org = getenv ("ORGANIZATION");
+   org = getenv ("ORGANIZATION");
 #ifdef OUR_ORGANIZATION
-   if (Slrn_User_Info.org == NULL) Slrn_User_Info.org = OUR_ORGANIZATION;
+   if (org == NULL) org = our_org;
 #endif
-   if (Slrn_User_Info.org != NULL)
+   if (org != NULL)
      {
 	/* Check to see if this is an organization file. */
 	char orgbuf[512];
-	if (slrn_is_absolute_path (Slrn_User_Info.org))
+	if (slrn_is_absolute_path (org))
 	  {
 	     FILE *fporg;
-	     if (NULL != (fporg = fopen (Slrn_User_Info.org, "r")))
+	     if (NULL != (fporg = fopen (org, "r")))
 	       {
 		  if (NULL != fgets (orgbuf, sizeof (orgbuf) - 1, fporg))
 		    {
 		       unsigned int orglen = strlen (orgbuf);
 		       if (orglen && (orgbuf[orglen - 1] == '\n'))
 			 orgbuf[orglen - 1] = 0;
-		       Slrn_User_Info.org = orgbuf;
+		       org = orgbuf;
 		    }
 		  slrn_fclose (fporg);
 	       }
+#ifdef OUR_ORGANIZATION
+	     else if (our_org == org)
+	       org = NULL;
+#endif
 	  }
-	Slrn_User_Info.org = slrn_safe_strmalloc (Slrn_User_Info.org);
+	if (org != NULL)
+	  Slrn_User_Info.org = slrn_safe_strmalloc (org);
      }
-   
+
    Slrn_User_Info.signature = slrn_safe_strmalloc (SLRN_SIGNATURE_FILE);
    
 #if SLRN_HAS_CANLOCK
