@@ -130,7 +130,8 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 	  {
 	     char *charset;
 	     unsigned int len;
-	     
+	     int quote_seen;
+
 	     b = slrn_skip_whitespace (b + 1);
 	     
 	     if (0 != slrn_case_strncmp (b, "charset", 7))
@@ -149,12 +150,27 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 	     
 	     if (*b != '=') continue;
 	     b++;
-	     if (*b == '"') b++;
+	     quote_seen = 0;
+	     if (*b == '"') 
+	       {
+		  b++;
+		  quote_seen = 1;
+	       }
+
 	     charset = b;
-	     while (*b && (*b != ';')
-		    && (*b != ' ') && (*b != '\t') && (*b != '\n')
-		    && (*b != '"'))
-	       b++;
+	     if (quote_seen)
+	       {
+		  while (*b && (*b != '\n') && (*b != '"'))
+		    b++;
+	       }
+	     else
+	       {
+		  while (*b && (*b != ';')
+			 && (*b != ' ') && (*b != '\t') && (*b != '\n')
+			 && (*b != '"'))
+		    b++;
+	       }
+
 	     len = b - charset;
 	     
 	     a->mime.charset = slrn_safe_strnmalloc (charset, len);

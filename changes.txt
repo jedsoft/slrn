@@ -210,6 +210,8 @@ Changes since 0.9.8.8pl1
 106. src/config.hin: Removed unused USE_DOMAIN_NAME and MY_DOMAIN_NAME
      variables. (Joerg Sommer)
 107. autoconf/aclocal.m4: Updated to version 0.2.3
+108. src/mime.c: mime-charsets with spaces in them were not being
+     properly parsed.
 
 {{{ Previous Versions 
 

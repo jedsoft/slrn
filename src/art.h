@@ -179,7 +179,7 @@ Slrn_Article_Line_Type;
 
 typedef struct
 {
-    char *charset;
+    char *charset;		       /* malloced */
     int content_type;
     int content_subtype;
     int was_modified;
