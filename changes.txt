@@ -212,6 +212,11 @@ Changes since 0.9.8.8pl1
 107. autoconf/aclocal.m4: Updated to version 0.2.3
 108. src/mime.c: mime-charsets with spaces in them were not being
      properly parsed.
+109. src/sltcp.c: Added support for the nss compat library.  Configure
+     using --with-ssl --with-nss-compat  (Miroslav Lichvar).
+110. src/misc.c: Use getaddrinfo if available for obtaining the FQDN
+     (Miroslav Lichvar).
+111. README, doc/FIRST_STEPS, doc/score.txt: Updates (Peter J. Ross).
 
 {{{ Previous Versions 
 

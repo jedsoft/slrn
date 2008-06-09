@@ -114,9 +114,13 @@ extern int h_errno;
 # include <gnutls/openssl.h>
 #else
 # if SLTCP_HAS_SSL_SUPPORT
-#  include <openssl/ssl.h>
-#  include <openssl/err.h>
-#  include <openssl/rand.h>
+#  if SLTCP_HAS_NSS_COMPAT
+#   include <nss_compat_ossl.h>
+#  else
+#   include <openssl/ssl.h>
+#   include <openssl/err.h>
+#   include <openssl/rand.h>
+#  endif
 # endif
 #endif
 
@@ -509,14 +513,17 @@ static void dump_ssl_error_0 (void)
      print_error ("%s\n", ERR_error_string(err, 0));
 }
 
-unsigned long Fast_Random;
+#if !SLTCP_HAS_NSS_COMPAT
+static unsigned long Fast_Random;
 static unsigned long fast_random (void)
 {
    return (Fast_Random = Fast_Random * 69069U + 1013904243U);
 }
+#endif
 
 static int init_ssl_random (void)
 {
+#if !SLTCP_HAS_NSS_COMPAT
    time_t t;
    pid_t pid;
    unsigned int count;
@@ -538,6 +545,7 @@ static int init_ssl_random (void)
 	unsigned long r = fast_random ();
 	RAND_seed (&r, sizeof (unsigned long));
      }
+#endif				       /* !SLTCP_HAS_NSS_COMPAT */
    if (RAND_status ())
      return 0;
    

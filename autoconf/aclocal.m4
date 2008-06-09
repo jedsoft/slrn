@@ -1,4 +1,5 @@
 dnl# -*- mode: sh; mode: fold -*-
+dnl# 0.2.3-1: AC_AIX needs to be called before running the compiler (Miroslav Lichvar)
 dnl# 0.2.3: rewrote JD_CHECK_FOR_LIBRARY to loop over include/lib pairs
 dnl# 0.2.2-1: JD_WITH_LIBRARY bug-fix
 dnl# 0.2.2:  Use ncurses5-config to search for terminfo dirs.
@@ -501,11 +502,11 @@ dnl#}}}
 
 AC_DEFUN(JD_ANSI_CC, dnl#{{{
 [
+AC_AIX
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_GCC_TRADITIONAL
 AC_ISC_POSIX
-AC_AIX
 
 dnl #This stuff came from Yorick config script
 dnl

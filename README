@@ -12,15 +12,10 @@ includes pointers to additional resources.
 			      Basic information
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-Original author:        John E. Davis <davis@space.mit.edu>
-
-Current maintainer:     Thomas Schultz <tststs@gmx.de>
-                        [ Please send e-mail about slrn to this address. ]
-
-Homepage:               http://slrn.sourceforge.net/
-HTML forward:           http://www.slrn.org/
-
-HTTP download:          http://prdownloads.sourceforge.net/slrn/
+Author:                 John E. Davis <jed@jedsoft.org>
+Version:		pre0.9.9
+Homepage:               http://www.jedsoft.org/slrn/
+Download:               http://www.jedsoft.org/slrn/download.html
 
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

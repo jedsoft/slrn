@@ -2543,10 +2543,14 @@ int slrn_is_fqdn (char *h) /*{{{*/
 /* Try to get a fully qualified domain name. */
 static char *get_hostname (void)
 {
+#ifdef HAVE_GETADDRINFO
+   struct addrinfo hint, *res;
+   int r;
+#else
    struct hostent *host_entry;
+#endif
    char buf[MAX_HOST_NAME_LEN + 1];
 
-   host_entry = NULL;
    if ((-1 == gethostname (buf, MAX_HOST_NAME_LEN))
        || (*buf == 0))
      return NULL;
@@ -2555,15 +2559,33 @@ static char *get_hostname (void)
     * to get more information.  Why isn't there a simplified interface to
     * get the FQDN!!!!
     */
+#ifdef HAVE_GETADDRINFO
+   memset(&hint, 0, sizeof (hint));
+   hint.ai_flags = AI_CANONNAME;
+
+   r = getaddrinfo(buf, NULL, &hint, &res);
+   if (r == EAI_AGAIN)
+     {
+	slrn_sleep (2);
+	r = getaddrinfo(buf, NULL, &hint, &res);
+     }
+
+   if ((r == 0) && res && res->ai_canonname)
+     {
+	char *ret = slrn_safe_strmalloc (res->ai_canonname);
+	freeaddrinfo(res);
+	return ret;
+     }
+#else
    host_entry = gethostbyname (buf);
 
-#if defined(TRY_AGAIN) && !defined(MULTINET)
+# if defined(TRY_AGAIN) && !defined(MULTINET)
    if ((host_entry == NULL) && (h_errno == TRY_AGAIN))
      {
 	slrn_sleep (2);
 	host_entry = gethostbyname (buf);
      }
-#endif
+# endif
 
    if ((host_entry != NULL)
        && (host_entry->h_name != NULL)
@@ -2584,7 +2606,8 @@ static char *get_hostname (void)
 
 	return slrn_safe_strmalloc ((char *)host_entry->h_name);
      }
-   
+#endif
+
    return slrn_safe_strmalloc (buf);
 }
 

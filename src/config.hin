@@ -1,6 +1,6 @@
 /* -*- C -*- */
 
-/* Note: this is for unix only.  See slrnconf.h for other systems.  
+/* Note: this is for Unix only.  See slrnconf.h for other systems.  
  * Also edit slrnfeat.h for slrn features.
  */
 
@@ -15,6 +15,9 @@
 
 /* define if you want SSL support */
 #undef USE_SSL
+
+/* define if you want to use NSS compat library instead of OpenSSL */
+#undef USE_NSS_COMPAT
 
 /* define if you have stdlib.h */
 #undef HAVE_STDLIB_H
@@ -162,6 +165,11 @@
 #define SLTCP_HAS_GNUTLS_SUPPORT SLRN_HAS_GNUTLS_SUPPORT
 #define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_SSL_SUPPORT
 
+#ifdef USE_NSS_COMPAT
+# define SLTCP_HAS_NSS_COMPAT 1
+#else
+# define SLTCP_HAS_NSS_COMPAT 0
+#endif
 
 #define SLRN_SERVER_ID_NNTP 1
 #define SLRN_SERVER_ID_SPOOL 2

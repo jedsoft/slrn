@@ -200,6 +200,9 @@ AC_SUBST(INCICONV)dnl# AM_GNU_GETTEXT does not do this.  Why???
 #---------------------------------------------------------------------------
 # SSL stuff
 #---------------------------------------------------------------------------
+AC_ARG_WITH(nss-compat,
+    [  --with-nss-compat       Use NSS compat library instead of OpenSSL],
+    [use_nss_compat=$withval], [use_nss_compat=no])
 AC_CACHE_CHECK(if you want SSL support,jd_use_ssl,
 [
   AC_ARG_WITH(ssl, 
@@ -212,17 +215,31 @@ xno)
    SSLLIB=
   ;;
 x|xyes)
-   SSLINC="-I/usr/local/ssl/include"
-   SSLLIB="-L/usr/local/ssl/lib -lssl -lcrypto"
+   if test "x$use_nss_compat" != xno
+   then
+     SSLINC="-I/usr/local/include/nss_compat_ossl -I/usr/local/include/nss3 -I/usr/local/include/nspr4"
+     SSLLIB="-L/usr/local/lib -lnss_compat_ossl"
+   else
+     SSLINC="-I/usr/local/ssl/include"
+     SSLLIB="-L/usr/local/ssl/lib -lssl -lcrypto"
+   fi
 ;;
 *)
-   SSLINC="-I$jd_use_ssl/include"
-   SSLLIB="-L$jd_use_ssl/lib -lssl -lcrypto"
+   if test "x$use_nss_compat" != xno; then
+     SSLINC="-I$jd_use_ssl/include/nss_compat_ossl -I$jd_use_ssl/include/nss3 -I$jd_use_ssl/include/nspr4"
+     SSLLIB="-L$jd_use_ssl/lib -lnss_compat_ossl"
+   else
+     SSLINC="-I$jd_use_ssl/include"
+     SSLLIB="-L$jd_use_ssl/lib -lssl -lcrypto"
+   fi
 esac
 AC_SUBST(SSLINC)
 AC_SUBST(SSLLIB)
 if test "x$SSLINC" != x; then
  AC_DEFINE(USE_SSL)
+ if test "x$use_nss_compat" != xno; then
+   AC_DEFINE(USE_NSS_COMPAT)
+ fi
 fi
 
 #---------------------------------------------------------------------------
