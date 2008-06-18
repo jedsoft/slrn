@@ -217,6 +217,8 @@ Changes since 0.9.8.8pl1
 110. src/misc.c: Use getaddrinfo if available for obtaining the FQDN
      (Miroslav Lichvar).
 111. README, doc/FIRST_STEPS, doc/score.txt: Updates (Peter J. Ross).
+112. autoconf/aclocal.m4: Corrected a typo affecting a test (Joerg
+     Sommer).
 
 {{{ Previous Versions 
 

@@ -1,4 +1,5 @@
 dnl# -*- mode: sh; mode: fold -*-
+dnl# 0.2.3-2: X was missing in a "test" statement (Joerg Sommer)
 dnl# 0.2.3-1: AC_AIX needs to be called before running the compiler (Miroslav Lichvar)
 dnl# 0.2.3: rewrote JD_CHECK_FOR_LIBRARY to loop over include/lib pairs
 dnl# 0.2.2-1: JD_WITH_LIBRARY bug-fix
@@ -899,7 +900,7 @@ AC_DEFUN(JD_CHECK_FOR_LIBRARY, dnl#{{{
     fi
   fi
 
-  if test X"$jd_$1_include_dir" != X -a "$jd_$1_library_dir" != X
+  if test X"$jd_$1_include_dir" != X -a X"$jd_$1_library_dir" != X
   then
     AC_MSG_RESULT(yes: $jd_$1_library_dir and $jd_$1_include_dir)
     jd_with_$1_library="yes"
