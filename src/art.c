@@ -162,7 +162,7 @@ Slrn_Header_Type *Slrn_Current_Header;
 Slrn_Header_Type *_art_Headers;
 
 /* range of articles on server for current group */
-int Slrn_Server_Min, Slrn_Server_Max;
+NNTP_Artnum_Type Slrn_Server_Min, Slrn_Server_Max;
 
 /* If +1, threads are all collapsed.  If zero, none are.  If -1, some may
  * be and some may not.  In other words, if -1, this variable should not
@@ -1714,7 +1714,7 @@ static void init_header_window_struct (void) /*{{{*/
 
 /*}}}*/
 
-static Slrn_Header_Type *find_header_from_serverid (int id) /*{{{*/
+static Slrn_Header_Type *find_header_from_serverid (NNTP_Artnum_Type id) /*{{{*/
 {
    Slrn_Header_Type *h;
    
@@ -1734,7 +1734,7 @@ static void kill_cross_references (Slrn_Header_Type *h) /*{{{*/
 {
    char *b;
    char *group, *g;
-   long num;
+   NNTP_Artnum_Type num;
    
    if ((h->xref == NULL) || (*h->xref == 0))
      {
@@ -1765,7 +1765,7 @@ static void kill_cross_references (Slrn_Header_Type *h) /*{{{*/
 	if ((g == b) || (*b++ == 0) || (*b == 0) ||
 	    (NULL == (group = slrn_strnmalloc (g, b-g-1, 0))))
 	  break;
-	num = atoi (b);
+	num = NNTP_STR_TO_ARTNUM (b);
 	while ((*b <= '9') && (*b >= '0')) b++;
 	if ((num != h->number)
 	    || strcmp (group, Slrn_Current_Group_Name))
@@ -2202,9 +2202,9 @@ Slrn_Header_Type *slrn_find_header_with_msgid (char *msgid) /*{{{*/
 static void goto_article (void) /*{{{*/
 {
    Slrn_Header_Type *h;
-   int want_n;
+   NNTP_Artnum_Type want_n;
    
-   if (-1 == slrn_read_integer (_("Goto article: "), NULL, &want_n))
+   if (-1 == slrn_read_artnum_int (_("Goto article: "), NULL, &want_n))
      return;
    
    h = _art_Headers;
@@ -5168,7 +5168,7 @@ static void author_search_backward (void) /*{{{*/
 typedef struct Kill_List_Type /*{{{*/
 {
 #define MAX_DKILLS 50
-   int nums[MAX_DKILLS];
+   NNTP_Artnum_Type nums[MAX_DKILLS];
    unsigned int num_used;
    struct Kill_List_Type *next;
 }
@@ -5180,7 +5180,7 @@ Kill_List_Type;
 static Kill_List_Type *Kill_List;
 static Kill_List_Type *Missing_Article_List;
 
-static Kill_List_Type *add_to_specified_kill_list (int num, Kill_List_Type *root) /*{{{*/
+static Kill_List_Type *add_to_specified_kill_list (NNTP_Artnum_Type num, Kill_List_Type *root) /*{{{*/
 {
    if (num < 0) return root;
    
@@ -5199,7 +5199,7 @@ static Kill_List_Type *add_to_specified_kill_list (int num, Kill_List_Type *root
 
 /*}}}*/
 
-static void add_to_kill_list (int num) /*{{{*/
+static void add_to_kill_list (NNTP_Artnum_Type num) /*{{{*/
 {
    Kill_List = add_to_specified_kill_list (num, Kill_List);
    Number_Killed++;
@@ -5207,7 +5207,7 @@ static void add_to_kill_list (int num) /*{{{*/
 
 /*}}}*/
 
-static void add_to_missing_article_list (int num) /*{{{*/
+static void add_to_missing_article_list (NNTP_Artnum_Type num) /*{{{*/
 {
    Missing_Article_List = add_to_specified_kill_list (num, Missing_Article_List);
 }
@@ -5220,7 +5220,7 @@ static void free_specific_kill_list_and_update (Kill_List_Type *k) /*{{{*/
      {
 	Kill_List_Type *next = k->next;
 	unsigned int i, imax = k->num_used;
-	int *nums = k->nums;
+	NNTP_Artnum_Type *nums = k->nums;
 	if (User_Aborted_Group_Read == 0) for (i = 0; i < imax; i++)
 	  {
 	     slrn_mark_article_as_read (NULL, nums[i]);
@@ -5268,7 +5268,7 @@ Slrn_Header_Type *slrn_set_header_score (Slrn_Header_Type *h,
      {
 	if ((score <= Slrn_Kill_Score_Max) && apply_kill)
 	  {
-	     int number = h->number;
+	     NNTP_Artnum_Type number = h->number;
 	     if (Slrn_Kill_Log_FP != NULL)
 	       {
 		  Slrn_Score_Debug_Info_Type *hlp = sdi;
@@ -5574,7 +5574,7 @@ static Slrn_Header_Type *process_xover (Slrn_XOver_Type *xov)
 /*}}}*/
 
 /*{{{ get_headers from server */
-static int get_add_headers (int min, int max) /*{{{*/
+static int get_add_headers (NNTP_Artnum_Type min, NNTP_Artnum_Type max) /*{{{*/
 {
    char *meter_chars = "|/-\\";
    static unsigned int last_meter_char;
@@ -5587,11 +5587,11 @@ static int get_add_headers (int min, int max) /*{{{*/
      {
 	Slrn_Header_Type *h;
 	Slrn_Header_Line_Type *l;
-	int this_num;
+	NNTP_Artnum_Type this_num;
 	
 	h = Slrn_First_Header;
 	
-	while (-1 != (this_num = slrn_read_add_xover(&l)))
+	while (-1 != slrn_read_add_xover(&l, &this_num))
 	  {
 	     if (SLang_get_error () == USER_BREAK)
 	       {
@@ -5625,12 +5625,12 @@ static int get_add_headers (int min, int max) /*{{{*/
 /*}}}*/
 /* gets the headers of article number min-max, decrementing *totalp for each
  * downloaded article */
-static int get_headers (int min, int max, int *totalp) /*{{{*/
+static int get_headers (NNTP_Artnum_Type min, NNTP_Artnum_Type max, NNTP_Artnum_Type *totalp) /*{{{*/
 {
    Slrn_Header_Type *h;
    /* int percent, last_percent, dpercent, */
-   int expected_num;
-   int total = *totalp;
+   NNTP_Artnum_Type expected_num;
+   NNTP_Artnum_Type total = *totalp;
    int reads_per_update;
    int num_processed;
    int num, err;
@@ -5662,8 +5662,8 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
    num = Total_Num_Headers + Number_Killed;
    while (slrn_read_xover(&xov) > 0)
      {
-	int this_num;
-	
+	NNTP_Artnum_Type this_num;
+
 	if (SLang_get_error () == USER_BREAK)
 	  {
 	     slrn_free_xover_data (&xov);
@@ -5676,7 +5676,7 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
 	
 	if (expected_num != this_num)
 	  {
-	     int bad_num;
+	     NNTP_Artnum_Type bad_num;
 	     
 	     total -= (this_num - expected_num);
 	     
@@ -5717,8 +5717,8 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
    
    if (expected_num != max + 1)
      {
-	int bad_num;
-	     
+	NNTP_Artnum_Type bad_num;
+
 	total -= (max - expected_num) + 1;
 	     
 	for (bad_num = expected_num; bad_num <= max; bad_num++)
@@ -5740,7 +5740,7 @@ static int get_headers (int min, int max, int *totalp) /*{{{*/
 static void get_missing_headers () /*{{{*/
 {
    Slrn_Header_Type *h;
-   int min, max;
+   NNTP_Artnum_Type min, max;
    
    if (0 == slrn_add_xover_missing())
      return;
@@ -5772,7 +5772,7 @@ static void get_missing_headers () /*{{{*/
 /* Nothing is synced by this routine.  It is up to the calling routine. */
 static void insert_header (Slrn_Header_Type *ref) /*{{{*/
 {
-   int n, id;
+   NNTP_Artnum_Type n, id;
    Slrn_Header_Type *h;
    
    ref->hash_next = Header_Table[ref->hash % HEADER_TABLE_SIZE];
@@ -5888,11 +5888,13 @@ static int get_header_by_message_id (char *msgid,
  * the server.  It does not sync line number. 
  */  
 static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
-				  Slrn_Range_Type *no_body)
+				  Slrn_Range_Type *no_body,
+				  unsigned int *numidsp)
 {
    char buf[NNTP_BUFFER_SIZE];
-   int id_array[1000];
-   int num_ids, i, id;
+   NNTP_Artnum_Type id_array[1000];
+   NNTP_Artnum_Type id;
+   unsigned int i, num_ids;
    char *fmt = _("Retrieving children from server...[%c]");
    char *meter_chars = "|/-\\";
    static unsigned int last_meter_char;
@@ -5927,7 +5929,7 @@ static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
 	slrn_message_now (fmt, meter_chars[last_meter_char]);
 	last_meter_char++;
 	
-	id = atoi (buf);
+	id = NNTP_STR_TO_ARTNUM (buf);
 	if (id <= 0) continue;
 	
 	p = buf;
@@ -5997,12 +5999,16 @@ static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
 	while (slrn_open_add_xover (id, id) == 1)
 	  {
 	     Slrn_Header_Line_Type *l;
-	     while (-1 != slrn_read_add_xover (&l)) /* loops once */
+	     NNTP_Artnum_Type unused;
+
+	     while (-1 != slrn_read_add_xover (&l, &unused)) /* loops once */
 	       slrn_append_add_xover_to_header (h, l);
 	  }
 	slrn_close_add_xover (0);
      }
-   return num_ids;
+   if (numidsp != NULL)
+     *numidsp = num_ids;
+   return 0;
 }
 
 /*}}}*/
@@ -6013,7 +6019,7 @@ static void get_children_headers_1 (Slrn_Header_Type *h, /*{{{*/
 {
    while (h != NULL)
      {
-	(void) find_children_headers (h, no_body);
+	(void) find_children_headers (h, no_body, NULL);
 	if (h->child != NULL)
 	  {
 	     get_children_headers_1 (h->child, no_body);
@@ -6044,7 +6050,7 @@ static void get_children_headers (void) /*{{{*/
    
    /* slrn_set_suspension (1); */
    
-   if (find_children_headers (Slrn_Current_Header, no_body) < 0)
+   if (find_children_headers (Slrn_Current_Header, no_body, NULL) < 0)
      {
 	/* slrn_set_suspension (0); */
 	slrn_ranges_free (no_body);	
@@ -6530,7 +6536,7 @@ static void toggle_verbatim (void) /*{{{*/
 /*{{{ leave/suspend article mode and support functions */
 static void update_ranges (void) /*{{{*/
 {
-   int bmin, bmax;
+   NNTP_Artnum_Type bmin, bmax;
    unsigned int is_read;
    Slrn_Range_Type *r_new;
    Slrn_Header_Type *h;
@@ -6586,7 +6592,7 @@ static void update_ranges (void) /*{{{*/
 static void update_requests (void) /*{{{*/
 {
 #if SLRN_HAS_SPOOL_SUPPORT
-   int bmin, bmax;
+   NNTP_Artnum_Type bmin, bmax;
    unsigned int is_req;
    Slrn_Range_Type *r = Current_Group->requests;
    Slrn_Header_Type *h;
@@ -7671,12 +7677,11 @@ static void slrn_art_hangup (int sig) /*{{{*/
 static void mark_ranges (Slrn_Range_Type *r, int flag) /*{{{*/
 {
    Slrn_Header_Type *h = Slrn_First_Header;
-   int min, max;
    
    while ((r != NULL) && (h != NULL))
      {
-	min = r->min;
-	max = r->max;
+	NNTP_Artnum_Type min = r->min;
+	NNTP_Artnum_Type max = r->max;
 	while (h != NULL)
 	  {
 	     if (h->number < min)
@@ -7719,10 +7724,10 @@ void slrn_set_header_flags (Slrn_Header_Type *h, unsigned int flags) /*{{{*/
  *             that last 'all' UNREAD articles.
  * Otherwise,  fetch ALL UNREAD headers from the server.
  */
-int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
+int slrn_select_article_mode (Slrn_Group_Type *g, NNTP_Artnum_Type all, int score) /*{{{*/
 {
-   int min, max;
-   int smin, smax;
+   NNTP_Artnum_Type min, max;
+   NNTP_Artnum_Type smin, smax;
    Slrn_Range_Type *r;
    int status;
 
@@ -7774,7 +7779,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
      {
 	if ((all < 0) && (r != NULL))
 	  {
-	     int unread;
+	     NNTP_Artnum_Type unread;
 
 	     /* This condition will occur when the user wants to read unread
 	      * articles that occur in a gap, i.e., RRRUUUUURRRUUUUUUU and
@@ -7786,7 +7791,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 	      * go back will be under estimated.
 	      */
 	     all = -all;
-	     
+
 	     while (r->next != NULL) r = r->next;
 	     /* Go back through previously read articles counting unread.
 	      * If number unread becomes greater than the number that we
@@ -7804,7 +7809,7 @@ int slrn_select_article_mode (Slrn_Group_Type *g, int all, int score) /*{{{*/
 	       }
 	     if (r->prev == NULL)
 	       unread += max;
-	     
+
 	     if (unread >= all)
 	       {
 		  /* This may be problematic if some articles are missing on 
@@ -8615,7 +8620,7 @@ static int color_by_score (int score) /*{{{*/
 static char *display_header_cb (char ch, void *data, int *len, int *color) /*{{{*/
 {
    Slrn_Header_Type *h = (Slrn_Header_Type *) data;
-   static char buf[33];
+   static char buf[256];
    char *retval = NULL;
    int score;
    
@@ -8855,7 +8860,7 @@ static char *display_header_cb (char ch, void *data, int *len, int *color) /*{{{
 #ifdef HAVE_ANSI_SPRINTF
 	*len =
 #endif
-	sprintf (retval, "%d", h->number); /* safe */
+	sprintf (retval, NNTP_FMT_ARTNUM, h->number); /* safe */
 	break;
      }
    return retval;

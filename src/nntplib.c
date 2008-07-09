@@ -825,7 +825,7 @@ static int _nntp_num_or_msgid_cmd (NNTP_Type *s, char *cmd, int n, char *msgid)
      return nntp_server_vcmd (s, "%s %s", cmd, msgid);
 }
 
-int nntp_head_cmd (NNTP_Type *s, int n, char *msgid, int *real_id)
+int nntp_head_cmd (NNTP_Type *s, NNTP_Artnum_Type n, char *msgid, NNTP_Artnum_Type *real_id)
 {
    int status;
 
@@ -835,36 +835,36 @@ int nntp_head_cmd (NNTP_Type *s, int n, char *msgid, int *real_id)
    return status;
 }
 
-int nntp_xover_cmd (NNTP_Type *s, int min, int max)
+int nntp_xover_cmd (NNTP_Type *s, NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 {
-   return nntp_server_vcmd (s, "XOVER %d-%d", min, max);
+   return nntp_server_vcmd (s, "XOVER " NNTP_FMT_ARTRANGE, min, max);
 }
 
-int nntp_xhdr_cmd (NNTP_Type *s, char *field, int min, int max)
+int nntp_xhdr_cmd (NNTP_Type *s, char *field, NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 {
-   return nntp_server_vcmd (s, "XHDR %s %d-%d", field, min, max);
+   return nntp_server_vcmd (s, "XHDR %s " NNTP_FMT_ARTRANGE, field, min, max);
 }
 
-int nntp_article_cmd (NNTP_Type *s, int n, char *msgid)
+int nntp_article_cmd (NNTP_Type *s, NNTP_Artnum_Type n, char *msgid)
 {
    return _nntp_num_or_msgid_cmd (s, "ARTICLE", n, msgid);
 }
 
-int nntp_next_cmd (NNTP_Type *s, int *n)
+int nntp_next_cmd (NNTP_Type *s, NNTP_Artnum_Type *n)
 {
    int status;
 
    if ((OK_NEXT == (status = nntp_server_cmd (s, "NEXT")))
        && (n != NULL))
-     *n = atoi (s->rspbuf + 4);
+     *n = NNTP_STR_TO_ARTNUM (s->rspbuf + 4);
 
    return status;
 }
 
-int nntp_select_group (NNTP_Type *s, char *name, int *minp, int *maxp)
+int nntp_select_group (NNTP_Type *s, char *name, NNTP_Artnum_Type *minp, NNTP_Artnum_Type *maxp)
 {
-   int estim;
-   int min, max;
+   NNTP_Artnum_Type estim;
+   NNTP_Artnum_Type min, max;
    
    switch (nntp_server_vcmd (s, "GROUP %s", name))
      {
@@ -873,7 +873,7 @@ int nntp_select_group (NNTP_Type *s, char *name, int *minp, int *maxp)
 
       case OK_GROUP:
 
-	if (3 != sscanf(s->rspbuf + 4, "%d %d %d", &estim, &min, &max))
+	if (3 != sscanf (s->rspbuf + 4, NNTP_FMT_ARTNUM_3, &estim, &min, &max))
 	  return -1;
 
 	if (minp != NULL) *minp = min;
@@ -931,7 +931,8 @@ int nntp_refresh_groups (NNTP_Type *s, Slrn_Group_Range_Type *gr, int n)
    i = prev;
    while (i < n)
      {
-	int estim;
+	NNTP_Artnum_Type estim;
+
 	prev = i;
 	switch (nntp_get_server_response (s))
 	  {
@@ -957,7 +958,7 @@ int nntp_refresh_groups (NNTP_Type *s, Slrn_Group_Range_Type *gr, int n)
 	       return -1;
 	     
 	   case OK_GROUP:
-	     if (3 != sscanf (s->rspbuf + 4, "%d %d %d", &estim,
+	     if (3 != sscanf (s->rspbuf + 4, NNTP_FMT_ARTNUM_3, &estim,
 			      &(gr[i].min), &(gr[i].max)))
 	       {
 		  s->flags |= reconnect;
@@ -1002,16 +1003,17 @@ int nntp_end_post (NNTP_Type *s)
    return nntp_get_server_response (s);
 }
 
-int nntp_xpat_cmd (NNTP_Type *s, char *hdr, int rmin, int rmax, char *pat)
+int nntp_xpat_cmd (NNTP_Type *s, char *hdr, NNTP_Artnum_Type rmin, NNTP_Artnum_Type rmax, char *pat)
 {
    if (0 == PROBE_XCMD(s, s->can_xpat, "XPAT"))
      return ERR_COMMAND;
 
-   return nntp_server_vcmd (s, "XPAT %s %d-%d *%s*", hdr, rmin, rmax, pat);
+   return nntp_server_vcmd (s, ("XPAT %s " NNTP_FMT_ARTRANGE " *%s*"), 
+			    hdr, rmin, rmax, pat);
 }
 
 /* hdr should not include ':' */
-int nntp_one_xhdr_cmd (NNTP_Type *s, char *hdr, int num, char *buf, unsigned int buflen)
+int nntp_one_xhdr_cmd (NNTP_Type *s, char *hdr, NNTP_Artnum_Type num, char *buf, unsigned int buflen)
 {
    char tmpbuf[1024];
    int found;
@@ -1026,7 +1028,7 @@ int nntp_one_xhdr_cmd (NNTP_Type *s, char *hdr, int num, char *buf, unsigned int
      {
 	char *b, ch;
 
-	if (-1 == nntp_server_vcmd (s, "XHDR %s %d", hdr, num))
+	if (-1 == nntp_server_vcmd (s, ("XHDR %s " NNTP_FMT_ARTNUM), hdr, num))
 	  return -1;
 
 	if (OK_HEAD != s->code)
@@ -1111,7 +1113,7 @@ int nntp_listgroup (NNTP_Type *s, char *group)
    /*  OK_GROUP desired */
 }
 
-int nntp_body_cmd (NNTP_Type *s, int n, char *msgid)
+int nntp_body_cmd (NNTP_Type *s, NNTP_Artnum_Type n, char *msgid)
 {
    return _nntp_num_or_msgid_cmd (s, "BODY", n, msgid);
 }

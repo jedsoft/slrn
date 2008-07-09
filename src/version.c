@@ -119,6 +119,8 @@ static void show_compile_time_options (FILE *fp)
    print_options (fp, Backend_Options, _("Backends"));
    print_options (fp, External_Lib_Options, _("External programs / libs"));
    print_options (fp, Feature_Options, _("Features"));
+   (void) fprintf (fp, _(" Using %d bit integers for article numbers.\n"),
+		   8*sizeof(NNTP_Artnum_Type));
 }
 
 void slrn_show_version (FILE *fp) /*{{{*/

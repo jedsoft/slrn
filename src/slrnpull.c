@@ -1103,7 +1103,7 @@ static int write_xover_line (FILE *fp, Slrn_XOver_Type *xov) /*{{{*/
 
 #if CREATE_OVERVIEW
    if ((EOF == fprintf (fp,
-			"%d\t%s\t%s\t%s\t%s\t%s\t%d\t%d",
+			(NNTP_FMT_ARTNUM "\t%s\t%s\t%s\t%s\t%s\t%d\t%d"),
 			xov->id, xov->subject_malloced, 
 			xov->from, xov->date_malloced, xov->message_id,
 			xov->references, xov->bytes, xov->lines))
@@ -1111,7 +1111,7 @@ static int write_xover_line (FILE *fp, Slrn_XOver_Type *xov) /*{{{*/
 	   && (EOF == fprintf (fp, "\tXref: %s", xov->xref)))
        || (EOF == fputc ('\n', fp)))
      {
-	log_error (_("Error writing to overview database: %s:%d."), Current_Group->name, xov->id);
+	log_error (_("Error writing to overview database:%s:" NNTP_FMT_ARTNUM), Current_Group->name, xov->id);
 	return -1;
      }
 #else
@@ -1752,7 +1752,7 @@ static int pull_news (NNTP_Type *s, int marked_bodies) /*{{{*/
    g = Active_Groups;
    while (g != NULL)
      {
-	int min, max;
+	NNTP_Artnum_Type min, max;
 
 	log_message (_("Fetching articles for %s."), g->name);
 	

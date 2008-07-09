@@ -66,17 +66,17 @@ char *Slrn_Overviewfmt_File;
 char *Slrn_Requests_File;
 
 static int spool_put_server_cmd (char *, char *, unsigned int );
-static int spool_select_group (char *, int *, int *);
+static int spool_select_group (char *, NNTP_Artnum_Type *, NNTP_Artnum_Type *);
 static int spool_refresh_groups (Slrn_Group_Range_Type *, int);
 static void spool_close_server (void);
 static int spool_has_cmd (char *);
 static int spool_initialize_server (void);
 static int spool_read_line (char *, unsigned int );
-static int spool_xpat_cmd (char *, int, int, char *);
-static int spool_select_article (int, char *);
-static int spool_get_article_size (int);
-static int spool_one_xhdr_command (char *, int, char *, unsigned int);
-static int spool_xhdr_command (char *, int, int);
+static int spool_xpat_cmd (char *, NNTP_Artnum_Type, NNTP_Artnum_Type, char *);
+static int spool_select_article (NNTP_Artnum_Type, char *);
+static int spool_get_article_size (NNTP_Artnum_Type);
+static int spool_one_xhdr_command (char *, NNTP_Artnum_Type, char *, unsigned int);
+static int spool_xhdr_command (char *, NNTP_Artnum_Type, NNTP_Artnum_Type);
 static int spool_list (char *);
 static int spool_list_newsgroups (void);
 static int spool_list_active (char *);
@@ -84,7 +84,7 @@ static int spool_send_authinfo (void);
 static int spool_read_xover (char *, unsigned int);
 static int spool_read_xpat (char *, unsigned int);
 static int spool_read_xhdr (char *, unsigned int);
-static int spool_article_num_exists (int);
+static int spool_article_num_exists (NNTP_Artnum_Type);
 static unsigned int spool_get_bytes (int clear);
 
 static Slrn_Server_Obj_Type Spool_Server_Obj;
@@ -97,11 +97,11 @@ static char *Spool_Group=NULL;
 static char *Spool_Group_Name;
 
 static FILE *Spool_fh_nov=NULL; /* we use the overview file lots, so keep it open */
-static int Spool_cur_artnum = 0;
+static NNTP_Artnum_Type Spool_cur_artnum = 0;
 
 /* These are set when the group is selected. */
-static int Spool_Max_Artnum = 0;
-static int Spool_Min_Artnum = 0;
+static NNTP_Artnum_Type Spool_Max_Artnum = 0;
+static NNTP_Artnum_Type Spool_Min_Artnum = 0;
 
 static int Spool_Doing_XOver;	       /* if non-zero, reading from ,overview */
 static int Spool_Doing_XPat;	       /* reading xpat */
@@ -224,9 +224,9 @@ static int Spool_XOver_Next;
 static int Spool_XOver_Max;
 static int Spool_XOver_Min;
 
-static int spool_nntp_xover (int min, int max)
+static int spool_nntp_xover (NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 {
-   int i, ch;
+   NNTP_Artnum_Type i;
    long fp;
 
    Spool_Doing_XOver = 0;
@@ -254,7 +254,7 @@ static int spool_nntp_xover (int min, int max)
              return ERR_FAULT;
           }
 
-	if ((1 != fscanf (Spool_fh_local,"%d", &i))
+	if ((1 != fscanf (Spool_fh_local, NNTP_FMT_ARTNUM, &i))
 	    || (i > min))
 	  {
 	     /* looks like we're after the start of the range */
@@ -265,6 +265,8 @@ static int spool_nntp_xover (int min, int max)
 	  }
 	else
 	  {
+	     int ch;
+
 	     while (((ch = getc(Spool_fh_local)) != '\n')
 		    && (ch != EOF))
 	       ; /* do nothing */
@@ -321,7 +323,7 @@ static int spool_read_xover (char *the_buf, unsigned int len)
 	  the_buf [buflen - 1] = 0;
    
 	/* check if we've reached the end of the requested range */
-	Spool_XOver_Next = atoi (the_buf);
+	Spool_XOver_Next = NNTP_STR_TO_ARTNUM (the_buf);
 	if (Spool_XOver_Next > Spool_XOver_Max)
 	  {
              if (-1 == fseek(Spool_fh_nov, pos, SEEK_SET))
@@ -355,16 +357,16 @@ static int spool_read_xover (char *the_buf, unsigned int len)
    return 1;
 }
 
-static int spool_find_artnum_from_msgid (char *msgid)
+static int spool_find_artnum_from_msgid (char *msgid, NNTP_Artnum_Type *idp)
 {
    char buf [4096];
    char *p;
-   int n;
    
    debug_output (NULL, -1, "spool_find_artnum_from_msgid('%s')", msgid);
 
    if (Slrn_Server_Obj->sv_has_xover == 0)
      {
+	NNTP_Artnum_Type n;
 	unsigned int len = strlen (msgid);
    
 	for (n = Spool_Min_Artnum; n <= Spool_Max_Artnum; n++)
@@ -374,7 +376,10 @@ static int spool_find_artnum_from_msgid (char *msgid)
 	     
 	     p = slrn_skip_whitespace (buf);
 	     if (0 == strncmp (p, msgid, len))
-	       return n;
+	       {
+		  *idp = n;
+		  return 0;
+	       }
 	  }
    
 	return -1;
@@ -400,9 +405,11 @@ static int spool_find_artnum_from_msgid (char *msgid)
 
 	if (0 == strcmp(msgid, p))
 	  {
-	     debug_output (NULL, -1, "spool_find_artnum_from_msgid() returns %d",atoi(buf));
+	     debug_output (NULL, -1, ("spool_find_artnum_from_msgid() returns " NNTP_FMT_ARTNUM)
+			   ,NNTP_STR_TO_ARTNUM(buf));
 	     Spool_Doing_XOver = 0;
-	     return atoi(buf);
+	     *idp = NNTP_STR_TO_ARTNUM(buf);
+	     return 0;
 	  }
      }
    
@@ -422,11 +429,11 @@ static FILE *spool_open_article_num (int num)
    return fopen (buf,"r");
 }
 
-static int spool_article_num_exists (int num)
+static int spool_article_num_exists (NNTP_Artnum_Type num)
 {
    char buf [SLRN_MAX_PATH_LEN];
    
-   slrn_snprintf (buf, sizeof (buf), "%s/%d", Spool_Group, num);
+   slrn_snprintf (buf, sizeof (buf), ("%s/" NNTP_FMT_ARTNUM), Spool_Group, num);
 
    if (1 == slrn_file_exists (buf))
      return 0;
@@ -434,11 +441,11 @@ static int spool_article_num_exists (int num)
    return -1;
 }
 
-static int spool_get_article_size (int num)
+static int spool_get_article_size (NNTP_Artnum_Type num)
 {
    char buf [SLRN_MAX_PATH_LEN];
    
-   slrn_snprintf (buf, sizeof (buf), "%s/%d", Spool_Group, num);
+   slrn_snprintf (buf, sizeof (buf), ("%s/" NNTP_FMT_ARTNUM), Spool_Group, num);
    
    return slrn_file_size (buf);
 }
@@ -459,14 +466,19 @@ static int spool_is_name_all_digits (char *p)
 
 /*{{{ The routines in this fold implement the sv_put_server_cmd */
 
-static int spool_nntp_head (int id, char *msgid, int *real_id)
+static int spool_nntp_head (NNTP_Artnum_Type id, char *msgid, NNTP_Artnum_Type *real_id)
 {
    spool_fclose_local();
 
    if (id == -1)
      {
-	if (msgid == NULL) id = Spool_cur_artnum;
-	else id = spool_find_artnum_from_msgid (msgid);
+	if (msgid == NULL) 
+	  id = Spool_cur_artnum;
+	else
+	  {
+	     if (-1 == spool_find_artnum_from_msgid (msgid, &id))
+	       id = -1;
+	  }
      }
 
    if (real_id != NULL) *real_id = id;
@@ -481,9 +493,9 @@ static int spool_nntp_head (int id, char *msgid, int *real_id)
    return OK_HEAD; /* Head follows */
 }
 
-static int spool_nntp_next (int *id)
+static int spool_nntp_next (NNTP_Artnum_Type *id)
 {
-   int i;
+   NNTP_Artnum_Type i;
    
    spool_fclose_local();
 
@@ -495,14 +507,15 @@ static int spool_nntp_next (int *id)
 	     Spool_cur_artnum = i;
 	     if (id != NULL) *id = i;
 	     
-	     debug_output (NULL, -1, "NEXT found article %d",Spool_cur_artnum);
+	     debug_output (NULL, -1, ("NEXT found article " NNTP_FMT_ARTNUM), Spool_cur_artnum);
 
 	     return OK_NOTEXT; /* No text sent -- stat, next, last */
 	  }
      }
 
-   debug_output (NULL, -1, "No NEXT -- %d > %d", Spool_cur_artnum, Spool_Max_Artnum);
-   
+   debug_output (NULL, -1, ("No NEXT -- " NNTP_FMT_ARTNUM " > " NNTP_FMT_ARTNUM), 
+		 Spool_cur_artnum, Spool_Max_Artnum);
+
    return ERR_NONEXT; /* No next article in this group */
 }
 
@@ -742,7 +755,7 @@ static int spool_put_server_cmd (char *line, char *buf, unsigned int len)
 /*}}}*/
 
 
-static int spool_read_minmax_from_dp (Slrn_Dir_Type *dp, int *min, int *max)
+static int spool_read_minmax_from_dp (Slrn_Dir_Type *dp, NNTP_Artnum_Type *min, NNTP_Artnum_Type *max)
 {
    Slrn_Dirent_Type *ep;
    char *p;
@@ -778,11 +791,11 @@ static int spool_read_minmax_from_dp (Slrn_Dir_Type *dp, int *min, int *max)
    return 0;
 }
 
-static int spool_read_minmax_file (int *min, int *max, char *group_dir)
+static int spool_read_minmax_file (NNTP_Artnum_Type *min, NNTP_Artnum_Type *max, char *group_dir)
 {
    char *file;
    FILE *fp;
-   char buf[256];
+   char buf[512];
    int status;
 
    file = slrn_spool_dircat (group_dir, ".minmax", 0);
@@ -798,7 +811,7 @@ static int spool_read_minmax_file (int *min, int *max, char *group_dir)
 
    status = 0;
    if ((NULL == fgets (buf, sizeof (buf), fp))
-       || (2 != sscanf (buf, "%d %d", min, max)))
+       || (2 != sscanf (buf, NNTP_FMT_ARTNUM_2, min, max)))
      status = -1;
    
    fclose (fp);
@@ -811,7 +824,7 @@ static int spool_read_minmax_file (int *min, int *max, char *group_dir)
  * or looking at the files in the directory.
  * Returns 0 on success, -1 on failure
  */
-static int spool_read_minmax_from_dir (int *min, int *max, char *dir)
+static int spool_read_minmax_from_dir (NNTP_Artnum_Type *min, NNTP_Artnum_Type *max, char *dir)
 {
    Slrn_Dir_Type *dp;
 
@@ -842,7 +855,7 @@ static int spool_read_minmax_from_dir (int *min, int *max, char *dir)
  * Returns 0 on success, -1 on failure
  * (failure => active file didn't open, or the group wasn't in it)
  */
-static int spool_read_minmax_from_active( char *name, int *min, int *max )
+static int spool_read_minmax_from_active( char *name, NNTP_Artnum_Type *min, NNTP_Artnum_Type *max )
 {
    char buf[512];
    unsigned int len;
@@ -879,7 +892,7 @@ static int spool_read_minmax_from_active( char *name, int *min, int *max )
 /* Get the lowest and highest article numbers from the overview file
  * Returns 0 on success, -1 on failure
  */
-static int spool_read_minmax_from_overview (char *name, int *min, int *max)
+static int spool_read_minmax_from_overview (char *name, NNTP_Artnum_Type *min, NNTP_Artnum_Type *max)
 {
    /* chunk size to step back through .overview files by
     * when trying to find start of last line */
@@ -898,7 +911,7 @@ static int spool_read_minmax_from_overview (char *name, int *min, int *max)
    else
      /* !HACK! this assumes the overview file is rewound */
      Spool_Server_Obj.sv_has_xover = ((Spool_fh_nov != NULL)
-				      && (1 == fscanf (Spool_fh_nov,"%d", min)));
+				      && (1 == fscanf (Spool_fh_nov, NNTP_FMT_ARTNUM, min)));
 
    if (0 == Spool_Server_Obj.sv_has_xover)
      return -1;
@@ -957,7 +970,7 @@ static int spool_read_minmax_from_overview (char *name, int *min, int *max)
         return -1;
      }
 
-   if (1 != fscanf (Spool_fh_nov, "%d", max))
+   if (1 != fscanf (Spool_fh_nov, NNTP_FMT_ARTNUM, max))
      {
         debug_output (__FILE__, __LINE__, "Hmmm, unable to understand overview file - no integer found?");
         return -1;
@@ -965,11 +978,11 @@ static int spool_read_minmax_from_overview (char *name, int *min, int *max)
 
    rewind (Spool_fh_nov);
 
-   debug_output (NULL, -1, "%s %d %d",name,*min,*max);
+   debug_output (NULL, -1, ("%s " NNTP_FMT_ARTNUM_2), name,*min,*max);
    return 0;
 }
 
-static int spool_select_group (char *name, int *min, int *max)
+static int spool_select_group (char *name, NNTP_Artnum_Type *min, NNTP_Artnum_Type *max)
 {
    /* close any open files */
    spool_fclose_local();
@@ -1232,7 +1245,7 @@ static int spool_read_xpat (char *buf, unsigned int len)
    return 0;
 }
 
-static int spool_xpat_cmd (char *hdr, int rmin, int rmax, char *pat)
+static int spool_xpat_cmd (char *hdr, NNTP_Artnum_Type rmin, NNTP_Artnum_Type rmax, char *pat)
 {
    static char *overview_headers [] = 
      {
@@ -1291,7 +1304,7 @@ static int spool_xpat_cmd (char *hdr, int rmin, int rmax, char *pat)
    return OK_HEAD;
 }
 
-static int spool_select_article (int n, char *msgid)
+static int spool_select_article (NNTP_Artnum_Type n, char *msgid)
 {
    /*    printf("spool_select_article(%d,%s)\n",n,msgid); */
 
@@ -1300,7 +1313,7 @@ static int spool_select_article (int n, char *msgid)
 	if ((msgid == NULL) || (*msgid == 0))
 	  return -1;
 	
-	if (-1 == (n = spool_find_artnum_from_msgid (msgid)))
+	if (-1 == spool_find_artnum_from_msgid (msgid, &n))
 	  return ERR_NOARTIG;
      }
 
@@ -1315,7 +1328,7 @@ static int spool_select_article (int n, char *msgid)
 
 
 /* The hdr string should NOT include the ':' */
-static int spool_one_xhdr_command (char *hdr, int num, char *buf,
+static int spool_one_xhdr_command (char *hdr, NNTP_Artnum_Type num, char *buf,
 				   unsigned int buflen)
 {
    char tmpbuf [1024];
@@ -1353,10 +1366,11 @@ static int spool_one_xhdr_command (char *hdr, int num, char *buf,
    return -1;
 }
 
-static int spool_xhdr_command (char *field, int min, int max)
+static int spool_xhdr_command (char *field, NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 {
-   debug_output (NULL, -1, "spool_xhdr_command(%s,%d,%d)", field, min, max);
-   
+   debug_output (NULL, -1, ("spool_xhdr_command(%s " NNTP_FMT_ARTNUM_2),
+		 field, min, max);
+
    spool_fclose_local ();
    
    if (max > Spool_Max_Artnum)

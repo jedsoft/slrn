@@ -47,7 +47,7 @@ extern unsigned int slrn_toggle_format (char **, unsigned int);
 extern FILE *slrn_open_home_file (char *, char *, char *, size_t, int);
 extern VFILE *slrn_open_home_vfile (char *, char *, size_t);
 extern void slrn_suspend_cmd (void);
-extern int slrn_read_integer (char *, int *, int *);
+extern int slrn_read_artnum_int (char *, NNTP_Artnum_Type *, NNTP_Artnum_Type *);
 extern int slrn_read_input (char *, char *, char *, int, int);
 extern int slrn_read_input_no_echo (char *, char *, char *, int, int);
 extern int slrn_read_filename (char *, char *, char *, int, int);

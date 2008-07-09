@@ -154,24 +154,24 @@ static int _nntp_read_line (char *buf, unsigned int len)
    return -1;
 }
 
-static int _nntp_get_article_size (int id)
+static int _nntp_get_article_size (NNTP_Artnum_Type id)
 {
    /* no nntp-command for this, reading the article takes too much time */
    (void) id;
    return 0;
 }
 
-static int _nntp_head_cmd (int id, char *msgid, int *real_idp)
+static int _nntp_head_cmd (NNTP_Artnum_Type id, char *msgid, NNTP_Artnum_Type *real_idp)
 {
    return nntp_head_cmd (NNTP_Server, id, msgid, real_idp);
 }
 
-static int _nntp_select_article (int n, char *msgid)
+static int _nntp_select_article (NNTP_Artnum_Type n, char *msgid)
 {
    return nntp_article_cmd (NNTP_Server, n, msgid);
 }
 
-static int _nntp_select_group (char *grp, int *min, int *max)
+static int _nntp_select_group (char *grp, NNTP_Artnum_Type *min, NNTP_Artnum_Type *max)
 {
    return nntp_select_group (NNTP_Server, grp, min, max);
 }
@@ -198,12 +198,12 @@ static int _nntp_put_server_cmd (char *cmd, char *buf, unsigned int len)
    return code;
 }
 
-static int _nntp_xpat_cmd (char *hdr, int rmin, int rmax, char *pat)
+static int _nntp_xpat_cmd (char *hdr, NNTP_Artnum_Type rmin, NNTP_Artnum_Type rmax, char *pat)
 {
    return nntp_xpat_cmd (NNTP_Server, hdr, rmin, rmax, pat);
 }
 
-static int _nntp_one_xhdr_cmd (char *hdr, int num, 
+static int _nntp_one_xhdr_cmd (char *hdr, NNTP_Artnum_Type num,
 			       char *buf, unsigned int buflen)
 {
    return nntp_one_xhdr_cmd (NNTP_Server, hdr, num, buf, buflen);
@@ -321,7 +321,7 @@ static int _nntp_po_printf (char *fmt, ...)
    return retval;
 }
 
-static int _nntp_xover_cmd (int min, int max)
+static int _nntp_xover_cmd (NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 {
    int status;
 
@@ -333,7 +333,7 @@ static int _nntp_xover_cmd (int min, int max)
    return status;
 }
 
-static int _nntp_xhdr_cmd (char *field, int min, int max)
+static int _nntp_xhdr_cmd (char *field, NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 {
    int status;
    
@@ -345,7 +345,7 @@ static int _nntp_xhdr_cmd (char *field, int min, int max)
    return status;
 }
 
-static int _nntp_next_cmd (int *id)
+static int _nntp_next_cmd (NNTP_Artnum_Type *id)
 {
    return nntp_next_cmd (NNTP_Server, id);
 }

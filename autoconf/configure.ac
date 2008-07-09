@@ -282,6 +282,14 @@ AC_TYPE_UID_T
 #dnl here for the snprintf code.
 AC_CHECK_TYPE(long double)
 
+AC_CHECK_SIZEOF(short, 2)
+AC_CHECK_SIZEOF(int, 4)
+AC_CHECK_SIZEOF(long, 4)
+AC_CHECK_SIZEOF(float, 4)
+AC_CHECK_SIZEOF(double, 8)
+
+JD_CHECK_LONG_LONG
+
 AC_CHECK_FUNCS(\
 memset \
 memcpy \
@@ -302,6 +310,7 @@ vsnprintf \
 uname \
 setlocale \
 isalpha isspace isdigit isalnum ispunct \
+atoll strtoll \
 )
 
 AC_MSG_CHECKING(for timezone in time.h)

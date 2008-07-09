@@ -561,12 +561,22 @@ static void read_mini_variable (char *prompt, char *dfl, char *init) /*{{{*/
 
 static int read_mini_integer (char *prompt, int *dfl) /*{{{*/
 {
-   int status, retval;
-   status = slrn_read_integer (prompt, dfl, &retval);
-   if (-1 == status)
-     error (_("Quit!"));
+   NNTP_Artnum_Type x;
+   int ix;
+
+   x = *dfl;
+   if (-1 == slrn_read_artnum_int (prompt, &x, &x))
+     {
+	error (_("Quit!"));
+	return -1;
+     }
+   
+   ix = (int) x;
+   if (x != ix)
+     error (_("Number exceeds the size of an integer"));
+
    slrn_clear_message ();
-   return retval;
+   return ix;
 }
 /*}}}*/
 

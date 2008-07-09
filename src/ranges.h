@@ -30,19 +30,19 @@ typedef struct Slrn_Range_Type
 {
    struct Slrn_Range_Type *next;
    struct Slrn_Range_Type *prev;
-   int min, max;
+   NNTP_Artnum_Type min, max;
 } Slrn_Range_Type;
 
 extern Slrn_Range_Type *slrn_ranges_from_newsrc_line (char *);
-extern int slrn_ranges_to_newsrc_file (Slrn_Range_Type *, int, FILE*);
+extern int slrn_ranges_to_newsrc_file (Slrn_Range_Type *, NNTP_Artnum_Type, FILE*);
 
-extern Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *, int, int);
-extern Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *, int, int);
+extern Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *, NNTP_Artnum_Type, NNTP_Artnum_Type);
+extern Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *, NNTP_Artnum_Type, NNTP_Artnum_Type);
 
 extern Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *, Slrn_Range_Type *);
 extern Slrn_Range_Type *slrn_ranges_merge (Slrn_Range_Type *, Slrn_Range_Type *);
 
-extern int slrn_ranges_is_member (Slrn_Range_Type *, int);
+extern int slrn_ranges_is_member (Slrn_Range_Type *, NNTP_Artnum_Type);
 
 extern Slrn_Range_Type *slrn_ranges_clone (Slrn_Range_Type *);
 extern int slrn_ranges_compare (Slrn_Range_Type *, Slrn_Range_Type *);

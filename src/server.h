@@ -36,7 +36,7 @@ typedef struct
 
 typedef struct 
 {
-   int (*sv_select_group) (char *, int *, int *);
+   int (*sv_select_group) (char *, NNTP_Artnum_Type *, NNTP_Artnum_Type *);
    int (*sv_refresh_groups) (Slrn_Group_Range_Type *, int);
    char * (*sv_current_group) (void);
    int (*sv_read_line) (char *, unsigned int);
@@ -46,12 +46,12 @@ typedef struct
     */
    void (*sv_reset)(void);
    int (*sv_initialize) (void);
-   int (*sv_select_article) (int, char *);
-   int (*sv_get_article_size) (int);
+   int (*sv_select_article) (NNTP_Artnum_Type, char *);
+   int (*sv_get_article_size) (NNTP_Artnum_Type);
    int (*sv_put_server_cmd) (char *, char *, unsigned int);
-   int (*sv_xpat_cmd) (char *, int, int, char *);
+   int (*sv_xpat_cmd) (char *, NNTP_Artnum_Type, NNTP_Artnum_Type, char *);
 
-   int (*sv_xhdr_command) (char *, int, char *, unsigned int);
+   int (*sv_xhdr_command) (char *, NNTP_Artnum_Type, char *, unsigned int);
 
    int (*sv_has_cmd) (char *);
    int (*sv_list) (char *);
@@ -66,10 +66,10 @@ typedef struct
     * This is because some servers support XOVER but do not have overview
     * files for all groups.  See xover.c
     */
-   int (*sv_nntp_xover) (int, int);
-   int (*sv_nntp_xhdr) (char *, int, int);
-   int (*sv_nntp_head) (int, char *, int *);
-   int (*sv_nntp_next) (int *);
+   int (*sv_nntp_xover) (NNTP_Artnum_Type, NNTP_Artnum_Type);
+   int (*sv_nntp_xhdr) (char *, NNTP_Artnum_Type, NNTP_Artnum_Type);
+   int (*sv_nntp_head) (NNTP_Artnum_Type, char *, NNTP_Artnum_Type *);
+   int (*sv_nntp_next) (NNTP_Artnum_Type *);
 
    /* Returns number of bytes received.
     * If the int is non-zero, the counter is reset. */
@@ -80,14 +80,13 @@ typedef struct
 #define SERVER_ID_INN		1
    int sv_id;
    char *sv_name;
-   
 } 
 Slrn_Server_Obj_Type;
 
 extern Slrn_Server_Obj_Type *Slrn_Server_Obj;
 extern Slrn_Post_Obj_Type *Slrn_Post_Obj;
 
-extern int Slrn_Server_Min, Slrn_Server_Max;
+extern NNTP_Artnum_Type Slrn_Server_Min, Slrn_Server_Max;
 extern char *Slrn_Current_Group_Name;
 
 #if SLRN_HAS_NNTP_SUPPORT

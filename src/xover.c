@@ -52,7 +52,7 @@
 #ifndef SLRNPULL_CODE
 # include "server.h"
 
-static int extract_id_from_xref (char *);
+static int extract_id_from_xref (char *, NNTP_Artnum_Type *);
 static void rearrange_add_headers (void);
 static int Suspend_XOver_For_Kill = 0;
 #endif
@@ -243,7 +243,7 @@ static char *fake_refs_from_inreply_to (char *buf, unsigned int buflen)
 }
 #endif
    
-static int parsed_headers_to_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
+static int parsed_headers_to_xover (NNTP_Artnum_Type id, Slrn_XOver_Type *xov) /*{{{*/
 {
    unsigned int len;
    char *subj, *from, *date, *msgid, *refs, *bytes, *lines, *xref;
@@ -315,8 +315,10 @@ static int parsed_headers_to_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
    xov->lines = atoi (lines);
 
 #ifndef SLRNPULL_CODE
-   if (id == -1)
-     id = extract_id_from_xref (xov->xref);
+   if ((id == -1)
+       && (-1 == extract_id_from_xref (xov->xref, &id)))
+     id = -1;
+
 # if SLRN_HAS_SPOOL_SUPPORT
    if (Slrn_Spool_Check_Up_On_Nov && (xov->bytes == 0) && (id != -1))
      {
@@ -667,11 +669,9 @@ static Slrn_Header_Line_Type *copy_add_headers (Slrn_Header_Line_Type *l, /*{{{*
 
 #ifndef SLRNPULL_CODE
 static int XOver_Done;
-static int XOver_Min;
-static int XOver_Max;
-static int XOver_Next;
+static NNTP_Artnum_Type XOver_Min, XOver_Max, XOver_Next;
 
-static int extract_id_from_xref (char *xref) /*{{{*/
+static int extract_id_from_xref (char *xref, NNTP_Artnum_Type *idp) /*{{{*/
 {
    unsigned int group_len;
    char ch;
@@ -693,7 +693,10 @@ static int extract_id_from_xref (char *xref) /*{{{*/
 	  {
 	     xref += group_len;
 	     if (*xref == ':')
-	       return atoi (xref + 1);
+	       {
+		  *idp = NNTP_STR_TO_ARTNUM (xref + 1);
+		  return 0;
+	       }
 	  }
 
 	/* skip to next space */
@@ -762,7 +765,7 @@ static char *server_read_and_malloc (void) /*{{{*/
 
 /*}}}*/
 
-static int read_head_into_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
+static int read_head_into_xover (NNTP_Artnum_Type id, Slrn_XOver_Type *xov) /*{{{*/
 {
    slrn_free (Malloced_Headers);
 
@@ -777,9 +780,10 @@ static int read_head_into_xover (int id, Slrn_XOver_Type *xov) /*{{{*/
 
 extern int Slrn_Prefer_Head;
 
-int slrn_open_xover (int min, int max) /*{{{*/
+int slrn_open_xover (NNTP_Artnum_Type min, NNTP_Artnum_Type max) /*{{{*/
 {
-   int id, status = -1;
+   NNTP_Artnum_Type id;
+   int status = -1;
    XOver_Done = 1;
 
    if (Slrn_Server_Obj->sv_has_xover && !Suspend_XOver_For_Kill &&
@@ -838,7 +842,8 @@ int slrn_open_xover (int min, int max) /*{{{*/
 static int parse_xover_line (char *buf, Slrn_XOver_Type *xov) /*{{{*/
 {
    char *b;
-   int id, i;
+   int i;
+   NNTP_Artnum_Type id;
    Slrn_Header_Line_Type *addh;
    Overview_Fmt_Type *t = Overview_Fmt;
    
@@ -849,7 +854,7 @@ static int parse_xover_line (char *buf, Slrn_XOver_Type *xov) /*{{{*/
    
    while (*b && (*b != '\t')) b++;
    if (*b) *b++ = 0;
-   id = atoi (buf);
+   id = NNTP_STR_TO_ARTNUM (buf);
    
    for (i = 0; i < 7; ++i)
      {
@@ -911,7 +916,7 @@ static int parse_xover_line (char *buf, Slrn_XOver_Type *xov) /*{{{*/
 int slrn_read_xover (Slrn_XOver_Type *xov) /*{{{*/
 {
    char buf [NNTP_BUFFER_SIZE];
-   int id;
+   NNTP_Artnum_Type id;
    int status;
    
    if (XOver_Done)
@@ -940,7 +945,7 @@ int slrn_read_xover (Slrn_XOver_Type *xov) /*{{{*/
 		  return 0;
 	       }
 
-	     id = atoi (buf);
+	     id = NNTP_STR_TO_ARTNUM (buf);
 # if SLRN_HAS_SPOOL_SUPPORT
 	     if (Slrn_Spool_Check_Up_On_Nov)
 	       if (-1 == (bytes = Slrn_Server_Obj->sv_get_article_size (id)))
@@ -1031,7 +1036,8 @@ void slrn_close_suspend_xover (void) /*{{{*/
 /*}}}*/
 int slrn_xover_for_msgid (char *msgid, Slrn_XOver_Type *xov) /*{{{*/
 {
-   int id, status, retval;
+   NNTP_Artnum_Type id;
+   int status, retval;
    
    if ((msgid == NULL) || (*msgid == 0)) return -1;
 
@@ -1066,7 +1072,7 @@ void slrn_open_all_add_xover (void) /*{{{*/
 /*}}}*/
 
 /* Returns -1 upon error, 0 if done, 1 upon success */
-int slrn_open_add_xover (int min, int max) /*{{{*/
+int slrn_open_add_xover (NNTP_Artnum_Type min, NNTP_Artnum_Type max) /*{{{*/
 {
    int status = -1;
    
@@ -1097,17 +1103,19 @@ int slrn_open_add_xover (int min, int max) /*{{{*/
 }
 
 /*}}}*/
-/* Returns -1 when done and on errors, otherwise the article number */
-int slrn_read_add_xover (Slrn_Header_Line_Type **l) /*{{{*/
+/* Returns -1 when done and on errors, 0 and article number otherwise */
+int slrn_read_add_xover (Slrn_Header_Line_Type **l, NNTP_Artnum_Type *idp) /*{{{*/
 {
    static char valbuf [NNTP_BUFFER_SIZE];
    static Slrn_Header_Line_Type hlbuf;
    Slrn_XOver_Type xov;
    char *b;
-   int id, status;
+   int status;
    
    if (Slrn_Server_Obj->sv_has_xhdr == 1)
      {
+	NNTP_Artnum_Type id;
+
 	while (1)
 	  {
 	     status = Slrn_Server_Obj->sv_read_line (valbuf, sizeof (valbuf));
@@ -1126,7 +1134,7 @@ int slrn_read_add_xover (Slrn_Header_Line_Type **l) /*{{{*/
 	     while (*b && (*b != ' ')) b++;
 	     if (*b) *b++ = 0;
 	     
-	     id = atoi (valbuf);
+	     id = NNTP_STR_TO_ARTNUM (valbuf);
 	     if ((id >= XOver_Min) && (id <= XOver_Max))
 	       break;
 	     /* else ignore server response */
@@ -1141,7 +1149,8 @@ int slrn_read_add_xover (Slrn_Header_Line_Type **l) /*{{{*/
 	  hlbuf.value = NULL;
 	hlbuf.next = NULL;
 	*l = &hlbuf;
-	return id;
+	*idp = id;
+	return 0;
      }
    
    /* Server does not support xhdr -- we need to get full HEADers (slow!) */
@@ -1150,7 +1159,8 @@ int slrn_read_add_xover (Slrn_Header_Line_Type **l) /*{{{*/
    if (status == 1)
      {
 	slrn_free_xover_data (&xov);
-	return xov.id;
+	*idp = xov.id;
+	return 0;
      }
    return -1;
 }

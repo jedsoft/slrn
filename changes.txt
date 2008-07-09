@@ -219,6 +219,10 @@ Changes since 0.9.8.8pl1
 111. README, doc/FIRST_STEPS, doc/score.txt: Updates (Peter J. Ross).
 112. autoconf/aclocal.m4: Corrected a typo affecting a test (Joerg
      Sommer).
+113. src/*: Apparantly some server has articles with server numbers
+     exceeding the size of a 32 bit integer.  For this reason, the
+     code was updated to support long-long (64 bit) integer types.  This
+     involved many small changes.
 
 {{{ Previous Versions 
 

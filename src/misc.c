@@ -2228,27 +2228,27 @@ int slrn_read_variable (char *prompt, char *dfl, char *str, int trim_flag, int p
    return retval;
 }
 
-int slrn_read_integer (char *prompt, int *dflt, int *np) /*{{{*/
+int slrn_read_artnum_int (char *prompt, NNTP_Artnum_Type *dflt, NNTP_Artnum_Type *np) /*{{{*/
 {
-   char sdfl_buf[32];
+   char sdfl_buf[256];
    char *sdfl = NULL;
    char str[SLRL_DISPLAY_BUFFER_SIZE];
-   int n;
-   
+   NNTP_Artnum_Type n;
+
    if (dflt != NULL)
      {
-	sprintf (sdfl_buf, "%d", *dflt); /* safe */
+	sprintf (sdfl_buf, NNTP_FMT_ARTNUM, *dflt); /* safe */
 	sdfl = sdfl_buf;
      }
    
    *str = 0;
-   if (-1 == (n = slrn_read_input (prompt, sdfl, str, 1, 0)))
+   if (-1 == slrn_read_input (prompt, sdfl, str, 1, 0))
      {
 	slrn_error (_("Abort!"));
 	return -1;
      }
-   
-   if (1 != sscanf(str, "%d", &n))
+
+   if (1 != sscanf(str, NNTP_FMT_ARTNUM, &n))
      {
 	slrn_error (_("Integer expected."));
 	return -1;

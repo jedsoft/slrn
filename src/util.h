@@ -73,7 +73,7 @@ char *slrn_make_from_string (void);
 typedef struct Slrn_Group_Range_Type
 {
    char *name;
-   int min, max;
+   NNTP_Artnum_Type min, max;
 } Slrn_Group_Range_Type;
 
 #endif				       /* _SLRN_UTIL_H */

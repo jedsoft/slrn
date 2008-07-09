@@ -72,20 +72,20 @@ Slrn_Range_Type *slrn_ranges_from_newsrc_line (char *line) /*{{{*/
  * If max is non-zero, no numbers larger than max are written.
  * Returns 0 on success, -1 otherwise.
  */
-int slrn_ranges_to_newsrc_file (Slrn_Range_Type *r, int max, FILE* fp) /*{{{*/
+int slrn_ranges_to_newsrc_file (Slrn_Range_Type *r, NNTP_Artnum_Type max, FILE* fp) /*{{{*/
 {
    while ((r != NULL) && ((max<=0) || (r->min <= max)))
      {
-	int minmax = r->max;
+	NNTP_Artnum_Type minmax = r->max;
 	if ((max>0) && (minmax > max))
 	  minmax = max;
 	
 	if (r->min != minmax)
 	  {
-	     if (fprintf (fp, "%d-%d", r->min, minmax) < 0)
+	     if (fprintf (fp, NNTP_FMT_ARTRANGE, r->min, minmax) < 0)
 	       return -1;
 	  }
-	else if (fprintf (fp, "%d", r->min) < 0)
+	else if (fprintf (fp, NNTP_FMT_ARTNUM, r->min) < 0)
 	  return -1;
 	
 	r = r->next;
@@ -101,7 +101,7 @@ int slrn_ranges_to_newsrc_file (Slrn_Range_Type *r, int max, FILE* fp) /*{{{*/
  * returns a pointer in case the first element of the list changes.
  * (r==NULL) is allowed; in this case, a new list is created
  */
-Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, int min, int max) /*{{{*/
+Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, NNTP_Artnum_Type min, NNTP_Artnum_Type max) /*{{{*/
 {
    Slrn_Range_Type *head = r;
    
@@ -182,7 +182,7 @@ Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, int min, int max) /*{{{*/
  * Note: does not allocate a new list, but changes r; the function still
  * returns a pointer in case the first element of the list gets deleted.
  */
-Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *r, int min, int max) /*{{{*/
+Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *r, NNTP_Artnum_Type min,  NNTP_Artnum_Type max) /*{{{*/
 {
    Slrn_Range_Type *head = r;
    
@@ -323,7 +323,7 @@ Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *a, Slrn_Range_Type *b) 
 /*}}}*/
 
 /* Checks if n is in r; returns 1 if true, 0 if false. */
-int slrn_ranges_is_member (Slrn_Range_Type *r, int n) /*{{{*/
+int slrn_ranges_is_member (Slrn_Range_Type *r, NNTP_Artnum_Type n) /*{{{*/
 {
    while (r != NULL)
      {

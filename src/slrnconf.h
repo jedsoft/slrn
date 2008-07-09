@@ -212,3 +212,28 @@
 /* gettext is currently only supported on unix */
 #define _(a) (a)
 #define N_(a) a
+
+#undef HAVE_LONG_LONG
+#undef HAVE_ATOLL
+#undef HAVE_STRTOLL
+#define SIZEOF_LONG_LONG 8
+
+#if defined(HAVE_LONG_LONG) && (SIZEOF_LONG < SIZEOF_LONG_LONG)
+typedef long long NNTP_Artnum_Type;
+# define NNTP_FMT_ARTNUM "%lld"
+# define NNTP_FMT_ARTNUM_2 "%lld %lld"
+# define NNTP_FMT_ARTNUM_3 "%lld %lld %lld"
+# define NNTP_FMT_ARTRANGE "%lld-%lld"
+# ifdef HAVE_ATOLL
+#  define NNTP_STR_TO_ARTNUM(x) atoll(x)
+# else
+#  define NNTP_STR_TO_ARTNUM(x) strtoll((x),NULL,10)
+# endif
+#else
+typedef long NNTP_Artnum_Type;
+# define NNTP_FMT_ARTNUM "%ld"
+# define NNTP_FMT_ARTNUM_2 "%ld %ld"
+# define NNTP_FMT_ARTNUM_3 "%ld %ld %ld"
+# define NNTP_FMT_ARTRANGE "%ld-%ld"
+# define NNTP_STR_TO_ARTNUM atoi
+#endif

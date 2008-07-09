@@ -31,7 +31,7 @@ extern void slrn_list_all_groups (int);
 extern void slrn_hide_groups (int);
 extern int slrn_read_newsrc (int);
 extern int slrn_write_newsrc (int);
-extern void slrn_mark_article_as_read (char *, long);
+extern void slrn_mark_article_as_read (char *, NNTP_Artnum_Type);
 extern int slrn_get_new_groups (int);
 extern void slrn_init_group_mode (void);
 extern void slrn_get_group_descriptions (void);
@@ -74,7 +74,7 @@ typedef struct Slrn_Group_Type
    int requests_loaded;	/* We load these each time we enter article mode in case
 			 * slrnpull ran in the background */
    
-   int unread;
+   NNTP_Artnum_Type unread;
    char *descript;		       /* description of the group -- malloced, could be NULL */
 }
 Slrn_Group_Type;

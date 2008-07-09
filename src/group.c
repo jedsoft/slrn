@@ -131,17 +131,19 @@ static void remove_group_entry (Slrn_Group_Type *);
 
 /*{{{ Functions that deal with Group Range */
 
-static int count_unread (Slrn_Range_Type *r)
+static NNTP_Artnum_Type count_unread (Slrn_Range_Type *r)
 {
-   int unread = r->max;
-
+   NNTP_Artnum_Type nread = 0;
+   
    while (r->next != NULL)
      {
 	r = r->next;
-	unread -= r->max - r->min + 1;
+	nread += r->max - r->min + 1;
      }
+   if (nread > r->max)
+     return 0;
    
-   return unread;
+   return r->max - nread;
 }
 
 void slrn_group_recount_unread (Slrn_Group_Type *g)
@@ -150,8 +152,6 @@ void slrn_group_recount_unread (Slrn_Group_Type *g)
    if (g->range.min>1)
      g->range.next = slrn_ranges_add (g->range.next, 1, g->range.min-1);
    g->unread = count_unread (&g->range);
-   if (g->unread < 0)
-     g->unread = 0;
 }   
 
 static int is_article_requested (Slrn_Group_Type *g, long num) /*{{{*/
@@ -173,13 +173,13 @@ static int is_article_requested (Slrn_Group_Type *g, long num) /*{{{*/
 }
 /*}}}*/
 
-static void group_mark_article_as_read (Slrn_Group_Type *g, long num) /*{{{*/
+static void group_mark_article_as_read (Slrn_Group_Type *g, NNTP_Artnum_Type num) /*{{{*/
 {
    Slrn_Range_Type *r;
    
    /* Never mark articles as read if their body has been requested. */
    if (is_article_requested (g, num)) return;
-   
+
    r = &g->range;
    if (r->max < num)  /* not at server yet so update our data */
      {
@@ -197,14 +197,14 @@ static void group_mark_article_as_read (Slrn_Group_Type *g, long num) /*{{{*/
 	r = r->next;
      }
    
-   if (g->unread > 0) g->unread -= 1;
+   if (g->unread != 0) g->unread -= 1;
    Slrn_Groups_Dirty = 1;
    g->range.next = slrn_ranges_add (g->range.next, num, num);   
 }
 
 /*}}}*/
 
-void slrn_mark_article_as_read (char *group, long num) /*{{{*/
+void slrn_mark_article_as_read (char *group, NNTP_Artnum_Type num) /*{{{*/
 {
    Slrn_Group_Type *g;
    unsigned long hash;
@@ -237,14 +237,14 @@ void slrn_mark_article_as_read (char *group, long num) /*{{{*/
 
 /*}}}*/
 
-static int group_update_range (Slrn_Group_Type *g, int min, int max) /*{{{*/
+static int group_update_range (Slrn_Group_Type *g, NNTP_Artnum_Type min, NNTP_Artnum_Type max) /*{{{*/
 {
-   int n, max_available;
+   NNTP_Artnum_Type n, max_available;
    Slrn_Range_Type *r;
    
    if (max == 0)
      {
-	int nmax, nmin;
+	NNTP_Artnum_Type nmax, nmin;
 	
 	nmax = g->range.max;
 	nmin = g->range.min;
@@ -253,7 +253,7 @@ static int group_update_range (Slrn_Group_Type *g, int min, int max) /*{{{*/
 	if (nmax > 0)
 	  for (n = nmin; n <= nmax; n++)
 	    group_mark_article_as_read (g, n);
-	
+
 	/* g->unread = 0; */
 	Slrn_Full_Screen_Update = 1;
 	Slrn_Groups_Dirty = 1;
@@ -267,7 +267,7 @@ static int group_update_range (Slrn_Group_Type *g, int min, int max) /*{{{*/
     * mark any articles as read */
    if (Kill_After_Max && (max < g->range.max))
      {
-	int nmax = g->range.max;
+	NNTP_Artnum_Type nmax = g->range.max;
 	for (n = max + 1; n <= nmax; n++)
 	  group_mark_article_as_read (g, n);
      }
@@ -283,13 +283,6 @@ static int group_update_range (Slrn_Group_Type *g, int min, int max) /*{{{*/
    r = &g->range;
    if (r->next != NULL)
      {
-#if 0
-	/* stesch@parsec.rhein-neckar.de (Stefan Scholl) suggests moving this
-	 * below to avoid posibility of n < 0.
-	 */
-	if (r->next->min <= r->min)
-	  r->next->min = 1;
-#endif	
 	n = r->max;
 	while (r->next != NULL)
 	  {
@@ -299,11 +292,10 @@ static int group_update_range (Slrn_Group_Type *g, int min, int max) /*{{{*/
 	if (n < 0) n = 0;
 	if (n > max_available) n = max_available;
 	g->unread = n;
-#if 1
+
 	r = &g->range;
 	if (r->next->min <= r->min)
 	  r->next->min = 1;
-#endif
      }
    else
      g->unread = max_available;
@@ -321,7 +313,7 @@ static int group_update_range (Slrn_Group_Type *g, int min, int max) /*{{{*/
 
 /*}}}*/
 
-static int group_sync_group_with_server (Slrn_Group_Type *g, int *minp, int *maxp) /*{{{*/
+static int group_sync_group_with_server (Slrn_Group_Type *g, NNTP_Artnum_Type *minp, NNTP_Artnum_Type *maxp) /*{{{*/
 {
    char *group;
    int status, reselect;
@@ -447,7 +439,7 @@ static Slrn_Group_Type *find_group_entry (char *name, unsigned int len) /*{{{*/
 
 /*}}}*/
 static Slrn_Group_Type *create_group_entry (char *name, unsigned int len, /*{{{*/
-					    int min, int max, int query_server,
+					    NNTP_Artnum_Type min, NNTP_Artnum_Type max, int query_server,
 					    int skip_find)
 {
    int hash_index;
@@ -874,7 +866,7 @@ unsigned int slrn_group_down_n (unsigned int n) /*{{{*/
 
 int slrn_group_select_group (void) /*{{{*/
 {
-   int min, max, n, max_available, last_n;
+   NNTP_Artnum_Type min, max, n, max_available, last_n;
    int ret;
    Slrn_Range_Type *r;
    int prefix;
@@ -908,19 +900,19 @@ int slrn_group_select_group (void) /*{{{*/
    if ((prefix != 0) || (n == 0))
      n = max_available;
 
-   if ((prefix & 1) ||
-       ((n > Slrn_Query_Group_Cutoff)
-	&& (Slrn_Query_Group_Cutoff > 0)) ||
-       ((n > -Slrn_Query_Group_Cutoff)
-	&& (Slrn_Query_Group_Cutoff < 0)))
+   if ((prefix & 1) 
+       || ((Slrn_Query_Group_Cutoff > 0) 
+	   && (n > (NNTP_Artnum_Type)Slrn_Query_Group_Cutoff))
+       || ((Slrn_Query_Group_Cutoff < 0) 
+	   && (n > (NNTP_Artnum_Type)(-Slrn_Query_Group_Cutoff))))
      {
-	char int_prompt_buf[256];
+	char int_prompt_buf[512];
 	if ((prefix & 1) || (Slrn_Query_Group_Cutoff > 0))
 	  {
 	     slrn_snprintf (int_prompt_buf, sizeof (int_prompt_buf),
 			    _("%s: Read how many? "),
 			    Slrn_Group_Current_Group->group_name);
-	     if ((-1 == slrn_read_integer (int_prompt_buf, &n, &n))
+	     if ((-1 == slrn_read_artnum_int (int_prompt_buf, &n, &n))
 		 || (n <= 0))
 	       {
 		  slrn_clear_message ();
@@ -1165,7 +1157,7 @@ static void refresh_groups_cmd (void) /*{{{*/
 	  /* hack: avoid a problem with inn not updating the high water mark */
 	  {
 	     Slrn_Group_Type *a = c, *b;
-	     int min, max;
+	     NNTP_Artnum_Type min, max;
 	     
 	     if (((NULL != (b = c->next)) || (NULL != (b = c->prev))) &&
 		 (0 == strcmp (c->group_name,
@@ -2843,7 +2835,7 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
 	max = g->range.max;
 	if (r != NULL)
 	  {
-	     int max_newsrc_number=0;
+	     NNTP_Artnum_Type max_newsrc_number=0;
 	     /* Make this check because the unsubscribed group
 	      * range may not have been initialized from the server.
 	      */
@@ -2864,7 +2856,7 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
 	  }
 	else if (g->range.min > 2)
 	  {
-	     if (fprintf (fp, " %d-%d", 1, g->range.min - 1) < 0)
+	     if (fprintf (fp, (" 1-" NNTP_FMT_ARTNUM), g->range.min - 1) < 0)
 	       goto write_error;
 	  }
 	
@@ -2930,7 +2922,7 @@ static void group_quick_help (void) /*{{{*/
 static char *group_display_format_cb (char ch, void *data, int *len, int *color) /*{{{*/
 {
    Slrn_Group_Type *g = (Slrn_Group_Type*) data;
-   static char buf[32];
+   static char buf[512];
    char *retval = buf;
    
    *retval = 0;
@@ -2959,7 +2951,7 @@ static char *group_display_format_cb (char ch, void *data, int *len, int *color)
 #ifdef HAVE_ANSI_SPRINTF
 	  *len =
 #endif
-	  sprintf (buf, "%d", g->range.max); /* safe */
+	  sprintf (buf, NNTP_FMT_ARTNUM, g->range.max); /* safe */
 	break;
       case 'l':
 	if (g->range.min == -1)
@@ -2971,7 +2963,7 @@ static char *group_display_format_cb (char ch, void *data, int *len, int *color)
 #ifdef HAVE_ANSI_SPRINTF
 	  *len =
 #endif
-	  sprintf (buf, "%d", g->range.min); /* safe */
+	  sprintf (buf, NNTP_FMT_ARTNUM, g->range.min); /* safe */
 	break;
       case 'n':
 	retval = g->group_name;
@@ -2987,13 +2979,13 @@ static char *group_display_format_cb (char ch, void *data, int *len, int *color)
 #ifdef HAVE_ANSI_SPRINTF
 	  *len =
 #endif
-	  sprintf (buf, "%d", g->range.max - g->range.min + 1); /* safe */
+	  sprintf (buf, NNTP_FMT_ARTNUM, g->range.max - g->range.min + 1); /* safe */
 	break;
       case 'u':
 #ifdef HAVE_ANSI_SPRINTF
 	*len =
 #endif
-	sprintf (buf, "%d", g->unread); /* safe */
+	sprintf (buf, NNTP_FMT_ARTNUM, g->unread); /* safe */
 	break;
      }
    

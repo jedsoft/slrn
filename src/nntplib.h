@@ -88,19 +88,19 @@ extern int nntp_end_post (NNTP_Type *);
 extern int nntp_post_cmd (NNTP_Type *);
 extern int nntp_list_active_cmd (NNTP_Type *, char *);
 
-extern int nntp_select_group (NNTP_Type *, char *, int *, int *);
+extern int nntp_select_group (NNTP_Type *, char *, NNTP_Artnum_Type *, NNTP_Artnum_Type *);
 extern int nntp_refresh_groups (NNTP_Type *, Slrn_Group_Range_Type *, int);
-extern int nntp_xpat_cmd (NNTP_Type *, char *, int, int, char *);
-extern int nntp_one_xhdr_cmd (NNTP_Type *, char *, int, char *, unsigned int);
+extern int nntp_xpat_cmd (NNTP_Type *, char *, NNTP_Artnum_Type, NNTP_Artnum_Type, char *);
+extern int nntp_one_xhdr_cmd (NNTP_Type *, char *, NNTP_Artnum_Type, char *, unsigned int);
 
 extern int nntp_listgroup (NNTP_Type *, char *);
-extern int nntp_head_cmd (NNTP_Type *, int, char *, int *);
+extern int nntp_head_cmd (NNTP_Type *, NNTP_Artnum_Type, char *, NNTP_Artnum_Type *);
 
-extern int nntp_xover_cmd (NNTP_Type *, int, int);
-extern int nntp_xhdr_cmd (NNTP_Type *, char *, int, int);
-extern int nntp_next_cmd (NNTP_Type *s, int *);
-extern int nntp_body_cmd (NNTP_Type *s, int, char *);
-extern int nntp_article_cmd (NNTP_Type *s, int, char *);
+extern int nntp_xover_cmd (NNTP_Type *, NNTP_Artnum_Type, NNTP_Artnum_Type);
+extern int nntp_xhdr_cmd (NNTP_Type *, char *, NNTP_Artnum_Type, NNTP_Artnum_Type);
+extern int nntp_next_cmd (NNTP_Type *s, NNTP_Artnum_Type *);
+extern int nntp_body_cmd (NNTP_Type *s, NNTP_Artnum_Type, char *);
+extern int nntp_article_cmd (NNTP_Type *s, NNTP_Artnum_Type, char *);
 
 extern char *nntp_read_and_malloc (NNTP_Type *);
 

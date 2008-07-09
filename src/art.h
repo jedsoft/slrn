@@ -21,7 +21,7 @@
 #ifndef _SLRN_ART_H
 #define _SLRN_ART_H
 #ifndef SLRNPULL_CODE
-extern int slrn_select_article_mode (Slrn_Group_Type *, int, int);
+extern int slrn_select_article_mode (Slrn_Group_Type *, NNTP_Artnum_Type, int);
 extern void slrn_init_article_mode (void);
 extern void slrn_subject_strip_was (char *);
 extern SLKeyMap_List_Type *Slrn_Article_Keymap;
@@ -119,7 +119,7 @@ typedef struct Slrn_Header_Type
    struct Slrn_Header_Type *hash_next;  /* next in hash table */
    unsigned int num_children;
    unsigned long hash;		       /* based on msgid */
-   int number;			       /* server number */
+   NNTP_Artnum_Type number;			       /* server number */
    int lines;
    int bytes;
    char *subject;		       /* malloced */

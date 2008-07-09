@@ -28,7 +28,7 @@
 
 typedef struct
 {
-   int id;
+   NNTP_Artnum_Type id;
    char *subject_malloced; /* keep these separate from the rest */
    char *from;			       /* points into subject_malloced */
    char *date_malloced;
@@ -52,13 +52,13 @@ extern int slrn_read_overview_fmt (void);
 
 #ifndef SLRNPULL_CODE
 extern int slrn_xover_for_msgid (char *, Slrn_XOver_Type *);
-extern int slrn_open_xover (int, int);
+extern int slrn_open_xover (NNTP_Artnum_Type, NNTP_Artnum_Type);
 extern int slrn_read_xover (Slrn_XOver_Type *);
 extern void slrn_close_xover (void);
 
 extern void slrn_open_all_add_xover (void);
-extern int slrn_open_add_xover (int, int);
-extern int slrn_read_add_xover (Slrn_Header_Line_Type **);
+extern int slrn_open_add_xover (NNTP_Artnum_Type, NNTP_Artnum_Type);
+extern int slrn_read_add_xover (Slrn_Header_Line_Type **, NNTP_Artnum_Type *);
 extern void slrn_close_add_xover (int);
 extern int slrn_add_xover_missing (void);
 extern void slrn_append_add_xover_to_header (Slrn_Header_Type *,
