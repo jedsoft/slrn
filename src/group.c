@@ -134,16 +134,17 @@ static void remove_group_entry (Slrn_Group_Type *);
 static NNTP_Artnum_Type count_unread (Slrn_Range_Type *r)
 {
    NNTP_Artnum_Type nread = 0;
-   
+   NNTP_Artnum_Type rmax = r->max;
+
    while (r->next != NULL)
      {
 	r = r->next;
 	nread += r->max - r->min + 1;
      }
-   if (nread > r->max)
+   if (nread > rmax)
      return 0;
    
-   return r->max - nread;
+   return rmax - nread;
 }
 
 void slrn_group_recount_unread (Slrn_Group_Type *g)

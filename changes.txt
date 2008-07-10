@@ -223,6 +223,8 @@ Changes since 0.9.8.8pl1
      exceeding the size of a 32 bit integer.  For this reason, the
      code was updated to support long-long (64 bit) integer types.  This
      involved many small changes.
+114. src/group.c: Small bug introduced in #113 that affecting the
+     count of unread articles was corrected.
 
 {{{ Previous Versions 
 
