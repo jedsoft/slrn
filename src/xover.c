@@ -359,7 +359,7 @@ char *slrn_extract_add_header (Slrn_Header_Type *h, char *hdr) /*{{{*/
 /*}}}*/
 
 #ifdef SLRNPULL_CODE
-static int xover_parse_head (int id, char *headers, Slrn_XOver_Type *xov) /*{{{*/
+static int xover_parse_head (NNTP_Artnum_Type id, char *headers, Slrn_XOver_Type *xov) /*{{{*/
 {
    slrn_free (Malloced_Headers);
 

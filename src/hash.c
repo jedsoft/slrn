@@ -58,7 +58,7 @@ typedef struct Msg_Id_Cache_Type
    char *newsgroup;
    struct Msg_Id_Cache_Type *next;
 #ifdef SLRNPULL_CODE
-   unsigned int num;
+   NNTP_Artnum_Type num;
 #endif
 }
 Msg_Id_Cache_Type;
@@ -154,7 +154,7 @@ static Msg_Id_Cache_Type *allocate_msgid_node (char *msgid, unsigned int msgid_l
 
 static int Dont_Grow = 0;
 static Msg_Id_Cache_Type *is_msgid_cached (char *msgid, char *newsgroup,
-					   unsigned int num, int add)
+					   NNTP_Artnum_Type num, int add)
 {
    Msg_Id_Cache_Type *node;
    unsigned int hash_index;

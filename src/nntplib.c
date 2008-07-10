@@ -61,6 +61,9 @@ static int _nntp_connect_server (NNTP_Type *);
 extern int Slrn_Force_Authentication;
 extern FILE *Slrn_Debug_Fp; /* we need this here when compiling slrnpull */
 
+/* Note: nntp_allocate_nntp returns a pointer to a static object.  Eventually,
+ * it should be changed to return a dynamic one.
+ */
 static NNTP_Type *nntp_allocate_nntp (void)
 {
    static NNTP_Type nn;
@@ -80,6 +83,12 @@ static void _nntp_deallocate_nntp (NNTP_Type *s)
 {
    if (s == NULL) return;
 
+   if (s->tcp != NULL)
+     sltcp_close (s->tcp);
+
+   /* Until nntp_allocate_nntp is modified to create a dynamic object, just
+    * zero the memory here.
+    */
    memset ((char *) s, 0, sizeof (NNTP_Type));
 }
 
@@ -409,11 +418,6 @@ int nntp_close_server (NNTP_Type *s)
    if (Slrn_Debug_Fp != NULL)
      fputs ("!Closing the server connection.\n", Slrn_Debug_Fp);
    
-   (void) sltcp_close (s->tcp);
-
-   s->tcp = NULL;
-   s->init_state = 0;
-
    _nntp_deallocate_nntp (s);
 
    return 0;

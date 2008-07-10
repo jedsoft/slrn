@@ -234,6 +234,9 @@ Changes since 0.9.8.8pl1
      authenticate with the server even if the server does not request
      it.  This change eliminates most, if not all, uses of the
      force_authentication variable.
+117. src/nntplib.c: _nntp_deallocate_nntp was not closing the tcp
+     socket.
+118. src/slrnpull.c: Updates for long-long support (see #113).
 
 {{{ Previous Versions 
 

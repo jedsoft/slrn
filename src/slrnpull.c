@@ -176,12 +176,12 @@ typedef struct _Active_Group_Type /*{{{*/
     * and a message id of 80 characters.  Of course that number would be
     * smaller if Pine were eliminated.
     */
-   unsigned int min, max;	       /* range of articles that slrnpull has 
+   NNTP_Artnum_Type min, max;	       /* range of articles that slrnpull has 
 					* already dealt with */
-   unsigned int active_min, active_max;/* article numbers that are in spool dir */
-   unsigned int server_min;	       /* artcle numbers that server reports */
-   unsigned int server_max;
-   
+   NNTP_Artnum_Type active_min, active_max;/* article numbers that are in spool dir */
+   NNTP_Artnum_Type server_min;	       /* artcle numbers that server reports */
+   NNTP_Artnum_Type server_max;
+
    
    unsigned int max_to_get;	       /* if non-zero, get only this many */
    unsigned int expire_days;	       /* if zero, no expiration */
@@ -360,11 +360,11 @@ static FILE *open_server_min_file (Active_Group_Type *g, char *mode, /*{{{*/
 
 /*}}}*/
 
-static unsigned int read_server_min_file (Active_Group_Type *g) /*{{{*/
+static NNTP_Artnum_Type read_server_min_file (Active_Group_Type *g) /*{{{*/
 {
    char file[SLRN_MAX_PATH_LEN + 1];
    char line[256];
-   unsigned int retval;
+   NNTP_Artnum_Type retval;
    FILE *fp;
 
    fp = open_server_min_file (g, "r", file, sizeof (file));
@@ -381,7 +381,8 @@ static unsigned int read_server_min_file (Active_Group_Type *g) /*{{{*/
 
    fclose (fp);
    
-   if (1 != sscanf (line, "%u", &retval))
+   if ((1 != sscanf (line, NNTP_FMT_ARTNUM, &retval))
+       || (retval < 0))
      {
 	log_error (_("Error parsing %s."), file);
 	return 0;
@@ -391,7 +392,7 @@ static unsigned int read_server_min_file (Active_Group_Type *g) /*{{{*/
 }
 /*}}}*/
 
-static void write_server_min_file (Active_Group_Type *g, unsigned int val) /*{{{*/
+static void write_server_min_file (Active_Group_Type *g, NNTP_Artnum_Type val) /*{{{*/
 {
    char file[SLRN_MAX_PATH_LEN + 1];
    FILE *fp;
@@ -402,7 +403,7 @@ static void write_server_min_file (Active_Group_Type *g, unsigned int val) /*{{{
 	log_error (_("Unable to open %s for writing."), file);
 	return;
      }
-   if (EOF == fprintf (fp, "%u", val))
+   if (EOF == fprintf (fp, NNTP_FMT_ARTNUM, val))
      {
 	log_error (_("Write to %s failed."), file);
 	(void) fclose (fp);
@@ -434,7 +435,7 @@ static int read_group_min_max_file (Active_Group_Type *g) /*{{{*/
 {
    char file[SLRN_MAX_PATH_LEN + 1];
    char line[256];
-   unsigned int min, max;
+   NNTP_Artnum_Type min, max;
    FILE *fp;
 
    g->min = 1;
@@ -454,12 +455,17 @@ static int read_group_min_max_file (Active_Group_Type *g) /*{{{*/
 
    fclose (fp);
    
-   if (2 != sscanf (line, "%u %u", &min, &max))
+   if (2 != sscanf (line, NNTP_FMT_ARTNUM_2, &min, &max))
      {
 	log_error (_("Error parsing %s."), file);
 	return -1;
      }
-   
+   if ((min < 0) || (max < 0))
+     {
+	log_error (_("Expecting minmax numbers to be non-negative"));
+	return -1;
+     }
+
    g->active_min = g->min = min;
    g->server_max = g->active_max = g->max = max;
    
@@ -479,7 +485,7 @@ static int write_group_min_max_file (Active_Group_Type *g) /*{{{*/
 	log_error (_("Unable to open %s for writing."), file);
 	return -1;
      }
-   if (EOF == fprintf (fp, "%u %u", g->min, g->max))
+   if (EOF == fprintf (fp, NNTP_FMT_ARTNUM_2, g->min, g->max))
      {
 	log_error (_("Write to %s failed."), file);
 	(void) fclose (fp);
@@ -834,10 +840,11 @@ static int make_filenames (void) /*{{{*/
 
 /*}}}*/
 
-static int *listgroup_numbers (NNTP_Type *s, Active_Group_Type *g, unsigned int *nump) /*{{{*/
+static NNTP_Artnum_Type *listgroup_numbers (NNTP_Type *s, Active_Group_Type *g, unsigned int *nump) /*{{{*/
 {
-   int *numbers;
-   unsigned int max, num, maxnum, curnum;
+   NNTP_Artnum_Type *numbers;
+   NNTP_Artnum_Type maxnum, curnum;
+   unsigned int max, num;
    char buf[256];
    int status;
    
@@ -858,10 +865,10 @@ static int *listgroup_numbers (NNTP_Type *s, Active_Group_Type *g, unsigned int 
      {
 	if (num == max)
 	  {
-	     int *newnums;
+	     NNTP_Artnum_Type *newnums;
 	     
 	     max += 1000;
-	     newnums = (int *) slrn_realloc ((char *) numbers, max * sizeof (int), 1);
+	     newnums = (NNTP_Artnum_Type *) slrn_realloc ((char *) numbers, max * sizeof (NNTP_Artnum_Type), 1);
 	     if (newnums == NULL)
 	       {
 		  slrn_free ((char *)numbers);
@@ -870,7 +877,7 @@ static int *listgroup_numbers (NNTP_Type *s, Active_Group_Type *g, unsigned int 
 	       }
 	     numbers = newnums;
 	  }
-	curnum = atoi (buf);
+	curnum = NNTP_STR_TO_ARTNUM (buf);
 	if (curnum > maxnum) maxnum = curnum;
 	numbers[num] = curnum;
 	num++;
@@ -896,15 +903,16 @@ static unsigned int Num_Duplicates;
  * in group g on server s. *nump is set to the length of the array.
  * If article numbers larger than g->server_max are found, that variable
  * gets updated. */
-static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
-				 int server_min, int server_max,
-				 unsigned int *nump) /*{{{*/
+static NNTP_Artnum_Type *
+  list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
+		       NNTP_Artnum_Type server_min, NNTP_Artnum_Type server_max,
+		       unsigned int *nump) /*{{{*/
 {
    char *name; 
-   unsigned int min, max;
+   NNTP_Artnum_Type min, max;
    int status;
    char buf [512];
-   int *numbers;
+   NNTP_Artnum_Type *numbers;
    unsigned int num_numbers, max_num_numbers;
    
    *nump = 0;
@@ -922,11 +930,11 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
     * all the message-ids when the user specifies a limit to grab.
     */
    if ((max <= 1) && (g->max_to_get != 0)
-       && ((unsigned int) server_max-server_min+1 > g->max_to_get))
+       && (server_max + 1 > server_min + g->max_to_get))
      {
-	max = (unsigned int) server_max - g->max_to_get + 1;
+	max = server_max - g->max_to_get + 1;
 	if (server_max >= server_min)
-	  log_message (_("The server may contain as many as %d articles in this group"),
+	  log_message (_("The server may contain as many as " NNTP_FMT_ARTNUM  " articles in this group"),
 		       server_max - server_min + 1);
 	log_message (_("Only examining last %u articles since this is a new group"), g->max_to_get);
      }
@@ -956,10 +964,10 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
    min = max;
    while (1 == (status = nntp_read_line (s, buf, sizeof (buf))))
      {
-	int num;
+	NNTP_Artnum_Type num;
 	char *b1, *b2;
-	
-	num = (int) atoi (buf);
+
+	num = NNTP_STR_TO_ARTNUM (buf);
 	b1 = slrn_strbyte (buf, '<');
 	if (b1 == NULL)
 	  {
@@ -972,25 +980,25 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
 	b2++;
 	*b2 = 0;
 	
-	if (num > (int) max) max = (unsigned int) num;
+	if (num > max) max = num;
 
 	if (NULL != is_msgid_cached (b1, name, num, 0))
 	  {
 	     if (g->min > g->max) g->min = num;
 	     g->max = max;	       /* was: g->max = num */
 	     
-	     if (g->server_max < (unsigned int) num) g->server_max = num;
-	     
+	     if (g->server_max < num) g->server_max = num;
+
 	     Num_Duplicates++;
 	     continue;
 	  }
 	
 	if (num_numbers == max_num_numbers)
 	  {
-	     int *newnums;
+	     NNTP_Artnum_Type *newnums;
 	     
 	     max_num_numbers += 100;
-	     newnums = (int *) slrn_realloc ((char *) numbers, max_num_numbers * sizeof (int), 1);
+	     newnums = (NNTP_Artnum_Type *) slrn_realloc ((char *) numbers, max_num_numbers * sizeof (NNTP_Artnum_Type), 1);
 	     if (newnums == NULL)
 	       {
 		  slrn_free ((char *)numbers);
@@ -1003,7 +1011,7 @@ static int *list_server_numbers (NNTP_Type *s, Active_Group_Type *g,
 	num_numbers++;
      }
 
-   log_message (_("%s: Retrieving %s %d-%d."), g->name,
+   log_message (_("%s: Retrieving %s " NNTP_FMT_ARTRANGE "."), g->name,
 		g->headers_only ? _("headers") : _("articles"),
 		min, max);
    if (num_numbers) g->server_max = max;
@@ -1122,13 +1130,13 @@ static int write_xover_line (FILE *fp, Slrn_XOver_Type *xov) /*{{{*/
 
 /*}}}*/
 
-static int append_body (Active_Group_Type *g, int n, char *body) /*{{{*/
+static int append_body (Active_Group_Type *g, NNTP_Artnum_Type n, char *body) /*{{{*/
 {
    char file[SLRN_MAX_PATH_LEN + 1];
-   char buf[128];
+   char buf[256];
    FILE *fp;
    
-   (void) SLsnprintf (buf, sizeof(buf), "%d", n);
+   (void) SLsnprintf (buf, sizeof(buf), NNTP_FMT_ARTNUM, n);
    
    if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, g->dirname,
 			   file, sizeof (file)))
@@ -1166,12 +1174,12 @@ static int append_body (Active_Group_Type *g, int n, char *body) /*{{{*/
 }
 /*}}}*/
 
-static int write_head_and_body (Active_Group_Type *g, int n, /*{{{*/
+static int write_head_and_body (Active_Group_Type *g, NNTP_Artnum_Type n, /*{{{*/
 				char *head, char *body, 
 				Slrn_XOver_Type *xov, FILE *xov_fp)
 {
    char file [SLRN_MAX_PATH_LEN + 1];
-   char buf[128];
+   char buf[256];
    FILE *fp;
    
    if (head == NULL)
@@ -1182,8 +1190,8 @@ static int write_head_and_body (Active_Group_Type *g, int n, /*{{{*/
 	return 0;
      }
 
-   (void) SLsnprintf (buf, sizeof (buf), "%d", n);
-   
+   (void) SLsnprintf (buf, sizeof (buf), NNTP_FMT_ARTNUM, n);
+
    if ((-1 == slrn_dircat (SlrnPull_Spool_News_Dir, g->dirname,
 			   file, sizeof (file)))
        || (-1 == slrn_dircat (file, buf, file, sizeof (file))))
@@ -1251,7 +1259,7 @@ static int fetch_body (NNTP_Type *s, char **body) /*{{{*/
 
 /*}}}*/
 
-static int get_bodies (NNTP_Type *s, int *numbers, /*{{{*/
+static int get_bodies (NNTP_Type *s, NNTP_Artnum_Type *numbers, /*{{{*/
 		       char **heads, char **bodies, unsigned int num)
 {
    unsigned int i;
@@ -1269,7 +1277,7 @@ static int get_bodies (NNTP_Type *s, int *numbers, /*{{{*/
 	  continue;
 	
 	(void) SLsnprintf (b, sizeof (buf) - (size_t)(b - buf),
-		       "%sbody %d", crlf, numbers[i]);
+			   ("%sbody " NNTP_FMT_ARTNUM), crlf, numbers[i]);
 	b += strlen (b);
 	
 	crlf = "\r\n";
@@ -1308,7 +1316,7 @@ static void free_header_data (Slrn_Header_Type *h)
    slrn_free_additional_headers (h->add_hdrs);
 }
 
-static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **headers, Slrn_XOver_Type *xov) /*{{{*/
+static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, NNTP_Artnum_Type n, char **headers, Slrn_XOver_Type *xov) /*{{{*/
 {
    int status;
    Slrn_Header_Type h;
@@ -1346,7 +1354,7 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
    slrn_rfc1522_decode_string (&h.from);
 #endif
 #if 1
-   (void) is_msgid_cached (h.msgid, Current_Group->name, (unsigned int) n, 1);
+   (void) is_msgid_cached (h.msgid, Current_Group->name, n, 1);
 #endif
 
    score = slrn_score_header (&h, Current_Group->name, (KLog_Fp != NULL) ? &sdi : NULL);
@@ -1403,7 +1411,7 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, int n, char **header
 
 /*}}}*/
 
-static int get_heads (NNTP_Type *s,  Active_Group_Type *g, int *numbers, char **heads, /*{{{*/
+static int get_heads (NNTP_Type *s,  Active_Group_Type *g, NNTP_Artnum_Type *numbers, char **heads, /*{{{*/
 		      Slrn_XOver_Type *xovs, unsigned int num)
 {
    unsigned int i;
@@ -1473,9 +1481,9 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
 {
    char *heads[SLRN_MAX_QUEUED];
    char *bodies[SLRN_MAX_QUEUED];
-   int numbers[SLRN_MAX_QUEUED];
+   NNTP_Artnum_Type numbers[SLRN_MAX_QUEUED];
    unsigned int i, num;
-   int max, bmin, bmax;
+   NNTP_Artnum_Type max, bmin, bmax;
    Slrn_Range_Type *r;
 
    Num_Articles_Received = 0;
@@ -1498,7 +1506,7 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
      {
 	heads[i] = ""; /* insert dummy headers so get_bodies won't skip them */
      }
-   
+
    max = r->min;
    while (r != NULL)
      {
@@ -1563,7 +1571,7 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
 }
 /*}}}*/
 
-static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsigned int num) /*{{{*/
+static int get_articles (NNTP_Type *s, Active_Group_Type *g, NNTP_Artnum_Type *numbers, unsigned int num) /*{{{*/
 {
    unsigned int i;
 #ifndef SLRN_MAX_QUEUED
@@ -1608,7 +1616,7 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 
    if (g->headers_only) /* "register" new articles without body */
      {
-	int bmin, bmax;
+	NNTP_Artnum_Type bmin, bmax;
 	unsigned int j=0;
 	
 	while ((j < num) && (heads[j]==NULL))
@@ -1644,12 +1652,12 @@ static int get_articles (NNTP_Type *s, Active_Group_Type *g, int *numbers, unsig
 /*}}}*/
 
 static int get_group_articles (NNTP_Type *s, Active_Group_Type *g, 
-			       int server_min, int server_max, int marked_bodies) /*{{{*/
+			       NNTP_Artnum_Type server_min, NNTP_Artnum_Type server_max, int marked_bodies) /*{{{*/
 {
    if (!marked_bodies)
      {
-	unsigned int gmin, gmax;
-	int *numbers;
+	NNTP_Artnum_Type gmin, gmax;
+	NNTP_Artnum_Type *numbers;
 	unsigned int num_numbers, i, imin;
 	
 	Num_Articles_Received = 0;
@@ -1658,9 +1666,9 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 	
 	gmin = g->min;
 	gmax = g->max;
-	
+
 	if (((server_min > server_max) || (server_max < 0))
-	    || (((unsigned int)server_max <= gmax) && (gmin <= gmax)))
+	    || ((server_max <= gmax) && (gmin <= gmax)))
 	  {
 	     log_message (_("%s: no new articles available."), g->name);
 	     goto fetch_marked_bodies;
@@ -1675,7 +1683,7 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 	if (numbers == NULL) return -1;
 	
 	i = 0;
-	while ((i < num_numbers) && (numbers[i] <= (int) gmax))
+	while ((i < num_numbers) && (numbers[i] <= gmax))
 	  i++;
 	
 	if (i == num_numbers)
@@ -1705,7 +1713,7 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 	
 	while (i < num_numbers)
 	  {
-	     int ns[SLRN_MAX_QUEUED];
+	     NNTP_Artnum_Type ns[SLRN_MAX_QUEUED];
 	     unsigned int j;
 	     
 	     j = 0;
@@ -1770,7 +1778,7 @@ static int pull_news (NNTP_Type *s, int marked_bodies) /*{{{*/
 	  }
 
 	write_server_min_file (g, min);
-	if (g->server_max > (unsigned int) max)
+	if (g->server_max > max)
 	  g->server_max = max;
 
 	Current_Group = g;
@@ -1954,7 +1962,7 @@ static int write_active (void) /*{{{*/
    
    while (g != NULL)
      {
-	if (EOF == fprintf (fp, "%s %u %u y\n", g->name, 
+	if (EOF == fprintf (fp, ("%s " NNTP_FMT_ARTNUM_2 " y\n"), g->name,
 			    g->active_max, g->active_min))
 	  {
 	     fclose (fp);
@@ -2723,7 +2731,7 @@ static char *read_header_from_file (char *file, int *has_body)
    return mbuf;
 }
 
-static int sort_int_cmp (unsigned int *a, unsigned int *b)
+static int sort_artnums_cmp (NNTP_Artnum_Type *a, NNTP_Artnum_Type *b)
 {
    if (*a > *b) return 1;
    if (*a == *b) return 0;
@@ -2734,16 +2742,16 @@ static int sort_int_cmp (unsigned int *a, unsigned int *b)
  * write an overview-file entry for a single article
  * returns -1 on error, 0 if header is missing, 1 otherwise
  */
-static int write_overview_entry(FILE *xov_fp, int id, char *dir)
+static int write_overview_entry(FILE *xov_fp, NNTP_Artnum_Type id, char *dir)
 {
    char file [SLRN_MAX_PATH_LEN + 1];
    char *header;
    struct stat st;
    Slrn_XOver_Type xov;
    int has_body;
-   char buf[32];
+   char buf[256];
    
-   sprintf (buf, "%d", id); /* safe */
+   sprintf (buf, NNTP_FMT_ARTNUM, id); /* safe */
    
    if (-1 == slrn_dircat (dir, buf, file, sizeof (file)))
      {
@@ -2799,14 +2807,14 @@ static void progress_update_overview(int i, int n_nums, Active_Group_Type *g, in
 }
 
 /* Now also updates g->headers */
-static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, unsigned int n_nums)
+static int create_overview_for_dir (Active_Group_Type *g, NNTP_Artnum_Type *nums, unsigned int n_nums)
 {
    char dir [SLRN_MAX_PATH_LEN + 1];
    FILE *xov_fp;
    unsigned int i;
-   int bmin, bmax;
+   NNTP_Artnum_Type bmin, bmax;
    Slrn_Range_Type *headers = NULL;
-   void (*qsort_fun) (char *, unsigned int, int, int (*)(unsigned int *, unsigned int *));
+   void (*qsort_fun) (char *, unsigned int, int, int (*)(NNTP_Artnum_Type *, NNTP_Artnum_Type *));
 
    log_message (_("Creating Overview file for %s..."), g->name);
    
@@ -2821,12 +2829,12 @@ static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
    
    if ((nums != NULL) && (n_nums != 0))
      {
-	qsort_fun = (void (*)(char *, unsigned int, int, 
-			      int (*)(unsigned int *, unsigned int *))) 
+	qsort_fun = (void (*)(char *, unsigned int, int,
+			      int (*)(NNTP_Artnum_Type *, NNTP_Artnum_Type *)))
 	  qsort;
-	
-	(*qsort_fun) ((char *) nums, n_nums, sizeof (unsigned int), sort_int_cmp);
-	
+
+	(*qsort_fun) ((char *) nums, n_nums, sizeof (NNTP_Artnum_Type), sort_artnums_cmp);
+
 	g->active_min = g->min = nums[0];
 	g->active_max = nums [n_nums - 1];
      }
@@ -2835,12 +2843,12 @@ static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 	g->active_min = g->min = g->max + 1;
 	g->active_max = g->active_min - 1;
      }
-   
+
    bmin = bmax = -1;
    for (i = 0; i < n_nums; i++)
      {
 	int ret;
-        if (-1 == (ret = write_overview_entry(xov_fp, (int) nums [i], dir)))
+        if (-1 == (ret = write_overview_entry(xov_fp, nums [i], dir)))
           {
              fclose(xov_fp);
 	     slrn_ranges_free (headers);
@@ -2850,7 +2858,7 @@ static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 	  {
 	     bmin = bmax = nums[i];
 	  }
-	else if ((bmin != -1) && (ret || ((int)nums[i] != bmax+1)))
+	else if ((bmin != -1) && (ret || (nums[i] != bmax+1)))
 	  {
 	     headers = slrn_ranges_add (headers, bmin, bmax);
 	     if (ret)
@@ -2877,16 +2885,16 @@ static int create_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
  * which is a lot faster than recreating the entire file. If the overview
  * file cannot be opened for reading, a new one is created.
  */
-static int update_overview_for_dir (Active_Group_Type *g, unsigned int *nums, unsigned int n_nums)
+static int update_overview_for_dir (Active_Group_Type *g, NNTP_Artnum_Type *nums, unsigned int n_nums)
 {
    char file [SLRN_MAX_PATH_LEN + 1];
    char newfile [SLRN_MAX_PATH_LEN + 1];
    char dir [SLRN_MAX_PATH_LEN + 1];
    char buf [4096];
-   unsigned int xov_nr = 0;
+   NNTP_Artnum_Type xov_nr = 0;
    FILE *xov_fp, *new_xov_fp;
    unsigned int i;
-   void (*qsort_fun) (char *, unsigned int, int, int (*)(unsigned int *, unsigned int *));
+   void (*qsort_fun) (char *, unsigned int, int, int (*)(NNTP_Artnum_Type *, NNTP_Artnum_Type *));
    
    xov_fp = open_xover_file (g, "r");
    if (xov_fp == NULL)
@@ -2914,10 +2922,10 @@ static int update_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
    if ((nums != NULL) && (n_nums != 0))
      {
 	qsort_fun = (void (*)(char *, unsigned int, int, 
-			      int (*)(unsigned int *, unsigned int *))) 
+			      int (*)(NNTP_Artnum_Type *, NNTP_Artnum_Type *)))
 	  qsort;
-	
-	(*qsort_fun) ((char *) nums, n_nums, sizeof (unsigned int), sort_int_cmp);
+
+	(*qsort_fun) ((char *) nums, n_nums, sizeof (NNTP_Artnum_Type), sort_artnums_cmp);
 	
 	g->active_min = g->min = nums[0];
 	g->active_max = nums [n_nums - 1];
@@ -2942,13 +2950,13 @@ static int update_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 	while (xov_nr < nums[i]) /* drop old overview entries */
 	  {
 	     if (NULL != fgets (buf, sizeof(buf), xov_fp))
-	       xov_nr = atoi (buf);
+	       xov_nr = NNTP_STR_TO_ARTNUM (buf);
 	     else
 	       /* end of overview file found, write remaining entries */
 	       {
 		  while (i < n_nums)
 		    {
-		       if (-1 == write_overview_entry (new_xov_fp, (int) nums [i], dir))
+		       if (-1 == write_overview_entry (new_xov_fp, nums [i], dir))
 			 break;
 		       
 		       if ((Stdout_Is_TTY) && (((i % 100) == 0) || (i+1 == n_nums)))
@@ -2973,7 +2981,7 @@ static int update_overview_for_dir (Active_Group_Type *g, unsigned int *nums, un
 	/* In case entries are missing, insert as many as needed */
 	while (nums [i] < xov_nr)
 	  {
-	     if (-1 == write_overview_entry (new_xov_fp, (int) nums [i], dir))
+	     if (-1 == write_overview_entry (new_xov_fp, nums[i], dir))
 	       goto end_of_loop; /* break 2 */
 	     if ((Stdout_Is_TTY) && (((i % 100) == 0) || (i+1 == n_nums)))
 	       progress_update_overview(i, n_nums, g, 0);
@@ -3009,12 +3017,11 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
    Slrn_Dirent_Type *df;
    char dir [SLRN_MAX_PATH_LEN + 1];
    char file [SLRN_MAX_PATH_LEN + 1];
-   unsigned int *ok_names;
-   unsigned int num_ok_names, max_num_ok_names;
+   NNTP_Artnum_Type *ok_names;
+   unsigned int i, n, num_ok_names, max_num_ok_names;
    unsigned int num_expired = 0;
-   unsigned int i, n;
    unsigned int left, right, cutoff;
-   void (*qsort_fun) (char *, unsigned int, int, int (*)(unsigned int *, unsigned int *));
+   void (*qsort_fun) (char *, unsigned int, int, int (*)(NNTP_Artnum_Type *, NNTP_Artnum_Type *));
    time_t expire_time;
    int perform_expire = 1;
    
@@ -3039,21 +3046,23 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
    while (NULL != (df = slrn_read_dir (dp)))
      {
 	char *name, *p;
-	
+	NNTP_Artnum_Type id;
+
 	name = df->name;
 	
 	/* Look for names composed of digits.  Skip others. */
 	p = name;
 	while (*p && isdigit (*p)) p++;
 	if (*p != 0) continue;
-	
-	if (1 != sscanf (name, "%u", &n))
+
+	if ((1 != sscanf (name, NNTP_FMT_ARTNUM, &id))
+	    || (id < 0))
 	  continue;		       /* hmm... I'm paranoid. */
 
 	if (num_ok_names == max_num_ok_names)
 	  {
 	     max_num_ok_names += 500;
-	     ok_names = (unsigned int *) slrn_realloc ((char *) ok_names, max_num_ok_names * sizeof (unsigned int), 1);
+	     ok_names = (NNTP_Artnum_Type *) slrn_realloc ((char *) ok_names, max_num_ok_names * sizeof (NNTP_Artnum_Type), 1);
 	     if (ok_names == NULL)
 	       {
 		  log_error (_("malloc error. Unable to expire group %s."), g->name);
@@ -3061,11 +3070,11 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
 		  return -1;
 	       }
 	  }
-	
-	ok_names [num_ok_names] = n;
+
+	ok_names [num_ok_names] = id;
 	num_ok_names++;
      }
-   
+
    slrn_close_dir (dp);
 
    if (num_ok_names==0) /* nothing to do */
@@ -3074,10 +3083,10 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
    /* Now, sort the array and use a binary search to find the lowest article
     * number we don't want to expire.
     */
-   qsort_fun = (void (*)(char *, unsigned int, int, 
-			 int (*)(unsigned int *, unsigned int *))) qsort;
+   qsort_fun = (void (*)(char *, unsigned int, int,
+			 int (*)(NNTP_Artnum_Type *, NNTP_Artnum_Type*))) qsort;
    
-   (*qsort_fun) ((char *) ok_names, num_ok_names, sizeof (unsigned int), sort_int_cmp);
+   (*qsort_fun) ((char *) ok_names, num_ok_names, sizeof (NNTP_Artnum_Type), sort_artnums_cmp);
 
    time (&expire_time);
    expire_time -= g->expire_days * (24 * 60 * 60);   
@@ -3092,13 +3101,13 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
 	 * article we want to keep. */
 	while (left < right)
 	  {
-	     char buf[32];
+	     char buf[256];
 	     struct stat st;
 	     
 	     cutoff = (left + right) / 2;
-	     
-	     sprintf (buf, "%d", ok_names[cutoff]); /* safe */
-	     
+
+	     sprintf (buf, NNTP_FMT_ARTNUM, ok_names[cutoff]); /* safe */
+
 	     if (-1 == slrn_dircat (dir, buf, file, sizeof (file)))
 	       goto stat_error;
 	     
@@ -3133,39 +3142,40 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
    if (cutoff < num_ok_names)
      {
 	Slrn_Range_Type *r;
-	unsigned int server_min = read_server_min_file (g);
+	NNTP_Artnum_Type id;
+	NNTP_Artnum_Type server_min = read_server_min_file (g);
 
-	i = ok_names[cutoff];
-	if (i>1)
-	  g->headers = slrn_ranges_remove (g->headers, 1, i-1);
+	id = ok_names[cutoff];
+	if (id>1)
+	  g->headers = slrn_ranges_remove (g->headers, 1, id-1);
 	r = g->headers;
 	
 	if (r!=NULL)
 	  {
-	     if ((int)i < r->min)
-	       i = r->min;
+	     if (id < r->min)
+	       id = r->min;
 	     
 	     n = cutoff;
-	     while (i < server_min)
+	     while (id < server_min)
 	       {
-		  while ((n<num_ok_names) && (ok_names[n]<i))
+		  while ((n<num_ok_names) && (ok_names[n]<id))
 		    n++;
 		  
-		  if ((n<num_ok_names) && (ok_names[n]==i))
+		  if ((n<num_ok_names) && (ok_names[n]==id))
 		    {
 		       ok_names[n] = ok_names[cutoff];
-		       ok_names[cutoff] = i;
+		       ok_names[cutoff] = id;
 		       cutoff++;
 		    }
 		  
-		  i++;
-		  if ((int)i>r->max)
+		  id++;
+		  if (id>r->max)
 		    {
 		       r = r->next;
-		       if (r != NULL)
-			 i = r->min;
-		       else
+		       if (r == NULL)
 			 break;
+
+		       id = r->min;
 		    }
 	       }
 	  }
@@ -3177,8 +3187,8 @@ static int expire_group (Active_Group_Type *g, int rebuild) /*{{{*/
    /* Now, actually delete the files on disk. */
    for (i=0; i < cutoff; i++)
      {
-	char buf[32];
-	sprintf (buf, "%d", ok_names[i]); /* safe */
+	char buf[256];
+	sprintf (buf, NNTP_FMT_ARTNUM, ok_names[i]); /* safe */
 	
 	if ((-1 == slrn_dircat (dir, buf, file, sizeof (file))) ||
 	    (-1 == slrn_delete_file (file)))
