@@ -238,7 +238,7 @@ static int _nntp_list_active (char *pat)
 
 static int _nntp_send_authinfo (void)
 {
-   return nntp_authorization (NNTP_Server);
+   return nntp_authorization (NNTP_Server, Slrn_Force_Authentication);
 }
 
 static int _nntp_start_post (void)

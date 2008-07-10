@@ -1769,7 +1769,7 @@ static void kill_cross_references (Slrn_Header_Type *h) /*{{{*/
 	while ((*b <= '9') && (*b >= '0')) b++;
 	if ((num != h->number)
 	    || strcmp (group, Slrn_Current_Group_Name))
-	  slrn_mark_article_as_read (group, num);
+	  slrn_mark_articles_as_read (group, num, num);
 	SLfree (group);
      }
 }
@@ -5168,8 +5168,9 @@ static void author_search_backward (void) /*{{{*/
 typedef struct Kill_List_Type /*{{{*/
 {
 #define MAX_DKILLS 50
-   NNTP_Artnum_Type nums[MAX_DKILLS];
-   unsigned int num_used;
+   NNTP_Artnum_Type range_min[MAX_DKILLS];
+   NNTP_Artnum_Type range_max[MAX_DKILLS];
+   unsigned int active_index;
    struct Kill_List_Type *next;
 }
 
@@ -5182,18 +5183,34 @@ static Kill_List_Type *Missing_Article_List;
 
 static Kill_List_Type *add_to_specified_kill_list (NNTP_Artnum_Type num, Kill_List_Type *root) /*{{{*/
 {
+   unsigned int active_index;
+
    if (num < 0) return root;
-   
-   if ((root == NULL) || (root->num_used == MAX_DKILLS))
+
+   if (root != NULL)
+     {
+	active_index = root->active_index;
+	if (num == root->range_max[active_index] + 1)
+	  {
+	     root->range_max[active_index] = num;   /* extend range */
+	     return root;
+	  }
+	active_index++;		       /* need new range */
+     }
+   else active_index = MAX_DKILLS;
+
+   if (active_index == MAX_DKILLS)
      {
 	Kill_List_Type *k;
 	k = (Kill_List_Type *) SLMALLOC (sizeof (Kill_List_Type));
 	if (k == NULL) return root;
-	k->num_used = 0;
 	k->next = root;
 	root = k;
+	active_index = 0;
      }
-   root->nums[root->num_used++] = num;
+
+   root->active_index = active_index;
+   root->range_min[active_index] = root->range_max[active_index] = num;
    return root;
 }
 
@@ -5219,11 +5236,16 @@ static void free_specific_kill_list_and_update (Kill_List_Type *k) /*{{{*/
    while (k != NULL)
      {
 	Kill_List_Type *next = k->next;
-	unsigned int i, imax = k->num_used;
-	NNTP_Artnum_Type *nums = k->nums;
-	if (User_Aborted_Group_Read == 0) for (i = 0; i < imax; i++)
+	unsigned int i, imax = k->active_index;
+	NNTP_Artnum_Type *mins = k->range_min;
+	NNTP_Artnum_Type *maxs = k->range_max;
+
+	if (User_Aborted_Group_Read == 0)
 	  {
-	     slrn_mark_article_as_read (NULL, nums[i]);
+	     for (i = 0; i <= imax; i++)
+	       {
+		  slrn_mark_articles_as_read (NULL, mins[i], maxs[i]);
+	       }
 	  }
 	SLFREE (k);
 	k = next;

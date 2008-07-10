@@ -3237,14 +3237,25 @@ static int do_expire (int rebuild) /*{{{*/
 static char *Auth_User_Name;
 static char *Auth_Password;
 
-static int get_authorization (char *host, char **name, char **pass)
+static int get_authorization (char *host, int isreq, char **name, char **pass)
 {
+   int has_null_vals;
+
    (void) host;
+
+   *name = *pass = NULL;
+
+   has_null_vals = ((Auth_Password == NULL) || (Auth_User_Name == NULL));
+   if ((isreq == 0) && has_null_vals)
+     return 0;
+
+   if (has_null_vals)
+     return -1;
 
    *name = Auth_User_Name;
    *pass = Auth_Password;
 
-   return 0;
+   return 1;
 }
 
 static int read_authinfo (void)

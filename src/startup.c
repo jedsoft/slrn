@@ -1727,7 +1727,7 @@ static int nnrp_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 }
 /*}}}*/
 
-int slrn_get_authorization (char *host, char **name, char **pass) /*{{{*/
+int slrn_get_authorization (char *host, int reqd, char **name, char **pass) /*{{{*/
 {
    Server_List_Type *s;
    char buf[SLRL_DISPLAY_BUFFER_SIZE];
@@ -1741,6 +1741,9 @@ int slrn_get_authorization (char *host, char **name, char **pass) /*{{{*/
    if (s == NULL)
      return 0;
    
+   if ((reqd == 0) && ((s->username == NULL) || (s->password == NULL)))
+     return 0;
+     
    if ((s->username == NULL) || (*s->username == 0))
      {
 	*buf = 0;
@@ -1775,7 +1778,7 @@ int slrn_get_authorization (char *host, char **name, char **pass) /*{{{*/
    *name = s->username;
    *pass = s->password;
 
-   return 0;
+   return 1;
 }
 
 /*}}}*/

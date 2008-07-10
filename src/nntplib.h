@@ -83,7 +83,7 @@ extern int nntp_discard_output (NNTP_Type *s);
 extern int nntp_has_cmd (NNTP_Type *, char *);
 extern int nntp_list (NNTP_Type *, char *);
 extern int nntp_list_newsgroups (NNTP_Type *);
-extern int nntp_authorization (NNTP_Type *);
+extern int nntp_authorization (NNTP_Type *, int);
 extern int nntp_end_post (NNTP_Type *);
 extern int nntp_post_cmd (NNTP_Type *);
 extern int nntp_list_active_cmd (NNTP_Type *, char *);
@@ -105,7 +105,7 @@ extern int nntp_article_cmd (NNTP_Type *s, NNTP_Artnum_Type, char *);
 extern char *nntp_read_and_malloc (NNTP_Type *);
 
 extern void (*NNTP_Connection_Lost_Hook) (NNTP_Type *);
-extern int (*NNTP_Authorization_Hook) (char *, char **, char **);
+extern int (*NNTP_Authorization_Hook) (char *, int, char **, char **);
 extern FILE *NNTP_Debug_Fp;
 extern char *nntp_map_code_to_string (int);
 

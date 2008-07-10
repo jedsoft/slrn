@@ -51,7 +51,7 @@
 #include "common.h"
 
 void (*NNTP_Connection_Lost_Hook) (NNTP_Type *);
-int (*NNTP_Authorization_Hook) (char *, char **, char **);
+int (*NNTP_Authorization_Hook) (char *, int, char **, char **);
 int NNTP_Try_Authentication = 0;
 
 int Slrn_Broken_Xref;
@@ -340,7 +340,7 @@ int nntp_server_cmd (NNTP_Type *s, char *cmd)
 	     if ((code == ERR_NOAUTH) && NNTP_Try_Authentication)
 	       {
 		  NNTP_Try_Authentication = 0;
-		  if (-1 == nntp_authorization (s))
+		  if (-1 == nntp_authorization (s, 1))
 		    return -1;
 		  tried_auth = 1;
 		  continue;
@@ -419,13 +419,18 @@ int nntp_close_server (NNTP_Type *s)
    return 0;
 }
 
-int nntp_authorization (NNTP_Type *s)
+int nntp_authorization (NNTP_Type *s, int auth_reqd)
 {
-   char *name, *pass;
+   char *name = NULL, *pass = NULL;
+   int status = 0;
 
-   if ((NNTP_Authorization_Hook == NULL) ||
-       (-1 == (*NNTP_Authorization_Hook) (s->name, &name, &pass)) ||
-       ((name == NULL) || (pass == NULL)))
+   if (NNTP_Authorization_Hook != NULL)
+     status = (*NNTP_Authorization_Hook) (s->name, auth_reqd, &name, &pass);
+
+   if ((auth_reqd == 0) && (status == 0))
+     return 0;			       /* not needed and info not present */
+   
+   if ((status == -1) || (name == NULL) || (pass == NULL))
      {
 	slrn_exit_error (_("Authorization needed, but could not determine username / password."));
 	return -1;
@@ -511,7 +516,7 @@ static int _nntp_connect_server (NNTP_Type *s)
    if (s->code == OK_NOPOST)
      s->can_post = 0;
    
-   if (Slrn_Force_Authentication && (-1 == nntp_authorization (s)))
+   if (-1 == nntp_authorization (s, Slrn_Force_Authentication))
      return -1;
 
    slrn_message_now (_("Connected to host.  %s"),
@@ -949,7 +954,7 @@ int nntp_refresh_groups (NNTP_Type *s, Slrn_Group_Range_Type *gr, int n)
 	     if (NNTP_Try_Authentication)
 	       {
 		  NNTP_Try_Authentication = 0;
-		  if (-1 == nntp_authorization (s))
+		  if (-1 == nntp_authorization (s, 1))
 		    return -1;
 		  max_tries++;
 		  goto start_over;

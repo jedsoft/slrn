@@ -31,7 +31,7 @@ extern void slrn_list_all_groups (int);
 extern void slrn_hide_groups (int);
 extern int slrn_read_newsrc (int);
 extern int slrn_write_newsrc (int);
-extern void slrn_mark_article_as_read (char *, NNTP_Artnum_Type);
+extern void slrn_mark_articles_as_read (char *, NNTP_Artnum_Type, NNTP_Artnum_Type);
 extern int slrn_get_new_groups (int);
 extern void slrn_init_group_mode (void);
 extern void slrn_get_group_descriptions (void);

@@ -205,34 +205,42 @@ static void group_mark_article_as_read (Slrn_Group_Type *g, NNTP_Artnum_Type num
 
 /*}}}*/
 
-void slrn_mark_article_as_read (char *group, NNTP_Artnum_Type num) /*{{{*/
+void slrn_mark_articles_as_read (char *group, 
+				 NNTP_Artnum_Type rmin, NNTP_Artnum_Type rmax) /*{{{*/
 {
    Slrn_Group_Type *g;
-   unsigned long hash;
    
    if (group == NULL)
+     g = Slrn_Group_Current_Group;
+   else
      {
-	group_mark_article_as_read (Slrn_Group_Current_Group, num);
-	return;
+	unsigned long hash = slrn_compute_hash ((unsigned char *) group,
+						(unsigned char *) group + strlen (group));
+   
+	g = Group_Hash_Table[hash % GROUP_HASH_TABLE_SIZE];
+   
+	while (g != NULL)
+	  {
+	     if ((g->hash == hash) && !strcmp (group, g->group_name))
+	       {
+		  /* If it looks like we have read this group, mark it read. */
+		  if ((g->flags & GROUP_UNSUBSCRIBED)
+		      && (g->range.next == NULL))
+		    return;
+		  
+		  break;
+	       }
+	     g = g->hash_next;
+	  }
      }
    
-   hash = slrn_compute_hash ((unsigned char *) group,
-			     (unsigned char *) group + strlen (group));
-   
-   g = Group_Hash_Table[hash % GROUP_HASH_TABLE_SIZE];
-   
-   while (g != NULL)
+   if (g == NULL)
+     return;
+
+   while (rmin <= rmax)
      {
-	if ((g->hash == hash) && !strcmp (group, g->group_name))
-	  {
-	     /* If it looks like we have read this group, mark it read. */
-	     if (((g->flags & GROUP_UNSUBSCRIBED) == 0)
-		 || (g->range.next != NULL))
-	       group_mark_article_as_read (g, num);
-	     
-	     break;
-	  }
-	g = g->hash_next;
+	group_mark_article_as_read (g, rmin);
+	rmin++;
      }
 }
 

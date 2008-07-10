@@ -225,6 +225,15 @@ Changes since 0.9.8.8pl1
      involved many small changes.
 114. src/group.c: Small bug introduced in #113 that affecting the
      count of unread articles was corrected.
+115. src/art.c: If a server reports an article range such as
+     3132-234867280, then most likely most of the articles in the
+     range are not present on the server.  I rewrote the
+     missing-article-list code to use far less memory for such cases.
+116. src/nntplib.c, startup.c, slrnpull.c: If a username or password
+     are associated with a server via an nnrpaccess command, then
+     authenticate with the server even if the server does not request
+     it.  This change eliminates most, if not all, uses of the
+     force_authentication variable.
 
 {{{ Previous Versions 
 
