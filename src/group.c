@@ -931,7 +931,7 @@ int slrn_group_select_group (void) /*{{{*/
 	  }
 	else
 	  {
-	     slrn_message_now (_("Only downloading %d of %d articles."),
+	     slrn_message_now (_("Only downloading %d of " NNTP_FMT_ARTNUM " articles."),
 			       -Slrn_Query_Group_Cutoff, n);
 	     n = -Slrn_Query_Group_Cutoff;
 	  }
@@ -2013,7 +2013,7 @@ void slrn_init_group_mode (void) /*{{{*/
    char  *err = _("Unable to create group keymap!");
    
    if (NULL == (Slrn_Group_Keymap = SLang_create_keymap ("group", NULL)))
-     slrn_exit_error (err);
+     slrn_exit_error ("%s", err);
    
    Group_Mode_Cap.keymap = Slrn_Group_Keymap;
    
@@ -2101,7 +2101,7 @@ void slrn_init_group_mode (void) /*{{{*/
 #if USE_TEST_FUNCTION
    SLkm_define_key  ("y", (FVOID_STAR) test_function, Slrn_Group_Keymap);
 #endif
-   if (SLang_get_error ()) slrn_exit_error (err);
+   if (SLang_get_error ()) slrn_exit_error ("%s", err);
 }
 
 /*}}}*/
@@ -2922,7 +2922,7 @@ static void group_quick_help (void) /*{{{*/
    if (Slrn_Group_Help_Line != NULL)
      hlp = Slrn_Group_Help_Line;
    
-   if (0 == slrn_message (hlp))
+   if (0 == slrn_message ("%s", hlp))
      Slrn_Message_Present = 0;
 }
 

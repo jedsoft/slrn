@@ -909,7 +909,7 @@ int slrn_select_list_mode (char *title,
    free_select_list (root, 0);
    slrn_pop_mode ();
    
-   slrn_message ("");
+   slrn_message ("%s", "");
 
    if (Select_List_Quit == -1)
      return -1;
@@ -1030,7 +1030,7 @@ int slrn_popup_win_mode (char *title, char *text)
    free_select_list (root, 1);
    slrn_pop_mode ();
    
-   slrn_message ("");
+   slrn_message ("%s", "");
    
    if (Select_List_Quit == -1)
      return -1;

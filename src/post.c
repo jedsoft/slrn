@@ -1070,7 +1070,7 @@ int slrn_prepare_file_for_posting (char *file, unsigned int *line, Slrn_Article_
 	       {
 		  if (tmp->critical == MIME_ERROR_CRIT)
 		    {
-		       slrn_error (tmp->msg);
+		       slrn_error ("%s", tmp->msg);
 		       tmp=tmp->next;
 		    }
 	       }
@@ -1936,7 +1936,7 @@ void slrn_post_postponed (void) /*{{{*/
 
    if (1 != slrn_file_exists (file))
      {
-	slrn_error (_("%s: not a regular file"));
+	slrn_error (_("%s: not a regular file"), file);
 	return;
      }
 

@@ -214,7 +214,7 @@ static int get_yesno_cancel (char *prompt)
 
 static int get_response (char *choices, char *prompt)
 {
-   return slrn_get_response (choices, "%s", prompt);
+   return slrn_get_response (choices, choices, "%s", prompt);
 }
 
    

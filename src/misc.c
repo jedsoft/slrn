@@ -1522,7 +1522,7 @@ int slrn_edit_file (char *editor, char *file, unsigned int line,
 
    if (msg != NULL)
      {
-	slrn_message (msg);
+	slrn_message ("%s", msg);
 	if (ret >= 0)
 	  {
 	     slrn_update_screen ();
@@ -2414,7 +2414,7 @@ int slrn_get_yesno (int dflt, char *str, ...) /*{{{*/
    prompt = slrn_strdup_strcat (buf, fmt, NULL);
    if (strlen (responses) != 4) /* Translator messed it up */
      responses = "";
-   rsp = slrn_get_response ("yYnN\r\n", responses, prompt);
+   rsp = slrn_get_response ("yYnN\r\n", responses, "%s", prompt);
    slrn_free (prompt);
    if ((rsp == '\r') || (rsp == '\n')) rsp = ch;
    else rsp = slrn_map_translated_char ("yYnN", responses, rsp) | 0x20;
@@ -2447,7 +2447,7 @@ int slrn_get_yesno_cancel (char *str, ...) /*{{{*/
    va_end(ap);
    
    prompt = slrn_strdup_strcat (buf, _("? [\001Y]es, \001No, \001Cancel"), NULL);
-   rsp = slrn_get_response ("\007yYnNcC\r", responses, prompt);
+   rsp = slrn_get_response ("\007yYnNcC\r", responses, "%s", prompt);
    slrn_free (prompt);
    if (rsp == '\r') rsp = 'y';
    else if (rsp == 7) rsp = 'c';

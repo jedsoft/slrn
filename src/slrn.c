@@ -1565,7 +1565,7 @@ int slrn_getkey (void)
 	
 	slrn_push_suspension (0);
 	r = SLsmg_get_row (); c = SLsmg_get_column ();
-	slrn_message (buf);
+	slrn_message ("%s", buf);
 	SLsmg_gotorc (r, c);
 	slrn_smg_refresh ();
 	slrn_pop_suspension ();

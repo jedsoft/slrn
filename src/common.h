@@ -21,7 +21,7 @@
 #ifndef _SLRN_COMMON_H_
 #define _SLRN_COMMON_H_
 extern int Slrn_UTF8_Mode;
-extern void slrn_error (char *, ...);  /* in misc.c */
-extern void slrn_exit_error (char *, ...);
+extern void slrn_error (char *, ...) ATTRIBUTE_PRINTF(1,2);  /* in misc.c */
+extern void slrn_exit_error (char *, ...) ATTRIBUTE_PRINTF(1,2);
 
 #endif

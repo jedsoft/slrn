@@ -939,7 +939,7 @@ static NNTP_Artnum_Type *
 	log_message (_("Only examining last %u articles since this is a new group"), g->max_to_get);
      }
 
-   status = nntp_server_vcmd (s, "XHDR Message-ID %u-", max);
+   status = nntp_server_vcmd (s, ("XHDR Message-ID " NNTP_FMT_ARTNUM "-"), max);
    if (status == -1)
      {
 	log_error (_("Server failed to return proper code for XHDR.  The connection may be lost")); 

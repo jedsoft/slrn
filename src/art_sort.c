@@ -912,7 +912,7 @@ static void sort_by_threads (void) /*{{{*/
 		  while (rparent->parent != NULL) rparent = rparent->parent;
 		  if (rparent == h) /* self referencing!!! */
 		    {
-		       slrn_error (_("Article %d is part of reference loop!"), h->number);
+		       slrn_error (_("Article " NNTP_FMT_ARTNUM " is part of reference loop!"), h->number);
 		    }
 		  else
 		    {

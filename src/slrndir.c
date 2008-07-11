@@ -65,6 +65,7 @@
 #endif
 
 #include <slang.h>
+#include "jdmacros.h"
 
 #include "util.h"
 #include "slrndir.h"

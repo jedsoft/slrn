@@ -23,11 +23,11 @@
 #include <stdarg.h>
 
 extern void slrn_tty_vmessage (FILE *, char *, va_list);
-extern void slrn_tty_error (char *, ...);
-extern void slrn_tty_message (char *, ...);
-extern int slrn_message (char *, ...);
-extern int slrn_message_now (char *, ...);
+extern void slrn_tty_error (char *, ...) ATTRIBUTE_PRINTF(1,2);
+extern void slrn_tty_message (char *, ...) ATTRIBUTE_PRINTF(1,2);
+extern int slrn_message (char *, ...) ATTRIBUTE_PRINTF(1,2);
+extern int slrn_message_now (char *, ...) ATTRIBUTE_PRINTF(1,2);
 extern void slrn_verror (char *, va_list);
-extern void slrn_error_now (unsigned int, char *, ...);
+extern void slrn_error_now (unsigned int, char *, ...) ATTRIBUTE_PRINTF(2,3);
 
 #endif				       /* _SLRN_TTYMSG_H */

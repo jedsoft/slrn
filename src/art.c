@@ -1127,7 +1127,7 @@ static void launch_url (char *url, int want_edit) /*{{{*/
 	if (!strcmp (url, "*")) /* special case */
 	  {
 	     if ((Slrn_User_Wants_Confirmation & SLRN_CONFIRM_URL) &&
-		 (slrn_get_yesno (1, _("Show all available groups"), url) == 0))
+		 (slrn_get_yesno (1, _("Show all available groups")) == 0))
 	       return;
 	     
 	     art_quit ();
@@ -2297,7 +2297,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
    if (h->tag_number) slrn_message_now (_("#%2d/%-2d: Retrieving... %s"), 
 					h->tag_number, Num_Tag_List.len,
 					h->subject);
-   else slrn_message_now (_("[%d] Reading..."), h->number);
+   else slrn_message_now (_("[" NNTP_FMT_ARTNUM "] Reading..."), h->number);
    
    status = Slrn_Server_Obj->sv_select_article (h->number, h->msgid);
    if (status != OK_ARTICLE)
@@ -2308,7 +2308,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	     return NULL;
 	  }
 	
-	slrn_error (_("Article %d unavailable."), h->number);
+	slrn_error (_("Article " NNTP_FMT_ARTNUM " unavailable."), h->number);
 	
 	if (kill_refs && ((h->flags & HEADER_READ) == 0) &&
 	    ((h->flags & HEADER_DONT_DELETE_MASK) == 0))
@@ -2375,10 +2375,10 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 #endif
 	     else
 #ifdef HAVE_GETTIMEOFDAY
-	       slrn_message_now (_("[%d] Read %d/%d lines so far at %.2fkB/sec"),
+	       slrn_message_now (_("[" NNTP_FMT_ARTNUM "] Read %d/%d lines so far at %.2fkB/sec"),
 				 h->number, total_lines, h->lines, current_bps);
 #else
-	       slrn_message_now (_("[%d] Read %d/%d lines so far"),
+	       slrn_message_now (_("[" NNTP_FMT_ARTNUM"] Read %d/%d lines so far"),
 				 h->number, total_lines, h->lines);
 #endif
 	  }
@@ -5713,7 +5713,7 @@ static int get_headers (NNTP_Artnum_Type min, NNTP_Artnum_Type max, NNTP_Artnum_
 	if ((1 == (num % reads_per_update))
 	    && (SLang_get_error () == 0))
 	  {
-	     slrn_message_now (_("%s: headers received: %2d/%d"),
+	     slrn_message_now (_("%s: headers received: %2d/" NNTP_FMT_ARTNUM),
 			       Slrn_Current_Group_Name, num, total);
 	  }
 	
@@ -7498,7 +7498,7 @@ void slrn_init_article_mode (void) /*{{{*/
    char ch;
    
    if (NULL == (Slrn_Article_Keymap = SLang_create_keymap ("article", NULL)))
-     slrn_exit_error (err);
+     slrn_exit_error ("%s", err);
    
    Art_Mode_Cap.keymap = Slrn_Article_Keymap;
    
@@ -7676,7 +7676,7 @@ void slrn_init_article_mode (void) /*{{{*/
 
    SLkm_define_key  ("z", (FVOID_STAR) zoom_article_window, Slrn_Article_Keymap);
    
-   if (SLang_get_error ()) slrn_exit_error (err);
+   if (SLang_get_error ()) slrn_exit_error ("%s", err);
 }
 
 /*}}}*/
@@ -8230,7 +8230,7 @@ static void quick_help (void) /*{{{*/
 	if (Slrn_Art_Help_Line != NULL) msg = Slrn_Art_Help_Line;
      }
 
-   if (0 == slrn_message (msg))
+   if (0 == slrn_message ("%s", msg))
      Slrn_Message_Present = 0;
 }
 

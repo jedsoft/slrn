@@ -237,6 +237,10 @@ Changes since 0.9.8.8pl1
 117. src/nntplib.c: _nntp_deallocate_nntp was not closing the tcp
      socket.
 118. src/slrnpull.c: Updates for long-long support (see #113).
+119. src/*.c: Cleaned up some calls to functions that used printf
+     style formats.
+120. src/interp.c: The get_response function was not being called with
+     the proper number of arguments.
 
 {{{ Previous Versions 
 
