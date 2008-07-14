@@ -80,7 +80,10 @@ OBJSpull = \
 	$(OBJDIR)/ranges.o \
 	$(OBJDIR)/snprintf.o \
 	$(OBJDIR)/ttymsg.o \
+	$(OBJDIR)/sortdate.o \
+	$(OBJDIR)/sltcp.o \
 	$(OBJDIR)/slrnpull.o \
+	$(OBJDIR)/strutil.o \
 	$(OBJDIR)/slrndir.o \
 	$(OBJDIR)/nntplib.o \
 	$(OBJDIR)/vfile.o
@@ -103,7 +106,7 @@ interp_C_CFLAGS = -DSLRN_SLANG_DIR='"$(SLRN_SLANG_DIR)"'
 # Rules
 #---------------------------------------------------------------------------
 slrn.exe: $(OBJDIR) config.h slangversion $(OBJS)
-	$(CC) $(OBJS) -o slrn.exe $(LDFLAGS) $(SLANG_LIB) $(MISCLIBS)
+	$(CC) $(OBJS) -o slrn.exe $(LDFLAGS) $(SLANG_LIB) $(MISCLIBS) $(EXTRA_LIBS)
 #
 $(OBJDIR):
 	@mkdir $(OBJDIR)
@@ -123,7 +126,7 @@ clean:
 	$(RMDIR) $(OBJDIR)
 #
 slrnpull.exe: $(OBJDIR) config.h slangversion $(OBJSpull)
-	$(CC) $(OBJSpull) -o slrnpull.exe -L$(SLIBDIR) -lslang $(MISCLIBS)
+	$(CC) $(OBJSpull) -o slrnpull.exe $(SLANG_LIB) $(MISCLIBS)
 
 uudecode.exe: $(OBJDIR)/uudecode.o $(UUDECODE_OBJS)
 	$(CC) $(CFLAGS) -o uudecode.exe $(OBJDIR)/uudecode.o \
@@ -163,6 +166,8 @@ $(OBJDIR)/mime.o: mime.c $(mime_O_DEPS) $(COMMON_DEPS)
 	$(CC) -c $(CFLAGS) $(mime_C_CFLAGS) -o $(OBJDIR)/mime.o mime.c
 $(OBJDIR)/misc.o: misc.c $(misc_O_DEPS) $(COMMON_DEPS)
 	$(CC) -c $(CFLAGS) $(misc_C_CFLAGS) -o $(OBJDIR)/misc.o misc.c
+$(OBJDIR)/nntplib.o: nntplib.c $(nntplib_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(nntplib_C_CFLAGS) -o $(OBJDIR)/nntplib.o nntplib.c
 $(OBJDIR)/post.o: post.c $(post_O_DEPS) $(COMMON_DEPS)
 	$(CC) -c $(CFLAGS) $(post_C_CFLAGS) -o $(OBJDIR)/post.o post.c
 $(OBJDIR)/print.o: print.c $(print_O_DEPS) $(COMMON_DEPS)
@@ -177,6 +182,10 @@ $(OBJDIR)/slrn.o: slrn.c $(slrn_O_DEPS) $(COMMON_DEPS)
 	$(CC) -c $(CFLAGS) $(slrn_C_CFLAGS) -o $(OBJDIR)/slrn.o slrn.c
 $(OBJDIR)/slrndir.o: slrndir.c $(slrndir_O_DEPS) $(COMMON_DEPS)
 	$(CC) -c $(CFLAGS) $(slrndir_C_CFLAGS) -o $(OBJDIR)/slrndir.o slrndir.c
+$(OBJDIR)/slrnpull.o: slrnpull.c $(slrndir_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(slrn_C_CFLAGS) -o $(OBJDIR)/slrnpull.o slrnpull.c
+$(OBJDIR)/sltcp.o: sltcp.c $(slrtcp_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(slrndir_C_CFLAGS) -o $(OBJDIR)/sltcp.o sltcp.c
 $(OBJDIR)/snprintf.o: snprintf.c $(snprintf_O_DEPS) $(COMMON_DEPS)
 	$(CC) -c $(CFLAGS) $(snprintf_C_CFLAGS) -o $(OBJDIR)/snprintf.o snprintf.c
 $(OBJDIR)/sortdate.o: sortdate.c $(sortdate_O_DEPS) $(COMMON_DEPS)

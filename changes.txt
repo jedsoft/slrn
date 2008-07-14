@@ -243,6 +243,8 @@ Changes since 0.9.8.8pl1
      the proper number of arguments.
 121. doc/FAQ, doc/manual.txt, doc/FIRST_STEPS: Updates from
      slrn-doc.svn.sourceforge.net.
+122. src/Makefile.g32,src/slrnconf.h: Some updates to allow it to be
+     compiled under windows (Thomas Wiegner).
 
 {{{ Previous Versions 
 
