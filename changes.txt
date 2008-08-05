@@ -245,6 +245,9 @@ Changes since 0.9.8.8pl1
      slrn-doc.svn.sourceforge.net.
 122. src/Makefile.g32,src/slrnconf.h: Some updates to allow it to be
      compiled under windows (Thomas Wiegner).
+123. autoconf/configure.ac: Added configuration options for GNU TLS
+     (Joerg Sommer).
+124. doc/*: Updates from the slrn-doc project.
 
 {{{ Previous Versions 
 

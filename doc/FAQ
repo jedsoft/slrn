@@ -12,14 +12,13 @@
   Table of Contents
 
   1. General questions about slrn
-     1.1 What is slrn ?
-     1.2 Where can I download slrn ?
-     1.3 Where is slrn 's documentation?
-     1.4 Are there any mailing lists and/or newsgroups about slrn ?
+     1.1 What is slrn?
+     1.2 Where can I download slrn?
+     1.3 Where is slrn's documentation?
+     1.4 Are there any mailing lists and/or newsgroups about slrn?
      1.5 slrn appears quite stable. Why don't you call it version 1.0?
      1.6 How well are slang-2 and Unicode supported right now?
-     1.7 I upgraded from version 0.9.8.1 to 0.9.9. What do I have to
-         change in my slrnrc?
+     1.7 I upgraded from version 0.9.8.1 to 0.9.9. What do I have to change in my slrnrc?
 
   2. Configuration
      2.1 Is it possible to set my ``From:'' header line for postings?
@@ -28,8 +27,8 @@
      2.4 What charset settings should I use under Windows?
      2.5 How can I use an external e-mail program for replies?
      2.6 The thread tree is not drawn properly. Why?
-     2.7 Can I use the mouse with slrn ?
-     2.8 How can I rotate signatures in slrn ?
+     2.7 Can I use the mouse with slrn?
+     2.8 How can I rotate signatures in slrn?
 
   3. Usage
      3.1 What is a prefix argument?
@@ -38,11 +37,10 @@
         3.2.2 How can I get slrn to show both read and unread articles?
         3.2.3 How can I retrieve read articles from the same thread?
         3.2.4 How can I retrieve other read articles?
-        3.2.5 I want to see full threads as soon as they contain at least
-              one unread article. Can slrn do this?
+        3.2.5 I want to see full threads as soon as they contain at least one unread article. Can slrn do this?
      3.3 Handling of binary postings
         3.3.1 How do I uudecode articles?
-        3.3.2 What are the advantages of using uudeview ?
+        3.3.2 What are the advantages of using uudeview?
         3.3.3 What about yEnc?
         3.3.4 Can I put multipart binary postings into one thread?
      3.4 How can I mark cross-posts as read in other groups as well?
@@ -53,36 +51,31 @@
 
   4. Scoring
      4.1 What is scoring?
-     4.2 How can I killfile with slrn ?
+     4.2 How can I killfile with slrn?
      4.3 How do I set up slrn to read a scorefile?
      4.4 What is the format of an slrn scorefile?
-     4.5 Where can I get a full description of slrn 's regular
-         expressions?
-     4.6 How can I test whether my regular expressions do what I expect
-         them to do?
+     4.5 Where can I get a full description of slrn's regular expressions?
+     4.6 How can I test whether my regular expressions do what I expect them to do?
      4.7 Is there an easy way to watch or kill threads / authors?
      4.8 Do I need to remove expired entries from my scorefile manually?
-     4.9 How do I score on a specific ``Subject'' line, e.g., ``test''
-         messages?
+     4.9 How do I score on a specific ``Subject'' line, e.g., ``test'' messages?
      4.10 How do I score articles from a specific person?
      4.11 How do I score articles from a specific site?
      4.12 How do I score followups?
      4.13 Is it possible to score followups to my own postings?
      4.14 How do I kill cross-posts from a specific group?
      4.15 How do I score all cross-posts?
-     4.16 How do I make it so I read only articles from a specific
-          person?
-     4.17 How do I score articles that have no ``References'' line but
-          whose ``Subject'' line starts with ``Re:''?
+     4.16 How do I make it so I read only articles from a specific person?
+     4.17 How do I score articles that have no ``References'' line but whose ``Subject'' line starts with ``Re:''?
      4.18 How do I score subjects that contain only uppercase characters?
      4.19 How can I filter people without a real name?
 
   5. slrnpull
-     5.1 What is slrnpull ?
-     5.2 Why can't I post when using slrnpull ?
+     5.1 What is slrnpull?
+     5.2 Why can't I post when using slrnpull?
      5.3 How do I get a full list of newsgroups?
 
-  6. I found a bug in slrn !!!
+  6. I found a bug in slrn!!!
      6.1 slrn hangs infinitely when I press the delete key
      6.2 Non US-ASCII characters are displayed incorrectly.
      6.3 The bug I found is not listed here. What do I do now?
@@ -159,7 +152,7 @@
   announcements are also mailed to slrn-user, so there is no need to
   read both lists.
 
-  1.5.  slrn appears quite stable. Why don't you call it version 1.0?
+  1.5.  slrn  appears quite stable. Why don't you call it version 1.0?
 
   The main reason for the sub-1.0 version number is the poor handling of
   different character sets. Users of a modern newsreader expect it to
@@ -187,14 +180,11 @@
   change in my slrnrc?
 
   Since there were fundamental changes in the internal character set
-  handling, the configuration of this has also changed. The internal
-  variables charset, mime_charset and the command compatible_charsets
-  are no longer valid. Use the charset command instead.
-
-  A lot of configuration commands have become internal variables, so you
-  need to use ``set command'' instead of just ``command''. slrn will
-  print out warnings when running into obsolete commands and sometimes
-  point to the new ones. Please read the startup messages from slrn.
+  handling, the configuration of this has also changed. The
+  configuration variables charset, editor_uses_mime_charset,
+  fold_headers, mime_charset and use_mime, and the configuration command
+  compatible_charsets are no longer valid. To set character sets for
+  display, editor and posting, use the new charset command instead.
 
   2.  Configuration
 
@@ -262,13 +252,13 @@
   macro. For example,
 
   ______________________________________________________________________
-   define set_size_of_article_pager ()
-   {
-   set_article_window_size (int(SCREEN_HEIGHT*0.8));
-   }
-   !if (register_hook ("resize_screen_hook", "set_size_of_article_pager"))
-   message ("Warning: Could not register set_size_of_article_pager" +
-   " for resize_screen_hook");
+          define set_size_of_article_pager ()
+          {
+             set_article_window_size (int(SCREEN_HEIGHT*0.8));
+          }
+          !if (register_hook ("resize_screen_hook", "set_size_of_article_pager"))
+            message ("Warning: Could not register set_size_of_article_pager" +
+            " for resize_screen_hook");
   ______________________________________________________________________
 
   would give about 80% of the screen to the pager. If you want the
@@ -300,9 +290,14 @@
 
              charset editor "utf-8"
 
-  Note: slrn's recoding abilities are currently restricted and rather
-  rudimentary. This will hopefully improve as soon as version 0.9.9,
-  which uses slang-2.0, has received extensive testing.
+  3. To enable utf-8 display for slrn in windows you need at least slang
+     2.1.4pre39. You'll have to change the font in the console to a
+     TrueType font which is capable of displaying utf-8 characters. To
+     active slrn utf-8 mode you'll have to type one of the following
+     commands in the console:
+
+             chcp 65001
+             set LANG=en_US.UTF-8
 
   2.5.  How can I use an external e-mail program for replies?
 
@@ -355,8 +350,8 @@
 
   Find a $TERM setting that supports line drawing characters like the
   vt100 or vt220. Then create a new termcap entry based on that terminal
-  with additional color capabilities and save it to ~/.termcap. It might
-  look like this:
+  with additional color capabilities and save it to ~/.termcap.  It
+  might look like this:
 
           myterm:\
             :Co#8:NC#3:pa#64:\
@@ -406,13 +401,13 @@
   the signature automatically.
 
   ______________________________________________________________________
-   define set_signature ()
-   {
-   variable signature_file = ".signature.english";
-   if (0 == strncmp (current_newsgroup(), "de.", 3))
-   signature_file = ".signature.german";
-   set_string_variable ("signature", signature_file);
-   }
+          define set_signature ()
+          {
+            variable signature_file = ".signature.english";
+            if (0 == strncmp (current_newsgroup(), "de.", 3))
+              signature_file = ".signature.german";
+            set_string_variable ("signature", signature_file);
+          }
   ______________________________________________________________________
 
   If you want more sophisticated per-group settings, we recommend the
@@ -479,7 +474,7 @@
   the ones you did not yet read), so you might want to consider the
   answers to the following questions.
 
-  3.2.2.  How can I get slrn to show both read and unread articles?
+  3.2.2.  How can I get slrn  to show both read and unread articles?
 
   If you want to see all articles in a group (read and unread ones),
   simply set a ``prefix argument'' before entering a newsgroup. Using
@@ -520,7 +515,7 @@
   prompt.
 
   3.2.5.  I want to see full threads as soon as they contain at least
-  one unread article. Can slrn do this?
+  one unread article. Can slrn  do this?
 
   This is currently not implemented, although it should be possible to
   achieve such an effect using a macro.
@@ -588,11 +583,11 @@
 
   Now nine headers have been numerically tagged. To decode these, simply
   press the ``:'' key. slrn will prompt for a filename to save the arti-
-  cles to and after saving, it will prompt to go ahead and decode. The
+  cles to and after saving, it will prompt to go ahead and decode.  The
   decoded files will be placed in the directory specified by the
-  ``decode_directory'' variable that one can set in the slrnrc file. The
-  end result is that after tagging with the ``#'' key, one presses ``:''
-  and hits return twice. To un-tag articles, press ``ESC #''.
+  ``decode_directory'' variable that one can set in the slrnrc file.
+  The end result is that after tagging with the ``#'' key, one presses
+  ``:'' and hits return twice. To un-tag articles, press ``ESC #''.
 
   3.3.2.  What are the advantages of using uudeview ?
 
@@ -711,7 +706,7 @@
 
   2. Edit the ``Newsgroups'' header line when editing the message.
      Again, the list of newsgroups must be comma separated with no
-     whitespace. Also make sure that you do not wrap this line.
+     whitespace.  Also make sure that you do not wrap this line.
 
   Note: When crossposting, it is often polite to set a ``Followup-To''
   header.
@@ -787,18 +782,18 @@
   even get displayed, so the above scoring rule effectively killfiles
   all articles that have ``gnus'' in their subject line.
 
-  4.3.  How do I set up slrn to read a scorefile?
+  4.3.  How do I set up slrn  to read a scorefile?
 
   In order for slrn to read a scorefile, it must know the name of the
-  scorefile. This is specified by putting the appropriate line in your
-  slrnrc file. For example, if the name of the scorefile is ``Score''
+  scorefile.  This is specified by putting the appropriate line in your
+  slrnrc file.  For example, if the name of the scorefile is ``Score''
   and it is located in the ``News'' subdirectory, then add the line:
 
           set scorefile "News/Score"
 
   to your slrnrc file.
 
-  4.4.  What is the format of an slrn scorefile?
+  4.4.  What is the format of an slrn  scorefile?
 
   The format of slrn's scorefiles is described in the file score.txt
   which is part of the documentation that comes with the source package.
@@ -808,7 +803,7 @@
   sions?
 
   slrn makes use of the regexp engine built into the s-lang programmer's
-  library. Thus, a full description of the regexp syntax that can be
+  library.  Thus, a full description of the regexp syntax that can be
   used in slrn's scorefiles can be found in the documentation of s-lang.
   In version 2.1, this is chapter 22 of the file slang.txt (also
   available online
@@ -908,7 +903,7 @@
   4.12.  How do I score followups?
 
   We're assuming that a followup contains a ``Subject'' line starting
-  with ``Re:'' and/or has a ``References'' header line. To assign a
+  with ``Re:'' and/or has a ``References'' header line.  To assign a
   score of -9999 to such an article use:
 
           Score:: -9999
@@ -998,7 +993,7 @@
             Newsgroups: ,.*,
             ~Followup-To: .
 
-  4.16.  How do I make it so I read only articles from a specific per-
+  4.16.  How do I make it so I read only  articles from a specific per-
   son?
 
   The answer is simple: kill articles by everyone else. Assume that you
@@ -1028,7 +1023,7 @@
 
           Subject: ^\cRe:
 
-  Here, ``\c'' turns on case-sensitivity. To turn it off (which is the
+  Here, ``\c'' turns on case-sensitivity.  To turn it off (which is the
   default), use ``\C'', e.g.:
 
           Subject: ^\cRe:.*\Ctest
@@ -1057,7 +1052,7 @@
   2. It does not begin with ``Re:'', followed by blanks only.
 
   The last constraint is necessary to avoid killing articles that are
-  followups to articles with an empty ``Subject'' line. Of course, one
+  followups to articles with an empty ``Subject'' line.  Of course, one
   might want to kill such articles as well.
 
   4.19.  How can I filter people without a real name?
@@ -1115,12 +1110,12 @@
 
   5.3.  How do I get a full list of newsgroups?
 
-  You will have to go online for that. Run slrn as follows:
+  You will have to go online for that.  Run slrn as follows:
 
           slrn --nntp -h YOUR.NEWS.SERVER -a -f groups.dat --create
 
   This will start slrn and download the groups and put them in the file
-  groups.dat. Before actually doing this, modify your slrnrc file to
+  groups.dat.  Before actually doing this, modify your slrnrc file to
   make sure write_newsrc_flags has its default setting
 
           set write_newsrc_flags 0
@@ -1132,7 +1127,7 @@
   First, please check whether the bug you discovered is already
   discussed here:
 
-  6.1.  slrn hangs infinitely when I press the delete key
+  6.1.  slrn  hangs infinitely when I press the delete key
 
   This is a known bug; however, it's not a problem in slrn, so I cannot
   fix it. slrn uses a library called s-lang for its screen input/output
@@ -1144,7 +1139,7 @@
   from the public FTP space <ftp://space.mit.edu/pub/davis/slang> of its
   author, John E. Davis and compile them yourself.
 
-  However, simply deinstalling the s-lang package that came with your
+  However, simply uninstalling the s-lang package that came with your
   distribution and replacing it with your own version might break
   dependencies in your system's package management - even if you build
   your own RPM package: Some packages explicitly depend on the patched
@@ -1240,7 +1235,7 @@
 
   7.1.  History
 
-     2008-07-04: Revision 1.3
+     2008-07-20: Revision 1.3
         Updated, mostly by TW and PJR, for changes in version 0.9.9.
 
      2004-10-04: Revision 1.2

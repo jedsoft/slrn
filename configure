@@ -1369,6 +1369,7 @@ Optional Packages:
   --with-libintl-prefix[=DIR]  search for libintl in DIR/include and DIR/lib
   --without-libintl-prefix     don't search for libintl in includedir and libdir
   --with-nss-compat       Use NSS compat library instead of OpenSSL
+  --with-gnutls=path      Use GNU TLS library instead of OpenSSL
   --with-ssl=path       for SSL support
   --with-slang=DIR      Use DIR/lib and DIR/include for slang
   --with-slanglib=DIR   slang library in DIR
@@ -9018,6 +9019,14 @@ else
   use_nss_compat=no
 fi
 
+
+# Check whether --with-gnutls was given.
+if test "${with_gnutls+set}" = set; then
+  withval=$with_gnutls; use_gnutls=$withval; jd_use_ssl=$withval
+else
+  use_gnutls=no; jd_use_ssl=no
+fi
+
 { echo "$as_me:$LINENO: checking if you want SSL support" >&5
 echo $ECHO_N "checking if you want SSL support... $ECHO_C" >&6; }
 if test "${jd_use_ssl+set}" = set; then
@@ -9046,6 +9055,10 @@ x|xyes)
    then
      SSLINC="-I/usr/local/include/nss_compat_ossl -I/usr/local/include/nss3 -I/usr/local/include/nspr4"
      SSLLIB="-L/usr/local/lib -lnss_compat_ossl"
+   elif test "x$use_gnutls" != xno
+   then
+     SSLINC=
+     SSLLIB="-lgnutls-openssl"
    else
      SSLINC="-I/usr/local/ssl/include"
      SSLLIB="-L/usr/local/ssl/lib -lssl -lcrypto"
@@ -9055,6 +9068,10 @@ x|xyes)
    if test "x$use_nss_compat" != xno; then
      SSLINC="-I$jd_use_ssl/include/nss_compat_ossl -I$jd_use_ssl/include/nss3 -I$jd_use_ssl/include/nspr4"
      SSLLIB="-L$jd_use_ssl/lib -lnss_compat_ossl"
+   elif test "x$use_gnutls" != xno
+   then
+     SSLINC="-I$jd_use_ssl/inlcude"
+     SSLLIB="-L$jd_use_ssl/lib -lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
    else
      SSLINC="-I$jd_use_ssl/include"
      SSLLIB="-L$jd_use_ssl/lib -lssl -lcrypto"
@@ -9062,7 +9079,7 @@ x|xyes)
 esac
 
 
-if test "x$SSLINC" != x; then
+if test "x$SSLINC$SSLLIB" != x; then
  cat >>confdefs.h <<\_ACEOF
 #define USE_SSL 1
 _ACEOF
@@ -9070,6 +9087,12 @@ _ACEOF
  if test "x$use_nss_compat" != xno; then
    cat >>confdefs.h <<\_ACEOF
 #define USE_NSS_COMPAT 1
+_ACEOF
+
+ fi
+ if test "x$use_gnutls" != xno; then
+   cat >>confdefs.h <<\_ACEOF
+#define USE_GNUTLS 1
 _ACEOF
 
  fi

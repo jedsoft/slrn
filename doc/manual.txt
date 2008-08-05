@@ -959,13 +959,13 @@
   5.3.2.  charset
 
   Usage: charset option charset
-  Default: detected from locale settings
+  Default: detected from locale settings if supported by OS.
+  (autodetection not supported in (cyg)win)
 
   option can be one of these:
 
      display
         slrn will use this character set when displaying articles.
-
      outgoing
         This setting will be used for the charset encoding of outgoing
         articles and emails. Setting a value like "iso-8859-15,utf-8" is
@@ -1899,7 +1899,7 @@
 
           set editor_command "jed '%s' -g %d -tmp"
 
-  See also: ``editor_uses_mime_charset''
+  See also: ``charset editor''
 
   6.21.  editor_uses_mime_charset
 
@@ -2059,16 +2059,15 @@
   6.32.  force_authentication
 
   Type: integer
-  Default: 0
+  Default: 1
 
-  By default, slrn only sends authentication data if the server requests
-  it. Although this conforms to RFC 2980, in practice you need to
-  volunteer authentication to some servers. This behaviour can be turned
-  on by setting this variable to a non-zero value.
-
-  Note: This variable is needed with servers that allow you to read, but
-  not to post without a password (it seems the author of RFC 2980 did
-  not take this situation into account).
+  If this variable is set to ``0'', slrn sends authentication data only
+  if the server requests it. Although this conforms to RFC 2980, in
+  practice you need to volunteer authentication to some servers, so the
+  default setting is ``1'' whenever a username and password are
+  specified with the nnrpaccess command. Usually, changing this setting
+  from the default will produce undesirable results, such as being able
+  to read but not post, or seeing only a limited number of newsgroups.
 
   Note: If you need to set this variable on a per-server basis, use a
   startup_hook():
@@ -2078,8 +2077,8 @@
   ______________________________________________________________________
           define startup_hook()
             {
-              !if (strcmp (server_name(), "needs.password.com"))
-                 set_integer_variable("force_authentication", 1);
+              !if (strcmp (server_name(), "send-no-password.com"))
+                 set_integer_variable("force_authentication", 0);
             }
   ______________________________________________________________________
 
@@ -2727,8 +2726,12 @@
   processed by my_print_filter and then printed on "my_printer". If
   unset, the default action is to use lpr with the value of ``$PRINTER''
   as the -P option.
-  On Windows, you can set this variable to the name of the print queue
+  On Windows98, you can set this variable to the name of the print queue
   you want to use. Here, the default is to use the setting in "win.ini".
+
+  On Windows XP, you have to share your attached printer and assign a
+  "share name". The printer_name string has to be set to this "share
+  name".
 
   print is not yet implemented for VMS.
 
@@ -2785,10 +2788,10 @@
   query_read_group_cutoff article headers, it will prompt you to confirm
   (or change) the number of articles to read. This feature is turned off
   if you set this variable to 0.
-
   Setting this variable to a negative number -n has a similar effect.
   However, slrn will not prompt you in this case; instead, it will
   automatically download n articles if more are present.
+
   6.80.  quote_string
 
   Type: string
@@ -2907,7 +2910,6 @@
 
   Hint: If you get error messages when using this variable, you possibly
   pointed it to a directory instead of a file.
-
   See also:  ``save_replies''
 
   6.89.  save_replies
@@ -2972,6 +2974,7 @@
 
   Type: string
   Default: (compile time setting)
+
   slrn uses this string as a command to send email (when forwarding or
   replying). Input will be piped to the program if the system supports
   it.  On systems without pipes, sendmail_command will be given the name
@@ -3113,7 +3116,9 @@
 
   This character will be used to hide "spoiler" text (i.e. text preceded
   by a formfeed character). The interpretation of formfeed characters as
-  "spoilers" can be turned off at compile time.
+  "spoilers" can be turned off at compile time with:
+
+          ./configure --disable-spoilers
 
   See also: ``spoiler_display_mode''
 
@@ -3264,6 +3269,7 @@
 
   Type: string
   Default: (unset)
+
   Using this variable, you can customize the status line slrn displays
   at the top of the screen. It can be set to a format string that works
   like the one used in ``header_display_format''. The following %

@@ -19,6 +19,9 @@
 /* define if you want to use NSS compat library instead of OpenSSL */
 #undef USE_NSS_COMPAT
 
+/* define if you want to use GNU TLS library instead of OpenSSL */
+#undef USE_GNUTLS
+
 /* define if you have stdlib.h */
 #undef HAVE_STDLIB_H
 
@@ -161,8 +164,12 @@
 # define SLRN_HAS_SSL_SUPPORT	0
 #endif
 
-#define SLRN_HAS_GNUTLS_SUPPORT 0      /* untested */
-#define SLTCP_HAS_GNUTLS_SUPPORT SLRN_HAS_GNUTLS_SUPPORT
+#ifdef USE_GNUTLS
+# define SLTCP_HAS_GNUTLS_SUPPORT 1
+#else
+# define SLTCP_HAS_GNUTLS_SUPPORT 0
+#endif
+
 #define SLTCP_HAS_SSL_SUPPORT SLRN_HAS_SSL_SUPPORT
 
 #ifdef USE_NSS_COMPAT
