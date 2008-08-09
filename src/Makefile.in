@@ -97,7 +97,7 @@ chmap_O_DEP = chmap.h charmaps.h
 chkslang_O_DEP = config.h Makefile
 version_O_DEP = version.h
 
-slrnpull_O_DEP = score.c xover.c hash.c version.h
+slrnpull_O_DEP = score.c xover.c hash.c version.h $(CONFIG_H)
 slrnpull_DEPS = $(OBJDIR)/util.o $(OBJDIR)/strutil.o $(OBJDIR)/sortdate.o \
  $(OBJDIR)/sltcp.o $(OBJDIR)/nntplib.o $(OBJDIR)/slrndir.o $(OBJDIR)/ranges.o \
  $(OBJDIR)/vfile.o

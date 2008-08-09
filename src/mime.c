@@ -1215,7 +1215,7 @@ static char *skip_non_ascii_whitespace (char *s, char *smax)
 }
 
 
-static Slrn_Mime_Error_Obj *fold_line (char **s_ptr)/*{{{*/
+static Slrn_Mime_Error_Obj *fold_line (char **s_ptr, int warn)/*{{{*/
 {
    char *s0, *s, *smax;
    int long_words = 0;
@@ -1288,7 +1288,7 @@ static Slrn_Mime_Error_Obj *fold_line (char **s_ptr)/*{{{*/
    
    slrn_free (*s_ptr);
    *s_ptr = folded_text;
-   if (long_words)
+   if (long_words && warn)
      return slrn_add_mime_error(NULL, _("One word of the header is too long to get folded."), *s_ptr, 0, MIME_ERROR_WARN);
    else
      return NULL;
@@ -2246,11 +2246,13 @@ static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset) /*{{{
 
 /*}}}*/
 
-static Slrn_Mime_Error_Obj *fold_xface (char **s_ptr)
+static Slrn_Mime_Error_Obj *fold_xface (char **s_ptr, int warn)
 {
    char *s0, *smax;
    char *folded_text;
    unsigned int len;
+
+   (void) warn;
 
    s0 = *s_ptr;
    len = strlen (s0);
@@ -2294,25 +2296,29 @@ typedef struct
 {
    char *keyword;
    Slrn_Mime_Error_Obj *(*encode)(char **, char *);
-   Slrn_Mime_Error_Obj *(*fold) (char **);
+   Slrn_Mime_Error_Obj *(*fold) (char **, int);
+   int warn;
 }
 Header_Encode_Info_Type;
 
 Header_Encode_Info_Type Header_Encode_Table [] = 
 {
-   {"Newsgroups: ", NULL, fold_line},
-   {"Followup-To: ", NULL, fold_line},
-   {"Message-ID: ", NULL, fold_line},
-   {"References: ", NULL, fold_line},
-   {"From: ", from_encode, fold_line},
-   {"Cc: ", from_encode, fold_line},
-   {"To: ", from_encode, fold_line},
-   {"Reply-To: ", from_encode, fold_line},
-   {"Mail-Copies-To: ", from_encode, fold_line},
-   {"X-Face: ", NULL, fold_xface},
+   {"Newsgroups: ", NULL, fold_line, 1},
+   {"Followup-To: ", NULL, fold_line, 1},
+   {"Message-ID: ", NULL, fold_line, 1},
+   /* Do not warn about long msg-ids in the references.  There is nothing the
+    * user can do about it.
+    */
+   {"References: ", NULL, fold_line, 0},
+   {"From: ", from_encode, fold_line, 1},
+   {"Cc: ", from_encode, fold_line, 1},
+   {"To: ", from_encode, fold_line, 1},
+   {"Reply-To: ", from_encode, fold_line, 1},
+   {"Mail-Copies-To: ", from_encode, fold_line, 1},
+   {"X-Face: ", NULL, fold_xface, 1},
 
    /* This must be the last entry.  It serves as a default */
-   {"", min_encode, fold_line},
+   {"", min_encode, fold_line, 1},
 };
 
 
@@ -2337,7 +2343,7 @@ Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **s_ptr, char *from_charset) 
      }	     
 
    if (h->fold != NULL)
-     return (*h->fold) (s_ptr);
+     return (*h->fold) (s_ptr, h->warn);
    
    return NULL;
 }

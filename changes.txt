@@ -248,6 +248,13 @@ Changes since 0.9.8.8pl1
 123. autoconf/configure.ac: Added configuration options for GNU TLS
      (Joerg Sommer).
 124. doc/*: Updates from the slrn-doc project.
+125. src/Makefile.in: Add config.h to slrnpull.o dependency (Joerg
+     Sommer).
+126. src/slrnpull.c: %d was used in a format strings to print
+     long-long values (Joerg Sommer).
+127. src/mime.c: If a long message-id in a reference cannot be folded,
+     then omit the warning since there is nothing the user can do
+     about it.  (variation of a patch from Joerg Sommer).
 
 {{{ Previous Versions 
 

@@ -262,6 +262,7 @@ static void log_message (char *fmt, ...) /*{{{*/
 
 /*}}}*/
 
+static void log_error (char *fmt, ...) SLATTRIBUTE_PRINTF(1,2);
 static void log_error (char *fmt, ...) /*{{{*/
 {
    va_list ap;
@@ -1428,7 +1429,7 @@ static int get_heads (NNTP_Type *s,  Active_Group_Type *g, NNTP_Artnum_Type *num
 	unsigned int len = sizeof (buf) - (size_t) (b - buf);
 	if (len < 20)
 	  slrn_exit_error (_("Internal error: Buffer in get_heads not large enough!"));
-	(void) SLsnprintf (b, len, "%shead %d", crlf, numbers[i]);
+	(void) SLsnprintf (b, len, "%shead " NNTP_FMT_ARTNUM, crlf, numbers[i]);
 	crlf = "\r\n";
 	b += strlen (b);
 	
@@ -2771,13 +2772,13 @@ static int write_overview_entry(FILE *xov_fp, NNTP_Artnum_Type id, char *dir)
    header = read_header_from_file (file, &has_body);
    if (header == NULL)
      {
-        log_error(_("Unable to read header %d in %s."), id, file);
+        log_error(_("Unable to read header " NNTP_FMT_ARTNUM " in %s."), id, file);
         return -1;
      }
    
    if (-1 == xover_parse_head (id, header, &xov))
      {
-        log_error(_("Header %d not parseable for overview."), id);
+        log_error(_("Header " NNTP_FMT_ARTNUM " not parseable for overview."), id);
         slrn_free (header);
         return -1;
      }
