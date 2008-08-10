@@ -517,7 +517,7 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
 {
    Slrn_Article_Line_Type *l;
    Slrn_Article_Line_Type *body_start, *next;
-   char *buf_src, *buf_dest, *buf_pos;
+   char *buf_src, *buf_dest, *buf_pos, *buf_end;
    char *base;
    int keep_nl = 1;
    int len;
@@ -589,10 +589,14 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
    l = body_start;
    base = buf_dest;
    buf_pos = buf_dest;
-   
+   buf_end = buf_dest + strlen (buf_dest);
    /* put decoded article back into article structure */
-   while (NULL != (buf_pos = slrn_strbyte(buf_dest, '\n')))
+   
+   while (buf_dest < buf_end)
      {
+	if (NULL == (buf_pos = slrn_strbyte(buf_dest, '\n')))
+	  buf_pos = buf_end;
+
 	len = buf_pos - buf_dest;
 	
 	next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type), 1, 1);
