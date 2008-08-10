@@ -1370,7 +1370,7 @@ Optional Packages:
   --without-libintl-prefix     don't search for libintl in includedir and libdir
   --with-nss-compat       Use NSS compat library instead of OpenSSL
   --with-gnutls=path      Use GNU TLS library instead of OpenSSL
-  --with-ssl=path       for SSL support
+  --with-ssl[=path]       for SSL support
   --with-slang=DIR      Use DIR/lib and DIR/include for slang
   --with-slanglib=DIR   slang library in DIR
   --with-slanginc=DIR   slang include files in DIR
@@ -9024,7 +9024,7 @@ fi
 if test "${with_gnutls+set}" = set; then
   withval=$with_gnutls; use_gnutls=$withval; jd_use_ssl=$withval
 else
-  use_gnutls=no; jd_use_ssl=no
+  use_gnutls=no
 fi
 
 { echo "$as_me:$LINENO: checking if you want SSL support" >&5
@@ -9070,7 +9070,7 @@ x|xyes)
      SSLLIB="-L$jd_use_ssl/lib -lnss_compat_ossl"
    elif test "x$use_gnutls" != xno
    then
-     SSLINC="-I$jd_use_ssl/inlcude"
+     SSLINC="-I$jd_use_ssl/include"
      SSLLIB="-L$jd_use_ssl/lib -lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
    else
      SSLINC="-I$jd_use_ssl/include"

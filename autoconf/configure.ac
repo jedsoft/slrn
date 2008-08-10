@@ -207,11 +207,11 @@ AC_ARG_WITH(gnutls,
     AS_HELP_STRING([--with-gnutls[=path]],
                    [Use GNU TLS library instead of OpenSSL]),
     [use_gnutls=$withval; jd_use_ssl=$withval],
-    [use_gnutls=no; jd_use_ssl=no])
+    [use_gnutls=no])
 AC_CACHE_CHECK(if you want SSL support,jd_use_ssl,
 [
   AC_ARG_WITH(ssl, 
-  [  --with-ssl[=path]       for SSL support],
+  [  --with-ssl[[=path]]       for SSL support],
   [jd_use_ssl=$withval], [jd_use_ssl=no])
 ])
 case "x$jd_use_ssl" in
@@ -239,7 +239,7 @@ x|xyes)
      SSLLIB="-L$jd_use_ssl/lib -lnss_compat_ossl"
    elif test "x$use_gnutls" != xno
    then
-     SSLINC="-I$jd_use_ssl/inlcude"
+     SSLINC="-I$jd_use_ssl/include"
      SSLLIB="-L$jd_use_ssl/lib -lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
    else
      SSLINC="-I$jd_use_ssl/include"

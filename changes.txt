@@ -255,6 +255,9 @@ Changes since 0.9.8.8pl1
 127. src/mime.c: If a long message-id in a reference cannot be folded,
      then omit the warning since there is nothing the user can do
      about it.  (variation of a patch from Joerg Sommer).
+128. configure: --with-ssl configure option was broken.
+129. src/group.c: An error was being generated when bogus groups were
+     found causing slrn to exit upon startup.
 
 {{{ Previous Versions 
 

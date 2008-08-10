@@ -570,7 +570,8 @@ static int add_group (char *name, unsigned int len, /*{{{*/
 	     
 	     if (NULL != (tmp_name = slrn_strnmalloc (name, len, 1)))
 	       {
-		  slrn_error (_("Group %s is bogus - ignoring it."), tmp_name);
+		  slrn_message_now (_("Group %s is bogus - ignoring it."), tmp_name);
+		  Slrn_Saw_Warning = 1;
 		  slrn_free (tmp_name);
 	       }
 	     return -1;
@@ -1126,8 +1127,9 @@ static void refresh_groups (Slrn_Group_Type **c) /*{{{*/
 	       }
 	     if (ranges[j].min == -1)
 	       {
-		  slrn_error (_("Group %s is bogus%s."), g->group_name,
+		  slrn_message_now (_("Group %s is bogus%s."), g->group_name,
 			      Slrn_Drop_Bogus_Groups ? _(" - dropping it") : "");
+		  Slrn_Saw_Warning = 1;
 		  if (Slrn_Drop_Bogus_Groups)
 		    {
 		       Slrn_Group_Type *tmp = g->next;

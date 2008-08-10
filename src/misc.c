@@ -402,7 +402,7 @@ void slrn_clear_message (void) /*{{{*/
 void slrn_va_message (char *fmt, va_list ap)
 {
    if (Error_Present == 0)
-     vmessage (stderr, fmt, ap);
+     vmessage (stdout, fmt, ap);
 }
 
 int slrn_message (char *fmt, ...) /*{{{*/
