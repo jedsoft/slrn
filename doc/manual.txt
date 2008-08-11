@@ -3,7 +3,7 @@
   Thomas Schultz <tststs@gmx.de>
   Thomas Wiegner <wiegner@gmx.de>
   Peter J Ross <peadar.ruadh@gmail.com>
-  Version 0.9.9, July 2008
+  Version 0.9.9, August 2008
 
   Using and customizing the slrn newsreader
   ______________________________________________________________________
@@ -356,8 +356,8 @@
 
   1.2.  Getting help
 
-  First of all, please read the available documentation found in this
-  file and in slrn's FAQ.
+  First of all, please read the documentation found in this file and in
+  the slrn FAQs at <http://slrn.sourceforge.net/docs/slrn-FAQ.html>.
 
   Questions not covered by the docs are on-topic in
   news.software.readers. If you speak German, you also might want to
@@ -383,15 +383,17 @@
 
   The manual is written in SGML using the ``linuxdoc'' DTD and has been
   ``rendered'' using the linuxdoc-tools package. The manual and other
-  official documentation have their own webpage where you can find these
-  files in several different formats, as well as instructions on how to
-  get the latest development version (which might be useful if you need
-  documentation for a developer version of slrn).
+  official documentation have their own web page at
+  <http://slrn.sourceforge.net/documentation.html> where you can find
+  these files in several different formats, as well as instructions on
+  how to get the latest development version (which might be useful if
+  you need documentation for a developer version of slrn).
 
   If you want to contribute to the manual (e.g. write additional
   chapters), please contact us, either privately or via the slrn-user
-  mailing list. We also appreciate feedback about errors, bad language
-  or suggestions concerning this manual.
+  mailing list at <http://lists.sourceforge.net/mailman/listinfo/slrn-
+  user>.  We also appreciate feedback about errors, bad language or
+  suggestions concerning this manual.
 
   1.3.1.  History
 

@@ -4,7 +4,7 @@
   Thomas Schultz <tststs@gmx.de>
   Thomas Wiegner <wiegner@gmx.de>
   Peter J Ross <peadar.ruadh@gmail.com>
-  Version 0.9.9, July 2008
+  Version 0.9.9, August 2008
 
   Frequently asked questions about the slrn newsreader.
   ______________________________________________________________________
@@ -90,8 +90,8 @@
 
   1.1.  What is slrn ?
 
-  slrn (``s-lang read news'') is a Usenet newsreader that runs in text
-  mode on various Unix and Unix-like operating systems (including
+  slrn  (``s-lang read news'') is a Usenet newsreader that runs in text
+  mode on various Unix  and Unix-like operating systems (including
   Linux), Windows, OS/2, BeOS, MacOS X and VMS.
 
   It supports scoring rules to highlight, sort or kill articles to make
@@ -107,11 +107,10 @@
   to go''.
 
   If you wish to obtain a more current version of slrn for Linux or
-  another supported OS, details can be found at:
+  another supported OS, details can be found at
   <http://slrn.sourceforge.net/download.html>
 
-  Additional resources are available at slrn's official homepage
-  <http://slrn.sourceforge.net/>.
+  Additional resources are available at <http://slrn.sourceforge.net/>.
 
   Note: Upgrading is especially recommended if you are currently using a
   0.9.8.1pl1 or pl2 version, in which significant bugs exist.
@@ -139,7 +138,6 @@
   The appropriate newsgroup for questions about slrn is
   news.software.readers. There is also a German speaking equivalent
   (de.comm.software.newsreader).
-
   Slrn-user is a mailing list for discussion of the use, development and
   extension of slrn. You can subscribe to it through the web interface
   at <http://lists.sourceforge.net/lists/listinfo/slrn-user>.
@@ -411,16 +409,15 @@
   ______________________________________________________________________
 
   If you want more sophisticated per-group settings, we recommend the
-  macro identity.sl from Emanuele Bassi's slrn page.
-  <http://www.emmanuelebassi.net/slrn/>
+  macro identity.sl from Emanuele Bassi's slrn page:
+  <http://www.emmanuelebassi.net/slrn/>.
 
   Note: slrn itself does not have an option to execute a program and use
   its output as the signature. Such an option would require piping,
   which is not available on all platforms. If you're on a Unix-like
   system and still want to use pipes, you can make ~/.signature a named
   pipe and attach a daemon sig randomizer to it. Various programs that
-  do this are available on the net - one example is the program autosig
-  <http://www.irendi.com/~msharpe/>.
+  do this are available on the net - one example is the program autosig.
 
   3.  Usage
 
@@ -617,15 +614,15 @@
 
   3.3.3.  What about yEnc?
 
-  yEnc is a way to encode binaries that makes use of 8bit characters,
-  thus creating less overhead than the traditional uuencode and base64
-  methods. For this reason, it has become increasingly popular in
-  certain binary groups. slrn does not have builtin support for yEnc:
-  one reason for this is that I do not need this feature myself and so
-  far, no patches for it have been contributed; besides, yEnc is still
-  under development and still has some drawbacks which I'd like to see
-  solved first. However, there already are two ways to decode such
-  messages:
+  yEnc <http://www.yenc.org/> is a way to encode binaries that makes use
+  of 8bit characters, thus creating less overhead than the traditional
+  uuencode and base64 methods. For this reason, it has become
+  increasingly popular in certain binary groups. slrn does not have
+  native support for yEnc: one reason for this is that I do not need
+  this feature myself and so far, no patches for it have been
+  contributed; besides, yEnc is still under development and still has
+  some drawbacks which I'd like to see solved first. However, there
+  already are two ways to decode such messages:
 
   Prior to 0.9.7.4, slrn would corrupt some yEnc-encoded postings (by
   removing backspace-letter combinations traditionally used for
@@ -729,7 +726,7 @@
   However, if you want to sort all groups alphabetically, you don't have
   to do this manually. slrn comes with a simple macro that does the job
   for you (gsort.sl) and you can find a more sophisticated one on the
-  macro page of J.B. Nicholson-Owens. <http://forestfield.org/slrn/>
+  macro page of J.B. Nicholson-Owens.
 
   On Unix-like systems, you can also use the sort command to sort your
   /newsrc file (do this while slrn is not running). For example, if you
@@ -806,9 +803,8 @@
   library.  Thus, a full description of the regexp syntax that can be
   used in slrn's scorefiles can be found in the documentation of s-lang.
   In version 2.1, this is chapter 22 of the file slang.txt (also
-  available online
-  <http://www.jedsoft.org/slang/doc/html/slang-22.html>). Please note
-  that in slrn, the default is \C (case insensitive), not \c.
+  available online). Please note that in slrn, the default is \C (case
+  insensitive), not \c.
 
   4.6.  How can I test whether my regular expressions do what I expect
   them to do?
@@ -829,8 +825,9 @@
   the currently selected article.
 
   If you want to watch or kill subthreads via a single keystroke, you
-  may like the ``one-key scoring macro'' that's available from the macro
-  section of slrn's homepage <http://slrn.sourceforge.net/macros/>.
+  may like the ``one-key scoring macro'' that is available from the
+  macro section of the slrn website:
+  <http://slrn.sourceforge.net/macros.html>.
 
   4.8.  Do I need to remove expired entries from my scorefile manually?
 
@@ -845,7 +842,8 @@
   you. On Unix-like systems, it can even be called as a cron job, so you
   don't need to worry about expired entries at all. cleanscore is
   included in the contrib directory of slrn's source distribution and
-  has its own web page <http://slrn.sourceforge.net/cleanscore/>.
+  can also be downloaded from the slrn website:
+  <http://slrn.sourceforge.net/downloads/>.
 
   4.9.  How do I score on a specific ``Subject'' line, e.g., ``test''
   messages?
@@ -1171,11 +1169,11 @@
 
   The bug might already be fixed, so please consider upgrading to the
   latest release of slrn or at least check whether the problem is listed
-  in the current changes file
-  <http://slrn.svn.sourceforge.net/viewvc/slrn/trunk/changes.txt?view=markup>.
+  in the current changes file.
 
   If you find that the bug is still unreported, send a bug report either
-  to John E. Davis davis@space.mit.edu or to the slrn-user mailing list.
+  to John E. Davis <davis@space.mit.edu> or to the slrn-user mailing
+  list.
 
   Please give a detailed description of what you did, how you expected
   slrn to behave and what slrn did instead; also include the exact error
@@ -1230,8 +1228,8 @@
   7.  About this document
 
   The latest version of this FAQ is available from the slrn
-  documentation page <http://slrn.sourceforge.net/documentation.html>.
-  Suggestions for improvements are welcome.
+  documentation page : <http://slrn.sourceforge.net/documentation.html>.
+  Suggestions for improvements are always welcome.
 
   7.1.  History
 
