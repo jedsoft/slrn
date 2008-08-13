@@ -436,7 +436,7 @@ static int parse_name_eqs_string (char *p, char *name, char *str, unsigned int l
 	  && (ch != '\n')
 	  && (ch != 0))
      {
-	if ((quote == 0) && ((ch == ' ') || (ch == '\t')))
+	if ((quote == 0) && ((ch == ' ') || (ch == '\t') || (ch == ';')))
 	  break;
 	
 	*str++ = ch;
