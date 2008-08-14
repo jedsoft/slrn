@@ -262,6 +262,7 @@ Changes since 0.9.8.8pl1
      dropped if it was not terminated by a \n character.
 131. src/decode.c: Parsing of text such as "name=foo; charset=bar;"
      was not using the ';' as a separator.
+132. po/*.po: Recreated the files using the current source strings.
 
 {{{ Previous Versions 
 

@@ -2304,11 +2304,11 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
      {
 	if (status == -1)
 	  {
-	     slrn_error (_("Server failed to return article."));
+	     slrn_error ("%s", _("Server failed to return the article."));
 	     return NULL;
 	  }
 	
-	slrn_error (_("Article " NNTP_FMT_ARTNUM " unavailable."), h->number);
+	slrn_error (_("Article " NNTP_FMT_ARTNUM "is unavailable."), h->number);
 	
 	if (kill_refs && ((h->flags & HEADER_READ) == 0) &&
 	    ((h->flags & HEADER_DONT_DELETE_MASK) == 0))
@@ -2347,7 +2347,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	  {
 	     if (Slrn_Server_Obj->sv_reset != NULL)
 	       Slrn_Server_Obj->sv_reset ();
-	     slrn_error (_("Article transfer aborted or connection lost."));
+	     slrn_error ("%s", _("Article transfer aborted or connection lost."));
 	     break;
 	  }
 	
