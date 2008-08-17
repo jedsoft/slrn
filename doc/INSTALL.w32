@@ -36,6 +36,10 @@ you either need a binary of slrnpull or a local server as well.
 Compiling slrn for Windows
 ==========================
 
+!!!!!!!!  FIXME  !!!!!!!!!!!!!!
+The following information is outdated and needs to be rewritten.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 The current version of slrn has been reported to compile with recent
 versions of MinGW and Watcom.  The Cygwin environment is now treated like a
 Unix system (see INSTALL.unix) - note that you need slang >= 1.4.5 for this.
@@ -48,13 +52,9 @@ MinGW only.
 
 1. Compiling S-Lang:
 
-The S-Lang library is required to build slrn.  It's available from
-<URL:ftp://space.mit.edu/pub/davis/slang>. Unpack the tarball into a
-directory called "slang".  In the "src" subdirectory, execute
-
-> .\mkfiles\mkmake WIN32 MINGW32 < mkfiles\makefile.all > makefile
-
-in a DOS box.  Then, simply type "make".
+Version 2.x of the S-Lang library is required to build slrn.  It's
+available from <http://www.jedsoft.org/slang/>.  Follow the
+instructions in the the INSTALL.pc that comes with it.
 
 2. Compiling slrn:
 
@@ -67,3 +67,4 @@ options if you want.  Now you can run
 If you want to compile slrnpull as well, do
 
 > make -f makefile.g32 slrnpull.exe
+

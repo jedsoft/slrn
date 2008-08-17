@@ -1,22 +1,11 @@
-=============================================================================
-			   S L R N  -  R E A D M E
-=============================================================================
+slrn is a Usenet client that supports both the Network News Transfer
+Protocol (NNTP) and a news spool on the local filesystem.  Extensive
+information about slrn may be found on its home page at
+<http://www.slrn.org/>.  Installation instructions may be found in the
+INSTALL file.
 
-Slrn is a Usenet newsreader written by John E. Davis.
-
-This file provides an overview of the documentation that comes with slrn and
-includes pointers to additional resources.
-
-
-= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-			      Basic information
-= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-Author:                 John E. Davis <jed@jedsoft.org>
-Version:		pre0.9.9
-Homepage:               http://www.jedsoft.org/slrn/
-Download:               http://www.jedsoft.org/slrn/download.html
-
+The rest of this file provides an overview of the documentation that
+comes with slrn and includes pointers to additional resources.
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 			   Files in this directory
@@ -30,6 +19,7 @@ README                  This File.
 
 changes.txt             Lists the changes from version to version.
 
+INSTALL                 Installation instructions.
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 				Files in doc/

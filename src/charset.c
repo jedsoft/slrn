@@ -2,6 +2,7 @@
 /* Charset handling routines.
  *
  * Author: Felix Schueller
+ * Modified by JED.
  * 
  */
 

@@ -263,6 +263,8 @@ Changes since 0.9.8.8pl1
 131. src/decode.c: Parsing of text such as "name=foo; charset=bar;"
      was not using the ';' as a separator.
 132. po/*.po: Recreated the files using the current source strings.
+133. INSTALL: New file that contains a few words about what is
+     required to build slrn.
 
 {{{ Previous Versions 
 

@@ -2,7 +2,7 @@
 /* MIME handling routines.
  *
  * Author: Michael Elkins <elkins@aero.org>
- * Modified by John E. Davis <davis@space.mit.edu>
+ * Modified by John E. Davis <jed@jedsoft.org>
  * Modified by Thomas Schultz <tststs@gmx.de>
  * 
  * Change Log:

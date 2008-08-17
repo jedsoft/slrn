@@ -1,0 +1,17 @@
+Compiling slrn from source requires a C compiler that supports C89 or
+later constructs.  Most C compilers that are currently in use provide
+such support.  If you do not have such a C compiler, then download and
+install the GNU compiler gcc from <http://gcc.gnu.org>.
+
+slrn makes extensive use of version 2.X of the S-Lang programmer's
+library.  You will need to have this library installed before you can
+build slrn.  See <http://www.jedsoft.org/slang/> for links to the
+library.
+
+This version of slrn has been tested on Unix and Windows systems.  The
+code contains support for OS/2 and VMS but will most likely require
+additional tweaks to get it running.  While it may compile without
+difficulty on Mac OS X, it has not been tested on that platform.
+
+To build slrn on a Unix platform (including cygwin), see
+doc/INSTALL.unx.  For a windows platform, see INSTALL.pc.

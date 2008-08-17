@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999 John E. Davis <davis@space.mit.edu>
+ Copyright (c) 1994, 1999, 2007-2008 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -19,7 +19,7 @@
  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#define SLRN_VERSION_STRING "pre0.9.9-132"
+#define SLRN_VERSION_STRING "pre0.9.9-133"
 #define SLRN_VERSION 990
 
 #ifndef SLRNPULL_CODE

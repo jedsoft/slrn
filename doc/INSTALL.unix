@@ -1,27 +1,30 @@
 Installation (Unix)
 ===================
 
-The S-Lang library is required to build slrn.  If you do not have a current
-version of it on your system (1.4.x is needed for full features), you need
-to build it before you can compile slrn.  S-Lang is available from
-<URL:ftp://space.mit.edu/pub/davis/slang>.
+The S-Lang library is required to build slrn.  If you do not have a
+recent version of it installed on your system (2.1.x is needed for
+full features --- Version 1.x in not supported), you need to build it
+before you can compile slrn.  S-Lang is freely available from
+<http://www.jedsoft.org/slang/>.
 
-Slrn uses the GNU autoconf package that makes the installation quite simple.
-Usually, executing
+Slrn uses the GNU autoconf package that makes the installation quite
+simple. Assuming that the S-Lang library is installed in a standard
+location, e.g., under /usr/local, executing
 
     ./configure
     make
-  [ strip src/slrn src/slrnpull ]
     make install
-  [ make install-contrib ]
   
-is enough to configure, build and install slrn.  All needed information will
-be determined automatically.
+is enough to configure, build and install slrn.  All needed
+information will be determined automatically.  If you have the S-Lang
+library installed in a non-standard directory or if you wish to
+install slrn somewhere other than under /usr/local, then you will need
+to use the --prefix or --with-slang configure options, e.g.,
 
-The square brackets indicate optional commands: "make install-contrib"
-installs two helpful scripts contributed by slrn users.  They require perl
-to run.  More information about them can be found in contrib/README.*
-If you do not know what "strip" does, you probably do not need to run it.
+    ./configure --prefix=/home/bob --with-slang=/opt
+
+will install the slrn executable in /home/bob/bin/ and use the S-Lang
+library intalled under /opt. 
 
 The configure script supports a number of options listed below.  Especially,
 you need to specify --with-slrnpull if you plan to use slrnpull.
@@ -31,59 +34,15 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
     of slrn shall be installed.
     Default: /usr/local
 
---exec-prefix=EPREFIX
-    Set EPREFIX to the base directory where the architecture-dependent part
-    of slrn will be installed.
-    Default: PREFIX [/usr/local]
+--with-slanglib=DIR
+    The location of the S-Lang library (libslang.so)
 
---bindir=BINDIR
-    The directory where the slrn executable will be put.
-    Default: EPREFIX/bin [/usr/local/bin]
+--with-slanginc=DIR
+    The location of the S-Lang header file slang.h.
 
---mandir=MANDIR
-    The place where man pages will be installed.
-    Default: PREFIX/man [/usr/local/man]
-
---datadir=DATADIR
-    Architecture-independent read-only files such as slang macros.
-    Default: PREFIX/share/slrn [/usr/local/share/slrn]
-
---sysconfdir=SYSCONFDIR
-    Directory for global configuration files (like slrn.rc).
-    Default: PREFIX/etc [/usr/local/etc]
-
---with-docdir=DIR
-    The directory where slrn's documentation is placed.
-    Default: PREFIX/share/doc/slrn [/usr/local/share/doc/slrn]
-
---enable-hardcode-libs
-    Tells the linker to hardcode the path of dynamic libraries that are not
-    in /usr/lib into the executable.  You need to specify this if
-    compilation fails with a message saying that libslang cannot be opened.
-
---with-server-name=HOST
-    Hostname of a fallback NNTP server if none has been selected by the user
-    via environment or command line.
-    Default: unset
-
---with-server-file=FILE
-    At startup, slrn reads the name of a fallback NNTP server from this
-    file. This option overrides --with-server-name; however, users may
-    still select another server via environment or command line.
-    Common settings for FILE are "/etc/nntpserver" and "/etc/news/server".
-    Default: unset
-
---with-slang-library=DIR
-    Explicitly set the location of the slang library.  If not used,
-    configure will look for it automatically.
-    
---with-slang-includes=DIR
-    Explicitly set the location of the slang include files.  If not used,
-    configure will automatically look for this as well.
-
---with-libdir=LIBDIR
-    Directory where slrn will expect the global newsgroups description file.
-    Default: PREFIX/lib/slrn [/usr/local/lib/slrn]
+--with-slang=DIR
+    Using this option is equivalent to the pair of options
+       `--with-slanglib=DIR/lib --with-slanginc=DIR/include'
 
 --with-ssl[=DIR]
     Include support for connections via SSL, using the OpenSSL library.
@@ -135,14 +94,6 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
     make_from_string_hook does not get executed; manually added "From"
     headers are rejected when posting.
 
---disable-slang
-    Don't make the slang interpreter available from within slrn.
-    Of course, slrn will still be linked against the slang library.
-
---disable-mime
-    Don't include MIME support.  You should not do this if you intend to use
-    any other charset than strict US-ASCII.
-
 --disable-charmap
     Disables the mapping between ISO-Latin and native character sets like
     isolatin, ibm850, NeXT and koi8
@@ -152,10 +103,6 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
 
 --disable-emph-text
     Turn off the coloring of *emphasized* _text_.
-
---disable-verb-marks
-    Disable the special treatment of text between #v+/#v- marks.
-    Currently, these verbatim marks are only supported by slrn.
 
 --disable-gen-mid
     This prevents slrn from generating its own Message-IDs.
@@ -181,11 +128,35 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
     If using gcc, the slrn binary will write profile data to gmon.out.
     Never use this option when compiling slrn for production use!
 
+--exec-prefix=EPREFIX
+    Set EPREFIX to the base directory where the architecture-dependent part
+    of slrn will be installed.
+    Default: PREFIX [/usr/local]
+
+--bindir=BINDIR
+    The directory where the slrn executable will be put.
+    Default: EPREFIX/bin [/usr/local/bin]
+
+--mandir=MANDIR
+    The place where man pages will be installed.
+    Default: PREFIX/man [/usr/local/man]
+
+--datadir=DATADIR
+    Architecture-independent read-only files such as slang macros.
+    Default: PREFIX/share/slrn [/usr/local/share/slrn]
+
+--sysconfdir=SYSCONFDIR
+    Directory for global configuration files (like slrn.rc).
+    Default: PREFIX/etc [/usr/local/etc]
+
+--with-docdir=DIR
+    The directory where slrn's documentation is placed.
+    Default: PREFIX/share/doc/slrn [/usr/local/share/doc/slrn]
+
+--with-libdir=LIBDIR
+    Directory where slrn will expect the global newsgroups description file.
+    Default: PREFIX/lib/slrn [/usr/local/lib/slrn]
+
 Some rarely used compile-time options are not under autoconf control.  You
 need to edit src/slrnfeat.h manually before running "make" to change them.
 
-If configure cannot find the slang library and include files, it will fail.
-In this case, you need to point it to the right directories using
---with-slang-library / --with-slang-includes.  If a program (such as
-sendmail or inews) is not found although it is installed on your system, run
-PATH=$PATH:/path/to/program ./configure 
