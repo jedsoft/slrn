@@ -14,4 +14,4 @@ additional tweaks to get it running.  While it may compile without
 difficulty on Mac OS X, it has not been tested on that platform.
 
 To build slrn on a Unix platform (including cygwin), see
-doc/INSTALL.unx.  For a windows platform, see INSTALL.pc.
+doc/INSTALL.unx.  For a windows platform, see doc/INSTALL.w32.
