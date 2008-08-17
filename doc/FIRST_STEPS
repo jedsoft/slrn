@@ -1,7 +1,7 @@
   slrn - First Steps
   Felix Schueller <fschueller@netcologne.de>
   Peter J Ross <peadar.ruadh@gmail.com>
-  Version 0.9.9, July 2008
+  Version 0.9.9, August 2008
 
   This document explains the first things you have to do after having
   installed slrn. It doesn't matter how you installed slrn (from source
@@ -35,7 +35,7 @@
   distributor has included a global slrn.rc and/or an example slrn.rc.
   If you cannot find a file named ``slrn.rc'' or any other file which
   seems to be a configuration file for slrn, you can get an example from
-  http://slrn.sourceforge.net/downloads/slrn.rc.
+  <http://slrn.sourceforge.net/downloads/slrn.rc>.
 
   If a global configuration file exists, it will also be read before
   your personal one on each startup, so you might want to look at the
@@ -51,7 +51,7 @@
   For the exact syntax and descriptions of all variables, have a look at
   the ``slrn reference manual'' which comes with slrn, named
   ``manual.txt''. An HTML version is also available from
-  http://slrn.sourceforge.net/manual/slrn-manual.html.
+  <http://slrn.sourceforge.net/docs/slrn-manual.html>.
 
   If your ``From:'' header cannot be generated from your local account,
   you should at least set the following variables:
@@ -98,7 +98,7 @@
   3.  Connecting for the first time
 
   Run ``slrn --create'' at your shell prompt to start slrn and retrieve
-  a list of all active newsgroups from the server.  This can take some
+  a list of all active newsgroups from the server. This can take some
   time if your connection is slow; future startups (without that flag)
   are much faster.
 
@@ -155,7 +155,7 @@
   At first, you should have a look at the ``README'' file from the
   source distribution. It gives an overview of all the documentation
   distributed with slrn. If you cannot find this file,
-  http://slrn.sourceforge.net/documentation.html is a good point to
+  <http://slrn.sourceforge.net/documentation.html> is a good point to
   start.
 
   8.  About this document

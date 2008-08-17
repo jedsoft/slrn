@@ -780,7 +780,7 @@
      VISUAL
         See ``$SLRN_EDITOR''.
 
-  5.  The slrn  configuration file
+  5.  The slrn configuration file
 
   5.1.  Basics
 
@@ -1964,8 +1964,8 @@
 
   Violating RFC recommendations, some broken newsreaders post unencoded
   8 bit characters in the headers or post non us-ascii characters in the
-  body with a missing "Content-Type:" declaration.  Setting this
-  variable will help slrn to guess the correct encoding of the posting.
+  body with a missing "Content-Type:" declaration. Setting this variable
+  will help slrn to guess the correct encoding of the posting.
 
   Hint: It might be a good idea to set this variable to "Windows-1252"
   if you read Western or to "iso-8859-2" if you read Eastern European
@@ -2077,11 +2077,11 @@
   Example:
 
   ______________________________________________________________________
-          define startup_hook()
-            {
-              !if (strcmp (server_name(), "send-no-password.com"))
-                 set_integer_variable("force_authentication", 0);
-            }
+   define startup_hook()
+   {
+   !if (strcmp (server_name(), "send-no-password.com"))
+   set_integer_variable("force_authentication", 0);
+   }
   ______________________________________________________________________
 
   See also: ``nnrpaccess''
@@ -2454,7 +2454,7 @@
   Default: 0
 
   Set this variable if your ``mail_editor_command'' is a Mail User
-  Agent, i.e.  sends the email itself.  This makes sure it does not get
+  Agent, i.e.  sends the email itself. This makes sure it does not get
   sent twice (both by your MUA and slrn).
 
   Example (using mutt as an external mailer):
@@ -2573,13 +2573,13 @@
   Default: 1
 
   When non-zero, slrn will warn you if your posting does not conform to
-  some generally accepted netiquette guidelines.  You can still force
-  the posting, so it's probably a good idea to keep this turned on to
-  make sure that you do not violate these rules without noticing it.
+  some generally accepted netiquette guidelines. You can still force the
+  posting, so it's probably a good idea to keep this turned on to make
+  sure that you do not violate these rules without noticing it.
 
   Note: Currently, this feature warns you when crossposting to more than
   four groups or without setting a "Followup-To:", or if the "Followup-
-  To:" header line contains multiple groups.  Additionally, you are
+  To:" header line contains multiple groups. Additionally, you are
   notified if your signature has more than four lines.
 
   See also: ``reject_long_lines''
@@ -3460,7 +3460,7 @@
   cannot find a valid user name, an error message is issued and the
   program is aborted.
 
-  Note: Do not confuse your user name  with your real name!
+  Note: Do not confuse your user name with your real name!
 
   See also: ``hostname'', ``realname''
 
@@ -4063,7 +4063,7 @@
   point.
 
   Note: This function depends on the "XPAT" NNTP extension, which is not
-  supported by all servers.  Even when it's supported, it will only find
+  supported by all servers. Even when it's supported, it will only find
   articles that were posted to the current group.
 
   7.2.29.  get_parent_header
