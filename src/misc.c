@@ -2967,7 +2967,8 @@ static char *make_realname (char *realname)
 }
 
 
-char *slrn_make_from_string (void)
+/* This function returns a malloced string of the form "From: value" */
+char *slrn_make_from_header (void)
 {
    static char *buf;
    char *localpart, *realname, *msg;
@@ -2978,7 +2979,10 @@ char *slrn_make_from_string (void)
      {
 	if (*msg != 0)
 	  {
-	     buf = slrn_safe_strmalloc (msg);
+	     char *prefix = "From: ";
+	     if (0 == strncmp (msg, "From: ", 6))
+	       prefix = "";
+	     buf = slrn_strjoin (prefix, msg, "");
 	     SLang_free_slstring (msg);
 	     return buf;
 	  }

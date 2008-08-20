@@ -671,7 +671,7 @@ static int prepare_header (VFILE *vp, unsigned int *linenum, Slrn_Article_Type *
    system_os_name = slrn_get_os_name ();
 
 #if SLRN_HAS_STRICT_FROM
-   if (NULL != (tmp = slrn_make_from_string ()))
+   if (NULL != (tmp = slrn_make_from_header ()))
      {
 	if (NULL != (err = slrn_mime_header_encode (&tmp, from_charset)))
 	  err->lineno = 0;
@@ -1782,7 +1782,7 @@ int slrn_post (char *newsgroup, char *followupto, char *subj) /*{{{*/
      {
 	char *from;
 	
-	if (NULL == (from = slrn_make_from_string ()))
+	if (NULL == (from = slrn_make_from_header ()))
 	  return -1;
 	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) <0)
 	  {

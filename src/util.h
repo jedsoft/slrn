@@ -68,7 +68,7 @@ extern void slrn_stderr_strcat (const char *, ...);
 /* These declarations are here although the functions are not really defined 
  * in util.c.
  */
-char *slrn_make_from_string (void);
+char *slrn_make_from_header (void);
 
 typedef struct Slrn_Group_Range_Type
 {

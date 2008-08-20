@@ -2962,7 +2962,7 @@ static void reply (char *from, int use_cc) /*{{{*/
 
    if (Slrn_Generate_Email_From)
      {
-	char *fromstr = slrn_make_from_string ();
+	char *fromstr = slrn_make_from_header ();
 	if (fromstr == NULL) return;
 	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", fromstr)< 0)
 	  {
@@ -3138,7 +3138,7 @@ static void forward_article (void) /*{{{*/
    
    if (Slrn_Generate_Email_From)
      {
-	char *from = slrn_make_from_string ();
+	char *from = slrn_make_from_header ();
 	if (from == NULL) return;
 	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) < 0)
 	  {
@@ -3487,7 +3487,7 @@ static void followup (void) /*{{{*/
 
 #if ! SLRN_HAS_STRICT_FROM
      {
-	char *from = slrn_make_from_string ();
+	char *from = slrn_make_from_header ();
 	if (from == NULL) return;
 	if (slrn_convert_fprintf(fp, Slrn_Editor_Charset, Slrn_Display_Charset, "%s\n", from) < 0)
 	  {
@@ -3705,7 +3705,7 @@ static void supersede (void) /*{{{*/
       (void) parse_from (from, from_buf, sizeof(from_buf));
    else
       from_buf[0] = '\0';
-   if (NULL == (me = slrn_make_from_string())) return;
+   if (NULL == (me = slrn_make_from_header())) return;
    (void) parse_from (me+6, me_buf, sizeof(me_buf));
    
    if (slrn_case_strcmp ( from_buf,  me_buf))
@@ -6945,7 +6945,7 @@ static void cancel_article (void) /*{{{*/
    if (from != NULL) (void) parse_from (from, from_buf, sizeof(from_buf));
    else from[0] = '\0';
    
-   if (NULL == (me = slrn_make_from_string ())) return;
+   if (NULL == (me = slrn_make_from_header ())) return;
    (void) parse_from (me+6, me_buf, sizeof(me_buf));
    
    if (slrn_case_strcmp ( from_buf,  me_buf))
