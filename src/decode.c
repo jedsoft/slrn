@@ -58,6 +58,7 @@
 # endif
 # define slrn_message_now slrn_tty_message
 # define slrn_message slrn_tty_message
+int Slrn_UTF8_Mode = 0;
 
 #if 0
 static FILE *uudecode_popen (char *cmd, char *mode) /*{{{*/
@@ -1116,8 +1117,8 @@ int main (int argc, char **argv) /*{{{*/
    (void) setlocale(LC_ALL, "");
 #endif
 #ifdef ENABLE_NLS
-   bindtextdomain(PACKAGE,LOCALEDIR);
-   textdomain(PACKAGE);
+   bindtextdomain(NLS_PACKAGE_NAME,NLS_LOCALEDIR);
+   textdomain(NLS_PACKAGE_NAME);
 #endif
    
    SLang_init_case_tables ();

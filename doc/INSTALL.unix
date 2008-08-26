@@ -54,7 +54,7 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
     USE WITH CARE: GNU TLS is still under heavy development and slrn's
     support for it is untested.
 
---with-uudeview[=DIR]
+--with-uu[=DIR]
     This option tells slrn to use the uudeview library for decoding
     uuencoded articles instead of its builtin routines.
 

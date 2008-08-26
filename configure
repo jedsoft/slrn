@@ -1340,7 +1340,6 @@ Optional Features:
   --disable-spoilers      Disable spoiler support
   --disable-emph-text     Disable emphasized text support
   --disable-gen-mid       Prevent slrn (and user) from generating Message-IDs
-\
   --enable-mid-cache      Make slrn cache Message-IDs to eliminate cross-posts
                           (only needed when server has no xref headers)
   --disable-fake-refs     Do not use In-Reply-To if References is not available
@@ -1357,6 +1356,8 @@ Optional Packages:
   --with-slrnlib=DIR       Place for the slrn library files
   --with-localedir=DIR    Where to put locale files
   --with-slrnpull=[DIR]        Build slrnpull and use DIR as the slrnpull root
+  --with-server-name=HOST Hostname of a default NNTP server
+  --with-server-file=FILE File containing the hostname of an NNTP server
   --with-uu=DIR      Use DIR/lib and DIR/include for uu
   --with-uulib=DIR   uu library in DIR
   --with-uuinc=DIR   uu include files in DIR
@@ -1807,6 +1808,7 @@ ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
 
 
 
@@ -5910,6 +5912,42 @@ SLRN_HAS_PULL_SUPPORT=$optionvalue
 
 
 
+# Check whether --with-server-name was given.
+if test "${with_server_name+set}" = set; then
+  withval=$with_server_name; if test "x$withval" != "xno"; then
+      if test "x$withval" = "xyes"; then
+        { { echo "$as_me:$LINENO: error: you must pass the hostname of the server to the option --with-server-name" >&5
+echo "$as_me: error: you must pass the hostname of the server to the option --with-server-name" >&2;}
+   { (exit 1); exit 1; }; }
+      fi
+      cat >>confdefs.h <<_ACEOF
+#define NNTPSERVER_NAME "$withval"
+_ACEOF
+
+     fi
+
+fi
+
+
+# Check whether --with-server-file was given.
+if test "${with_server_file+set}" = set; then
+  withval=$with_server_file; if test "x$withval" != "xno"; then
+      if test "x$withval" = "xyes"; then
+        { { echo "$as_me:$LINENO: error: you must pass the name of the file to the option --with-server-file" >&5
+echo "$as_me: error: you must pass the name of the file to the option --with-server-file" >&2;}
+   { (exit 1); exit 1; }; }
+      fi
+      cat >>confdefs.h <<_ACEOF
+#define NNTPSERVER_FILE "$withval"
+_ACEOF
+
+     fi
+
+fi
+
+
+
+
  optionvalue=1
  # Check whether --enable-nntp was given.
 if test "${enable_nntp+set}" = set; then
@@ -6322,6 +6360,11 @@ echo $ECHO_N "checking for the uu library and header files uudeview.h... $ECHO_C
 	 /opt/uu/include,/opt/uu/lib \
 	 /opt/include,/opt/lib"
 
+      if test X != X
+      then
+        inc_and_lib_dirs="/include,/lib $inc_and_lib_dirs"
+      fi
+
       case "$host_os" in
          *darwin* )
 	   exts="dylib so a"
@@ -6570,6 +6613,11 @@ echo $ECHO_N "checking for the canlock library and header files ... $ECHO_C" >&6
 	 /opt/include/canlock,/opt/lib \
 	 /opt/canlock/include,/opt/canlock/lib \
 	 /opt/include,/opt/lib"
+
+      if test X != X
+      then
+        inc_and_lib_dirs="/include,/lib $inc_and_lib_dirs"
+      fi
 
       case "$host_os" in
          *darwin* )
@@ -13238,6 +13286,11 @@ echo $ECHO_N "checking for the slang library and header files ... $ECHO_C" >&6; 
 	 /opt/include/slang,/opt/lib \
 	 /opt/slang/include,/opt/slang/lib \
 	 /opt/include,/opt/lib"
+
+      if test X != X
+      then
+        inc_and_lib_dirs="/include,/lib $inc_and_lib_dirs"
+      fi
 
       case "$host_os" in
          *darwin* )

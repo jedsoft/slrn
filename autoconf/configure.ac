@@ -1,5 +1,6 @@
 dnl# -*- sh -*-
-AC_INIT(src/slrn.c)
+AC_INIT
+AC_CONFIG_SRCDIR([src/slrn.c])
 JD_INIT
 
 AC_CONFIG_AUX_DIR(autoconf)
@@ -89,6 +90,28 @@ AC_SUBST(SLRNPULL)
 AC_SUBST(SLRNPULL_ROOT_DIR)
 AC_SUBST(MAN_SLRNPULL)
 
+AC_ARG_WITH(server-name,
+    AS_HELP_STRING([--with-server-name=HOST],
+                   [Hostname of a default NNTP server]),
+    [if test "x$withval" != "xno"; then
+      if test "x$withval" = "xyes"; then
+        AC_MSG_ERROR([you must pass the hostname of the server to the option --with-server-name])
+      fi
+      AC_DEFINE_UNQUOTED([NNTPSERVER_NAME], "$withval")
+     fi
+    ])
+AC_ARG_WITH(server-file,
+    AS_HELP_STRING([--with-server-file=FILE],
+                   [File containing the hostname of an NNTP server]),
+    [if test "x$withval" != "xno"; then
+      if test "x$withval" = "xyes"; then
+        AC_MSG_ERROR([you must pass the name of the file to the option --with-server-file])
+      fi
+      AC_DEFINE_UNQUOTED([NNTPSERVER_FILE], "$withval")
+     fi
+    ])
+
+
 CF_COMPILE_OPTION(nntp,
     [  --disable-nntp          Disable NNTP support],
     [SLRN_HAS_NNTP_SUPPORT], 1)
@@ -141,8 +164,7 @@ CF_COMPILE_OPTION(gen-mid,
     [  --disable-gen-mid       Prevent slrn (and user) from generating Message-IDs],
     [SLRN_HAS_GEN_MSGID], 1)
 CF_COMPILE_OPTION(mid-cache,
-    [\
-  --enable-mid-cache      Make slrn cache Message-IDs to eliminate cross-posts
+    [  --enable-mid-cache      Make slrn cache Message-IDs to eliminate cross-posts
                           (only needed when server has no xref headers)],
     [SLRN_HAS_MSGID_CACHE], 0)
 CF_COMPILE_OPTION(fake-refs,
@@ -330,18 +352,12 @@ atoll strtoll \
 )
 
 AC_MSG_CHECKING(for timezone in time.h)
-AC_TRY_LINK([#include <time.h>],
-	[long int tz; tz = timezone % 1],
-	[AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes)],
-	AC_MSG_RESULT(no))
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <time.h>]], [[long int tz; tz = timezone % 1]])],[AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(for tm_gmtoff in struct tm)
 AH_TEMPLATE([HAVE_TM_GMTOFF],
 [define if you have "tm_gmtoff" in struct tm])
-AC_TRY_LINK([#include <time.h>],
-	[struct tm t; t.tm_gmtoff = 0],
-	[AC_DEFINE(HAVE_TM_GMTOFF) AC_MSG_RESULT(yes)],
-	AC_MSG_RESULT(no))
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <time.h>]], [[struct tm t; t.tm_gmtoff = 0]])],[AC_DEFINE(HAVE_TM_GMTOFF) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 dnl # AC_CACHE_CHECK(for domain in /etc/resolv.conf, slrn_cv_domain,
 dnl # [if test -f /etc/resolv.conf; then
@@ -367,7 +383,7 @@ AC_DEFUN(CF_VA_COPY,
  dnl# all results in config.log for bug reports.
 AC_MSG_CHECKING(for an implementation of va_copy())
 AC_CACHE_VAL(slrn_cv_va_copy,[
-	AC_TRY_RUN([
+	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 	#include <stdarg.h>
 	void f (int i, ...) {
 	va_list args1, args2;
@@ -380,16 +396,14 @@ AC_CACHE_VAL(slrn_cv_va_copy,[
 	int main() {
 	  f (0, 42);
 	  return 0;
-	}],
-	slrn_cv_va_copy=yes
-	,
-	slrn_cv_va_copy=no
-	,)
+	}]])],[slrn_cv_va_copy=yes
+	],[slrn_cv_va_copy=no
+	],[])
 ])
 AC_MSG_RESULT($slrn_cv_va_copy)
 AC_MSG_CHECKING(for an implementation of __va_copy())
 AC_CACHE_VAL(slrn_cv___va_copy,[
-	AC_TRY_RUN([
+	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 	#include <stdarg.h>
 	void f (int i, ...) {
 	va_list args1, args2;
@@ -402,16 +416,14 @@ AC_CACHE_VAL(slrn_cv___va_copy,[
 	int main() {
 	  f (0, 42);
 	  return 0;
-	}],
-	slrn_cv___va_copy=yes
-	,
-	slrn_cv___va_copy=no
-	,)
+	}]])],[slrn_cv___va_copy=yes
+	],[slrn_cv___va_copy=no
+	],[])
 ])
 AC_MSG_RESULT($slrn_cv___va_copy)
 AC_MSG_CHECKING(whether va_lists can be copied by value)
 AC_CACHE_VAL(slrn_cv_va_val_copy,[
-	AC_TRY_RUN([
+	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 	#include <stdarg.h>
 	void f (int i, ...) {
 	va_list args1, args2;
@@ -424,11 +436,9 @@ AC_CACHE_VAL(slrn_cv_va_val_copy,[
 	int main() {
 	  f (0, 42);
 	  return 0;
-	}],
-	slrn_cv_va_val_copy=yes
-	,
-	slrn_cv_va_val_copy=no
-	,)
+	}]])],[slrn_cv_va_val_copy=yes
+	],[slrn_cv_va_val_copy=no
+	],[])
 ])
 
 if test "x$slrn_cv_va_copy" = "xyes"
@@ -460,9 +470,12 @@ JD_CREATE_MODULE_ORULES
 AC_CONFIG_HEADER(src/sysconf.h:src/config.hin)
 AC_CONFIG_FILES(po/Makefile.in)
 
-AC_OUTPUT(src/slrnfeat.h:src/slrnfeat.hin)
-AC_OUTPUT(Makefile:autoconf/Makefile.in src/Makefile)
-AC_OUTPUT(po/Makefile)
+AC_CONFIG_FILES([src/slrnfeat.h:src/slrnfeat.hin])
+AC_OUTPUT
+AC_CONFIG_FILES([Makefile:autoconf/Makefile.in src/Makefile])
+AC_OUTPUT
+AC_CONFIG_FILES([po/Makefile])
+AC_OUTPUT
 
 JD_CREATE_ORULE(chkslang)
 

@@ -5,6 +5,16 @@ Changes since 0.9.9
    make_from_string_hook does not start with this prefix, then it will
    be prepended.
 2. src/misc.c: slrn_make_from_string renamed to slrn_make_from_header.
+3. autoconf/*: Updated using autoupdate
+4. configure: Added --with-server-name and --with-server-file options
+   (Thomas Wiegner and Joerg Sommer)
+5. doc/INSTALL.unix: Corrected a typo involving the uudeview library
+   option. (Andrew Strong)
+6. INSTALL.txt: typo corrected (Brian Salter-Duke)
+7. src/decode.c, src/Makefile.in: Added changes to create a standalone
+   uudecode executable.
+
+{{{ Previous Versions 
 
 Changes since 0.9.8.8pl1
 0. Removed the dependency on automake.  As a result, the configuration
@@ -272,8 +282,6 @@ Changes since 0.9.8.8pl1
 132. po/*.po: Recreated the files using the current source strings.
 133. INSTALL: New file that contains a few words about what is
      required to build slrn.
-
-{{{ Previous Versions 
 
 Changes since 0.9.8.1
 

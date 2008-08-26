@@ -1,4 +1,7 @@
 dnl# -*- mode: sh; mode: fold -*-
+dnl# 0.2.5-1: Updated using autoupdate
+dnl# 0.2.5-0: M_LIB output variable created for haiku support (Scott McCreary)
+dnl# 0.2.4-0: Added optional 3rd argument to JD_WITH_LIBRARY for a default path
 dnl# 0.2.3-2: X was missing in a "test" statement (Joerg Sommer)
 dnl# 0.2.3-1: AC_AIX needs to be called before running the compiler (Miroslav Lichvar)
 dnl# 0.2.3: rewrote JD_CHECK_FOR_LIBRARY to loop over include/lib pairs
@@ -525,9 +528,9 @@ dnl
 dnl #Be sure we've found compiler that understands prototypes
 dnl
 AC_MSG_CHECKING(C compiler that understands ANSI prototypes)
-AC_TRY_COMPILE([ ],[
- extern int silly (int);], [
- AC_MSG_RESULT($CC looks ok.  Good.)], [
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+ extern int silly (int);]])],[
+ AC_MSG_RESULT($CC looks ok.  Good.)],[
  AC_MSG_RESULT($CC is not a good enough compiler)
  AC_MSG_ERROR(Set env variable CC to your ANSI compiler and rerun configure.)
  ])dnl
@@ -576,6 +579,7 @@ INSTALL_ELFLIB_TARGET="install-elf-and-links"
 ELFLIB_BUILD_NAME="\$(ELFLIB_MAJOR_MINOR_MICRO)"
 INSTALL_MODULE="\$(INSTALL_DATA)"
 SLANG_DLL_CFLAGS=""
+M_LIB="-lm"
 
 case "$host_os" in
   *linux*|*gnu*|k*bsd*-gnu )
@@ -689,6 +693,15 @@ case "$host_os" in
     ELFLIB_MAJOR_MINOR_MICRO="lib\$(THIS_LIB)\$(ELF_MAJOR_VERSION)_\$(ELF_MINOR_VERSION)_\$(ELF_MICRO_VERSION).dll"
     ELFLIB_BUILD_NAME="\$(ELFLIB_MAJOR)"
     ;;
+  *haiku* )
+    M_LIB=""
+    DYNAMIC_LINK_FLAGS="-Wl,-export-dynamic"
+    ELF_CC="\$(CC)"
+    ELF_CFLAGS="\$(CFLAGS) -fPIC"
+    ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-O1 -Wl,--version-script,\$(VERSION_SCRIPT) -Wl,-soname,\$(ELFLIB_MAJOR)"
+    ELF_DEP_LIBS="\$(DL_LIB)"
+    CC_SHARED="\$(CC) \$(CFLAGS) -shared -fPIC"
+    ;;
   * )
     echo "Note: ELF compiler for host_os=$host_os may be wrong"
     ELF_CC="\$(CC)"
@@ -715,6 +728,7 @@ AC_SUBST(INSTALL_MODULE)
 AC_SUBST(INSTALL_ELFLIB_TARGET)
 AC_SUBST(ELFLIB_BUILD_NAME)
 AC_SUBST(SLANG_DLL_CFLAGS)
+AC_SUBST(M_LIB)
 ])
 
 dnl#}}}
@@ -827,6 +841,7 @@ dnl#  jd_with_$1_library=yes/no,
 dnl#  jd_$1_inc_file
 dnl#  jd_$1_include_dir
 dnl#  jd_$1_library_dir
+dnl# If $3 is present, then also look in $3/include+$3/lib
 AC_DEFUN(JD_CHECK_FOR_LIBRARY, dnl#{{{
 [
   AC_REQUIRE([JD_EXPAND_PREFIX])dnl
@@ -856,6 +871,11 @@ AC_DEFUN(JD_CHECK_FOR_LIBRARY, dnl#{{{
 	 /opt/include/$1,/opt/lib \
 	 /opt/$1/include,/opt/$1/lib \
 	 /opt/include,/opt/lib"
+	 
+      if test X$3 != X
+      then
+        inc_and_lib_dirs="$3/include,$3/lib $inc_and_lib_dirs"
+      fi
   
       case "$host_os" in
          *darwin* )
@@ -932,7 +952,7 @@ dnl#}}}
 
 AC_DEFUN(JD_WITH_LIBRARY, dnl#{{{
 [
-  JD_CHECK_FOR_LIBRARY($1, $2)
+  JD_CHECK_FOR_LIBRARY($1, $2, $3)
   if test "$jd_with_$1_library" = "no"
   then
     AC_MSG_ERROR(unable to find the $1 library and header file $jd_$1_inc_file)

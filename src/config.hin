@@ -198,6 +198,9 @@
 #undef HAVE_ATOLL
 #undef HAVE_STRTOLL
 
+#undef NNTPSERVER_NAME
+#undef NNTPSERVER_FILE
+
 #if defined(HAVE_LONG_LONG) && (SIZEOF_LONG < SIZEOF_LONG_LONG)
 typedef long long NNTP_Artnum_Type;
 # define NNTP_FMT_ARTNUM "%lld"

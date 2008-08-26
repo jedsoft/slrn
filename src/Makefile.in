@@ -104,7 +104,8 @@ slrnpull_DEPS = $(OBJDIR)/util.o $(OBJDIR)/strutil.o $(OBJDIR)/sortdate.o \
 
 slrnpull_LIBS = $(slrnpull_DEPS)
 
-UUDECODE_OBJS = $(OBJDIR)/util.o $(OBJDIR)/ttymsg.o $(OBJDIR)/slrndir.o
+UUDECODE_OBJS = $(OBJDIR)/strutil.o $(OBJDIR)/ttymsg.o \
+  $(OBJDIR)/slrndir.o $(OBJDIR)/snprintf.o
 
 UPDATE_VERSION_SCRIPT = $(HOME)/bin/update_changes_version
 
@@ -134,9 +135,9 @@ version.h: $(SRCDIR)/../changes.txt
 	  $(UPDATE_VERSION_SCRIPT) $(SRCDIR)/../changes.txt $(SRCDIR)/version.h; \
 	fi
 #
-uudecode: uudecode.c $(UUDECODE_OBJS)
-	$(CC) $(ALL_CFLAGS) -DSTANDALONE $(LDFLAGS) -o uudecode uudecode.c $(UUDECODE_OBJS) $(EXECLIBS)
-	touch uudecode.c
+uudecode: decode.c $(UUDECODE_OBJS)
+	$(CC) $(ALL_CFLAGS) -DSTANDALONE $(LDFLAGS) -o uudecode decode.c $(UUDECODE_OBJS) $(EXECLIBS)
+	touch decode.c
 clean:
 	/bin/rm -f $(OBJDIR)/* *~
 	cd ../po; $(MAKE) clean
