@@ -155,7 +155,7 @@ void slrn_group_recount_unread (Slrn_Group_Type *g)
    g->unread = count_unread (&g->range);
 }   
 
-static int is_article_requested (Slrn_Group_Type *g, long num) /*{{{*/
+static int is_article_requested (Slrn_Group_Type *g, NNTP_Artnum_Type num) /*{{{*/
 {
 #if SLRN_HAS_SPOOL_SUPPORT
    if (Slrn_Server_Id != SLRN_SERVER_ID_SPOOL) return 0;

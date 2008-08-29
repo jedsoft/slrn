@@ -108,22 +108,44 @@ static int _nntp_initialize_server (void)
    if (NULL == (NNTP_Server = nntp_open_server (NNTP_Server_Name, NNTP_Port)))
      return -1;
    
-   if (Slrn_Prefer_Head == 2)
+   NNTP_Server_Obj.sv_has_xover = 0;
+   if (Slrn_Prefer_Head & 2)
      NNTP_Server->can_xover = 0;
-   else if (-1 == nntp_has_cmd (NNTP_Server, "XOVER"))
+   else 
      {
-	_nntp_close_server ();
-	return -1;
+	if (-1 == nntp_has_cmd (NNTP_Server, "XOVER"))
+	  {
+	     _nntp_close_server ();
+	     return -1;
+	  }
+
+	if (NNTP_Server->can_xover == 0)
+	  {
+	     slrn_message_now (_("Server %s does not implement the XOVER command."), 
+			       NNTP_Server->host);
+	  }
+	else NNTP_Server_Obj.sv_has_xover = 1;
      }
-   
-   if (NNTP_Server->can_xover == 0)
+
+   NNTP_Server_Obj.sv_has_xhdr = 0;
+   if (Slrn_Prefer_Head & 1)
+     NNTP_Server->can_xhdr = 0;
+   else 
      {
-	slrn_message_now (_("Server %s does not implement the XOVER command."), 
-			  NNTP_Server->host);
-	NNTP_Server_Obj.sv_has_xover = 0;
+	if (-1 == nntp_has_cmd (NNTP_Server, "XHDR"))
+	  {
+	     _nntp_close_server ();
+	     return -1;
+	  }
+
+	if (NNTP_Server->can_xhdr == 0)
+	  {
+	     slrn_message_now (_("Server %s does not implement the XHDR command."),
+			       NNTP_Server->host);
+	  }
+	else NNTP_Server_Obj.sv_has_xhdr = 1;
      }
-   else NNTP_Server_Obj.sv_has_xover = 1;
-   
+
    NNTP_Server_Obj.sv_id = NNTP_Server->sv_id;
    
    NNTP_Post_Obj.po_can_post = NNTP_Server->can_post;

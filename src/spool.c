@@ -191,7 +191,7 @@ static FILE *spool_open_nov_file (void)
    return fp;
 }
 
-static int overview_file_seek (long fp, int cur, int dest)
+static int overview_file_seek (long fp, NNTP_Artnum_Type cur, NNTP_Artnum_Type dest)
 {
    int ch;
    
@@ -202,7 +202,7 @@ static int overview_file_seek (long fp, int cur, int dest)
              debug_output (__FILE__, __LINE__, "ftell returned -1; errno %d (%s).", errno, strerror(errno));
              return -1;
           }
-	if (1 != fscanf (Spool_fh_local, "%d", &cur))
+	if (1 != fscanf (Spool_fh_local, NNTP_FMT_ARTNUM, &cur))
 	  {
 	     spool_fclose_local ();
 	     return -1;
@@ -220,9 +220,9 @@ static int overview_file_seek (long fp, int cur, int dest)
    return 0;
 }
 
-static int Spool_XOver_Next;
-static int Spool_XOver_Max;
-static int Spool_XOver_Min;
+static NNTP_Artnum_Type Spool_XOver_Next;
+static NNTP_Artnum_Type Spool_XOver_Max;
+static NNTP_Artnum_Type Spool_XOver_Min;
 
 static int spool_nntp_xover (NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 {
@@ -385,7 +385,7 @@ static int spool_find_artnum_from_msgid (char *msgid, NNTP_Artnum_Type *idp)
 	return -1;
      }
    
-   if (OK_XOVER != spool_nntp_xover (1, INT_MAX))
+   if (OK_XOVER != spool_nntp_xover (1, NNTP_ARTNUM_TYPE_MAX))
      return -1;
 
    while (1 == spool_read_xover (buf, sizeof(buf)))
@@ -420,11 +420,11 @@ static int spool_find_artnum_from_msgid (char *msgid, NNTP_Artnum_Type *idp)
 }
 
 
-static FILE *spool_open_article_num (int num)
+static FILE *spool_open_article_num (NNTP_Artnum_Type num)
 {
    char buf [SLRN_MAX_PATH_LEN];
    
-   slrn_snprintf (buf, sizeof (buf), "%s/%d", Spool_Group, num);
+   slrn_snprintf (buf, sizeof (buf), ("%s/" NNTP_FMT_ARTNUM), Spool_Group, num);
    
    return fopen (buf,"r");
 }
@@ -759,9 +759,9 @@ static int spool_read_minmax_from_dp (Slrn_Dir_Type *dp, NNTP_Artnum_Type *min, 
 {
    Slrn_Dirent_Type *ep;
    char *p;
-   long l;
-   long hi = 0;
-   long lo = LONG_MAX;
+   NNTP_Artnum_Type l;
+   NNTP_Artnum_Type hi = 0;
+   NNTP_Artnum_Type lo = NNTP_ARTNUM_TYPE_MAX;
 
    /* Scan through all the files, checking the ones with numbers for names */
    while ((ep = slrn_read_dir(dp)) != NULL)
@@ -772,7 +772,7 @@ static int spool_read_minmax_from_dp (Slrn_Dir_Type *dp, NNTP_Artnum_Type *min, 
 	if (0 == spool_is_name_all_digits (p))
 	  continue;
 
-	if (0 == (l = atol (p)))
+	if (0 == (l = NNTP_STR_TO_ARTNUM(p)))
 	  continue;
 
 	if (l < lo)
@@ -1113,7 +1113,7 @@ static int spool_read_line (char *line, unsigned int len)
 	char buf[NNTP_BUFFER_SIZE];
 	int retval = -1;
 	
-	if (buf == NULL) return -1;
+	/* if (buf == NULL) return -1; */
 	if ((len > 33) &&
 	    (1 == (retval = spool_read_xhdr (buf, sizeof (buf)))))
 	  {
@@ -1121,7 +1121,7 @@ static int spool_read_line (char *line, unsigned int len)
 #ifdef HAVE_ANSI_SPRINTF
 	     numlen =
 #endif
-	     sprintf (line, "%d ", (Spool_XOver_Next - 1)); /* safe */
+	     sprintf (line, (NNTP_FMT_ARTNUM " "), (Spool_XOver_Next - 1)); /* safe */
 #ifndef HAVE_ANSI_SPRINTF
 	     numlen = strlen (line);
 #endif
@@ -1138,7 +1138,7 @@ static int spool_read_line (char *line, unsigned int len)
 typedef struct
 {
    int xover_field;
-   unsigned int rmin, rmax;
+   NNTP_Artnum_Type rmin, rmax;
    char header[80];
    char pat[256];
 }
@@ -1167,7 +1167,7 @@ static int spool_read_xpat (char *buf, unsigned int len)
 	
 	for (num = Spool_XPat_Struct.rmin; num <= Spool_XPat_Struct.rmax; num++)
 	  {
-	     if (-1 == spool_one_xhdr_command (Spool_XPat_Struct.header, (int) num,
+	     if (-1 == spool_one_xhdr_command (Spool_XPat_Struct.header, num,
 					       tmpbuf, sizeof (tmpbuf)))
 	       continue;
 	     

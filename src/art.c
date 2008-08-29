@@ -343,8 +343,8 @@ static void art_winch (void) /*{{{*/
    if (Header_Window_Nrows < 0) Header_Window_Nrows = 1;
    if (Article_Window_Nrows < 0) Article_Window_Nrows = 1;
    
-   Slrn_Article_Window.nrows = Article_Window_Nrows;
-   Slrn_Header_Window.nrows = Header_Window_Nrows;
+   Slrn_Article_Window.nrows = (unsigned int) Article_Window_Nrows;
+   Slrn_Header_Window.nrows = (unsigned int) Header_Window_Nrows;
 
    if (Slrn_Current_Article != NULL)
      {
@@ -554,7 +554,7 @@ static void init_article_window_struct (void) /*{{{*/
    Slrn_Article_Window.current_line = (SLscroll_Type *) a->cline;
    Slrn_Article_Window.cannot_scroll = SLtt_Term_Cannot_Scroll;
    Slrn_Article_Window.lines = (SLscroll_Type *) a->lines;
-   Slrn_Article_Window.border = Slrn_Article_Window_Border;
+   Slrn_Article_Window.border = (unsigned int) Slrn_Article_Window_Border;
    art_winch ();		       /* set nrows element */
    find_article_line_num ();
 }
@@ -801,7 +801,7 @@ Slrn_Article_Line_Type *slrn_search_article (char *string, /*{{{*/
 #else
    else 
      {
-	unsigned int flags = SLSEARCH_CASELESS;
+	int flags = SLSEARCH_CASELESS;
 	if (Slrn_UTF8_Mode)
 	  flags |= SLSEARCH_UTF8;
 
@@ -1305,7 +1305,6 @@ int slrn_get_next_pagedn_action (void)
    
 static void art_pagedn (void) /*{{{*/
 {
-   unsigned char ch;
    char *msg = NULL;
    
    if (Slrn_Current_Header == NULL) return;
@@ -1365,17 +1364,21 @@ static void art_pagedn (void) /*{{{*/
 	     if ((key->type != SLKEY_F_INTRINSIC) ||
 		 (key->f.f != (FVOID_STAR) art_pagedn))
 	       {
-		  SLang_ungetkey_string (key->str+1, *(key->str)-1);
+		  SLang_ungetkey_string (key->str+1, (unsigned int)*(key->str)-1);
 		  return;
 	       }
 	  }
 	else /* article_page_down is unbound */
 	  {
+	     unsigned int ch;
+
 	     slrn_message_now (msg, _("<Space>"));
-	     ch = SLang_getkey ();
+	     if (SLANG_GETKEY_ERROR == (ch = SLang_getkey ()))
+	       slrn_exit_error ("SLang_getkey failed");
+
 	     if (ch != ' ')
 	       {
-		  SLang_ungetkey (ch);
+		  SLang_ungetkey ((unsigned char) ch);
 		  return;
 	       }
 	  }
@@ -1406,7 +1409,7 @@ static void art_bob (void) /*{{{*/
 
 unsigned int slrn_art_linedn_n (unsigned int n) /*{{{*/
 {
-   int new_article = 0;
+   unsigned int new_article = 0;
    switch (select_article (0))
      {
       case 0:
@@ -1762,9 +1765,10 @@ static void kill_cross_references (Slrn_Header_Type *h) /*{{{*/
 	/* now we are looking at the groupname */
 	g = b;
 	while (*b && (*b != ':')) b++;
-	if ((g == b) || (*b++ == 0) || (*b == 0) ||
-	    (NULL == (group = slrn_strnmalloc (g, b-g-1, 0))))
+	if ((g == b) || (b[0] == 0) || (b[1] == 0)
+	    || (NULL == (group = slrn_strnmalloc (g, (unsigned int)(b-g), 0))))
 	  break;
+	b++;			       /* skip ':' */
 	num = NNTP_STR_TO_ARTNUM (b);
 	while ((*b <= '9') && (*b >= '0')) b++;
 	if ((num != h->number)
@@ -1857,7 +1861,7 @@ static size_t read_quotedstring (char *start, char *dest, size_t max) /*{{{*/
    
    while (*start && (*start != '"'))
      {
-	int backslash = 0;
+	unsigned int backslash = 0;
 	if (*start == '\\')
 	  {
 	     backslash = 1;
@@ -1898,7 +1902,7 @@ static size_t read_dotatom (char *start, char *dest, size_t max) /*{{{*/
 
    while (1)
      {
-	int dot = 0;
+	unsigned int dot = 0;
 	if (*start == '.')
 	  {
 	     dot = 1;
@@ -2122,7 +2126,7 @@ static void get_header_real_name (Slrn_Header_Type *h) /*{{{*/
    
    while ((f != NULL) && (*f != '<'))
      {
-	f = read_localpart (f, p, sizeof (buf) - (p - buf));
+	f = read_localpart (f, p, (unsigned int) (sizeof(buf) - (p-buf)));
 	unquote_string(p); /* the name may have been quoted */
 	p += strlen (p);
 	if ((f != NULL) && (p + 1 < buf + sizeof (buf)))
@@ -2889,7 +2893,8 @@ static void reply (char *from, int use_cc) /*{{{*/
    FILE *fp;
    char file[256];
    char from_buf[256];
-   unsigned int n, wrap;
+   unsigned int n;
+   int is_wrapped;
    char *quote_str;
 
    if ((-1 == slrn_check_batch ()) 
@@ -3009,7 +3014,7 @@ static void reply (char *from, int use_cc) /*{{{*/
 	  }
 	n += 1;
      }
-   
+
    n += slrn_add_custom_headers (fp, Slrn_Reply_Custom_Headers, insert_followup_format);
    fputs ("\n", fp);
    
@@ -3018,7 +3023,7 @@ static void reply (char *from, int use_cc) /*{{{*/
 
    n += 2;
 
-   wrap = Slrn_Current_Article->is_wrapped;
+   is_wrapped = Slrn_Current_Article->is_wrapped;
    (void) _slrn_art_unwrap_article (Slrn_Current_Article);
    
    l = Slrn_Current_Article->lines;
@@ -3048,7 +3053,7 @@ static void reply (char *from, int use_cc) /*{{{*/
 	l = l->next;
      }
    
-   if (wrap)
+   if (is_wrapped)
      (void) _slrn_art_wrap_article (Slrn_Current_Article);
    
    slrn_add_signature (fp);
@@ -3086,8 +3091,9 @@ static void forward_article (void) /*{{{*/
    char file[256];
    char to[SLRL_DISPLAY_BUFFER_SIZE];
    char *charset=NULL;
-   int edit, n, wrap, full = 0;
-   
+   int edit, is_wrapped, full = 0;
+   unsigned int n;
+
    if (Slrn_Prefix_Arg_Ptr != NULL)
      {
 	full = *Slrn_Prefix_Arg_Ptr;
@@ -3160,7 +3166,7 @@ static void forward_article (void) /*{{{*/
      }
    putc ('\n', fp);
    
-   wrap = Slrn_Current_Article->is_wrapped;
+   is_wrapped = Slrn_Current_Article->is_wrapped;
    (void) _slrn_art_unwrap_article (Slrn_Current_Article);
 
    l = Slrn_Current_Article->lines;
@@ -3174,7 +3180,7 @@ static void forward_article (void) /*{{{*/
      }
    slrn_fclose (fp);
    
-   if (wrap)
+   if (is_wrapped)
      (void) _slrn_art_wrap_article (Slrn_Current_Article);
    
    (void) slrn_mail_file (file, edit, n, to, subject);
@@ -3218,7 +3224,7 @@ static void followup (void) /*{{{*/
    int prefix_arg;
    int perform_cc;
    int free_cc_string = 0;
-   int strip_sig, rsp, wrap;
+   int strip_sig, wrap;
    char *newsgroups_hdr;
 
    /* The perform_cc testing is ugly.  Is there an easier way?? */
@@ -3312,12 +3318,16 @@ static void followup (void) /*{{{*/
 		  warn = 1;
 		  while (rpos < epos)
 		    {
+		       unsigned int len;
+
 		       lpos = rpos;
 		       rpos = slrn_strbyte(lpos, ',');
 		       if (rpos == NULL)
 			 rpos = epos;
-		       if ((strlen(Slrn_Current_Group_Name) == (unsigned int) (rpos-lpos)) &&
-			   (0 == strncmp(lpos, Slrn_Current_Group_Name, rpos-lpos)))
+		       
+		       len = (unsigned int) (rpos - lpos);
+		       if ((len == strlen(Slrn_Current_Group_Name))
+			   && (0 == strncmp(lpos, Slrn_Current_Group_Name, len)))
 			 {
 			    warn = 0;
 			    break;
@@ -3354,6 +3364,7 @@ static void followup (void) /*{{{*/
 	 * default characters for other fields than they originally stood for.
 	 */
         char *responses=_("fFaAtTcC");
+	char rsp;
 	if (strlen (responses) != 8)
 	  responses = "";
 	rsp = slrn_get_response ("fFaAtTcC", responses, 
@@ -3371,7 +3382,7 @@ static void followup (void) /*{{{*/
 	   case 't':
 	     newsgroups = Slrn_Current_Group_Name;
 	     break;
-	     
+
 	   case 'c':
 	     return;
 	  }
@@ -3547,7 +3558,7 @@ static void followup (void) /*{{{*/
      fputs(followupto, fp);
    fputs("\n", fp);
    n++;
-   
+
    n += slrn_add_custom_headers (fp, Slrn_Followup_Custom_Headers, insert_followup_format);
    
    fputs ("\n", fp);
@@ -4020,7 +4031,9 @@ static void art_next_unread (void) /*{{{*/
 	if ((key->type != SLKEY_F_INTRINSIC) ||
 	    (key->f.f != (FVOID_STAR) art_next_unread))
 	  {
-	     SLang_ungetkey_string (key->str+1, *(key->str)-1);
+	     unsigned int len = key->str[0];
+	     if (len != 0) 
+	       SLang_ungetkey_string (key->str+1, len-1);
 	     return;
 	  }
      }

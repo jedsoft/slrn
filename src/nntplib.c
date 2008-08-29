@@ -824,10 +824,10 @@ int nntp_has_cmd (NNTP_Type *s, char *cmd)
    return _nntp_probe_server (s, cmd);
 }
 
-static int _nntp_num_or_msgid_cmd (NNTP_Type *s, char *cmd, int n, char *msgid)
+static int _nntp_num_or_msgid_cmd (NNTP_Type *s, char *cmd, NNTP_Artnum_Type n, char *msgid)
 {
    if ((n != -1) && ((Slrn_Broken_Xref == 0) || (msgid == NULL)))
-     return nntp_server_vcmd (s, "%s %d", cmd, n);
+     return nntp_server_vcmd (s, ("%s " NNTP_FMT_ARTNUM), cmd, n);
    else if (msgid == NULL)
      return nntp_server_cmd(s, cmd);
    else
@@ -840,7 +840,7 @@ int nntp_head_cmd (NNTP_Type *s, NNTP_Artnum_Type n, char *msgid, NNTP_Artnum_Ty
 
    status = _nntp_num_or_msgid_cmd (s, "HEAD", n, msgid);
    if ((status == OK_HEAD) && (real_id != NULL))
-     *real_id = atoi(s->rspbuf + 4);
+     *real_id = NNTP_STR_TO_ARTNUM(s->rspbuf + 4);
    return status;
 }
 
