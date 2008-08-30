@@ -97,13 +97,13 @@
 
   1.1.  What is slrn ?
 
-  slrn (``s-lang read news'') is a Usenet newsreader that runs in text
+  slrn (``S-Lang read news'') is a Usenet newsreader that runs in text
   mode on various Unix and Unix-like operating systems (including
   Linux), Windows, OS/2, BeOS, MacOS X and VMS.
 
   It supports scoring rules to highlight, sort or kill articles to make
   reading news more efficient. Furthermore it is highly customizable,
-  allows free key-bindings and can be extended using the s-lang macro
+  allows free key-bindings and can be extended using the S-Lang macro
   language. Offline reading is possible using either slrnpull (shipped
   with slrn) or a local newsserver like Leafnode or INN.
 
@@ -127,7 +127,7 @@
   The source distribution contains a lot of documentation; on Unix-like
   systems, it is likely to be installed somewhere in /usr/share/doc or
   /usr/doc. It contains manpages (type man slrn at the command prompt),
-  the Slrn Reference Manual (manual.txt) and several other useful
+  the slrn Reference Manual (manual.txt) and several other useful
   resources like a sample slrnrc (configuration) file.
 
   If you are new to slrn, please make sure to read the file FIRST_STEPS.
@@ -146,7 +146,7 @@
   news.software.readers. There is also a German speaking equivalent
   (de.comm.software.newsreader).
 
-  Slrn-user is a mailing list for discussion of the use, development and
+  slrn-user is a mailing list for discussion of the use, development and
   extension of slrn. You can subscribe to it through the web interface
   at <http://lists.sourceforge.net/lists/listinfo/slrn-user>.
 
@@ -254,7 +254,7 @@
   shrink_article_window (bound to ``CTRL-^'').
 
   There is no config variable you could use to make permanent changes to
-  this; fortunately, it is very easy to set it using a simple s-lang
+  this; fortunately, it is very easy to set it using a simple S-Lang
   macro. For example,
 
   ______________________________________________________________________
@@ -614,11 +614,10 @@
   To link against uudeview, you need to have the library installed on
   your system; one way to get it is its homepage at
   <http://www.fpx.de/fp/Software/UUDeview/>. You also need to pass
-  ``--with-uudeview'' to the configure script when building slrn (on
-  Unix-like systems). If you did not compile your copy of slrn yourself,
-  you can still find out whether it has uudeview support by looking for
-  a ``+'' sign in front of ``uudeview'' in the output of ``slrn
-  --version''.
+  ``--with-uu'' to the configure script when building slrn (on Unix-like
+  systems). If you did not compile your copy of slrn yourself, you can
+  still find out whether it has uudeview support by looking for a ``+''
+  sign in front of ``uudeview'' in the output of ``slrn --version''.
 
   3.3.3.  What about yEnc?
 
@@ -807,9 +806,9 @@
   4.5.  Where can I get a full description of slrn 's regular expres-
   sions?
 
-  slrn makes use of the regexp engine built into the s-lang programmer's
+  slrn makes use of the regexp engine built into the S-Lang programmer's
   library. Thus, a full description of the regexp syntax that can be
-  used in slrn's scorefiles can be found in the documentation of s-lang.
+  used in slrn's scorefiles can be found in the documentation of S-Lang.
   In version 2.1, this is chapter 22 of the file slang.txt (also
   available online). Please note that in slrn, the default is \C (case
   insensitive), not \c.
@@ -1136,16 +1135,16 @@
   6.1.  slrn hangs infinitely when I press the delete key
 
   This is a known bug; however, it's not a problem in slrn, so I cannot
-  fix it. slrn uses a library called s-lang for its screen input/output
+  fix it. slrn uses a library called S-Lang for its screen input/output
   and some Linux distributions (including RedHat) patch that library to
-  get Unicode support. Unfortunately, the patch they use makes s-lang
+  get Unicode support. Unfortunately, the patch they use makes S-Lang
   unstable.
 
-  To get rid of this program, you can get the vanilla s-lang sources
+  To get rid of this program, you can get the vanilla S-Lang sources
   from the public FTP space <ftp://space.mit.edu/pub/davis/slang> of its
   author, John E. Davis and compile them yourself.
 
-  However, simply uninstalling the s-lang package that came with your
+  However, simply uninstalling the S-Lang package that came with your
   distribution and replacing it with your own version might break
   dependencies in your system's package management - even if you build
   your own RPM package: Some packages explicitly depend on the patched
@@ -1160,7 +1159,7 @@
   LD_LIBRARY_PATH to the library path when running slrn.
 
   If you experience such a problem, please also report it as a bug to
-  your distributor, so we will hopefully see no more broken s-lang
+  your distributor, so we will hopefully see no more broken S-Lang
   packages in the future. For RedHat, I got a report that it already got
   fixed in version 8.
 
@@ -1170,7 +1169,7 @@
   6.2.  Non US-ASCII characters are displayed incorrectly.
 
   Most such problems should disappear after upgrading to current
-  versions of both slrn (0.9.9 or higher) and the s-lang library (2.1 or
+  versions of both slrn (0.9.9 or higher) and the S-Lang library (2.1 or
   higher).
 
   6.3.  The bug I found is not listed here. What do I do now?

@@ -2891,7 +2891,7 @@ static void reply (char *from, int use_cc) /*{{{*/
    char *msgid, *subject, *from_t;
    Slrn_Article_Line_Type *l;
    FILE *fp;
-   char file[256];
+   char file [SLRN_MAX_PATH_LEN];
    char from_buf[256];
    unsigned int n;
    int is_wrapped;
@@ -3088,7 +3088,7 @@ static void forward_article (void) /*{{{*/
    char *subject;
    Slrn_Article_Line_Type *l;
    FILE *fp;
-   char file[256];
+   char file [SLRN_MAX_PATH_LEN];
    char to[SLRL_DISPLAY_BUFFER_SIZE];
    char *charset=NULL;
    int edit, is_wrapped, full = 0;

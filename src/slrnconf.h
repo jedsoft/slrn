@@ -231,13 +231,15 @@ typedef long long NNTP_Artnum_Type;
 # else
 #  define NNTP_STR_TO_ARTNUM(x) strtoll((x),NULL,10)
 # endif
+# define NNTP_ARTNUM_TYPE_MAX 9223372036854775807L
 #else
 typedef long NNTP_Artnum_Type;
 # define NNTP_FMT_ARTNUM "%ld"
 # define NNTP_FMT_ARTNUM_2 "%ld %ld"
 # define NNTP_FMT_ARTNUM_3 "%ld %ld %ld"
 # define NNTP_FMT_ARTRANGE "%ld-%ld"
-# define NNTP_STR_TO_ARTNUM atoi
+# define NNTP_STR_TO_ARTNUM atol
+# define NNTP_ARTNUM_TYPE_MAX LONG_MAX
 #endif
 
 #endif				       /* SLRN_NON_UNIX_CONFIG_H */

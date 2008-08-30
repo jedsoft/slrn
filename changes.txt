@@ -13,6 +13,16 @@ Changes since 0.9.9
 6. INSTALL.txt: typo corrected (Brian Salter-Duke)
 7. src/decode.c, src/Makefile.in: Added changes to create a standalone
    uudecode executable.
+8. doc/*: Updated docs from the slrn-doc team.
+9. src/art.c: signed-vs-unsigned cleanups.
+10. src/spool.c: A few functions were not using NNTP_Artnum_Type.
+11. src/nntplib.c: _nntp_num_or_msgid_cmd was not using
+    NNTP_Artnum_Type (Joerg Sommer)
+12. src/nntp.c: Added the probe for XHDR early on instead of when
+    first used to avoid a possible server timeout.
+13. src/art.c: A few functions were limiting file sizes to 256,
+    instead of PATH_MAX.
+14. src/config.hin: NNTP_ARTNUM_TYPE_MAX was not defined.
 
 {{{ Previous Versions 
 

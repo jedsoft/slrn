@@ -363,7 +363,7 @@
   news.software.readers. If you speak German, you also might want to
   subscribe to de.comm.software.newsreader.
 
-  Slrn-user is a mailing list for discussion of the use, development and
+  slrn-user is a mailing list for discussion of the use, development and
   extension of slrn. You can subscribe to it through the web interface
   at <http://lists.sourceforge.net/lists/listinfo/slrn-user>.
 
@@ -2947,7 +2947,8 @@
 
   If you want to score articles, you need to set this variable to the
   filename of your scorefile. It is interpreted as being relative to
-  your home directory (unless it starts with a slash).
+  your home directory (unless it starts with a slash), or relative to
+  $SLRNHOME if this is set.
 
   If you want to use more than one scorefile, you need to use an include
   statement in the scorefile itself. Please do not confuse this with the
@@ -3442,7 +3443,7 @@
   Default: (compile time setting)
 
   If your copy of slrn has support for external uudeview libraries
-  (--with-uudeview), but you still want to use the (faster, but less
+  (--with-uu), but you still want to use the (faster, but less
   sophisticated) builtin routines for decoding binary files, set this
   variable to 0. Otherwise, it has no effect.
 
