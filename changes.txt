@@ -23,6 +23,12 @@ Changes since 0.9.9
 13. src/art.c: A few functions were limiting file sizes to 256,
     instead of PATH_MAX.
 14. src/config.hin: NNTP_ARTNUM_TYPE_MAX was not defined.
+15. src/nntp.c: Use "XHDR Path" instead of "XHDR" when probing for
+    XHDR.
+16. src/nntplib.c: Rewrote the logic in parsing the return values from
+    the XHDR Probe.  It is possible that different servers will return
+    different codes for this probe and that further changes will have
+    to be made.
 
 {{{ Previous Versions 
 

@@ -781,7 +781,8 @@ static int _nntp_probe_server (NNTP_Type *s, char *cmd)
    return 1;
 }
 
-#define PROBE_XCMD(s, var,cmd) (((var) != -1) ? (var) : ((var) = _nntp_probe_server ((s),(cmd))))
+#define PROBE_XCMD(s, var, cmd) \
+   (((var) != -1) ? (var) : ((var) = _nntp_probe_server ((s),(cmd))))
 
 int nntp_has_cmd (NNTP_Type *s, char *cmd)
 {
@@ -795,23 +796,35 @@ int nntp_has_cmd (NNTP_Type *s, char *cmd)
 
 	ret = nntp_server_cmd (s, cmd);
 
-	if ((ret == ERR_COMMAND) || (ret == ERR_ACCESS))
-	  s->can_xhdr = 0;
-	else if ((ret == OK_HEAD) &&
-		 (1 == nntp_read_line (s, buf, sizeof (buf))))
+	switch (ret)
 	  {
-	     char *p = buf;
-	     nntp_discard_output (s);
-	     while (*p && (*p != ' ')) p++;
-	     while (*p == ' ') p++;
-	     if (!strcmp (p, "(none)"))
-	       s->can_xhdr = 0;
-	     else
-	       s->can_xhdr = 1;
+	   default:
+	     s->can_xhdr = 0;
+	     break;
+
+	   case ERR_CMDSYN:
+	   case ERR_NCING:
+	     s->can_xhdr = 1;
+	     break;
+	     
+	   case ERR_COMMAND:
+	   case ERR_ACCESS:
+	     s->can_xhdr = 0;
+	     break;
+
+	   case OK_HEAD:
+	     s->can_xhdr = 1;
+	     if (1 == nntp_read_line (s, buf, sizeof (buf)))
+	       {
+		  char *p = buf;
+		  nntp_discard_output (s);
+		  while (*p && (*p != ' ')) p++;
+		  while (*p == ' ') p++;
+		  if (!strcmp (p, "(none)"))
+		    s->can_xhdr = 0;
+	       }
+	     break;
 	  }
-	else if (strlen (cmd) == 4)
-	  s->can_xhdr = 1;
-	
 	return s->can_xhdr;
      }
 

@@ -132,7 +132,7 @@ static int _nntp_initialize_server (void)
      NNTP_Server->can_xhdr = 0;
    else 
      {
-	if (-1 == nntp_has_cmd (NNTP_Server, "XHDR"))
+	if (-1 == nntp_has_cmd (NNTP_Server, "XHDR Path"))
 	  {
 	     _nntp_close_server ();
 	     return -1;
