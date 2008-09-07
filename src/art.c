@@ -2312,7 +2312,7 @@ static Slrn_Article_Type *read_article (Slrn_Header_Type *h, int kill_refs) /*{{
 	     return NULL;
 	  }
 	
-	slrn_error (_("Article " NNTP_FMT_ARTNUM "is unavailable."), h->number);
+	slrn_error (_("Article " NNTP_FMT_ARTNUM " is unavailable."), h->number);
 	
 	if (kill_refs && ((h->flags & HEADER_READ) == 0) &&
 	    ((h->flags & HEADER_DONT_DELETE_MASK) == 0))

@@ -29,6 +29,8 @@ Changes since 0.9.9
     the XHDR Probe.  It is possible that different servers will return
     different codes for this probe and that further changes will have
     to be made.
+17. src/art.c: A space was missing in a format statement in the
+    read_article function (Christof Meerwald, Peter J. Ross).
 
 {{{ Previous Versions 
 
