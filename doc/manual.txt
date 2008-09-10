@@ -3,7 +3,7 @@
   Thomas Schultz <tststs@gmx.de>
   Thomas Wiegner <wiegner@gmx.de>
   Peter J Ross <peadar.ruadh@gmail.com>
-  Version 0.9.9, August 2008
+  Version 0.9.9, September 2008
 
   Using and customizing the slrn newsreader
   ______________________________________________________________________
@@ -961,13 +961,15 @@
   5.3.2.  charset
 
   Usage: charset option charset
-  Default: detected from locale settings if supported by OS.
-  (autodetection not supported in (cyg)win)
 
   option can be one of these:
 
      display
         slrn will use this character set when displaying articles.
+
+        Default: detected from locale settings if supported by OS.
+        (autodetection not supported in (cyg)win)
+
      outgoing
         This setting will be used for the charset encoding of outgoing
         articles and emails. Setting a value like "iso-8859-15,utf-8" is
@@ -975,12 +977,15 @@
         the first for which encoding succeeds.
 
      config
-        Set this value if the encoding of your .slrnrc is different from
-        the locale setting.
+        Set this value if your .slrnrc contains non-ascii characters.
+
+        Default: us-ascii
 
      editor
         Set this value if the encoding your editor uses is different
         from the locale setting.
+
+        Default: value from charset display
 
   5.3.3.  color
 
@@ -1128,7 +1133,6 @@
 
   Additionally, you can use the default foreground / background colors
   of your terminal via the keyword ``default''.
-
   Please note that the colors in the right column are all ``bright'' (or
   ``bold''). On many terminals, they can only be used for the
   foreground. If you think your terminal has more than 8 background
@@ -1490,6 +1494,7 @@
   ``subject'' and ``AW: subject'' are not, even if you defined ``^AW:''
   in strip_re_regexp. The reason for this is that it would be too
   expensive to do a full regexp search whenever comparing subjects.
+
   5.3.18.  strip_sig_regexp
 
   Usage: strip_sig_regexp pattern [pattern] ...
@@ -1606,6 +1611,7 @@
 
   Type: integer
   Default: 1
+
   If non-zero, every article you open will automatically be marked as
   read.
 
@@ -1784,6 +1790,7 @@
   If ``sorting_method'' is set to 12 (custom sorting), this variable is
   used to decide whether or not to thread headers. In this case, any
   non-zero value activates threading.
+
   See also: ``custom_sort_order''
 
   6.16.  custom_sort_order
@@ -1888,7 +1895,6 @@
   editor_command is a kind of fall-back if the more specific editor
   command is not set. If editor_command is empty, slrn looks at
   ``$SLRN_EDITOR'' et al.
-
   The following % escapes can be used:
 
           %s  name of the file to edit
@@ -2251,6 +2257,7 @@
   If non-zero, PGP signatures in articles will not be displayed. The
   setting of this variable can be changed using ``toggle_pgpsignature''
   (default binding: `]') while slrn is running.
+
   See also: ``hide_signature''
 
   6.44.  hide_quotes
@@ -2312,6 +2319,7 @@
   visible effect if the subject is printed bold or in a bright color
   anyways. Besides that, the special color "default" does not have a
   bright version.
+
   When set to two, unread subjects are printed in the color you set with
   ``unread_subject''. In this case, only subjects of unread articles can
   be ``colored by score''.
@@ -2374,6 +2382,7 @@
   inews(1)) instead of the builtin NNTP routines slrn offers (see
   ``post_object'' for details). In this case, inews_program can be used
   to specify the command you want slrn to pipe outgoing articles to.
+
   Note: This variable will not work if SLRN_HAS_USER_INEWS in slrnfeat.h
   was disabled at compile time. Obviously, it also has no effect if
   inews support is not compiled in.
@@ -2422,7 +2431,6 @@
   /usr/local/share/slrn/slang. If a macro does not exist in a path
   listed in macro_directory, slrn will first try to find it in $HOME (or
   $SLRNHOME), then in the compile-time default directory.
-
   Example:
 
           interpret "News/macros/my-macro.sl"
@@ -2728,6 +2736,7 @@
   processed by my_print_filter and then printed on "my_printer". If
   unset, the default action is to use lpr with the value of ``$PRINTER''
   as the -P option.
+
   On Windows98, you can set this variable to the name of the print queue
   you want to use. Here, the default is to use the setting in "win.ini".
 
@@ -2790,6 +2799,7 @@
   query_read_group_cutoff article headers, it will prompt you to confirm
   (or change) the number of articles to read. This feature is turned off
   if you set this variable to 0.
+
   Setting this variable to a negative number -n has a similar effect.
   However, slrn will not prompt you in this case; instead, it will
   automatically download n articles if more are present.
@@ -2842,7 +2852,6 @@
   when posting source code). Setting this variable to 0 turns the check
   off. Please note that long lines are generally considered bad
   netiquette.
-
   See also: ``netiquette_warnings''
 
   6.84.  reply_custom_headers
@@ -2912,6 +2921,7 @@
 
   Hint: If you get error messages when using this variable, you possibly
   pointed it to a directory instead of a file.
+
   See also:  ``save_replies''
 
   6.89.  save_replies
@@ -2988,6 +2998,10 @@
   tries to find the sendmail binary; otherwise, you can set
   SLRN_SENDMAIL_COMMAND in slrnfeat.h.
 
+  Hint: Some sendmail replacements for Windows expect the input to be
+  piped to the program, what slrn is not able to do. You can handle this
+  by adding a "<" at the end of the string.
+
   6.94.  server_object
 
   Type: string
@@ -3034,6 +3048,9 @@
   The default of this variable is defined in slrnfeat.h
   (SLRN_SIGNATURE_FILE): It is ".signature" on Unix and VMS and
   "signatur.txt" on OS/2 and Windows.
+
+  If the signature contains non us-ascii characters make sure they have
+  the same encoding defined in ``charset editor''
 
   Note: If your signature file doesn't start with sig dashes ("-- \n"),
   slrn will add them automatically.
@@ -3283,7 +3300,7 @@
           n  name of the current newsgroup
           s  name of the current server
           t  current time
-          v  version of <tt/slrn/
+          v  version of slrn
 
   The special sequences `%g' and `%?' work as described in
   ``header_display_format''.
@@ -3548,7 +3565,6 @@
   and a number before calling the function (e.g. to call
   ``select_group'' with the prefix argument four, you need to press "ESC
   4 ENTER".
-
   If you want, you can use the ``setkey'' configuration command to bind
   them to different keys. However, please note that the online help
   won't be updated automatically. If you want it to reflect your
@@ -4259,6 +4275,7 @@
   postings inside it that do not yet have a body. If some of them are
   already marked for download, but some others are not, it does not
   toggle the state of each individual article, but requests all bodies.
+
   7.2.56.  save
 
   Default: "o"
@@ -4433,6 +4450,7 @@
 
   Toggles the variable ``hide_verbatim_marks'', which controls the
   display of "verbatim marks".
+
   7.2.77.  toggle_verbatim_text
 
   Default: "{"
@@ -4530,7 +4548,6 @@
   will only insert the portion of the name that is common to all of
   them. In that case, calling the function again will give you a list of
   possible completions to chose from.
-
   On all other prompts, it works like ``self_insert''.
 
   7.3.4.  cycle

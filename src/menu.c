@@ -110,7 +110,7 @@ static void update_menu (Menu_Type *m) /*{{{*/
    
    SLsmg_erase_eol ();
 
-   col = SLtt_Screen_Cols - 16;
+   col = SLtt_Screen_Cols - (5 + strlen(Slrn_Version_String));
    if (SLsmg_get_column () < col)
      SLsmg_gotorc (0, col);
    

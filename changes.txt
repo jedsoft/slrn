@@ -31,6 +31,10 @@ Changes since 0.9.9
     to be made.
 17. src/art.c: A space was missing in a format statement in the
     read_article function (Christof Meerwald, Peter J. Ross).
+18. src/menu.c: The length of the version string was not being
+    considered when writing it to the top menu line, causing a long
+    string to be truncated (Thomas Wiegner).
+19. doc/: Documentation updates (doc-team).
 
 {{{ Previous Versions 
 

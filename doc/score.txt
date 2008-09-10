@@ -24,18 +24,18 @@
 
   1.1.  General description of scoring
 
-  slrn awards an article points by giving it a score.  If the score for
+  slrn awards an article points by giving it a score. If the score for
   the article is less than max_low_score (zero by default), the article
-  is marked as read.  If the score is less than or equal to kill_score
-  (-9999 by default), the article is killed.  If the score is greater
+  is marked as read. If the score is less than or equal to kill_score
+  (-9999 by default), the article is killed. If the score is greater
   than or equal to min_high_score (1 by default), the article is marked
-  as important.  The purpose of the score file is to define the set of
+  as important. The purpose of the score file is to define the set of
   tests that an article must go through to determine the score.
 
   Although the score may be based on ANY header item, it is recommended
   that one stick with the information found in the news overview data
   when scoring in slrn (slrnpull gets full headers anyways, so it does
-  not make a difference there).  The news overview file typically
+  not make a difference there). The news overview file typically
   contains:
 
           * Subject
@@ -47,7 +47,7 @@
           * Lines
 
   plus any header that your news admin decided to include here (usually,
-  `Xref' is one of them).  slrn offers two special keywords that also
+  `Xref' is one of them). slrn offers two special keywords that also
   allow efficient scoring: `Newsgroup' (the newsgroup that the article
   is part of) and `Age' (the age of the article in days).
 
@@ -86,13 +86,13 @@
 
   The name may contain the `*' wild card character.
 
-  Comments begin with the `%' character.  Leading whitespace is ignored.
+  Comments begin with the `%' character. Leading whitespace is ignored.
 
   Each section consists of comment lines, empty lines or keyword lines.
   Only the keyword lines are meaningful and all leading whitespace is
-  ignored.  A keyword line begins with the name of the keyword followed
-  immediately by one or two colons and one space.  The rest of the line
-  usually consists of a regular expression.  The keyword may be prefixed
+  ignored. A keyword line begins with the name of the keyword followed
+  immediately by one or two colons and one space. The rest of the line
+  usually consists of a regular expression. The keyword may be prefixed
   by the `~' character to signify that the regular expression should not
   match the object specified by the keyword.
 
@@ -114,30 +114,30 @@
           Score: 100 % optional name here
 
   All keywords except for `Score' and `Expires' may be prefixed by the
-  `~' character.  If the `Expires' keyword appears, it must immediately
-  follow the `Score' keyword.  The `Expires' keyword may be used to
+  `~' character. If the `Expires' keyword appears, it must immediately
+  follow the `Score' keyword. The `Expires' keyword may be used to
   indicate that the test is no longer to be applied on the date
-  specified by the keyword.  For example,
+  specified by the keyword. For example,
 
           Expires: 4/1/2010              (or: 1-4-2010)
 
   implies that the given test is no longer valid on or after April first
   2010.  As the example indicates, the date must be specified using
-  either the format MM/DD/YYYY or DD-MM-YYYY.  Note: DO NOT CONFUSE THIS
+  either the format MM/DD/YYYY or DD-MM-YYYY. Note: DO NOT CONFUSE THIS
   WITH THE EXPIRES HEADER KEYWORD.
 
   The `Lines', `Bytes', `Age' and `Has-Body' keywords are also special.
   Their value is not a regular expression, rather, a simple integer.
 
   `Lines' and `Bytes' may be used to kill articles which contain too
-  many or too few lines / bytes.  For example,
+  many or too few lines / bytes. For example,
 
           Score: -100
           Bytes: 20480
 
-  assigns a score of -100 to articles that are larger than 20 kB.
-  Please keep in mind that `Bytes:' is only available when getting
-  overview data and will otherwise (e.g. in slrnpull) be set to 0.
+  assigns a score of -100 to articles that are larger than 20 kB. Please
+  keep in mind that `Bytes:' is only available when getting overview
+  data and will otherwise (e.g. in slrnpull) be set to 0.
 
   Similarly, the test
 
@@ -170,12 +170,12 @@
   meaning.
 
   Finally a score file may include other score files via the `include'
-  statement.  The syntax is simple:
+  statement. The syntax is simple:
 
           include FILE
 
   The name of the file is considered to be relative to the directory of
-  the file including it, unless an absolute path is specified.  For
+  the file including it, unless an absolute path is specified. For
   instance, suppose `/home/john/News/Score' contains
 
           include /usr/local/share/slrn/score
@@ -189,7 +189,7 @@
   `/home/john/News' but in the second instance it will be read from
   `/usr/local/share/slrn'.
 
-  3.  A sample slrn  score file
+  3.  A sample slrn score file
 
   [news.software.readers]
           Score: =1000
@@ -233,32 +233,32 @@
 
   4.  Explanatory notes for the sample scorefile
 
-  This file consists of three sections.  The first section defines a set
-  of tests applied to the news.software.readers newsgroups.  The second
-  section applies to the comp.os.linux newsgroups.  The final section
+  This file consists of three sections. The first section defines a set
+  of tests applied to the news.software.readers newsgroups. The second
+  section applies to the comp.os.linux newsgroups. The final section
   applies to ALL newsgroups EXCEPT misc.invest.* and misc.taxes (see
   below).
 
-  The first section consists of three tests.  The first test applies a
-  score of 1000 to any subject that contains the string `slrn'.  The
-  second test applies to the `From'.  It says that any article from
-  davis@space.mit.edu has its score increased by 1000.  The third test
+  The first section consists of three tests. The first test applies a
+  score of 1000 to any subject that contains the string `slrn'. The
+  second test applies to the `From'. It says that any article from
+  davis@space.mit.edu has its score increased by 1000. The third test
   reduces by -9999 the score of any article whose subject contains the
-  word `agent'.  Since tests are applied in order, if an article
-  contains both `slrn' and `agent', it will be given a score of 1000
-  since the value is prefixed with an equal sign.
+  word `agent'. Since tests are applied in order, if an article contains
+  both `slrn' and `agent', it will be given a score of 1000 since the
+  value is prefixed with an equal sign.
 
-  The second section is more complex.  It applies to the comp.os.linux
-  newsgroups and consists of 5 tests.  The first three are simple: -10
+  The second section is more complex. It applies to the comp.os.linux
+  newsgroups and consists of 5 tests. The first three are simple: -10
   points are given if the subject contains `swap', 20 if it contains
-  `SunOS', and 50 if the article is from someone named `Linus'.  This
+  `SunOS', and 50 if the article is from someone named `Linus'. This
   means that if Bill@Somewhere writes an article whose subject is `Swap,
-  Swap, Swap', the article is given -10 points.  However, if Linus
-  writes an article with the same title, it is given -10 + 50 = 40
-  points.  Note that the first test expires at the beginning of 2010.
+  Swap, Swap', the article is given -10 points. However, if Linus writes
+  an article with the same title, it is given -10 + 50 = 40 points. Note
+  that the first test expires at the beginning of 2010.
 
   The fourth test kills all articles that were cross-posted to an
-  advocacy newsgroup UNLESS they were posted by Linus.  Note that if a
+  advocacy newsgroup UNLESS they were posted by Linus. Note that if a
   keyword begins with the `~' character, the effect of the regular
   expression is reversed.
 
