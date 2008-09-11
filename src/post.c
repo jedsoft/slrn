@@ -1045,19 +1045,24 @@ int slrn_prepare_file_for_posting (char *file, unsigned int *line, Slrn_Article_
 	switch (tmp->critical)
 	  {
 	   case MIME_ERROR_NET:
-	     has_net = 1;
+	     if (Slrn_Netiquette_Warnings)	     
+	       has_net = 1;
 	     break;
 	   case MIME_ERROR_CRIT:
 	     has_crit = 1;
 	     break;
 	   case MIME_ERROR_WARN:
 	     has_warn = 1;
+	     break;
 	  }
 	tmp = tmp->next;
      }
    
    ret = 0;
    *line = 0;
+
+   if ((has_crit == 0) && (has_warn == 0) && (has_net == 0))
+     goto free_and_return;
 
    if (Slrn_Batch)
      {
@@ -1110,8 +1115,8 @@ int slrn_prepare_file_for_posting (char *file, unsigned int *line, Slrn_Article_
 	row += 2;
 	display_errors (mime_errors, MIME_ERROR_WARN, line, &row, SLtt_Screen_Rows-9);
      }
-	
-   if (has_net && Slrn_Netiquette_Warnings)
+
+   if (has_net)
      {
 	if (ret == 0)
 	  ret = 2;
