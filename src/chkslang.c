@@ -97,9 +97,58 @@ set them.  Also try: make clean; make\n******\n\n"));
 	fprintf (stderr, _("Your slang version is %s.\n"), make_version(sl_version));
 	fprintf (stderr, _("To fully utilize this program, you should upgrade the slang library to\n"
 			   "  version %s\n"), make_version(sug_version));
-	fprintf (stderr, _("This library is available via anonymous ftp from\n\
-space.mit.edu in pub/davis/slang.\n"));
+	fprintf (stderr, _("This library is available from <http://www.jedsoft.org/slang/>.\n"));
      }
    
+
+#ifdef SIZEOF_SHORT
+   if (sizeof(short) != SIZEOF_SHORT)
+     {
+	fprintf (stderr, "SIZEOF_SHORT[%lu] is not equal to sizeof(short)[%lu]\n",
+		 (unsigned long) SIZEOF_SHORT, (unsigned long) sizeof(short));
+	ret = FAILURE;
+     }
+#endif
+#ifdef SIZEOF_INT
+   if (sizeof(int) != SIZEOF_INT)
+     {
+	fprintf (stderr, "SIZEOF_INT[%lu] is not equal to sizeof(int)[%lu]\n",
+		 (unsigned long) SIZEOF_INT, (unsigned long) sizeof(int));
+	ret = FAILURE;
+     }
+#endif
+#ifdef SIZEOF_LONG
+   if (sizeof(long) != SIZEOF_LONG)
+     {
+	fprintf (stderr, "SIZEOF_LONG[%lu] is not equal to sizeof(long)[%lu]\n",
+		 (unsigned long) SIZEOF_LONG, (unsigned long) sizeof(long));
+	ret = FAILURE;
+     }
+#endif
+#ifdef SIZEOF_LONG_LONG
+   if (sizeof(long long) != SIZEOF_LONG_LONG)
+     {
+	fprintf (stderr, "SIZEOF_LONG_LONG[%lu] is not equal to sizeof(long long)[%lu]\n",
+		 (unsigned long) SIZEOF_LONG_LONG, (unsigned long) sizeof(long long));
+	ret = FAILURE;
+     }
+#endif
+#ifdef SIZEOF_FLOAT
+   if (sizeof(float) != SIZEOF_FLOAT)
+     {
+	fprintf (stderr, "SIZEOF_FLOAT[%lu] is not equal to sizeof(float)[%lu]\n",
+		 (unsigned long) SIZEOF_FLOAT, (unsigned long) sizeof(float));
+	ret = FAILURE;
+     }
+#endif
+#ifdef SIZEOF_DOUBLE
+   if (sizeof(double) != SIZEOF_DOUBLE)
+     {
+	fprintf (stderr, "SIZEOF_DOUBLE[%lu] is not equal to sizeof(double)[%lu]\n",
+		 (unsigned long) SIZEOF_DOUBLE, (unsigned long) sizeof(double));
+	ret = FAILURE;
+     }
+#endif
+
    return ret;
 }

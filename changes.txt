@@ -42,6 +42,7 @@ Changes since 0.9.9
 22. src/slrnconf.c: NNTP_ARTNUM_TYPE_MAX was defined as a long and not
     a long long (missing LL suffix at the end of the literal constant).
 23. src/slrnconf.c: (Win32) SIZEOF_* values were missing.
+24. src/chkslang.c: Added SIZEOF_* checks.
 
 {{{ Previous Versions 
 
