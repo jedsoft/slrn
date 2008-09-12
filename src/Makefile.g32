@@ -12,6 +12,7 @@ CCFLAGS = -O2 -fno-strength-reduce -W -Wall
 LDFLAGS = -Wl,--subsystem,console
 MISCLIBS = -lwsock32 -lwinspool
 SLSH = slsh
+P = /# Path separator for running external progs such as chkslang
 
 #-----------------------------------------------------------------------------
 # Directory where the slang library, once installed  is located.
@@ -96,7 +97,7 @@ CFLAGS = $(CCFLAGS) $(DLL_FLAGS) $(SLANG_INC) $(SLRNLIBDIR)
 COMMON_DEPS = config.h slrnfeat.h
 server_O_DEP = clientlib.c spool.c nntp.c sltcp.c nntplib.c
 chmap_O_DEP = chmap.h charmaps.h
-chkslang_O_DEP = config.h Makefile
+chkslang_O_DEP = config.h Makefile Makefile.g32
 version_O_DEP = version.h
 group_C_CFLAGS = -DSLRN_LIB_DIR='"$(SLRN_LIB_DIR)"'
 slrn_C_CFLAGS = -DSLRN_CONF_DIR='"$(SLRN_CONF_DIR)"'
@@ -116,7 +117,7 @@ slrnfeat.h: win32/slrnfeat.def slrnfeat.hin
 	$(SLSH) win32/subst.sl win32/slrnfeat.def slrnfeat.hin slrnfeat.h
 #
 slangversion: $(OBJDIR)/chkslang.exe
-	.\$(OBJDIR)\chkslang.exe slrn 20000
+	.$(P)$(OBJDIR)$(P)chkslang.exe slrn 20000
 $(OBJDIR)/chkslang.exe: $(OBJDIR)/chkslang.o
 	$(CC) $(OBJDIR)/chkslang.o -o $(OBJDIR)/chkslang.exe $(SLANG_LIB)
 $(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h $(COMMON_DEPS)

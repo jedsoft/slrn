@@ -43,6 +43,8 @@ Changes since 0.9.9
     a long long (missing LL suffix at the end of the literal constant).
 23. src/slrnconf.c: (Win32) SIZEOF_* values were missing.
 24. src/chkslang.c: Added SIZEOF_* checks.
+25. src/Makefile.g32: (Win32) Use / as the path separator when running
+    chkslang.
 
 {{{ Previous Versions 
 
