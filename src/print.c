@@ -153,7 +153,7 @@ Slrn_Print_Type *win32_open_printer (void)
    
    if (FALSE == OpenPrinterA (printer_name, &h, NULL))
      {
-	slrn_error (_("OpenPrinterA failed: %d"), GetLastError ());
+	slrn_error (_("OpenPrinterA failed: %lu"), GetLastError ());
 	slrn_free ((char *) p);
 	return NULL;
      }
@@ -161,7 +161,7 @@ Slrn_Print_Type *win32_open_printer (void)
    
    if (FALSE == StartDocPrinterA (h, 1, (unsigned char *) &doc_info))
      {
-	slrn_error (_("StartDocPrinterA failed: %d"), GetLastError ());
+	slrn_error (_("StartDocPrinterA failed: %lu"), GetLastError ());
 	ClosePrinter (h);
 	slrn_free ((char *) p);
 	return NULL;
@@ -181,7 +181,7 @@ static int win32_write_to_printer (Slrn_Print_Type *p, char *buf, unsigned int l
    if (FALSE == WritePrinter (p->h, buf, len, &nlen))
      {
 	p->error_status = 1;
-	slrn_error (_("Write to printer failed: %d"), GetLastError ());
+	slrn_error (_("Write to printer failed: %lu"), GetLastError ());
 	return -1;
      }
    

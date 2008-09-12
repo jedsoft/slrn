@@ -35,6 +35,12 @@ Changes since 0.9.9
     considered when writing it to the top menu line, causing a long
     string to be truncated (Thomas Wiegner).
 19. doc/: Documentation updates (doc-team).
+20. src/post.c: Avoid a momentatary display of "Your message is not
+    acceptable..." when a post/followup has a netiquette error, but
+    the user is ignoring such errors. (Peter J. Ross)
+21. src/print.c: %d was being used to print a DWORD arg (Win32 specific)
+22. src/slrnconf.c: NNTP_ARTNUM_TYPE_MAX was defined as a long and not
+    a long long (missing LL suffix at the end of the literal constant).
 
 {{{ Previous Versions 
 
