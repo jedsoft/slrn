@@ -251,6 +251,7 @@ static void va_log (FILE *fp, char *pre, char *fmt, va_list ap) /*{{{*/
 
 /*}}}*/
 
+static void log_message (char *fmt, ...) SLATTRIBUTE_PRINTF(1,2);
 static void log_message (char *fmt, ...) /*{{{*/
 {
    va_list ap;

@@ -117,6 +117,8 @@ static unsigned int bytes_read=0;
 
 /* Note: Please leave debugging output untranslated.
  *       It cannot be interpreted by the end user anyway. */
+static void debug_output (char *file, int line, char *fmt, ...) ATTRIBUTE_PRINTF(3,4);
+
 static void debug_output (char *file, int line, char *fmt, ...)
 {
    va_list ap;
@@ -602,7 +604,7 @@ static int spool_nntp_newgroups (char *line, char *buf, unsigned int len)
 #endif /* NOT HAVE_TIMEZONE */
      }
 
-   debug_output (NULL, -1, "threshold for spool_nntp_newsgrups is %d",threshold);
+   debug_output (NULL, -1, "threshold for spool_nntp_newsgrups is %lu", (unsigned long) threshold);
 
    spool_fclose_local();
    Spool_fh_local = fopen (Slrn_ActiveTimes_File, "r");
@@ -1011,7 +1013,7 @@ static int spool_select_group (char *name, NNTP_Artnum_Type *min, NNTP_Artnum_Ty
    Spool_Max_Artnum = *max;
    Spool_Min_Artnum = *min;
 
-   debug_output (NULL, -1, "Group: %s %d - %d", name, *min, *max);
+   debug_output (NULL, -1, "Group: %s " NNTP_FMT_ARTRANGE, name, *min, *max);
    return OK_GROUP;
 }
 

@@ -168,7 +168,8 @@ int SLtcp_TimeOut_Secs = SLRN_SLTCP_TIMEOUT_SECS;
 static int TCP_Verbose_Reporting = 0;
 
 void (*SLtcp_Verror_Hook) (char *, va_list);
-static void print_error (char *fmt, ...)
+static void print_error (char *fmt, ...) SLATTRIBUTE_PRINTF(1,2);
+static void print_error (char *fmt, ...) 
 {
    va_list ap;
    
@@ -184,7 +185,7 @@ static void print_error (char *fmt, ...)
    va_end (ap);
 }
 
-void (*SLtcp_Error_Hook) (char *, ...);
+/* void (*SLtcp_Error_Hook) (char *, ...) SLATTRIBUTE_PRINTF(1,2); */
 
 
 

@@ -45,6 +45,10 @@ Changes since 0.9.9
 24. src/chkslang.c: Added SIZEOF_* checks.
 25. src/Makefile.g32: (Win32) Use / as the path separator when running
     chkslang.
+26. src/spool.c: In a few debug statements, the wrong format was being
+    using for article numbers.
+27. src/slrnpull.c: Add the SLATTRIBUTE_PRINTF attribute to the
+    log_message function.
 
 {{{ Previous Versions 
 
