@@ -41,6 +41,7 @@ Changes since 0.9.9
 21. src/print.c: %d was being used to print a DWORD arg (Win32 specific)
 22. src/slrnconf.c: NNTP_ARTNUM_TYPE_MAX was defined as a long and not
     a long long (missing LL suffix at the end of the literal constant).
+23. src/slrnconf.c: (Win32) SIZEOF_* values were missing.
 
 {{{ Previous Versions 
 

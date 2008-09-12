@@ -215,10 +215,16 @@
 #define _(a) (a)
 #define N_(a) a
 
+#define SIZEOF_SHORT		2
+#define SIZEOF_INT		4
+#define SIZEOF_LONG		4
+#define SIZEOF_FLOAT		4
+#define SIZEOF_DOUBLE		8
+#define SIZEOF_LONG_LONG	8
+
 #undef HAVE_LONG_LONG
 #undef HAVE_ATOLL
 #undef HAVE_STRTOLL
-#define SIZEOF_LONG_LONG 8
 
 #if defined(HAVE_LONG_LONG) && (SIZEOF_LONG < SIZEOF_LONG_LONG)
 typedef long long NNTP_Artnum_Type;
