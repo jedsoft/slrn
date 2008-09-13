@@ -876,11 +876,11 @@ static int spool_read_minmax_from_active( char *name, NNTP_Artnum_Type *min, NNT
 	    && (0 == memcmp (buf, name, len)))
 	  {
 	     spool_fclose_local ();
-	     if (2 != sscanf (buf + len + 1, "%d%d", max, min))
+	     if (2 != sscanf (buf + len + 1, NNTP_FMT_ARTNUM NNTP_FMT_ARTNUM, max, min))
 	       return -1;
 
 	     Spool_Max_Artnum = *max;
-	     debug_output (NULL, -1, "from active:%s %d %d", name, *min, *max);
+	     debug_output (NULL, -1, "from active:%s " NNTP_FMT_ARTNUM_2, name, *min, *max);
 	     return 0;
 	  }
 	buf[len] = 0;
@@ -1119,15 +1119,11 @@ static int spool_read_line (char *line, unsigned int len)
 	if ((len > 33) &&
 	    (1 == (retval = spool_read_xhdr (buf, sizeof (buf)))))
 	  {
-	     int numlen;
-#ifdef HAVE_ANSI_SPRINTF
-	     numlen =
-#endif
-	     sprintf (line, (NNTP_FMT_ARTNUM " "), (Spool_XOver_Next - 1)); /* safe */
-#ifndef HAVE_ANSI_SPRINTF
+	     unsigned int numlen;
+	     (void) slrn_snprintf (line, len, (NNTP_FMT_ARTNUM " "), (Spool_XOver_Next - 1));
 	     numlen = strlen (line);
-#endif
-	     slrn_strncpy (line + numlen, buf, len - numlen);
+	     if (len > numlen)
+	       slrn_strncpy (line + numlen, buf, len - numlen);
 	  }
 	return retval;
      }
@@ -1165,7 +1161,7 @@ static int spool_read_xpat (char *buf, unsigned int len)
    
    if (Spool_XPat_Struct.xover_field == -1)
      {
-	unsigned int num;
+	NNTP_Artnum_Type num;
 	
 	for (num = Spool_XPat_Struct.rmin; num <= Spool_XPat_Struct.rmax; num++)
 	  {
@@ -1180,7 +1176,7 @@ static int spool_read_xpat (char *buf, unsigned int len)
 		  Spool_Doing_XPat = 1;
 		  Spool_XPat_Struct.rmin = num + 1;
 		  
-		  slrn_snprintf (buf, len, "%d ", num);
+		  slrn_snprintf (buf, len, (NNTP_FMT_ARTNUM " "), num);
 		  blen = strlen (buf);
 		  
 		  strncpy (buf + blen, tmpbuf, len - blen);
@@ -1197,12 +1193,12 @@ static int spool_read_xpat (char *buf, unsigned int len)
 	/* read the overview file until the right field matches the pattern */
 	while (NULL != (fgets (tmpbuf, sizeof (tmpbuf), Spool_fh_local)))
 	  {
-	     int field = Spool_XPat_Struct.xover_field + 1;
 	     /* first field is article number; "+1" skips it */
-	     unsigned int num = (unsigned int) atoi (tmpbuf);
+	     int field = Spool_XPat_Struct.xover_field + 1;
+	     NNTP_Artnum_Type num = NNTP_STR_TO_ARTNUM (tmpbuf);
 	     char *b = tmpbuf, *end;
 	     
-	     if (num > Spool_XPat_Struct.rmax)
+	     if ((num > Spool_XPat_Struct.rmax) || (num < 0))
 	       {
 		  spool_fclose_local ();
 		  return 0;
@@ -1233,9 +1229,9 @@ static int spool_read_xpat (char *buf, unsigned int len)
 		  unsigned int blen;
 		  
 		  Spool_Doing_XPat = 1;
-		  slrn_snprintf (buf, len, "%u ", num);
+		  slrn_snprintf (buf, len, (NNTP_FMT_ARTNUM " "), num);
 		  blen = strlen (buf);
-		  
+
 		  strncpy (buf + blen, b, len - blen);
 		  buf[len - 1] = 0;
 		  return 1;

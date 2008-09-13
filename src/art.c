@@ -1934,6 +1934,9 @@ static char *read_localpart (char *start, char *dest, size_t max) /*{{{*/
 
    if (max) *dest = '\0';
    
+   if (*start == 0)
+     return NULL;
+
    while ((*start == ' ') || (*start == '\t')) start++;
    while (*start == '(')
      {

@@ -76,11 +76,7 @@
 # endif
 #endif
 
-#if defined(__CYGWIN32__) && !defined(__CYGWIN__)
-# define __CYGWIN__
-#endif
-
-#if defined(__CYGWIN__) || defined(__MINGW32__) || defined(__WATCOMC__)
+#if defined(__MINGW32__) || defined(__WATCOMC__)
 # ifndef __WIN32__
 #  define __WIN32__
 # endif
@@ -124,14 +120,12 @@
 #endif
 
 #if defined(__NT__) || defined(__WIN32__)
-# ifndef __CYGWIN__
-#  define HAVE_UNISTD_H 1
-# endif
+# define HAVE_UNISTD_H 1
 # define HAVE_MEMORY_H 1
 # define HAVE_FCNTL_H 1
 # define HAVE_LOCALE_H 1
 # define HAVE_SETLOCALE 1
-# if defined(__CYGWIN__) || defined(__MINGW32__)
+# if defined(__MINGW32__)
 #  define HAVE_DIRENT_H 1
 # else
 #  define HAVE_DIRECT_H 1
@@ -141,7 +135,7 @@
 #endif
 
 #if defined(__WIN32__)
-# if !defined(__CYGWIN__) && !defined(__MINGW32__)
+# if !defined(__MINGW32__)
 #  define HAVE_WINSPOOL_H
 # endif
 #endif
@@ -195,7 +189,7 @@
 #define SLRN_POST_ID_INEWS 2
 #define SLRN_POST_ID_PULL 3
 
-#if defined(IBMPC_SYSTEM) && !defined(__CYGWIN__)
+#if defined(IBMPC_SYSTEM)
 # define SLRN_PATH_SLASH_CHAR	'\\'
 #endif
 
@@ -228,10 +222,17 @@
 
 #if defined(HAVE_LONG_LONG) && (SIZEOF_LONG < SIZEOF_LONG_LONG)
 typedef long long NNTP_Artnum_Type;
-# define NNTP_FMT_ARTNUM "%lld"
-# define NNTP_FMT_ARTNUM_2 "%lld %lld"
-# define NNTP_FMT_ARTNUM_3 "%lld %lld %lld"
-# define NNTP_FMT_ARTRANGE "%lld-%lld"
+# ifdef IBMPC_SYSTEM
+#  define NNTP_FMT_ARTNUM "%I64d"
+#  define NNTP_FMT_ARTNUM_2 "%I64d %I64d"
+#  define NNTP_FMT_ARTNUM_3 "%I64d %I64d %I64d"
+#  define NNTP_FMT_ARTRANGE "%I64d-%I64d"
+# else
+#  define NNTP_FMT_ARTNUM "%lld"
+#  define NNTP_FMT_ARTNUM_2 "%lld %lld"
+#  define NNTP_FMT_ARTNUM_3 "%lld %lld %lld"
+#  define NNTP_FMT_ARTRANGE "%lld-%lld"
+# endif
 # ifdef HAVE_ATOLL
 #  define NNTP_STR_TO_ARTNUM(x) atoll(x)
 # else

@@ -14,6 +14,7 @@
 # include <stdlib.h>
 #endif
 
+#include <string.h>
 #include <slang.h>
 #include "jdmacros.h"
 
@@ -132,7 +133,24 @@ set them.  Also try: make clean; make\n******\n\n"));
 		 (unsigned long) SIZEOF_LONG_LONG, (unsigned long) sizeof(long long));
 	ret = FAILURE;
      }
+# if (SIZEOF_LONG_LONG >= 8)
+   else
+     {
+	long long x = 9223372036854775807LL;
+	long long y = 0, z = 0;
+
+	if ((2 != sscanf ("9223372036854775807 9223372036854775807",
+			  NNTP_FMT_ARTNUM_2, &y, &z))
+	    || (y != x) || (z != x))
+	  {
+	     fprintf (stderr, "The long long format \"%s\" does not appear to work properly\n", NNTP_FMT_ARTNUM);
+	     fprintf (stderr, "Please check/correct the config.h file.\n");
+	     ret = FAILURE;
+	  }
+     }
+# endif	     
 #endif
+
 #ifdef SIZEOF_FLOAT
    if (sizeof(float) != SIZEOF_FLOAT)
      {

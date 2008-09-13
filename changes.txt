@@ -49,6 +49,14 @@ Changes since 0.9.9
     using for article numbers.
 27. src/slrnpull.c: Add the SLATTRIBUTE_PRINTF attribute to the
     log_message function.
+28. src/spool.c: A %d format was used for an article number in a
+    section of code activated by the SPOOL_ACTIVE_FOR_ART_RANGE
+    feature,   Also the XPAT code was using an unsigned int instead of
+    an NNTP_Artnum_Type object.
+29. src/art.c: An empty "From:" was not being parsed properly.
+30. src/slrnconf.h: Removed references to cygwin and changed the
+    long-long format string from %lld to %I64d on win32 systems.
+31. src/chkslang.c: Added a test for the long-long format string.
 
 {{{ Previous Versions 
 
