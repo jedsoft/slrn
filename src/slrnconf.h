@@ -216,6 +216,9 @@
 #define SIZEOF_DOUBLE		8
 #define SIZEOF_LONG_LONG	8
 
+/* If your system has long long integers and you want to use 64 bit article
+ * numbers, then be sure to defined HAVE_LONG_LONG.
+ */
 #undef HAVE_LONG_LONG
 #undef HAVE_ATOLL
 #undef HAVE_STRTOLL
