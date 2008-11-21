@@ -1,4 +1,8 @@
 -*- mode: text; mode: fold -*-
+Changes since 0.9.9p1
+1. src/charset.c: Avoid using CODESET if it is not defined.
+2. doc/slrn.1: Remove blank line at top of file. (Ignatios Souvatzis)
+
 Changes since 0.9.9
 1. src/misc.c: The code assumed that slrn_make_from_string returned a
    string of the form "From: ".  If the value returned by

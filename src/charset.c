@@ -44,7 +44,7 @@ char *Slrn_Fallback_Input_Charset = NULL;
 
 void slrn_init_charset (void)
 {
-#if defined(HAVE_LOCALE_H) && defined(HAVE_LANGINFO_H)
+#if defined(HAVE_LOCALE_H) && defined(HAVE_LANGINFO_H) && defined(CODESET)
   if (Slrn_Display_Charset == NULL)
     {
        /* setlocale has already been called when this function is called */

@@ -3,7 +3,7 @@
   Thomas Schultz <tststs@gmx.de>
   Thomas Wiegner <wiegner@gmx.de>
   Peter J Ross <peadar.ruadh@gmail.com>
-  Version 0.9.9, September 2008
+  Version 0.9.9p1, October 2008
 
   Using and customizing the slrn newsreader
   ______________________________________________________________________
