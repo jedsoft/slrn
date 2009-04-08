@@ -26,18 +26,24 @@ After compiling it, `slrn --version' should indicate SSL support.
 Using SLRN with secure servers
 ------------------------------
 
-As far as slrn is concerned, only those servers whose names are
-prefixed with "snews://" are secure and require SSL.  So,
-to access a secure server such as netscape's secnews.netscape.com,
-simply prefix the NNTP host name with "snews://".  For instance, 
+As far as slrn is concerned, only those servers whose names are prefixed with
+"snews://" are secure and require SSL.  So, to access a secure server such as
+netscape's secnews.netscape.com, simply prefix the NNTP host name with
+"snews://" and, if required, specify the port number.  For instance, 
 
-   slrn -h snews://secnews.netscape.com --create
+   slrn -h snews://secnews.netscape.com:563 --create
 
 In your .slrnrc file, you may want to add a line such as:
 
-   server "snews://secnews.netscape.com" ".newsrc-netscape"
+   server "snews://secnews.netscape.com:563" ".newsrc-netscape"
 
 to indicate that the file ".newsrc-netscape" should be used for this
 server.
+
+ 
+If the server requires authentication, you may also want to add a line such
+as:
+
+   nnrpaccess "snews://secnews.netscape.com:563" "username" "password"
 
 That's it!

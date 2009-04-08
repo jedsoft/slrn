@@ -300,7 +300,6 @@ static int match_srt (Slrn_Header_Type *h, Score_Regexp_Type *srt,
 	       }
 	     if (or_type) return 1;
 	     goto next_srt;
-             break;
 
 	   case SCORE_SUB_OR:
              if (match_srt(h, srt->search.srt, newsgroup, 1))
@@ -321,7 +320,6 @@ static int match_srt (Slrn_Header_Type *h, Score_Regexp_Type *srt,
 	       }
              if (or_type) return 1;
 	     goto next_srt;
-             break;
            default:
              s = NULL;            /* not supposed to happen */
           } /*switch (srt->header_type)*/

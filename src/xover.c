@@ -618,11 +618,7 @@ static Slrn_Header_Line_Type *copy_add_headers (Slrn_Header_Line_Type *l, /*{{{*
 
 	value = slrn_safe_strmalloc(value);
 #ifndef SLRNPULL_CODE /* FIXME */
-	if (slrn_case_strcmp (name,
-			      "Newsgroups") &&
-	    slrn_case_strcmp (name,
-			      "Followup-To"))
-	   slrn_rfc1522_decode_string (&value);
+	(void) slrn_rfc1522_decode_header (name, &value);
 #endif
 	
 	if (NULL == (copy = (Slrn_Header_Line_Type*) slrn_malloc

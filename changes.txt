@@ -2,6 +2,13 @@
 Changes since 0.9.9p1
 1. src/charset.c: Avoid using CODESET if it is not defined.
 2. doc/slrn.1: Remove blank line at top of file. (Ignatios Souvatzis)
+3. src/Makefile.in: /bin/sh on solaris does not like empty lists in a
+   for loop causing make install to fail.  Workaround added
+   (Petr Sumbera).
+4. src/mime.c: rewrote much of the email address encoding/decoding so
+   that only comment fields in email addresses are encoded/decoded.
+   slrn is also smarted in encoding/decoding other headers (based on
+   patch from Robert Grimm).
 
 Changes since 0.9.9
 1. src/misc.c: The code assumed that slrn_make_from_string returned a

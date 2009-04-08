@@ -186,7 +186,8 @@ installdocs:
 		fi; \
 	done
 installslang:
-	@for i in $(CONF_FILES); \
+	@files=$(CONF_FILES); \
+	for i in $$files; \
 	do \
 		echo $(INSTALL_DATA) $$i $(DEST_CONFDIR); \
 		$(INSTALL_DATA) $$i $(DEST_CONFDIR); \

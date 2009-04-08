@@ -14,7 +14,7 @@ typedef struct Slrn_Mime_Error_Obj
    unsigned int lineno;
 } Slrn_Mime_Error_Obj;
 
-extern int slrn_rfc1522_decode_string (char **);
+extern int slrn_rfc1522_decode_header (char *name, char **hdrp);
 
 extern Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **, char *);
 extern int slrn_mime_process_article (Slrn_Article_Type *);

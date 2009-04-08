@@ -55,6 +55,7 @@
 #include "charset.h"
 #include "common.h"
 #include "strutil.h"
+#include "parse2822.h"
 
 /*}}}*/
 
@@ -62,6 +63,21 @@
 
 /*}}}*/
 
+#if 0
+static void parse_rfc2822_intrin (char *header)
+{
+   char *errmsg;
+   char *map;
+
+   if (NULL == (map = slrn_parse_rfc2822_addr (header, &errmsg)))
+     {
+	SLang_verror (SL_Syntax_Error, "%s", errmsg);
+	return;
+     }
+   SLang_push_string (map);
+   SLfree (map);
+}
+#endif
 
 /*{{{ Screen update and message functions */
 
@@ -1477,6 +1493,7 @@ static int unregister_hook (void)
 
 static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
 {
+   /* MAKE_INTRINSIC_S("parse_rfc2822", parse_rfc2822_intrin, SLANG_VOID_TYPE), */
    MAKE_INTRINSIC_0("headers_hidden_mode", slrn_is_hidden_headers_mode, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("replace_article", replace_article_cmd, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_S("message_now", message_now, SLANG_VOID_TYPE),

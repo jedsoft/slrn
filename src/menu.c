@@ -1035,7 +1035,7 @@ int slrn_popup_win_mode (char *title, char *text)
    if (Select_List_Quit == -1)
      return -1;
    
-   return SLang_Last_Key_Char;;
+   return SLang_Last_Key_Char;
 }
 
 static int file_strcmp (char **ap, char **bp)

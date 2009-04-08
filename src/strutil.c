@@ -308,6 +308,7 @@ void slrn_free (char *s)
    if (s != NULL) SLfree (s);
 }
 
+/* return a:amax + s + b:bmax */
 char *slrn_substrjoin (char *a, char *amax, char *b, char *bmax, char *s)
 {
    unsigned int len_a, len_b, len_s, len;
@@ -339,6 +340,7 @@ char *slrn_substrjoin (char *a, char *amax, char *b, char *bmax, char *s)
    return c;
 }
 
+/* return a + s + b */
 char *slrn_strjoin (char *a, char *b, char *s)
 {
    return slrn_substrjoin (a, NULL, b, NULL, s);

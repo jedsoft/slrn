@@ -51,6 +51,7 @@
 #include "charset.h"
 #include "common.h"
 #include "hdrutils.h"
+#include "parse2822.h"
 
 int Slrn_Use_Meta_Mail = 1;
 int Slrn_Fold_Headers = 1;
@@ -325,7 +326,7 @@ static char *decode_base64 (char *dest, char *src, char *srcmax, int keep_nl, in
 
 /* Warning: It must be ok to free *s_ptr and replace it with the converted
  * string */
-int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
+static int rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{*/
 {
    char *s1, *s2, ch, *s;
    char *charset, method, *txt;
@@ -341,20 +342,7 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
    charset = NULL;
    s= *s_ptr;
 
-   if (slrn_string_nonascii (s))
-     {
-       /* Only ascii is allowed in headers, if we find unencoded 8 bit chars
-        * convert them with the fallback charset.
-	*/
-	if (NULL == (s = slrn_convert_string (NULL, s, s+strlen(s), 
-					       Slrn_Display_Charset, 0)))
-	  return -1;
-
-	slrn_free (*s_ptr);
-	*s_ptr = s;
-	/* return 0; */
-     }
-
+   s = s + start_offset;
    while (1)
      {
 	char *decoded_start, *decoded_end;
@@ -463,7 +451,12 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 	     
 	     if (s2 != NULL)
 	       {
+		  /* FIXME --- currently slrn_strdup_strcat will exit */
 		  s = slrn_strdup_strcat (s2, decoded_end, NULL);
+		  if (s == NULL)
+		    {
+		    }
+
 		  slrn_free(*s_ptr);
 		  *s_ptr = s;
 		  s += strlen(s2);
@@ -487,6 +480,222 @@ int slrn_rfc1522_decode_string (char **s_ptr)/*{{{*/
 
 #ifndef SLRNPULL_CODE /* rest of the file in this ifdef */
 
+/* Decode everything after the colon */
+static int rfc1522_decode_header_generic (char **hdr, unsigned int start_offset)
+{
+   return rfc1522_decode_string (hdr, start_offset);
+}
+
+static int rfc1522_decode_header_email (char **hdr, unsigned int start_offset)
+{
+   char *encodemap;
+   char *header, *addr;
+   char *errmsg;
+   unsigned int i0, last_i0, imax;
+   char *new_header = NULL;
+   unsigned int new_header_len;
+   char *tail;
+   int status;
+
+   header = *hdr;
+   addr = header + start_offset;
+
+   if (NULL == slrn_strbyte (addr, '?'))
+     return 0;
+
+   if (NULL == (encodemap = slrn_parse_rfc2822_addr (addr, &errmsg)))
+     {
+	slrn_error ("%s", errmsg);
+	return -1;
+     }
+
+   imax = strlen (encodemap);
+   i0 = 0;
+   while ((i0 < imax)
+	  && (encodemap[i0] == ' '))
+     i0++;
+   
+   status = 0;
+   if (i0 == imax)
+     {
+	slrn_free (encodemap);
+	return 0;
+     }
+
+   new_header_len = i0 + start_offset;
+   new_header = slrn_strnmalloc (header, new_header_len, 1);
+   if (new_header == NULL)
+     goto return_error;
+
+   status = 0;
+   tail = header + new_header_len;
+   last_i0 = i0;
+   while (1)
+     {
+	char *tmp, *str;
+	unsigned int i1, dlen;
+	int dstatus;
+
+	if ((i0 < imax)
+	    && (encodemap[i0] == ' '))
+	  {
+	     i0++;
+	     continue;
+	  }
+	
+	tmp = slrn_substrjoin (new_header, new_header+new_header_len,
+			       addr + last_i0, addr + i0,
+			       NULL);
+	if (tmp == NULL)
+	  goto return_error;
+   
+	slrn_free (new_header);
+	new_header = tmp;
+	new_header_len += i0 - last_i0;
+	
+	if (i0 == imax)
+	  break;
+
+	i1 = i0 + 1;
+	while ((i1 < imax)
+	       && (encodemap[i1] != ' '))
+	  i1++;
+
+	str = slrn_strnmalloc (addr + i0, i1-i0, 1);
+	if (str == NULL)
+	  goto return_error;
+
+	if (-1 == (dstatus = rfc1522_decode_string (&str, 0)))
+	  {
+	     slrn_free (str);
+	     goto return_error;
+	  }
+	status = status || (dstatus != 0);
+
+	dlen = strlen (str);
+	tmp = slrn_substrjoin (new_header, new_header + new_header_len,
+			       str, str + dlen, NULL);
+	slrn_free (str);
+
+	if (tmp == NULL)
+	  goto return_error;
+
+	slrn_free (new_header);
+	new_header = tmp;
+	new_header_len += dlen;
+	
+	last_i0 = i0 = i1;
+     }
+   
+   slrn_free (encodemap);
+   slrn_free (*hdr);
+   *hdr = new_header;
+   return status;
+   
+return_error:
+   if (new_header != NULL)
+     slrn_free (new_header);
+   if (encodemap != NULL)
+     slrn_free (encodemap);
+
+   return -1;
+}
+
+typedef struct
+{
+   char *header;
+   unsigned int header_len;
+   int (*decode_func)(char **, unsigned int);
+}
+Header_Decode_Type;
+
+static Header_Decode_Type Header_Decode_Table[] = 
+{
+   {"Message-ID", 10, NULL},
+   {"Followup-To", 11, NULL},
+   {"Newsgroups", 10, NULL},
+   {"References", 10, NULL},
+   {"Received", 10, NULL},
+   {"Xref", 10, NULL},
+   {"Cc", 2, rfc1522_decode_header_email},
+   {"To", 2, rfc1522_decode_header_email},
+   {"Reply-To", 8, rfc1522_decode_header_email},
+   {"Mail-Copies-To", 14, rfc1522_decode_header_email},
+   {"From", 4, rfc1522_decode_header_email},
+   {NULL, 0, NULL}
+};
+
+static Header_Decode_Type *find_header_decode_info (char *header, unsigned int len)
+{
+   Header_Decode_Type *hdt;
+   
+   hdt = Header_Decode_Table;
+
+   while (hdt->header != NULL)
+     {
+	if ((hdt->header_len == len)
+	    && (0 == slrn_case_strncmp (hdt->header, header, len)))
+	  return hdt;
+	
+	hdt++;
+     }
+   return NULL;
+}
+
+/* Warning: It must be ok to free *s_ptr and replace it with the converted
+ * string */
+int slrn_rfc1522_decode_header (char *name, char **hdrp)
+{
+   char *header;
+   unsigned int len, start_offset;
+   Header_Decode_Type *hdt;
+   int (*decode_func)(char **, unsigned int);
+
+   header = *hdrp;
+   if (slrn_string_nonascii (header))
+     {
+       /* Only ascii is allowed in headers, if we find unencoded 8 bit chars
+        * convert them with the fallback charset.
+	*/
+	char *s = header;
+
+	if (NULL == (s = slrn_convert_string (NULL, s, s+strlen(s),
+					      Slrn_Display_Charset, 0)))
+	  return -1;
+
+	slrn_free (header);
+	header = s;
+	*hdrp = header;
+     }
+
+   if (name == NULL)
+     {
+	char *colon;
+
+	if (NULL == (colon = strchr (header, ':')))
+	  return 0;
+	len = colon - header;
+	name = header;
+	start_offset = len + 1;
+     }
+   else 
+     {
+	len = strlen (name);
+	start_offset = 0;
+     }
+
+   if (NULL == (hdt = find_header_decode_info (name, len)))
+     decode_func = rfc1522_decode_header_generic;
+   else
+     {
+	decode_func = hdt->decode_func;
+	if (decode_func == NULL)
+	  return 0;
+     }
+
+   return (*decode_func)(hdrp, start_offset);
+}
+	
 static void rfc1522_decode_headers (Slrn_Article_Type *a)/*{{{*/
 {
    Slrn_Article_Line_Type *line;
@@ -498,11 +707,7 @@ static void rfc1522_decode_headers (Slrn_Article_Type *a)/*{{{*/
 
    while ((line != NULL) && (line->flags & HEADER_LINE))
      {
-	if (slrn_case_strncmp (line->buf,
-			       "Newsgroups:", 11) &&
-	    slrn_case_strncmp (line->buf,
-			       "Followup-To:", 12) &&
-	    (slrn_rfc1522_decode_string (&line->buf) > 0))
+	if (1 == slrn_rfc1522_decode_header (NULL, &line->buf))
 	  {
 	     a->is_modified = 1;
 	     a->mime.was_modified = 1;
@@ -1611,644 +1816,125 @@ static Slrn_Mime_Error_Obj *min_encode (char **s_ptr, char *from_charset) /*{{{*
 }
 /*}}}*/
 
-static Slrn_Mime_Error_Obj *
-  encode_substring (char *charset, char **s_ptr, 
-		    char *encode_start, char *encode_end,
-		    unsigned int *dlenp)
+static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset)
 {
-   char *encoded_str;
-   char *s = *s_ptr;
+   unsigned int start_offset;
+   char *encodemap;
+   char *header, *addr, ch;
+   char *errmsg;
+   unsigned int i0, last_i0, imax;
+   char *new_header = NULL;
+   unsigned int new_header_len;
+   char *tail;
+   int status;
 
-   encoded_str = rfc1522_encode_string (charset, s, encode_start, encode_end, 0);
-
-   if (encoded_str != NULL)
-     {
-	*dlenp = strlen (encoded_str) - strlen (s);
-	slrn_free (*s_ptr);
-	*s_ptr = encoded_str;
-	return NULL;
-     }
-
-   if (SLang_get_error () == SL_Malloc_Error)
-     return MIME_MEM_ERROR(s);
-
-   return MIME_UNKNOWN_ERROR(s);
-}
-
-
-/* Encode structured header fields ("From:", "To:", "Cc:" and such) {{{ */
-
-#define TYPE_ADD_ONLY 1
-#define TYPE_OLD_STYLE 2
-#define TYPE_RFC_2882 3
-
-/* What is RFC 2882???? */
-#define RFC_2882_SPECIAL_CHARS "()<>[]:;@\\,.\""
-#define RFC_2882_NOT_ATOM_CHARS RFC_2882_SPECIAL_CHARS
-#define RFC_2882_NOT_DOTATOM_CHARS "(),:;<>@[\\]\""
-#define RFC_2882_NOT_QUOTED_CHARS "\t\\\""
-#define RFC_2882_NOT_DOMLIT_CHARS "[\\]"
-#define RFC_2882_NOT_COMMENT_CHARS "(\\)"
-
-static int quoted_pair_char_ok (char *str, char *p, char *pmax, Slrn_Mime_Error_Obj **errp)
-{
-   char ch;
-
-   if (p == pmax)
-     {
-	*errp = slrn_mime_error (_("Expecting a quoted-pair in the header."),  str, 0, MIME_ERROR_CRIT);
-	return 0;
-     }
-
-   ch = *p;
-   if ((ch == '\r') || (ch == '\n'))
-     {
-	*errp = slrn_mime_error (_("Illegal quoted-pair character in header."), str, 0, MIME_ERROR_CRIT);
-	return 0;
-     }
-
-   *errp = NULL;
-   return 1;
-}
-
-static char *skip_comment (char *str, char *p, char *pmax, int *in_commentp, Slrn_Mime_Error_Obj **errp)
-{
-   int in_comment;
-   int want_depth;
-
-   *errp = NULL;
-   in_comment = *in_commentp;
-   want_depth = in_comment-1;
-
-   while (p < pmax)
-     {
-	char ch = *p++;
-	
-	if (ch == '(')
-	  {
-	     in_comment++;
-	     continue;
-	  }
-	
-	if (ch == ')')
-	  {
-	     in_comment--;
-	     if (in_comment == want_depth)
-	       break;
-
-	     continue;
-	  }
-	
-	if (ch == '\\')
-	  {
-	     if (0 == quoted_pair_char_ok (str, p, pmax, errp))
-	       {
-		  *in_commentp = in_comment;
-		  return p;
-	       }
-	     p++;
-	     continue;
-	  }
-
-	if (NULL != slrn_strbyte(RFC_2882_NOT_COMMENT_CHARS, ch))
-	  {
-	     *errp = slrn_mime_error (_("Illegal char in displayname of address header."), str, 0, MIME_ERROR_CRIT);
-	     *in_commentp = in_comment;
-	     return p-1;
-	  }
-     }
-
-   if (in_comment != want_depth)
-     *errp = slrn_mime_error (_("Comment opened but never closed in address header."), str, 0, MIME_ERROR_CRIT);
-
-   *in_commentp = in_comment;
-   return p;
-}
-
-
-static char *skip_quoted_string (char *str, char *p, char *pmax, Slrn_Mime_Error_Obj **errp)
-{
-   *errp = NULL;
-
-   while (p < pmax)
-     {
-	char ch = *p++;
-	
-	if (ch == '"')
-	  return p;
-	
-	if (ch == '\\')
-	  {
-	     if (0 == quoted_pair_char_ok (str, p, pmax, errp))
-	       return p;
-	     p++;
-	     continue;
-	  }
-
-	if (NULL != slrn_strbyte(RFC_2882_NOT_QUOTED_CHARS, ch))
-	  {
-	     *errp = slrn_mime_error (_("Illegal char in displayname of address header."), str, 0, MIME_ERROR_CRIT);
-	     return p-1;
-	  }
-     }
-
-   *errp = slrn_mime_error (_("Quoted string opened but never closed in address header."), str, 0, MIME_ERROR_CRIT);
-   return p;
-}
-
-/* This function gets called with *startp positioned to the character past the
- * opening '('.  Find the matching ')' and encode everything in between.
- */
-static Slrn_Mime_Error_Obj *encode_comment (char **s_ptr, char *charset, unsigned int *startp, unsigned int *maxp) /*{{{*/
-{
-   char *s = *s_ptr;
-   char *p0, *p, *pmax;
-   int in_comment;
-   Slrn_Mime_Error_Obj *err;
-   unsigned int dlen;
-
-   p = p0 = s + *startp;
-   pmax = s + *maxp;
-   in_comment = 1;
-
-   p = skip_comment (s, p, pmax, &in_comment, &err);
-   if (err != NULL)
-     return err;
-   
-   /* p points one character past closing ')' */
-   p--;
-   err = encode_substring (charset, s_ptr, p0, p, &dlen);
-   if (err == NULL)
-     {
-	*startp = (p - s) + dlen;
-	*maxp += dlen;
-     }
-   return err;
-}
-
-/*}}}*/
-
-/* This encodes a string that looks like "some phrase <address>".  Stop 
- * encoding at the start of <address>.
- * 
- * An RFC-2822 phrase consists of "words", which are composed of
- * atoms or quoted strings, or comments.  A quoted string is enclosed
- * in double quotes, and interprets the backslash character as a
- * quote. 
- */
-static Slrn_Mime_Error_Obj *encode_rfc2882_phrase (char **s_ptr, char *charset, unsigned int *startp, unsigned int *stopp) /*{{{*/
-{
-   char *s = *s_ptr;
-   char *p0, *p, *pmax;
-   Slrn_Mime_Error_Obj *err;
-   unsigned int dlen;
-
-   p = p0 = s + *startp;
-   pmax = s + *stopp;
-   
-   while (p < pmax)
-     {
-	unsigned char ch = (unsigned char) *p++;
-
-	if (ch <= 32)
-	  {
-	     if ((ch == '\r') || (ch == '\n'))
-	       return slrn_mime_error (_("Illegal char in displayname of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
-
-	     continue;
-	  }
-	
-	if (ch == '(')
-	  {
-	     int in_comment = 1;
-	     p = skip_comment (s, p, pmax, &in_comment, &err);
-	     if (err != NULL)
-	       return err;
-	     continue;
-	  }
-	
-	if (ch == '"')
-	  {
-	     p = skip_quoted_string (s, p, pmax, &err);
-	     if (err != NULL)
-	       return err;
-	     continue;
-	  }
-	
-	if (ch == '<')
-	  {
-	     p--;
-	     break;
-	  }
-
-	if (NULL != slrn_strbyte(RFC_2882_NOT_ATOM_CHARS, ch))
-	  return slrn_mime_error (_("Illegal char in displayname of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
-     }
-
-   err = encode_substring (charset, s_ptr, p0, p, &dlen);
-   if (err == NULL)
-     {
-	*startp = (p-s) + dlen;
-	*stopp = (pmax-s) + dlen;
-     }
-   return err;
-}
-
-/*}}}*/
-
-/* It will return with *start set to the position of smax, or to the
- * of the '@', '>' (type == TYPE_RFC_2882), or space character, if present.
- */
-static Slrn_Mime_Error_Obj *encode_localpart (char **s_ptr, char *from_charset, unsigned int *start, unsigned int max, int type) /*{{{*/
-{
-   char *s, *str, *smax;
-   int in_quote=0;
-   unsigned int nchars;
-
-   str = *s_ptr;
-   s = str + (*start);
-   smax = str + max;
-   
-   nchars = 0;
-   while (s < smax)
-     {
-	char ch = *s++;
-	
-	if (ch & 0x80)
-	  return slrn_mime_error (_("Non 7-bit char in localpart of address header."), str, 0, MIME_ERROR_CRIT);
-
-	if (ch == '"')
-	  {
-	     in_quote = !in_quote;
-	     if (in_quote)
-	       continue;
-
-	     if (s < smax)
-	       {
-		  ch = *s;
-		  if ((ch == '@') || (ch == '>') || (ch == ' '))
-		    continue;	       /* process these next time through */
-	       }
-	     return slrn_mime_error (_("Wrong quote in localpart of address header."), str, 0, MIME_ERROR_CRIT);
-	  }
-	
-	if (in_quote)
-	  {
-	     if ((ch == ' ')
-		 || (NULL != slrn_strbyte(RFC_2882_NOT_QUOTED_CHARS, ch)))
-	       return slrn_mime_error (_("Illegal char in quoted localpart of address header."), str, 0, MIME_ERROR_CRIT);
-	     
-	     continue;
-	  }
-
-	if (nchars 
-	    && ((ch == '@')
-		|| (ch == ' ')
-		|| (ch == '(')	       /* comment */
-		|| ((ch == '>') && (type = TYPE_RFC_2882))))
-	  {
-	     s--;
-	     break;
-	  }
-
-	if ((ch == ' ')
-	    || (NULL != slrn_strbyte(RFC_2882_NOT_DOTATOM_CHARS, ch)))
-	  return slrn_mime_error (_("Illegal char in localpart of address header."), str, 0, MIME_ERROR_CRIT);
-
-	nchars++;
-     }
-
-   if (in_quote)
-     return slrn_mime_error (_("Wrong quote in localpart of address header."), str, 0, MIME_ERROR_CRIT);
-
-   if (nchars == 0)
-     return slrn_mime_error (_("localpart of the address header is empty"), str, 0, MIME_ERROR_CRIT);
-
-   *start=(s-str);
-   /* return slrn_mime_error (_("No domain found in address header."), *s_ptr, 0, MIME_ERROR_CRIT); */
-   return NULL;
-}
-
-/*}}}*/
-
-static Slrn_Mime_Error_Obj *encode_domain (char **s_ptr, char *from_charset, unsigned int *start, unsigned int max, int type) /*{{{*/
-{
-   char *s =*s_ptr;
-   unsigned int pos = *start;
-
-   while (pos < max)
-     {
-#ifndef HAVE_LIBIDN
-	if (s[pos] & 0x80)
-	  {
-	     /* TODO: encode with libidn */
-	     return slrn_mime_error (_("Non 7-bit char in domain of address header. libidn is not yet supported."), *s_ptr, 0, MIME_ERROR_CRIT);
-	  }
-#endif
-	if (type == TYPE_RFC_2882)
-	  {
-	     if (s[pos] == '>')
-	       {
-		  *start=pos;
-		  return NULL;
-	       }
-	
-	     if (s[pos] == ' ')
-	       {
-		  return slrn_mime_error (_("Space in domain."), *s_ptr, 0, MIME_ERROR_CRIT);
-	       }
-	  }
-	else
-	  {
-	     if (s[pos] == ' ')
-	       {
-		  *start=pos;
-		  return NULL;
-	       }
-	  }
-	if (NULL != slrn_strbyte(RFC_2882_NOT_DOTATOM_CHARS, s[pos]))
-	  {
-	     return slrn_mime_error (_("Illegal char in domain of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
-	  }
-	pos++;
-	
-     }
-   *start=pos;
-   return NULL;
-}
-
-/*}}}*/
-
-static Slrn_Mime_Error_Obj *encode_domainlit (char **s_ptr, char *from_charset, unsigned int *start, unsigned int max) /*{{{*/
-{
-   char *s =*s_ptr;
-   unsigned int pos = *start;
-
-   while (pos < max)
-     {
-#ifndef HAVE_LIBIDN
-	if (s[pos] & 0x80)
-	  {
-	     return slrn_mime_error (_("Non 7-bit char in domain of address header. libidn is not yet supported."), *s_ptr, 0, MIME_ERROR_CRIT);
-	  }
-#endif
-	if (s[pos] == ']')
-	  {
-	     *start=pos;
-	     return NULL;
-	  }
-	if (NULL != slrn_strbyte(RFC_2882_NOT_DOMLIT_CHARS, s[pos]))
-	  {
-	     return slrn_mime_error (_("Illegal char in domain-literal of address header."), *s_ptr, 0, MIME_ERROR_CRIT);
-	  }
-	pos++;
-     }
-   return slrn_mime_error (_("domain-literal opened but never closed."), *s_ptr, 0, MIME_ERROR_CRIT);
-}
-
-/*}}}*/
-
-static Slrn_Mime_Error_Obj *encode_cfws (char **s_ptr, char *charset, unsigned int *startp, unsigned int *stopp)
-{
-   while (1)
-     {
-	char *s, *p0, *p, *pmax;
-	Slrn_Mime_Error_Obj *err;
-
-	s = *s_ptr;
-	p = p0 = s + *startp;
-	pmax = s + *stopp;
-	
-	while ((p < pmax) && ((*p == ' ') || (*p == '\t')))
-	  p++;
-   
-	*startp = (unsigned int) (p - s);
-	if ((p == pmax) || (*p != '('))
-	  return NULL;
-	
-	*startp += 1;		       /* skip ( */
-	if (NULL != (err = encode_comment (s_ptr, charset, startp, stopp)))
-	  return err;
-	
-	*startp += 1;		       /* skip ) */
-     }
-}
-
-
-/* The encodes a comma separated list of addresses.  Each item in the list
- * is assumed to be of the following forms:
- * 
- *    address (Comment-text)
- *    address (Comment-text)
- *    Comment-text <address>
- * 
- * Here address is local@domain, local@[domain], or local.
- * 
- * Here is an example of something that is permitted:
- * 
- * From: Pete(A wonderful \) chap) <pete(his account)@silly.test(his host)>
- * To:A Group(Some people)
- *    :Chris Jones <c@(Chris's host.)public.example>,
- *        joe@example.org,
- *   John <jdoe@one.test> (my dear friend); (the end of the group)
- * Cc:(Empty list)(start)Undisclosed recipients  :(nobody(that I know))  ;
- * 
- * The example shows that the "local" part can contain comments, and that
- * the backquote serves as a quote character in the comments.
- */
-static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset) /*{{{*/
-{
-   unsigned int head_start=0, head_end;
-   int type=0;
-   unsigned int pos=0;
-   char *s=*s_ptr;
-   Slrn_Mime_Error_Obj *err;
-   char ch;
-   
-   while ((0 != (ch = s[head_start]))
+   header = *s_ptr;
+   start_offset = 0;
+   while ((0 != (ch = header[start_offset]))
 	  && (ch != ':'))
-     head_start++;
+     start_offset++;
 
    if (ch != ':')
      return slrn_mime_error (_("A colon is missing from the address header"), *s_ptr, 0, MIME_ERROR_CRIT);
-   
-   head_start++;		       /* skip colon */
 
-   while (head_start < strlen(s))      /* s may change in the loop */
+   start_offset++;		       /* skip colon */
+
+   addr = header + start_offset;
+
+   if (NULL == (encodemap = slrn_parse_rfc2822_addr (addr, &errmsg)))
+     return slrn_mime_error (errmsg, header, 0, MIME_ERROR_CRIT);
+
+   imax = strlen (encodemap);
+   i0 = 0;
+   while ((i0 < imax)
+	  && (encodemap[i0] == ' '))
+     i0++;
+
+   if (i0 == imax)
      {
-	int in_comment, in_quote;
+	slrn_free (encodemap);
+	return NULL;
+     }
 
-	/* skip past leading whitespace */
-	while ((0 != (ch = s[head_start]))
-	       && ((ch == ' ') || (ch == '\t')))
-	  head_start++;
+   new_header_len = i0 + start_offset;
+   new_header = slrn_strnmalloc (header, new_header_len, 1);
+   if (new_header == NULL)
+     goto return_error;
 
-	if (ch == 0)
+   status = 0;
+   tail = header + new_header_len;
+   last_i0 = i0;
+   while (1)
+     {
+	char *tmp, *encoded_str, *str;
+	unsigned int i1, dlen;
+
+	if ((i0 < imax)
+	    && (encodemap[i0] == ' '))
+	  {
+	     i0++;
+	     continue;
+	  }
+	
+	tmp = slrn_substrjoin (new_header, new_header+new_header_len,
+			       addr + last_i0, addr + i0,
+			       NULL);
+	if (tmp == NULL)
+	  goto return_error;
+   
+	slrn_free (new_header);
+	new_header = tmp;
+	new_header_len += i0 - last_i0;
+	
+	if (i0 == imax)
 	  break;
-	  
-	/* If multiple addresses are given, split at ',' */
-	head_end=head_start;
-	in_quote=0;
-	in_comment = 0;
-	type=TYPE_ADD_ONLY;
 
-	/* Loop until end of string is reached, or a ',' found */
-	while (1)
-	  {
-	     ch = s[head_end];
-	     if (ch == 0)
-	       break;
+	i1 = i0 + 1;
+	while ((i1 < imax)
+	       && (encodemap[i1] != ' '))
+	  i1++;
 
-	     head_end++;
+	str = slrn_strnmalloc (addr + i0, i1-i0, 1);
+	if (str == NULL)
+	  goto return_error;
+	
+	encoded_str = rfc1522_encode_string (from_charset, str, str, str+(i1-i0), 0);
+	slrn_free (str);
+	
+	if (encoded_str == NULL)
+	  goto return_error;
 
-	     if (in_quote)
-	       {
-		  if (ch == '"')
-		    {
-		       in_quote = !in_quote;
-		       continue;
-		    }
+	dlen = strlen (encoded_str);
+	tmp = slrn_substrjoin (new_header, new_header + new_header_len,
+			       encoded_str, encoded_str + dlen, NULL);
+	slrn_free (encoded_str);
 
-		  if (ch == '\\')
-		    {
-		       ch = s[head_end];
-		       if ((ch == 0) || (ch == '\r'))
-			 return slrn_mime_error (_("Illegal quoted character in address header."), *s_ptr, 0, MIME_ERROR_CRIT);
-		       head_end++;
-		       continue;
-		    }
-		  continue;
-	       }
-	     
-	     if (in_comment)
-	       {
-		  if (ch == '(')
-		    {
-		       in_comment++;
-		       continue;
-		    }
-		  if (ch == ')')
-		    {
-		       in_comment--;
-		       continue;
-		    }
-		  if (ch == '\\')
-		    {
-		       ch = s[head_end];
-		       if ((ch == 0) || (ch == '\r'))
-			 return slrn_mime_error (_("Illegal quoted character in address header."), *s_ptr, 0, MIME_ERROR_CRIT);
-		       head_end++;
-		       continue;
-		    }
-		  continue;
-	       }
+	if (tmp == NULL)
+	  goto return_error;
 
-	     if (ch == '"')
-	       {
-		  in_quote = 1;
-		  continue;
-	       }
-	     
-	     if (ch == '(')
-	       {
-		  in_comment++;
-		  continue;
-	       }
-
-	     if (ch == '<')
-	       {
-		  type = TYPE_RFC_2882;
-		  continue;
-	       }
-	     
-	     if (ch == ',')
-	       {
-		  head_end--;
-		  break;
-	       }
-	  }
-
-	if (in_quote)
-	  return slrn_mime_error (_("Quote opened but never closed in address header."), *s_ptr, 0, MIME_ERROR_CRIT);
-	if (in_comment)
-	  return slrn_mime_error (_("Comment opened but never closed in address header."), *s_ptr, 0, MIME_ERROR_CRIT);
-
-	pos=head_start;
-	s=*s_ptr;
-	if (type == TYPE_RFC_2882)     /* foo <bar> */
-	  {
-	     if (s[pos] != '<')
-	       {
-		  /* phrase <bar> */
-		  err = encode_rfc2882_phrase (s_ptr, from_charset, &pos, &head_end);
-		  if (err != NULL)
-		    return err;
-	       }
-	     s = *s_ptr;
-	     /* at this point, pos should be at '<' */
-	     if (s[pos] != '<')
-	       {
-		  return slrn_mime_error (_("Address appear to have a misplaced '<'."),
-					  *s_ptr, 0, MIME_ERROR_CRIT);
-	       }
-	     pos++;
-	  }
-
-	/* Encode any comments preceeding the local part */
-	if (NULL != (err = encode_cfws (s_ptr, from_charset, &pos, &head_end)))
-	  return err;
-
-	if (NULL != (err = encode_localpart(s_ptr, from_charset, &pos, head_end, type)))
-	  return err;
-
-	/* Encode any comments following the local part */
-	if (NULL != (err = encode_cfws (s_ptr, from_charset, &pos, &head_end)))
-	  return err;
-
-	s = *s_ptr;
-	if (s[pos] == '@')
-	  {
-	     pos++;
-	     if (s[pos] == '[')
-	       {
-		  pos++;
-		  err=encode_domainlit(s_ptr, from_charset, &pos, head_end);
-		  if (err != NULL)
-		    return err;
-		  pos++;	       /* skip ']' */
-	       }
-	     else
-	       {
-		  err = encode_domain (s_ptr, from_charset, &pos, head_end, type);
-		  if (err != NULL)
-		    return err;
-	       }
-	  }
-
-	s=*s_ptr;
-	if (type == TYPE_RFC_2882)
-	  {
-	     if (s[pos] != '>')
-	       {
-		  return slrn_mime_error (_("Expected closing '>' character in the address"), 
-					  *s_ptr, 0, MIME_ERROR_CRIT);
-	       }
-	     pos++;
-	  }
-
-	/* after domainpart only (folding) Whitespace and comments are allowed*/
-	if (NULL != (err = encode_cfws (s_ptr, from_charset, &pos, &head_end)))
-	  return err;
-
-	/* head_end should be at ',', so skip over it. */
-	head_start=head_end+1;
-	s = *s_ptr;
-     } /*while (head_start < strlen(*s_ptr)) */
+	slrn_free (new_header);
+	new_header = tmp;
+	new_header_len += dlen;
+	
+	last_i0 = i0 = i1;
+     }
+   
+   slrn_free (encodemap);
+   slrn_free (*s_ptr);
+   *s_ptr = new_header;
    return NULL;
-}
-/*}}}*/
+   
+return_error:
+   if (new_header != NULL)
+     slrn_free (new_header);
+   if (encodemap != NULL)
+     slrn_free (encodemap);
 
-/*}}}*/
+   if (SLang_get_error () == SL_Malloc_Error)
+     return MIME_MEM_ERROR(header);
+
+   return MIME_UNKNOWN_ERROR(header);
+}
 
 static Slrn_Mime_Error_Obj *fold_xface (char **s_ptr, int warn)
 {
@@ -2345,6 +2031,9 @@ Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **s_ptr, char *from_charset) 
 	if (err != NULL)
 	  return err;
      }	     
+
+   if (slrn_string_nonascii (*s_ptr))
+     return slrn_mime_error (_("This header contains eight bit characters after encoding"), *s_ptr, 0, MIME_ERROR_CRIT);
 
    if (h->fold != NULL)
      return (*h->fold) (s_ptr, h->warn);

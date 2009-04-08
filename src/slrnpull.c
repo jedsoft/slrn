@@ -1352,8 +1352,8 @@ static int fetch_head (NNTP_Type *s,  Active_Group_Type *g, NNTP_Artnum_Type n, 
 
 #if 0
    /* FIXME -- I need to think more about this, and check for errors */
-   slrn_rfc1522_decode_string (&h.subject);
-   slrn_rfc1522_decode_string (&h.from);
+   (void) slrn_rfc1522_decode_header ("Subject", &h.subject);
+   (void) slrn_rfc1522_decode_header ("From", &h.from);
 #endif
 #if 1
    (void) is_msgid_cached (h.msgid, Current_Group->name, n, 1);

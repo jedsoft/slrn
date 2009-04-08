@@ -70,6 +70,7 @@ OBJS = $(OBJDIR)/art.o \
        $(OBJDIR)/sortdate.o \
        $(OBJDIR)/startup.o \
        $(OBJDIR)/strutil.o \
+       $(OBJDIR)/parse2822.o \
        $(OBJDIR)/ttymsg.o \
        $(OBJDIR)/util.o \
        $(OBJDIR)/version.o \
@@ -205,5 +206,7 @@ $(OBJDIR)/vfile.o: vfile.c $(vfile_O_DEPS) $(COMMON_DEPS)
 	$(CC) -c $(CFLAGS) $(vfile_C_CFLAGS) -o $(OBJDIR)/vfile.o vfile.c
 $(OBJDIR)/xover.o: xover.c $(xover_O_DEPS) $(COMMON_DEPS)
 	$(CC) -c $(CFLAGS) $(xover_C_CFLAGS) -o $(OBJDIR)/xover.o xover.c
+$(OBJDIR)/parse2822.o: parse2822.c $(parse2822_O_DEPS) $(COMMON_DEPS)
+	$(CC) -c $(CFLAGS) $(parse2822_C_CFLAGS) -o $(OBJDIR)/parse2822.o parse2822.c
 #
 

@@ -4671,7 +4671,7 @@ int slrn_pipe_article_to_cmd (char *cmd) /*{{{*/
 	break;
       case PIPE_DECODED:
 	return -1;
-	break;
+
       case PIPE_CONVERTED:
 	lines = Slrn_Current_Article->lines;
 	convert = 1;
@@ -5594,8 +5594,8 @@ static Slrn_Header_Type *process_xover (Slrn_XOver_Type *xov)
    slrn_map_xover_to_header (xov, h, 1);
    Number_Total++;
    
-   slrn_rfc1522_decode_string (&h->subject);
-   slrn_rfc1522_decode_string (&h->from);
+   (void) slrn_rfc1522_decode_header ("Subject", &h->subject);
+   (void) slrn_rfc1522_decode_header ("From", &h->from);
 
    get_header_real_name (h);
    
