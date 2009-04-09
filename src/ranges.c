@@ -5,7 +5,7 @@
  Copyright (c) 2003-2006 Thomas Schultz <tststs@gmx.de>
 
  partly based on code by John E. Davis:
- Copyright (c) 1994, 1999, 2007-2008 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
