@@ -9,6 +9,9 @@ Changes since 0.9.9p1
    that only comment fields in email addresses are encoded/decoded.
    slrn is also smarted in encoding/decoding other headers (based on
    patch from Robert Grimm).
+5. autoconf/Makefile.in: Added dependencies such that if the
+   Makefile.in and config.in files have been modified, the user is
+   told to re-run the configure script.
 
 Changes since 0.9.9
 1. src/misc.c: The code assumed that slrn_make_from_string returned a

@@ -4,13 +4,22 @@
 
 @SET_MAKE@
 
-all:
+all: makefiles
 	cd src; $(MAKE) all
 uudecode:
 	cd src; $(MAKE) uudecode
 slrnpull: slrnpull_exe
-slrnpull_exe:
+slrnpull_exe: makefiles
 	cd src; $(MAKE) slrnpull
+Makefile: configure autoconf/Makefile.in
+	@echo "Makefile is older than the configure script".
+	@echo "Please re-run the configure script."
+	@exit 1
+src/Makefile: configure src/Makefile.in src/config.hin
+	@echo "src/Makefile is older than its dependencies".
+	@echo "Please re-run the configure script."
+	@exit 1
+makefiles: Makefile src/Makefile
 clean:
 	/bin/rm -f *~ doc/*~ macros/*~
 	cd src; $(MAKE) clean
@@ -22,8 +31,4 @@ distclean:
 install:
 	cd src; $(MAKE) install
 #
-
-# The symlinks target is for my own private use.  It simply creates the object
-# directory as a symbolic link to a local disk instead of an NFS mounted one.
-symlinks:
-	cd src; $(MAKE) symlinks
+.PHONY: all install clean distclean makefiles
