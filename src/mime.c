@@ -1338,11 +1338,13 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
 
    if (eightbit == 0)
      {
+#if 0
+	/* These are unnecessary */
 	if ((NULL == slrn_append_header_keyval (a, "Mime-Version", "1.0"))
 	    || (NULL == slrn_append_header_keyval (a, "Content-Type", "text/plain; charset=us-ascii"))
 	    || (NULL == slrn_append_header_keyval (a, "Content-Transfer-Encoding", "7bit")))
 	  return MIME_MEM_ERROR("Mime Headers");
-
+#endif
 	steal_raw_lines (a, header_sep);
 	return NULL;
      }
@@ -1381,9 +1383,12 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
 
    steal_raw_lines (a, header_sep);
 
-   if ((NULL == slrn_append_header_keyval (a, "Mime-Version", "1.0"))
-       || (NULL == slrn_append_to_header (a, slrn_strdup_printf ("Content-Type: text/plain; charset=%s", charset),1))
-       || (NULL == slrn_append_header_keyval (a, "Content-Transfer-Encoding", "8bit")))
+   if (((NULL == slrn_find_header_line (a, "Mime-Version"))
+	&& (NULL == slrn_append_header_keyval (a, "Mime-Version", "1.0")))
+       || ((NULL == slrn_find_header_line (a, "Content-Type"))
+	   && (NULL == slrn_append_to_header (a, slrn_strdup_printf ("Content-Type: text/plain; charset=%s", charset),1)))
+       || ((NULL == slrn_find_header_line (a, "Content-Transfer-Encoding"))
+	   && (NULL == slrn_append_header_keyval (a, "Content-Transfer-Encoding", "8bit"))))
      {
 	slrn_free (charset);
 	return MIME_MEM_ERROR("Mime Headers");

@@ -12,6 +12,12 @@ Changes since 0.9.9p1
 5. autoconf/Makefile.in: Added dependencies such that if the
    Makefile.in and config.in files have been modified, the user is
    told to re-run the configure script.
+6. Updated the copyright years to 2009.
+7. src/mime.c: Omit the mime headers if the content is pure 7bit.
+   Also, if mime-headers already exist, do not add append additional
+   ones.
+
+{{{ Previous Versions 
 
 Changes since 0.9.9
 1. src/misc.c: The code assumed that slrn_make_from_string returned a
@@ -71,8 +77,6 @@ Changes since 0.9.9
 30. src/slrnconf.h: Removed references to cygwin and changed the
     long-long format string from %lld to %I64d on win32 systems.
 31. src/chkslang.c: Added a test for the long-long format string.
-
-{{{ Previous Versions 
 
 Changes since 0.9.8.8pl1
 0. Removed the dependency on automake.  As a result, the configuration
