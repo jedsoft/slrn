@@ -16,6 +16,9 @@ Changes since 0.9.9p1
 7. src/mime.c: Omit the mime headers if the content is pure 7bit.
    Also, if mime-headers already exist, do not add append additional
    ones.
+8. configure: Added the configuration option --with-non-gnu-iconv that
+   can be used to indicate that local version of iconv is not
+   compatible with GNU iconv (Piotr 'aniou' Meyer).
 
 {{{ Previous Versions 
 

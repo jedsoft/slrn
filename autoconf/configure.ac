@@ -219,6 +219,15 @@ AM_ICONV
 AM_GNU_GETTEXT(external)
 AC_SUBST(INCICONV)dnl# AM_GNU_GETTEXT does not do this.  Why???
 
+AC_ARG_WITH(non-gnu-iconv,
+    [  --with-non-gnu-iconv    Local iconv is not GNU compatible],
+    [use_non_gnu_iconv=$withval], [use_non_gnu_iconv=no])
+case "x$use_non_gnu_iconv" in
+x|xyes)
+  AC_DEFINE(NON_GNU_ICONV)dnl
+  ;;
+esac
+
 #---------------------------------------------------------------------------
 # SSL stuff
 #---------------------------------------------------------------------------

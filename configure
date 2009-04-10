@@ -1369,6 +1369,7 @@ Optional Packages:
   --without-libiconv-prefix     don't search for libiconv in includedir and libdir
   --with-libintl-prefix[=DIR]  search for libintl in DIR/include and DIR/lib
   --without-libintl-prefix     don't search for libintl in includedir and libdir
+  --with-non-gnu-iconv    Local iconv is not GNU compatible
   --with-nss-compat       Use NSS compat library instead of OpenSSL
   --with-gnutls=path      Use GNU TLS library instead of OpenSSL
   --with-ssl[=path]       for SSL support
@@ -9055,6 +9056,22 @@ _ACEOF
 
 
 
+
+
+# Check whether --with-non-gnu-iconv was given.
+if test "${with_non_gnu_iconv+set}" = set; then
+  withval=$with_non_gnu_iconv; use_non_gnu_iconv=$withval
+else
+  use_non_gnu_iconv=no
+fi
+
+case "x$use_non_gnu_iconv" in
+x|xyes)
+  cat >>confdefs.h <<\_ACEOF
+#define NON_GNU_ICONV 1
+_ACEOF
+  ;;
+esac
 
 #---------------------------------------------------------------------------
 # SSL stuff

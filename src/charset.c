@@ -140,9 +140,13 @@ static int iconv_convert_string (iconv_t cd, char *str, size_t len, int test, ch
 
 	errno = 0;
 	ret = iconv (cd, &str, &inbytesleft, &bufp, &outbytesleft);
+#ifdef NON_GNU_ICONV
+	if (ret == 0)
+	  break;
+#else
 	if (ret != (size_t) -1)
 	  break;
-
+#endif
 	switch (errno)
 	  {
 	   default:
@@ -159,8 +163,9 @@ static int iconv_convert_string (iconv_t cd, char *str, size_t len, int test, ch
 	     outbytesleft--;
 	     /* FIXME: Should the shift-state be reset? */
 	     break;
-	     
+#ifndef NON_GNU_ICONV
 	   case 0:		       /* windows bug */
+#endif
 	   case E2BIG:
 	     need_realloc = 1;
 	     break;
