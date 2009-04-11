@@ -428,7 +428,7 @@ int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_char
  /* It returns 0 if it did not convert, 1 if it did, -1 upon error.
   * Only those lines that have the 8bit flag set will be converted.
   */
-int slrn_test_convert_lines (Slrn_Article_Line_Type *rlines, char *to_charset, char *from_charset)
+int slrn_test_convert_lines (Slrn_Article_Line_Type *rlines, char *to_charset, char *from_charset, char **badlinep)
 {
 #ifdef HAVE_ICONV
    Slrn_Article_Line_Type *rline;
@@ -457,6 +457,7 @@ int slrn_test_convert_lines (Slrn_Article_Line_Type *rlines, char *to_charset, c
 	if (next == NULL)
 	  {
 	     status = -1;
+	     *badlinep = rline->buf;
 	     goto free_return;
 	  }
 
@@ -472,11 +473,13 @@ int slrn_test_convert_lines (Slrn_Article_Line_Type *rlines, char *to_charset, c
 	     
 	   case 0:		       /* failed to convert */
 	     status = 0;
+	     *badlinep = rline->buf;
 	     slrn_art_free_line (next);
 	     goto free_return;
 
 	   default:
 	     status = -1;
+	     *badlinep = rline->buf;
 	     slrn_art_free_line (next);
 	     goto free_return;
 	  }

@@ -1310,7 +1310,7 @@ static void steal_raw_lines (Slrn_Article_Type *a, Slrn_Article_Line_Type *line)
 }
 
 
-/* When this function gets called, the header is already encoded and is in in
+/* When this function gets called, the header is already encoded and is in
  * a->lines, whereas the body is in a->raw_lines.  Clearly this needs to be
  * corrected.
  */
@@ -1320,6 +1320,7 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
    int eightbit = 0;
    char *charset;
    unsigned int n, len;
+   unsigned int line_offset;
 
    rline = a->raw_lines;
    while (rline != NULL)
@@ -1353,10 +1354,13 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
    if (NULL == (charset = slrn_malloc (len, 0, 1)))
      return MIME_MEM_ERROR("Mime Headers");
 
+   line_offset = 0;
+
    n = 0;
    while (1)
      {
 	int status;
+	char *badline;
 
 	if (-1 == SLextract_list_element (Slrn_Outgoing_Charset, n, ',', charset, len))
 	  {
@@ -1367,12 +1371,12 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
 	if (0 == slrn_case_strcmp (charset, from_charset))
 	  break; /* No recoding needed */
 	
-	status = slrn_test_convert_lines (a->raw_lines, charset, from_charset);
+	status = slrn_test_convert_lines (a->raw_lines, charset, from_charset, &badline);
 	if (status == -1)
 	  {
 	     slrn_free (charset);
 	     /* This error message may not be correct */
-	     return slrn_add_mime_error(NULL, _("Can't determine suitable charset for body"), NULL, -1 , MIME_ERROR_CRIT);
+	     return slrn_add_mime_error(NULL, _("Error encountered while encoding body"), badline, -1, MIME_ERROR_CRIT);
 	  }
 
 	if (status == 1)
