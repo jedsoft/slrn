@@ -1360,17 +1360,17 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
    while (1)
      {
 	int status;
-	char *badline;
+	char *badline = NULL;
 
 	if (-1 == SLextract_list_element (Slrn_Outgoing_Charset, n, ',', charset, len))
 	  {
 	     slrn_free (charset);
-	     return slrn_add_mime_error(NULL, _("Can't determine suitable charset for body"), NULL, -1 , MIME_ERROR_CRIT);
+	     return slrn_add_mime_error(NULL, _("Can't determine suitable charset for body"), badline, -1 , MIME_ERROR_CRIT);
 	  }
 
 	if (0 == slrn_case_strcmp (charset, from_charset))
 	  break; /* No recoding needed */
-	
+
 	status = slrn_test_convert_lines (a->raw_lines, charset, from_charset, &badline);
 	if (status == -1)
 	  {

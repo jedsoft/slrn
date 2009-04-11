@@ -19,6 +19,8 @@ Changes since 0.9.9p1
 8. configure: Added the configuration option --with-non-gnu-iconv that
    can be used to indicate that local version of iconv is not
    compatible with GNU iconv (Piotr 'aniou' Meyer).
+9. src/charset.c: Upon failure, slrn_test_convert_lines will return the line
+   that caused it to fail.
 
 {{{ Previous Versions 
 
