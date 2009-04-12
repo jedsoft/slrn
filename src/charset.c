@@ -27,6 +27,7 @@
 #include <slang.h>
 
 #include "jdmacros.h"
+#include "slrn.h"
 #include "group.h"
 #include "art.h"
 #include "util.h"
@@ -472,6 +473,13 @@ int slrn_test_convert_lines (Slrn_Article_Line_Type *rlines, char *to_charset, c
 	     break;
 	     
 	   case 0:		       /* failed to convert */
+	     if (Slrn_Debug_Fp != NULL)
+	       {
+		  (void) fprintf (Slrn_Debug_Fp, "*** iconv_convert_string failed to convert:\n");
+		  (void) fprintf (Slrn_Debug_Fp, "%s\n", rline->buf);
+		  (void) fprintf (Slrn_Debug_Fp, "*** from charset=%s to charset=%s\n", from_charset, to_charset);
+		  (void) fflush (Slrn_Debug_Fp);
+	       }
 	     status = 0;
 	     *badlinep = rline->buf;
 	     slrn_art_free_line (next);

@@ -21,6 +21,8 @@ Changes since 0.9.9p1
    compatible with GNU iconv (Piotr 'aniou' Meyer).
 9. src/charset.c: Upon failure, slrn_test_convert_lines will return the line
    that caused it to fail.
+10. src/charset.c: If the --debug option is given, slrn will write the
+    strings that iconv failed to convert to the log file.
 
 {{{ Previous Versions 
 
