@@ -23,6 +23,8 @@ Changes since 0.9.9p1
    that caused it to fail.
 10. src/charset.c: If the --debug option is given, slrn will write the
     strings that iconv failed to convert to the log file.
+11. src/post.c: Skip long line checks between verbatim marks. (Robert
+    Grimm).
 
 {{{ Previous Versions 
 

@@ -879,6 +879,7 @@ static Slrn_Mime_Error_Obj *
    unsigned int lineno=*linenum;
    char *qs = Slrn_Quote_String;
    int qlen, not_quoted=0, sig_lines=-1, longline=0, hibin=0;
+   int verbatim = 0, check_verbatim = 1;
    Slrn_Mime_Error_Obj *err = NULL;
    Slrn_Article_Line_Type *raw_line=a->raw_lines;
 
@@ -890,35 +891,55 @@ static Slrn_Mime_Error_Obj *
    while (NULL != (vline = vgets (vp, &vlen)))
      {
 	Slrn_Article_Line_Type *tmp;
-
 	/*remove trailing \n*/
 	if (vline[vlen-1] == '\n')
 	  vlen--;
-	
+
 	line = slrn_safe_strnmalloc (vline, vlen);
 	lineno++;
-	
+
 	if (!hibin && slrn_string_nonascii(line))
-	     hibin=1;
-	if (sig_lines != -1) sig_lines++;
+	  hibin=1;
 
-	if ((!not_quoted) &&(strncmp (line, qs, qlen)))
-	     not_quoted=1;
-
-	if (0 == strcmp (line, "-- "))
-	     sig_lines = 0;
-
-	if ( (Slrn_Netiquette_Warnings != 0) || (Slrn_Reject_Long_Lines != 0))
+	if (check_verbatim)
 	  {
-	    if ( !longline && (slrn_charset_strlen (line, from_charset)>80))
-	      {
-		longline = 1;
-		err = slrn_add_mime_error(err,
-					  _("Please wrap lines with more than 80 characters (only first one is shown)"),
-					  line, lineno, MIME_ERROR_NET);
-	      }
+	     if (0 == strcmp (line, "#v+"))
+	       verbatim++;
+	     else if (0 == strcmp (line, "#v-"))
+	       {
+		  verbatim--;
+		  if (verbatim < 0)
+		    {
+		       err = slrn_add_mime_error(err,
+						 _("Unbalanced #v+/- verbatim marks"),
+						 line, lineno, MIME_ERROR_WARN);
+		       check_verbatim = 0;
+		       verbatim = 0;
+		    }
+	       }
 	  }
-	
+
+	if (verbatim == 0)
+	  {	     
+	     if (sig_lines != -1) sig_lines++;
+
+	     if (0 == strcmp (line, "-- "))
+	       sig_lines = 0;
+
+	     if ((!not_quoted) &&(strncmp (line, qs, qlen)))
+	       not_quoted=1;
+
+	     if ((Slrn_Netiquette_Warnings || Slrn_Reject_Long_Lines)
+		 && (longline == 0)
+		 && (slrn_charset_strlen (line, from_charset) > 80))
+	       {
+		  longline = 1;
+		  err = slrn_add_mime_error(err,
+					    _("Please wrap lines with more than 80 characters (only first one is shown)"),
+					    line, lineno, MIME_ERROR_NET);
+	       }
+	  }
+
 	tmp = (Slrn_Article_Line_Type *) slrn_safe_malloc(sizeof(Slrn_Article_Line_Type));
 
 	tmp->prev = raw_line;
