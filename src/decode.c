@@ -146,11 +146,25 @@ static int unpack_as_shell_archive (FILE *fp, char *buf, int size) /*{{{*/
 
 /*}}}*/
 #endif
+
+static int file_exists (char *file)
+{
+   struct stat st;
+
+   if (-1 == stat (file, &st))
+     return 0;
+
+   return 1;
+}
+
+     
+     
 /* Note: this function modifies name */
 static FILE *open_output_file (char *name, char *type, int mode, FILE *use_this) /*{{{*/
 {
    FILE *fp;
    char *p;
+   char *file = NULL;
 
    if (use_this != NULL)
      return use_this;
@@ -163,11 +177,39 @@ static FILE *open_output_file (char *name, char *type, int mode, FILE *use_this)
 	p++;
      }
 
+   if (1 == file_exists (name))
+     {
+	unsigned int i;
+	unsigned int len = strlen (name);
+	
+	len += 1 + 4 + 1;
+	if (NULL == (file = slrn_malloc (len, 0, 1)))
+	  return NULL;
+
+	for (i = 1; i <= 9999; i++)
+	  {
+	     (void) slrn_snprintf (file, len, "%s-%d", name, i);
+	     if (0 == file_exists (file))
+	       {
+		  name = file;
+		  break;
+	       }
+	  }
+
+	if (name != file)
+	  {
+	     slrn_free (file);
+	     slrn_error(_("Unable to create %s\n"), name);
+	     return NULL;
+	  }
+     }
+   
    fp = fopen (name, "wb");
 	
    if (fp == NULL)
      {
 	slrn_error(_("Unable to create %s\n"), name);
+	if (file != NULL) slrn_free (file);
 	return NULL;
      }
    
@@ -176,6 +218,7 @@ static FILE *open_output_file (char *name, char *type, int mode, FILE *use_this)
    if (mode != -1) 
      chmod (name, mode);
    
+   if (file != NULL) slrn_free (file);
    return fp;
 }
 

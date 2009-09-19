@@ -25,6 +25,15 @@ Changes since 0.9.9p1
     strings that iconv failed to convert to the log file.
 11. src/post.c: Skip long line checks between verbatim marks. (Robert
     Grimm).
+12. src/nntplib.h: Removed duplicate declarations of nntp_server_cmd
+    and nntp_server_vcmd. (Li Hong).
+13. src/decode.c: If an output file already exists, create a new one
+    by appending an integer to the name.
+14. src/slrn.c: work around a SLang_getkey bug that arises when the
+    underlying read system call is interrupted, and the interrupt hook
+    creates a different read descriptor.
+15. src/misc.c: All error messages (including slang tracebacks) are
+    logged to the --debug output file.
 
 {{{ Previous Versions 
 

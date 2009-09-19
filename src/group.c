@@ -1345,7 +1345,8 @@ static void move_group_cmd (void) /*{{{*/
      {
 	slrn_message_now (_("Moving %s. Press RETURN when finished."), Slrn_Group_Current_Group->group_name);
 	
-	key = SLang_do_key (Slrn_Group_Keymap, (int (*)(void)) SLang_getkey);
+	/* key = SLang_do_key (Slrn_Group_Keymap, (int (*)(void)) SLang_getkey); */
+	key = SLang_do_key (Slrn_Group_Keymap, slrn_getkey);
 	
 	if ((key == NULL) 
 	    || (key->type == SLKEY_F_INTERPRET))
@@ -1980,7 +1981,8 @@ static void group_mouse_middle (void)
      {
 	if (SLang_input_pending (7))
 	  {
-	     while (SLang_input_pending (0)) SLang_getkey ();
+	     while (SLang_input_pending (0)) 
+	       (void) SLang_getkey ();
 	  }
      }
 #endif

@@ -907,7 +907,6 @@ void slrn_va_exit_error (char *fmt, va_list ap)
 void slrn_exit_error (char *fmt, ...) /*{{{*/
 {
    va_list ap;
-   
    va_start (ap, fmt);
    slrn_va_exit_error (fmt, ap);
    va_end(ap);
@@ -1572,10 +1571,28 @@ int slrn_getkey (void)
 	timeout_active = 1;
      }
    
-   ch = SLang_getkey ();
-   if (ch == SLANG_GETKEY_ERROR)
-     slrn_exit_error (_("SLang_getkey failed"));
+   while (1)
+     {
+#ifdef REAL_UNIX_SYSTEM
+	int ttyfd = SLang_TT_Read_FD;
+#endif
+	int e;
+	errno = 0;
 	
+	ch = SLang_getkey ();
+	if (ch != SLANG_GETKEY_ERROR)
+	  break;
+	e = errno;
+
+#ifdef REAL_UNIX_SYSTEM
+	if (ttyfd != SLang_TT_Read_FD)
+	  continue;
+#endif
+
+	slrn_exit_error ("%s: errno=%d [%s]", _("SLang_getkey failed"),
+			 e, SLerrno_strerror (e));
+     }
+
    if (buf_len + 4 < sizeof (buf))
      {
 	if (ch == 0) 

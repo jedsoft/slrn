@@ -1373,9 +1373,12 @@ static void art_pagedn (void) /*{{{*/
 	     unsigned int ch;
 
 	     slrn_message_now (msg, _("<Space>"));
+#if 0
 	     if (SLANG_GETKEY_ERROR == (ch = SLang_getkey ()))
 	       slrn_exit_error ("SLang_getkey failed");
-
+#else
+	     ch = slrn_getkey ();
+#endif
 	     if (ch != ' ')
 	       {
 		  SLang_ungetkey ((unsigned char) ch);
@@ -1816,7 +1819,6 @@ int slrn_goto_header (Slrn_Header_Type *header, int read_flag) /*{{{*/
 /*}}}*/
 
 /*{{{ parse_from  */
-
 static char *read_comment (char *start, char *dest, size_t max) /*{{{*/
 {
    int depth = 1; /* RFC 2822 allows nesting */
@@ -4043,7 +4045,11 @@ static void art_next_unread (void) /*{{{*/
    else /* next is unbound */
      {
 	slrn_message_now (_("No following unread articles.  Press %s for next group."), "n");
+#if 0
 	ch = SLang_getkey ();
+#else
+	ch = slrn_getkey ();
+#endif
 	if (ch != 'n')
 	  {
 	     SLang_ungetkey (ch);
@@ -4181,8 +4187,12 @@ static void goto_header_number (void) /*{{{*/
 	  }
 	slrn_message_now (_("Goto Header: %d"), i);
      }
+#if 0
    while ((ich = SLang_getkey ()), (ich <= '9') && (ich >= '0'));
-   
+#else
+   while ((ich = slrn_getkey ()), (ich <= '9') && (ich >= '0'));
+#endif
+
    if (SLKeyBoard_Quit) return;
    
    if (ich != '\r')
@@ -7213,8 +7223,11 @@ static void grouplens_rate_article (void) /*{{{*/
      return;
    
    slrn_message_now (_("Rate article (1-5):"));
-   
+#if 0
    ch = SLang_getkey ();
+#else
+   ch = slrn_getkey ();
+#endif
    if ((ch < '1') || (ch > '5'))
      {
 	slrn_error (_("Rating must be in range 1 to 5."));
@@ -7345,7 +7358,8 @@ static void art_mouse_middle (void) /*{{{*/
      {
 	if (SLang_input_pending (7))
 	  {
-	     while (SLang_input_pending (0)) SLang_getkey ();
+	     while (SLang_input_pending (0)) 
+	       (void) SLang_getkey ();
 	  }
      }
 #endif

@@ -361,6 +361,16 @@ static void vmessage (FILE *fp, char *fmt, va_list ap)
      slrn_tty_vmessage (fp, fmt, ap);
 }
 
+static void log_error_message (char *fmt, va_list ap)
+{
+   if (Slrn_Debug_Fp != NULL)
+     {
+	(void) vfprintf (Slrn_Debug_Fp, fmt, ap);
+	(void) fputs ("\n", Slrn_Debug_Fp);
+	(void) fflush (Slrn_Debug_Fp);
+     }
+}
+
 void slrn_verror (char *fmt, va_list ap)
 {
    if ((Slrn_TT_Initialized & SLRN_SMG_INIT) == 0)
@@ -376,6 +386,7 @@ void slrn_verror (char *fmt, va_list ap)
 	SLang_flush_input ();
      }
    
+   log_error_message (fmt, ap);
    if (SLang_get_error () == 0) SLang_set_error (INTRINSIC_ERROR);
 }
 
@@ -1639,7 +1650,9 @@ static int read_from_input_string (char *str)
    return strlen (str);
 }
 
-/* s could be NULL.  If so, input string is cleared. */
+/* s could be NULL.  If so, input string is cleared.  The calling routine
+ * should not free the input pointer.
+ */
 void slrn_set_input_string (char *s)
 {
    slrn_free (Input_String);

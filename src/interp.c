@@ -1368,7 +1368,13 @@ static void open_log_file (char *file)
 static void log_message (char *buf)
 {
    FILE *fp;
-   
+
+   if (Slrn_Debug_Fp != NULL)
+     {
+	(void) fputs (buf, Slrn_Debug_Fp);
+	(void) fflush (Slrn_Debug_Fp);
+     }
+
    fp = Log_File_Ptr;
    if (fp == NULL) 
      {
@@ -1376,8 +1382,8 @@ static void log_message (char *buf)
 	  return;
 	fp = stderr;
      }
-   fputs (buf, fp);
-   fflush (fp);
+   (void) fputs (buf, fp);
+   (void) fflush (fp);
 }
 
 static void message_now (char *s)
@@ -1723,7 +1729,10 @@ int slrn_init_slang (void) /*{{{*/
    SLang_Exit_Error_Hook = slrn_va_exit_error;
    SLang_Dump_Routine = log_message;
    SLang_VMessage_Hook = slrn_va_message;
-   
+
+   if (Slrn_Debug_Fp != NULL)
+     SLang_Traceback = 1;
+
    if (-1 == load_startup_file ())
      return -1;
 

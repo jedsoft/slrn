@@ -58,8 +58,6 @@ extern void nntp_disconnect_server (NNTP_Type *);
 extern int nntp_check_connection (NNTP_Type *);
 extern int nntp_reconnect_server (NNTP_Type *);
 
-extern int nntp_server_cmd (NNTP_Type *, char *);
-extern int nntp_server_vcmd (NNTP_Type *, char *, ...) ATTRIBUTE_PRINTF(2,3);
 extern int nntp_write_server (NNTP_Type *, char *, unsigned int);
 extern int nntp_fgets_server (NNTP_Type *, char *, unsigned int);
 extern int nntp_fputs_server (NNTP_Type *, char *);
