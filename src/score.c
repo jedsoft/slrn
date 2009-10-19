@@ -64,6 +64,8 @@
 int Slrn_Perform_Scoring = SLRN_XOVER_SCORING | SLRN_EXPENSIVE_SCORING;
 int Slrn_Prefer_Head = 0;
 
+int Slrn_Invalid_Header_Score = -1000;
+
 /* These two structures are pseudo-score types containing no compiled
  * regular expressions.
  */
@@ -443,6 +445,9 @@ int slrn_score_header (Slrn_Header_Type *h, char *newsgroup,
 #endif
 #endif				       /* NOT SLRNPULL_CODE */
    
+   if (h->flags & HEADER_HAS_PARSE_PROBLEMS)
+     score = Slrn_Invalid_Header_Score;
+
    st = Score_Root;
    while (st != NULL)
      {

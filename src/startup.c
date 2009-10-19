@@ -688,6 +688,7 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
      {"use_xgtitle", NULL, NULL},
      {"use_mime", NULL, NULL},
 #endif
+     {"invalid_header_score", &Slrn_Invalid_Header_Score},
      {NULL, NULL, NULL}
 };
 

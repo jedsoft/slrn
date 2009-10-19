@@ -34,6 +34,9 @@ Changes since 0.9.9p1
     creates a different read descriptor.
 15. src/misc.c: All error messages (including slang tracebacks) are
     logged to the --debug output file.
+16. src/art.c,etc: If an article has invalid headers, clear the error
+    but give the article an initial score of -1000.  This number may
+    be customized using the "invalid_header_score" variable.
 
 {{{ Previous Versions 
 

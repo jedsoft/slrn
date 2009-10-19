@@ -1573,7 +1573,7 @@ int slrn_getkey (void)
    
    while (1)
      {
-#ifdef REAL_UNIX_SYSTEM
+#if defined(REAL_UNIX_SYSTEM) && (SLANG_VERSION < 20202)
 	int ttyfd = SLang_TT_Read_FD;
 #endif
 	int e;
@@ -1584,7 +1584,7 @@ int slrn_getkey (void)
 	  break;
 	e = errno;
 
-#ifdef REAL_UNIX_SYSTEM
+#if defined(REAL_UNIX_SYSTEM) && (SLANG_VERSION < 20202)
 	if (ttyfd != SLang_TT_Read_FD)
 	  continue;
 #endif

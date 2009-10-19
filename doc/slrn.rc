@@ -231,6 +231,10 @@
 % If non-zero, hide PGP signature in articles.
 %set hide_pgpsignature 0
 
+% Set the starting score for an article that has headers that are invalid,
+% e.g., an invalid From header.
+%set invalid_header_score -1000
+
 %
 %% 9. Display / color settings
 %

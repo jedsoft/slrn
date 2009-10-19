@@ -912,7 +912,12 @@ static void sort_by_threads (void) /*{{{*/
 		  while (rparent->parent != NULL) rparent = rparent->parent;
 		  if (rparent == h) /* self referencing!!! */
 		    {
+		       int err = SLang_get_error ();
 		       slrn_error (_("Article " NNTP_FMT_ARTNUM " is part of reference loop!"), h->number);
+		       if (err == 0)
+			 {
+			    SLang_set_error (0);
+			 }
 		    }
 		  else
 		    {

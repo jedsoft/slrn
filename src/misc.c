@@ -410,6 +410,12 @@ void slrn_clear_message (void) /*{{{*/
 
 /*}}}*/
 
+void slrn_clear_error (void)
+{
+   SLang_set_error (0);
+   slrn_clear_message ();
+}
+
 void slrn_va_message (char *fmt, va_list ap)
 {
    if (Error_Present == 0)

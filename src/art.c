@@ -5598,14 +5598,28 @@ static void view_scores (void) /*{{{*/
 static Slrn_Header_Type *process_xover (Slrn_XOver_Type *xov)
 {
    Slrn_Header_Type *h;
-   
+   int err;
+
    h = (Slrn_Header_Type *) slrn_safe_malloc (sizeof (Slrn_Header_Type));
    
    slrn_map_xover_to_header (xov, h, 1);
    Number_Total++;
+
+   err = SLang_get_error ();
    
-   (void) slrn_rfc1522_decode_header ("Subject", &h->subject);
-   (void) slrn_rfc1522_decode_header ("From", &h->from);
+   if ((-1 == slrn_rfc1522_decode_header ("Subject", &h->subject))
+       && (err == 0))
+     {
+	h->flags |= HEADER_HAS_PARSE_PROBLEMS;
+	slrn_clear_error ();
+     }
+   
+   if ((-1 == slrn_rfc1522_decode_header ("From", &h->from))
+       && (err == 0))
+     {
+	h->flags |= HEADER_HAS_PARSE_PROBLEMS;
+	slrn_clear_error ();
+     }
 
    get_header_real_name (h);
    

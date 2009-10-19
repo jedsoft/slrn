@@ -85,6 +85,8 @@ extern int Slrn_Use_Uudeview;
 
 #endif				       /* NOT SLRNPULL_CODE */
 
+extern int Slrn_Invalid_Header_Score;
+
 typedef struct Slrn_Header_Line_Type
 {
    char *name;
@@ -112,7 +114,8 @@ typedef struct Slrn_Header_Type
 #define FAKE_CHILDREN			0x0800
 #define FAKE_HEADER_HIGH_SCORE		0x1000
 #define HEADER_CHMAP_PROCESSED		0x2000
-
+#define HEADER_HAS_PARSE_PROBLEMS	0x4000
+   
 #define HEADER_PROCESSED		0x8000
    struct Slrn_Header_Type *real_next, *real_prev;
    struct Slrn_Header_Type *parent, *child, *sister;  /* threaded relatives */
