@@ -37,6 +37,8 @@ Changes since 0.9.9p1
 16. src/art.c,etc: If an article has invalid headers, clear the error
     but give the article an initial score of -1000.  This number may
     be customized using the "invalid_header_score" variable.
+17. src/mime.c: In slrn_mime_process_article, decode headers even if
+    Content-Type is not understood and metamail is needed.
 
 {{{ Previous Versions 
 

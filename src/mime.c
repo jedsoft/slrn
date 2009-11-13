@@ -1157,7 +1157,9 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
 /*   if (NULL == find_header_line (a, "Mime-Version:")) return;*/
 /*   if ((-1 == parse_content_type_line (a))
        || (-1 == parse_content_transfer_encoding_line (a)))*/
-
+#if 1 /* moved */
+   rfc1522_decode_headers (a);
+#endif
    if (-1 == parse_content_type_line (a))
      {
 	a->mime.needs_metamail = 1;
@@ -1167,9 +1169,9 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
    if ((a->mime.charset == NULL)
        && (NULL == (a->mime.charset = guess_body_charset (a))))
      return -1;
-
+#if 0  /* moved */
    rfc1522_decode_headers (a);
-
+#endif
    switch (parse_content_transfer_encoding_line (a))
      {
       case ENCODED_RAW:
