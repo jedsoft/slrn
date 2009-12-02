@@ -5954,9 +5954,9 @@ static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
 				  unsigned int *numidsp)
 {
    char buf[NNTP_BUFFER_SIZE];
-   NNTP_Artnum_Type id_array[1000];
+   NNTP_Artnum_Type *id_array;
    NNTP_Artnum_Type id;
-   unsigned int i, num_ids;
+   unsigned int i, num_ids, id_array_size;
    char *fmt = _("Retrieving children from server...[%c]");
    char *meter_chars = "|/-\\";
    static unsigned int last_meter_char;
@@ -5976,6 +5976,9 @@ static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
    last_meter_char++;
    
    num_ids = 0;
+   id_array_size = 0;
+   id_array = NULL;
+
    while (1)
      {
 	int status;
@@ -6000,11 +6003,23 @@ static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
 	if ((*p == 0) || (*(p+1) == 0))
 	  continue; /* work around a bug in Typhoon servers */
 	
-	if (NULL != find_header_from_serverid (id)) continue;
+	if (NULL != find_header_from_serverid (id)) 
+	  continue;
+
+	if (num_ids == id_array_size)
+	  {
+	     NNTP_Artnum_Type *new_ids;
+	     unsigned int new_size = 2*(id_array_size + 1);
+	     new_ids = (NNTP_Artnum_Type *)slrn_realloc ((char *)id_array, new_size*sizeof(NNTP_Artnum_Type), 1);
+	     if (new_ids == NULL)
+	       break;
+	     id_array = new_ids;
+	     id_array_size = new_size;
+	  }
 	id_array[num_ids] = id;
 	num_ids++;
      }
-   
+
    for (i = 0; i < num_ids; i++)
      {
 	Slrn_XOver_Type xov;
@@ -6070,6 +6085,7 @@ static int find_children_headers (Slrn_Header_Type *parent, /*{{{*/
      }
    if (numidsp != NULL)
      *numidsp = num_ids;
+   slrn_free ((char *) id_array);
    return 0;
 }
 

@@ -39,6 +39,8 @@ Changes since 0.9.9p1
     be customized using the "invalid_header_score" variable.
 17. src/mime.c: In slrn_mime_process_article, decode headers even if
     Content-Type is not understood and metamail is needed.
+18. src/art.c: Avoid a buffer overflow when reconstructing huge
+    threads.  Thanks to Robert Grimm for finding the problem.
 
 {{{ Previous Versions 
 
