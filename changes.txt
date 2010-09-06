@@ -50,6 +50,7 @@ Changes since 0.9.9p1
 21. src/sltcp.c: Add support for gnutls logging functions.
 22. src/chkslang.c: Fixed a sscanf format issue involving long long
     integers.
+23. src/sltcp.c: Change 21 needed #ifdef SLTCP_HAS_GNUTLS_SUPPORT.
 
 {{{ Previous Versions 
 

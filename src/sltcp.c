@@ -554,10 +554,12 @@ static int init_ssl_random (void)
    return -1;
 }
 
+#if SLTCP_HAS_GNUTLS_SUPPORT
 static void tls_log_func (int level, const char *str)
 {
    print_error ("tls: level=%d: %s\n", level, str);
 }
+#endif
 
 static SSL *alloc_ssl (void)
 {
@@ -580,18 +582,19 @@ static SSL *alloc_ssl (void)
 	/* SSL_CTX_set_options (c, SSL_OP_NO_TLSv1); */
 	This_SSL_Ctx = c;
 	atexit (deinit_ssl);
-	
+
 	if (-1 == init_ssl_random ())
 	  return NULL;
      }
 
+#if SLTCP_HAS_GNUTLS_SUPPORT
    gnutls_global_set_log_function(tls_log_func);
    gnutls_global_set_log_level(4711);
-
+#endif
    ssl = SSL_new (This_SSL_Ctx);
    if (ssl != NULL)
      return ssl;
-   
+
    dump_ssl_error_0 ();
    print_error (_("SSL_new failed\n"));
    return NULL;
