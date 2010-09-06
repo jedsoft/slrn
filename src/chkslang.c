@@ -30,15 +30,13 @@ static char *make_version (unsigned int v)
 {
    static char v_string[16];
    unsigned int a, b, c;
-   
+
    a = v/10000;
    b = (v - a * 10000) / 100;
    c = v - (a * 10000) - (b * 100);
    sprintf (v_string, "%u.%u.%u", a, b, c); /* safe */
    return v_string;
 }
-
-
 
 int main (int argc, char **argv)
 {
@@ -71,7 +69,7 @@ slang.h does not match slang library version.  Did you install slang as\n\
 as a shared library?  Did you run ldconfig?  You have an installation problem\n\
 and you will need to check the SLANG variables in the Makefile and properly\n\
 set them.  Also try: make clean; make\n******\n\n"));
-	
+
 	fprintf (stderr, "slang.h version: %d\nlibslang version %d\n",
 		 SLANG_VERSION, SLang_Version);
 
@@ -79,12 +77,11 @@ set them.  Also try: make clean; make\n******\n\n"));
      }
 #endif
 #endif
-   
+
    sscanf (argv[2], "%u", &min_version);
    if (argc == 4) sscanf (argv[3], "%u", &sug_version);
    else sug_version = sl_version;
-   
-   
+
    ret = SUCCESS;
    if (sl_version < min_version)
      {
@@ -92,7 +89,7 @@ set them.  Also try: make clean; make\n******\n\n"));
 		 argv[1], make_version(min_version));
 	ret = FAILURE;
      }
-   
+
    if (sl_version < sug_version)
      {
 	fprintf (stderr, _("Your slang version is %s.\n"), make_version(sl_version));
@@ -100,7 +97,6 @@ set them.  Also try: make clean; make\n******\n\n"));
 			   "  version %s\n"), make_version(sug_version));
 	fprintf (stderr, _("This library is available from <http://www.jedsoft.org/slang/>.\n"));
      }
-   
 
 #ifdef SIZEOF_SHORT
    if (sizeof(short) != SIZEOF_SHORT)
@@ -136,19 +132,19 @@ set them.  Also try: make clean; make\n******\n\n"));
 # if (SIZEOF_LONG_LONG >= 8)
    else
      {
-	long long x = 9223372036854775807LL;
-	long long y = 0, z = 0;
+	long long llx = 9223372036854775807LL;
+	NNTP_Artnum_Type y = 0, z = 0;
 
 	if ((2 != sscanf ("9223372036854775807 9223372036854775807",
 			  NNTP_FMT_ARTNUM_2, &y, &z))
-	    || (y != x) || (z != x))
+	    || (y != llx) || (z != llx))
 	  {
 	     fprintf (stderr, "The long long format \"%s\" does not appear to work properly\n", NNTP_FMT_ARTNUM);
 	     fprintf (stderr, "Please check/correct the config.h file.\n");
 	     ret = FAILURE;
 	  }
      }
-# endif	     
+# endif
 #endif
 
 #ifdef SIZEOF_FLOAT

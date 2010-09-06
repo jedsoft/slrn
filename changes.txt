@@ -41,6 +41,15 @@ Changes since 0.9.9p1
     Content-Type is not understood and metamail is needed.
 18. src/art.c: Avoid a buffer overflow when reconstructing huge
     threads.  Thanks to Robert Grimm for finding the problem.
+19. src/version.c: %d format was used to print a long integer.
+20. src/nntplib.c: slrn user "narke" discovered that his server will
+    disconnect if an attempt is made to post an empty body.  slrn does
+    this after authenticating with the server to verify that posting
+    is possible.  As a work-around, the response comment from the
+    AUTHINFO command is parsed.
+21. src/sltcp.c: Add support for gnutls logging functions.
+22. src/chkslang.c: Fixed a sscanf format issue involving long long
+    integers.
 
 {{{ Previous Versions 
 

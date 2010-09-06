@@ -120,7 +120,7 @@ static void show_compile_time_options (FILE *fp)
    print_options (fp, External_Lib_Options, _("External programs / libs"));
    print_options (fp, Feature_Options, _("Features"));
    (void) fprintf (fp, _(" Using %d bit integers for article numbers.\n"),
-		   8*sizeof(NNTP_Artnum_Type));
+		   8*(int)sizeof(NNTP_Artnum_Type));
 }
 
 void slrn_show_version (FILE *fp) /*{{{*/
@@ -139,7 +139,7 @@ void slrn_show_version (FILE *fp) /*{{{*/
 		 SLANG_VERSION_STRING);
      }
 #if defined(__DATE__) && defined(__TIME__)
-   fprintf (fp, _("Compiled at: %s %s\n"), __DATE__, __TIME__);
+   fprintf (fp, _("Compiled on: %s %s\n"), __DATE__, __TIME__);
 #endif
    fprintf (fp, _("Operating System: %s\n"), os);
 

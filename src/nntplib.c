@@ -35,7 +35,7 @@
 #include <slang.h>
 #include "jdmacros.h"
 
-#if SLRN_USE_SLTCP 
+#if SLRN_USE_SLTCP
 # include "sltcp.h"
 #else
 # include "clientlib.h"
@@ -103,7 +103,6 @@ static int check_connect_lost_hook (NNTP_Type *s)
 
    return -1;
 }
-   
 
 int nntp_fgets_server (NNTP_Type *s, char *buf, unsigned int len)
 {
@@ -129,17 +128,17 @@ int nntp_fputs_server (NNTP_Type *s, char *buf)
 {
    if ((s == NULL) || (s->init_state == 0))
      return -1;
-   
+
    if (-1 == sltcp_fputs (s->tcp, buf))
      {
 	(void) nntp_disconnect_server (s);
 	(void) check_connect_lost_hook (s);
 	return -1;
      }
-   
+
    if (Slrn_Debug_Fp != NULL)
      fprintf (Slrn_Debug_Fp, ">%s\n", buf);
-   
+
    return 0;
 }
 
@@ -147,14 +146,14 @@ int nntp_write_server (NNTP_Type *s, char *buf, unsigned int n)
 {
    if ((s == NULL) || (s->init_state == 0))
      return -1;
-   
+
    if (n != sltcp_write (s->tcp, buf, n))
      {
 	(void) nntp_disconnect_server (s);
 	(void) check_connect_lost_hook (s);
 	return -1;
      }
-   
+
    if (Slrn_Debug_Fp != NULL)
      {
 	unsigned int i;
@@ -163,7 +162,7 @@ int nntp_write_server (NNTP_Type *s, char *buf, unsigned int n)
 	  fputc (buf[i], Slrn_Debug_Fp);
 	fputc ('\n', Slrn_Debug_Fp);
      }
-   
+
    return 0;
 }
 
@@ -173,7 +172,7 @@ int nntp_gets_server (NNTP_Type *s, char *buf, unsigned int len)
      return -1;
 
    len = strlen (buf);
-   
+
    /* Update bytes received */
    s->number_bytes_received += len;
 
@@ -208,7 +207,6 @@ static void _nntp_error_response (NNTP_Type *s, char *fmt)
    slrn_error (_("Reason: %s"), s->rspbuf);
 }
 
-
 static int _nntp_try_parse_timeout (char *str)
 {
    /* I know of only two timeout responses:
@@ -240,7 +238,7 @@ static int _nntp_try_parse_timeout (char *str)
      {
 	if (NULL != SLregexp_match (re, str, strlen (str)))
 	  status = 0;
-	
+
 	SLregexp_free (re);
      }
    return status;
@@ -265,7 +263,7 @@ int nntp_get_server_response (NNTP_Type *s)
 	if (-1 == _nntp_try_parse_timeout (s->rspbuf))
 	  break;
 	/* Drop */
-	
+
       case 0:			       /* invalid code */
       case ERR_GOODBYE:
 	nntp_disconnect_server (s);
@@ -281,7 +279,7 @@ int nntp_get_server_response (NNTP_Type *s)
 static int _nntp_reconnect (NNTP_Type *s)
 {
    nntp_disconnect_server (s);
-   
+
    if (-1 == check_connect_lost_hook (s))
      return -1;
 
@@ -296,7 +294,7 @@ static int _nntp_reconnect (NNTP_Type *s)
 	s->flags |= NNTP_RECONNECT_OK;
 	return -1;
      }
-   
+
    if ((s->group_name[0] != 0)
        && (-1 == nntp_server_vcmd (s, "GROUP %s", s->group_name)))
      {
@@ -414,10 +412,10 @@ int nntp_close_server (NNTP_Type *s)
     * of the *server_cmd functions.
     */
    (void) nntp_puts_server (s, "QUIT");
-   
+
    if (Slrn_Debug_Fp != NULL)
      fputs ("!Closing the server connection.\n", Slrn_Debug_Fp);
-   
+
    _nntp_deallocate_nntp (s);
 
    return 0;
@@ -433,7 +431,7 @@ int nntp_authorization (NNTP_Type *s, int auth_reqd)
 
    if ((auth_reqd == 0) && (status == 0))
      return 0;			       /* not needed and info not present */
-   
+
    if ((status == -1) || (name == NULL) || (pass == NULL))
      {
 	slrn_exit_error (_("Authorization needed, but could not determine username / password."));
@@ -458,7 +456,19 @@ int nntp_authorization (NNTP_Type *s, int auth_reqd)
 	if (s->can_post == 1)
 	  break;
 	/* This is the only obvious way to find out whether we are
-	 * able to post after successful authentication. */
+	 * able to post after successful authentication.
+	 * 
+	 * However, at least one server will disconnect if an attempt
+	 * is made to post an empty article.  Try to avoid this by
+	 * looking at the response message.  Unfortunately, this method
+	 * is not very robust.
+	 */
+	if (NULL == strstr (s->rspbuf, "Posting Allowed"))
+	  {
+	     s->can_post = 1;
+	     break;
+	  }
+
 	if (-1 == nntp_post_cmd (s))
 	  return -1;
 	if (s->code == CONT_POST)
@@ -491,7 +501,7 @@ static int _nntp_connect_server (NNTP_Type *s)
    s->init_state = 1;
    s->number_bytes_received = 0;
    NNTP_Try_Authentication = 2;
-   
+
    /* Read logon message. */
    switch (nntp_get_server_response (s))
      {
@@ -512,20 +522,20 @@ static int _nntp_connect_server (NNTP_Type *s)
      s->sv_id = SERVER_ID_INN;
    else
      s->sv_id = SERVER_ID_UNKNOWN;
-   
+
    if ((-1 == nntp_server_cmd (s, "MODE READER"))
        || (ERR_ACCESS == s->code))
      goto failed;
-   
+
    if (s->code == OK_NOPOST)
      s->can_post = 0;
-   
+
    if (-1 == nntp_authorization (s, Slrn_Force_Authentication))
      return -1;
 
    slrn_message_now (_("Connected to host.  %s"),
 		     (s->can_post ? _("Posting ok.") : _("Posting NOT ok.")));
-   
+
    return 0;
 
    failed:
@@ -533,7 +543,7 @@ static int _nntp_connect_server (NNTP_Type *s)
    _nntp_error_response (s, _("Failed to initialize server"));
    if (Slrn_Debug_Fp != NULL)
      fputs ("!Server connect failed.\n", Slrn_Debug_Fp);
-   
+
    (void) sltcp_close (s->tcp);
    s->tcp = NULL;
    return -1;
@@ -609,7 +619,6 @@ char *nntp_get_server_name (void)
    return "localhost";
 }
 
-
 /* In general, host has the form: "address:port" or "[address]:port" (to
  * support IPv6 literal addresses).  If port is non-negative use its value
  * despite the value coded in the hostname. */
@@ -669,7 +678,6 @@ static int _nntp_setup_host_and_port (char *host, int port, NNTP_Type *s)
 
    return 0;
 }
-
 
 NNTP_Type *nntp_open_server (char *host, int port)
 {
@@ -763,10 +771,10 @@ int nntp_check_connection (NNTP_Type *s)
 void nntp_disconnect_server (NNTP_Type *s)
 {
    if (s == NULL) return;
-   
+
    if (Slrn_Debug_Fp != NULL)
      fputs ("!Disconnecting from server.\n", Slrn_Debug_Fp);
-   
+
    sltcp_close_socket (s->tcp);
 }
 
@@ -806,7 +814,7 @@ int nntp_has_cmd (NNTP_Type *s, char *cmd)
 	   case ERR_NCING:
 	     s->can_xhdr = 1;
 	     break;
-	     
+
 	   case ERR_COMMAND:
 	   case ERR_ACCESS:
 	     s->can_xhdr = 0;
@@ -887,7 +895,7 @@ int nntp_select_group (NNTP_Type *s, char *name, NNTP_Artnum_Type *minp, NNTP_Ar
 {
    NNTP_Artnum_Type estim;
    NNTP_Artnum_Type min, max;
-   
+
    switch (nntp_server_vcmd (s, "GROUP %s", name))
      {
       case -1:
@@ -903,7 +911,7 @@ int nntp_select_group (NNTP_Type *s, char *name, NNTP_Artnum_Type *minp, NNTP_Ar
 
 	slrn_strncpy (s->group_name, name, NNTP_MAX_GROUP_NAME_LEN);
 	break;
-	
+
       case ERR_ACCESS:
       default:
 	break;
@@ -917,27 +925,27 @@ int nntp_select_group (NNTP_Type *s, char *name, NNTP_Artnum_Type *minp, NNTP_Ar
 int nntp_refresh_groups (NNTP_Type *s, Slrn_Group_Range_Type *gr, int n)
 {
    int reconnect, i, prev = 0, max_tries = 3;
-   
+
    start_over:
-   
+
    /* If we might still need authentication, use nntp_select_group first. */
    if ((NNTP_Try_Authentication == 2) && n)
      {
 	int status;
 	NNTP_Try_Authentication = 1;
-	
+
 	status = nntp_select_group (s, gr->name, &(gr->min), &(gr->max));
 	if (status == -1) return -1;
 	else if (status == ERR_NOGROUP)
 	  gr->min = -1;
 	n--; gr++;
      }
-   
+
    max_tries--;
    reconnect = s->flags & NNTP_RECONNECT_OK;
    s->flags &= ~NNTP_RECONNECT_OK;
    /* disallow reconnect for the moment as we batch commands */
-   
+
    i = prev;
    while (i < n)
      {
@@ -963,7 +971,7 @@ int nntp_refresh_groups (NNTP_Type *s, Slrn_Group_Range_Type *gr, int n)
 	     if ((max_tries == 0) || (-1 == _nntp_reconnect (s)))
 	       return -1;
 	     goto start_over;
-	     
+
 	   case ERR_NOAUTH:
 	     s->flags |= reconnect;
 	     while (++i < n)
@@ -978,7 +986,7 @@ int nntp_refresh_groups (NNTP_Type *s, Slrn_Group_Range_Type *gr, int n)
 	       }
 	     else
 	       return -1;
-	     
+
 	   case OK_GROUP:
 	     if (3 != sscanf (s->rspbuf + 4, NNTP_FMT_ARTNUM_3, &estim,
 			      &(gr[i].min), &(gr[i].max)))
@@ -990,7 +998,7 @@ int nntp_refresh_groups (NNTP_Type *s, Slrn_Group_Range_Type *gr, int n)
 	       }
 	     slrn_strncpy (s->group_name, gr[i].name, NNTP_MAX_GROUP_NAME_LEN);
 	     break;
-	     
+
 	   case ERR_FAULT:
 	   case OK_GOODBYE: /* SN */
 	     if (max_tries == 2) /* might be a timeout we didn't recognize */
@@ -1001,7 +1009,7 @@ int nntp_refresh_groups (NNTP_Type *s, Slrn_Group_Range_Type *gr, int n)
 		  goto start_over;
 	       }
 	     /* Fall through */
-	     
+
 	   default:
 	     gr[i].min = -1;
 	     break;
@@ -1030,7 +1038,7 @@ int nntp_xpat_cmd (NNTP_Type *s, char *hdr, NNTP_Artnum_Type rmin, NNTP_Artnum_T
    if (0 == PROBE_XCMD(s, s->can_xpat, "XPAT"))
      return ERR_COMMAND;
 
-   return nntp_server_vcmd (s, ("XPAT %s " NNTP_FMT_ARTRANGE " *%s*"), 
+   return nntp_server_vcmd (s, ("XPAT %s " NNTP_FMT_ARTRANGE " *%s*"),
 			    hdr, rmin, rmax, pat);
 }
 
@@ -1182,7 +1190,7 @@ char *nntp_read_and_malloc (NNTP_Type *s)
      {
 	if (mbuf == NULL)
 	  mbuf = slrn_strmalloc ("", 0);
-	
+
 	return mbuf;
      }
 
@@ -1194,25 +1202,25 @@ char *nntp_map_code_to_string (int code)
 {
    switch (code)
      {
-      case INF_HELP:	/* 100 */	
+      case INF_HELP:	/* 100 */
 	return _("Help text on way");
-      case INF_AUTH:	/* 180 */	
+      case INF_AUTH:	/* 180 */
 	return _("Authorization capabilities");
-      case INF_DEBUG:	/* 199 */	
+      case INF_DEBUG:	/* 199 */
 	return _("Debug output");
-      case OK_CANPOST:	/* 200 */	
+      case OK_CANPOST:	/* 200 */
 	return _("Hello; you can post");
-      case OK_NOPOST:	/* 201 */	
+      case OK_NOPOST:	/* 201 */
 	return _("Hello; you can't post");
-      case OK_SLAVE:	/* 202 */	
+      case OK_SLAVE:	/* 202 */
 	return _("Slave status noted");
-      case OK_GOODBYE:	/* 205 */	
+      case OK_GOODBYE:	/* 205 */
 	return _("Closing connection");
-      case OK_GROUP:	/* 211 */	
+      case OK_GROUP:	/* 211 */
 	return _("Group selected");
-      case OK_GROUPS:	/* 215 */	
+      case OK_GROUPS:	/* 215 */
 	return _("Newsgroups follow");
-      case OK_ARTICLE:	/* 220 */	
+      case OK_ARTICLE:	/* 220 */
 	return _("Article (head & body) follows");
       case OK_HEAD:	/* 221 */
 	return _("Head follows");

@@ -554,6 +554,10 @@ static int init_ssl_random (void)
    return -1;
 }
 
+static void tls_log_func (int level, const char *str)
+{
+   print_error ("tls: level=%d: %s\n", level, str);
+}
 
 static SSL *alloc_ssl (void)
 {
@@ -565,6 +569,7 @@ static SSL *alloc_ssl (void)
 
 	SSLeay_add_ssl_algorithms ();
 	c = SSL_CTX_new(SSLv23_client_method());
+	/* c = SSL_CTX_new(SSLv3_client_method()); */
 	SSL_load_error_strings ();
 	if (c == NULL)
 	  {
@@ -572,13 +577,17 @@ static SSL *alloc_ssl (void)
 	     print_error (_("SSL_CTX_new failed.\n"));
 	     return NULL;
 	  }
+	/* SSL_CTX_set_options (c, SSL_OP_NO_TLSv1); */
 	This_SSL_Ctx = c;
 	atexit (deinit_ssl);
 	
 	if (-1 == init_ssl_random ())
 	  return NULL;
      }
-   
+
+   gnutls_global_set_log_function(tls_log_func);
+   gnutls_global_set_log_level(4711);
+
    ssl = SSL_new (This_SSL_Ctx);
    if (ssl != NULL)
      return ssl;
