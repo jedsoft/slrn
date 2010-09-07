@@ -51,6 +51,8 @@ Changes since 0.9.9p1
 22. src/chkslang.c: Fixed a sscanf format issue involving long long
     integers.
 23. src/sltcp.c: Change 21 needed #ifdef SLTCP_HAS_GNUTLS_SUPPORT.
+24. src/nntplib.c: A comparison in #20 should have used != instead of
+    ==.
 
 {{{ Previous Versions 
 

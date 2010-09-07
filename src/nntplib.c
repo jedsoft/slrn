@@ -463,7 +463,7 @@ int nntp_authorization (NNTP_Type *s, int auth_reqd)
 	 * looking at the response message.  Unfortunately, this method
 	 * is not very robust.
 	 */
-	if (NULL == strstr (s->rspbuf, "Posting Allowed"))
+	if (NULL != strstr (s->rspbuf, "Posting Allowed"))
 	  {
 	     s->can_post = 1;
 	     break;
