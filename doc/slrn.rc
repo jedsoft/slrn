@@ -180,11 +180,11 @@
 %
 
 % Character set used for the display or terminal; valid values include:
-%   utf8, iso-8859-1, ibm850, ibm852, koi8,
-%charset display utf8
+%   utf-8, iso-8859-1, ibm850, ibm852, koi8,
+%charset display "utf-8"
 
 % the character set used for outgoing articles
-%charset outgoing "utf8"
+%charset outgoing "utf-8"
 
 % If non-zero, call metamail for MIME formats slrn cannot handle.
 %set use_metamail 1

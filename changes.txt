@@ -53,6 +53,8 @@ Changes since 0.9.9p1
 23. src/sltcp.c: Change 21 needed #ifdef SLTCP_HAS_GNUTLS_SUPPORT.
 24. src/nntplib.c: A comparison in #20 should have used != instead of
     ==.
+25. doc/slrn.rc: "utf8" changed to "utf-8" (Thomas Wiegner).
+26. src/art_misc.c: Increased the search range for a pgp signature.
 
 {{{ Previous Versions 
 

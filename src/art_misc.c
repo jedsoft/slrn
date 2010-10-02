@@ -1075,7 +1075,7 @@ void slrn_art_mark_pgp_signature (Slrn_Article_Type *a) /*{{{*/
 	l0 = l;
 	l = l->next;
 	
-	count = 20;
+	count = 256;		       /* arbitrary */
 	while ((l != NULL) && count)
 	  {
 	     if ((l->buf[0] != '-')
