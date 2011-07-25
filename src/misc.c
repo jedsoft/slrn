@@ -77,9 +77,9 @@
 #   if !defined(h_errno) && !defined(__CYGWIN__)
 extern int h_errno;
 #   endif
-#  endif 
-# endif 
-#endif 
+#  endif
+# endif
+#endif
 
 #ifdef HAVE_SYS_WAIT_H
 # include <sys/wait.h>
@@ -124,7 +124,7 @@ extern int h_errno;
 /*}}}*/
 
 /*{{{ Global Variables */
-int Slrn_Full_Screen_Update = 1; 
+int Slrn_Full_Screen_Update = 1;
 int Slrn_User_Wants_Confirmation = SLRN_CONFIRM_ALL;
 int Slrn_Message_Present = 0;
 int Slrn_Abort_Unmodified = 0;
@@ -175,7 +175,6 @@ void slrn_smg_refresh (void)
      }
 }
 
-
 void slrn_set_color (int color) /*{{{*/
 {
    SLsmg_set_color (color);
@@ -186,12 +185,12 @@ void slrn_set_color (int color) /*{{{*/
 void slrn_redraw (void) /*{{{*/
 {
    if (Slrn_Batch) return;
-   
+
    slrn_push_suspension (0);
-   
+
    SLsmg_cls ();
    Slrn_Full_Screen_Update = 1;
-   
+
    redraw_message ();
    slrn_update_screen ();
    redraw_mini_buffer ();
@@ -213,11 +212,11 @@ char *slrn_print_percent (char *buf, SLscroll_Window_Type *w, int lines) /*{{{*/
      {
 	int bot_showing;
 	unsigned int bot_number;
-	
+
 	bot_number = w->line_num + (w->nrows - w->window_row) - 1;
 	bot_showing = ((w->bot_window_line == NULL)
 		       || (w->num_lines == bot_number));
-	
+
 	if (w->line_num == w->window_row + 1)
 	  slrn_strncpy (buf, bot_showing ? _("All") : _("Top"), 66);
 	else if (bot_showing)
@@ -226,7 +225,7 @@ char *slrn_print_percent (char *buf, SLscroll_Window_Type *w, int lines) /*{{{*/
 	  sprintf (buf, "%d%%", (100 * bot_number) / w->num_lines); /* safe */
     }
   return buf;
-}   
+}
 /*}}}*/
 
 static char *top_status_line_cb (char ch, void *data, int *len, int *color) /*{{{*/
@@ -234,9 +233,9 @@ static char *top_status_line_cb (char ch, void *data, int *len, int *color) /*{{
    static char buf[32];
    char *retval = NULL;
    time_t now;
-   
+
    (void) data; (void) color; /* we currently don't use these */
-   
+
    switch (ch)
      {
       case 'd':
@@ -244,26 +243,26 @@ static char *top_status_line_cb (char ch, void *data, int *len, int *color) /*{{
 	if (0 != (*len = strftime (buf, sizeof(buf), "%x", localtime(&now))))
 	  retval = buf;
 	break;
-	
+
       case 'n':
 	if (NULL != Slrn_Group_Current_Group)
 	  retval = Slrn_Group_Current_Group->group_name;
 	break;
-	
+
       case 's':
 	retval = Slrn_Server_Obj->sv_name;
 	break;
-	
+
       case 't':
 	time(&now);
 	if (0 != (*len = strftime (buf, sizeof(buf), "%X", localtime(&now))))
 	  retval = buf;
 	break;
-	
+
       case 'v':
 	retval = Slrn_Version_String;
 	break;
-	
+
      }
    return retval == NULL ? "" : retval;
 }
@@ -271,12 +270,12 @@ static char *top_status_line_cb (char ch, void *data, int *len, int *color) /*{{
 void slrn_update_top_status_line (void) /*{{{*/
 {
    char *fmt = Slrn_Top_Status_Line;
-   
+
    if (Slrn_Full_Screen_Update == 0) return;
-   
+
    if ((fmt == NULL) || (*fmt == 0))
      fmt = _("slrn %v ** Press '?' for help, 'q' to quit. ** Server: %s");
-   
+
    slrn_custom_printf (fmt, top_status_line_cb, NULL, 0, MENU_COLOR);
 }
 /*}}}*/
@@ -288,10 +287,10 @@ static char *skip_char (char *s, char *smax, int ignore_combining)
 {
    if (s >= smax)
      return s;
-   
+
    if (Slrn_UTF8_Mode == 0)
      return s+1;
-   
+
    return (char *)SLutf8_skip_chars ((SLuchar_Type *)s, (SLuchar_Type *)smax, 1, NULL, ignore_combining);
 }
 
@@ -304,14 +303,14 @@ static void redraw_message (void)
    char *m, *mmax;
 
    if (Slrn_Batch) return;
-   
+
    if (Slrn_Message_Present == 0)
      return;
-   
+
    slrn_push_suspension (0);
 
    SLsmg_gotorc (SLtt_Screen_Rows - 1, 0);
-   
+
    color = Message_Buffer [0];
    m = Message_Buffer + 1;
    mmax = m + strlen (m);
@@ -329,21 +328,20 @@ static void redraw_message (void)
 	m1++;
 	if (m1 == mmax)
 	  break;
-	
+
 	slrn_set_color (RESPONSE_CHAR_COLOR);
 	m = m1;
 	m1 = skip_char (m, mmax, 1);
 	SLsmg_write_nchars (m, m1-m);
 	m = m1;
      }
-   
+
    SLsmg_erase_eol ();
    slrn_set_color (0);
-   
+
    slrn_pop_suspension ();
 }
 
-     
 static void vmessage_1 (int color, char *fmt, va_list ap)
 {
    slrn_vsnprintf (Message_Buffer + 1, sizeof(Message_Buffer)-1, fmt, ap);
@@ -385,7 +383,7 @@ void slrn_verror (char *fmt, va_list ap)
 	vmessage_1 (ERROR_COLOR, fmt, ap);
 	SLang_flush_input ();
      }
-   
+
    log_error_message (fmt, ap);
    if (SLang_get_error () == 0) SLang_set_error (INTRINSIC_ERROR);
 }
@@ -397,10 +395,10 @@ void slrn_clear_message (void) /*{{{*/
    /* SLang_Error = 0; */
    Beep_Pending = 0;
    SLKeyBoard_Quit = 0;
-   
+
    if ((Slrn_TT_Initialized & SLRN_SMG_INIT) == 0)
      return;
-   
+
    slrn_push_suspension (0);
    SLsmg_gotorc (SLtt_Screen_Rows - 1, 0);
    SLsmg_erase_eol ();
@@ -425,7 +423,7 @@ void slrn_va_message (char *fmt, va_list ap)
 int slrn_message (char *fmt, ...) /*{{{*/
 {
    va_list ap;
-   
+
    if (Error_Present) return -1;
    va_start(ap, fmt);
    vmessage (stdout, fmt, ap);
@@ -438,7 +436,7 @@ int slrn_message (char *fmt, ...) /*{{{*/
 int slrn_message_now (char *fmt, ...) /*{{{*/
 {
    va_list ap;
-   
+
    if (Error_Present) return -1;
    va_start(ap, fmt);
    vmessage (stdout, fmt, ap);
@@ -483,11 +481,11 @@ void slrn_write_nbytes (char *s, unsigned int n) /*{{{*/
 	SLsmg_write_nchars (s, n);
 	return;
      }
-   
+
    s1 = (unsigned char *) s;
    smax = s1 + n;
    eight_bit = SLsmg_Display_Eight_Bit;
-   
+
    while (s1 < smax)
      {
 	if ((*s1 & 0x80) && (eight_bit > (unsigned int) *s1))
@@ -500,7 +498,7 @@ void slrn_write_nbytes (char *s, unsigned int n) /*{{{*/
 	  }
 	else s1++;
      }
-   
+
    if (s != (char *)s1)
      SLsmg_write_nchars (s, (unsigned int) ((char *)s1 - s));
 }
@@ -515,21 +513,21 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 
    SLsmg_gotorc (row, 0);
    slrn_set_color (def_color);
-   
+
    while ((ch = *fmt) != 0)
      {
 	char *s, *smax, *p;
 	int color = def_color;
 	int len = -1, field_len = -1;
 	int justify, spaces = 0;
-	
+
 	if (fmt == elsepart)
 	  {
 	     fmt = cond_end + 1; /* skip the '?' */
 	     elsepart = cond_end = NULL;
 	     continue;
 	  }
-	
+
 	if (ch != '%')
 	  {
 	     if ((NULL == (s = slrn_strbyte (fmt, '%'))) && (elsepart == NULL))
@@ -547,26 +545,26 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 		  continue;
 	       }
 	  }
-	
+
 	fmt++;
 	ch = *fmt++;
-	
+
 	if (ch == '?')
 	  {
 	     int column;
 	     char *res;
-	     
+
 	     if (((ch = *fmt++) == '\0') || (*fmt++ != '?') ||
 		 (NULL == (cond_end = slrn_strbyte (fmt, '?'))))
 	       break; /* syntax error; stop here */
 	     if ((NULL == (elsepart = slrn_strbyte (fmt, '&'))) ||
 		 (elsepart > cond_end))
 	       elsepart = cond_end;
-	     
+
 	     column = SLsmg_get_column (); /* callback could print something */
 	     res = (cb)(ch, param, &len, &color);
 	     SLsmg_gotorc (row, column);
-	     
+
 	     if ((res == NULL) || (*res == '\0') ||
 		 ((*res == '0' || isspace(*res)) && *(res+1) == '\0'))
 	       {
@@ -576,9 +574,9 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	       }
 	     continue;
 	  }
-	
+
 	s = NULL;
-	
+
 	if (ch == '-')
 	  {
 	     justify = 1;
@@ -591,7 +589,7 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	  }
 	else
 	  justify = 0;
-	
+
 	if (isdigit (ch))
 	  {
 	     field_len = 0;
@@ -602,7 +600,7 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	       }
 	     while (isdigit (ch));
 	  }
-	
+
 	switch (ch)
 	  {
 	   case 0:
@@ -612,19 +610,19 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	     s = "%";
 	     len = 1;
 	     break;
-	     
+
 	   case 'g':
 	     SLsmg_erase_eol ();
 	     if (justify)
 	       field_len = SLtt_Screen_Cols - field_len;
 	     SLsmg_gotorc (row, field_len);
 	     break;
-	     
+
 	   default:
 	     s = (cb)(ch, param, &len, &color);
 	     break;
 	  }
-	
+
 	if (s == NULL)
 	  continue;
 
@@ -637,7 +635,7 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	len = slrn_screen_strlen (s, smax);
 	if (NULL != (p = slrn_strbyte (s, '\n')))
 	  len = slrn_screen_strlen (s, p);
-	
+
 	if (field_len != -1)
 	  {
 	     if (field_len > len)
@@ -662,10 +660,10 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 	     SLsmg_write_nchars (" ", 1);
 	     spaces--;
 	  }
-	if (color != def_color) 
+	if (color != def_color)
 	  slrn_set_color (def_color);
      }
-   
+
    SLsmg_erase_eol ();
 }
 /*}}}*/
@@ -674,7 +672,7 @@ int slrn_set_display_format (char **formats, unsigned int num, char *entry) /*{{
 {
    if (num >= SLRN_MAX_DISPLAY_FORMATS)
      return -1;
-   
+
    if (formats[num] != NULL)
      SLang_free_slstring (formats[num]);
 
@@ -686,7 +684,7 @@ int slrn_set_display_format (char **formats, unsigned int num, char *entry) /*{{
 
    if (NULL == (formats[num] = SLang_create_slstring (entry)))
      return -1;
-   
+
    return 0;
 }
 /*}}}*/
@@ -694,14 +692,14 @@ int slrn_set_display_format (char **formats, unsigned int num, char *entry) /*{{
 unsigned int slrn_toggle_format (char **formats, unsigned int cur) /*{{{*/
 {
    unsigned int retval = cur;
-   
+
    if (Slrn_Prefix_Arg_Ptr != NULL)
      {
 	retval = (unsigned int) *Slrn_Prefix_Arg_Ptr % SLRN_MAX_DISPLAY_FORMATS;
 	Slrn_Prefix_Arg_Ptr = NULL;
      }
    else retval = (retval + 1) % SLRN_MAX_DISPLAY_FORMATS;
-   
+
    while ((retval != cur) && (formats[retval] == NULL))
      retval = (retval + 1) % SLRN_MAX_DISPLAY_FORMATS;
 
@@ -720,7 +718,6 @@ int slrn_check_batch (void)
 /*}}}*/
 
 /*{{{ File Related Functions */
-   
 
 #ifdef VMS
 /*{{{ VMS Filename fixup functions */
@@ -728,7 +725,7 @@ int slrn_check_batch (void)
 static void vms_fix_name(char *name)
 {
    int idx, pos;
-   
+
    pos = strspn(name, VALID_FILENAME_CHARS);
    if (pos == strlen(name))
      return;
@@ -778,10 +775,10 @@ void slrn_make_home_filename (char *name, char *file, size_t n) /*{{{*/
 #endif
 	return;
      }
-   
+
    if (NULL == (home = getenv ("SLRNHOME")))
      home = getenv ("HOME");
-   
+
    *file = 0;
    slrn_dircat (home, name, file, n);
 #else /* VMS */
@@ -789,17 +786,17 @@ void slrn_make_home_filename (char *name, char *file, size_t n) /*{{{*/
    static char fname[SLRN_MAX_PATH_LEN];
    char fn[SLRN_MAX_PATH_LEN], fn1[SLRN_MAX_PATH_LEN];
    int rc, idx;
-   
+
    slrn_strncpy (fn1, name, sizeof (fn1));
    if (NULL != slrn_strbyte (name, ':'))
      {
 	slrn_strncpy (file, name, n);
 	return;
      }
-   
+
    if (NULL == (home = getenv ("SLRNHOME")))
      home = getenv ("HOME");
-   
+
    *file = 0;
    if (NULL != (cp = slrn_strbyte (fn1, '/')))
      {
@@ -814,9 +811,9 @@ void slrn_make_home_filename (char *name, char *file, size_t n) /*{{{*/
 	     strcat(cp1, "/"); /* safe ? */
  	  }
 	strcat (cp1, fn1); /* safe ? */
-	
+
 	vms_fix_name (cp1);
- 	
+
 	rc = decc$to_vms(cp1, vms_copyname2, 0, 2);
  	if (rc > 0)
  	  {
@@ -836,9 +833,9 @@ void slrn_make_home_filename (char *name, char *file, size_t n) /*{{{*/
 	     strcat(cp1, "/"); /* safe ? */
 	  }
 	strcat (cp1, fn1); /* safe ? */
-	
+
 	vms_fix_name (cp1);
- 	
+
 	rc = shell$to_vms(cp1, vms_copyname2, 0, 2);
 	if (rc > 0)
 	  {
@@ -871,7 +868,7 @@ void slrn_make_home_dirname (char *name, char *dir, size_t n) /*{{{*/
    char fn[SLRN_MAX_PATH_LEN];
    static char fname[SLRN_MAX_PATH_LEN];
    int rc, idx, len;
-   
+
    if (NULL != slrn_strbyte (name, ':'))
      {
 	slrn_strncpy (dir, name, n);
@@ -892,7 +889,7 @@ void slrn_make_home_dirname (char *name, char *dir, size_t n) /*{{{*/
 	  }
 	strcat (cp, name); /* safe ? */
 	vms_fix_name (cp);
-	
+
 	rc = decc$to_vms(cp, vms_copyname2, 0, 2);
 	if (rc > 0)
 	  {
@@ -917,7 +914,7 @@ void slrn_make_home_dirname (char *name, char *dir, size_t n) /*{{{*/
      }
    else
      {
-	if (home != NULL) 
+	if (home != NULL)
 	  {
 	     slrn_strncpy(dir, home, n);
 	     len = strlen(dir) - 1;
@@ -937,7 +934,7 @@ void slrn_make_home_dirname (char *name, char *dir, size_t n) /*{{{*/
 	  strcat(dir, name); /* safe */
      }
 #endif /* VMS */
-   
+
    return;
 }
 
@@ -947,7 +944,7 @@ static unsigned int make_random (void)
 {
    static unsigned long s;
    static int init;
-   
+
    if (init == 0)
      {
 	s = (unsigned long) time (NULL) + (unsigned long) getpid ();
@@ -963,7 +960,7 @@ static unsigned int make_random (void)
     */
    return (unsigned int) (s + (unsigned long) time (NULL));
 }
-   
+
 /* Note: This function should not create a file that is deleted when it
  * is closed.
  */
@@ -974,7 +971,7 @@ FILE *slrn_open_tmpfile_in_dir (char *dir, char *file, size_t n)
    unsigned int len;
    unsigned int i;
    char buf[80];
-   
+
 #ifndef VMS
    if (2 != slrn_file_exists (dir))
      return NULL;
@@ -985,26 +982,26 @@ FILE *slrn_open_tmpfile_in_dir (char *dir, char *file, size_t n)
 #else
    slrn_snprintf (buf, sizeof (buf), "SLRN%X", make_random ());
 #endif
-   
+
    if (-1 == slrn_dircat (dir, buf, file, n))
      return NULL;
-   
+
 #if defined(IBMPC_SYSTEM)
 # define MAX_TMP_FILE_NUMBER 999
 #else
 # define MAX_TMP_FILE_NUMBER 1024
 #endif
-   
+
    len = strlen (file);
    for (i = 0; i < MAX_TMP_FILE_NUMBER; i++)
      {
 	int fd;
-	
+
 	if (len + 5 < n)
 	  sprintf (file + len, ".%u", i); /* safe */
 	else if (i)
 	  break;
-	
+
 	fd = open (file, O_WRONLY | O_CREAT | O_EXCL, S_IREAD | S_IWRITE);
 	if (fd != -1)
 	  {
@@ -1020,7 +1017,7 @@ FILE *slrn_open_tmpfile_in_dir (char *dir, char *file, size_t n)
 FILE *slrn_open_tmpfile (char *file, size_t n) /*{{{*/
 {
    char *dir;
-   
+
    dir = getenv ("TMP");
    if ((dir == NULL) || (2 != slrn_file_exists (dir)))
      dir = getenv ("TMPDIR");
@@ -1037,7 +1034,7 @@ FILE *slrn_open_tmpfile (char *file, size_t n) /*{{{*/
 # endif
 #endif
      }
-   
+
    return slrn_open_tmpfile_in_dir (dir, file, n);
 }
 
@@ -1047,7 +1044,7 @@ FILE *slrn_open_home_file (char *name, char *mode, char *file, /*{{{*/
 			   size_t n, int create_flag)
 {
    char filebuf[SLRN_MAX_PATH_LEN];
-   
+
    if (file == NULL)
      {
 	file = filebuf;
@@ -1055,7 +1052,7 @@ FILE *slrn_open_home_file (char *name, char *mode, char *file, /*{{{*/
      }
 
    slrn_make_home_filename (name, file, n);
-   
+
 #ifdef VMS
    if (create_flag)
      {
@@ -1077,7 +1074,7 @@ FILE *slrn_open_home_file (char *name, char *mode, char *file, /*{{{*/
 VFILE *slrn_open_home_vfile (char *name, char *file, size_t n)
 {
    char filebuf[SLRN_MAX_PATH_LEN];
-   
+
    if (file == NULL)
      {
 	file = filebuf;
@@ -1085,13 +1082,12 @@ VFILE *slrn_open_home_vfile (char *name, char *file, size_t n)
      }
 
    slrn_make_home_filename (name, file, n);
-   
+
    return vopen (file, 4096, 0);
 }
 
 /*}}}*/
 
-   
 int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char *subject) /*{{{*/
 {
    FILE *pp;
@@ -1100,12 +1096,12 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
    char *buf;
    char outfile [SLRN_MAX_PATH_LEN];
 #endif
-   
+
    if (edit && (Slrn_Batch == 0))
      {
 	if (slrn_edit_file (Slrn_Editor_Mail, file, editline, 1) < 0) return -1;
 	if (Slrn_Mail_Editor_Is_Mua) return 0;
-	
+
 	while (1)
 	  {
 	     char rsp;
@@ -1113,7 +1109,7 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
  * Do not change the length of this string. You cannot use any of the
  * default characters for different fields. */
 	     char *responses=_("yYnNeE");
-	     
+
 	     if (strlen (responses) != 6)
 	       responses = "";
 	     rsp = slrn_get_response ("yYnNeE", responses, _("Mail the message? \001Yes, \001No, \001Edit"));
@@ -1128,7 +1124,7 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
    vms_send_mail (buf, subject, file);
    slrn_free (buf);
 #else
-   
+
    while (1)
      {
 	int rsp;
@@ -1212,7 +1208,7 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 # else
    slrn_pclose (pp);
 # endif
-   
+
 #endif /* NOT VMS */
    slrn_message (_("Sending...done"));
 
@@ -1228,7 +1224,7 @@ int slrn_mail_file (char *file, int edit, unsigned int editline, char *to, char 
 
 /*}}}*/
 
-#if SLRN_HAS_PIPING   
+#if SLRN_HAS_PIPING
 int _slrn_pclose (FILE *fp)
 {
    int ret;
@@ -1259,14 +1255,14 @@ typedef struct _Pipe_Cmd_Table_Type
 Pipe_Cmd_Table_Type;
 
 Pipe_Cmd_Table_Type *Pipe_Cmd_Table;
-   
+
 static int store_pipe_cmd (char *cmd, FILE *fp)
 {
    Pipe_Cmd_Table_Type *p;
 
    if (NULL == (cmd = SLang_create_slstring (cmd)))
      return -1;
-   
+
    p = (Pipe_Cmd_Table_Type *)slrn_malloc (sizeof (Pipe_Cmd_Table_Type), 1, 0);
    if (p == NULL)
      {
@@ -1281,9 +1277,9 @@ static int store_pipe_cmd (char *cmd, FILE *fp)
 }
 
 static void delete_pipe_cmd (FILE *fp)
-{   
+{
    Pipe_Cmd_Table_Type *last, *next;
-   
+
    last = NULL;
    next = Pipe_Cmd_Table;
    while (next != NULL)
@@ -1292,34 +1288,34 @@ static void delete_pipe_cmd (FILE *fp)
 	  {
 	     if (last != NULL)
 	       last->next = next->next;
-	     else 
+	     else
 	       Pipe_Cmd_Table = next->next;
-	     
+
 	     SLang_free_slstring (next->cmd);
 	     slrn_free ((char *) next);
 	     return;
 	  }
-	
+
 	last = next;
 	next = next->next;
      }
-   
+
    /* should not be reached */
 }
 
 static char *get_pipe_cmd (FILE *fp)
 {
    Pipe_Cmd_Table_Type *p;
-   
+
    p = Pipe_Cmd_Table;
    while (p != NULL)
      {
 	if (p->fp == fp)
 	  return p->cmd;
-	
+
 	p = p->next;
      }
-   
+
    return _("**UNKNOWN**");
 }
 #endif 				       /* SLRN_HAS_PIPING */
@@ -1328,12 +1324,12 @@ int slrn_pclose (FILE *fp) /*{{{*/
 #if SLRN_HAS_PIPING
    int ret;
    if (fp == NULL) return -1;
-   
+
    ret = _slrn_pclose (fp);
    if (ret)
      {
 	char buf[SLRN_MAX_PATH_LEN];
-	fprintf (stderr, _("Command %s returned exit status %d.  Press RETURN.\n"), 
+	fprintf (stderr, _("Command %s returned exit status %d.  Press RETURN.\n"),
 		 get_pipe_cmd (fp), ret);
 	fgets (buf, sizeof(buf), stdin);
      }
@@ -1353,10 +1349,10 @@ FILE *slrn_popen (char *cmd, char *mode) /*{{{*/
 {
 #if SLRN_HAS_PIPING
    FILE *fp;
-   
+
    slrn_set_display_state (0);
    fp = popen (cmd, mode);
-   
+
    if (fp == NULL)
      {
 	char buf[256];
@@ -1374,7 +1370,6 @@ FILE *slrn_popen (char *cmd, char *mode) /*{{{*/
 
 /*}}}*/
 
-
 /*}}}*/
 
 /* returns a malloced string */
@@ -1383,9 +1378,9 @@ static char *create_edit_command (char *edit, char *file, unsigned int line) /*{
    int d, s;
    char ch, *p = edit;
    /* Look for %d and %s */
-   
+
    d = s = 0;
-   
+
    while (0 != (ch = *p++))
      {
 	if (ch != '%') continue;
@@ -1408,7 +1403,7 @@ static char *create_edit_command (char *edit, char *file, unsigned int line) /*{
      }
 
 #if defined(IBMPC_SYSTEM)
-   /* Convert editor pathnames from / form to \\ form.  I wonder what 
+   /* Convert editor pathnames from / form to \\ form.  I wonder what
     * happens when the pathname contains a space.  Hmmm...
     */
    p = edit;
@@ -1418,9 +1413,9 @@ static char *create_edit_command (char *edit, char *file, unsigned int line) /*{
 	p++;
      }
 #endif
-   
+
    /* No %d, %s */
-   
+
    if ((d == 0) && (s == 0))
      {
 	return slrn_strdup_strcat (edit, " ", file, NULL);
@@ -1450,7 +1445,7 @@ static char *create_edit_command (char *edit, char *file, unsigned int line) /*{
 /*}}}*/
 
 /* This function returns -1 upon failure, -2 upon unmodified edit */
-int slrn_edit_file (char *editor, char *file, unsigned int line, 
+int slrn_edit_file (char *editor, char *file, unsigned int line,
 		    int check_mtime) /*{{{*/
 {
    char *cmd, *editcmd, *msg = NULL;
@@ -1460,7 +1455,7 @@ int slrn_edit_file (char *editor, char *file, unsigned int line,
 
    if (Slrn_Abort_Unmodified == 0)
      check_mtime = 0;
-     
+
    if ((editor == NULL) || (*editor == 0))
      editor = Slrn_Editor;
 
@@ -1513,7 +1508,7 @@ int slrn_edit_file (char *editor, char *file, unsigned int line,
 	  msg = _("The editor returned a non-zero status.");
      }
 #endif
-   
+
    /* Am I the only one who thinks this is a good idea?? */
    if (Slrn_TT_Initialized) while (SLang_input_pending (5))
      SLang_flush_input ();
@@ -1567,12 +1562,14 @@ static void rline_update (SLrline_Type *rli, char *prompt,
    (void) rli;
 
    slrn_push_suspension (0);
-   
+   if (prompt == NULL)
+     prompt = "";
+
    prompt_len = strlen (prompt);
    ubuf = slrn_safe_malloc (prompt_len + len + 1);
    strcpy (ubuf, prompt);
    strncpy (ubuf + prompt_len, buf, len);
-   
+
    len += prompt_len;
    ubuf[len] = 0;
 
@@ -1601,8 +1598,6 @@ static void rline_update (SLrline_Type *rli, char *prompt,
    slrn_pop_suspension ();
 }
 
-
-
 /* If 1, redraw read_line.  If 2, redraw message */
 static int Reading_Input;
 
@@ -1620,13 +1615,13 @@ static SLang_RLine_Info_Type *init_readline (void) /*{{{*/
 {
    SLrline_Type *rli;
    unsigned int flags = SL_RLINE_BLINK_MATCH;
-   
+
    if (Slrn_UTF8_Mode)
      flags |= SL_RLINE_UTF8_MODE;
 
    if (NULL == (rli = SLrline_open (SLtt_Screen_Cols, flags)))
      return NULL;
-   
+
    (void) SLrline_set_update_hook (rli, rline_update, NULL);
    return rli;
 }
@@ -1636,23 +1631,23 @@ static SLang_RLine_Info_Type *init_readline (void) /*{{{*/
 static int read_from_input_string (char *str)
 {
    char *s;
-   
+
    if (Input_String == NULL) return -1;
-   
+
    s = slrn_strbyte (Input_String_Ptr, '\n');
-   if (s != NULL) 
+   if (s != NULL)
      *s = 0;
-   
+
    strncpy (str, Input_String_Ptr, 255);
    str[255] = 0;
-   
+
    if (s == NULL)
      {
 	SLFREE (Input_String);
 	Input_String_Ptr = Input_String = NULL;
      }
    else Input_String_Ptr = s + 1;
-   
+
    return strlen (str);
 }
 
@@ -1670,13 +1665,13 @@ static char read_from_input_char (void)
 {
    if (Input_Chars_Ptr == NULL)
      return 0;
-   
+
    if (*Input_Chars_Ptr == 0)
      {
 	slrn_set_input_chars (NULL);
 	return 0;
      }
-   
+
    return *Input_Chars_Ptr++;
 }
 
@@ -1700,7 +1695,7 @@ static int dir_findnext (char *buf) /*{{{*/
 {
    Slrn_Dirent_Type *dirent;
    unsigned int len = strlen (File_Pattern);
-   
+
    while (NULL != (dirent = slrn_read_dir (Dir)))
      {
 	char *name = dirent->name;
@@ -1722,16 +1717,16 @@ static int dir_findnext (char *buf) /*{{{*/
 static int dir_findfirst (char *buf) /*{{{*/
 {
    int pos = strlen (buf);
-   
+
    if (Dir != NULL)
      {
 	slrn_close_dir (Dir);
 	Dir = NULL;
      }
-   
+
    while ((pos >= 0) && (buf[pos] != SLRN_PATH_SLASH_CHAR))
      pos--;
-   
+
    if (pos == -1)
      {
 	unsigned int len;
@@ -1747,10 +1742,10 @@ static int dir_findfirst (char *buf) /*{{{*/
 	  pos = SLRN_MAX_PATH_LEN - 2;
 	slrn_strncpy (Dir_Name, buf, pos + 2);
      }
-   
+
    pos++;
    slrn_strncpy (File_Pattern, buf + pos, sizeof (File_Pattern));
-   
+
    if (NULL == (Dir = slrn_open_dir (Dir_Name)))
      return 0;
 
@@ -1771,7 +1766,7 @@ static int Var_Pos;
 static int var_findnext (char *buf) /*{{{*/
 {
    unsigned int len = strlen (File_Pattern);
-   
+
    while (Var->what != NULL)
      {
 	int retval = 0;
@@ -1799,7 +1794,7 @@ static int var_findfirst (char *buf) /*{{{*/
    int pos = strlen (buf);
    while ((pos > 0) && (buf[pos-1] != ' '))
      pos--;
-   
+
    slrn_strncpy (Dir_Name, buf, pos + 1);
    slrn_strncpy (File_Pattern, buf + pos, SLRN_MAX_PATH_LEN);
    Var = (Generic_Var_Type*) Slrn_Int_Variables; Var_Pos = 0;
@@ -1844,7 +1839,7 @@ static void generic_mini_complete (int cycle) /*{{{*/
 	rli_self_insert ();
 	return;
      }
-   
+
    n = sizeof (buf);
    (void) SLrline_get_point (Slrn_Keymap_RLI, &point);
    if (point < n)
@@ -1856,7 +1851,7 @@ static void generic_mini_complete (int cycle) /*{{{*/
 
    slrn_strncpy (buf, rli_buf, n);
    n = 0;
-   
+
    if (strcmp (rli_buf, prevcall) ||
        (point != lastpoint) ||
        (0 == In_Completion))
@@ -1866,12 +1861,12 @@ static void generic_mini_complete (int cycle) /*{{{*/
 	flag = 0;
 	repeat = 0;
      }
-   
+
    SLfree (rli_buf); rli_buf = NULL;
 
    if (In_Completion == 2)
      repeat = 0;
-   
+
    if (cycle)
      {
 	if (flag)
@@ -1889,14 +1884,14 @@ static void generic_mini_complete (int cycle) /*{{{*/
      {
 	flag = (*Complete_Open)(buf);
 	strcpy (last, buf); /* safe */
-	
+
 	/* This loop tests all values from complete_next and returns the
 	 * smallest length match of initial characters of buf */
 	while (flag)
 	  {
 	     pl = last;
 	     pb = buf;
-	     
+
 	     if (repeat)
 	       {
 		  if (argc == maxargc)
@@ -1917,23 +1912,23 @@ static void generic_mini_complete (int cycle) /*{{{*/
 		      (NULL != (argv[argc] = slrn_safe_strmalloc (buf))))
 		    argc++;
 	       }
-	     
-	     while (*pl && (*pl == *pb)) 
+
+	     while (*pl && (*pl == *pb))
 	       {
 		  pl++;
 		  pb++;
 	       }
-	     
+
 	     *pl = 0;
 	     n++;
 	     flag = (*Complete_Next)(buf);
 	  }
      }
-   
+
    if (cycle || n)
      {
 	unsigned int len;
-	
+
 	if (repeat && (argc > 1))
 	  {
 	     int sel;
@@ -1943,9 +1938,9 @@ static void generic_mini_complete (int cycle) /*{{{*/
 	     qsort_fun = (void (*)(char **, unsigned int,
 				   unsigned int, int (*)(char **, char **)))
 	       qsort;
-	     
+
 	     qsort_fun (argv, argc, sizeof (char *), strpcmp);
-	     
+
 	     sel = slrn_select_list_mode (_("Possible completions"), argc,
 					  argv, 0, 1, NULL);
 	     slrn_update_screen ();
@@ -1955,9 +1950,9 @@ static void generic_mini_complete (int cycle) /*{{{*/
 		  n = 1;
 	       }
 	  }
-	
+
 	len = strlen (last);
-	
+
 	if ((n < 2) && ((long) Complete_Open == (long) dir_findfirst) &&
 	    (flag || !cycle) && (len + 1 < sizeof (last)))
 	  {
@@ -1974,10 +1969,10 @@ static void generic_mini_complete (int cycle) /*{{{*/
 	SLrline_redraw (Slrn_Keymap_RLI);
      }
    else SLtt_beep();
-   
+
    if (!cycle)
      strcpy (prev, last); /* safe; make this the new search context */
-   
+
    slrn_free_argc_argv_list (argc, argv);
    slrn_free ((char *) argv);
    rli_buf = SLrline_get_line (Slrn_Keymap_RLI);
@@ -1990,7 +1985,7 @@ static void generic_mini_complete (int cycle) /*{{{*/
    SLfree (rli_buf);
    (void) SLrline_get_point (Slrn_Keymap_RLI, &lastpoint);
    In_Completion = cycle ? 2 : 1;
-   
+
    return;
 }
 
@@ -2013,7 +2008,7 @@ static int mini_cycle (SLrline_Type *rli)
 static int rli_del_bol (SLrline_Type *rli) /*{{{*/
 {
    unsigned int point;
-   
+
    (void) SLrline_get_point (rli, &point);
    (void) SLrline_set_point (rli, 0);
    (void) SLrline_del (rli, point);
@@ -2033,7 +2028,7 @@ static int rli_del_bow (SLrline_Type *rli) /*{{{*/
 
    if (NULL == (buf = SLrline_get_line (rli)))
      return -1;
-   
+
    b = buf + (point - 1);
    while ((b > buf) && ((*b == ' ') || (*b == '\t')))
      b--;
@@ -2047,12 +2042,12 @@ static int rli_del_bow (SLrline_Type *rli) /*{{{*/
 	  }
 	b--;
      }
-   
+
    len = point;
    point = b - buf;
    (void) SLrline_set_point (rli, point);
    (void) SLrline_del (rli, len - point);
-   
+
    SLfree (buf);
    return 0;
 }
@@ -2076,18 +2071,17 @@ int slrn_rline_setkey (char *key, char *fun, SLkeymap_Type *kmap)
 
    if (NULL != SLang_find_key_function(fun, kmap))
      return SLang_define_key (key, fun, kmap);
-       
+
    tmp = kmap->functions;
    kmap->functions = Slrn_Custom_Readline_Functions;
    failure = SLang_define_key (key, fun, kmap);
    kmap->functions = tmp;
-   
+
    return failure;
 }
 
-
 /* str needs to have enough space for SLRL_DISPLAY_BUFFER_SIZE characters */
-static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag, 
+static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag,
 			       int no_echo, int point) /*{{{*/
 {
    int i;
@@ -2096,12 +2090,14 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
    char *buf;
    unsigned int len;
    int save_slang_error;
-   
+
+   if (prompt == NULL) prompt = "";
+
    Slrn_Full_Screen_Update = 1;
-   
+
    slrn_strncpy (prompt_buf, prompt, sizeof (prompt_buf));
    len = strlen (prompt);
-   
+
    if ((dfl != NULL) && *dfl)
      {
 	if (slrn_snprintf (prompt_buf + len, sizeof (prompt_buf) - len,
@@ -2114,16 +2110,16 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
    prompt = prompt_buf;
 
    if ((str == NULL) && (dfl == NULL)) return -1;
-   
+
    SLrline_set_display_width (Slrn_Keymap_RLI, SLtt_Screen_Cols);
 
-   /* slrn_set_suspension (1); */   
+   /* slrn_set_suspension (1); */
 
    if ((str != NULL) && *str)
      {
 	if (-1 == SLrline_set_line (Slrn_Keymap_RLI, str))
 	  return -1;
-	
+
 	if (point == 0)
 	  SLrline_set_point (Slrn_Keymap_RLI, 0);
 
@@ -2133,11 +2129,11 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
 
    i = read_from_input_string (str);
    if (i >= 0) return i;
-   
+
    tt_init_state = Slrn_TT_Initialized;
-   
+
    slrn_set_display_state (Slrn_TT_Initialized | SLRN_TTY_INIT);
-   
+
    if (no_echo)
      SLrline_set_echo (Slrn_Keymap_RLI, 0);
    else
@@ -2149,8 +2145,7 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
      (void) SLrline_set_update_hook (Slrn_Keymap_RLI, NULL, NULL);
 
    slrn_enable_mouse (0);
-   
-   
+
    save_slang_error = SLang_get_error ();
    SLang_set_error (0);
 
@@ -2160,9 +2155,9 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
    buf = SLrline_read_line (Slrn_Keymap_RLI, prompt, &len);
    slrn_set_color (0);
    Reading_Input = 0;
-   
+
    slrn_enable_mouse (1);
-   
+
    if ((buf != NULL) && (0 == SLang_get_error ()) && !SLKeyBoard_Quit)
      {
 	char *b = buf;
@@ -2170,7 +2165,7 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
 	if (*b)
 	  {
 	     if (no_echo == 0) SLrline_save_line (Slrn_Keymap_RLI);
-	     if (trim_flag) 
+	     if (trim_flag)
 	       {
 		  slrn_trim_string (b);
 		  b = slrn_skip_whitespace (b);
@@ -2180,19 +2175,19 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
 
 	/* b could be equal to dfl and dfl could be equal to str.  If this is
 	 * the case, there is no need to perform the strcpy */
-	if (b != str) 
+	if (b != str)
 	  slrn_strncpy (str, b, SLRL_DISPLAY_BUFFER_SIZE); /* safe */
 
 	i = strlen (str);
      }
    else i = -1;
-   
+
    SLfree (buf);
 
    if (SLKeyBoard_Quit) i = -1;
    SLKeyBoard_Quit = 0;
    SLang_set_error (save_slang_error);
-   
+
    slrn_set_display_state (tt_init_state);
 
    if (tt_init_state & SLRN_SMG_INIT)
@@ -2259,7 +2254,7 @@ int slrn_read_artnum_int (char *prompt, NNTP_Artnum_Type *dflt, NNTP_Artnum_Type
 	sprintf (sdfl_buf, NNTP_FMT_ARTNUM, *dflt); /* safe */
 	sdfl = sdfl_buf;
      }
-   
+
    *str = 0;
    if (-1 == slrn_read_input (prompt, sdfl, str, 1, 0))
      {
@@ -2280,12 +2275,12 @@ int slrn_read_artnum_int (char *prompt, NNTP_Artnum_Type *dflt, NNTP_Artnum_Type
 
 int slrn_init_readline (void) /*{{{*/
 {
-   if ((Slrn_Keymap_RLI == NULL) 
+   if ((Slrn_Keymap_RLI == NULL)
        && (NULL == (Slrn_Keymap_RLI = init_readline ())))
      return -1;
-   
+
    Slrn_RLine_Keymap = SLrline_get_keymap (Slrn_Keymap_RLI);
-   SLkm_define_key ("\t", (FVOID_STAR) mini_complete, Slrn_RLine_Keymap);   
+   SLkm_define_key ("\t", (FVOID_STAR) mini_complete, Slrn_RLine_Keymap);
    SLkm_define_key (" ", (FVOID_STAR) mini_cycle, Slrn_RLine_Keymap);
    SLkm_define_key ("^U", (FVOID_STAR) rli_del_bol, Slrn_RLine_Keymap);
    SLkm_define_key ("^W", (FVOID_STAR) rli_del_bow, Slrn_RLine_Keymap);
@@ -2313,7 +2308,7 @@ char slrn_get_response (char *valid_chars, char *translated_chars, /*{{{*/
    char ch;
    va_list ap;
    char *v;
-   
+
    /* if (SLang_Error) return -1; */
    if (Error_Present)
      slrn_error_now (2, NULL);
@@ -2323,36 +2318,36 @@ char slrn_get_response (char *valid_chars, char *translated_chars, /*{{{*/
 	Slrn_Full_Screen_Update = 1;
 
 	ch = read_from_input_char ();
-	
+
 	if (ch == 0)
 	  {
 	     if (Slrn_TT_Initialized == 0)
 	       {
 		  char buf[256];
-	  
+
 		  va_start(ap, str);
 		  slrn_tty_vmessage (stdout, str, ap);
 		  va_end(ap);
-		  
+
 		  *buf = 0;
 		  (void) fgets (buf, sizeof(buf), stdin);
 		  ch = *buf;
 	       }
-	     else 
+	     else
 	       {
 		  SLang_flush_input ();
 		  slrn_clear_message ();
-		  
+
 		  va_start(ap, str);
 		  vmessage_1 (MESSAGE_COLOR, str, ap);
 		  va_end(ap);
-		  
+
 		  slrn_smg_refresh ();
-		  
+
 		  Reading_Input = 2;
 		  ch = SLang_getkey ();
 		  Reading_Input = 0;
-	     
+
 		  slrn_clear_message ();
 		  SLang_set_error (0);
 		  SLKeyBoard_Quit = 0;
@@ -2371,7 +2366,7 @@ char slrn_get_response (char *valid_chars, char *translated_chars, /*{{{*/
 	     if (*v == ch) return ch;
 	     v++;
 	  }
-	
+
 	slrn_error_now (0, _("Invalid response! Try again."));
 	if (Slrn_TT_Initialized & SLRN_TTY_INIT)
 	  {
@@ -2408,17 +2403,17 @@ int slrn_get_yesno (int dflt, char *str, ...) /*{{{*/
     * You *cannot* use "y" for "no" or "n" for "yes".
     */
    char *responses=_("yYnN");
-   
+
    /* if (SLang_Error) return -1; */
-   
+
    va_start(ap, str);
    (void) slrn_vsnprintf(buf0, sizeof (buf0), str, ap);
    va_end(ap);
-   
+
    /* As the prompt will be processed through printf again (by
     * slrn_get_response), we need to escape percent characters. */
    escape_percent_chars (buf, buf0, buf + sizeof (buf));
-   
+
    if (dflt)
      {
 	ch = 'y';
@@ -2429,7 +2424,7 @@ int slrn_get_yesno (int dflt, char *str, ...) /*{{{*/
 	ch = 'n';
 	fmt = _("? \001Yes, [\001N]o");
      }
-   
+
    prompt = slrn_strdup_strcat (buf, fmt, NULL);
    if (strlen (responses) != 4) /* Translator messed it up */
      responses = "";
@@ -2437,7 +2432,7 @@ int slrn_get_yesno (int dflt, char *str, ...) /*{{{*/
    slrn_free (prompt);
    if ((rsp == '\r') || (rsp == '\n')) rsp = ch;
    else rsp = slrn_map_translated_char ("yYnN", responses, rsp) | 0x20;
-   
+
    if (rsp == 'n')
      return 0;
    return 1;
@@ -2460,18 +2455,18 @@ int slrn_get_yesno_cancel (char *str, ...) /*{{{*/
      responses = "";
 
    if (SLang_get_error ()) return -1;
-   
+
    va_start(ap, str);
    (void) slrn_vsnprintf(buf, sizeof(buf), str, ap);
    va_end(ap);
-   
+
    prompt = slrn_strdup_strcat (buf, _("? [\001Y]es, \001No, \001Cancel"), NULL);
    rsp = slrn_get_response ("\007yYnNcC\r", responses, "%s", prompt);
    slrn_free (prompt);
    if (rsp == '\r') rsp = 'y';
    else if (rsp == 7) rsp = 'c';
    else rsp = slrn_map_translated_char ("yYnNcC", responses, rsp) | 0x20;
-   
+
    if (rsp == 'y') return 1;
    if (rsp == 'n') return 0;
    return -1;
@@ -2482,7 +2477,7 @@ int slrn_get_yesno_cancel (char *str, ...) /*{{{*/
 void slrn_get_mouse_rc (int *rp, int *cp) /*{{{*/
 {
    int r, c;
-   
+
    c = (unsigned char) SLang_getkey () - 32;
    r = (unsigned char) SLang_getkey () - 32;
    if (cp != NULL) *cp = c;
@@ -2494,13 +2489,13 @@ void slrn_get_mouse_rc (int *rp, int *cp) /*{{{*/
 void slrn_evaluate_cmd (void) /*{{{*/
 {
    char buf[SLRL_DISPLAY_BUFFER_SIZE];
-   
+
    *buf = '\0';
    if (slrn_read_input ("S-Lang> ", NULL, buf, 0, 0) > 0)
      {
 	SLang_load_string (buf);
      }
-   
+
    SLang_set_error (0);
 }
 /*}}}*/
@@ -2537,7 +2532,7 @@ unsigned char *slrn_regexp_match (SLRegexp_Type *re, char *str) /*{{{*/
 int slrn_is_fqdn (char *h) /*{{{*/
 {
    char *p;
-   
+
    /* Believe it or not, I have come across one system with a '(' character
     * as part of the hostname!!!  I suppose that I should also check for
     * other strange characters as well.  This is an issue since a message
@@ -2546,15 +2541,15 @@ int slrn_is_fqdn (char *h) /*{{{*/
     */
    if (NULL != slrn_strbrk (h, "~`!@#$%^&*()=+|\\[]{}/?;"))
      return 0;
-   
+
    p = slrn_strbyte (h, '.');
    if ((p == NULL) || (p == h))
      return 0;
-   
+
    /* Make sure it does not end in a '.' */
    if (p [strlen(p)-1] == '.')
      return 0;
-   
+
    return 1;
 }
 /*}}}*/
@@ -2640,7 +2635,7 @@ static char *get_host_from_filename (char *file)
 
    if (NULL == (fp = fopen (file, "r")))
      return NULL;
-   
+
    host = NULL;
    if (NULL != fgets (line, sizeof (line), fp))
      {
@@ -2663,9 +2658,9 @@ void slrn_get_user_info (void) /*{{{*/
 #ifdef HAS_PASSWORD_CODE
    struct passwd *pw;
 #endif
-   
+
    /* Fill in what is assumed to be non-NULL by rest of program. */
-   
+
    /* no-c-format tells gettext that the following strings do not
     * need to be checked as if they were passed to printf. */
 
@@ -2678,7 +2673,7 @@ void slrn_get_user_info (void) /*{{{*/
 
    Slrn_CC_Post_Message =         /* xgettext:no-c-format */
      slrn_safe_strmalloc (_("[This message has also been posted to %n.]"));
-   
+
    /* Now get default values for rest. */
    host = get_hostname ();
    if (host != NULL)
@@ -2706,7 +2701,7 @@ void slrn_get_user_info (void) /*{{{*/
 	  host1 = get_host_from_filename (OUR_HOSTNAME);
      }
 #endif
-   
+
    if ((host1 != NULL)
        && slrn_is_fqdn (host1))
      {
@@ -2722,10 +2717,10 @@ void slrn_get_user_info (void) /*{{{*/
 #else
    name = NULL;
 # ifdef HAS_PASSWORD_CODE
-   /* I cannot use getlogin under Unix because some implementations 
+   /* I cannot use getlogin under Unix because some implementations
     * truncate the username to 8 characters.  Besides, I suspect that
     * it is equivalent to the following line.
-    * 
+    *
     * Also it is not clear if the valued returned by getpwuid is malloced.
     * The man page indicates that it _may_ point to a static area.  Valgrind
     * reports a leak.  Sigh.
@@ -2735,9 +2730,9 @@ void slrn_get_user_info (void) /*{{{*/
      name = pw->pw_name;
 # endif
 #endif
-   
+
    if (((name == NULL) || (*name == 0))
-#if ! SLRN_HAS_STRICT_FROM       
+#if ! SLRN_HAS_STRICT_FROM
        && ((name = getenv("USER")) == NULL)
        && ((name = getenv("LOGNAME")) == NULL)
 #endif
@@ -2750,7 +2745,7 @@ void slrn_get_user_info (void) /*{{{*/
    if ((Slrn_User_Info.replyto = getenv ("REPLYTO")) == NULL)
      Slrn_User_Info.replyto = "";
    Slrn_User_Info.replyto = slrn_safe_strmalloc (Slrn_User_Info.replyto);
-   
+
 #ifdef VMS
    Slrn_User_Info.realname = slrn_vms_fix_fullname(slrn_vms_get_uaf_fullname());
 #else
@@ -2770,12 +2765,12 @@ void slrn_get_user_info (void) /*{{{*/
 #endif
 
    Slrn_User_Info.realname = slrn_safe_strmalloc (Slrn_User_Info.realname);
-   
+
    /* truncate at character used to delineate extra gecos fields */
    name = Slrn_User_Info.realname;
    while (*name && (*name != ',')) name++;
    *name = 0;
-   
+
    org = getenv ("ORGANIZATION");
 #ifdef OUR_ORGANIZATION
    if (org == NULL) org = our_org;
@@ -2808,7 +2803,7 @@ void slrn_get_user_info (void) /*{{{*/
      }
 
    Slrn_User_Info.signature = slrn_safe_strmalloc (SLRN_SIGNATURE_FILE);
-   
+
 #if SLRN_HAS_CANLOCK
    Slrn_User_Info.cancelsecret = slrn_safe_strmalloc ("");
 #endif
@@ -2853,29 +2848,29 @@ static char *make_escaped_string (char *src, int is_comment)
 	   case '\\':
 	     dlen++;
 	     break;
-	     
+
 	   case '"':
 	     if (is_comment == 0)
 	       dlen++;
 	     break;
-	     
+
 	   case '(': case ')':
 	     if (is_comment)
 	       dlen++;
 	     break;
 	  }
      }
-   
+
    dest = slrn_malloc (len + dlen + 3, 0, 1);
    if (dest == NULL)
      return NULL;
-   
+
    p = dest;
    if (is_comment)
      *p++ = '(';
    else
      *p++ = '"';
-   
+
    while (1)
      {
 	ch = *src++;
@@ -2892,12 +2887,12 @@ static char *make_escaped_string (char *src, int is_comment)
 	   case '\\':
 	     *p++ = '\\';
 	     break;
-	     
+
 	   case '"':
 	     if (is_comment == 0)
 	       *p++ = '\\';
 	     break;
-	     
+
 	   case '(': case ')':
 	     if (is_comment)
 	       *p++ = '\\';
@@ -2919,7 +2914,6 @@ static char *make_localpart (char *username)
      }
    return make_escaped_string (username, 0);
 }
-
 
 static char *make_realname (char *realname)
 {
@@ -2962,10 +2956,10 @@ static char *make_realname (char *realname)
 	   case '"':		       /* not a special, but treated like one here */
 	     flags |= REALNAME_HAS_SPEC;
 	     break;
-	     
+
 	   case ' ': case '\t':
 	     break;
-	     
+
 	   default:
 	     if (ch < 32)
 	       {
@@ -2975,16 +2969,15 @@ static char *make_realname (char *realname)
 	     break;
 	  }
      }
-   
+
    if ((flags == 0) || (flags == REALNAME_HAS_8BIT))
      return slrn_strmalloc (realname, 1);
-   
+
    if (flags & REALNAME_HAS_8BIT)
      return make_escaped_string (realname, 1);
-   
+
    return make_escaped_string (realname, 0);
 }
-
 
 /* This function returns a malloced string of the form "From: value" */
 char *slrn_make_from_header (void)
@@ -3023,10 +3016,10 @@ char *slrn_make_from_header (void)
 	slrn_error (_("Cannot generate \"From:\" line without a hostname."));
 	return NULL;
      }
-   
-   if (( realname = make_realname (Slrn_User_Info.realname))  != NULL) 
+
+   if (( realname = make_realname (Slrn_User_Info.realname))  != NULL)
      {
-	buf=slrn_safe_malloc(6 + strlen(realname) +2 + strlen(localpart) + 1 
+	buf=slrn_safe_malloc(6 + strlen(realname) +2 + strlen(localpart) + 1
 		  + strlen(Slrn_User_Info.hostname)+2);
 	sprintf (buf, "From: %s <%s@%s>", realname, localpart, /* safe */
 		 Slrn_User_Info.hostname);
@@ -3034,7 +3027,7 @@ char *slrn_make_from_header (void)
      }
    else
      {
-	buf=slrn_safe_malloc(6 + strlen(localpart) + 1 
+	buf=slrn_safe_malloc(6 + strlen(localpart) + 1
 		  + strlen(Slrn_User_Info.hostname)+2);
 	sprintf (buf, "From: %s@%s", localpart, Slrn_User_Info.hostname); /* safe */
      }

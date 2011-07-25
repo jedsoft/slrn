@@ -55,6 +55,9 @@ Changes since 0.9.9p1
     ==.
 25. doc/slrn.rc: "utf8" changed to "utf-8" (Thomas Wiegner).
 26. src/art_misc.c: Increased the search range for a pgp signature.
+27. src/misc.c: The rline_update callback function was not handling
+    the case where no prompt (prompt==NULL) was associated with the
+    readline object.  (M. G. Berberich)
 
 {{{ Previous Versions 
 
