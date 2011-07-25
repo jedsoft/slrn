@@ -62,7 +62,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 #endif
- 
+
 #ifndef O_RDONLY
 # ifdef VMS
 #  include <file.h>
@@ -76,7 +76,6 @@
 /*}}}*/
 
 unsigned int VFile_Mode = VFILE_TEXT;
-
 
 struct VFILE
 {
@@ -97,7 +96,6 @@ struct VFILE
    unsigned int cr_flag;	       /* true if lines end in cr */
 };
 
-
 VFILE *vopen(char *file, unsigned int size, unsigned int fmode) /*{{{*/
 {
    int fd;
@@ -105,10 +103,10 @@ VFILE *vopen(char *file, unsigned int size, unsigned int fmode) /*{{{*/
 
 #ifdef O_BINARY
    mode = O_BINARY;
-#else 
+#else
    mode = 0;
 #endif
-      
+
    if ((fd = open(file, mode | O_RDONLY, 0)) < 0) return(NULL);
    return vstream(fd, size, fmode);
 }
@@ -127,7 +125,7 @@ void vclose(VFILE *v) /*{{{*/
 VFILE *vstream(int fd, unsigned int size, unsigned int mode) /*{{{*/
 {
    VFILE *v;
-   
+
    if (NULL == (v = (VFILE *) SLmalloc(sizeof(VFILE)))) return(NULL);
    v->has_unget = 0;
    v->bmax = v->bp = v->buf = NULL;
@@ -179,7 +177,7 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 #else
 	if (!n) n = 64 * 1024;
 #endif
-	
+
 	if (NULL == (neew = SLmalloc(n + 1)))
 	  return NULL;
 
@@ -192,9 +190,9 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
    if ((vp->eof != NULL) && (bp >= vp->eof)) return (NULL);
    bp1 = vp->buf;
    bmax = vp->bmax;
-   
+
    while (1)
-     {	
+     {
 	if (doread)
 	  {
 	     max = (int) (vp->bmax - bp);
@@ -229,7 +227,7 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 #endif
 		       return NULL;
 		    }
-		  
+
 		  max -= nread;
 		  bp += nread;
 	       }
@@ -241,10 +239,10 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 	     bp = bp1;
 	  }
 	else bp1 = bp;
-	   
+
 	/* extract a line */
 	if (vp->eof != NULL) bmax = vp->eof;
-	
+
 	n = (unsigned int) (bmax - bp);
 #if defined(__MSDOS__)
 	if (n)
@@ -264,19 +262,19 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 	     }
 	     bp += n;
 #else
- 	     if (NULL == (bpmax = SLMEMCHR(bp, '\n', n)))
+ 	     if (NULL == (bpmax = (char *)SLMEMCHR(bp, '\n', n)))
  	       bp += n;
  	     else
  	       bp = bpmax;
 #endif /* __WIN32__ */
 	     if (*bp != '\n') bp++;
 	  }
-	
+
 	if (bp < bmax)
 	  {
 	     vp->bp = ++bp;
 	     *num = (unsigned int) (bp - bp1);
-	     
+
 	     /* if it is text, replace the carriage return by a newline
 	        and adjust the number read by 1 */
 	     bp -= 2;
@@ -289,16 +287,16 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 	     return bp1;
 	  }
 #else
-	if (NULL != (bpmax = SLMEMCHR(bp, '\n', n)))
+	if (NULL != (bpmax = (char *)SLMEMCHR(bp, '\n', n)))
 	  {
 	     bpmax++;
 	     vp->bp = bpmax;
 	     *num = (unsigned int) (bpmax - bp1);
-	     
+
 	     if ((fmode == VFILE_TEXT) && (*num > 1))
 	       {
 		  bpmax -= 2;
-		  if (*bpmax == '\r') 
+		  if (*bpmax == '\r')
 		    {
 		       vp->cr_flag = 1;
 		       *bpmax = '\n'; (*num)--;
@@ -312,11 +310,10 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 	  {
 	     *num = (unsigned int) (bp - bp1);
 	     vp->bp = bp;
-	     
-	     
+
 #if defined(IBMPC_SYSTEM)
 	     /* kill ^Z at EOF if present */
-	     if ((fmode == VFILE_TEXT) && (*num) && (26 == *(bp - 1))) 
+	     if ((fmode == VFILE_TEXT) && (*num) && (26 == *(bp - 1)))
 	       {
 		  *num -= 1;
 		  if (!*num) bp1 = NULL;
@@ -324,7 +321,7 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 #endif
 	     return(bp1);
 	  }
-	
+
 	doread = 1;
 
 	bp = bp1;
@@ -336,14 +333,14 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 	     bp = bp1;
 	     bp1 = vp->buf;
 	  }
-	else 
+	else
 	  {
 	     bp = bmax;
 	     vp->bmax += 2 * (int) (vp->bmax - vp->buf);
 	     neew = SLrealloc (vp->buf, 1 + (unsigned int) (vp->bmax - vp->buf));
-	     if (neew == NULL) 
+	     if (neew == NULL)
 	       return NULL;
-	     
+
 	     bp = neew + (int) (bmax - vp->buf);
 	     bmax = vp->bmax = neew + (int) (vp->bmax - vp->buf);
 	     bp1 = vp->buf = neew;
@@ -352,7 +349,6 @@ static char *vgets_internal(VFILE *vp, unsigned int *num) /*{{{*/
 }
 
 /*}}}*/
-
 
 char *vgets (VFILE *vp, unsigned int *nump)
 {
@@ -368,12 +364,11 @@ char *vgets (VFILE *vp, unsigned int *nump)
 	*nump = vp->unget_len;
 	return vp->unget_buf;
      }
-   
+
    vp->unget_buf = vgets_internal (vp, &vp->unget_len);
    *nump = vp->unget_len;
    return vp->unget_buf;
 }
-
 
 int vungets (VFILE *v)
 {
@@ -387,4 +382,3 @@ int vungets (VFILE *v)
    return 0;
 }
 
-   

@@ -58,6 +58,8 @@ Changes since 0.9.9p1
 27. src/misc.c: The rline_update callback function was not handling
     the case where no prompt (prompt==NULL) was associated with the
     readline object.  (M. G. Berberich)
+28. src/vfile.c: Add explicit void* to char* cast for better C++
+    compliance.
 
 {{{ Previous Versions 
 
