@@ -232,10 +232,12 @@ mode and allow you to manipulate the article window.
 \done
 
 \function{replace_article}
-\usage{replace_article (String_Type string)}
+\usage{replace_article (String_Type string [,Int_Type process_mime])}
 \description
   The \var{replace_article} may be used to replace the text of
-  the currently displayed article with an arbitrary string.
+  the currently displayed article with an arbitrary string.  If the
+  value of the optional \exmp{process_mime} argument is non-0, then
+  the new headers will be examined and mime parsed accordingly.
 \example
   The following code fragment causes the text of an article to be
   replaced by its lowercase equivalent:

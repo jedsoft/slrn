@@ -1,7 +1,7 @@
   Slrn Intrinsic Function Reference Manual
-  John E. Davis, davis@space.mit.edu
+  John E. Davis, jed@jedsoft.org
   Thomas Schultz, tststs@gmx.de
-  Tue Sep 28 11:23:34 2004
+  Apr 3, 2012
   ____________________________________________________________
 
   Table of Contents
@@ -44,7 +44,7 @@
      1.33 uncollapse_threads
 
   2. Article Functions
-     2.1 is_article_visible
+     2.1 _is_article_visible
      2.2 article_as_string
      2.3 article_cline_as_string
      2.4 article_cline_number
@@ -119,8 +119,8 @@
      6.5 print_file
 
   7. Miscellaneous Functions
-     7.1 slrn_version
-     7.2 slrn_version_string
+     7.1 _slrn_version
+     7.2 _slrn_version_string
      7.3 datestring_to_unixtime
      7.4 get_bg_color
      7.5 get_fg_color
@@ -159,12 +159,13 @@
      8.13 post_filter_hook
      8.14 post_hook
      8.15 pre_article_mode_hook
-     8.16 read_article_hook
-     8.17 reply_hook
-     8.18 resize_screen_hook
-     8.19 startup_hook
-     8.20 subject_compare_hook
-     8.21 supersede_hook
+     8.16 quit_hook
+     8.17 read_article_hook
+     8.18 reply_hook
+     8.19 resize_screen_hook
+     8.20 startup_hook
+     8.21 subject_compare_hook
+     8.22 supersede_hook
 
 
   ______________________________________________________________________
@@ -173,7 +174,6 @@
 
   The intrinsic functions described in this chapter are available in
   article mode and allow you to manipulate the header window.
-
 
   1.1.  collapse_thread
 
@@ -186,8 +186,6 @@
 
       See Also
         uncollapse_thread, collapse_threads, is_thread_collapsed
-
-
 
   1.2.  collapse_threads
 
@@ -202,8 +200,6 @@
       See Also
         uncollapse_threads
 
-
-
   1.3.  extract_article_header
 
 
@@ -212,23 +208,21 @@
 
       Description
         This function returns the article header line specified by the
-        header keyword h of the currently selected header.  The
-        currently selected header may correspond to the currently
-        displayed article.  To get a header of the currently displayed
-        article, use the extract_displayed_article_header function.
+        header keyword h of the currently selected header. The currently
+        selected header may correspond to the currently displayed
+        article. To get a header of the currently displayed article, use
+        the extract_displayed_article_header function.
 
         If the header does not exist, it returns the empty string.
 
       Notes
-        This function will not query the server.  If you are looking for
+        This function will not query the server. If you are looking for
         a non-NOV header which was not stored for expensive scoring,
         then download the message associated with the current header
         line.
 
       See Also
         extract_displayed_article_header, is_article_visible
-
-
 
   1.4.  extract_displayed_article_header
 
@@ -244,8 +238,6 @@
       See Also
         extract_displayed_article_header, is_article_visible
 
-
-
   1.5.  get_grouplens_score
 
 
@@ -257,8 +249,6 @@
         If the header has no grouplens score, or if grouplens support
         has not been enabled, 0 will be returned.
 
-
-
   1.6.  get_header_flags
 
 
@@ -266,21 +256,20 @@
         Integer get_header_flags ()
 
       Description
-        This functions returns the flags for the current header.  This
+        This functions returns the flags for the current header. This
         integer is a bitmapped value whose bits are defined by the
         following constants:
 
-           HEADER_READ : set if header is marked as read
-           HEADER_TAGGED : set if header has `*' tag
-           HEADER_HIGH_SCORE : set if header has high score
-           HEADER_LOW_SCORE : set if header has low score
+
+                HEADER_READ : set if header is marked as read
+                HEADER_TAGGED : set if header has `*' tag
+                HEADER_HIGH_SCORE : set if header has high score
+                HEADER_LOW_SCORE : set if header has low score
 
 
 
       See Also
         set_header_flags
-
-
 
   1.7.  get_header_number
 
@@ -294,8 +283,6 @@
         file). If you want the current cursor position instead, use
         header_cursor_pos.
 
-
-
   1.8.  get_header_score
 
 
@@ -308,8 +295,6 @@
       See Also
         set_header_score
 
-
-
   1.9.  get_header_tag_number
 
 
@@ -318,10 +303,8 @@
 
       Description
         This function returns the value of the numerical tag associated
-        with the current header.  If the header has no numerical tag,
+        with the current header. If the header has no numerical tag,
         zero is returned.
-
-
 
   1.10.  get_visible_headers
 
@@ -331,15 +314,13 @@
 
       Description
         The get_visible_headers function returns the list of headers
-        headers that are to be displayed when an article is viewed.  See
+        headers that are to be displayed when an article is viewed. See
         the documentation for the set_visible_headers for the format of
         this string.
 
       See Also
         set_visible_headers, is_article_visible,
         set_header_display_format
-
-
 
   1.11.  goto_num_tagged_header
 
@@ -349,8 +330,7 @@
 
       Description
         This function causes the header with numerical tag n to become
-        the current header.  It returns 1 upon success or 0 upon
-        failure.
+        the current header. It returns 1 upon success or 0 upon failure.
 
       See Also
         header_down, get_header_flags, call
@@ -366,8 +346,6 @@
       Description
         Returns 1 if the current header has a parent (within a thread
         tree), 0 otherwise.
-
-
 
   1.13.  header_cursor_pos
 
@@ -385,8 +363,6 @@
         using the intrinsic function get_header_number). If the article
         pager is ``zoomed'', this function always returns 1.
 
-
-
   1.14.  header_down
 
 
@@ -394,12 +370,11 @@
         Integer header_down (Integer n)
 
       Description
-        The function moves the current position down n headers.  It
+        The function moves the current position down n headers. It
         returns the number that was actually moved.
 
       See Also
         header_up
-
 
   1.15.  header_next_unread
 
@@ -415,8 +390,6 @@
       See Also
         header_down
 
-
-
   1.16.  header_up
 
 
@@ -424,13 +397,11 @@
         Integer header_up (Integer n)
 
       Description
-        The function moves the current position up n headers.  It
-        returns the number that was actually moved.
+        The function moves the current position up n headers. It returns
+        the number that was actually moved.
 
       See Also
         header_down
-
-
 
   1.17.  headers_hidden_mode
 
@@ -440,14 +411,12 @@
 
       Description
         This function may be used to determine whether or not some
-        headers will be hidden when an article is displayed.  It returns
+        headers will be hidden when an article is displayed. It returns
         0 is all headers will be displayed, or a non-zero value if some
         may be hidden.
 
       See Also
         set_visible_headers, get_visible_headers, is_article_visible
-
-
 
   1.18.  is_thread_collapsed
 
@@ -457,13 +426,11 @@
 
       Description
         If the current header is the start of a collapsed thread, this
-        function will return a non-zero value.  If the thread is
+        function will return a non-zero value. If the thread is
         expanded, zero will be returned.
 
       See Also
         collapse_thread
-
-
 
   1.19.  locate_header_by_msgid
 
@@ -473,10 +440,10 @@
 
       Description
         The locate_header_by_msgid function may be used to set the
-        current header to one whose message-id is given by msgid.  If
-        the second parameter qs is non-zero, then the header will be
+        current header to one whose message-id is given by msgid. If the
+        second parameter qs is non-zero, then the header will be
         retrieved from the server if it is not in the current list of
-        headers.  The function returns 1 if an appropriate header was
+        headers. The function returns 1 if an appropriate header was
         found, or 0 otherwise.
 
       Example
@@ -500,16 +467,15 @@
       Usage
         Integer next_tagged_header ()
 
+
       Description
         This function moves the current header position to the next *
-        tagged header.  It returns non-zero upon success or zero upon
+        tagged header. It returns non-zero upon success or zero upon
         failure.
 
       See Also
         prev_tagged_header, goto_num_tagged_header, header_up,
         header_down
-
-
 
   1.21.  prev_tagged_header
 
@@ -519,14 +485,12 @@
 
       Description
         This function moves the current header position to the previous
-        `*' tagged header.  It returns non-zero upon success or zero
-        upon failure.
+        `*' tagged header. It returns non-zero upon success or zero upon
+        failure.
 
       See Also
         next_tagged_header, goto_num_tagged_header, header_up,
         header_down
-
-
 
   1.22.  re_bsearch_author
 
@@ -537,13 +501,10 @@
       Description
         Search backward for header whose author matches regular
         expression regexp. If successful, it returns 1 and the current
-        header is set to the matching header.  It returns 0 upon
-        failure.
+        header is set to the matching header. It returns 0 upon failure.
 
       See Also
         re_fsearch_author, re_fsearch_subject
-
-
 
   1.23.  re_bsearch_subject
 
@@ -554,13 +515,10 @@
       Description
         Search backward for header whose subject matches regular
         expression regexp. If successful, it returns 1 and the current
-        header is set to the matching header.  It returns 0 upon
-        failure.
+        header is set to the matching header. It returns 0 upon failure.
 
       See Also
         re_fsearch_author, re_bsearch_subject
-
-
 
   1.24.  re_fsearch_author
 
@@ -571,13 +529,10 @@
       Description
         Search forward for header whose author matches regular
         expression regexp. If successful, it returns 1 and the current
-        header is set to the matching header.  It returns 0 upon
-        failure.
+        header is set to the matching header. It returns 0 upon failure.
 
       See Also
         re_bsearch_author, re_fsearch_subject
-
-
 
   1.25.  re_fsearch_subject
 
@@ -588,8 +543,7 @@
       Description
         Search forward for header whose subject matches regular
         expression regexp. If successful, it returns 1 and the current
-        header is set to the matching header.  It returns 0 upon
-        failure.
+        header is set to the matching header. It returns 0 upon failure.
 
       See Also
         re_fsearch_author, re_bsearch_subject
@@ -602,7 +556,7 @@
 
       Description
         The set_header_display_format function may be used to set the
-        nth header display format to fmt.  One may interactively toggle
+        nth header display format to fmt. One may interactively toggle
         between the formats via the toggle_header_formats keybinding.
 
         The generic format specifier begins with the % character and
@@ -613,10 +567,10 @@
 
 
 
-     where the brackets indicate optional items.  Here, w is a width
-     specifier consisting of one or more digits.  If the minus sign (-)
+     where the brackets indicate optional items. Here, w is a width
+     specifier consisting of one or more digits. If the minus sign (-)
      is present, the item will be right justified, otherwise it will be
-     left justified.  The item specifier x is required and, depending on
+     left justified. The item specifier x is required and, depending on
      it value, has the following meaning:
 
 
@@ -643,14 +597,12 @@
      The g format specifier must be preceeded by a number that indicates
      the next write should take place at the specified column.  If the
      column number is negative, then the column is interpreted as an
-     offset from the right side of the display.  For example, %-24g%f
+     offset from the right side of the display. For example, %-24g%f
      indicates that then From header is to be written out 24 columns
      from the right edge of the window.
 
       See Also
         set_visible_headers
-
-
 
   1.27.  set_header_flags
 
@@ -660,13 +612,11 @@
 
       Description
         This function may be used to set the flags associated with the
-        currently selected header.  See the description for the
+        currently selected header. See the description for the
         get_header_flags function for more information.
 
       See Also
         get_header_flags
-
-
 
   1.28.  set_header_score
 
@@ -681,8 +631,6 @@
       See Also
         get_header_score
 
-
-
   1.29.  set_visible_headers
 
 
@@ -691,9 +639,8 @@
 
       Description
         The set_visible_headers function may be used to specify the
-        headers that are displayed when an article is viewed.  The
-        string header_list specifies a comma separated list of headers
-        to show.
+        headers that are displayed when an article is viewed. The string
+        header_list specifies a comma separated list of headers to show.
 
       Example
         To show only the From header and headers that start with `X-',
@@ -708,8 +655,6 @@
         get_visible_headers, headers_hidden_mode, is_article_visible,
         set_header_display_format
 
-
-
   1.30.  sort_by_sorting_method
 
 
@@ -723,8 +668,9 @@
       Example
         This is useful if you want to apply changes to sorting_method:
 
-          set_integer_variable("sorting_method", 3);
-          sort_by_sorting_method ();
+
+               set_integer_variable("sorting_method", 3);
+               sort_by_sorting_method ();
 
 
 
@@ -738,8 +684,6 @@
         This function returns the number of articles in the current
         thread or subthread.
 
-
-
   1.32.  uncollapse_thread
 
 
@@ -752,8 +696,6 @@
       See Also
         thread_size, collapse_thread, is_thread_collapsed
 
-
-
   1.33.  uncollapse_threads
 
 
@@ -761,22 +703,19 @@
         Void uncollapse_threads ()
 
       Description
-        This function uncollapses all threads.  This is usually
-        necessary if you want to use the header movement functions to
-        access hidden headers.
+        This function uncollapses all threads. This is usually necessary
+        if you want to use the header movement functions to access
+        hidden headers.
 
       See Also
         collapse_threads
-
-
 
   2.  Article Functions
 
   The intrinsic functions described in this chapter are available in
   article mode and allow you to manipulate the article window.
 
-
-  2.1.  _.ds h is_article_visible Article Functions
+  2.1.  _is_article_visible
 
 
       Usage
@@ -789,14 +728,14 @@
         Specifically, it returns a bitmapped value:
 
 
-                0  : if the article window is hidden and not associated with the
-                       current header.
-                1  : if the article window is showing but the current header
-                       does not refer to the article.
-                2  : if the article window is hidden but attached to the current
-                       header.
-                3  : if the article window is showing and contains the current
-                       header article.
+           0  : if the article window is hidden and not associated with the
+                  current header.
+           1  : if the article window is showing but the current header
+                  does not refer to the article.
+           2  : if the article window is hidden but attached to the current
+                  header.
+           3  : if the article window is showing and contains the current
+                  header article.
 
 
 
@@ -820,8 +759,6 @@
       See Also
         _is_article_visible, is_article_window_zoomed, call
 
-
-
   2.2.  article_as_string
 
 
@@ -830,14 +767,12 @@
 
       Description
         This function will return the entire contents of the current
-        article as a string.  If no article has been dowloaded, the
-        empty string will be returned.  The current article may not be
-        the one associated with the currently selected header.
+        article as a string. If no article has been dowloaded, the empty
+        string will be returned. The current article may not be the one
+        associated with the currently selected header.
 
       See Also
         raw_article_as_string, replace_article, is_article_visible
-
-
 
   2.3.  article_cline_as_string
 
@@ -847,8 +782,9 @@
 
       Description
         Returns the current line of the article (i.e. the first one that
-        is displayed in the article pager) as a string.  If no article
+        is displayed in the article pager) as a string. If no article
         has been downloaded, the empty string will be returned.
+
       See Also
         article_as_string, article_cline_number
 
@@ -862,13 +798,11 @@
 
       Description
         Returns the number of the line that is currently displayed at
-        the top of the article pager.  Counting starts at 1 and ignores
+        the top of the article pager. Counting starts at 1 and ignores
         hidden lines.
 
       See Also
         article_cline_as_string, article_count_lines, article_goto_line
-
-
 
   2.5.  article_count_lines
 
@@ -878,7 +812,7 @@
 
       Description
         This function returns the total number of visible lines in the
-        article pager.  For example, you could use it with
+        article pager. For example, you could use it with
         article_goto_line to jump to the last line in the pager:
 
 
@@ -897,17 +831,15 @@
 
       Description
         Makes the article pager jump to line number linenum (i.e., puts
-        this line at the top of the pager).  As in article_cline_number,
-        counting starts at 1 and ignores hidden lines.  If you specify 0
+        this line at the top of the pager). As in article_cline_number,
+        counting starts at 1 and ignores hidden lines. If you specify 0
         or a negative number as the argument, no action is taken and the
-        function returns zero.  Otherwise, the new line number is
+        function returns zero. Otherwise, the new line number is
         returned. If the article has less than linenum lines, the
         function goes to the last line.
 
       See Also
         article_line_down, article_line_up
-
-
 
   2.7.  article_line_down
 
@@ -916,7 +848,7 @@
         Integer article_line_down (Integer num)
 
       Description
-        Scrolls the article down num lines.  Returns the number of lines
+        Scrolls the article down num lines. Returns the number of lines
         that were actually scrolled.
 
       Notes
@@ -925,8 +857,6 @@
 
       See Also
         article_goto_line, article_line_up
-
-
 
   2.8.  article_line_up
 
@@ -941,8 +871,6 @@
       See Also
         article_goto_line, article_line_down
 
-
-
   2.9.  bsearch_article
 
 
@@ -956,8 +884,6 @@
       See Also
         search_article
 
-
-
   2.10.  get_article_window_size
 
 
@@ -970,8 +896,6 @@
 
       See Also
         set_article_window_size
-
-
 
   2.11.  get_body_status
 
@@ -996,7 +920,6 @@
         request_body
 
 
-
   2.12.  get_next_art_pgdn_action
 
 
@@ -1006,8 +929,8 @@
       Description
         This function may be used to get information about what action
         slrn will take when an attempt is made to go to the next page of
-        the current article, e.g., by pressing the space key.  It
-        returns one of the following integers:
+        the current article, e.g., by pressing the space key. It returns
+        one of the following integers:
 
 
                  -1  Not in article mode
@@ -1035,6 +958,7 @@
                 3  : if the article window contains the current header article
 
 
+
       Notes
         For some purposes, it may be more useful to the the
         _is_article_visible function which may be slightly more useful.
@@ -1054,22 +978,17 @@
       See Also
         _is_article_visible, is_article_window_zoomed, call
 
-
-
   2.14.  is_article_window_zoomed
 
 
       Usage
         Integer is_article_window_zoomed ()
-
       Description
         This function returns 1 if the article window is zoomed, or 0
         otherwise.
 
       See Also
         is_article_visible, call
-
-
 
   2.15.  pipe_article
 
@@ -1079,14 +998,12 @@
 
       Description
         This function may be used to pipe the current article to the
-        command given by the cmd argument.  If the article window is
+        command given by the cmd argument. If the article window is
         hidden, it downloads the article associated with the currently
         selected header.
 
       See Also
         read_mini
-
-
 
   2.16.  raw_article_as_string
 
@@ -1105,8 +1022,6 @@
         replace_article. In this case, the output is the same as the one
         of article_as_string.
 
-
-
   2.17.  re_bsearch_article
 
 
@@ -1120,8 +1035,6 @@
       See Also
         re_search_article
 
-
-
   2.18.  re_search_article
 
 
@@ -1131,17 +1044,16 @@
       Description
         This function searches forward in the current article for a
         string matching the regular expression given by the parameter
-        pat.  It returns 0 if no matching line is found.  Otherwise, it
+        pat. It returns 0 if no matching line is found. Otherwise, it
         returns 1 and the matching line will be left on the stack as a
         string.
+
 
       See Also
         re_search_article_first
 
       See Also
         search_article
-
-
 
   2.19.  re_search_article_first
 
@@ -1157,18 +1069,17 @@
       See Also
         re_search_article
 
-
-
   2.20.  replace_article
 
 
       Usage
-        replace_article (String_Type string)
-
+        replace_article (String_Type string [,Int_Type process_mime])
 
       Description
         The replace_article may be used to replace the text of the
-        currently displayed article with an arbitrary string.
+        currently displayed article with an arbitrary string. If the
+        value of the optional process_mime argument is non-0, then the
+        new headers will be examined and mime parsed accordingly.
 
       Example
         The following code fragment causes the text of an article to be
@@ -1181,8 +1092,6 @@
 
       See Also
         article_as_string, is_article_visible
-
-
 
   2.21.  request_body
 
@@ -1198,19 +1107,18 @@
       See Also
         get_body_status
 
-
-
   2.22.  save_current_article
 
 
       Usage
         Integer save_current_article (String filename)
 
+
       Description
         This function saves the currently selected article to a file
-        specified by filename.  If the article window is hidden, it
+        specified by filename. If the article window is hidden, it
         downloads the the article associated with the currently selected
-        header.  It returns 0 upon success; upon failure, it returns -1
+        header. It returns 0 upon success; upon failure, it returns -1
         and sets an slang error condition.
 
       Notes
@@ -1218,7 +1126,6 @@
         ones.
 
       See Also
-
 
 
   2.23.  search_article
@@ -1230,8 +1137,8 @@
       Description
         This function searches forward in the current article (if none
         is visible, in the one associated with the currently selected
-        header) for the string given by the parameter str.  It returns 0
-        if no matching line is found.  Otherwise, it returns 1 and the
+        header) for the string given by the parameter str. It returns 0
+        if no matching line is found. Otherwise, it returns 1 and the
         matching line will be left on the stack as a string.
 
       See Also
@@ -1239,8 +1146,6 @@
 
       See Also
         search_article_first
-
-
 
   2.24.  search_article_first
 
@@ -1258,8 +1163,6 @@
       See Also
         search_article
 
-
-
   2.25.  set_article_window_size
 
 
@@ -1268,7 +1171,7 @@
 
       Description
         The set_article_window_size may be used to set the height of the
-        article window.  The variable SCREEN_HEIGHT may be used to
+        article window. The variable SCREEN_HEIGHT may be used to
         facilitate this.
 
       See Also
@@ -1280,7 +1183,6 @@
 
   The intrinsic functions described in this chapter are available in
   group mode.
-
 
   3.1.  current_newsgroup
 
@@ -1294,8 +1196,6 @@
       See Also
         server_name
 
-
-
   3.2.  get_group_flags
 
 
@@ -1304,7 +1204,7 @@
 
       Description
         This function returns the flags associated with the current
-        newsgroup.  This integer is a bitmapped value whose bits are
+        newsgroup. This integer is a bitmapped value whose bits are
         defined by the following constants:
 
 
@@ -1315,8 +1215,6 @@
 
       See Also
         get_header_flags, set_group_flags, current_newsgroup
-
-
 
   3.3.  get_group_order
 
@@ -1335,8 +1233,6 @@
       See Also
         set_group_order
 
-
-
   3.4.  group_down_n
 
 
@@ -1347,10 +1243,9 @@
         This function moves the current group pointer down n groups and
         returns the actual number moved.
 
+
       See Also
         group_up_n, group_search, current_newsgroup
-
-
 
   3.5.  group_search
 
@@ -1360,16 +1255,14 @@
 
       Description
         This function searches for a newsgroup containing the string
-        name.  It also searches newsgroup descriptions.  A non-zero
-        value is returned upon success or zero upon failure.
+        name. It also searches newsgroup descriptions. A non-zero value
+        is returned upon success or zero upon failure.
 
       Notes
         This search may wrap.
 
       See Also
         select_group, current_newsgroup
-
-
 
   3.6.  group_unread
 
@@ -1384,8 +1277,6 @@
       See Also
         select_group, current_newsgroup, is_group_mode
 
-
-
   3.7.  group_up_n
 
 
@@ -1399,8 +1290,6 @@
       See Also
         group_down_n, group_search, current_newsgroup
 
-
-
   3.8.  hide_current_group
 
 
@@ -1410,8 +1299,6 @@
       Description
         Hides the current group in the group window. Hidden groups can
         be displayed again by calling ``toggle_hidden''.
-
-
 
   3.9.  is_group_mode
 
@@ -1426,7 +1313,6 @@
       See Also
 
 
-
   3.10.  select_group
 
 
@@ -1434,8 +1320,8 @@
         Integer select_group ()
 
       Description
-        This function may be used to select the current group.  It
-        returns 0 upon success or -1 upon failure.  It can fail if the
+        This function may be used to select the current group. It
+        returns 0 upon success or -1 upon failure. It can fail if the
         group has no articles.
 
         Note that in some situations, this function will set an slang
@@ -1446,8 +1332,6 @@
       See Also
         current_newsgroup
 
-
-
   3.11.  set_group_display_format
 
 
@@ -1456,7 +1340,7 @@
 
       Description
         This function may be used to set the nth group display format to
-        fmt.  One may interactively toggle between the formats via the
+        fmt. One may interactively toggle between the formats via the
         toggle_group_formats keybinding.
 
         The generic format is identical to the one described in
@@ -1498,7 +1382,7 @@
 
       Description
         When names is a one-dimensional array of strings (group names),
-        slrn will sort the group list into the implied order.  Strings
+        slrn will sort the group list into the implied order. Strings
         that do not match known groups are ignored; existing groups that
         are not included in names remain in their current (relative)
         order, but will be moved to the end of the list.
@@ -1526,13 +1410,10 @@
       See Also
         get_group_order
 
-
-
   4.  Dialog and Message Functions
 
   This chapter describes some functions which are useful if you want to
   interact with the user.
-
 
   4.1.  get_response
 
@@ -1542,9 +1423,9 @@
 
       Description
         This function will prompt the user for a single character using
-        the prompt as specifed by the second parameter.  The first
+        the prompt as specifed by the second parameter. The first
         parameter, choices, specified the characters that will be
-        accepted.  Any character in the prompt string that is preceeded
+        accepted. Any character in the prompt string that is preceeded
         by \001 will be given the `response_char' color.
 
       Example
@@ -1557,11 +1438,8 @@
 
      will return one of the four characters y, Y, n, or N to the vari-
      able rsp.
-
       See Also
         get_yes_no_cancel, set_color, get_select_box_response
-
-
 
   4.2.  get_select_box_response
 
@@ -1571,7 +1449,7 @@
 
       Description
         This function pops a selection box and queries the user for a
-        response.  An integer is returned which indicates the user's
+        response. An integer is returned which indicates the user's
         choice.
 
       Example
@@ -1589,8 +1467,6 @@
         read_mini, message, get_yes_no_cancel, get_response,
         select_list_box
 
-
-
   4.3.  get_yes_no_cancel
 
 
@@ -1599,7 +1475,7 @@
 
       Description
         This function displays str in the minibuffer after concatenating
-        "? [Y]-es, N-o, C-ancel" to it.  It then awaits user input and
+        "? [Y]-es, N-o, C-ancel" to it. It then awaits user input and
         returns:
 
 
@@ -1615,8 +1491,6 @@
       See Also
         get_select_box_response, getkey, read_mini, select_list_box
 
-
-
   4.4.  message_now
 
 
@@ -1627,10 +1501,9 @@
         This function displays the string s to the message area
         immediately.
 
+
       See Also
         message, vmessage, error
-
-
 
   4.5.  popup_window
 
@@ -1650,8 +1523,6 @@
       See Also
         select_list_box
 
-
-
   4.6.  read_mini
 
 
@@ -1660,15 +1531,13 @@
 
       Description
         This function will prompt the user for a string value using
-        prompt p.  The second parameter dfl is used to specify the
+        prompt p. The second parameter dfl is used to specify the
         default value. If the final parameter is not the empty string
         (""), it will be made available to the user for editing.
 
       See Also
         read_mini_filename, read_mini_no_echo, read_mini_integer,
         read_mini_variable, getkey, set_input_string, set_input_chars
-
-
 
   4.7.  read_mini_filename
 
@@ -1683,6 +1552,7 @@
       See Also
         read_mini, read_mini_variable, getkey, set_input_string,
         set_input_chars
+
   4.8.  read_mini_integer
 
 
@@ -1711,8 +1581,6 @@
       See Also
         read_mini, getkey, set_input_string, set_input_chars
 
-
-
   4.10.  read_mini_variable
 
 
@@ -1726,8 +1594,6 @@
       See Also
         read_mini, read_mini_filename, getkey, set_input_string,
         set_input_chars
-
-
 
   4.11.  select_list_box
 
@@ -1744,16 +1610,14 @@
       Description
         This purpose of this function is to present a list of n strings,
         specified by the s_1, ... s_n parameters to the user and have
-        the user select one.  The user interface for this operation is
-        that of a box of strings.  The title of the box is specified by
-        the title parameter.  The active_n parameter specifies which
-        string is to be the default selection.  It returns the string
+        the user select one. The user interface for this operation is
+        that of a box of strings. The title of the box is specified by
+        the title parameter. The active_n parameter specifies which
+        string is to be the default selection. It returns the string
         selected by the user.
 
       See Also
         get_select_box_response, get_response
-
-
 
   4.12.  set_input_chars
 
@@ -1769,17 +1633,14 @@
 
       Example
 
-
-                 set_input_chars ("y");
-                 if ('y' == get_yes_no_cancel ("Really Quit"))
-                   quit (0);
+            set_input_chars ("y");
+            if ('y' == get_yes_no_cancel ("Really Quit"))
+              quit (0);
 
 
 
       See Also
         set_input_string, get_response, get_yes_no_cancel
-
-
 
   4.13.  set_input_string
 
@@ -1789,9 +1650,9 @@
 
       Description
         This function may be used to set the string that will be
-        returned by the next prompt for input in the minibuffer.  One
-        can set the value returned for the next n prompts by separating
-        the values by \n characters.
+        returned by the next prompt for input in the minibuffer. One can
+        set the value returned for the next n prompts by separating the
+        values by \n characters.
 
       Example
         The code
@@ -1810,13 +1671,10 @@
       See Also
         read_mini, set_input_chars
 
-
-
   5.  Key Input Functions
 
   This chapter describes functions that can be used to control
   interactive functions from your macros.
-
 
   5.1.  call
 
@@ -1826,13 +1684,11 @@
 
       Description
         This function is used to execute an interactive slrn internal
-        function.  Such functions are used with setkey statements in the
+        function. Such functions are used with setkey statements in the
         .slrnrc startup files.
 
       See Also
         definekey, undefinekey, set_prefix_argument
-
-
 
   5.2.  definekey
 
@@ -1840,16 +1696,15 @@
       Usage
         definekey (String fun, String key, String km)
 
+
       Description
         This function is used to bind a key sequence specified by key to
-        a function fun in the keymap km.  Here fun can be any predefined
+        a function fun in the keymap km. Here fun can be any predefined
         slang function that takes 0 arguments and returns void.  The
         parameter km must be either "article", "group", or "readline".
 
       See Also
         undefinekey, call, set_prefix_argument
-
-
 
   5.3.  get_prefix_arg
 
@@ -1873,8 +1728,6 @@
       See Also
         set_prefix_argument, reset_prefix_arg
 
-
-
   5.4.  getkey
 
 
@@ -1888,8 +1741,6 @@
       See Also
         ungetkey, input_pending, read_mini
 
-
-
   5.5.  input_pending
 
 
@@ -1897,14 +1748,12 @@
         Integer input_pending (Integer tsecs)
 
       Description
-        This function checks for keyboard input.  Its argument specifies
-        the number of tenths of a second to wait.  It returns 0 if no
+        This function checks for keyboard input. Its argument specifies
+        the number of tenths of a second to wait. It returns 0 if no
         input is available or a non-sero value if input is available.
 
       See Also
         getkey, ungetkey
-
-
 
   5.6.  reset_prefix_arg
 
@@ -1914,13 +1763,11 @@
 
       Description
         The reset_prefix_arg function may be used to reset the prefix
-        argument.  This is usually necessary after calling to keep the
+        argument. This is usually necessary after calling to keep the
         argument from propagating to other functions.
 
       See Also
         get_prefix_arg, set_prefix_argument
-
-
 
   5.7.  set_prefix_argument
 
@@ -1930,13 +1777,11 @@
 
       Description
         The set_prefix_argument function may be used to set the prefix
-        argument to val.  It is mainly used immediately before calling
+        argument to val. It is mainly used immediately before calling
         internal functions which take prefix arguments.
 
       See Also
         call
-
-
 
   5.8.  undefinekey
 
@@ -1951,8 +1796,6 @@
       See Also
         definekey
 
-
-
   5.9.  ungetkey
 
 
@@ -1961,13 +1804,11 @@
 
       Description
         This function pushes the character ch back upon the input stream
-        such that the next call to getkey will return it.  It is
-        possible to push several characters back.
+        such that the next call to getkey will return it. It is possible
+        to push several characters back.
 
       See Also
         getkey
-
-
 
   6.  File I/O Functions
 
@@ -1976,7 +1817,6 @@
   opening and reading from a regular file) are already part of S-lang
   itself. If you need one of those, please consult the file slangfun.txt
   which comes with S-lang.
-
 
   6.1.  close_log_file
 
@@ -1988,10 +1828,9 @@
         The close_log_file function closes the file previously opened by
         open_log_file.
 
+
       See Also
         open_log_file, log_message
-
-
 
   6.2.  log_message
 
@@ -2001,12 +1840,11 @@
 
       Description
         The log_message function may be used to write a string to the
-        log file.  If no log file has been opened via open_log_file, the
+        log file. If no log file has been opened via open_log_file, the
         message will be written to stderr.
+
       See Also
         open_log_file, close_log_file, message
-
-
 
   6.3.  make_home_filename
 
@@ -2024,8 +1862,6 @@
       See Also
         read_mini
 
-
-
   6.4.  open_log_file
 
 
@@ -2034,14 +1870,12 @@
 
       Description
         The open_log_file function causes S-lang traceback messages to
-        be written to the specified file.  This is useful for debugging
-        macros.  Traceback messages are enabled by setting the S-lang
+        be written to the specified file. This is useful for debugging
+        macros. Traceback messages are enabled by setting the S-lang
         variable _traceback to a non-zero value.
 
       See Also
         close_log_file, log_message, _traceback, _trace_function
-
-
 
   6.5.  print_file
 
@@ -2056,16 +1890,12 @@
       Notes
         The printer is specified via the slrnrc printer_name variable.
 
-
-
   7.  Miscellaneous Functions
 
   This chapter is for all functions and variables that did not fit
   nicely in any of the others. They are available in all modes.
 
-
-  7.1.  _.ds h slrn_version Miscellaneous Functions
-
+  7.1.  _slrn_version
 
 
       Usage
@@ -2083,9 +1913,7 @@
       See Also
         _slrn_version_string
 
-
-
-  7.2.  _.ds h slrn_version_string Miscellaneous Functions
+  7.2.  _slrn_version_string
 
 
       Usage
@@ -2098,8 +1926,6 @@
 
       See Also
         _slrn_version
-
-
 
   7.3.  datestring_to_unixtime
 
@@ -2120,8 +1946,6 @@
         define get_article_time () { return
         datestring_to_unixtime(extract_article_header("Date")); }
 
-
-
   7.4.  get_bg_color
 
 
@@ -2134,6 +1958,9 @@
 
       Notes
         Due to a limitation in S-Lang, this function only works on Unix.
+
+
+
   7.5.  get_fg_color
 
 
@@ -2147,8 +1974,6 @@
       Notes
         Due to a limitation in S-Lang, this function only works on Unix.
 
-
-
   7.6.  get_variable_value
 
 
@@ -2157,14 +1982,12 @@
 
       Description
         This function returns the value of an internal variable
-        specified by v.  Here v must be one of the variable names that
-        can be used in .slrnrc `set' commands.  The type of the object
+        specified by v. Here v must be one of the variable names that
+        can be used in .slrnrc `set' commands. The type of the object
         returned will depend upon the type of the object v represents.
 
       See Also
         set_integer_variable, set_string_variable
-
-
 
   7.7.  quit
 
@@ -2178,8 +2001,6 @@
 
       See Also
         call
-
-
 
   7.8.  register_hook
 
@@ -2215,8 +2036,6 @@
       See Also
         unregister_hook
 
-
-
   7.9.  reload_scorefile
 
 
@@ -2225,14 +2044,12 @@
 
       Description
         This function can be used to reload the scorefile after a macro
-        changed it.  If the integer apply_now is 1, the new scores are
-        immediately applied.  If it is 0, the new scores are used the
+        changed it. If the integer apply_now is 1, the new scores are
+        immediately applied. If it is 0, the new scores are used the
         next time you enter a group; if -1, the user is queried.
 
       Notes
         Outside article mode, apply_now has no effect.
-
-
 
   7.10.  server_name
 
@@ -2246,8 +2063,6 @@
       See Also
         current_newsgroup
 
-
-
   7.11.  set_color
 
 
@@ -2256,14 +2071,11 @@
 
       Description
         This function may be used to set the foreground and background
-        colors of an object.  The obj parameter specifies the object and
+        colors of an object. The obj parameter specifies the object and
         the fg and bg parameters specify the foreground and background
         colors, respectively.
 
-
-
   7.12.  set_color_attr
-
 
 
       Usage
@@ -2278,10 +2090,11 @@
         the following constants:
 
 
-             ATTR_BLINK     blinking text
-             ATTR_BOLD      bold text
-             ATTR_REV       inverse text
-             ATTR_ULINE     underlined text
+
+        ATTR_BLINK     blinking text
+        ATTR_BOLD      bold text
+        ATTR_REV       inverse text
+        ATTR_ULINE     underlined text
 
 
 
@@ -2306,8 +2119,6 @@
         article you download. If one is currently displayed, it remains
         unaffected.
 
-
-
   7.14.  set_integer_variable
 
 
@@ -2316,28 +2127,25 @@
 
       Description
         This function may be used to set the value of the internal
-        integer variable specified by name to value v.  name must be an
+        integer variable specified by name to value v. name must be an
         integer variable name allowed in .slrnrc set commands.
 
       See Also
         set_string_variable, get_variable_value
-
-
 
   7.15.  set_string_variable
 
 
       Usage
         Void set_string_variable (String name, String v)
+
       Description
         This function may be used to set the value of the internal
-        string variable specified by name to value v.  name must be a
+        string variable specified by name to value v. name must be a
         string variable name allowed in .slrnrc set commands.
 
       See Also
         set_integer_variable, get_variable_value
-
-
 
   7.16.  set_strip_re_regexp
 
@@ -2356,8 +2164,6 @@
 
       See Also
         set_ignore_quotes, set_strip_sig_regexp, set_strip_was_regexp
-
-
 
   7.17.  set_strip_sig_regexp
 
@@ -2379,8 +2185,6 @@
       See Also
         set_ignore_quotes, set_strip_re_regexp, set_strip_was_regexp
 
-
-
   7.18.  set_strip_was_regexp
 
 
@@ -2395,10 +2199,9 @@
       Notes
         This function is only available if slrn was compiled with S-Lang
         1.4.x.
+
       See Also
         set_ignore_quotes, set_strip_re_regexp, set_strip_sig_regexp
-
-
 
   7.19.  set_utf8_conversion_table
 
@@ -2408,27 +2211,24 @@
 
       Description
         This function can be used to define a conversion table for
-        decoding UTF-8.  table has to be a two-dimensional array of
+        decoding UTF-8. table has to be a two-dimensional array of
         integer values that has two columns: The left column contains
         the Unicode characters you want to convert, the right column the
         corresponding local characters.
 
         When decoding, any non-ASCII characters that cannot be found in
-        your table are displayed as question marks.  If table has no
+        your table are displayed as question marks. If table has no
         rows, UTF-8 will be converted to Latin 1, which is also the
         default if this function is not called. Thus, you can reset the
         default using
 
-
-             set_utf8_conversion_table (Integer_Type[2,0]);
+        set_utf8_conversion_table (Integer_Type[2,0]);
 
 
 
       Notes
         This function is only available if slrn was compiled with S-Lang
         1.4.x.
-
-
 
   7.20.  setlocale
 
@@ -2438,10 +2238,9 @@
 
       Description
         You can use this function to change the current locale at
-        runtime.  You may want to do this if you read groups in
-        different languages.  The syntax is identical to the one of
-        setlocale(3).  For category, the following constants are
-        defined:
+        runtime. You may want to do this if you read groups in different
+        languages. The syntax is identical to the one of setlocale(3).
+        For category, the following constants are defined:
 
 
                 LC_CTYPE : affects character handling (e.g. which 8bit characters
@@ -2451,12 +2250,12 @@
 
 
 
-     The locale can be any locale supported by your system.  If it is an
+     The locale can be any locale supported by your system. If it is an
      empty string, the locale to use will be taken from the environment.
      The function will return the name of the locale that was actually
      selected.
 
-     Please note that locales are not supported by all systems.  In this
+     Please note that locales are not supported by all systems. In this
      case, this function will trigger an slang error.
 
   7.21.  tt_send
@@ -2471,8 +2270,6 @@
 
       See Also
         message, update
-
-
 
   7.22.  unregister_hook
 
@@ -2489,11 +2286,8 @@
              1: Function successfully unregistered.
 
 
-
       See Also
         register_hook
-
-
 
   7.23.  update
 
@@ -2506,8 +2300,6 @@
 
       See Also
         message
-
-
 
   8.  Hooks
 
@@ -2522,7 +2314,6 @@
   macro to a hook, which comes in handy if you want to use pre-written
   macro sets.
 
-
   8.1.  article_mode_hook
 
 
@@ -2531,7 +2322,7 @@
 
       Description
         This hook is called during article mode after headers have been
-        retrieved but before sorting them.  You can use this hook to set
+        retrieved but before sorting them. You can use this hook to set
         variables based on the group name.
 
       Example
@@ -2572,8 +2363,6 @@
         including the times you switch directly to a different group
         (without quitting to group mode in between).
 
-
-
   8.3.  article_mode_startup_hook
 
 
@@ -2583,8 +2372,6 @@
       Description
         Unlike article_mode_hook, which gets called prior to sorting the
         headers, this hook gets called after sorting has taken place.
-
-
 
   8.4.  cc_hook
 
@@ -2596,14 +2383,12 @@
         This hook is called when sending a "courtesy copy" of a followup
         -- it gets the author's email address as an argument and is
         expected to leave a string on the stack which will be used as
-        the address the CC is actually sent to.  If the returned string
+        the address the CC is actually sent to. If the returned string
         is empty, no CC is sent.
 
       Notes
         As this hook returns a value, you cannot bind multiple macros to
         it.
-
-
 
   8.5.  followup_hook
 
@@ -2614,8 +2399,6 @@
       Description
         Function called when following up to an article.
 
-
-
   8.6.  forward_hook
 
 
@@ -2625,8 +2408,6 @@
       Description
         Function called when forwarding an article to someone.
 
-
-
   8.7.  group_mode_hook
 
 
@@ -2634,12 +2415,9 @@
         Void group_mode_hook ()
 
       Description
-        This hook will be called whenever group mode is entered.  This
+        This hook will be called whenever group mode is entered. This
         includes the times when one exists article mode back to group
         mode.
-
-
-
   8.8.  group_mode_startup_hook
 
 
@@ -2648,9 +2426,8 @@
 
       Description
         This hook is called after checking for news and immediately
-        before entering the main keyboard loop.  When called, group mode
+        before entering the main keyboard loop. When called, group mode
         will be active.
-
 
   8.9.  header_number_hook
 
@@ -2661,8 +2438,6 @@
       Description
         If defined, this function will be called after selecting a
         header via a header number.
-
-
 
   8.10.  make_from_string_hook
 
@@ -2708,16 +2483,13 @@
 
       Example
         Here is a simple example:
-
-
-
-        define make_save_filename_hook ()
-        {
-          if (string_match (extract_article_header ("Subject"), "slrn", 1) != 0)
-            return "slrn-related";
-          else
-            return current_newsgroup();
-        }
+             define make_save_filename_hook ()
+             {
+               if (string_match (extract_article_header ("Subject"), "slrn", 1) != 0)
+                 return "slrn-related";
+               else
+                 return current_newsgroup();
+             }
 
 
 
@@ -2729,15 +2501,12 @@
 
       Description
         Function called after composing and filtering, but before
-        posting article.
-        This hook takes a single parameter: the name of the file that
-        slrn is about to post.
+        posting article.  This hook takes a single parameter: the name
+        of the file that slrn is about to post.
 
       Example
         An example of this hook is included in macros/posthook.sl in
         slrn's source tree.
-
-
 
   8.13.  post_filter_hook
 
@@ -2762,8 +2531,6 @@
         An example of this hook is included in macros/ispell.sl in
         slrn's source tree.
 
-
-
   8.14.  post_hook
 
 
@@ -2773,22 +2540,31 @@
       Description
         Function called when posting an article.
 
-
-
   8.15.  pre_article_mode_hook
-
 
 
       Usage
         Void pre_article_mode_hook ()
 
+
       Description
         This hook is similar to article_mode_hook except that it is
         called before any headers for the group have been retrieved.
 
+  8.16.  quit_hook
 
 
-  8.16.  read_article_hook
+      Usage
+        Void quit_hook ()
+
+      Description
+        Function called when slrn exits. Note that slrn already
+        disconnected from the server at the time this hook is run. In
+        this hook, it is safe to assume that startup_hook was run before
+        (i.e., if slrn exits before startup_hook had a chance to
+        execute, quit_hook is omitted).
+
+  8.17.  read_article_hook
 
 
       Usage
@@ -2798,9 +2574,7 @@
         Function called after reading and processing an article. It may
         use the replace_article function to change it.
 
-
-
-  8.17.  reply_hook
+  8.18.  reply_hook
 
 
       Usage
@@ -2809,9 +2583,7 @@
       Description
         Function called when replying to poster.
 
-
-
-  8.18.  resize_screen_hook
+  8.19.  resize_screen_hook
 
 
       Usage
@@ -2820,9 +2592,7 @@
       Description
         This hook will be called whenever the screen size changes.
 
-
-
-  8.19.  startup_hook
+  8.20.  startup_hook
 
 
       Usage
@@ -2830,7 +2600,7 @@
 
       Description
         This hook is called right after the newsreader is initialized
-        and immediately before checking for news.  It allows the user to
+        and immediately before checking for news. It allows the user to
         set variables on a server by server basis.
 
       Example
@@ -2853,7 +2623,7 @@
 
 
 
-  8.20.  subject_compare_hook
+  8.21.  subject_compare_hook
 
 
       Usage
@@ -2866,9 +2636,7 @@
         subjects as arguments.  If it returns 0, the articles are put in
         the same thread.
 
-
-
-  8.21.  supersede_hook
+  8.22.  supersede_hook
 
 
       Usage

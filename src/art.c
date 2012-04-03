@@ -2580,7 +2580,7 @@ static int select_header (Slrn_Header_Type *h, int kill_refs) /*{{{*/
 
 /*}}}*/
 
-int slrn_string_to_article (char *str)
+int slrn_string_to_article (char *str, int handle_mime)
 {
    char *estr;
    Slrn_Article_Line_Type *l, *cline = NULL;
@@ -2655,6 +2655,19 @@ int slrn_string_to_article (char *str)
      {
 	free_article ();
 	return -1;
+     }
+
+   if (handle_mime)
+     {
+	slrn_mime_free (&a->mime);
+	slrn_mime_init (&a->mime);
+
+	if (-1 == slrn_mime_process_article (a))
+	  {
+	     slrn_art_free_article (a);
+	     slrn_error(_("MIME processing unsuccessful"));
+	     return -1;
+	  }
      }
 
    prepare_article (a);

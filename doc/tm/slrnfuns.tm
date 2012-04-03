@@ -28,9 +28,8 @@
 #d done </descrip><p>
 
 #d documentstyle article
-#d sect1 \section
-#d sect2 \subsection
-#d sect3 \subsubsection
+#d section#1 \sect{$1}
+#d subsection#1 \sect1{$1}
 
 #d slang-manual \bf{A Guide to the S-Lang Language}
 
@@ -40,34 +39,34 @@
 \begin{\documentstyle}
 
 \title Slrn Intrinsic Function Reference Manual
-\author John E. Davis, \tt{davis@space.mit.edu}\newline
+\author John E. Davis, \tt{jed@jedsoft.org}\newline
 Thomas Schultz, \tt{tststs@gmx.de}
 \date \__today__
 
 \toc
 
-\sect1{Header and Thread Functions}
+\section{Header and Thread Functions}
 #i slrnfuns/header.tm
 
-\sect1{Article Functions}
+\section{Article Functions}
 #i slrnfuns/article.tm
 
-\sect1{Group Functions}
+\section{Group Functions}
 #i slrnfuns/group.tm
 
-\sect1{Dialog and Message Functions}
+\section{Dialog and Message Functions}
 #i slrnfuns/dialog.tm
 
-\sect1{Key Input Functions}
+\section{Key Input Functions}
 #i slrnfuns/keys.tm
 
-\sect1{File I/O Functions}
+\section{File I/O Functions}
 #i slrnfuns/file.tm
 
-\sect1{Miscellaneous Functions}
+\section{Miscellaneous Functions}
 #i slrnfuns/misc.tm
 
-\sect1{Hooks}
+\section{Hooks}
 #i slrnfuns/hooks.tm
 
 \end{\documentstyle}

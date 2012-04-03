@@ -1,9 +1,11 @@
-## Process this file with automake to produce Makefile.in -*- sh -*-
-## Based on the Makefile by John E. Davis, adapted to automake.
-##
-##  jed version 0.98-5 or newer is required.  tm2txt is part of the slang
-##  distribution.
-##
+# -*- sh -*-
+
+# To create the SGML files, you will need to install the tmexpand
+# package.  See http://www.jedsoft.org/ for more information.
+#
+TMEXPAND = tmexpand
+TM2SGML = $(TMEXPAND)
+
 SOURCE_FILES = slrnfuns.tm slrnfuns/article.tm slrnfuns/dialog.tm \
  slrnfuns/file.tm slrnfuns/group.tm slrnfuns/header.tm slrnfuns/hooks.tm \
  slrnfuns/keys.tm slrnfuns/misc.tm
@@ -19,7 +21,8 @@ DISTCLEANFILES = *.html $(TXT_FILES) $(SGML_FILES)
 
 SGML2LATEX = sgml2latex -p letter -o tex
 SGML2HTML = sgml2html
-SGML2TXT = sgml2txt -f --pass="-P -c"
+SGML2TXT = linuxdoc -B txt -f
+#SGML2TXT = sgml2txt -f --pass="-P -c"
 TM2TXT = tm2txt --quiet
 LATEX = latex
 
@@ -37,7 +40,7 @@ update: convert-txt
 
 ##----- SGML Files ----------------------------------------------------------
 slrnfuns.sgml: $(SOURCE_FILES)
-	jed -script tm2sgml.sl slrnfuns
+	$(TM2SGML) -I$(MACRODIR) slrnfuns.tm slrnfuns.sgml
 ##----- HTML Files ----------------------------------------------------------
 slrnfuns.html : slrnfuns.sgml
 	$(SGML2HTML) slrnfuns.sgml

@@ -1425,14 +1425,25 @@ static int locate_header_by_msgid (char *msgid, int *qs)
    return 1;
 }
 
-static void replace_article_cmd (char *str)
+static void replace_article_cmd (void)
 {
-   if ((-1 == check_article_mode ())
-       || (Slrn_Current_Header == NULL))
+   int handle_mime = 0;
+   char *str;
+
+   if (SLang_Num_Function_Args == 2)
+     {
+	if (-1 == SLang_pop_integer (&handle_mime))
+	  return;
+     }
+   if (-1 == SLang_pop_slstring (&str))
      return;
 
-   if (-1 == slrn_string_to_article (str))
+   if ((0 == check_article_mode ())
+       && (Slrn_Current_Header != NULL)
+       && (-1 == slrn_string_to_article (str, handle_mime)))
      slrn_error (_("Could not replace article with given string."));
+
+   SLang_free_slstring (str);
 }
 
 static int is_article_visible (void)
@@ -1501,7 +1512,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
 {
    /* MAKE_INTRINSIC_S("parse_rfc2822", parse_rfc2822_intrin, SLANG_VOID_TYPE), */
    MAKE_INTRINSIC_0("headers_hidden_mode", slrn_is_hidden_headers_mode, SLANG_INT_TYPE),
-   MAKE_INTRINSIC_S("replace_article", replace_article_cmd, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_0("replace_article", replace_article_cmd, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_S("message_now", message_now, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_S("set_visible_headers", set_visible_headers, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("get_visible_headers", get_visible_headers, SLANG_STRING_TYPE),

@@ -60,6 +60,10 @@ Changes since 0.9.9p1
     readline object.  (M. G. Berberich)
 28. src/vfile.c: Add explicit void* to char* cast for better C++
     compliance.
+29. doc/tm/: Updated the Makefile and rebuilt the docs
+30. src/interp.c, art.c: Added support for an optional argument to the
+    replace_article function that dictates if the article should be
+    mime processed.
 
 {{{ Previous Versions 
 
