@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it

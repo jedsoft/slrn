@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -23,7 +23,7 @@
 #include "nntpcodes.h"
 #include "ranges.h"
 
-typedef struct 
+typedef struct
 {
    int (*po_start)(void);
    int (*po_end)(void);
@@ -34,7 +34,7 @@ typedef struct
    int po_can_post;
 } Slrn_Post_Obj_Type;
 
-typedef struct 
+typedef struct
 {
    int (*sv_select_group) (char *, NNTP_Artnum_Type *, NNTP_Artnum_Type *);
    int (*sv_refresh_groups) (Slrn_Group_Range_Type *, int);
@@ -62,7 +62,7 @@ typedef struct
    int sv_has_xhdr;
    int sv_has_xover;
    int sv_reset_has_xover;
-   /* if non-zero, sv_has_xover is set to 1 when entering a group.  
+   /* if non-zero, sv_has_xover is set to 1 when entering a group.
     * This is because some servers support XOVER but do not have overview
     * files for all groups.  See xover.c
     */
@@ -80,7 +80,7 @@ typedef struct
 #define SERVER_ID_INN		1
    int sv_id;
    char *sv_name;
-} 
+}
 Slrn_Server_Obj_Type;
 
 extern Slrn_Server_Obj_Type *Slrn_Server_Obj;

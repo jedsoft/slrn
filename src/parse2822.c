@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 2009-2012 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -39,7 +39,7 @@
 #include "strutil.h"
 
 /* The grammar from rfc2822 is:
- * 
+ *
  *   address        =  mailbox | group
  *   mailbox        =  name-addr | addr-spec
  *   name-addr      =  [display-name] angle-addr
@@ -68,14 +68,14 @@
  *   ctext          =  NO-WS-CTRL | 33-39 | 42-91 | 93-126
  *   quoted-pair    =  ("\" text )
  *   text           =  ASCII except CR and LF
- * 
+ *
  * Obsolete:
- * 
+ *
  *   word           = atom | quoted-string
  *   phrase         = 1*word | obs-phrase
  *   obs-phrase     = word *(word | "." | CFWS)
  *   obs-local-part = word *("." word)
- * 
+ *
  */
 #define TYPE_ADD_ONLY 1
 #define TYPE_OLD_STYLE 2
@@ -111,20 +111,19 @@ static int check_quoted_pair (char *p, char *pmax, char **errmsg)
 	*errmsg = _("Illegal quoted-pair character in header.");
 	return -1;
      }
-   
+
    return 0;
 }
-
 
 static char *skip_quoted_string (char *p, char *pmax, char **errmsg)
 {
    while (p < pmax)
      {
 	char ch = *p++;
-	
+
 	if (ch == '"')
 	  return p;
-	
+
 	if (ch == '\\')
 	  {
 	     if (-1 == check_quoted_pair (p, pmax, errmsg))
@@ -133,14 +132,14 @@ static char *skip_quoted_string (char *p, char *pmax, char **errmsg)
 	     p++;
 	     continue;
 	  }
-	
+
 	if (NULL != slrn_strbyte(RFC_2822_NOT_QUOTED_CHARS, ch))
 	  {
 	     *errmsg = _("Illegal char in displayname of address header.");
 	     return NULL;
 	  }
      }
-   
+
    *errmsg = _("Quoted string opened but never closed in address header.");
    return NULL;
 }
@@ -151,12 +150,12 @@ static char *skip_quoted_string (char *p, char *pmax, char **errmsg)
 static int parse_rfc2822_comment (char *header, char *parsemap, unsigned int *startp, unsigned int stop, char **errmsg) /*{{{*/
 {
    unsigned int start;
-   
+
    start = *startp;
    while (start < stop)
      {
 	unsigned char ch = (unsigned char) header[start];
-	
+
 	if (ch == '(')
 	  {
 	     start++;
@@ -167,7 +166,7 @@ static int parse_rfc2822_comment (char *header, char *parsemap, unsigned int *st
 	       }
 	     continue;
 	  }
-	
+
 	if (ch == ')')
 	  {
 	     start++;
@@ -213,14 +212,14 @@ static int parse_rfc2822_cfws (char *header, char *parsemap, unsigned int *start
 
 	p = p0 = header + *startp;
 	pmax = header + stop;
-	
+
 	while ((p < pmax) && ((*p == ' ') || (*p == '\t')))
 	  p++;
-   
+
 	*startp = (unsigned int) (p - header);
 	if ((p == pmax) || (*p != '('))
 	  return 0;
-	
+
 	*startp += 1;		       /* skip ( */
 	if (-1 == parse_rfc2822_comment (header, parsemap, startp, stop, errmsg))
 	  return -1;
@@ -236,14 +235,14 @@ static int parse_rfc2822_atext (char *header, char *parsemap, unsigned int *star
 #define IS_NOT_ATEXT_CHAR(ch) \
    (((ch) & 0x80) || ((unsigned char)(ch) <= ' ') || ((ch) == '.') \
        || (NULL != slrn_strbyte(RFC_2822_NOT_DOTATOM_CHARS, (ch))))
-   
+
    start = *startp;
    if (start >= stop)
      {
 	*errmsg = _("premature end of parse seen in atext portion of email address");
 	return -1;
      }
-   
+
    ch = header[start];
    if (0 == IS_RFC2822_ATEXT(ch))
      {
@@ -266,20 +265,20 @@ static int parse_rfc2822_atext (char *header, char *parsemap, unsigned int *star
 static int parse_rfc2822_quoted_string (char *header, char *parsemap, unsigned int *startp, unsigned int stop, char **errmsg)
 {
    char *p, *pmax;
-   
+
    p = header + *startp;
    pmax = header + stop;
-   
+
    p = skip_quoted_string (p, pmax, errmsg);
    if (p == NULL)
      return -1;
 
    *startp = (p - header);
-   
+
    return parse_rfc2822_cfws (header, parsemap, startp, stop, errmsg);
 }
 
-/* dotatom: [CFWS] atext [.atext ...] [CFWS] 
+/* dotatom: [CFWS] atext [.atext ...] [CFWS]
  * Note that the obsolete forms allow CFWS on both sides of the dot.
  * Moreover, it allows quoted-strings between the dots.
  * This is also permitted here:
@@ -289,7 +288,7 @@ static int parse_rfc2822_dotatom (char *header, char *parsemap, unsigned int *st
 {
    if (-1 == parse_rfc2822_cfws (header, parsemap, startp, stop, errmsg))
      return -1;
-   
+
    if (allow_quoted_string
        && ((*startp < stop) && (header[*startp] == '"')))
      {
@@ -299,15 +298,15 @@ static int parse_rfc2822_dotatom (char *header, char *parsemap, unsigned int *st
      }
    else if (-1 == parse_rfc2822_atext (header, parsemap, startp, stop, errmsg))
      return -1;
-   
+
    while (*startp < stop)
      {
 	if (-1 == parse_rfc2822_cfws (header, parsemap, startp, stop, errmsg))
 	  return -1;
-   
+
 	if (header[*startp] != '.')
 	  break;
-	
+
 	*startp += 1;
 
 	if (-1 == parse_rfc2822_cfws (header, parsemap, startp, stop, errmsg))
@@ -323,16 +322,16 @@ static int parse_rfc2822_dotatom (char *header, char *parsemap, unsigned int *st
 	else if (-1 == parse_rfc2822_atext (header, parsemap, startp, stop, errmsg))
 	  return -1;
      }
-   
+
    if (-1 == parse_rfc2822_cfws (header, parsemap, startp, stop, errmsg))
      return -1;
-   
+
    return 0;
 }
 
-/* This parses a string that looks like "some phrase <address>".  Stop 
+/* This parses a string that looks like "some phrase <address>".  Stop
  * parsing at the start of <address>.
- * 
+ *
  * An RFC-2822 phrase consists of "words", which are composed of
  * atoms or quoted strings, or comments, and optionally separated by dots.
  */
@@ -342,7 +341,7 @@ static int parse_rfc2822_phrase (char *header, char *parsemap, unsigned int *sta
    unsigned int start;
    p = p0 = header + *startp;
    pmax = header + stop;
-   
+
    start = *startp;
    while (start < stop)
      {
@@ -359,7 +358,7 @@ static int parse_rfc2822_phrase (char *header, char *parsemap, unsigned int *sta
 	     start++;
 	     continue;
 	  }
-	
+
 	if (ch == '(')
 	  {
 	     start++;
@@ -370,7 +369,7 @@ static int parse_rfc2822_phrase (char *header, char *parsemap, unsigned int *sta
 	       }
 	     continue;
 	  }
-	
+
 	if (ch == '"')
 	  {
 	     start++;
@@ -384,7 +383,7 @@ static int parse_rfc2822_phrase (char *header, char *parsemap, unsigned int *sta
 
 	if (!IS_RFC2822_PHRASE_CHAR(ch))
 	  break;
-	
+
 	parsemap[start] = 'C';
 	start++;
      }
@@ -395,10 +394,9 @@ static int parse_rfc2822_phrase (char *header, char *parsemap, unsigned int *sta
 
 /*}}}*/
 
-
 /* The grammar implies:
  *   local-part = dot-atom | quoted-string | obs-local-part
- * Note that the obsolete local part is like the dot-atom, except it 
+ * Note that the obsolete local part is like the dot-atom, except it
  * permits CFWS to surround the ".".
  */
 static int parse_rfc2822_localpart (char *header, char *parsemap, unsigned int *startp, unsigned int stop, char **errmsg) /*{{{*/
@@ -413,7 +411,7 @@ static int parse_rfc2822_domain (char *header, char *parsemap, unsigned int *sta
    /* Here domain is a dot atom or an obsolete local part. */
    if (-1 == parse_rfc2822_dotatom (header, parsemap, startp, stop, errmsg, 0))
      return -1;
-   
+
    return 0;
 }
 
@@ -422,7 +420,7 @@ static int parse_rfc2822_domain (char *header, char *parsemap, unsigned int *sta
 static int parse_rfc2822_domainlit (char *header, char *parsemap, unsigned int *start, unsigned int end, char **errmsg) /*{{{*/
 {
    unsigned int pos = *start;
-   
+
    (void) parsemap;
 
    while (pos < end)
@@ -452,26 +450,24 @@ static int parse_rfc2822_domainlit (char *header, char *parsemap, unsigned int *
 
 /*}}}*/
 
-
-
 /* The encodes a comma separated list of addresses.  Each item in the list
  * is assumed to be of the following forms:
- * 
+ *
  *    address (Comment-text)
  *    address (Comment-text)
  *    Comment-text <address>
- * 
+ *
  * Here address is local@domain, local@[domain], or local.
- * 
+ *
  * Here is an example of something that is permitted:
- * 
+ *
  * From: Pete(A wonderful \) chap) <pete(his account)@silly.test(his host)>
  * To:A Group(Some people)
  *    :Chris Jones <c@(Chris's host.)public.example>,
  *        joe@example.org,
  *   John <jdoe@one.test> (my dear friend); (the end of the group)
  * Cc:(Empty list)(start)Undisclosed recipients  :(nobody(that I know))  ;
- * 
+ *
  * The example shows that the "local" part can contain comments, and that
  * the backquote serves as a quote character in the comments.
  */
@@ -495,7 +491,6 @@ static int rfc2822_parse (char *header, char *parsemap, int skip_colon, char **e
 	  }
 	head_start++;		       /* skip colon */
      }
-
 
    while (1)
      {
@@ -550,7 +545,7 @@ static int rfc2822_parse (char *header, char *parsemap, int skip_colon, char **e
 		    }
 		  continue;
 	       }
-	     
+
 	     if (in_comment)
 	       {
 		  if (ch == '(')
@@ -582,7 +577,7 @@ static int rfc2822_parse (char *header, char *parsemap, int skip_colon, char **e
 		  in_quote = 1;
 		  continue;
 	       }
-	     
+
 	     if (ch == '(')
 	       {
 		  in_comment++;
@@ -594,7 +589,7 @@ static int rfc2822_parse (char *header, char *parsemap, int skip_colon, char **e
 		  type = TYPE_RFC_2822;
 		  continue;
 	       }
-	     
+
 	     if (ch == ',')
 	       {
 		  head_end--;
@@ -676,7 +671,7 @@ static int rfc2822_parse (char *header, char *parsemap, int skip_colon, char **e
 
 	/* head_end should be at ',', so skip over it. */
 	head_start=head_end+1;
-     } 
+     }
 }
 /*}}}*/
 
@@ -685,13 +680,13 @@ static int rfc2822_parse (char *header, char *parsemap, int skip_colon, char **e
 /* This function takes a header of the form "KEY: VALUE" and parses it
  * according to rfc2822.   It returns a string that contains information where
  * the header may be encoded.  For example, if the header is:
- * 
+ *
  *    "From: Thomas Paine <thomas@unknown.isp>"
  *
  * Then the following string will be returned:
- * 
+ *
  *    "      CCCCCCCCCCCCC                    "
- * 
+ *
  * The Cs indicate that the corresponding areas of the header may be encoded.
  * If an error occurs, NULL will be returned and *errmsg will be set to a string
  * describing the error.
@@ -700,7 +695,7 @@ char *slrn_parse_rfc2822_addr (char *header, char **errmsg)
 {
    char *encodemap;
    unsigned int len;
-   
+
    *errmsg = NULL;
 
    len = strlen (header);
@@ -709,7 +704,7 @@ char *slrn_parse_rfc2822_addr (char *header, char **errmsg)
 	*errmsg = _("Out of memory");
 	return NULL;
      }
-   
+
    memset (encodemap, ' ', len);
    encodemap[len] = 0;
 
@@ -720,6 +715,6 @@ char *slrn_parse_rfc2822_addr (char *header, char **errmsg)
 	slrn_free (encodemap);
 	return NULL;
      }
-   
+
    return encodemap;
 }

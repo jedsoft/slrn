@@ -5,7 +5,7 @@
  Copyright (c) 2003-2006 Thomas Schultz <tststs@gmx.de>
 
  partly based on code by John E. Davis:
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -79,7 +79,7 @@ int slrn_ranges_to_newsrc_file (Slrn_Range_Type *r, NNTP_Artnum_Type max, FILE* 
 	NNTP_Artnum_Type minmax = r->max;
 	if ((max>0) && (minmax > max))
 	  minmax = max;
-	
+
 	if (r->min != minmax)
 	  {
 	     if (fprintf (fp, NNTP_FMT_ARTRANGE, r->min, minmax) < 0)
@@ -87,7 +87,7 @@ int slrn_ranges_to_newsrc_file (Slrn_Range_Type *r, NNTP_Artnum_Type max, FILE* 
 	  }
 	else if (fprintf (fp, NNTP_FMT_ARTNUM, r->min) < 0)
 	  return -1;
-	
+
 	r = r->next;
 	if ((r != NULL) && (EOF == putc (',', fp)))
 	  return -1;
@@ -104,9 +104,9 @@ int slrn_ranges_to_newsrc_file (Slrn_Range_Type *r, NNTP_Artnum_Type max, FILE* 
 Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, NNTP_Artnum_Type min, NNTP_Artnum_Type max) /*{{{*/
 {
    Slrn_Range_Type *head = r;
-   
+
    if (min>max) return head;
-   
+
    /* Do we need to insert at the beginning of the list? */
    if ((r==NULL) || (max+1 < r->min))
      {
@@ -117,14 +117,14 @@ Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, NNTP_Artnum_Type min, NNTP
 	head->prev = NULL;
 	if (r!=NULL)
 	  r->prev = head;
-	
+
 	return head;
      }
 
    /* Skip ranges below min */
    while ((r->next!=NULL) && (r->max+1 < min))
      r = r->next;
-   
+
    /* Do we need to append a new range? */
    if (min > r->max+1)
      {
@@ -135,10 +135,10 @@ Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, NNTP_Artnum_Type min, NNTP
 	n->next = NULL;
 	n->prev = r;
 	r->next = n;
-	
+
 	return head;
      }
-   
+
    /* Do we need to insert a new range? */
    if (max+1 < r->min)
      {
@@ -159,7 +159,7 @@ Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, NNTP_Artnum_Type min, NNTP
      r->min = min;
    if (max > r->max)
      r->max = max;
-   
+
    /* Clean up successive ranges */
    while ((r->next != NULL) &&
 	  (r->next->min <= r->max+1))
@@ -167,13 +167,13 @@ Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, NNTP_Artnum_Type min, NNTP
 	Slrn_Range_Type *next = r->next;
 	if (next->max > r->max)
 	  r->max = next->max;
-	
+
 	r->next = next->next;
 	if (r->next != NULL)
 	  r->next->prev = r;
 	SLFREE (next);
      }
-   
+
    return head;
 }
 /*}}}*/
@@ -185,14 +185,14 @@ Slrn_Range_Type *slrn_ranges_add (Slrn_Range_Type *r, NNTP_Artnum_Type min, NNTP
 Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *r, NNTP_Artnum_Type min,  NNTP_Artnum_Type max) /*{{{*/
 {
    Slrn_Range_Type *head = r;
-   
+
    if ((min>max) || (r==NULL))
      return head;
-   
+
    /* Skip ranges below min */
    while ((r->next != NULL) && (r->max < min))
      r = r->next;
-   
+
    /* Do we need to split the current range? */
    if ((r->min < min) && (r->max > max))
      {
@@ -206,10 +206,10 @@ Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *r, NNTP_Artnum_Type min,  
 	  n->next->prev = n;
 	n->prev = r;
 	r->next = n;
-	
+
 	return head;
      }
-   
+
    /* Change or delete successive nodes */
    while (r->next != NULL)
      {
@@ -219,7 +219,7 @@ Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *r, NNTP_Artnum_Type min,  
 	     if (next->next != NULL)
 	       next->next->prev = r;
 	     r->next = next->next;
-	     
+
 	     SLFREE (next);
 	  }
 	else
@@ -229,7 +229,7 @@ Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *r, NNTP_Artnum_Type min,  
 	     break;
 	  }
      }
-   
+
    if ((min <= r->max) && (max >= r->min))
      {
 	if (max < r->max) /* Change this node */
@@ -245,11 +245,11 @@ Slrn_Range_Type *slrn_ranges_remove (Slrn_Range_Type *r, NNTP_Artnum_Type min,  
 	       r->prev->next = next;
 	     else
 	       head = next;
-	     
+
 	     SLFREE (r);
 	  }
      }
-   
+
    return head;
 }
 /*}}}*/
@@ -266,7 +266,7 @@ Slrn_Range_Type *slrn_ranges_merge (Slrn_Range_Type *a, Slrn_Range_Type *b) /*{{
 	retval = slrn_ranges_add (retval, b->min, b->max);
 	b = b->next;
      }
-   
+
    return retval;
 }
 /*}}}*/
@@ -285,13 +285,13 @@ Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *a, Slrn_Range_Type *b) 
 	     if (b != NULL)
 	       while ((a != NULL) && (a->max < b->min))
 		 a = a->next;
-	     
+
 	     if (a != NULL)
 	       while ((b != NULL) && (b->max < a->min))
 		 b = b->next;
 	  }
 	while ((a!=NULL) && (b!=NULL) && (a->max < b->min));
-	
+
 	/* append a range containing the next intersection */
 	if ((a!=NULL) && (b!=NULL))
 	  {
@@ -310,7 +310,7 @@ Slrn_Range_Type *slrn_ranges_intersect (Slrn_Range_Type *a, Slrn_Range_Type *b) 
 	       }
 	     n->min = (a->min < b->min) ? b->min : a->min;
 	     n->max = (a->max > b->max) ? b->max : a->max;
-	     
+
 	     if (n->max == a->max)
 	       a = a->next;
 	     else
@@ -343,11 +343,11 @@ Slrn_Range_Type *slrn_ranges_clone (Slrn_Range_Type *r) /*{{{*/
    Slrn_Range_Type *retval=NULL, *c, *n;
 
    if (r==NULL) return NULL;
-   
+
    retval = (Slrn_Range_Type *) slrn_safe_malloc (sizeof(Slrn_Range_Type));
    retval->prev = NULL;
    c = retval;
-   
+
    while (r != NULL)
      {
 	c->min = r->min;
@@ -362,7 +362,7 @@ Slrn_Range_Type *slrn_ranges_clone (Slrn_Range_Type *r) /*{{{*/
 	  }
      }
    c->next = NULL;
-   
+
    return retval;
 }
 /*}}}*/
@@ -377,7 +377,7 @@ int slrn_ranges_compare (Slrn_Range_Type *a, Slrn_Range_Type *b) /*{{{*/
 	a = a->next;
 	b = b->next;
      }
-   
+
    return ((a == NULL) && (b == NULL)) ? 0 : 1;
 }
 /*}}}*/

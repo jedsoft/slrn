@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -46,7 +46,7 @@
 char *Slrn_Version_String = SLRN_VERSION_STRING;
 int Slrn_Version = SLRN_VERSION;
 
-typedef struct 
+typedef struct
 {
    char *name;
    int value;
@@ -61,7 +61,7 @@ static Compile_Option_Type Backend_Options [] =
    {NULL, 0}
 };
 
-static Compile_Option_Type External_Lib_Options [] = 
+static Compile_Option_Type External_Lib_Options [] =
 {
    {"canlock",			SLRN_HAS_CANLOCK},
    {"inews",			SLRN_HAS_INEWS_SUPPORT},
@@ -108,7 +108,7 @@ static void print_options (FILE *fp, Compile_Option_Type *opts, char *title)
 	     len = dlen + 3;
 	  }
 	(void) fprintf (fp, " %c%s", (opts->value ? '+' : '-'), opts->name);
-	opts++; 
+	opts++;
      }
    (void) fputc ('\n', fp);
 }
@@ -149,7 +149,7 @@ void slrn_show_version (FILE *fp) /*{{{*/
    (void) fputs ("\n", fp);
    fprintf (fp, _("DEFAULTS:\n Default server object:     %s\n"),
 	    slrn_map_object_id_to_name (0, SLRN_DEFAULT_SERVER_OBJ));
-   
+
    fprintf (fp, _(" Default posting mechanism: %s\n"),
 	    slrn_map_object_id_to_name (1, SLRN_DEFAULT_POST_OBJ));
 }
@@ -161,7 +161,7 @@ static char *get_unix_system_name (void)
 {
 # ifdef HAVE_UNAME
    static struct utsname u;
-   
+
    if (-1 != uname (&u))
      return u.sysname;
 # endif
@@ -202,7 +202,6 @@ static char *get_amiga_system_name (void)
 }
 #endif
 
-   
 #if defined(__WIN32__)
 static char *get_win32_system_name (void)
 {

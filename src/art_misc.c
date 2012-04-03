@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -28,7 +28,6 @@
 #include <string.h>
 #include <time.h>
 
-
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
@@ -51,7 +50,7 @@
 #include "post.h"
 /* #include "clientlib.h" */
 #include "startup.h"
-#include "hash.h" 
+#include "hash.h"
 #include "score.h"
 #include "menu.h"
 #include "xover.h"
@@ -71,7 +70,7 @@ static void hide_article_lines (Slrn_Article_Type *a, unsigned int mask) /*{{{*/
 
    if (a == NULL)
      return;
-   
+
    a->needs_sync = 1;
    l = a->lines;
 
@@ -107,7 +106,7 @@ static void unhide_article_lines (Slrn_Article_Type *a, unsigned int mask) /*{{{
 
 /*}}}*/
 
-/* The function that set the needs_sync flag article line number start with _ 
+/* The function that set the needs_sync flag article line number start with _
  */
 
 int _slrn_art_unhide_quotes (Slrn_Article_Type *a) /*{{{*/
@@ -134,7 +133,7 @@ static unsigned char *is_matching_line (unsigned char *b, SLRegexp_Type **r) /*{
 
 	re = *r++;
 #if SLANG_VERSION < 20000
-	if ((re->min_length > len) 
+	if ((re->min_length > len)
 	    || (b != SLang_regexp_match (b, len, re)))
 	  continue;
 	match_len = re->end_matches[0];
@@ -153,17 +152,17 @@ static unsigned char *is_matching_line (unsigned char *b, SLRegexp_Type **r) /*{
 int _slrn_art_hide_quotes (Slrn_Article_Type *a, int reset) /*{{{*/
 {
    Slrn_Article_Line_Type *l, *last;
-   
+
    if (a == NULL)
      return -1;
 
    _slrn_art_unhide_quotes (a);
-   
+
    a->needs_sync = 1;
 
    if (!reset)
      Art_Hide_Quote_Level = Slrn_Quotes_Hidden_Mode;
-   
+
    l = a->lines;
    last = NULL;
 
@@ -209,23 +208,22 @@ int _slrn_art_hide_quotes (Slrn_Article_Type *a, int reset) /*{{{*/
 
 /*}}}*/
 
-
 #if SLRN_HAS_SPOILERS
 void slrn_art_mark_spoilers (Slrn_Article_Type *a) /*{{{*/
 {
    Slrn_Article_Line_Type *l;
-   
+
    if ((Slrn_Spoiler_Char == 0) || (a == NULL))
      return;
 
    l = a->lines;
-   
+
    while ((l != NULL) && (l->flags & HEADER_LINE))
      l = l->next; /* skip header */
-   
+
    while ((l != NULL) && (NULL == slrn_strbyte (l->buf, 12)))
      l = l->next; /* skip to first formfeed */
-   
+
    while (l != NULL)
      {
 	l->flags |= SPOILER_LINE;
@@ -266,7 +264,7 @@ static int try_supercite (Slrn_Article_Line_Type *l) /*{{{*/
        && (NULL == (re = SLregexp_compile (Super_Cite_Regexp, 0))))
      return -1;
 #endif
-   
+
    /* skip header --- I should look for Xnewsreader: gnus */
    while ((l != NULL) && (*l->buf != 0)) l = l->next;
 
@@ -290,9 +288,9 @@ static int try_supercite (Slrn_Article_Line_Type *l) /*{{{*/
 	     l = l->next;
 	     count--;
 	  }
-	
+
 	if ((l == NULL) || (count == 0)) return ret;
-	
+
 	/* Now find out what is used for citing. */
 	if (-1 == SLregexp_nth_match (re, 1, &ofs, &len))
 	  return ret;
@@ -302,16 +300,16 @@ static int try_supercite (Slrn_Article_Line_Type *l) /*{{{*/
 
 	ret = 0;
 	strncpy (name, (char *) b, len); name[len] = 0;
-	
+
 	while (l != NULL)
 	  {
 	     unsigned char ch;
-	     
+
 	     b = (unsigned char *) l->buf;
 	     last = l;
 	     l = l->next;
 	     if (last->flags & QUOTE_LINE) continue;
-	     
+
 	     b = (unsigned char *) slrn_skip_whitespace ((char *) b);
 
 	     if (!strncmp ((char *) b, name, len)
@@ -319,7 +317,7 @@ static int try_supercite (Slrn_Article_Line_Type *l) /*{{{*/
 		     || (ch > 'z')))
 	       {
 		  last->flags |= QUOTE_LINE;
-		  
+
 		  while (l != NULL)
 		    {
 		       b = (unsigned char *) slrn_skip_whitespace (l->buf);
@@ -343,7 +341,7 @@ void slrn_art_mark_quotes (Slrn_Article_Type *a) /*{{{*/
 {
    Slrn_Article_Line_Type *l;
    unsigned char *b;
-   
+
    if (a == NULL)
      return;
 
@@ -351,9 +349,9 @@ void slrn_art_mark_quotes (Slrn_Article_Type *a) /*{{{*/
      {
 	/* return; */
      }
-   
+
    if (Slrn_Ignore_Quote_Regexp[0] == NULL) return;
-   
+
    /* skip header */
    l = a->lines;
    while ((l != NULL) && (l->flags == HEADER_LINE))
@@ -385,25 +383,25 @@ void slrn_art_mark_quotes (Slrn_Article_Type *a) /*{{{*/
 void slrn_art_mark_signature (Slrn_Article_Type *a) /*{{{*/
 {
    Slrn_Article_Line_Type *l;
-   
+
    if (a == NULL)
      return;
-   
+
    l = a->lines;
    if (l == NULL) return;
    /* go to end of article */
    while (l->next != NULL) l = l->next;
 
    /* skip back until a line matches the signature RegExp */
-   
+
    while ((l != NULL) && (0 == (l->flags & HEADER_LINE))
 	  && ((l->flags & VERBATIM_LINE) ||
 	      (NULL == is_matching_line ((unsigned char *) l->buf,
 					 Slrn_Strip_Sig_Regexp))))
      l = l->prev;
-   
+
    if ((l == NULL) || (l->flags & HEADER_LINE)) return;
-   
+
    while (l != NULL)
      {
         l->flags |= SIGNATURE_LINE;
@@ -434,7 +432,7 @@ static Slrn_Article_Line_Type *unwrap_line (Slrn_Article_Type *a, /*{{{*/
 
    ll = l->prev;
    b = ll->buf;
-   do 
+   do
      {
 	b += strlen (b);
 	/* skip the space at beginning of the wrapped line: */
@@ -446,7 +444,7 @@ static Slrn_Article_Line_Type *unwrap_line (Slrn_Article_Type *a, /*{{{*/
 	l = next;
      }
    while ((l != NULL) && (l->flags & WRAPPED_LINE));
-	     
+
    ll->next = l;
    if (l != NULL) l->prev = ll;
    return l;
@@ -459,7 +457,7 @@ static Slrn_Article_Line_Type *unwrap_line (Slrn_Article_Type *a, /*{{{*/
 int _slrn_art_unwrap_article (Slrn_Article_Type *a) /*{{{*/
 {
    Slrn_Article_Line_Type *l;
-   
+
    if (a == NULL)
      return -1;
 
@@ -505,7 +503,7 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
      {
 	unsigned char header_char_delimiter = 0;
 
-	if (l->flags & HEADER_LINE) 
+	if (l->flags & HEADER_LINE)
 	  {
 	     if ((wrap_mode & 1) == 0)
 	       {
@@ -542,20 +540,20 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 		  Slrn_Article_Line_Type *new_l;
 		  unsigned char *buf0, *lbuf;
 
-		  /* Try to break the line on a word boundary.  
+		  /* Try to break the line on a word boundary.
 		   * For now, I will only break on space characters.
 		   */
 		  buf0 = buf;
 		  lbuf = (unsigned char *) l->buf;
 
 		  lbuf += 1;	       /* avoid space at beg of line */
-		  
+
 		  if (Slrn_Wrap_Method == 0 || Slrn_Wrap_Method == 2)
 		    {
 		       while (buf0 > lbuf)
 			 {
 			    if ((*buf0 == ' ') || (*buf0 == '\t')
-				|| (header_char_delimiter 
+				|| (header_char_delimiter
 				    && (*buf0 == header_char_delimiter)))
 			      {
 				 buf = buf0;
@@ -563,19 +561,19 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 			      }
 			    buf0--;
 			 }
-		       
+
 		       if (buf0 == lbuf)
 			 {
 			    if (Slrn_Wrap_Method == 0)
 			      {
 		       /* Could not find a place to break the line.  Ok, so
-			* we will not break this.  Perhaps it is a URL.  
+			* we will not break this.  Perhaps it is a URL.
 			* If not, it is a long word and who cares about it.
 			*/
 				 while (((ch = *buf) != 0)
 					&& (ch != ' ') && (ch != '\t'))
 				   buf++;
-				 
+
 				 if (ch == 0)
 				   continue;
 			      }
@@ -585,7 +583,7 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 			    }
 			 }
 		    }
-		  
+
 		  /* Start wrapped lines with a space.  To do this, I will
 		   * _temporally_ modify the previous character for the purpose
 		   * of creating the new space.
@@ -593,11 +591,11 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 		  buf--;
 		  ch = *buf;
 		  *buf = ' ';
-		  
+
 		  new_l = (Slrn_Article_Line_Type *) slrn_malloc (sizeof (Slrn_Article_Line_Type), 1, 1);
 		  if (new_l == NULL)
 		    return -1;
-		  
+
 		  if (NULL == (new_l->buf = slrn_strmalloc ((char *)buf, 1)))
 		    {
 		       slrn_free ((char *) new_l);
@@ -606,7 +604,7 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 
 		  *buf++ = ch;
 		  *buf = 0;
-		  
+
 		  new_l->next = l->next;
 		  new_l->prev = l;
 		  l->next = new_l;
@@ -625,7 +623,7 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 #if SLANG_VERSION < 20000
 	     else buf++;
 #endif
-	     
+
 	     ch = *buf;
 	  }
 	l = l->next;
@@ -634,7 +632,6 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 }
 
 /*}}}*/
-
 
 static int is_blank_line (unsigned char *b) /*{{{*/
 {
@@ -664,16 +661,16 @@ void _slrn_art_skip_quoted_text (Slrn_Article_Type *a) /*{{{*/
 	  }
 	l = l->next;
      }
-   
+
    /* Now we are either at the end of the buffer or on a quote line. Skip
     * past other quote lines.
     */
-   
+
    if (l == NULL)
      return;
-   
+
    l = l->next;
-   
+
    while (l != NULL)
      {
 	if (l->flags & HIDDEN_LINE)
@@ -723,13 +720,13 @@ int _slrn_art_skip_digest_forward (Slrn_Article_Type *a) /*{{{*/
 	  {
 	     char ch;
 	     char *buf;
-	     
+
 	     if ((l->flags & HIDDEN_LINE) || (l->flags & HEADER_LINE))
 	       {
 		  l = l->next;
 		  continue;
 	       }
-	     
+
 	     buf = l->buf;
 	     if (num_passes == 0)
 	       {
@@ -749,7 +746,7 @@ int _slrn_art_skip_digest_forward (Slrn_Article_Type *a) /*{{{*/
 		       continue;
 		    }
 	       }
-	     
+
 	     a->cline = l;
 	     a->needs_sync = 1;
 	     return 0;
@@ -768,7 +765,7 @@ char *slrn_art_extract_header (char *hdr, unsigned int len) /*{{{*/
 
    if (a == NULL)
      return NULL;
-   
+
    l = a->lines;
 
    while ((l != NULL)
@@ -787,7 +784,7 @@ char *slrn_art_extract_header (char *hdr, unsigned int len) /*{{{*/
 
 	     /* Return the data after the colon */
 	     result = slrn_strbyte (l->buf, ':');
-	     if (result == NULL) 
+	     if (result == NULL)
 	       result = l->buf + len;
 	     else result += 1;
 
@@ -830,14 +827,13 @@ static void free_visible_header_list (void) /*{{{*/
 
 /*}}}*/
 
-
 int slrn_set_visible_headers (char *headers) /*{{{*/
 {
    char buf[256];
    unsigned int nth;
 
    free_visible_header_list ();
-   
+
    Slrn_Visible_Headers_String = SLang_create_slstring (headers);
    if (Slrn_Visible_Headers_String == NULL)
      return -1;
@@ -846,7 +842,7 @@ int slrn_set_visible_headers (char *headers) /*{{{*/
    while (-1 != SLextract_list_element (headers, nth, ',', buf, sizeof(buf)))
      {
 	Visible_Header_Type *next;
-	
+
 	next = (Visible_Header_Type *) SLmalloc (sizeof (Visible_Header_Type));
 	if (next == NULL)
 	  return -1;
@@ -859,7 +855,7 @@ int slrn_set_visible_headers (char *headers) /*{{{*/
 	next->len = strlen (buf);
 	next->next = Visible_Headers;
 	Visible_Headers = next;
-	
+
 	nth++;
      }
    if ((Slrn_Current_Article != NULL) &&
@@ -874,21 +870,21 @@ void _slrn_art_hide_headers (Slrn_Article_Type *a) /*{{{*/
 {
    Slrn_Article_Line_Type *l;
    char ch;
-   
+
    if (a == NULL)
      return;
 
    _slrn_art_unhide_headers (a);
 
    a->needs_sync = 1;
-   
+
    l = a->lines;
 
    while ((l != NULL) && (l->flags & HEADER_LINE))
      {
 	int hide_header;
 	Visible_Header_Type *v;
-	
+
 	ch = l->buf[0];
 	ch |= 0x20;
 
@@ -899,7 +895,7 @@ void _slrn_art_hide_headers (Slrn_Article_Type *a) /*{{{*/
 	  {
 	     int hide = (v->header[0] == '!') ? 1 : 0;
 	     char chv = (0x20 | v->header[hide]);
-	     
+
 	     if ((chv == ch)
 		 && (0 == slrn_case_strncmp (l->buf,
 					     v->header + hide,
@@ -908,7 +904,7 @@ void _slrn_art_hide_headers (Slrn_Article_Type *a) /*{{{*/
 		  hide_header = hide;
 		  break;
 	       }
-	     
+
 	     v = v->next;
 	  }
 
@@ -916,7 +912,7 @@ void _slrn_art_hide_headers (Slrn_Article_Type *a) /*{{{*/
 	  {
 	     if (hide_header)
 	       l->flags |= HIDDEN_LINE;
-	     
+
 	     l = l->next;
 	  }
 	while ((l != NULL) && ((*l->buf == ' ') || (*l->buf == '\t')));
@@ -941,10 +937,10 @@ int _slrn_art_unfold_header_lines (Slrn_Article_Type *a) /*{{{*/
 {
    Slrn_Article_Line_Type *l;
    char ch;
-   
+
    if (a == NULL)
      return -1;
-   
+
    l = a->lines->next;
    a->is_modified = 1;
    a->needs_sync = 1;
@@ -957,20 +953,20 @@ int _slrn_art_unfold_header_lines (Slrn_Article_Type *a) /*{{{*/
 	     unsigned int len0, len1;
 	     Slrn_Article_Line_Type *prev;
 	     char *new_buf;
-	     
+
 	     l->buf[0] = ' ';
-	     
+
 	     prev = l->prev;
-	     
+
 	     len0 = strlen (prev->buf);
 	     len1 = len0 + strlen (l->buf) + 1;
-	     
+
 	     new_buf = slrn_realloc (prev->buf, len1, 1);
 	     if (new_buf == NULL)
 	       return -1;
 
 	     prev->buf = new_buf;
-	     
+
 	     strcpy (new_buf + len0, l->buf); /* safe */
 	     prev->next = l->next;
 	     if (l->next != NULL) l->next->prev = prev;
@@ -978,7 +974,7 @@ int _slrn_art_unfold_header_lines (Slrn_Article_Type *a) /*{{{*/
 	     slrn_free ((char *) l);
 	     l = prev;
 	  }
-	
+
 	l = l->next;
      }
    return 0;
@@ -989,7 +985,7 @@ int _slrn_art_unfold_header_lines (Slrn_Article_Type *a) /*{{{*/
 void slrn_mark_header_lines (Slrn_Article_Type *a) /*{{{*/
 {
    Slrn_Article_Line_Type *l;
-   
+
    if (a == NULL)
      return;
    l = a->lines;
@@ -1026,12 +1022,12 @@ void _slrn_art_unhide_signature (Slrn_Article_Type *a) /*{{{*/
 /*}}}*/
 
 void slrn_art_mark_pgp_signature (Slrn_Article_Type *a) /*{{{*/
-{	
+{
    Slrn_Article_Line_Type *l;
 
    if (a == NULL)
      return;
-   
+
    l = a->lines;
    while (l != NULL)
      {
@@ -1043,14 +1039,14 @@ void slrn_art_mark_pgp_signature (Slrn_Article_Type *a) /*{{{*/
 	  {
 	     l->flags |= PGP_SIGNATURE_LINE;
 	     l->flags &= ~QUOTE_LINE;
-	     
+
 	     if ((NULL != (l = l->next)) &&
 		 !strncmp (l->buf, "Hash: ", 6))
 	       {
 		  /* catch the `Hash: ... ' line */
 		  l->flags |= PGP_SIGNATURE_LINE;
 		  l->flags &= ~QUOTE_LINE;
-		  
+
 		  l = l->next;
 	       }
 	     if ((NULL != l) &&
@@ -1059,10 +1055,10 @@ void slrn_art_mark_pgp_signature (Slrn_Article_Type *a) /*{{{*/
 		  /* the optional "NotDashEscaped: ..." line */
 		  l->flags |= PGP_SIGNATURE_LINE;
 		  l->flags &= ~QUOTE_LINE;
-		  
-		  l = l->next;		  
+
+		  l = l->next;
 	       }
-	     
+
 	     continue;
 	  }
 
@@ -1074,7 +1070,7 @@ void slrn_art_mark_pgp_signature (Slrn_Article_Type *a) /*{{{*/
 	  }
 	l0 = l;
 	l = l->next;
-	
+
 	count = 256;		       /* arbitrary */
 	while ((l != NULL) && count)
 	  {
@@ -1134,7 +1130,7 @@ void slrn_art_mark_verbatim (Slrn_Article_Type *a)
 
    if (a == NULL)
      return;
-   
+
    von = "#v+";
    voff = "#v-";
 
@@ -1172,7 +1168,6 @@ void slrn_art_mark_verbatim (Slrn_Article_Type *a)
 	l = l->next;
      }
 }
-
 
 void _slrn_art_unhide_verbatim (Slrn_Article_Type *a) /*{{{*/
 {

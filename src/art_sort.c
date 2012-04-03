@@ -3,7 +3,7 @@
  This file is part of SLRN.
  It contains the sorting routines for article mode.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -112,7 +112,7 @@ static int header_thread_cmp(Slrn_Header_Type **unsorted, Slrn_Header_Type **sor
 void _art_toggle_sort (void) /*{{{*/
 {
    int rsp;
-   
+
    rsp = slrn_sbox_sorting_method ();
    if (rsp != -1)
      {
@@ -131,42 +131,42 @@ int _art_subject_cmp (char *sa, char *sb) /*{{{*/
    char *end_a = sa + strlen (sa);
    char *end_b = sb + strlen (sb);
    char *was;
-   
+
    /* find "(was: ...)" and set end_[ab] */
    if (NULL != (was = strstr (sa, "(was:"))
        && (was != sa) && (*(end_a - 1) == ')'))
      end_a = was;
-   
+
    if (NULL != (was = strstr (sb, "(was:"))
        && (was != sb) && (*(end_b - 1) == ')'))
      end_b = was;
-   
+
    /* skip past re: */
    while (*sa == ' ') sa++;
    while (*sb == ' ') sb++;
-   
+
    if (((*sa | 0x20) == 'r') && ((*(sa + 1) | 0x20) == 'e')
        && (*(sa + 2) == ':'))
      {
 	sa += 3;
      }
-   
+
    if (((*sb | 0x20) == 'r') && ((*(sb + 1) | 0x20) == 'e')
        && (*(sb + 2) == ':'))
      {
 	sb += 3;
      }
-   
+
    while (1)
      {
 	char cha, chb;
 
 	while ((cha = *sa) == ' ') sa++;
 	while ((chb = *sb) == ' ') sb++;
-	
+
 	if ((sa == end_a) && (sb == end_b))
 	  return 0;
-	
+
 	/* This hack sorts "(3/31)" before "(25/31)" */
 	if (isdigit (cha) && isdigit (chb))
 	  {
@@ -174,13 +174,13 @@ int _art_subject_cmp (char *sa, char *sb) /*{{{*/
 	     if (a != b)
 	       return a - b;
 	  }
-	
+
 	cha = UPPER_CASE(cha);
 	chb = UPPER_CASE(chb);
-	
+
 	if (cha != chb)
 	  return (int) cha - (int) chb;
-	
+
 	sa++;
 	sb++;
      }
@@ -209,10 +209,10 @@ static int header_subject_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*/
 static int header_date_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*/
 {
    long asec, bsec;
-   
+
    asec = slrn_date_to_order_parm (a->date);
    bsec = slrn_date_to_order_parm (b->date);
-   
+
    return (int) (asec - bsec);
 }
 /*}}}*/
@@ -220,10 +220,10 @@ static int header_date_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*/
 static int header_has_body_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*/
 {
    int abody, bbody;
-   
+
    abody = (0 != (a->flags & HEADER_WITHOUT_BODY));
    bbody = (0 != (b->flags & HEADER_WITHOUT_BODY));
-   
+
    return bbody - abody;
 }
 /*}}}*/
@@ -231,10 +231,10 @@ static int header_has_body_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*
 static int header_highscore_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*/
 {
    int ahigh, bhigh;
-   
+
    ahigh = (0 != (a->flags & (HEADER_HIGH_SCORE | FAKE_HEADER_HIGH_SCORE)));
    bhigh = (0 != (b->flags & (HEADER_HIGH_SCORE | FAKE_HEADER_HIGH_SCORE)));
-   
+
    return ahigh - bhigh;
 }
 /*}}}*/
@@ -275,16 +275,16 @@ static int header_msgid_cmp (Slrn_Header_Type *a, Slrn_Header_Type *b) /*{{{*/
 static int header_cmp (sort_function_type *sort_function, Slrn_Header_Type **unsorted, Slrn_Header_Type **sorted) /*{{{*/
 {
    int result=0;
-   
+
    while (sort_function != NULL)
      {
         result = (sort_function->fun)(*unsorted, *sorted);
         if (result) break;
         sort_function = sort_function->next;
      }
-   
+
    if (sort_function != NULL && sort_function->inverse) result *= -1;
-   
+
    return result;
 }
 /*}}}*/
@@ -313,7 +313,7 @@ void slrn_sort_headers (void) /*{{{*/
    int do_threading;
    void (*qsort_fun) (char *, unsigned int,
 		      unsigned int, int (*)(Slrn_Header_Type **, Slrn_Header_Type **));
-   
+
    /* This is a silly hack to make up for braindead compilers and the lack of
     * uniformity in prototypes for qsort.
     */
@@ -350,13 +350,13 @@ void slrn_sort_headers (void) /*{{{*/
      }
    if (nheaders < 2)
      goto cleanup_screen_and_return;
-   
+
    if (NULL == (header_list = (Slrn_Header_Type **) SLCALLOC (sizeof (Slrn_Header_Type *), nheaders + 1)))
      {
 	slrn_error (_("slrn_sort_headers(): memory allocation failure."));
 	goto cleanup_screen_and_return;
      }
-   
+
    /* Now, fill the array and call qsort on it; use our header_initial_cmp function
     * to do the comparison. */
    h = Slrn_First_Header;
@@ -368,16 +368,16 @@ void slrn_sort_headers (void) /*{{{*/
 	h = h->real_next;
      }
    header_list[nheaders] = NULL;
-   
+
    (*qsort_fun) ((char *) header_list, nheaders, sizeof (Slrn_Header_Type *), header_initial_cmp);
-   
+
    /* What we do now depends on the threading state. If the headers are
     * unthreaded, simply link them in the order returned by qsort. */
    if (!do_threading)
      {
 	header_list[0]->next = header_list[1];
 	header_list[0]->prev = NULL;
-	
+
 	for (i = 1; i < nheaders; i++)
 	  {
 	     h = header_list[i];
@@ -411,11 +411,11 @@ void slrn_sort_headers (void) /*{{{*/
    /* Finally, free the array and clean up the screen. */
    _art_Headers = header_list[0];
    SLFREE (header_list);
-   
+
    cleanup_screen_and_return:
    _art_find_header_line_num ();
    Slrn_Full_Screen_Update = 1;
-   
+
    if (!Slrn_Uncollapse_Threads)
      slrn_collapse_threads (1);
 }
@@ -426,7 +426,7 @@ void slrn_sort_headers (void) /*{{{*/
 void _art_sort_by_server_number (void) /*{{{*/
 {
    Slrn_Header_Type *h;
-   
+
    /* This is easy since the real_next, prev are already ordered. */
    h = Slrn_First_Header;
    while (h != NULL)
@@ -440,7 +440,7 @@ void _art_sort_by_server_number (void) /*{{{*/
 	h = h->real_next;
      }
    _art_Headers_Threaded = 0;
-   
+
    /* Now find out where to put the Slrn_Headers pointer */
    while (_art_Headers->prev != NULL) _art_Headers = _art_Headers->prev;
 }
@@ -452,7 +452,7 @@ void _art_sort_by_server_number (void) /*{{{*/
 static void insert_fake_child (Slrn_Header_Type *parent, Slrn_Header_Type *new_child) /*{{{*/
 {
    Slrn_Header_Type *child = parent->child, *last_child = NULL;
-   
+
    /* Order: "normal" children first, so skip them; also skip all faked
     * children that sort higher than new_child */
    while ((child != NULL) &&
@@ -462,7 +462,7 @@ static void insert_fake_child (Slrn_Header_Type *parent, Slrn_Header_Type *new_c
 	last_child = child;
 	child = child->sister;
      }
-   
+
    /* Now, insert new_child */
    if (last_child == NULL)
      parent->child = new_child;
@@ -490,7 +490,7 @@ static void link_lost_relatives (void) /*{{{*/
    unsigned int n, i, j;
    Slrn_Header_Type *h;
    Relative_Type *relatives;
-   
+
    /* Count the number of possible lost relatives */
    n = 0;
    h = Slrn_First_Header;
@@ -499,7 +499,7 @@ static void link_lost_relatives (void) /*{{{*/
 	if ((h->parent == NULL)
 	    && (h->refs != NULL)
 	    && (*h->refs != 0)) n++;
-	
+
 	h = h->real_next;
      }
    if (n < 2) return;
@@ -509,7 +509,7 @@ static void link_lost_relatives (void) /*{{{*/
    relatives = (Relative_Type *) slrn_malloc (sizeof (Relative_Type) * n, 0, 0);
    if (relatives == NULL)
      return;
-   
+
    n = 0;
    h = Slrn_First_Header;
    while (h != NULL)
@@ -519,7 +519,7 @@ static void link_lost_relatives (void) /*{{{*/
 	    && (*h->refs != 0))
 	  {
 	     unsigned char *r, *ref_begin;
-	     
+
 	     r = (unsigned char *) h->refs;
 	     while (*r && (*r != '<')) r++;
 	     if (*r)
@@ -534,7 +534,7 @@ static void link_lost_relatives (void) /*{{{*/
 	  }
 	h = h->real_next;
      }
-   
+
    /* Walk through the array and mark all headers with the same hash value
     * as relatives. */
    for (i = 0; i < n; i++)
@@ -542,16 +542,16 @@ static void link_lost_relatives (void) /*{{{*/
 	unsigned long ref_hash;
 	Relative_Type *ri = relatives + i;
 	Slrn_Header_Type *rih;
-	
+
 	ref_hash = ri->ref_hash;
 	rih = ri->h;
-	
+
 	for (j = i + 1; j < n; j++)
 	  {
 	     if (relatives[j].ref_hash == ref_hash)
 	       {
 		  Slrn_Header_Type *rjh = relatives[j].h;
-		  
+
 		  if ((Slrn_New_Subject_Breaks_Threads & 1)
 		      && (rih->subject != NULL)
 		      && (rjh->subject != NULL)
@@ -588,7 +588,7 @@ static void link_same_subjects (void) /*{{{*/
    unsigned int i, nparents;
    int use_hook = 0;
    void (*qsort_fun) (char *, unsigned int, unsigned int, int (*)(Slrn_Header_Type **, Slrn_Header_Type **));
-   
+
    /* This is a silly hack to make up for braindead compilers and the lack of
     * uniformity in prototypes for qsort.
     */
@@ -596,7 +596,7 @@ static void link_same_subjects (void) /*{{{*/
 			 unsigned int, unsigned int,
 			 int (*)(Slrn_Header_Type **, Slrn_Header_Type **)))
      qsort;
-   
+
    /* Count number of threads we might want to link. */
    h = Slrn_First_Header;
    nparents = 0;
@@ -607,14 +607,14 @@ static void link_same_subjects (void) /*{{{*/
 	h = h->real_next;
      }
    if (nparents < 2) return;
-   
+
    /* Allocate an array for them, fill and qsort() it. */
    if (NULL == (header_list = (Slrn_Header_Type **) SLCALLOC (sizeof (Slrn_Header_Type *), nparents)))
      {
 	slrn_error (_("link_same_subjects: memory allocation failure."));
 	return;
      }
-   
+
    h = Slrn_First_Header;
    i = 0;
    while (i < nparents)
@@ -622,25 +622,25 @@ static void link_same_subjects (void) /*{{{*/
 	if (h->parent == NULL) header_list[i++] = h;
 	h = h->real_next;
      }
-   
+
    (*qsort_fun) ((char *) header_list,
 		 nparents, sizeof (Slrn_Header_Type *), qsort_subject_cmp);
-   
+
    if (0 != slrn_is_hook_defined(HOOK_SUBJECT_COMPARE))
      use_hook = 1;
-   
+
    h = header_list[0];
    for (i = 1; i < nparents; i++)
      {
 	Slrn_Header_Type *h1 = header_list[i];
 	int differ;
-	
+
 	differ = _art_subject_cmp (h->subject, h1->subject);
-	
+
 	if (differ && use_hook)
 	  {
 	     int rslt;
-	     
+
 	     if ((1 == slrn_run_hooks (HOOK_SUBJECT_COMPARE, 2, h->subject, h1->subject))
 		 && (-1 != SLang_pop_integer (&rslt)))
 	       differ = rslt;
@@ -648,9 +648,9 @@ static void link_same_subjects (void) /*{{{*/
 
 	if (differ == 0)
 	  {
-	     /* h and h1 have the same subject. Now make h1 a (faked) child of h. */ 
+	     /* h and h1 have the same subject. Now make h1 a (faked) child of h. */
 	     insert_fake_child (h, h1);
-	     
+
 	     if (h1->flags & FAKE_CHILDREN)
 	       {
 		  /* h1 has fake children, we have to link them up to the new
@@ -659,7 +659,7 @@ static void link_same_subjects (void) /*{{{*/
 		   */
 		  Slrn_Header_Type *child = h1->child, *last_child;
 		  last_child = child;
-		  
+
 		  /* child CANNOT be NULL here!! (the parent claims to have
 		   *				  children) */
 		  child = child->sister;
@@ -668,7 +668,7 @@ static void link_same_subjects (void) /*{{{*/
 		       last_child = child;
 		       child = child->sister;
 		    }
-		  
+
 		  if (last_child->flags & FAKE_PARENT) /* h1 has only fake children */
 		    {
 		       child = last_child;
@@ -676,7 +676,7 @@ static void link_same_subjects (void) /*{{{*/
 		    }
 		  else
 		    last_child->sister = NULL;
-		  
+
 		  last_child = child;
 		  while (last_child != NULL)
 		    {
@@ -698,7 +698,7 @@ static void link_same_subjects (void) /*{{{*/
 static unsigned int compute_num_children (Slrn_Header_Type *h) /*{{{*/
 {
    unsigned int n = 0, dn;
-   
+
    h = h->child;
    while (h != NULL)
      {
@@ -722,7 +722,7 @@ static Slrn_Header_Type *fixup_thread_node (Slrn_Header_Type *h, char *tree) /*{
    Slrn_Header_Type *last = NULL;
    static unsigned int level;
    unsigned char vline_char;
-   
+
    if (h == NULL) return NULL;
 
    vline_char = Graphic_VLine_Char;
@@ -730,16 +730,16 @@ static Slrn_Header_Type *fixup_thread_node (Slrn_Header_Type *h, char *tree) /*{
    while (1)
      {
 	last = h;
-	
+
 	if (h->child != NULL)
 	  {
 	     Slrn_Header_Type *child = h->child;
 	     unsigned int tree_level;
 	     unsigned int save_level = level;
-	     
+
 	     h->next = child;
 	     child->prev = h;
-	     
+
 	     if (level == 0)
 	       {
 		  if ((h->flags & FAKE_CHILDREN) &&
@@ -753,9 +753,9 @@ static Slrn_Header_Type *fixup_thread_node (Slrn_Header_Type *h, char *tree) /*{
 		  tree[1] = ' ';
 		  level = 1;
 	       }
-	     
+
 	     tree_level = 2 * level - 2;
-	     
+
 	     if (level && (tree_level < MAX_TREE_SIZE - 2))
 	       {
 		  if (h->sister != NULL)
@@ -778,22 +778,22 @@ static Slrn_Header_Type *fixup_thread_node (Slrn_Header_Type *h, char *tree) /*{
 		  tree[tree_level + 1] = ' ';
 		  tree[tree_level + 2] = 0;
 	       }
-	     
+
 	     level++;
 	     last = fixup_thread_node (h->child, tree);
 	     level--;
-	     
+
 	     if (level && ((tree_level < MAX_TREE_SIZE - 2)))
 	       tree[tree_level] = 0;
-	     
+
 	     level = save_level;
 	  }
-	
+
 	if (h->flags & FAKE_PARENT) *tree = 0;
-	
+
 	slrn_free (h->tree_ptr);
 	h->tree_ptr = NULL;
-	
+
 	if (*tree)
 	  h->tree_ptr = slrn_strmalloc (tree, 0);   /* NULL ok here */
 
@@ -812,24 +812,24 @@ static void fixup_threads (void) /*{{{*/
 {
    Slrn_Header_Type *h;
    char tree[MAX_TREE_SIZE];
-   
+
    /* Set the top of the header window. */
    h = Slrn_First_Header;
    _art_Headers = NULL;
-   
+
    if (h == NULL) return;
    while ((h != NULL) && (h->parent != NULL))
      h = h->real_next;
    if (h == NULL)
      slrn_exit_error (_("Internal Error in fixup_threads()."));
    else
-     _art_Headers = h;   
-   
+     _art_Headers = h;
+
    /* Do the next/prev linking. */
    *tree = 0;
    fixup_thread_node (_art_Headers, tree);
    while (_art_Headers->prev != NULL) _art_Headers = _art_Headers->prev;
-   
+
    /* Set number of children / thread scores.
     * Thread scores are only calculated for top level parents. */
    h = _art_Headers;
@@ -862,7 +862,7 @@ static void sort_by_threads (void) /*{{{*/
 {
    Slrn_Header_Type *h, *ref;
    char *r0, *r1, *rmin;
-   
+
    /* First, resolve existing threads. */
    h = Slrn_First_Header;
    while (h != NULL)
@@ -874,7 +874,7 @@ static void sort_by_threads (void) /*{{{*/
 	h->thread_score = h->score;
 	h = h->real_next;
      }
-   
+
    slrn_message_now (_("Threading by references ..."));
    h = Slrn_First_Header;
    while (h != NULL)
@@ -884,10 +884,10 @@ static void sort_by_threads (void) /*{{{*/
 	     h = h->real_next;
 	     continue;
 	  }
-	
+
 	rmin = h->refs;
 	r1 = rmin + strlen (rmin);
-	
+
 	/* Try to find an article from the References header */
 	while (1)
 	  {
@@ -895,19 +895,19 @@ static void sort_by_threads (void) /*{{{*/
 	     r0 = r1 - 1;
 	     while ((r0 >= rmin) && (*r0 != '<')) r0--;
 	     if ((r0 < rmin) || (r1 == rmin)) break;
-	     
+
 	     ref = _art_find_header_from_msgid (r0, r1 + 1);
-	     
+
 	     if (ref != NULL)
 	       {
 		  Slrn_Header_Type *child, *last_child, *rparent;
-		  
+
 		  if ((Slrn_New_Subject_Breaks_Threads & 1)
 		      && (h->subject != NULL)
 		      && (ref->subject != NULL)
 		      && (0 != _art_subject_cmp (h->subject, ref->subject)))
 		    break;
-		  
+
 		  rparent = ref;
 		  while (rparent->parent != NULL) rparent = rparent->parent;
 		  if (rparent == h) /* self referencing!!! */
@@ -943,12 +943,12 @@ static void sort_by_threads (void) /*{{{*/
 	  }
 	h = h->real_next;
      }
-   
+
    /* Now perform a re-arrangement such that those without parents but that
     * share the same reference are placed side-by-side as sisters. */
    slrn_message_now (_("Linking \"lost relatives\" ..."));
    link_lost_relatives ();
-   
+
    /* Now perform sort on subject to catch those that have fallen through the
     * cracks, i.e., no references */
    if (!(Slrn_New_Subject_Breaks_Threads & 2))
@@ -956,14 +956,14 @@ static void sort_by_threads (void) /*{{{*/
 	slrn_message_now (_("Linking articles with identical subjects ..."));
 	link_same_subjects ();
      }
-   
+
    /* Now link up others as sisters */
    h = Slrn_First_Header;
    while ((h != NULL) && (h->parent != NULL))
      {
 	h = h->real_next;
      }
-   
+
    while (h != NULL)
      {
 	Slrn_Header_Type *next;
@@ -973,7 +973,7 @@ static void sort_by_threads (void) /*{{{*/
 	h->sister = next;
 	h = next;
      }
-   
+
    _art_Headers_Threaded = 1;
    _art_Threads_Collapsed = 0;
    fixup_threads ();
@@ -990,12 +990,12 @@ static void sort_by_threads (void) /*{{{*/
 static void add_sort_function(sort_function_type **Functions, Header_Cmp_Func_Type fun, int inverse) /*{{{*/
 {
    sort_function_type *ptr, *newfnc;
-   
+
    newfnc = (sort_function_type *) slrn_safe_malloc (sizeof (sort_function_type));
    newfnc->fun = fun;
    newfnc->inverse = inverse;
    newfnc->next = NULL;
-   
+
    if (*Functions == NULL)
      *Functions = newfnc;
    else
@@ -1015,7 +1015,7 @@ static char *get_current_sort_order (int *do_threading) /*{{{*/
 	*do_threading = Slrn_Sort_By_Threads;
 	return (Slrn_Sort_Order == NULL ? "" : Slrn_Sort_Order);
      }
-   
+
    *do_threading = (Slrn_Sorting_Mode & SORT_BY_THREADS);
    if (Slrn_Sorting_Mode & SORT_BY_DATE)
      return (Slrn_Sorting_Mode & 0x2 ? "Highscore,date" : "Highscore,Date");
@@ -1031,16 +1031,16 @@ static void compile_function_list(char *order, sort_function_type **Functions) /
 {
    char buf[256];
    unsigned int nth=0;
-   
+
    while (*Functions != NULL)
      {
 	sort_function_type *next = (*Functions)->next;
 	SLFREE (*Functions);
 	*Functions = next;
      }
-   
+
    if ((order == NULL) || !(*order)) return;
-   
+
    while (-1 != SLextract_list_element (order, nth, ',', buf, sizeof(buf)))
      {
 	if (! slrn_case_strcmp(buf, "Subject"))
@@ -1065,7 +1065,7 @@ static void compile_function_list(char *order, sort_function_type **Functions) /
 	  {
 	     slrn_error(_("Can't sort according to `%s'"), buf);
 	  }
-	
+
 	nth++;
      } /* while (...) */
 }

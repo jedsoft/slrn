@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -19,7 +19,7 @@
 */
 #ifndef _JD_MACROS_H_
 #define _JD_MACROS_H_
-/* This file defines some macros that I use with programs that link to 
+/* This file defines some macros that I use with programs that link to
  * the slang library.
  */
 
@@ -31,7 +31,7 @@
 
 #ifdef HAVE_MEMORY_H
 # include <memory.h>
-#endif 
+#endif
 
 #ifndef SLMEMSET
 # ifdef HAVE_MEMSET

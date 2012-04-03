@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -33,5 +33,4 @@ extern int slrn_grouplens_add_group (char *);
 extern int Slrn_GroupLens_Port;
 
 #endif
-
 

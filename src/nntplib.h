@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -22,7 +22,7 @@
 #define _SLRN_NNTPLIB_H
 #include "sltcp.h"
 
-typedef struct 
+typedef struct
 {
 #define NNTP_RECONNECT_OK	0x1
    unsigned int flags;
@@ -45,11 +45,11 @@ typedef struct
    int can_xhdr;
    int can_xpat;
    int sv_id; /* type of server software */
-   
+
    int (*auth_hook)(char *, char **, char **);
 
    int number_bytes_received;
-   
+
    SLTCP_Type *tcp;
 }
 NNTP_Type;
@@ -76,7 +76,6 @@ extern NNTP_Type *nntp_open_server (char *, int);
 
 extern int nntp_read_line (NNTP_Type *s, char *, unsigned int);
 extern int nntp_discard_output (NNTP_Type *s);
-
 
 extern int nntp_has_cmd (NNTP_Type *, char *);
 extern int nntp_list (NNTP_Type *, char *);

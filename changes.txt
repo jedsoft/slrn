@@ -64,6 +64,7 @@ Changes since 0.9.9p1
 30. src/interp.c, art.c: Added support for an optional argument to the
     replace_article function that dictates if the article should be
     mime processed.
+31. src/*: Updated copyright year and trimmed extra whitespace.
 
 {{{ Previous Versions 
 

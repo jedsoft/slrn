@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -47,7 +47,7 @@
 
 char *Slrn_Printer_Name;
 
-/* I am using prefixes such as popen_ for the benefit of those without a 
+/* I am using prefixes such as popen_ for the benefit of those without a
  * folding editor.
  */
 #ifdef USE_NOTEPAD_PRINT_CODE
@@ -88,7 +88,6 @@ char *Slrn_Printer_Name;
 # endif
 #endif
 
-
 #ifdef USE_WIN32_PRINT_CODE /*{{{*/
 
 # ifdef HAVE_WINSPOOL_H
@@ -116,7 +115,7 @@ int win32_close_printer (Slrn_Print_Type *p)
    if ((p == NULL)
        || (p->h == INVALID_HANDLE_VALUE))
      return 0;
-   
+
    EndDocPrinter (p->h);
    ClosePrinter (p->h);
    slrn_free ((char *) p);
@@ -127,7 +126,7 @@ Slrn_Print_Type *win32_open_printer (void)
 {
    char printer_name_buf [256];
    HANDLE h;
-   static DOC_INFO_1 doc_info = 
+   static DOC_INFO_1 doc_info =
      {
 	"slrn-print-file",	       /* name of the document */
 	NULL,			       /* name of output file to use */
@@ -138,7 +137,7 @@ Slrn_Print_Type *win32_open_printer (void)
 
    if (NULL == (p = (Slrn_Print_Type *) SLmalloc (sizeof (Slrn_Print_Type))))
      return NULL;
-   
+
    memset ((char *) p, 0, sizeof(Slrn_Print_Type));
 
    if (NULL == (printer_name = Slrn_Printer_Name))
@@ -147,18 +146,17 @@ Slrn_Print_Type *win32_open_printer (void)
 	printer_name = slrn_strbyte (printer_name_buf, ',');
 	if (NULL != printer_name)
 	  *printer_name = 0;
-	
+
 	printer_name = printer_name_buf;
      }
-   
+
    if (FALSE == OpenPrinterA (printer_name, &h, NULL))
      {
 	slrn_error (_("OpenPrinterA failed: %lu"), GetLastError ());
 	slrn_free ((char *) p);
 	return NULL;
      }
-   
-   
+
    if (FALSE == StartDocPrinterA (h, 1, (unsigned char *) &doc_info))
      {
 	slrn_error (_("StartDocPrinterA failed: %lu"), GetLastError ());
@@ -166,7 +164,7 @@ Slrn_Print_Type *win32_open_printer (void)
 	slrn_free ((char *) p);
 	return NULL;
      }
-   
+
    p->h = h;
    return p;
 }
@@ -174,7 +172,7 @@ Slrn_Print_Type *win32_open_printer (void)
 static int win32_write_to_printer (Slrn_Print_Type *p, char *buf, unsigned int len)
 {
    DWORD nlen;
-   
+
    if ((p == NULL) || (p->h == INVALID_HANDLE_VALUE) || (p->error_status != 0))
      return -1;
 
@@ -184,7 +182,7 @@ static int win32_write_to_printer (Slrn_Print_Type *p, char *buf, unsigned int l
 	slrn_error (_("Write to printer failed: %lu"), GetLastError ());
 	return -1;
      }
-   
+
    return 0;
 }
 
@@ -206,13 +204,13 @@ int np_close_printer (Slrn_Print_Type *p)
 
    if ((p == NULL) || (p->fp == NULL))
      return 0;
-   
+
    (void) slrn_fclose (p->fp);
    cmd = slrn_strdup_printf (NOTEPAD_PRINT_CMD, p->file);
    slrn_posix_system (cmd, 1);
    slrn_free (cmd);
    (void) slrn_delete_file (p->file);
-   
+
    slrn_free ((char *) p);
    return 0;
 }
@@ -223,7 +221,7 @@ Slrn_Print_Type *np_open_printer (void)
 
    if (NULL == (p = (Slrn_Print_Type *) SLmalloc (sizeof (Slrn_Print_Type))))
      return NULL;
-   
+
    memset ((char *) p, 0, sizeof(Slrn_Print_Type));
 
    if (NULL == (p->fp = slrn_open_tmpfile (p->file, sizeof (p->file))))
@@ -267,13 +265,13 @@ int popen_close_printer (Slrn_Print_Type *p)
 
    if ((p == NULL) || (p->fp == NULL))
      return 0;
-   
+
    code = _slrn_pclose (p->fp);
 
    slrn_free ((char *) p);
 
    if (code == 0) return 0;
-   
+
    slrn_error (_("Printer process returned error code %d"), code);
    return -1;
 }
@@ -299,7 +297,7 @@ Slrn_Print_Type *popen_open_printer (void)
 
    if (NULL == (p = (Slrn_Print_Type *) SLmalloc (sizeof (Slrn_Print_Type))))
      return NULL;
-   
+
    memset ((char *) p, 0, sizeof(Slrn_Print_Type));
 
    if (NULL == (p->fp = popen (print_cmd, "w")))
@@ -308,7 +306,7 @@ Slrn_Print_Type *popen_open_printer (void)
 	popen_close_printer (p);
 	return NULL;
      }
-   
+
    return p;
 }
 
@@ -323,7 +321,7 @@ static int popen_write_to_printer (Slrn_Print_Type *p, char *buf, unsigned int l
 	slrn_error (_("Error writing to print process"));
 	return -1;
      }
-   
+
    return 0;
 }
 
@@ -355,7 +353,6 @@ int dummy_close_printer (Slrn_Print_Type *p)
 /*}}}*/
 #endif				       /* USE_DUMMY_PRINT_CODE */
 
-
 int slrn_write_to_printer (Slrn_Print_Type *p, char *buf, unsigned int len)
 {
    char *b, *bmax;
@@ -363,15 +360,15 @@ int slrn_write_to_printer (Slrn_Print_Type *p, char *buf, unsigned int len)
    /* Map \n to \r\n */
    b = buf;
    bmax = b + len;
-	
+
    while (b < bmax)
      {
-	if (*b != '\n') 
+	if (*b != '\n')
 	  {
 	     b++;
 	     continue;
 	  }
-	
+
 	len = (unsigned int) (b - buf);
 	if (len)
 	  {
@@ -380,22 +377,22 @@ int slrn_write_to_printer (Slrn_Print_Type *p, char *buf, unsigned int len)
 		  b++;
 		  continue;
 	       }
-	     
+
 	     if (-1 == write_to_printer (p, buf, len))
 	       return -1;
 	  }
-	
+
 	if (-1 == write_to_printer (p, "\r\n", 2))
 	  return -1;
-	
+
 	b++;
 	buf = b;
      }
-   
+
    len = (unsigned int) (b - buf);
    if (len)
      return write_to_printer (p, buf, len);
-   
+
    return 0;
 }
 
@@ -413,14 +410,14 @@ int slrn_print_file (char *file)
 	slrn_error (_("Unable to open %s for printing"), file);
 	return -1;
      }
-   
+
    p = slrn_open_printer ();
    if (p == NULL)
      {
 	fclose (fp);
 	return -1;
      }
-   
+
    while (NULL != fgets (line, sizeof (line), fp))
      {
 	if (-1 == slrn_write_to_printer (p, line, strlen(line)))
@@ -430,8 +427,8 @@ int slrn_print_file (char *file)
 	     return -1;
 	  }
      }
-   
+
    fclose (fp);
-   
+
    return slrn_close_printer (p);
 }

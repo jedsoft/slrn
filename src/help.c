@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -39,7 +39,7 @@
 #include "util.h"
 #include "strutil.h"
 
-static char *Global_Help [] = 
+static char *Global_Help [] =
 {
    "",
    "",
@@ -222,7 +222,7 @@ static char *Group_Help [] =
 
 static char *Copyright_Notice [] =
 {
-   " Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>",
+   " Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>",
      "",
      " For parts of it:",
      " Copyright (c) 2001-2003 Thomas Schultz <tststs@gmx.de>",
@@ -281,20 +281,20 @@ static void do_help (char **help)
    char **p, *sect = NULL;
    char quit;
    char **this_help;
-   
+
    this_help = p = help;
-   
+
    slrn_enable_mouse (0);
-   
+
    while (1)
      {
 	i = 0;
 	if (*p == NULL) break;
-	
+
 	slrn_push_suspension (0);
 
 	SLsmg_cls ();
-	
+
 	if ((sect != NULL) && (**p == ' '))
 	  {
 	     SLsmg_set_color (1);
@@ -320,11 +320,11 @@ The following copyright notice applies to the slrn newsreader:"));
 	       }
 	     i++;
 	  }
-	
+
 	while (i < SLtt_Screen_Rows - 4)
 	  {
 	     char pp;
-	     
+
 	     if (*p == NULL)
 	       {
 		  if ((this_help == Global_Help) ||
@@ -332,7 +332,7 @@ The following copyright notice applies to the slrn newsreader:"));
 		  this_help = p = Global_Help;
 		  sect = NULL;
 	       }
-	     
+
 	     pp = **p;
 	     if ((pp != ' ') && pp)
 	       {
@@ -341,7 +341,7 @@ The following copyright notice applies to the slrn newsreader:"));
 		  i++;
 		  SLsmg_set_color (1);
 	       }
-	     
+
 	     SLsmg_gotorc (i, 0);
 	     if (**p != '\0')
 	       SLsmg_write_string (_(*p));
@@ -353,17 +353,17 @@ The following copyright notice applies to the slrn newsreader:"));
 	       }
 	     p++;
 	  }
-	
+
 	SLsmg_gotorc (i + 1, 0);
 	SLsmg_set_color (1);
-	
+
 	if ((*p == NULL)
 	    && (this_help == help))
 	  {
 	     this_help = p = Global_Help;
 	     sect = NULL;
 	  }
-	
+
 	if (*p == NULL)
 	  {
 	     if (this_help == Copyright_Notice)
@@ -382,9 +382,9 @@ Press 'q' to quit help, 'c' to start over, or any other key to continue."));
 	       SLsmg_write_string (_("\
 Press 'q' to quit help, '?' to start over, or any other key to continue."));
 	  }
-	
+
 	slrn_smg_refresh ();
-	
+
 	slrn_pop_suspension ();
 
 	SLang_flush_input ();
@@ -433,10 +433,10 @@ int slrn_parse_helpfile (char *helpfile)
 	/* Skip over common comments */
 	if ((ch == '#') || (ch == '%') || (ch == ';') || (ch == '!'))
 	  continue;
-	
+
 	b = (unsigned char *) slrn_skip_whitespace (buf);
 	if (*b == 0) continue;
-	
+
 	if (ch == '[')
 	  {
 	     /* end current help */
@@ -445,7 +445,7 @@ int slrn_parse_helpfile (char *helpfile)
 		  slrn_free (current_help[num_lines]);
 		  current_help[num_lines] = NULL;
 	       }
-	     
+
 	     num_lines = 0;
 	     ch = *(buf + 1) | 0x20;
 	     if (ch == 'a')
@@ -454,21 +454,21 @@ int slrn_parse_helpfile (char *helpfile)
 	       }
 	     else if (ch == 'g') current_help = User_Group_Help;
 	     else current_help = NULL;
-	     
+
 	     continue;
 	  }
-	
+
 	if (current_help == NULL) continue;
-	
+
 	if (MAX_HELP_LINES == num_lines + 1)
 	  {
 	     current_help[num_lines] = NULL;
 	     current_help = NULL;
 	     continue;
 	  }
-	
+
 	slrn_free (current_help [num_lines]);
-	
+
 	if (NULL == (current_help [num_lines] = (char *) slrn_strmalloc (buf, 0)))
 	  goto return_error;
 
@@ -491,7 +491,7 @@ return_error:
 void slrn_article_help (void)
 {
    char **h;
- 
+
    if (Slrn_Batch) return;
    if (User_Article_Help[0] != NULL) h = User_Article_Help; else h = Art_Help;
    do_help (h);
@@ -517,11 +517,11 @@ char *slrn_help_keyseq_from_function (char *f, SLKeyMap_List_Type *map) /*{{{*/
    FVOID_STAR fp;
    unsigned char type;
    static char buf[3];
-   
+
    if (NULL == (fp = (FVOID_STAR) SLang_find_key_function(f, map)))
      type = SLKEY_F_INTERPRET;
    else type = SLKEY_F_INTRINSIC;
-   
+
    i = 256;
    key_root = map->keymap;
    while (i--)
@@ -536,7 +536,7 @@ char *slrn_help_keyseq_from_function (char *f, SLKeyMap_List_Type *map) /*{{{*/
 	     buf[2] = 0;
 	     return buf;
 	  }
-	
+
 	while (key != NULL)
 	  {
 	     if ((key->type == type) &&
@@ -773,7 +773,7 @@ char *slrn_help_keyseq_to_string (char *key, int keylen) /*{{{*/
    const int maxlen = 30;
    static char result[31]; /* maxlen+1 */
    int ind = 0;
-   
+
    while (keylen && (ind < maxlen))
      {
 	int i;
@@ -822,7 +822,7 @@ char *slrn_help_keyseq_to_string (char *key, int keylen) /*{{{*/
 	     keylen -= EscapeSequences[i][0];
 	  }
      }
-   
+
    if (keylen)
      return NULL;
 
@@ -840,7 +840,7 @@ char *slrn_help_string_to_keyseq (char *s) /*{{{*/
    static char result [SLANG_MAX_KEYMAP_KEY_SEQ+1];
    int ind = 0;
    int slen = strlen(s);
-   
+
    while (slen && (ind <= SLANG_MAX_KEYMAP_KEY_SEQ))
      {
 	char *end;
@@ -873,7 +873,7 @@ char *slrn_help_string_to_keyseq (char *s) /*{{{*/
 
    if (slen)
      return NULL;
-   
+
    result[ind] = 0;
    return result;
 }

@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2002-2006 Thomas Schultz <tststs@gmx.de>
  Copyright (c) 2007 John E. Davis <jed@jedsoft.org>
 
@@ -41,7 +41,7 @@
 char *slrn_skip_whitespace (char *b) /*{{{*/
 {
    if (b == NULL) return NULL;
-   
+
    while (isspace (*b))
      b++;
 
@@ -66,7 +66,6 @@ char *slrn_bskip_whitespace (char *smin)
    return s;
 }
 
-   
 /* returns a pointer to the end of the string */
 char *slrn_trim_string (char *s) /*{{{*/
 {
@@ -81,7 +80,7 @@ char *slrn_trim_string (char *s) /*{{{*/
 char *slrn_strbyte (char *s, char ch) /*{{{*/
 {
    register char ch1;
-   
+
    while (((ch1 = *s) != 0) && (ch != ch1)) s++;
    if (ch1 == 0) return NULL;
    return s;
@@ -94,7 +93,7 @@ char *slrn_strbyte (char *s, char ch) /*{{{*/
 char *slrn_strbrk (char *str, char *list) /*{{{*/
 {
    char ch, ch1, *p;
-   
+
    while ((ch = *str) != 0)
      {
 	p = list;
@@ -114,16 +113,16 @@ char *slrn_simple_strtok (char *s, char *chp) /*{{{*/
 {
    static char *s1;
    char ch = *chp;
-   
+
    if (s == NULL)
      {
 	if (s1 == NULL) return NULL;
 	s = s1;
      }
    else s1 = s;
-   
+
    while (*s1 && (*s1 != ch)) s1++;
-   
+
    if (*s1 == 0)
      {
 	s1 = NULL;
@@ -134,11 +133,10 @@ char *slrn_simple_strtok (char *s, char *chp) /*{{{*/
 
 /*}}}*/
 
-
 int slrn_case_strncmp (char *a, char *b, unsigned int n) /*{{{*/
 {
    char *bmax;
-   
+
    if (a == NULL)
      {
 	if (b == NULL)
@@ -148,7 +146,7 @@ int slrn_case_strncmp (char *a, char *b, unsigned int n) /*{{{*/
      }
    if (b == NULL)
      return 1;
-	
+
    if (Slrn_UTF8_Mode)
      return SLutf8_compare((SLuchar_Type *)a, (SLuchar_Type *)a+strlen(a),
 			   (SLuchar_Type *)b, (SLuchar_Type *)b+strlen(b),
@@ -175,7 +173,7 @@ int slrn_case_strcmp (char *a, char *b) /*{{{*/
 {
    register unsigned char cha, chb;
    int len_a,len_b;
-   
+
    if (a == NULL)
      {
 	if (b == NULL)
@@ -192,8 +190,8 @@ int slrn_case_strcmp (char *a, char *b) /*{{{*/
 	len_a=strlen(a);
 	len_b=strlen(b);
 
-	return SLutf8_compare((SLuchar_Type *)a, (SLuchar_Type *)a+len_a, 
-			      (SLuchar_Type *)b, (SLuchar_Type *)b+len_b, 
+	return SLutf8_compare((SLuchar_Type *)a, (SLuchar_Type *)a+len_a,
+			      (SLuchar_Type *)b, (SLuchar_Type *)b+len_b,
 			      ((len_a > len_b) ? len_a : len_b), 0);
      }
 
@@ -214,7 +212,6 @@ int slrn_case_strcmp (char *a, char *b) /*{{{*/
 
 /*}}}*/
 
-
 char *slrn_strncpy (char *dest, const char *src, size_t n) /*{{{*/
 {
    strncpy (dest, src, n);
@@ -222,7 +219,6 @@ char *slrn_strncpy (char *dest, const char *src, size_t n) /*{{{*/
    return dest;
 }
 /*}}}*/
-
 
 /*{{{ Memory Allocation Routines */
 
@@ -251,10 +247,10 @@ char *slrn_safe_strnmalloc (char *s, unsigned int len)
 char *slrn_strnmalloc (char *s, unsigned int len, int do_error)
 {
    s = SLmake_nstring (s, len);
-   
+
    if (s == NULL)
      return do_malloc_error (do_error);
-   
+
    return s;
 }
 
@@ -264,18 +260,17 @@ char *slrn_strmalloc (char *s, int do_error)
    return slrn_strnmalloc (s, strlen (s), do_error);
 }
 
-
 char *slrn_malloc (unsigned int len, int do_memset, int do_error)
-{   
+{
    char *s;
-   
+
    s = (char *) SLmalloc (len);
    if (s == NULL)
      return do_malloc_error (do_error);
 
    if (do_memset)
      memset (s, 0, len);
-   
+
    return s;
 }
 
@@ -283,23 +278,23 @@ char *slrn_realloc (char *s, unsigned int len, int do_error)
 {
    if (s == NULL)
      return slrn_malloc (len, 0, do_error);
-   
+
    s = SLrealloc (s, len);
    if (s == NULL)
      return do_malloc_error (do_error);
-	
+
    return s;
 }
 
 char *slrn_safe_malloc (unsigned int len)
 {
    char *s;
-   
+
    s = slrn_malloc (len, 1, 0);
 
    if (s == NULL)
      slrn_exit_error (_("Out of memory"));
-   
+
    return s;
 }
 
@@ -320,7 +315,7 @@ char *slrn_substrjoin (char *a, char *amax, char *b, char *bmax, char *s)
 
    len_a = (amax == NULL) ? strlen (a) : (unsigned int)(amax - a);
    len_b = (bmax == NULL) ? strlen (b) : (unsigned int)(bmax - b);
-   
+
    if ((len_a == 0) || (len_b == 0))
      len_s = 0;
    else
@@ -345,4 +340,4 @@ char *slrn_strjoin (char *a, char *b, char *s)
 {
    return slrn_substrjoin (a, NULL, b, NULL, s);
 }
-   
+

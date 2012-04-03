@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -457,7 +457,7 @@ int nntp_authorization (NNTP_Type *s, int auth_reqd)
 	  break;
 	/* This is the only obvious way to find out whether we are
 	 * able to post after successful authentication.
-	 * 
+	 *
 	 * However, at least one server will disconnect if an attempt
 	 * is made to post an empty article.  Try to avoid this by
 	 * looking at the response message.  Unfortunately, this method

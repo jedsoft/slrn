@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2002-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -68,7 +68,7 @@ int slrn_screen_strlen (const char *s, const char *smax) /*{{{*/
 {
    if (smax == NULL)
      smax = s + strlen (s);
-   
+
 #if SLANG_VERSION >= 20000
    if (Slrn_UTF8_Mode)
      {
@@ -123,24 +123,24 @@ int slrn_cygwin_convert_path (char *inpath, char *outpath, size_t n)
 {
    unsigned int outlen;
    char *p;
-   
+
    /*
     **  first, a quick sanity check to look for invalid formats
     */
    p = strrchr (inpath, ':');        /* we'll re-use 'p' later on */
    if (p && (p != inpath+1))
      return -1;
-   
+
    /*
     **  let's do some size checking
     */
    outlen = strlen (inpath) + 1;
    if (p)
      outlen += 9;        /* "/cygdrive/c" (11) replaces "c:" (2) ==> 9 */
-   
+
    if (n < outlen)
      return -2;
-   
+
    /*
     **  paths starting with C:, (or D:, etc) should be converted to the
     **  Cygwin native format /cygdrive/c (or /cygdrive/d, etc) while copying
@@ -166,7 +166,7 @@ int slrn_cygwin_convert_path (char *inpath, char *outpath, size_t n)
 	  *p = '/';
         p++;
      }
-   
+
    /*
     **  normal return
     */
@@ -202,7 +202,7 @@ static void fixup_path (char *path) /*{{{*/
 {
 #ifndef VMS
    unsigned int len;
-   
+
    len = strlen (path);
    if (len == 0) return;
 # ifdef IBMPC_SYSTEM
@@ -216,7 +216,7 @@ static void fixup_path (char *path) /*{{{*/
 
 /*}}}*/
 
-/* dir and file could be the same in which case this performs a strcat. 
+/* dir and file could be the same in which case this performs a strcat.
  * If name looks like an absolute path, it will be returned.
  */
 int slrn_dircat (char *dir, char *name, char *file, size_t n)
@@ -225,8 +225,8 @@ int slrn_dircat (char *dir, char *name, char *file, size_t n)
 #ifdef __CYGWIN__
    char convdir [SLRN_MAX_PATH_LEN];
 #endif
-   
-   if (name != NULL) 
+
+   if (name != NULL)
      {
 	if (slrn_is_absolute_path (name))
 	  {
@@ -239,20 +239,20 @@ int slrn_dircat (char *dir, char *name, char *file, size_t n)
 #endif
 	     return 0;
 	  }
-	
+
 	len = strlen (name);
      }
-   
+
    if (dir != NULL) len += strlen (dir);
-   
+
    len += 2;			       /* for / and \0 */
    if (len > n)
      {
 	slrn_error (_("File name too long."));
 	return -1;
      }
-   
-   if (dir != NULL) 
+
+   if (dir != NULL)
      {
 	if (dir != file) strcpy (file, dir); /* safe */
 	fixup_path (file);
@@ -283,7 +283,6 @@ void slrn_free_argc_argv_list (unsigned int argc, char **argv)
      }
 }
 
-
 char *slrn_fix_regexp (char *pat) /*{{{*/
 {
    static char newpat[256];
@@ -303,7 +302,7 @@ char *slrn_fix_regexp (char *pat) /*{{{*/
 
    if (len > sizeof(newpat))
      slrn_exit_error (_("Pattern too long for buffer"));
-     
+
    p = newpat;
 
    *p++ = '^';
@@ -316,8 +315,8 @@ char *slrn_fix_regexp (char *pat) /*{{{*/
 
 	*p++ = ch;
      }
-   
-   if (*(p - 1) != '$') 
+
+   if (*(p - 1) != '$')
      *p++ = '$';
 
    *p = 0;
@@ -342,7 +341,6 @@ int slrn_is_absolute_path (char *path)
 #endif
    return 0;
 }
-
 
 /* This is like slrn_dircat except that any dots in name can get mapped to
  * slashes.  It also mallocs space for the resulting file.
@@ -414,18 +412,17 @@ int slrn_fclose (FILE *fp) /*{{{*/
 
 /*}}}*/
 
-
 int slrn_file_exists (char *file) /*{{{*/
 {
    struct stat st;
    int m;
-   
+
 #ifdef _S_IFDIR
 # ifndef S_IFDIR
 #  define S_IFDIR _S_IFDIR
 # endif
 #endif
-   
+
 #ifndef S_ISDIR
 # ifdef S_IFDIR
 #  define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
@@ -433,13 +430,13 @@ int slrn_file_exists (char *file) /*{{{*/
 #  define S_ISDIR(m) 0
 # endif
 #endif
-   
+
    if (file == NULL)
      return -1;
 
    if (stat(file, &st) < 0) return 0;
    m = st.st_mode;
-   
+
    if (S_ISDIR(m)) return (2);
    return 1;
 }
@@ -450,13 +447,13 @@ int slrn_file_size (char *file) /*{{{*/
 {
    struct stat st;
    int m;
-   
+
    if (file == NULL)
      return 0;
-   
+
    if (stat(file, &st) < 0) return -1;
    m = st.st_mode;
-   
+
    if (S_ISDIR(m)) return -1;
    return (int)st.st_size;
 }
@@ -473,7 +470,7 @@ char *slrn_basename (char *file)
 
    while (NULL != (f = slrn_strbyte (file, SLRN_PATH_SLASH_CHAR)))
      file = f + 1;
-   
+
    return file;
 #endif
 }
@@ -494,10 +491,10 @@ static int file_eqs (char *a, char *b)
 #ifdef REAL_UNIX_SYSTEM
    struct stat st_a, st_b;
 #endif
-   
+
    if (0 == strcmp (a, b))
      return 1;
-   
+
 #ifndef REAL_UNIX_SYSTEM
    return 0;
 #else
@@ -505,20 +502,18 @@ static int file_eqs (char *a, char *b)
      return 0;
    if (-1 == stat (b, &st_b))
      return 0;
-   
+
    return ((st_a.st_ino == st_b.st_ino)
 	   && (st_a.st_dev == st_b.st_dev));
 #endif
 }
-
-   
 
 int slrn_copy_file (char *infile, char *outfile)
 {
    FILE *in, *out;
    int ch;
    int ret;
-   
+
    if ((infile == NULL) || (outfile == NULL))
      return -1;
 
@@ -530,7 +525,7 @@ int slrn_copy_file (char *infile, char *outfile)
 	slrn_error (_("Error opening %s"), infile);
 	return -1;
      }
-   
+
    if (NULL == (out = fopen (outfile, "wb")))
      {
 	fclose (in);
@@ -548,11 +543,11 @@ int slrn_copy_file (char *infile, char *outfile)
 	     break;
 	  }
      }
-   
+
    fclose (in);
    if (-1 == slrn_fclose (out))
      ret = -1;
-   
+
    return ret;
 }
 
@@ -611,7 +606,7 @@ int slrn_create_backup (char *filename)
    int retval = -1, do_copy = 0;
 #ifdef __unix__
    struct stat st;
-   
+
    if (0 == lstat (filename, &st))
      {
 	do_copy = (st.st_nlink > 1)
@@ -629,9 +624,9 @@ int slrn_create_backup (char *filename)
 	if (retval == -1)
 	  retval = slrn_copy_file (filename, backup_file);
      }
-   
+
    SLfree (backup_file);
-   
+
    return retval;
 }
 
@@ -651,7 +646,7 @@ int slrn_restore_backup (char *filename)
    int retval = -1, do_copy = 0;
 #ifdef __unix__
    struct stat st;
-   
+
    if (0 == lstat (filename, &st))
      {
 	do_copy = (st.st_nlink > 1)
@@ -661,7 +656,7 @@ int slrn_restore_backup (char *filename)
 	    ;
      }
 #endif /* __unix__ */
-   
+
    if (!do_copy)
      retval = rename (backup_file, filename);
    if (retval == -1)
@@ -670,12 +665,11 @@ int slrn_restore_backup (char *filename)
 	if (retval == 0)
 	  (void) slrn_delete_file (backup_file);
      }
-   
+
    SLfree (backup_file);
-   
+
    return retval;
 }
-
 
 unsigned int slrn_sleep (unsigned int len)
 {

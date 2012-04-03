@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -64,7 +64,7 @@ static void _nntp_connection_lost_hook (NNTP_Type *s)
 	if ((_NNTP_Abort_On_Disconnection == -1) && SLKeyBoard_Quit)
 	  return;
 
-	slrn_exit_error (_("Server connection to %s lost.  Cannot recover."), 
+	slrn_exit_error (_("Server connection to %s lost.  Cannot recover."),
 			 s->host);
      }
 }
@@ -82,18 +82,17 @@ static int _nntp_interrupt_handler (void)
 static void _nntp_reset (void)
 {
    NNTP_Type *s = NNTP_Server;
-   
+
    nntp_disconnect_server (s);
    /* The next NNTP command will actually perform the reset. */
 }
 
-   
 static void _nntp_close_server (void)
 {
    NNTP_Type *s = NNTP_Server;
-   
+
    NNTP_Server = NULL;
-   
+
    if (s != NULL) nntp_close_server (s);
 }
 
@@ -101,17 +100,17 @@ static int _nntp_initialize_server (void)
 {
    NNTP_Authorization_Hook = slrn_get_authorization;
    SLTCP_Interrupt_Hook = _nntp_interrupt_handler;
-   
+
    if (NNTP_Server != NULL)
      nntp_close_server (NNTP_Server);
-   
+
    if (NULL == (NNTP_Server = nntp_open_server (NNTP_Server_Name, NNTP_Port)))
      return -1;
-   
+
    NNTP_Server_Obj.sv_has_xover = 0;
    if (Slrn_Prefer_Head & 2)
      NNTP_Server->can_xover = 0;
-   else 
+   else
      {
 	if (-1 == nntp_has_cmd (NNTP_Server, "XOVER"))
 	  {
@@ -121,7 +120,7 @@ static int _nntp_initialize_server (void)
 
 	if (NNTP_Server->can_xover == 0)
 	  {
-	     slrn_message_now (_("Server %s does not implement the XOVER command."), 
+	     slrn_message_now (_("Server %s does not implement the XOVER command."),
 			       NNTP_Server->host);
 	  }
 	else NNTP_Server_Obj.sv_has_xover = 1;
@@ -130,7 +129,7 @@ static int _nntp_initialize_server (void)
    NNTP_Server_Obj.sv_has_xhdr = 0;
    if (Slrn_Prefer_Head & 1)
      NNTP_Server->can_xhdr = 0;
-   else 
+   else
      {
 	if (-1 == nntp_has_cmd (NNTP_Server, "XHDR Path"))
 	  {
@@ -147,7 +146,7 @@ static int _nntp_initialize_server (void)
      }
 
    NNTP_Server_Obj.sv_id = NNTP_Server->sv_id;
-   
+
    NNTP_Post_Obj.po_can_post = NNTP_Server->can_post;
    NNTP_Server->flags |= NNTP_RECONNECT_OK;
 
@@ -155,16 +154,15 @@ static int _nntp_initialize_server (void)
    return 0;
 }
 
-
 static int _nntp_read_line (char *buf, unsigned int len)
 {
    int status;
-   
+
    status = nntp_read_line (NNTP_Server, buf, len);
-   
+
    if (status == 1)
      return status;
-   
+
    if (status == 0)
      {
 	_NNTP_Abort_On_Disconnection = 0;
@@ -211,7 +209,7 @@ static char *_nntp_current_group (void)
 static int _nntp_put_server_cmd (char *cmd, char *buf, unsigned int len)
 {
    int code;
-   
+
    if (-1 != (code = nntp_server_cmd (NNTP_Server, cmd)))
      {
 	strncpy (buf, NNTP_Server->rspbuf, len);
@@ -249,9 +247,9 @@ static int _nntp_list_newsgroups (void)
 static int _nntp_list_active (char *pat)
 {
    int code;
-   
+
    code = nntp_list_active_cmd (NNTP_Server, pat);
-   
+
    if (OK_GROUPS == code)
      _NNTP_Abort_On_Disconnection = (pat == NULL) ? 1 : -1;
 
@@ -282,15 +280,15 @@ static int _nntp_start_post (void)
 static int _nntp_end_post (void)
 {
    int status;
-   
+
    status = nntp_end_post (NNTP_Server);
-   
+
    if (status == -1)
      {
 	slrn_error (_("Error writing to server."));
 	return -1;
      }
-   
+
    if (NNTP_Server->code != OK_POSTED)
      {
 	slrn_error (_("Article rejected: %s"), NNTP_Server->rspbuf);
@@ -300,25 +298,24 @@ static int _nntp_end_post (void)
    return 0;
 }
 
-
 static int _nntp_po_puts (char *buf)
 {
    char *b;
-   
+
    /* make sure \n --> \r\n */
    b = buf;
    while (NULL != (b = slrn_strbyte (buf, '\n')))
      {
 	unsigned int len;
-	
+
 	len = (unsigned int) (b - buf);
 	if ((-1 == nntp_write_server (NNTP_Server, buf, len))
 	    || (-1 == nntp_write_server (NNTP_Server, "\r\n", 2)))
 	  return -1;
-	
+
 	buf = b + 1;
      }
-   
+
    return nntp_fputs_server (NNTP_Server, buf);
 }
 
@@ -351,19 +348,19 @@ static int _nntp_xover_cmd (NNTP_Artnum_Type min, NNTP_Artnum_Type max)
      {
 	_NNTP_Abort_On_Disconnection = -1;
      }
-   
+
    return status;
 }
 
 static int _nntp_xhdr_cmd (char *field, NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 {
    int status;
-   
+
    if (OK_HEAD == (status = nntp_xhdr_cmd (NNTP_Server, field, min, max)))
      {
 	_NNTP_Abort_On_Disconnection = -1;
      }
-   
+
    return status;
 }
 
@@ -375,18 +372,18 @@ static int _nntp_next_cmd (NNTP_Artnum_Type *id)
 static unsigned int _nntp_get_bytes (int clear)
 {
    unsigned int temp;
-   
+
    temp = NNTP_Server->number_bytes_received;
    if (clear)
      NNTP_Server->number_bytes_received = 0;
-   
+
    return temp;
 }
 
 static char * _nntp_get_recom_id (void)
 {
    SLRegexp_Type *re;
-   
+
    if ((re=slrn_compile_regexp_pattern("<.*@.*\\..*>")) != NULL)
      {
 	char *t, *msgid = NULL, *post_rsp;
@@ -405,7 +402,7 @@ static char * _nntp_get_recom_id (void)
 #else
 	     (void) SLregexp_nth_match (re, 0, NULL, &len);
 #endif
-	     
+
 	     msgid=slrn_strnmalloc(t, len, 1);
 	  }
 #if SLANG_VERSION >= 20000
@@ -425,7 +422,7 @@ static int nntp_init_objects (void)
    NNTP_Post_Obj.po_puts = _nntp_po_puts;
    NNTP_Post_Obj.po_get_recom_id = _nntp_get_recom_id;
    NNTP_Post_Obj.po_can_post = 1;
-   
+
    NNTP_Server_Obj.sv_select_group = _nntp_select_group;
    NNTP_Server_Obj.sv_refresh_groups = _nntp_refresh_groups;
    NNTP_Server_Obj.sv_current_group = _nntp_current_group;
@@ -442,7 +439,7 @@ static int nntp_init_objects (void)
    NNTP_Server_Obj.sv_list_newsgroups = _nntp_list_newsgroups;
    NNTP_Server_Obj.sv_list_active = _nntp_list_active;
    NNTP_Server_Obj.sv_send_authinfo = _nntp_send_authinfo;
-   
+
    NNTP_Server_Obj.sv_has_xover = 0;
    NNTP_Server_Obj.sv_has_xhdr = -1;
    NNTP_Server_Obj.sv_nntp_xover = _nntp_xover_cmd;
@@ -458,26 +455,25 @@ static int nntp_init_objects (void)
 static int _nntp_get_server_name (void)
 {
    char *host;
-   
+
    if (NULL == (host = NNTP_Server_Name))
      {
 	host = nntp_get_server_name ();
 	if (host == NULL)
 	  return -1;
      }
-   
+
    NNTP_Server_Name = NNTP_Server_Obj.sv_name = slrn_safe_strmalloc (host);
    return 0;
 }
-
 
 static int nntp_select_server_object (void)
 {
    if (NNTP_Server_Obj.sv_select_group == NULL)
      nntp_init_objects ();
-   
+
    Slrn_Server_Obj = &NNTP_Server_Obj;
-   
+
    if (NNTP_Server_Obj.sv_name == NULL)
      return _nntp_get_server_name ();
 
@@ -488,12 +484,12 @@ static int nntp_select_post_object (void)
 {
    if (NNTP_Post_Obj.po_start == NULL)
      nntp_init_objects ();
-   
+
    Slrn_Post_Obj = &NNTP_Post_Obj;
-   
+
    if (NNTP_Server_Obj.sv_name == NULL)
      return _nntp_get_server_name ();
-   
+
    return 0;
 }
 
@@ -512,7 +508,7 @@ static void nntp_usage (void)
 static int nntp_parse_args (char **argv, int argc)
 {
    int i;
-   
+
    for (i = 0; i < argc; i++)
      {
 	if (!strcmp (argv[i], "--help"))
@@ -520,7 +516,7 @@ static int nntp_parse_args (char **argv, int argc)
 	else if (i + 1 < argc)
 	  {
 	     char *arg, *arg1;
-	     
+
 	     arg = argv[i];
 	     arg1 = argv [i + 1];
 	     if (!strcmp ("-p", arg))
@@ -537,6 +533,6 @@ static int nntp_parse_args (char **argv, int argc)
 	  }
 	else break;
      }
-   
+
    return i;
 }

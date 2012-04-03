@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2002-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -41,6 +41,5 @@ extern void slrn_free (char *);
 
 extern char *slrn_strjoin (char *a, char *b, char *s);
 extern char *slrn_substrjoin (char *a, char *amax, char *b, char *bmax, char *s);
-
 
 #endif

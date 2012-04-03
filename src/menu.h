@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -22,7 +22,6 @@ extern void slrn_update_group_menu (void);
 extern int slrn_execute_menu (int);
 extern int slrn_sbox_sorting_method (void);
 
-
 typedef struct
 {
    char *title;
@@ -31,7 +30,6 @@ typedef struct
 Slrn_Select_Box_Type;
 
 extern int slrn_select_box (Slrn_Select_Box_Type *);
-
 
 extern int slrn_select_list_mode (char *, unsigned int, char **, unsigned int, int, int *);
 extern int slrn_popup_win_mode (char *, char *);

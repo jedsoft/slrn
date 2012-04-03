@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 2007-2012 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -81,19 +81,19 @@ Slrn_Article_Line_Type *slrn_append_to_header (Slrn_Article_Type *a, char *buf, 
 	       && (bline->flags & HEADER_LINE))
 	  hline = bline;
      }
-   
+
    if (buf == NULL)
      {
 	/* header separator */
 	if ((bline != NULL) && (bline->buf[0] == 0))
 	  return a->cline = bline;
-	
+
 	if (NULL == (buf = slrn_strmalloc ("", 1)))
 	  return NULL;
 
 	flags = 0;
      }
-	  
+
    line = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type),1,1);
    if (line == NULL)
      {

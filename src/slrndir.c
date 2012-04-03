@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -72,7 +72,7 @@
 #include "strutil.h"
 #include "common.h"
 
-struct _Slrn_Dir_Type 
+struct _Slrn_Dir_Type
 {
    DIR *dp;
 };
@@ -89,13 +89,13 @@ Slrn_Dir_Type *slrn_open_dir (char *dir)
    d = (Slrn_Dir_Type *) slrn_malloc (sizeof (Slrn_Dir_Type), 1, 1);
    if (d == NULL)
      return NULL;
-   
+
    if (NULL == (dp = opendir (dir)))
      {
 	slrn_free ((char *)d);
 	return NULL;
      }
-   
+
    d->dp = dp;
    return d;
 #endif
@@ -123,35 +123,33 @@ Slrn_Dirent_Type *slrn_read_dir (Slrn_Dir_Type *d)
    ep = readdir (d->dp);
    if (ep == NULL)
      return NULL;
-   
+
    memset ((char *) &dir, 0, sizeof(Slrn_Dirent_Type));
-   
+
 #ifdef NEED_D_NAMLEN
    len = ep->d_namlen;
 #else
    len = strlen (ep->d_name);
 #endif
-   
+
    if (len > SLRN_MAX_PATH_LEN)
      len = SLRN_MAX_PATH_LEN;
 
    strncpy (dir.name, ep->d_name, len);
    dir.name [len] = 0;
-   
+
    dir.name_len = len;
 
    return &dir;
 #endif
 }
 
-
-
 /* This function is from JED */
 char *slrn_getcwd (char *cwdbuf, unsigned int buflen)
 {
    static char cwd[SLRN_MAX_PATH_LEN];
    char *c;
-   
+
    if (cwdbuf != NULL)
      *cwdbuf = 0;
 
@@ -187,7 +185,7 @@ char *slrn_getcwd (char *cwdbuf, unsigned int buflen)
 	cwd [sizeof (cwd) - 1] = 0;
 #endif
      }
-   
+
    if (cwdbuf == NULL)
      return cwd;
 
@@ -206,11 +204,11 @@ int slrn_chdir (char *dir)
 
    if (dir == NULL)
      return -1;
-   
+
    strncpy (dirbuf, dir, SLRN_MAX_PATH_LEN);
    dirbuf[SLRN_MAX_PATH_LEN] = 0;
    len = strlen (dirbuf);
-   
+
    /* I may have to add code to handle something like C:/ */
    if ((len > 1) && (dirbuf[len - 1] == SLRN_PATH_SLASH_CHAR))
      {
@@ -229,12 +227,12 @@ int slrn_chdir (char *dir)
    slrn_os2_convert_path (dirbuf);
 # endif
 #endif
-   
+
    if (-1 == chdir (dirbuf))
      {
 	slrn_error (_("chdir %s failed.  Does the directory exist?"), dirbuf);
 	return -1;
      }
-   
+
    return 0;
 }

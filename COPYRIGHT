@@ -1,13 +1,13 @@
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
- 
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
+
  For parts of it:
- 
+
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  For the parts in src/snprintf.c that are based on code from glib 1.2.8:
- 
+
  Copyright (C) 1995-1998  Peter Mattis, Spencer Kimball and Josh MacDonald
  Modified by the GLib Team and others 1997-1999.  See the AUTHORS
  file for a list of people on the GLib Team.  See the ChangeLog

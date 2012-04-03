@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -97,7 +97,7 @@ static void update (void) /*{{{*/
 static void free_argv_list (char **argv, unsigned int argc)
 {
    unsigned int i;
-   
+
    for (i = 0; i < argc; i++)
      slrn_free (argv[i]);
    slrn_free ((char *) argv);
@@ -119,13 +119,13 @@ static char **pop_argv_list (unsigned int *argcp)
      }
 
    argc = (unsigned int) n;
-      
+
    if (NULL == (argv = (char **) slrn_malloc (sizeof (char *) * (argc + 1), 1, 1)))
      {
 	SLang_set_error (SL_MALLOC_ERROR);
 	return NULL;
      }
-   
+
    argv [n] = NULL;
    i = argc;
    while (i != 0)
@@ -141,7 +141,7 @@ static char **pop_argv_list (unsigned int *argcp)
 
    return argv;
 }
-   
+
 static int interp_select_box (void) /*{{{*/
 {
    unsigned int n;
@@ -162,11 +162,11 @@ static int interp_select_box (void) /*{{{*/
 	free_argv_list (box.lines, n);
 	return -1;
      }
-   
+
    ret = slrn_select_box (&box);
    free_argv_list (box.lines, n);
    slrn_free (box.title);
-   
+
    return ret;
 }
 
@@ -182,24 +182,24 @@ static void select_list_box (void)
 
    if (-1 == SLang_pop_integer (&active))
      return;
-   
+
    argv = pop_argv_list (&argc);
    if (argv == NULL)
      return;
-   
+
    if (-1 == SLpop_string (&title))
      {
 	free_argv_list (argv, argc);
 	return;
      }
-   
+
    ret = slrn_select_list_mode (title, argc, argv, active - 1, 1, NULL);
    if (ret == -1)
      {
 	SLang_push_string ("");
 	return;
      }
-   
+
    SLang_push_string (argv[ret]);
 
    slrn_free (title);
@@ -210,13 +210,13 @@ static int popup_window (void)
 {
    char *title = NULL, *text = NULL;
    int retval = 0;
-   
+
    if ((-1 == SLpop_string (&text)) ||
        (-1 == SLpop_string (&title)))
      goto free_and_return;
-   
+
    retval = slrn_popup_win_mode (title, text);
-   
+
    free_and_return:
    slrn_free (title);
    slrn_free (text);
@@ -233,7 +233,6 @@ static int get_response (char *choices, char *prompt)
    return slrn_get_response (choices, choices, "%s", prompt);
 }
 
-   
 static void tt_send (char *s)
 {
    if (Slrn_Batch == 0)
@@ -260,12 +259,12 @@ int slrn_eval_slang_file (char *name) /*{{{*/
 {
 #if 0
    char file [SLRN_MAX_PATH_LEN];
-   
+
    if (Slrn_Macro_Dir != NULL)
      {
 	int n = 0;
 	char dir[SLRN_MAX_PATH_LEN];
-	
+
 	while (1)
 	  {
 	     if (-1 == SLextract_list_element (Slrn_Macro_Dir, n, ',',
@@ -284,12 +283,12 @@ int slrn_eval_slang_file (char *name) /*{{{*/
 	     n++;
 	  }
      }
-   
+
    slrn_make_home_filename (name, file, sizeof (file));
    slrn_message_now (_("loading %s"), file);
    if (0 != SLang_load_file (file))
      return -1;
-   
+
    return 0;
 #else
 
@@ -317,13 +316,11 @@ char *slrn_get_macro_dir (void)
 
    if (-1 == SLpop_string (&str))
      return NULL;
-   
+
    return str;
 }
-     
+
 /*}}}*/
-
-
 
 /*}}}*/
 
@@ -335,7 +332,7 @@ static void set_string_variable (char *s1, char *s2) /*{{{*/
 
    if (SLinterp_is_utf8_mode ())
      charset = "utf-8";
-     
+
    if (-1 == slrn_set_string_variable (s1, s2, charset))
      slrn_error (_("%s is not a valid variable name."), s1);
 }
@@ -355,7 +352,7 @@ static void get_variable_value (char *name) /*{{{*/
    char *s;
    int i;
    SLtype type;
-   
+
    if (-1 == slrn_get_variable_value (name, &type, &s, &i))
      return;
 
@@ -389,28 +386,28 @@ static void generic_set_regexp (SLRegexp_Type **regexp_table) /*{{{*/
    SLang_Array_Type *at;
    SLcmd_Cmd_Table_Type cmd_table;
    int argc, i;
-   
+
    if (-1 == SLang_pop_array_of_type (&at, SLANG_STRING_TYPE))
      {
 	slrn_error (_("Array of string expected."));
 	return;
      }
-   
+
    if (at->num_dims != 1)
      {
 	slrn_error (_("One-dimensional array expected."));
 	goto free_and_return;
      }
-   
+
    argc = at->dims[0];
-   
+
    if ((argc<1) || (argc > SLRN_MAX_REGEXP))
      {
 	slrn_error (_("Array must contain at least one, at most %d elements."),
 		    SLRN_MAX_REGEXP);
 	goto free_and_return;
      }
-   
+
    if (NULL == (cmd_table.string_args = (char**) slrn_malloc
 		((argc+1)*sizeof(char*), 0, 0)))
      goto free_and_return;
@@ -419,11 +416,11 @@ static void generic_set_regexp (SLRegexp_Type **regexp_table) /*{{{*/
      {
 	(void) SLang_get_array_element (at, &i, &(cmd_table.string_args[i+1]));
      }
-   
+
    slrn_generic_regexp_fun (argc+1, &cmd_table, regexp_table);
-   
+
    slrn_free ((char*)cmd_table.string_args);
-   
+
    free_and_return:
    SLang_free_array (at);
 }/*}}}*/
@@ -451,10 +448,10 @@ static void set_strip_was_regexp (void) /*{{{*/
 
 static char *get_server_name (void) /*{{{*/
 {
-   if ((NULL == Slrn_Server_Obj) 
+   if ((NULL == Slrn_Server_Obj)
        || (NULL == Slrn_Server_Obj->sv_name))
      return "";
-   
+
    return Slrn_Server_Obj->sv_name;
 }
 
@@ -465,7 +462,7 @@ static void quit (int *code) /*{{{*/
 }
 
 /*}}}*/
-   
+
 /*{{{ Keyboard related functions */
 
 static void definekey (char *fun, char *key, char *map) /*{{{*/
@@ -474,10 +471,10 @@ static void definekey (char *fun, char *key, char *map) /*{{{*/
    char *convkey = slrn_help_string_to_keyseq(key);
    if (convkey == NULL)
      convkey = key;
-   
+
    if (!strcmp (map, "readline"))
      map = "ReadLine";
-   
+
    if (NULL == (kmap = SLang_find_keymap (map)))
      {
 	slrn_error (_("definekey: no such keymap."));
@@ -495,20 +492,20 @@ static void definekey (char *fun, char *key, char *map) /*{{{*/
 static void undefinekey (char *key, char *map) /*{{{*/
 {
    SLKeyMap_List_Type *kmap;
-   
+
    char *convkey = slrn_help_string_to_keyseq(key);
    if (convkey == NULL)
      convkey = key;
-   
+
    if (!strcmp (map, "readline"))
      map = "ReadLine";
-   
+
    if (NULL == (kmap = SLang_find_keymap (map)))
      {
 	error (_("undefinekey: no such keymap."));
 	return;
      }
-   
+
    SLang_undefine_key (convkey, kmap);
 }
 
@@ -524,7 +521,7 @@ static void generic_read_mini (int mode, char *prompt, char *dfl, char *init) /*
 
    strncpy (str, init, sizeof (str));
    str[sizeof(str) - 1] = 0;
-   
+
    switch (mode)
      {
       case PROMPT_NO_ECHO:
@@ -539,7 +536,7 @@ static void generic_read_mini (int mode, char *prompt, char *dfl, char *init) /*
       default:
 	ret = slrn_read_input (prompt, dfl, str, 0, 0);
      }
-   
+
    if (-1 == ret)
      {
 	error (_("Quit!"));
@@ -586,7 +583,7 @@ static int read_mini_integer (char *prompt, int *dfl) /*{{{*/
 	error (_("Quit!"));
 	return -1;
      }
-   
+
    ix = (int) x;
    if (x != ix)
      error (_("Number exceeds the size of an integer"));
@@ -608,7 +605,7 @@ static int get_prefix_arg (void) /*{{{*/
 #define NO_PREFIX_ARGUMENT -1
 
    return Slrn_Prefix_Arg_Ptr ? *Slrn_Prefix_Arg_Ptr : NO_PREFIX_ARGUMENT;
-} 
+}
 
 /*}}}*/
 
@@ -616,15 +613,14 @@ static void reset_prefix_arg (void) /*{{{*/
 {
    Slrn_Prefix_Arg_Ptr = NULL;
 }
-  
-/*}}}*/
 
+/*}}}*/
 
 static int check_tty (void)
 {
    if (Slrn_TT_Initialized & SLRN_TTY_INIT)
      return 0;
-   
+
    error (_("Terminal not initialized."));
    return -1;
 }
@@ -633,7 +629,7 @@ static int input_pending (int *tsecs)
 {
    if (check_tty ())
      return 0;
-   
+
    return SLang_input_pending (*tsecs);
 }
 
@@ -641,7 +637,7 @@ static int getkey (void)
 {
    if (check_tty ())
      return 0;
-   
+
    return SLang_getkey ();
 }
 
@@ -706,7 +702,7 @@ static void pipe_article_cmd (char *cmd) /*{{{*/
 {
    if (-1 == check_article_mode ())
      return;
-   
+
    (void) slrn_pipe_article_to_cmd (cmd);
 }
 
@@ -716,7 +712,7 @@ static int save_current_article (char *file) /*{{{*/
 {
    if (-1 == check_article_mode ())
      return -1;
-   
+
    return slrn_save_current_article (file);
 }
 
@@ -727,14 +723,14 @@ static int generic_search_article (char *str, int is_regexp, /*{{{*/
 {
    Slrn_Article_Line_Type *l;
    char *ptr;
-   
+
    if (-1 == check_article_mode ())
      return 0;
-   
+
    l = slrn_search_article (str, &ptr, is_regexp, 1, dir);
    if (l == NULL)
      return 0;
-   
+
    (void) SLang_push_string (l->buf);
    return 1;
 }
@@ -781,7 +777,7 @@ static char *extract_article_header (char *h) /*{{{*/
 {
    unsigned int len;
    char buf[128];
-   
+
    if (-1 == check_article_mode ())
      return NULL;
 
@@ -792,7 +788,7 @@ static char *extract_article_header (char *h) /*{{{*/
 	h = slrn_cur_extract_header (buf, len + 2);
      }
    else h = NULL;
-   
+
    if (h == NULL) h = "";
 
    return h;
@@ -804,7 +800,7 @@ static char *extract_current_article_header (char *h) /*{{{*/
 {
    unsigned int len;
    char buf[128];
-   
+
    if (-1 == check_article_mode ())
      return NULL;
    if (NULL == Slrn_Current_Article)
@@ -833,7 +829,7 @@ static char *generic_article_as_string (int use_orig) /*{{{*/
    unsigned int len;
    Slrn_Article_Line_Type *l;
    char *s, *s1;
-   
+
    if (Slrn_Current_Article == NULL)
      return "";
 
@@ -844,36 +840,36 @@ static char *generic_article_as_string (int use_orig) /*{{{*/
      {
 	char *buf;
 	Slrn_Article_Line_Type *next = l->next;
-	
+
 	buf = l->buf;
 	if (l->flags & WRAPPED_LINE) buf++;   /* skip space */
-	
+
 	len += strlen (buf);
-	
+
 	if ((next == NULL) || (0 == (next->flags & WRAPPED_LINE)))
 	  len++;
 	l = next;
      }
-   
+
    if (NULL == (s = (char *) SLMALLOC (len + 1)))
      {
 	SLang_set_error (SL_MALLOC_ERROR);
 	return NULL;
      }
-   
+
    l = use_orig ? Slrn_Current_Article->raw_lines : Slrn_Current_Article->lines;
    s1 = s;
-   
+
    while (l != NULL)
      {
 	char *buf;
 	Slrn_Article_Line_Type *next = l->next;
-	
+
 	buf = l->buf;
 	if (l->flags & WRAPPED_LINE) buf++;   /* skip space */
-	
+
 	while (*buf != 0) *s1++ = *buf++;
-	       
+
 	if ((next == NULL) || (0 == (next->flags & WRAPPED_LINE)))
 	  *s1++ = '\n';
 	l = next;
@@ -899,7 +895,7 @@ static void sort_articles (void) /*{{{*/
 {
    if (-1 == check_article_mode ())
      return;
-   
+
    slrn_sort_headers ();
 }
 
@@ -948,7 +944,7 @@ static int article_line_up (int *num) /*{{{*/
    if ((-1 == check_article_mode ())
        || (*num <= 0))
      return 0;
-   
+
    return slrn_art_lineup_n ((unsigned int)*num);
 }
 /*}}}*/
@@ -958,7 +954,7 @@ static int article_line_down (int *num) /*{{{*/
    if ((-1 == check_article_mode ())
        || (*num <= 0))
      return 0;
-   
+
    return slrn_art_linedn_n ((unsigned int)*num);
 }
 /*}}}*/
@@ -1046,7 +1042,7 @@ static int header_down (int *num) /*{{{*/
    if ((-1 == check_article_mode ())
        || (*num <= 0))
      return 0;
-   
+
    return slrn_header_down_n (*num, 0);
 }
 
@@ -1057,7 +1053,7 @@ static int header_up (int *num) /*{{{*/
    if ((-1 == check_article_mode ())
        || (*num <= 0))
      return 0;
-   
+
    return slrn_header_up_n (*num, 0);
 }
 
@@ -1067,7 +1063,7 @@ static int header_next_unread (void)
 {
    if (-1 == check_article_mode ())
      return -1;
-   
+
    return slrn_next_unread_header (1);
 }
 
@@ -1086,7 +1082,7 @@ static void set_header_flags (int *flagsp) /*{{{*/
    if ((-1 == check_article_mode ())
        || (Slrn_Current_Header == NULL))
      return;
-   
+
    slrn_set_header_flags (Slrn_Current_Header, (unsigned int) *flagsp);
 }
 
@@ -1125,10 +1121,10 @@ static int get_header_number (void)
 
 static int get_header_tag_number (void)
 {
-   if ((Slrn_Current_Header == NULL) 
+   if ((Slrn_Current_Header == NULL)
        || (0 == (Slrn_Current_Header->flags & HEADER_NTAGGED)))
      return 0;
-   
+
    return (int) Slrn_Current_Header->tag_number;
 }
 
@@ -1171,7 +1167,7 @@ static int re_header_search (char *pat, unsigned int offset, int dir) /*{{{*/
        || (h == NULL)
        || (NULL == (re = slrn_compile_regexp_pattern (pat))))
      return 0;
-   
+
    status = 0;
    while (h != NULL)
      {
@@ -1181,14 +1177,14 @@ static int re_header_search (char *pat, unsigned int offset, int dir) /*{{{*/
 	     status = 1;
 	     break;
 	  }
-	
+
 	if (dir > 0)
 	  h = h->next;
 	else
 	  h = h->prev;
      }
    SLregexp_free (re);
-   return status;   
+   return status;
 }
 
 /*}}}*/
@@ -1198,7 +1194,6 @@ static int re_subject_search_forward (char *pat)
    Slrn_Header_Type h;
    return re_header_search (pat, (char *) &h.subject - (char *)&h, 1);
 }
-
 
 static int re_subject_search_backward (char *pat)
 {
@@ -1248,10 +1243,10 @@ static int is_group_mode (void)
 static int group_down_n (int *np)
 {
    int n = *np;
-   
+
    if (-1 == check_group_mode ())
      return 0;
-   
+
    if (n < 0) return slrn_group_up_n (-n);
    return slrn_group_down_n (n);
 }
@@ -1259,10 +1254,10 @@ static int group_down_n (int *np)
 static int group_up_n (int *np)
 {
    int n = *np;
-   
+
    if (-1 == check_group_mode ())
      return 0;
-   
+
    if (n < 0) return slrn_group_down_n (-n);
    return slrn_group_up_n (n);
 }
@@ -1278,7 +1273,7 @@ static char *current_group_name (void)
 {
    if (Slrn_Group_Current_Group == NULL)
      return "";
-   
+
    return Slrn_Group_Current_Group->group_name;
 }
 
@@ -1294,25 +1289,25 @@ static int select_group (void)
 {
    if (-1 == check_group_mode ())
      return -1;
-   
+
    return slrn_group_select_group ();
 }
 
 static int get_group_flags (void)
-{	
+{
    if (Slrn_Group_Current_Group == NULL)
      return 0;
-   
+
    return Slrn_Group_Current_Group->flags & GROUP_HARMLESS_FLAGS_MASK;
 }
 
 static void set_group_flags (int *flagsp)
 {
    unsigned int flags;
-   
+
    if (Slrn_Group_Current_Group == NULL)
      return;
-   
+
    Slrn_Group_Current_Group->flags &= ~GROUP_HARMLESS_FLAGS_MASK;
    flags = ((unsigned int) *flagsp) & GROUP_HARMLESS_FLAGS_MASK;
    Slrn_Group_Current_Group->flags |= flags;
@@ -1348,7 +1343,7 @@ static char *get_bg_color (char *name)
 
 static FILE *Log_File_Ptr;
 static void close_log_file (void)
-{	
+{
    if (Log_File_Ptr != NULL)
      {
 	(void) fclose (Log_File_Ptr);
@@ -1376,7 +1371,7 @@ static void log_message (char *buf)
      }
 
    fp = Log_File_Ptr;
-   if (fp == NULL) 
+   if (fp == NULL)
      {
 	if (Slrn_TT_Initialized & SLRN_SMG_INIT)
 	  return;
@@ -1457,16 +1452,16 @@ static int is_article_visible (void)
 static void reload_scorefile (int *apply_now) /*{{{*/
 {
    char file[SLRN_MAX_PATH_LEN];
-   
+
    if (Slrn_Score_File == NULL)
      return;
-   
+
    slrn_make_home_filename (Slrn_Score_File, file, sizeof (file));
 
    if (Slrn_Scorefile_Open != NULL)
      slrn_free (Slrn_Scorefile_Open);
    Slrn_Scorefile_Open = slrn_safe_strmalloc (file);
-   
+
    if (is_article_mode() && *apply_now)
      slrn_apply_scores (*apply_now);
 }
@@ -1481,18 +1476,18 @@ static int do_register_unregister_hook (int reg)
 
    if (NULL == (func = SLang_pop_function ()))
      return -1;
-   
+
    if (-1 == SLang_pop_slstring (&name))
      {
 	SLang_free_function (func);
 	return -1;
      }
-   
+
    if (reg)
      status = slrn_register_hook (name, func);
    else
      status = slrn_unregister_hook (name, func);
-   
+
    SLang_free_function (func);
    SLang_free_slstring (name);
    return status;
@@ -1688,16 +1683,16 @@ static int load_startup_file (void)
 
    if (NULL == (dir = getenv (ENV_SLRN_SLANG_DIR)))
      dir = SLRN_SLANG_DIR;
-   
+
    if ((dir == NULL) || (*dir == 0))
      {
 	slrn_error (_("The SLRN_SLANG_DIR variable is either NULL or empty"));
 	return -1;
      }
-   
+
    if (-1 == SLpath_set_load_path (dir))
      return -1;
-   
+
    if (-1 == SLang_load_file ("slrn.sl"))
      {
 	slrn_error (_("Configuration error: Unable to load startup file"));
@@ -1734,7 +1729,7 @@ int slrn_init_slang (void) /*{{{*/
    /* SLadd_intrinsic_function ("evalfile", (FVOID_STAR) evalfile, SLANG_INT_TYPE, 1, SLANG_STRING_TYPE); */
 
    (void) SLang_load_file_verbose (1);
-   
+
    SLang_Error_Hook = error;
    SLang_User_Clear_Error = slrn_clear_message;
    SLang_Exit_Error_Hook = slrn_va_exit_error;

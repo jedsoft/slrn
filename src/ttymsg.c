@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -30,19 +30,19 @@
 void slrn_tty_vmessage (FILE *fp, char *fmt, va_list ap)
 {
    static FILE *last_fp;
-   
+
    if ((fp == stdout) || (last_fp == stdout)) fputc ('\n', fp);
    (void) vfprintf(fp, fmt, ap);
    if (fp == stderr) fputc ('\n', fp);
    fflush (fp);
-   
+
    last_fp = fp;
 }
 
 void slrn_tty_message (char *fmt, ...)
 {
    va_list ap;
-   
+
    va_start (ap, fmt);
    slrn_tty_vmessage (stdout, fmt, ap);
    va_end (ap);
@@ -51,7 +51,7 @@ void slrn_tty_message (char *fmt, ...)
 void slrn_tty_error (char *fmt, ...)
 {
    va_list ap;
-   
+
    va_start (ap, fmt);
    slrn_tty_vmessage (stderr, fmt, ap);
    va_end (ap);

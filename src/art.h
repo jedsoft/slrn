@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -115,7 +115,7 @@ typedef struct Slrn_Header_Type
 #define FAKE_HEADER_HIGH_SCORE		0x1000
 #define HEADER_CHMAP_PROCESSED		0x2000
 #define HEADER_HAS_PARSE_PROBLEMS	0x4000
-   
+
 #define HEADER_PROCESSED		0x8000
    struct Slrn_Header_Type *real_next, *real_prev;
    struct Slrn_Header_Type *parent, *child, *sister;  /* threaded relatives */

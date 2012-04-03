@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -30,18 +30,18 @@
 /* This routine parses the date field of a header and returns it as a time_t
  * object.  The main difficulity is the lack of uniformity in the date formats
  * and the fact that there are leap years, etc...
- * 
- * Grepping my news spool of more than 12000 articles revealed that the 
- * date headers of the vast majority of headers appear in one of the 
+ *
+ * Grepping my news spool of more than 12000 articles revealed that the
+ * date headers of the vast majority of headers appear in one of the
  * following forms:
- * 
+ *
  *   03 Feb 1997 10:09:58 +0100
  *   5 Feb 1997 15:32:05 GMT
  *   Wed, 05 Feb 1997 11:58:33 -0800
- * 
+ *
  * A few look like:
  *   Fri, 3 Jan 1997 07:35:15 -0800 (PST)
- * 
+ *
  * and very few (less than 1 percent) of the articles had Date headers of the
  * form:
  *
@@ -52,18 +52,18 @@
  *
  * This means that the timezone can be assumed to be GMT or specified via an
  * offset from GMT.  All of the above dates have the format:
- *  
+ *
  *    [Weekday,] Day Month Year Hour:Min:Sec Timezone
- * 
+ *
  * which will make the parsing somewhat simple.
- * 
+ *
  * Beware: the calculations involving leap years, etc... are naive.
  */
 
 #define THE_YEAR_0		1970L  /* no leap year */
 #define IS_LEAP_YEAR(y)		(((y) % 4) == 0)
 
-typedef struct 
+typedef struct
 {
    char name[5];
    int tz;
@@ -94,22 +94,21 @@ static Timezone_Table_Type Timezone_Table [] =
    {"", 0}
 };
 
-   
 static int parse_timezone (char *t)
 {
    char ch;
    Timezone_Table_Type *table;
-   
+
    table = Timezone_Table;
-   
+
    while (0 != (ch = table->name [0]))
      {
 	if ((*t == ch) && (0 == strncmp (t, table->name, sizeof (table->name))))
 	  return table->tz;
-	
+
 	table++;
      }
-   
+
    return 0;
 }
 
@@ -118,18 +117,18 @@ long slrn_date_to_order_parm (char *date)
    char ch;
    long day, month, year, minutes, seconds, hours, tz;
    int sign;
-   
+
    date = slrn_skip_whitespace (date);
    if ((date == NULL) || (*date == 0))
      return 0;
-   
+
    /* Look for a weekday, if found skip it */
    while (isalpha (*date))
      date++;
    if (*date == ',') date++;
-   
+
    date = slrn_skip_whitespace (date);
-   
+
    /* expecting "03 Feb 1997 10:09:58 +0100" */
    day = 0;
    while (ch = *date, isdigit (ch))
@@ -140,12 +139,12 @@ long slrn_date_to_order_parm (char *date)
    if ((day == 0) || (day > 31))
      return 0;
    day--;
-   
+
    date = slrn_skip_whitespace (date);
    month = 0;
    switch (*date++)
      {
-      default: 
+      default:
 	return 0;
       case 'J':			       /* Jan, Jun, Jul */
 	ch = *date++;
@@ -160,7 +159,7 @@ long slrn_date_to_order_parm (char *date)
 	else if ((ch == 'a') || (ch == 'A'))
 	  month = 1;
 	break;
-	
+
       case 'F': case 'f':	       /* Feb */
 	month = 2;
 	break;
@@ -178,7 +177,7 @@ long slrn_date_to_order_parm (char *date)
 	if ((ch == 'p') || (ch == 'P')) month = 4;
 	else if ((ch == 'u') || (ch == 'U')) month = 8;
 	break;
-	
+
       case 'S': case 's':	       /* Sep */
 	month = 9;
 	break;
@@ -192,12 +191,12 @@ long slrn_date_to_order_parm (char *date)
 	month = 12;
 	break;
      }
-   
+
    if (month == 0)
      return 0;
-   
+
    month--;
-   
+
    /* skip past month onto year. */
    while (isalpha (*date))
      date++;
@@ -220,9 +219,8 @@ long slrn_date_to_order_parm (char *date)
      }
 #endif
 
-   
    date = slrn_skip_whitespace (date);
-   
+
    /* Now parse hh:mm:ss */
    hours = 0;
    while (ch = *date, isdigit (ch))
@@ -232,7 +230,7 @@ long slrn_date_to_order_parm (char *date)
      }
    if ((ch != ':') || (hours >= 24)) return 0;
    date++;
-   
+
    minutes = 0;
    while (ch = *date, isdigit (ch))
      {
@@ -241,7 +239,7 @@ long slrn_date_to_order_parm (char *date)
      }
    if (minutes >= 60)
      return 0;
-   
+
    /* Seconds may not be present */
    seconds = 0;
    if (ch == ':')
@@ -254,10 +252,10 @@ long slrn_date_to_order_parm (char *date)
 	  }
 	if (seconds >= 60) return 0;
      }
-	     
+
    /* Now timezone */
    date = slrn_skip_whitespace (date);
-   
+
    sign = 1;
    if (*date == '+')
      date++;
@@ -266,7 +264,7 @@ long slrn_date_to_order_parm (char *date)
 	sign = -1;
 	date++;
      }
-   
+
    tz = 0;
    while (ch = *date, isdigit(ch))
      {
@@ -274,7 +272,7 @@ long slrn_date_to_order_parm (char *date)
 	date++;
      }
    tz = sign * tz;
-   
+
    date = slrn_skip_whitespace (date);
    if (isalpha (*date))
      {
@@ -291,20 +289,19 @@ long slrn_date_to_order_parm (char *date)
 	day -= (month * 4 + 27)/10;
 	if (IS_LEAP_YEAR(year)) day++;
      }
-   
+
    /* add that to number of days since beginning of time */
    year -= THE_YEAR_0;
    day += year * 365 + year / 4;
    if ((year % 4) == 3) day++;
-   
+
    /* Adjust hours for timezone */
    hours -= tz / 100;
    minutes -= tz % 100;		       /* ?? */
-   
-   
+
    /* Now convert to secs */
    seconds += 60L * (minutes + 60L * (hours +  24L * day));
-   
+
    return seconds;
 }
 
@@ -315,9 +312,9 @@ void slrn_strftime (char *s, size_t max, const char *format, char *date,
 {
    time_t date_t;
    struct tm *date_tm;
-   
+
    date_t = (time_t) slrn_date_to_order_parm (date);
-   
+
 #if defined(VMS) || defined(__BEOS__)
    (void) use_localtime; /* gmtime is broken on BEOS */
 #else
@@ -326,6 +323,6 @@ void slrn_strftime (char *s, size_t max, const char *format, char *date,
    else
 #endif
      date_tm = localtime (&date_t);
-   
+
    (void) strftime (s, max, format, date_tm);
 }

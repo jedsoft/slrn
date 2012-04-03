@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -98,18 +98,18 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	slrn_error (_("A Score file has not been specified."));
 	return -1;
      }
-   
+
    if (Slrn_Prefix_Arg_Ptr == NULL)
      {
 	char rsp;
-	
+
 	if (strlen(typeresp) != 10) /* Translator messed it up */
 	  typeresp = "";
 	ch = slrn_get_response ("SsFfRrEeCc\007", typeresp, _("Pick Score type: \001Subject, \001From, \001References, \001Edit, \001Cancel"));
 	if (ch == 7) return -1;
 	ch = slrn_map_translated_char ("SsFfRrEeCc", typeresp, ch) | 0x20;
 	if (ch == 'c') return -1;
-   
+
 	while (1)
 	  {
 	     *qregexp = 0;
@@ -119,7 +119,7 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	     if (1 == sscanf (qregexp + force_score, "%d", &score))
 	       break;
 	  }
-	
+
 	if (strlen (scoperesp) != 4) /* Translator messed it up */
 	  scoperesp = "";
 	rsp = slrn_get_response ("TtaA\007", scoperesp, _("Which newsgroups: \001This group, \001All groups"));
@@ -134,7 +134,7 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	       return -1;
 	     if (*qregexp)
 	       {
-		  if (1 == sscanf(qregexp, "+%d",&days)) 
+		  if (1 == sscanf(qregexp, "+%d",&days))
 		    {
 		       if (days < 1)
 			 continue;
@@ -166,8 +166,8 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	       }
 	  }
      }
-   
-   if ((NULL == (fp = slrn_open_home_file (Slrn_Score_File, "r+", file, 
+
+   if ((NULL == (fp = slrn_open_home_file (Slrn_Score_File, "r+", file,
 					   sizeof (file), 1)))
        && (NULL == (fp = slrn_open_home_file (Slrn_Score_File, "w+", file,
 					      sizeof (file), 1))))
@@ -183,7 +183,7 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 #else
    re = NULL;
 #endif
-   
+
    if (Slrn_Prefix_Arg_Ptr == NULL)
      {
 	char *line;
@@ -193,19 +193,19 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	  {
 	     if (ich == '\n')	linenum++;
 	  }
-	
+
 	myclock = time((time_t *) 0);
 	fprintf(fp, "\n%%BOS\n%%Score created by slrn on %s\n[%s]\nScore: %s%d\n",
 		(char *) ctime(&myclock), ng, force_score ? "=" : "", score);
-	
+
 	if (use_expired)
 	  fprintf (fp, "Expires: %u/%u/%u\n", mm, dd, yy);
 	else fprintf (fp, "%%Expires: \n");
-	
+
 	line = slrn_safe_strmalloc (h->subject);
 	slrn_subject_strip_was (line);
 	remove_linebreaks (line);
-	
+
 	if ((NULL == (q = SLregexp_quote_string (line, qregexp, sizeof (qregexp)))) ||
 	    (ch != 's') ||
 #if SLANG_VERSION < 20000
@@ -281,26 +281,26 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 	     re = NULL;
 	  }
 #endif
-	
+
 	if (NULL != (q = SLregexp_quote_string (h->xref, qregexp, sizeof (qregexp))))
 	  {
 	     fprintf (fp, "%%\tXref: %s\n", q);
 	  }
-	
+
 	if (NULL != (q = SLregexp_quote_string (newsgroup, qregexp, sizeof (qregexp))))
 	  {
 	     fprintf (fp, "%%\tNewsgroup: %s\n", q);
 	  }
-	
+
 	fprintf (fp, "%%EOS\n");
 	file_modified = 1;
      }
-   
+
    Slrn_Prefix_Arg_Ptr = NULL;
 
    if (-1 == slrn_fclose (fp))
      return -1;
-   
+
    if (re_error)
      {
 	slrn_error ("Error in pattern - commented new scorefile entry out.");
@@ -310,7 +310,7 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
    if (ch == 'e')
      {
 	int status;
-	
+
 	status = slrn_edit_file (Slrn_Editor_Score, file, linenum + 1, 1);
 
 	if ((status == -2)	       /* unmodified */
@@ -319,7 +319,7 @@ int slrn_edit_score (Slrn_Header_Type *h, char *newsgroup)
 
 	if (status == -1)
 	  return -1;
-	
+
 	/* drop */
      }
    if (Slrn_Scorefile_Open != NULL)

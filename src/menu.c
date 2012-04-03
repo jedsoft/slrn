@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -26,7 +26,6 @@
 
 #include <stdio.h>
 #include <string.h>
-
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
@@ -73,7 +72,7 @@ static Menu_Type Group_Mode_Menu [] = /*{{{*/
 };
 
 /*}}}*/
-	
+
 static Menu_Type Article_Mode_Menu [] = /*{{{*/
 {
      {N_("Quit"), "quit"},
@@ -96,7 +95,7 @@ static Menu_Type *Current_Menu;
 static void update_menu (Menu_Type *m) /*{{{*/
 {
    int col;
-   
+
    Current_Menu = m;
    /* if (Slrn_Full_Screen_Update == 0) return; */
    SLsmg_gotorc (0, 0);
@@ -107,16 +106,16 @@ static void update_menu (Menu_Type *m) /*{{{*/
 	SLsmg_write_string ("   ");
 	m++;
      }
-   
+
    SLsmg_erase_eol ();
 
    col = SLtt_Screen_Cols - (5 + strlen(Slrn_Version_String));
    if (SLsmg_get_column () < col)
      SLsmg_gotorc (0, col);
-   
+
    SLsmg_write_string ("slrn ");
    SLsmg_write_string (Slrn_Version_String);
-   
+
    slrn_set_color (0);
 }
 
@@ -127,24 +126,24 @@ int slrn_execute_menu (int want_col) /*{{{*/
    Menu_Type *m;
    int col;
    int color;
-   
+
    if ((want_col < 0) || (want_col >= SLtt_Screen_Cols)) return -1;
-   
+
    m = Current_Menu;
    if (m == NULL) return -1;
-   
+
    col = -1;
    while (m->menu_name != NULL)
      {
 	int dcol = 2 + strlen (_(m->menu_name));
-	if ((want_col > col) 
+	if ((want_col > col)
 	    && (want_col <= col + dcol))
 	  break;
 	col += dcol + 1;
 	m++;
      }
    if (m->menu_name == NULL) return -1;
-   
+
    slrn_push_suspension (0);
    /* redraw menu item so that user sees that it has been pressed */
    if (col == -1) col = 0;
@@ -171,7 +170,7 @@ int slrn_execute_menu (int want_col) /*{{{*/
 }
 
 /*}}}*/
-   
+
 void slrn_update_article_menu (void) /*{{{*/
 {
    update_menu (Article_Mode_Menu);
@@ -221,12 +220,12 @@ static void center_string_column (char *title, int row, int col, int num_columns
 {
    int c;
    int len = strlen (title);
-   
+
    c = (num_columns - len) / 2;
    if (c < 0) c = 0;
-   
+
    c += col;
-   SLsmg_gotorc (row, c); 
+   SLsmg_gotorc (row, c);
    SLsmg_write_string (title);
 }
 
@@ -242,7 +241,7 @@ static void draw_box (int r0, int c0, unsigned int dr, unsigned int dc)
 	SLsmg_draw_box (r0, c0, dr, dc);
 	return;
      }
-   
+
    if ((dr == 0) || (dc == 0))
      return;
    dr--; dc--;
@@ -276,13 +275,13 @@ static int draw_select_box (Slrn_Select_Box_Type *sb) /*{{{*/
    int row, column, r, c;
    char **lines, *line, *title;
    static Slrn_Select_Box_Type *last_sb;
-   
+
    if (((sb == NULL) && ((sb = last_sb) == NULL)) ||
        (sb->lines == NULL))
      return -1;
-   
+
    last_sb = sb;
-   
+
    lines = sb->lines;
    if (sb->title == NULL)
      title = "";
@@ -290,7 +289,7 @@ static int draw_select_box (Slrn_Select_Box_Type *sb) /*{{{*/
      title = _(sb->title);
 
    slrn_push_suspension (0);
-   
+
    max_selection_len = strlen (title);
    num_selections = 0;
    while ((line = *lines) != NULL)
@@ -304,7 +303,7 @@ static int draw_select_box (Slrn_Select_Box_Type *sb) /*{{{*/
    /* allow room for title, blank line, top, bottom */
    num_rows = num_selections + 4 + 2;
    num_columns = max_selection_len + (3 + 3);
-   
+
    row = (SLtt_Screen_Rows - num_rows) / 2;
    if (row < 0) row = 0;
    column = (SLtt_Screen_Cols - num_columns) / 2;
@@ -312,13 +311,12 @@ static int draw_select_box (Slrn_Select_Box_Type *sb) /*{{{*/
 
    slrn_set_color (BOX_COLOR);
    SLsmg_fill_region (row, column, num_rows, num_columns, ' ');
-   
+
    r = row + 1;
    center_string_column (title, r, column, num_columns);
-   
+
    lines = sb->lines;
-   
-   
+
    num_selections = 0;
    c = column + 1;
    r += 1;
@@ -330,18 +328,18 @@ static int draw_select_box (Slrn_Select_Box_Type *sb) /*{{{*/
 	SLsmg_printf ("%2X %s", num_selections, _(line));
 	num_selections++;
      }
-   
+
    r += 2;
    center_string_column (_("(Select One)"), r, column, num_columns);
-				      
+
    slrn_set_color (FRAME_COLOR);
    draw_box (row, column, num_rows, num_columns);
    slrn_set_color (0);
-   
+
    slrn_smg_refresh ();
-   
+
    slrn_pop_suspension ();
-   
+
    return num_selections;
 }
 
@@ -357,7 +355,7 @@ static void select_box_redraw (void) /*{{{*/
 
 /*}}}*/
 
-static Slrn_Mode_Type Menu_Mode_Cap = 
+static Slrn_Mode_Type Menu_Mode_Cap =
 {
    NULL,			       /* keymap */
    select_box_redraw,		       /* redraw_fun */
@@ -371,35 +369,35 @@ int slrn_select_box (Slrn_Select_Box_Type *sb) /*{{{*/
 {
    int num_selections;
    int rsp;
-   
+
    if (Slrn_Batch)
      return -1;
 
    slrn_push_mode (&Menu_Mode_Cap);
 
    num_selections = draw_select_box (sb);
-   
+
    Slrn_Full_Screen_Update = 1;
    rsp = SLang_getkey ();
 
    slrn_pop_mode ();
-   
+
    if (rsp >= 'A')
      {
 	rsp = 10 + ((rsp | 0x20) - 'a');
      }
    else rsp = rsp - '0';
-   
+
    if ((rsp < 0) || (rsp >= num_selections))
      {
 	slrn_error (_("Cancelled."));
 
 	while (SLang_input_pending (2))
 	  (void) SLang_getkey ();
-	
+
 	return -1;
      }
-   
+
    return rsp;
 }
 
@@ -447,27 +445,27 @@ static void draw_select_list (void)
    SLscroll_find_top (Select_Window);
    l = (Select_List_Type *) Select_Window->top_window_line;
    num_rows = Select_Window->nrows;
-   
+
    row = Select_List_Window_Row;
    column = Select_List_Window_Col;
    num_columns = Select_List_Window_Ncols;
    if (num_columns + 5 > (unsigned int) SLtt_Screen_Cols)
      num_columns = SLtt_Screen_Cols;
    column = (SLtt_Screen_Cols - num_columns) / 2;
-   
+
    slrn_set_color (FRAME_COLOR);
    draw_box (row, column, num_rows + 2, num_columns + 2);
    SLsmg_gotorc (row + num_rows + 1, column + num_columns - 10);
    if (Is_Popup_Window)
      {
 	unsigned int bot_number;
-	
+
 	bot_number = Select_Window->line_num +
 	  (Select_Window->nrows - Select_Window->window_row) - 1;
 	bot_showing = ((Select_Window->bot_window_line == NULL)
 		       || (Select_Window->num_lines == bot_number));
 	top_showing = (Select_Window->line_num == Select_Window->window_row + 1);
-	
+
 	if (top_showing)
 	  {
 	     SLsmg_write_string (bot_showing ? _("[All]") : _("[Top]"));
@@ -486,18 +484,18 @@ static void draw_select_list (void)
 	SLsmg_gotorc (row, column + 1);
 	SLsmg_printf ("[%s]", Select_List_Title);
      }
-   
+
    slrn_set_color (BOX_COLOR);
    row++;
    column++;
-   
+
    for (r = 0; r < num_rows; r++)
      {
 	char *data;
 	SLsmg_gotorc (row + r, column);
-	
+
 	if (l == NULL) data = NULL;
-	else 
+	else
 	  {
 	     if (!Is_Popup_Window &&
 		 (l == (Select_List_Type *) Select_Window->current_line))
@@ -532,7 +530,7 @@ static void draw_select_list (void)
 static void free_select_list (Select_List_Type *l, int free_data)
 {
    Select_List_Type *next;
-   
+
    while (l != NULL)
      {
 	next = l->next;
@@ -547,17 +545,17 @@ static void select_list_winch (int oldr, int oldc)
 {
    (void) oldr;
    (void) oldc;
-   
+
    if (Select_Window == NULL)
      return;
-   
+
    if (Select_Window->num_lines + 5 >= (unsigned int) SLtt_Screen_Rows)
      {
 	if (SLtt_Screen_Rows > 5)
 	  Select_Window->nrows = (unsigned int) SLtt_Screen_Rows - 5;
 	else Select_Window->nrows = 1;
      }
-   
+
    Select_List_Window_Row = (SLtt_Screen_Rows - Select_Window->nrows) / 2;
 }
 
@@ -646,7 +644,7 @@ static void sl_jump (void)
    int dir = (ch & 0x20);
    SLscroll_Type *startpos = Select_Window->current_line;
    Select_List_Type *curline;
-   
+
    ch |= 0x20;
    do
      {
@@ -661,7 +659,7 @@ static void sl_jump (void)
 	       while (Select_Window->current_line->next != NULL)
 		 Select_Window->current_line = Select_Window->current_line->next;
 	  }
-	
+
 	if (Select_Window->current_line == startpos)
 	  {
 	     SLtt_beep ();
@@ -670,7 +668,7 @@ static void sl_jump (void)
 	curline = (Select_List_Type *) Select_Window->current_line;
      }
    while (ch != (*curline->data | 0x20));
-   
+
    select_list_winch (0, 0);
    SLscroll_find_line_num (Select_Window);
 }
@@ -700,7 +698,7 @@ static void sl_mouse (void)
    int r;
    slrn_get_mouse_rc (&r, NULL);
    r--;
-   
+
    if (((unsigned int) r <= Select_List_Window_Row)
        || ((unsigned int) r > Select_List_Window_Row + Select_Window->nrows))
      {
@@ -717,7 +715,6 @@ static void sl_mouse (void)
    Select_List_Quit = 2;
 }
 
-   
 static SLKeyMap_List_Type *Select_List_Keymap;
 static SLKeyMap_List_Type *Popup_Keymap;
 
@@ -746,7 +743,7 @@ static int init_select_list_mode (int select_list)
 {
    SLKeyMap_List_Type **kmap;
    char *int_name;
-   
+
    slrn_free ((char *) Select_Window);
    Select_Window = (SLscroll_Window_Type *) slrn_malloc (sizeof (SLscroll_Window_Type), 1, 1);
    Is_Popup_Window = !select_list;
@@ -754,7 +751,7 @@ static int init_select_list_mode (int select_list)
      return -1;
    Select_Window->nrows = 5;
    select_list_winch (0, 0);
-   
+
    if (select_list)
      {
 	kmap = &Select_List_Keymap;
@@ -765,17 +762,17 @@ static int init_select_list_mode (int select_list)
 	kmap = &Popup_Keymap;
 	int_name = "popup";
      }
-   
+
    if (*kmap != NULL)
      {
 	Select_List_Mode_Cap.keymap = *kmap;
 	if (select_list) adapt_shortcuts ();
 	return 0;
      }
-   
+
    if (NULL == (*kmap = SLang_create_keymap (int_name, NULL)))
      return -1;
-   
+
 #if defined(IBMPC_SYSTEM)
    SLkm_define_key  ("^@H", (FVOID_STAR) sl_up, *kmap);
    SLkm_define_key  ("\xE0H", (FVOID_STAR) sl_up, *kmap);
@@ -797,11 +794,11 @@ static int init_select_list_mode (int select_list)
    SLkm_define_key  ("^(ku)", (FVOID_STAR) sl_up, *kmap);
 # endif
 #endif
-   
+
    /* In select lists, these bindings collide with the new "jump" feature */
    SLkm_define_key  ("k", (FVOID_STAR) sl_up, *kmap);
    SLkm_define_key  ("j", (FVOID_STAR) sl_down, *kmap);
-   
+
    if (select_list)
      {
 #if defined(IBMPC_SYSTEM)
@@ -821,17 +818,17 @@ static int init_select_list_mode (int select_list)
 #endif
 	SLkm_define_key  ("\r", (FVOID_STAR) sl_select, Select_List_Keymap);
 	SLkm_define_key  ("^G", (FVOID_STAR) sl_cancel, Select_List_Keymap);
-	
+
 	SLkm_define_key  ("\033[M\040", (FVOID_STAR) sl_mouse, Select_List_Keymap);
 	SLkm_define_key  ("\033[M\041", (FVOID_STAR) sl_mouse, Select_List_Keymap);
 	SLkm_define_key  ("\033[M\042", (FVOID_STAR) sl_mouse, Select_List_Keymap);
-	
+
 	adapt_shortcuts ();
      }
-   
+
    if (SLang_get_error ())
      return -1;
-   
+
    Select_List_Mode_Cap.keymap = *kmap;
    return 0;
 }
@@ -851,12 +848,12 @@ int slrn_select_list_mode (char *title,
 
    if (-1 == init_select_list_mode (1))
      return -1;
-   
+
    Select_List_Title = title;
 
-   if (title == NULL) 
+   if (title == NULL)
      Select_List_Window_Ncols = 1;
-   else 
+   else
      Select_List_Window_Ncols = 2 + strlen (title);
 
    active_line = root = last = NULL;
@@ -878,7 +875,7 @@ int slrn_select_list_mode (char *title,
 	     curr->prev = last;
 	  }
 	last = curr;
-	
+
 	if (num_lines == active_num)
 	  active_line = curr;
 
@@ -888,7 +885,7 @@ int slrn_select_list_mode (char *title,
 	  Select_List_Window_Ncols = len;
      }
 
-   if (active_line == NULL) 
+   if (active_line == NULL)
      active_line = root;
 
    Select_Window->num_lines = num_lines;
@@ -897,7 +894,7 @@ int slrn_select_list_mode (char *title,
    Select_Window->lines = (SLscroll_Type *) root;
    select_list_winch (0, 0);
    SLscroll_find_line_num (Select_Window);
-   
+
    slrn_push_mode (&Select_List_Mode_Cap);
    Select_List_Quit = 0;
    while (Select_List_Quit == 0)
@@ -908,7 +905,7 @@ int slrn_select_list_mode (char *title,
    active_num = Select_Window->line_num - 1;
    free_select_list (root, 0);
    slrn_pop_mode ();
-   
+
    slrn_message ("%s", "");
 
    if (Select_List_Quit == -1)
@@ -930,27 +927,27 @@ int slrn_popup_win_mode (char *title, char *text)
    if ((text == NULL) || (*text == 0) ||
        (-1 == init_select_list_mode (0)))
      return -1;
-   
+
    Select_List_Title = title;
 
-   if (title == NULL) 
+   if (title == NULL)
      Select_List_Window_Ncols = 1;
-   else 
+   else
      Select_List_Window_Ncols = 2 + strlen (title);
 
    root = last = NULL;
-   
+
    do
      {
 	unsigned int len, pos;
 	char *newline, *tab;
-	
+
 	if (NULL == (curr = (Select_List_Type *) slrn_malloc (sizeof (Select_List_Type), 1, 1)))
 	  {
 	     free_select_list (root, 1);
 	     return -1;
 	  }
-	
+
 	if (root == NULL)
 	  root = curr;
 	else
@@ -959,7 +956,7 @@ int slrn_popup_win_mode (char *title, char *text)
 	     curr->prev = last;
 	  }
 	last = curr;
-	
+
 	if (NULL != (newline = slrn_strbyte (text, '\n')))
 	  {
 	     *newline++ = 0;
@@ -967,7 +964,7 @@ int slrn_popup_win_mode (char *title, char *text)
 	       newline = NULL;
 	  }
 	len = strlen (text);
-	
+
 	/* Here, we handle TABs (expand to spaces): */
 	tab = text;
 	while (NULL != (tab = slrn_strbyte (tab, '\t')))
@@ -997,7 +994,7 @@ int slrn_popup_win_mode (char *title, char *text)
 	       }
 	     text++;
 	  }
-	
+
 	len = strlen (curr->data);
 	if (len > Select_List_Window_Ncols)
 	  Select_List_Window_Ncols = len;
@@ -1005,23 +1002,23 @@ int slrn_popup_win_mode (char *title, char *text)
 	num_lines++;
      }
    while (text != NULL);
-   
+
    Select_Window->num_lines = num_lines;
    Select_Window->nrows = num_lines;
    Select_Window->current_line = Select_Window->lines = (SLscroll_Type *) root;
    select_list_winch (0, 0);
    SLscroll_find_line_num (Select_Window);
    Select_Window->top_window_line = Select_Window->current_line;
-   
+
    slrn_push_mode (&Select_List_Mode_Cap);
    Select_List_Quit = 0;
    while (Select_List_Quit == 0)
      {
 	SLang_Key_Type *key;
-	
+
 	slrn_update_screen ();
 	key = SLang_do_key (Popup_Keymap, (int (*)(void)) SLang_getkey);
-	if ((key == NULL) 
+	if ((key == NULL)
 	    || (key->type == SLKEY_F_INTERPRET))
 	  Select_List_Quit = 1;
 	else
@@ -1029,19 +1026,19 @@ int slrn_popup_win_mode (char *title, char *text)
      }
    free_select_list (root, 1);
    slrn_pop_mode ();
-   
+
    slrn_message ("%s", "");
-   
+
    if (Select_List_Quit == -1)
      return -1;
-   
+
    return SLang_Last_Key_Char;
 }
 
 static int file_strcmp (char **ap, char **bp)
 {
    char *a, *b;
-   
+
    a = *ap; b = *bp;
    /* Put the '.' files first */
    if (*a == '.')
@@ -1051,7 +1048,7 @@ static int file_strcmp (char **ap, char **bp)
      }
    else if (*b == '.')
      return 1;
-   
+
    return strcmp (a, b);
 }
 
@@ -1068,7 +1065,7 @@ static char *browse_dir (char *dir)
    unsigned int len;
    void (*qsort_fun) (char **, unsigned int,
 		      unsigned int, int (*)(char **, char **));
-   
+
    /* This is a silly hack to make up for braindead compilers and the lack of
     * uniformity in prototypes for qsort.
     */
@@ -1082,11 +1079,11 @@ static char *browse_dir (char *dir)
 	if (dir == NULL)
 	  return NULL;
      }
-   
+
    slrn_message_now (_("Creating directory list..."));
    if (NULL == (d = slrn_open_dir (dir)))
      return NULL;
-   
+
    len = strlen (dir) + 1;
    if (len >= sizeof (title))
      {
@@ -1094,7 +1091,7 @@ static char *browse_dir (char *dir)
 	sprintf (title, "....%s", dir); /* safe */
      }
    else strcpy (title, dir); /* safe */
-   
+
    argc = 0;
    while ((argc < MAX_DIR_FILES)
 	  && (NULL != (de = slrn_read_dir (d))))
@@ -1104,7 +1101,7 @@ static char *browse_dir (char *dir)
 	status = slrn_file_exists (de->name);
 	if (status == 0)
 	  continue;
-	
+
 	len = de->name_len;
 	if (NULL == (argv[argc] = slrn_malloc (len + 2, 0, 1)))
 	  {
@@ -1119,9 +1116,9 @@ static char *browse_dir (char *dir)
 	  }
 	argc++;
      }
-   
+
    slrn_close_dir (d);
-   
+
    if (argc > 1)
      {
 	qsort_fun (argv, argc, sizeof (char *), file_strcmp);
@@ -1134,7 +1131,7 @@ static char *browse_dir (char *dir)
 	slrn_free_argc_argv_list (argc, argv);
 	return NULL;
      }
-   
+
    dir = argv[selected];
    argv[selected] = NULL;
    slrn_free_argc_argv_list (argc, argv);
@@ -1168,7 +1165,7 @@ char *slrn_browse_dir (char *dir)
 	file = browse_dir (NULL);
 	if (file == NULL)
 	  break;
-	
+
 	len = strlen (file);
 	if ((len == 0) || (file [len - 1] != '/'))
 	  {
@@ -1185,13 +1182,13 @@ char *slrn_browse_dir (char *dir)
 	     file = dir_file;
 	     break;
 	  }
-	
+
 	file [len - 1] = 0;	       /* knock off slash */
 	(void) slrn_chdir (file);
 	slrn_free (file);
 	file = NULL;
      }
-   
+
    (void) slrn_chdir (cwd);
    slrn_free (cwd);
    return file;

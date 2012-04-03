@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -162,7 +162,7 @@ static void exit_malloc_error (void) /*{{{*/
 {
    if (This_File == NULL)
      slrn_exit_error (_("Memory Allocation Failure"));
-   
+
    slrn_exit_error (_("%s: Line %d\n%sMemory Allocation Failure"),
 		    This_File, This_Line_Num, This_Line);
 }
@@ -179,7 +179,6 @@ static char *safe_malloc (unsigned int n) /*{{{*/
 
 /*}}}*/
 
-
 static void exit_unknown_object (void) /*{{{*/
 {
    slrn_exit_error (_("%s: Error encountered processing line %d\n%s"),
@@ -192,9 +191,9 @@ static void issue_obsolete_message (void) /*{{{*/
 {
    char *file = This_File;
 
-   if (file == NULL) 
+   if (file == NULL)
      file = "??";
-   
+
    Slrn_Saw_Obsolete = 1;
    slrn_message (_("%s: Command is obsolete on line %d:\n%s"),
 		 file, This_Line_Num, This_Line);
@@ -203,7 +202,6 @@ static void issue_obsolete_message (void) /*{{{*/
 
 /*}}}*/
 
-   
 /*}}}*/
 /*{{{ Set/Unset Key Functions */
 
@@ -258,12 +256,12 @@ static int setkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    SLKeyMap_List_Type *kmap = NULL;
    char **obsolete_names = NULL;
    int failure;
-   
+
    (void) argc;
-   
+
    if (NULL == (key = slrn_help_string_to_keyseq(key)))
      key = table->string_args[3];
-   
+
    if (!strcmp (map, "group"))
      {
 	kmap = Slrn_Group_Keymap;
@@ -276,12 +274,12 @@ static int setkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
      }
    else if (!strcmp (map, "readline")) kmap = Slrn_RLine_Keymap;
    else slrn_exit_error (_("%s: line %d:\n%sNo such keymap: %s"), This_File, This_Line_Num, This_Line, map);
-   
+
    if (kmap == SLrline_get_keymap (Slrn_Keymap_RLI))
      failure = slrn_rline_setkey (key, fun, kmap);
    else
      failure = SLang_define_key (key, fun, kmap);
-   
+
    if (failure)
      {
 	slrn_exit_error (_("%s: line %d:\n%serror defining key."), This_File, This_Line_Num, This_Line);
@@ -290,7 +288,7 @@ static int setkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
      {
 	int i = 0;
 	char *old_name = NULL, *new_name = NULL;
-	
+
 	while ((old_name = obsolete_names[i]) != NULL)
 	  {
 	     if (!strcmp (old_name, fun))
@@ -301,7 +299,7 @@ static int setkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 	       }
 	     i += 2;
 	  }
-	
+
 	if (new_name != NULL)
 	  slrn_message (_("%s: Obsolete function name on line %d: %s\n"
 			"The new name is: %s"),
@@ -317,7 +315,7 @@ static int unsetkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 {
    char *map, *key;
    SLKeyMap_List_Type *kmap = NULL;
-   
+
    if (argc != 3)
      {
 	slrn_exit_error (_("%s: line %d:\n%sExpecting exactly two arguments for the unsetkey function"),
@@ -327,14 +325,14 @@ static int unsetkey_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    map = table->string_args[1];
    key = table->string_args[2];
    if (NULL == (key = slrn_help_string_to_keyseq(key)))
-     key = table->string_args[2];   
-   
+     key = table->string_args[2];
+
    if (!strcmp (map, "group")) kmap = Slrn_Group_Keymap;
    else if (!strcmp (map, "article")) kmap = Slrn_Article_Keymap;
    else if (!strcmp (map, "readline")) kmap = Slrn_RLine_Keymap;
    else slrn_exit_error (_("%s: line %d:\n%sNo such keymap: %s"),
 			 This_File, This_Line_Num, This_Line, map);
-   
+
    SLang_undefine_key (key, kmap);
    return 0;
 }
@@ -357,15 +355,15 @@ static SLRegexp_Type *compile_quote_regexp (char *str) /*{{{*/
    SLRegexp_Type *r;
 #if SLANG_VERSION < 20000
    unsigned char *compiled_pattern_buf;
-   
+
    compiled_pattern_buf = (unsigned char *) safe_malloc (512);
    r = (SLRegexp_Type *) safe_malloc (sizeof (SLRegexp_Type));
-   
+
    r->pat = (unsigned char *) str;
    r->buf = compiled_pattern_buf;
    r->case_sensitive = 1;
    r->buf_len = 512;
-   
+
    if (SLang_regexp_compile (r))
      {
 	SLfree ((char *) r);
@@ -378,7 +376,7 @@ static SLRegexp_Type *compile_quote_regexp (char *str) /*{{{*/
    if (r == NULL)
      slrn_exit_error (_("%s: line %d:\n%sInvalid regular expression."),
 		      This_File, This_Line_Num, This_Line);
-     
+
    return r;
 }
 
@@ -388,13 +386,13 @@ void slrn_generic_regexp_fun (int argc, SLcmd_Cmd_Table_Type *cmd_table,
 {
    unsigned int i;
    SLRegexp_Type *r;
-   
+
    if (argc > SLRN_MAX_REGEXP + 1)
      {
 	slrn_exit_error (_("%s: line %d:\n%sToo many expressions specified."),
 			 This_File, This_Line_Num, This_Line);
      }
-   
+
    for (i = 0; i < SLRN_MAX_REGEXP; i++)
      {
 	r = regexp_table[i];
@@ -409,7 +407,7 @@ void slrn_generic_regexp_fun (int argc, SLcmd_Cmd_Table_Type *cmd_table,
 	     regexp_table[i] = NULL;
 	  }
      }
-   
+
    for (i = 1; i < (unsigned int) argc; i++)
      {
 	regexp_table[i-1] = compile_quote_regexp (cmd_table->string_args[i]);
@@ -447,7 +445,7 @@ static int grouplens_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    (void) argc;
 #if SLRN_HAS_GROUPLENS
    (void) slrn_grouplens_add_group (table->string_args[1]);
-#else 
+#else
    (void) table;
 #endif
    return 0;
@@ -455,20 +453,19 @@ static int grouplens_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 
 /*}}}*/
 
-
-static int set_visible_headers_fun (int argc, SLcmd_Cmd_Table_Type *table) 
+static int set_visible_headers_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
    (void) argc;
    return slrn_set_visible_headers (table->string_args[1]);
 }
 
-static int set_header_format_fun (int argc, SLcmd_Cmd_Table_Type *table) 
+static int set_header_format_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
    (void) argc;
    return slrn_set_header_format (table->int_args[1], table->string_args[2]);
 }
 
-static int set_group_format_fun (int argc, SLcmd_Cmd_Table_Type *table) 
+static int set_group_format_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
    (void) argc;
    return slrn_set_group_format (table->int_args[1], table->string_args[2]);
@@ -512,17 +509,17 @@ static int set_charset_fun (int argc, SLcmd_Cmd_Table_Type *table)
    Charset_Table_Type *tbl = Charset_Table;
 
    (void) argc;
-   
+
    name = table->string_args[1];
    value = table->string_args[2];
-   
+
    while (tbl->name != NULL)
      {
 	if (0 == slrn_case_strcmp(name, tbl->name))
 	  {
 	     if (*tbl->charsetp != NULL)
 	       slrn_free (*tbl->charsetp);
-	     
+
 	     if (NULL == (*tbl->charsetp = SLmake_string (value)))
 	       exit_malloc_error ();
 	     return 0;
@@ -694,17 +691,16 @@ Slrn_Int_Var_Type Slrn_Int_Variables [] = /*{{{*/
 
 /*}}}*/
 
-
 static int get_set_macro_dir (Slrn_Str_Var_Type *sv, int set, char **valp)
 {
    (void) sv;
 
    if (set)
      return slrn_set_macro_dir (*valp);
-  
+
    if (NULL == (*valp = slrn_get_macro_dir ()))
      return -1;
-   
+
    return 0;
 }
 
@@ -764,14 +760,14 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
      {"grouplens_pseudoname", NULL, NULL},
      {"grouplens_host", NULL, NULL},
 #endif
-     {"decode_directory", 
+     {"decode_directory",
 #if SLRN_HAS_DECODE
 	  &Slrn_Decode_Directory
 #else
 	  NULL
 #endif
      , NULL},
-   
+
      {"inews_program",
 #if SLRN_HAS_INEWS_SUPPORT && SLRN_HAS_USER_INEWS
 	  &Slrn_Inews_Pgm
@@ -779,7 +775,7 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 	  NULL
 #endif
      , NULL},
-     
+
      {"metamail_command", &Slrn_MetaMail_Cmd, NULL},
 #if 0
      {"charset", &Slrn_Charset, NULL},
@@ -791,7 +787,7 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 #ifndef VMS
      {"sendmail_command", &Slrn_SendMail_Command, NULL},
 #endif
-     {"spool_inn_root", 
+     {"spool_inn_root",
 #if SLRN_HAS_SPOOL_SUPPORT
      &Slrn_Inn_Root
 #else
@@ -866,10 +862,10 @@ Slrn_Str_Var_Type Slrn_Str_Variables [] = /*{{{*/
 static int do_set_string_value (Slrn_Str_Var_Type *sp, char *value)
 {
    char *ss;
-   
+
    if (NULL != sp->get_set_func)
      return (*sp->get_set_func)(sp, 1, &value);
-   
+
    if (sp->svalp == NULL)
      return 0;
 
@@ -885,13 +881,13 @@ static int do_set_string_value (Slrn_Str_Var_Type *sp, char *value)
 int slrn_set_string_variable (char *name, char *value, char *charset) /*{{{*/
 {
    Slrn_Str_Var_Type *sp = Slrn_Str_Variables;
-	
+
    while (sp->what != NULL)
      {
 	if (!strcmp (sp->what, name))
 	  {
 	     char *ss;
-	     
+
 	     if (This_File != NULL)
 	       {
 		  char *oldname = NULL, *newname = NULL;
@@ -914,7 +910,7 @@ int slrn_set_string_variable (char *name, char *value, char *charset) /*{{{*/
 		       Slrn_Saw_Obsolete = 1;
 		    }
 	       }
-	     
+
 	     if ((sp->svalp == NULL) && (sp->get_set_func == NULL))
 	       {
 		  if (This_File != NULL)
@@ -924,7 +920,7 @@ int slrn_set_string_variable (char *name, char *value, char *charset) /*{{{*/
 		  Slrn_Saw_Warning = 1;
 		  return 0;
 	       }
-	     
+
 	     ss=NULL;
 	     if (slrn_string_nonascii(value))
 	       {
@@ -965,7 +961,7 @@ int slrn_set_string_variable (char *name, char *value, char *charset) /*{{{*/
 int slrn_set_integer_variable (char *name, int value) /*{{{*/
 {
    Slrn_Int_Var_Type *ip = Slrn_Int_Variables;
-   
+
    while (ip->what != NULL)
      {
 	if (!strcmp (ip->what, name))
@@ -1075,7 +1071,7 @@ static void print_string_vars (FILE *fp)
 		  slrn_free (val);
 	       }
 	  }
-	else 
+	else
 	  {
 	     if ((sp->svalp == NULL) || (NULL == (val = *sp->svalp)))
 	       (void) fprintf (fp, "\t%s=NULL\n", sp->what);
@@ -1090,7 +1086,7 @@ int slrn_get_variable_value (char *name, SLtype *type, char **sval, int *ival) /
 {
    Slrn_Str_Var_Type *sp;
    Slrn_Int_Var_Type *ip;
-   
+
    sp = Slrn_Str_Variables;
    while (sp->what != NULL)
      {
@@ -1101,7 +1097,7 @@ int slrn_get_variable_value (char *name, SLtype *type, char **sval, int *ival) /
 	     *type = SLANG_STRING_TYPE;
 	     if (sp->get_set_func != NULL)
 	       return (*sp->get_set_func)(sp, 0, sval);
-	     
+
 	     if ((sp->svalp == NULL) || (NULL == (s = *sp->svalp)))
 	       s = "";
 
@@ -1112,7 +1108,7 @@ int slrn_get_variable_value (char *name, SLtype *type, char **sval, int *ival) /
 	  }
 	sp++;
      }
-   
+
    ip = Slrn_Int_Variables;
    while (ip->what != NULL)
      {
@@ -1144,21 +1140,20 @@ static int set_variable_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    int ivalue = table->int_args[2];
    char *svalue = table->string_args[2];
    int type = table->arg_type[2];
-   
+
    (void) argc;
-   
+
    if (type == STRING_TYPE)
      ret = slrn_set_string_variable (what, svalue, Slrn_Config_Charset);
-   else if (type == INT_TYPE) 
+   else if (type == INT_TYPE)
      ret = slrn_set_integer_variable (what, ivalue);
    else ret = -1;
-   
+
    if (ret != 0) exit_unknown_object ();
    return 0;
 }
 
 /*}}}*/
-
 
 /*}}}*/
 
@@ -1258,7 +1253,7 @@ int slrn_set_object_color (char *name, char *fg, char *bg,
 	if (!strcmp (ct->name, name))
 	  {
 	     Color_Handle_Type *ac = Auto_Color_Handles;
-	     
+
 	     if ((This_File != NULL) && (ct == Color_Handles))
 	       {
 		  slrn_message (_("%s: Obsolete spelling on line %d:\n"
@@ -1266,22 +1261,22 @@ int slrn_set_object_color (char *name, char *fg, char *bg,
 				This_File, This_Line_Num);
 		  Slrn_Saw_Obsolete = 1;
 	       }
-	     
+
 	     SLtt_set_color (ct->value, name, fg, bg);
 #ifndef IBMPC_SYSTEM
 	     SLtt_add_color_attribute (ct->value, attr);
 #endif
-	     
+
 	     while (ac->name != NULL)
 	       {
 		  if (!strcmp (ac->name, name))
 		    {
 		       int i;
-		       
+
 		       for (i = 0; i < 16; ++i)
 			 if (!strcmp (fg, Color_Names [i]))
 			   break;
-		       
+
 		       if (i < 16)
 			 SLtt_set_color (ac->value, NULL,
 					 Color_Names [i | 0x8], bg);
@@ -1290,12 +1285,12 @@ int slrn_set_object_color (char *name, char *fg, char *bg,
 #ifndef IBMPC_SYSTEM
 		       SLtt_add_color_attribute (ac->value, attr);
 #endif
-		       
+
 		       break;
 		    }
 		  ac++;
 	       }
-	     
+
 	     return 0;
 	  }
 	ct++;
@@ -1340,7 +1335,7 @@ char *slrn_get_object_color (char *name, int want_bg) /*{{{*/
    slrn_error (_("Due to a limitation in S-Lang, this feature is only available on Unix."));
 #else
    Color_Handle_Type *ct = Color_Handles;
-   
+
    while (ct->name != NULL)
      {
 	if (!strcmp (ct->name, name))
@@ -1360,7 +1355,7 @@ char *slrn_get_object_color (char *name, int want_bg) /*{{{*/
 	     return get_name_for_color (color, want_bg);
 	  }
      }
-   
+
    slrn_error (_("%s is not a color object"), name);
 #endif
    return NULL;
@@ -1394,7 +1389,7 @@ static int color_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    char *fg = table->string_args[2];
    char *bg = table->string_args[3];
    SLtt_Char_Type attrs = read_mono_attributes (argc, 4, table);
-   
+
    if (-1 == slrn_set_object_color (what, fg, bg, attrs))
      exit_unknown_object ();
    return 0;
@@ -1409,15 +1404,15 @@ static int mono_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    Color_Handle_Type *ct = Color_Handles;
 
    mono_attr = read_mono_attributes (argc, 2, table);
-   
+
    while (ct->name != NULL)
      {
 	if (!strcmp (ct->name, what))
 	  {
 	     Color_Handle_Type *ac = Auto_Color_Handles;
-	     
+
 	     SLtt_set_mono (ct->value, NULL, mono_attr);
-	     
+
 	     while (ac->name != NULL)
 	       {
 		  if (!strcmp (ac->name, what))
@@ -1427,7 +1422,7 @@ static int mono_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 		    }
 		  ac++;
 	       }
-	     
+
 	     return 0;
 	  }
 	ct++;
@@ -1452,9 +1447,9 @@ static int mono_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 static int set_posting_host (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 {
    char *hostname = table->string_args[1];
-   
+
    (void) argc;
-   
+
    if (slrn_is_fqdn (hostname))
      {
 	slrn_free (Slrn_User_Info.posting_host);
@@ -1462,7 +1457,7 @@ static int set_posting_host (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 	  exit_malloc_error ();
 	return 0;
      }
-   
+
    slrn_error (_("%s is not a valid fully-qualified host name."), hostname);
    return -1;
 }
@@ -1474,7 +1469,7 @@ static int set_posting_host (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
  *
  * convenient mechanism to set Slrn_User_Info fields without adding
  * extra environment variables
- * 
+ *
  * FIXME: This is obsolete and will be removed before 1.0
 \*----------------------------------------------------------------------*/
 
@@ -1522,15 +1517,15 @@ static int user_data_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    User_Info_Variable_Type *u = User_Info_Variables;
    char **ptr, *contents;
    unsigned int n;
-   
+
    (void) argc;
-   
+
    while (u->name != NULL)
      {
 	if (!strcmp (u->name, what))
 	  {
 	     n = strlen (field);
-	     
+
 	     if (u->size)
 	       {
 		  contents = (char *) u->addr;
@@ -1541,13 +1536,13 @@ static int user_data_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 	       {
 		  contents = safe_malloc (n + 1);
 		  strcpy (contents, field); /* safe */
-		  
+
 		  slrn_free (*ptr);
 		  *ptr = contents;
 	       }
 
 	     issue_obsolete_message ();
-	     
+
 	     return 0;
 	  }
 	u++;
@@ -1581,7 +1576,7 @@ static Server_List_Type *find_server (char *host) /*{{{*/
    Server_List_Type *s;
    char *port;
    int i, has_ssl = 0;
-   
+
    if (0 == strncmp (host, "snews://", 8))
      {
 	has_ssl = 1;
@@ -1589,7 +1584,7 @@ static Server_List_Type *find_server (char *host) /*{{{*/
      }
    else if (0 == strncmp (host, "news://", 7))
      host += 7;
-   
+
    /* host may contain information about the port in the form "address:port"
     * and about whether to use SSL with a prefix like "snews://"
     * First try to find a match with exactly the same information.  If that
@@ -1605,7 +1600,7 @@ static Server_List_Type *find_server (char *host) /*{{{*/
 	  {
 	     char *this_host = s->host;
 	     int this_has_ssl = 0;
-	     
+
 	     if (0 == strncmp (this_host, "snews://", 8))
 	       {
 		  this_has_ssl = 1;
@@ -1613,8 +1608,8 @@ static Server_List_Type *find_server (char *host) /*{{{*/
 	       }
 	     else if (0 == strncmp (this_host, "news://", 7))
 	       this_host += 7;
-	     
-	     if ((0 == slrn_case_strcmp (host, this_host)) 
+
+	     if ((0 == slrn_case_strcmp (host, this_host))
 		 && ((i == 2) || (has_ssl == this_has_ssl)))
 	       break;
 	     s = s->next;
@@ -1622,7 +1617,7 @@ static Server_List_Type *find_server (char *host) /*{{{*/
 
 	if ((s != NULL) || (port == NULL))
 	  break;
-	
+
 	/* Try again without port information */
 	*port = 0;
      }
@@ -1636,7 +1631,7 @@ static Server_List_Type *find_server (char *host) /*{{{*/
 int slrn_add_to_server_list (char *host, char *file, char *username, char *password) /*{{{*/
 {
    Server_List_Type *s;
-   
+
    if (NULL == (s = find_server (host)))
      {
 	s = (Server_List_Type *) safe_malloc (sizeof (Server_List_Type));
@@ -1645,7 +1640,7 @@ int slrn_add_to_server_list (char *host, char *file, char *username, char *passw
 	Server_List = s;
 	s->host = slrn_safe_strmalloc (host);
      }
-   
+
    if (file != NULL)
      {
 	char pathbuf [SLRN_MAX_PATH_LEN];
@@ -1665,7 +1660,7 @@ int slrn_add_to_server_list (char *host, char *file, char *username, char *passw
 	slrn_free (s->password);
 	s->password = slrn_safe_strmalloc (password);
      }
-   
+
    return 0;
 }
 
@@ -1674,9 +1669,9 @@ int slrn_add_to_server_list (char *host, char *file, char *username, char *passw
 static int server_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 {
    char *the_file = table->string_args[2], *the_host = table->string_args[1];
-      
+
    (void) argc;
-   
+
    return slrn_add_to_server_list (the_host, the_file, NULL, NULL);
 }
 
@@ -1685,10 +1680,10 @@ static int server_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 char *slrn_map_file_to_host (char *host) /*{{{*/
 {
    Server_List_Type *s;
-   
+
    if (NULL == (s = find_server (host)))
      return NULL;
-   
+
    return s->file;
 }
 
@@ -1724,7 +1719,7 @@ static int nnrp_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
    (void) argc;
    (void) table;
    return 0;
-#endif   
+#endif
 }
 /*}}}*/
 
@@ -1736,15 +1731,15 @@ int slrn_get_authorization (char *host, int reqd, char **name, char **pass) /*{{
 
    *name = NULL;
    *pass = NULL;
-   
+
    s = find_server (host);
 
    if (s == NULL)
      return 0;
-   
+
    if ((reqd == 0) && ((s->username == NULL) || (s->password == NULL)))
      return 0;
-     
+
    if ((s->username == NULL) || (*s->username == 0))
      {
 	*buf = 0;
@@ -1802,17 +1797,17 @@ void slrn_startup_initialize (void) /*{{{*/
    slrn_init_modes ();
    SLang_init_case_tables ();
    slrn_help_init_keysym_table ();
-   
+
    Slrn_Ignore_Quote_Regexp[0] = compile_quote_regexp ("^ ? ?[><:=|]");
    Slrn_Strip_Sig_Regexp[0] = compile_quote_regexp ("^-- $");
-   
+
    h = Color_Handles;
    while (h->name != NULL)
      {
 	SLtt_set_color (h->value, NULL, h->fg, h->bg);
 #ifndef IBMPC_SYSTEM
 	SLtt_add_color_attribute (h->value, h->mono & ~SLTT_REV_MASK);
-#endif	
+#endif
 	SLtt_set_mono (h->value, NULL, h->mono);
 	h++;
      }
@@ -1822,7 +1817,7 @@ void slrn_startup_initialize (void) /*{{{*/
 	SLtt_set_color (h->value, NULL, h->fg, h->bg);
 #ifndef IBMPC_SYSTEM
 	SLtt_add_color_attribute (h->value, h->mono & ~SLTT_REV_MASK);
-#endif	
+#endif
 	SLtt_set_mono (h->value, NULL, h->mono);
 	h++;
      }
@@ -1839,20 +1834,19 @@ void slrn_startup_initialize (void) /*{{{*/
 
    /* The following are required by GNKSA */
    (void) slrn_set_visible_headers ("From:,Subject:,Newsgroups:,Followup-To:,Reply-To:");
-   
+
    (void) slrn_set_header_format (0, "%F%B%-5S%G%-5l:[%12r]%t%s");
    (void) slrn_set_header_format (1, "%F%B%G%-5l:[%12r]%t%s");
    (void) slrn_set_header_format (2, "%F%B%-5l:%t%s");
    (void) slrn_set_header_format (3, "%F%B%-5S%-5l:%t%50s %r");
    (void) slrn_set_header_format (4, "%F%B%-5S [%10r]:%t%49s %-19g[%17d]");
-   
+
    (void) slrn_set_group_format (0, "  %F%-5u  %n%45g%d");
    (void) slrn_set_group_format (1, "  %F%-5u  %n%50g%-8l-%h");
    (void) slrn_set_group_format (2, "  %F%-5u [%-6t]  %n");
 
    slrn_init_charset();
 }
-
 
 /*}}}*/
 
@@ -1865,19 +1859,19 @@ int slrn_read_startup_file (char *name) /*{{{*/
    char *save_this_file;
    char *save_this_line;
    char *save_config_charset;
-   
+
    if (-1 == slrn_init_readline ())
      {
 	slrn_exit_error (_("Unable to initialize S-Lang readline library."));
      }
-   
+
    if (NULL == (pt = SLprep_new()))
      {
 	slrn_exit_error (_("Error initializing S-Lang preprocessor."));
      }
-   
+
    fp = fopen (name, "r");
-   if (fp == NULL) 
+   if (fp == NULL)
      {
 	SLprep_delete (pt);
 	return -1;
@@ -1889,14 +1883,14 @@ int slrn_read_startup_file (char *name) /*{{{*/
    save_this_line = This_Line;
    save_this_line_num = This_Line_Num;
    save_config_charset = Slrn_Config_Charset;
-   
+
    This_File = name;
    This_Line = line;
    This_Line_Num = 0;
    Slrn_Config_Charset=NULL;
 
    Slrn_Cmd_Table.table = Slrn_Startup_File_Cmds;
-   
+
    while (NULL != fgets (line, sizeof(line) - 1, fp))
      {
 	This_Line_Num++;
@@ -1913,15 +1907,15 @@ int slrn_read_startup_file (char *name) /*{{{*/
 
    slrn_fclose (fp);
    SLprep_delete (pt);
-   
+
    if ((Server_Object != NULL)
        && (-1 == (Slrn_Default_Server_Obj = slrn_map_name_to_object_id (0, Server_Object))))
      slrn_exit_error (_("Server object '%s' is not supported."), Server_Object);
-   
-   if ((Post_Object != NULL) 
+
+   if ((Post_Object != NULL)
        && (-1 == (Slrn_Default_Post_Obj = slrn_map_name_to_object_id (1, Post_Object))))
      slrn_exit_error (_("Post object '%s' is not supported."), Post_Object);
-   
+
    This_File = save_this_file;
    This_Line = save_this_line;
    This_Line_Num = save_this_line_num;
@@ -1935,9 +1929,9 @@ int slrn_read_startup_file (char *name) /*{{{*/
 static int include_file_fun (int argc, SLcmd_Cmd_Table_Type *table)
 {
    char file [SLRN_MAX_PATH_LEN];
-   
+
    (void) argc;
-   
+
    slrn_make_home_filename (table->string_args [1], file, sizeof (file));
 
    if (-1 == slrn_read_startup_file (file))
@@ -1947,11 +1941,10 @@ static int include_file_fun (int argc, SLcmd_Cmd_Table_Type *table)
    return 0;
 }
 
-     
 static int interpret_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 {
    char *file = table->string_args [1];
-   
+
    (void) argc;
    return slrn_eval_slang_file (file);
 }
@@ -1960,7 +1953,7 @@ static int interpret_fun (int argc, SLcmd_Cmd_Table_Type *table) /*{{{*/
 
 static void print_env_vars (FILE *fp)
 {
-   static char *env_vars[] = 
+   static char *env_vars[] =
      {
 	"DISPLAY", "SLRNHOME", "HOME","COLORTERM", ENV_SLRN_SLANG_DIR,
 	"TMP", "TMPDIR", "SLRN_EDITOR", "SLANG_EDITOR", "EDITOR", "VISUAL",
@@ -1998,7 +1991,7 @@ static void print_header_formats (FILE *fp)
    int i;
 
    (void) fputs (_("Header Formats:\n"), fp);
-   
+
    for (i = 0; i < SLRN_MAX_DISPLAY_FORMATS; i++)
      (void) fprintf (fp, "\t%d: \"%s\"\n", i, slrn_get_header_format (i));
 }

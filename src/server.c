@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -53,7 +53,7 @@
 #include "server.h"
 #include "startup.h"
 #include "snprintf.h"
-#if SLRN_USE_SLTCP 
+#if SLRN_USE_SLTCP
 # if SLRN_HAS_NNTP_SUPPORT || SLRN_HAS_GROUP_LENS
 #  include "sltcp.c"
 # endif
@@ -118,7 +118,7 @@ static int inews_start_post (void)
 static int inews_end_post (void)
 {
    int res = 0;
-   
+
 #if defined(IBMPC_SYSTEM)
    char buf [MAX_LINE_BUFLEN];
    slrn_fclose (Fp_Inews);
@@ -132,7 +132,7 @@ static int inews_end_post (void)
      }
 #endif
    Fp_Inews=NULL;
-   
+
    return res;
 }
 
@@ -188,26 +188,25 @@ static int inews_select_post_object (void)
 {
    char inews [SLRN_MAX_PATH_LEN + 1];
    char *p;
-   
+
    strncpy (inews, Slrn_Inews_Pgm, SLRN_MAX_PATH_LEN);
    inews[SLRN_MAX_PATH_LEN - 1] = 0;
-   
+
    p = inews;
    while (*p && (*p != ' ')) p++;
    *p = 0;
-   
+
    if (1 != slrn_file_exists (inews))
      {
 	slrn_error (_("Unable to locate inews program \"%s\""), inews);
 	return -1;
      }
-   
+
    Slrn_Post_Obj = &Inews_Post_Obj;
    return 0;
 }
 
 #endif				       /* HAS_INEWS_SUPPORT */
-
 
 int slrn_init_objects (void)
 {
@@ -229,27 +228,27 @@ int slrn_init_objects (void)
    if (-1 == pull_init_objects ())
      return -1;
 #endif
-   
+
    switch (Slrn_Server_Id)
      {
       case SLRN_SERVER_ID_NNTP:
 	server = "NNTP";
 	break;
-	
+
       case SLRN_SERVER_ID_SPOOL:
 	server = "SPOOL";
 	break;
-	
+
       default:
 	server = NULL;
      }
-   
-   if ((server != NULL) 
+
+   if ((server != NULL)
        && (-1 == SLdefine_for_ifdef (server)))
      {
 	slrn_exit_error (_("Unable to add preprocessor name %s."), server);
      }
-   
+
    return 0;
 }
 
@@ -276,14 +275,14 @@ int slrn_select_post_object (int id)
 # endif
 	return inews_select_post_object ();
 #endif
-   
+
 #if !SLRN_FORCE_INEWS
 # if SLRN_HAS_NNTP_SUPPORT
       case SLRN_POST_ID_NNTP:
 	return nntp_select_post_object ();
 # endif
 #endif
-	
+
 #if SLRN_HAS_PULL_SUPPORT
       case SLRN_POST_ID_PULL:
 	return pull_select_post_object ();
@@ -296,7 +295,7 @@ int slrn_select_post_object (int id)
 
 	slrn_error (_("%s is not a supported posting agent."), post);
      }
-   
+
    return -1;
 }
 
@@ -313,7 +312,7 @@ int slrn_select_server_object (int id)
       case SLRN_SERVER_ID_NNTP:
 	return nntp_select_server_object ();
 #endif
-	
+
 #if SLRN_HAS_SPOOL_SUPPORT
       case SLRN_SERVER_ID_SPOOL:
 	ret = spool_select_server_object ();
@@ -322,12 +321,12 @@ int slrn_select_server_object (int id)
 	if (ret == -1)
 	  return ret;
 
-	if (Slrn_Use_Pull_Post) 
+	if (Slrn_Use_Pull_Post)
 	  Slrn_Post_Id = SLRN_POST_ID_PULL;
 # endif
 	return ret;
 #endif
-   
+
       default:
 	server = slrn_map_object_id_to_name (0, id);
 
@@ -344,7 +343,7 @@ int slrn_parse_object_args (char *name, char **argv, int argc)
    int num_parsed = -1;
 
    if (name == NULL) return -1;
-   
+
    if (!strcmp (name, "nntp"))
      {
 #if SLRN_HAS_NNTP_SUPPORT
@@ -360,7 +359,7 @@ int slrn_parse_object_args (char *name, char **argv, int argc)
 	return -2;
 #endif
      }
-   
+
    if (!strcmp (name, "spool"))
      {
 #if SLRN_HAS_SPOOL_SUPPORT
@@ -370,17 +369,17 @@ int slrn_parse_object_args (char *name, char **argv, int argc)
 	return -2;
 #endif
      }
-   
+
    if (!strcmp (name, "inews"))
      {
 #if SLRN_HAS_INEWS_SUPPORT
 	Slrn_Post_Id = SLRN_POST_ID_INEWS;
 	return 0;
-#else 
+#else
 	return -2;
 #endif
      }
-   
+
    if (!strcmp (name, "pull"))
      {
 #if SLRN_HAS_PULL_SUPPORT
@@ -402,14 +401,14 @@ typedef struct
 }
 Object_Name_Id_Type;
 
-static Object_Name_Id_Type Server_Objects_and_Ids [] = 
+static Object_Name_Id_Type Server_Objects_and_Ids [] =
 {
    {"nntp", SLRN_SERVER_ID_NNTP},
    {"spool", SLRN_SERVER_ID_SPOOL},
    {NULL, 0}
 };
 
-static Object_Name_Id_Type Post_Objects_and_Ids [] = 
+static Object_Name_Id_Type Post_Objects_and_Ids [] =
 {
    {"nntp", SLRN_POST_ID_NNTP},
    {"inews", SLRN_POST_ID_INEWS},
@@ -421,7 +420,7 @@ static Object_Name_Id_Type Post_Objects_and_Ids [] =
 static Object_Name_Id_Type *map_object_type (int type, int *def_id)
 {
    Object_Name_Id_Type *obj;
-   
+
    switch (type)
      {
       case 0:
@@ -429,34 +428,34 @@ static Object_Name_Id_Type *map_object_type (int type, int *def_id)
 	if (def_id != NULL)
 	  *def_id = SLRN_DEFAULT_SERVER_OBJ;
 	break;
-	
+
       case 1:
 	obj = Post_Objects_and_Ids;
 	if (def_id != NULL)
 	  *def_id = SLRN_DEFAULT_POST_OBJ;
 	break;
-	
+
       default:
 	obj = NULL;
      }
-   
+
    return obj;
 }
 
 char *slrn_map_object_id_to_name (int type, int id)
 {
    Object_Name_Id_Type *obj;
-   
+
    if (NULL == (obj = map_object_type (type, NULL)))
      return NULL;
-   
+
    while (obj->name != NULL)
      {
 	if (obj->id == id)
 	  return obj->name;
 	obj++;
      }
-   
+
    return NULL;
 }
 
@@ -474,7 +473,7 @@ int slrn_map_name_to_object_id (int type, char *name)
 	if (name == NULL)
 	  return -1;
      }
-   
+
    while (obj->name != NULL)
      {
 	if (0 == strcmp (name, obj->name))
@@ -493,34 +492,33 @@ char Pull_Post_Dir [SLRN_MAX_PATH_LEN + 1];
 
 static int pull_make_tempname (char *file, size_t n, char *prefix,
 			       unsigned int num)
-{   
+{
    int pid;
    time_t now;
    char name[256];
    char *login_name;
-   
+
    pid = getpid ();
    time (&now);
-   
+
    login_name = Slrn_User_Info.login_name;
    if ((login_name == NULL) || (*login_name == 0))
      login_name = "unknown";
 
    slrn_snprintf (name, sizeof (name), "%s%lu-%d-%u.%s", prefix,
 		  (unsigned long) now, pid, num, login_name);
-   
+
    if (-1 == slrn_dircat (Pull_Post_Dir, name, file, n))
      return -1;
-   
+
    return 0;
 }
-
 
 static int pull_start_post (void)
 {
    int fd;
    unsigned int n = 0;
-   
+
    do
      {
 	if (-1 == pull_make_tempname (Pull_Post_Filename,
@@ -535,13 +533,13 @@ static int pull_start_post (void)
 	  }
      }
    while (-1 == fd);
-   
+
    if (NULL == (Pull_Fp = fdopen (fd, "w")))
      {
 	close (fd);
 	return ERR_FAULT;
      }
-   
+
    return CONT_POST;
 }
 
@@ -549,7 +547,7 @@ static int pull_end_post (void)
 {
    char file [SLRN_MAX_PATH_LEN + 1];
    unsigned int n = 0, m = 0;
-   
+
    if (Pull_Fp == NULL)
      return ERR_FAULT;
 
@@ -559,7 +557,6 @@ static int pull_end_post (void)
 	return ERR_FAULT;
      }
    Pull_Fp = NULL;
-   
 
 #if SLRNPULL_USE_SETGID_POSTS
     /*
@@ -569,7 +566,7 @@ static int pull_end_post (void)
      *            group news. This way, the news user will have
      *            appropriate permissions for manipulating this file.
      *            (NOTE: This has only been tested on Linux-2.0.xx)
-     * 
+     *
      * As of version 0.9.7.3, the files is not made group writeable any
      * longer. slrnpull should not need that permission.
      */
@@ -577,8 +574,8 @@ static int pull_end_post (void)
       {
 	 return ERR_FAULT;
       }
-#endif   
- 
+#endif
+
    while (m != 10)
      {
 	do
@@ -588,10 +585,10 @@ static int pull_end_post (void)
 	       return ERR_FAULT;
 	  }
 	while (0 != slrn_file_exists (file));
-   
+
 	if (0 == rename (Pull_Post_Filename, file))
 	  break;
-	
+
 #ifdef EEXIST
 	if (errno == EEXIST)
 	  {
@@ -599,11 +596,11 @@ static int pull_end_post (void)
 	     continue;
 	  }
 #endif
-       
+
 	slrn_error (_("Unable to rename file. errno = %d."), errno);
 	return ERR_FAULT;
      }
-   
+
    return 0;
 }
 
@@ -612,7 +609,7 @@ static int pull_puts (char *s)
    unsigned int len;
 
    len = strlen (s);
-	
+
    if (len != fwrite (s, 1, len, Pull_Fp))
      {
 	slrn_error (_("Write error.  File system full?"));
@@ -673,15 +670,15 @@ static int pull_select_post_object (void)
    if (-1 == slrn_dircat (Slrn_Inn_Root, SLRNPULL_OUTGOING_DIR,
 			  Pull_Post_Dir, sizeof (Pull_Post_Dir)))
      return -1;
-   
+
    if (2 != slrn_file_exists (Pull_Post_Dir))
      {
 	slrn_error (_("Posting directory %s does not exist."), Pull_Post_Dir);
 	return -1;
      }
-   
+
    Slrn_Post_Obj = &Pull_Post_Obj;
-   
+
    return 0;
 }
 

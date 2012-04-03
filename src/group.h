@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -64,7 +64,7 @@ typedef struct Slrn_Group_Type
    char *group_name;
    unsigned long hash;
    struct Slrn_Group_Type *hash_next;
-   
+
    Slrn_Range_Type range;		       /* the first range corresponds to
 						* what the server has.  next ranges
 						* correspond to what has been read.
@@ -73,7 +73,7 @@ typedef struct Slrn_Group_Type
 			       * note that the first one is also malloced here! */
    int requests_loaded;	/* We load these each time we enter article mode in case
 			 * slrnpull ran in the background */
-   
+
    NNTP_Artnum_Type unread;
    char *descript;		       /* description of the group -- malloced, could be NULL */
 }

@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2009 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2002-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -65,7 +65,7 @@ extern char *slrn_fix_regexp (char *);
 extern void slrn_va_stderr_strcat (const char *, va_list);
 extern void slrn_stderr_strcat (const char *, ...);
 
-/* These declarations are here although the functions are not really defined 
+/* These declarations are here although the functions are not really defined
  * in util.c.
  */
 char *slrn_make_from_header (void);
