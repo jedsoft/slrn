@@ -65,6 +65,8 @@ Changes since 0.9.9p1
     replace_article function that dictates if the article should be
     mime processed.
 31. src/*: Updated copyright year and trimmed extra whitespace.
+32. macros/mime.sl: Added initial support for multipart mime messages.
+    See macros/mime.sl for additional information.
 
 {{{ Previous Versions 
 

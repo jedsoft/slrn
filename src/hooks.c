@@ -31,15 +31,15 @@ typedef struct Hook_Function_Type
 {
    SLang_Name_Type *func;
    struct Hook_Function_Type *next;
-} 
+}
 Hook_Function_Type;
 
-typedef struct Hook_Type 
+typedef struct Hook_Type
 {
    const char *name;
    int multi; /* whether multiple hooks may be registered */
    Hook_Function_Type *first;
-} 
+}
 Hook_Type;
 
 /* Order as given by constants HOOK_*
@@ -94,7 +94,7 @@ static void free_hook_function_type (Hook_Function_Type *f)
 
    if (f->func != NULL)
      SLang_free_function (f->func);
-   
+
    slrn_free ((char *) f);
 }
 
@@ -118,22 +118,22 @@ int slrn_register_hook (char *name, SLang_Name_Type *func)
    f = (Hook_Function_Type *) SLmalloc (sizeof (Hook_Function_Type));
    if (f == NULL)
      return -1;
-   
+
    if (NULL == (f->func = SLang_copy_function (func)))
      {
 	SLfree ((char *) f);
 	return -1;
      }
-   
+
    if (h->multi == 0)
      {
 	free_hook_function_type (h->first);
 	h->first = NULL;
      }
-   
+
    f->next = h->first;
    h->first = f;
-   
+
    return 1;
 }
 
@@ -144,10 +144,10 @@ int slrn_unregister_hook (char *name, SLang_Name_Type *func)
 
    if (NULL == (h = find_hook (name)))
      return -1;
-   
+
    prev = NULL;
    f = h->first;
-   while (f != NULL) 
+   while (f != NULL)
      {
 	if (f->func != func)
 	  {
@@ -160,14 +160,13 @@ int slrn_unregister_hook (char *name, SLang_Name_Type *func)
 	  prev->next = f->next;
 	else
 	  h->first = f->next;
-	
+
 	free_hook_function_type (f);
 	return 1;
      }
-   
+
    return 0;
 }
-
 
 static int call_slang_function (SLang_Name_Type *func, unsigned int num_args, va_list ap)
 {
@@ -186,10 +185,9 @@ static int call_slang_function (SLang_Name_Type *func, unsigned int num_args, va
    if ((-1 == SLang_end_arg_list ())
        || (-1 == SLexecute_function (func)))
      return -1;
-   
+
    return 0;
 }
-
 
 int slrn_run_hooks (unsigned int hook, unsigned int num_args, ...)
 {
@@ -203,7 +201,7 @@ int slrn_run_hooks (unsigned int hook, unsigned int num_args, ...)
 
    if (hook > HOOK_NUMBER)
      return num_called;
-   
+
    h = Hooks + hook;
    if (h->name == NULL)
      return num_called;
@@ -221,7 +219,7 @@ int slrn_run_hooks (unsigned int hook, unsigned int num_args, ...)
 	f = f->next;
 	num_called++;
      }
-	
+
    if (num_called && (h->multi == 0))
      return num_called;
 
@@ -249,9 +247,9 @@ int slrn_is_hook_defined (unsigned int hook)
 
    if (hook >= HOOK_NUMBER)
      return 0;
-   
+
    h = Hooks + hook;
-   
+
    if (h->first != NULL)
      return 1;
 
