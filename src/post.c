@@ -1576,7 +1576,7 @@ static int post_user_confirm (char *file, int is_postponed, unsigned int linenum
 	     break;
 
 	   case 'd':
-	     rsp = slrn_get_yesno_cancel (_("Sure you want to delete it"));
+	     rsp = slrn_get_yesno_cancel (1, "%s", _("Sure you want to delete it"));
 	     if (rsp == 0)
 	       continue;
 	     if (rsp == -1)
@@ -1914,7 +1914,7 @@ static int postpone_file (char *file) /*{{{*/
 	status = slrn_file_exists (dirfile);
 	if (status == 1)
 	  {
-	     status = slrn_get_yesno_cancel (_("File exists, overwrite"));
+	     status = slrn_get_yesno_cancel (1, "%s", _("File exists, overwrite"));
 	     if (status == 0)
 	       continue;
 	     if (status == 1)

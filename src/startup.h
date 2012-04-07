@@ -34,6 +34,8 @@ extern int slrn_set_object_color (char *, char *, char *, SLtt_Char_Type);
 extern char *slrn_get_object_color (char *, int);
 extern int slrn_add_to_server_list (char *, char *, char *, char *);
 
+extern char *slrn_get_charset (char *name);
+
 struct SLcmd_Cmd_Table_Type;
 struct SLRegexp_Type;
 extern void slrn_generic_regexp_fun (int, SLcmd_Cmd_Table_Type *, SLRegexp_Type **);

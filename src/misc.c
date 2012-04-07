@@ -2120,8 +2120,8 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
 	if (-1 == SLrline_set_line (Slrn_Keymap_RLI, str))
 	  return -1;
 
-	if (point == 0)
-	  SLrline_set_point (Slrn_Keymap_RLI, 0);
+	/* if (point == 0) */
+	  SLrline_set_point (Slrn_Keymap_RLI, point);
 
 	*str = 0;
      }
@@ -2439,7 +2439,7 @@ int slrn_get_yesno (int dflt, char *str, ...) /*{{{*/
 }
 
 /*}}}*/
-int slrn_get_yesno_cancel (char *str, ...) /*{{{*/
+int slrn_get_yesno_cancel (int dflt, char *str, ...) /*{{{*/
 {
    va_list ap;
    char buf[512];
@@ -2460,12 +2460,24 @@ int slrn_get_yesno_cancel (char *str, ...) /*{{{*/
    (void) slrn_vsnprintf(buf, sizeof(buf), str, ap);
    va_end(ap);
 
-   prompt = slrn_strdup_strcat (buf, _("? [\001Y]es, \001No, \001Cancel"), NULL);
+   if (dflt == 1)
+     prompt = slrn_strdup_strcat (buf, _("? [\001Y]es, \001No, \001Cancel"), NULL);
+   else if (dflt == 0)
+     prompt = slrn_strdup_strcat (buf, _("? Yes, \001[N]o, \001Cancel"), NULL);
+   else
+     prompt = slrn_strdup_strcat (buf, _("? Yes, \001No, \001[C]ancel"), NULL);
+
+   if (prompt == NULL)
+     return -1;
+
    rsp = slrn_get_response ("\007yYnNcC\r", responses, "%s", prompt);
    slrn_free (prompt);
-   if (rsp == '\r') rsp = 'y';
-   else if (rsp == 7) rsp = 'c';
-   else rsp = slrn_map_translated_char ("yYnNcC", responses, rsp) | 0x20;
+
+   if (rsp == '\r') return dflt;
+
+   if (rsp == 7) return -1;
+
+   rsp = slrn_map_translated_char ("yYnNcC", responses, rsp) | 0x20;
 
    if (rsp == 'y') return 1;
    if (rsp == 'n') return 0;

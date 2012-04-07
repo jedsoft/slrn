@@ -4,7 +4,7 @@
  * Author: Michael Elkins <elkins@aero.org>
  * Modified by John E. Davis <jed@jedsoft.org>
  * Modified by Thomas Schultz <tststs@gmx.de>
- * 
+ *
  * Change Log:
  * Aug 20, 1997 patch from "Byrial Jensen" <byrial@post3.tele.dk>
  *   added.  Apparantly RFC2047 requires the whitespace separating
@@ -19,7 +19,6 @@
 
 #include <stdio.h>
 #include <string.h>
-
 
 #ifdef HAVE_STDLIB_H
 # include <stdlib.h>
@@ -67,7 +66,6 @@ char *Slrn_MetaMail_Cmd;
 #define CONTENT_SUBTYPE_UNKNOWN		0x02
 #define CONTENT_SUBTYPE_UNSUPPORTED	0x10
 
-
 #endif /* NOT SLRNPULL_CODE */
 
 #ifndef SLRNPULL_CODE
@@ -82,16 +80,16 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 {
    char *b;
    Slrn_Article_Line_Type *line;
-   
+
    if (a == NULL)
      return -1;
    line = a->lines;
-   
+
    if (NULL == (line = slrn_find_header_line (a, "Content-Type:")))
      return 0;
-   
+
    b = slrn_skip_whitespace (line->buf + 13);
-   
+
    if (0 == slrn_case_strncmp (b, "text/", 5))
      {
 	a->mime.content_type = CONTENT_TYPE_TEXT;
@@ -124,7 +122,7 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 	a->mime.content_type = CONTENT_TYPE_UNSUPPORTED;
 	return -1;
      }
-   
+
    do
      {
 	while (NULL != (b = slrn_strbyte (b, ';')))
@@ -134,10 +132,10 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 	     int quote_seen;
 
 	     b = slrn_skip_whitespace (b + 1);
-	     
+
 	     if (0 != slrn_case_strncmp (b, "charset", 7))
 	       continue;
-	     
+
 	     b = slrn_skip_whitespace (b + 7);
 	     while (*b == 0)
 	       {
@@ -148,11 +146,11 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 		    return -1;
 		  b = slrn_skip_whitespace (b);
 	       }
-	     
+
 	     if (*b != '=') continue;
 	     b++;
 	     quote_seen = 0;
-	     if (*b == '"') 
+	     if (*b == '"')
 	       {
 		  b++;
 		  quote_seen = 1;
@@ -173,7 +171,7 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 	       }
 
 	     len = b - charset;
-	     
+
 	     a->mime.charset = slrn_safe_strnmalloc (charset, len);
 	     return 0;
 	  }
@@ -182,7 +180,7 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
    while ((line != NULL)
 	  && (line->flags & HEADER_LINE)
 	  && ((*(b = line->buf) == ' ') || (*b == '\t')));
-   
+
    return 0;
 }
 
@@ -198,7 +196,7 @@ static int parse_content_transfer_encoding_line (Slrn_Article_Type *a)/*{{{*/
 {
    Slrn_Article_Line_Type *line;
    char *buf;
-   
+
    if (a == NULL)
      return -1;
 
@@ -207,7 +205,7 @@ static int parse_content_transfer_encoding_line (Slrn_Article_Type *a)/*{{{*/
 
    buf = slrn_skip_whitespace (line->buf + 26);
    if (*buf == '"') buf++;
-   
+
    if (0 == slrn_case_strncmp (buf,  "7bit", 4))
 	return ENCODED_7BIT;
    else if (0 == slrn_case_strncmp (buf,  "8bit", 4))
@@ -256,15 +254,24 @@ static char *decode_quoted_printable (char *dest,/*{{{*/
    while (src < srcmax)
      {
 	ch = (unsigned char) *src++;
-	if ((ch == '=') && (src + 1 < srcmax)
-	    && (NULL != slrn_strbyte (allowed_in_qp, src[0]))
-	    && (NULL != slrn_strbyte (allowed_in_qp, src[1])))
+	if (ch == '=')
 	  {
-	     ch = (16 * HEX(src[0])) + HEX(src[1]);
-	     if ((ch == '\n') && (keep_nl == 0))
-	       ch = '?';
-	     *dest++ = (char) ch;
-	     src += 2;
+	     if ((src + 1 < srcmax)
+		 && (NULL != slrn_strbyte (allowed_in_qp, src[0]))
+		 && (NULL != slrn_strbyte (allowed_in_qp, src[1])))
+	       {
+		  ch = (16 * HEX(src[0])) + HEX(src[1]);
+		  if ((ch == '\n') && (keep_nl == 0))
+		    ch = '?';
+		  *dest++ = (char) ch;
+		  src += 2;
+	       }
+	     else if ((src < srcmax) && (*src == '\n'))
+	       {
+		  src++;
+		  continue;/* = at the end of a line-- skip it */
+	       }
+	     else *dest++ = ch;
 	  }
 	else if ((ch == '_') && treat_underscore_as_space)
 	  {
@@ -304,7 +311,7 @@ static char *decode_base64 (char *dest, char *src, char *srcmax, int keep_nl, in
 	if ((ch == '\n') && (keep_nl == 0)) ch = '?';
 	else if ((ch == 0) && convert_null) ch = '?';
 	*dest++ = ch;
-	
+
 	if (src[2] == '=') break;
 	ch = ((BASE64(src[1]) & 0xf) << 4) | (BASE64(src[2]) >> 2);
 	if ((ch == '\n') && (keep_nl == 0)) ch = '?';
@@ -324,9 +331,43 @@ static char *decode_base64 (char *dest, char *src, char *srcmax, int keep_nl, in
 
 /*}}}*/
 
+/* This function decodes the base64 string in place.  It returns a pointer to
+ * the END of the decoded text.
+ */
+char *slrn_decode_base64 (char *str)
+{
+   char *s, *s0;
+   char ch;
+   /* Remove any characters not in the base64 alphabet */
+   s = s0 = str;
+   while (1)
+     {
+	ch = *s++;
+	if (ch == 0)
+	  {
+	     *s0 = ch;
+	     break;
+	  }
+	if ((ch & 0x80) || (-1 == Index_64[(unsigned char)(ch)]))
+	  {
+	     if (ch != '=')
+	       continue;
+	  }
+	*s0++ = ch;
+     }
+   s = decode_base64 (str, str, s0, 1, 0);
+   return s;
+}
+
+/* returns a pointer to the end of the decoded string.  It decodes in-place */
+char *slrn_decode_qp (char *str)
+{
+   return decode_quoted_printable (str, str, str+strlen(str), 0, 1, 0);
+}
+
 /* Warning: It must be ok to free *s_ptr and replace it with the converted
  * string */
-static int rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{*/
+int slrn_rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{*/
 {
    char *s1, *s2, ch, *s;
    char *charset, method, *txt;
@@ -350,25 +391,25 @@ static int rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{
 	while ((NULL != (s = slrn_strbyte (s, '=')))
 	       && (s[1] != '?')) s++;
 	if (s == NULL) break;
-	
+
 	s1 = s;
 
 	charset = s = s1 + 2;
 	while (((ch = *s) != 0)
 	       && (ch != '?') && (ch != ' ') && (ch != '\t') && (ch != '\n'))
 	  s++;
-	
+
 	if (ch != '?')
 	  {
 	     s = s1 + 2;
 	     charset = NULL;
 	     continue;
 	  }
-	
+
 	charset = s1 + 2;
 	len = s - charset;
 	charset=slrn_strnmalloc (charset, len, 1);
-	
+
 	s++;			       /* skip ? */
 	method = *s++;		       /* skip B,Q */
 	/* works in utf8 mode and else */
@@ -386,10 +427,10 @@ static int rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{
 	/* Now look for the final ?= after encoded test */
 	s++;			       /* skip ? */
 	txt = s;
-       
+
 	while ((ch = *s) != 0)
 	  {
-	     /* Appararantly some programs do not convert ' ' to '_' in 
+	     /* Appararantly some programs do not convert ' ' to '_' in
 	      * quoted printable.  Sigh.
 	      */
 	     if (((ch == ' ') && (method != 'Q'))
@@ -397,10 +438,10 @@ static int rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{
 	       break;
 	     if ((ch == '?') && (s[1] == '='))
 	       break;
-	     
+
 	     s++;
 	  }
-	
+
 	if ((ch != '?') || (s[1] != '='))
 	  {
 	     s = s1 + 2;
@@ -430,7 +471,7 @@ static int rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{
 	s = s1;			       /* start from here next loop */
 	while ((ch = *s2++) != 0) *s1++ = ch;
 	*s1 = 0;
-	
+
 	count++;
 
 	if (slrn_case_strncmp(Slrn_Display_Charset,
@@ -448,7 +489,7 @@ static int rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{
 	     *decoded_end = 0;
 	     s2 = slrn_convert_substring(*s_ptr, offset, substr_len, Slrn_Display_Charset, charset, 0);
 	     *decoded_end = ch1;
-	     
+
 	     if (s2 != NULL)
 	       {
 		  /* FIXME --- currently slrn_strdup_strcat will exit */
@@ -463,7 +504,7 @@ static int rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{
 		  slrn_free(s2);
 	       }
            }
-	
+
 	slrn_free(charset);
 	charset=NULL;
 
@@ -483,7 +524,7 @@ static int rfc1522_decode_string (char **s_ptr, unsigned int start_offset )/*{{{
 /* Decode everything after the colon */
 static int rfc1522_decode_header_generic (char **hdr, unsigned int start_offset)
 {
-   return rfc1522_decode_string (hdr, start_offset);
+   return slrn_rfc1522_decode_string (hdr, start_offset);
 }
 
 static int rfc1522_decode_header_email (char **hdr, unsigned int start_offset)
@@ -514,7 +555,7 @@ static int rfc1522_decode_header_email (char **hdr, unsigned int start_offset)
    while ((i0 < imax)
 	  && (encodemap[i0] == ' '))
      i0++;
-   
+
    status = 0;
    if (i0 == imax)
      {
@@ -542,17 +583,17 @@ static int rfc1522_decode_header_email (char **hdr, unsigned int start_offset)
 	     i0++;
 	     continue;
 	  }
-	
+
 	tmp = slrn_substrjoin (new_header, new_header+new_header_len,
 			       addr + last_i0, addr + i0,
 			       NULL);
 	if (tmp == NULL)
 	  goto return_error;
-   
+
 	slrn_free (new_header);
 	new_header = tmp;
 	new_header_len += i0 - last_i0;
-	
+
 	if (i0 == imax)
 	  break;
 
@@ -565,7 +606,7 @@ static int rfc1522_decode_header_email (char **hdr, unsigned int start_offset)
 	if (str == NULL)
 	  goto return_error;
 
-	if (-1 == (dstatus = rfc1522_decode_string (&str, 0)))
+	if (-1 == (dstatus = slrn_rfc1522_decode_string (&str, 0)))
 	  {
 	     slrn_free (str);
 	     goto return_error;
@@ -583,15 +624,15 @@ static int rfc1522_decode_header_email (char **hdr, unsigned int start_offset)
 	slrn_free (new_header);
 	new_header = tmp;
 	new_header_len += dlen;
-	
+
 	last_i0 = i0 = i1;
      }
-   
+
    slrn_free (encodemap);
    slrn_free (*hdr);
    *hdr = new_header;
    return status;
-   
+
 return_error:
    if (new_header != NULL)
      slrn_free (new_header);
@@ -609,7 +650,7 @@ typedef struct
 }
 Header_Decode_Type;
 
-static Header_Decode_Type Header_Decode_Table[] = 
+static Header_Decode_Type Header_Decode_Table[] =
 {
    {"Message-ID", 10, NULL},
    {"Followup-To", 11, NULL},
@@ -628,7 +669,7 @@ static Header_Decode_Type Header_Decode_Table[] =
 static Header_Decode_Type *find_header_decode_info (char *header, unsigned int len)
 {
    Header_Decode_Type *hdt;
-   
+
    hdt = Header_Decode_Table;
 
    while (hdt->header != NULL)
@@ -636,7 +677,7 @@ static Header_Decode_Type *find_header_decode_info (char *header, unsigned int l
 	if ((hdt->header_len == len)
 	    && (0 == slrn_case_strncmp (hdt->header, header, len)))
 	  return hdt;
-	
+
 	hdt++;
      }
    return NULL;
@@ -678,7 +719,7 @@ int slrn_rfc1522_decode_header (char *name, char **hdrp)
 	name = header;
 	start_offset = len + 1;
      }
-   else 
+   else
      {
 	len = strlen (name);
 	start_offset = 0;
@@ -695,14 +736,14 @@ int slrn_rfc1522_decode_header (char *name, char **hdrp)
 
    return (*decode_func)(hdrp, start_offset);
 }
-	
+
 static void rfc1522_decode_headers (Slrn_Article_Type *a)/*{{{*/
 {
    Slrn_Article_Line_Type *line;
-   
+
    if (a == NULL)
      return;
-   
+
    line = a->lines;
 
    while ((line != NULL) && (line->flags & HEADER_LINE))
@@ -728,17 +769,17 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
    int len;
 
    if (a == NULL) return;
-   
+
    l = a->lines;
-   
+
    /* skip header and separator */
    while ((l != NULL) && ((l->flags & HEADER_LINE) || l->buf[0] == '\0'))
      l = l->next;
-   
+
    if (l == NULL) return;
-   
+
    body_start = l;
-   
+
    /* let's calculate how much space we need... */
    len = 0;
    while (l != NULL)
@@ -750,7 +791,7 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
    /* get some memory */
    buf_src = slrn_safe_malloc (len + 1);
    buf_dest = slrn_safe_malloc (len + 1);
-   
+
    /* collect all base64 encoded lines into buf_src */
    l = body_start;
    buf_pos = buf_src;
@@ -760,11 +801,11 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
 	buf_pos += strlen(l->buf);
 	l = l->next;
      }
-   
+
    /* put decoded article into buf_dest */
    buf_pos = decode_base64 (buf_dest, buf_src, buf_src+len, keep_nl, 1);
    *buf_pos = '\0';
-   
+
    if (a->mime.charset == NULL)
      {
 	buf_pos = buf_dest;
@@ -774,7 +815,7 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
 	     buf_pos++;
 	  }
      }
-   
+
    l = body_start;
    body_start = body_start->prev;
 
@@ -796,14 +837,14 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
    buf_pos = buf_dest;
    buf_end = buf_dest + strlen (buf_dest);
    /* put decoded article back into article structure */
-   
+
    while (buf_dest < buf_end)
      {
 	if (NULL == (buf_pos = slrn_strbyte(buf_dest, '\n')))
 	  buf_pos = buf_end;
 
 	len = buf_pos - buf_dest;
-	
+
 	next = (Slrn_Article_Line_Type *) slrn_malloc(sizeof(Slrn_Article_Line_Type), 1, 1);
 	if ((next == NULL)
 	    || (NULL == (next->buf = slrn_malloc(sizeof(char) * len + 1, 0, 1))))
@@ -811,34 +852,34 @@ static void decode_mime_base64 (Slrn_Article_Type *a)/*{{{*/
 	     slrn_free ((char *) next);/* NULL ok */
 	     goto return_error;
 	  }
-	next->next = NULL; /* Unnecessary since slrn_malloc as used 
+	next->next = NULL; /* Unnecessary since slrn_malloc as used
 			    * above will guarantee that next->next is NULL.
 			    */
 	next->prev = l;
 	l->next = next;
 	l = next;
-	
+
 	strncpy(l->buf, buf_dest, len);
 	/* terminate string and strip '\r' if necessary */
 	if (len && (l->buf[len-1] == '\r'))
 	  len--;
 
 	l->buf[len] = 0;
-	
+
 	buf_dest = buf_pos + 1;
      }
 
    /* drop */
 
 return_error:
-   
+
    slrn_free(buf_src);
    slrn_free(base);
 }
 
 /*}}}*/
 
-/* This function checks if the last character on curr_line is an = and 
+/* This function checks if the last character on curr_line is an = and
  * if it is, then it merges curr_line and curr_line->next. See RFC1341,
  * section 5.1 (Quoted-Printable Content-Transfer-Encoding) rule #5.
  * [csp@ohm.york.ac.uk]
@@ -855,25 +896,25 @@ static int merge_if_soft_linebreak (Slrn_Article_Line_Type *curr_line)/*{{{*/
 	b = curr_line->buf;
 	len = (unsigned int) (slrn_bskip_whitespace (b) - b);
 	if (len == 0) return 0;
-   
+
 	len--;
 	if (b[len] != '=') return 0;
-	
+
 	/* Remove the excess = character... */
 	b[len] = '\0';
-	
+
 	if (NULL == (b = (char *) SLrealloc (b, 1 + len + strlen (next_line->buf))))
 	  return -1;
 
 	curr_line->buf = b;
-	
+
 	strcpy (b + len, next_line->buf); /* safe */
-	
+
 	/* Unlink next_line from the linked list of lines in the article... */
 	curr_line->next = next_line->next;
 	if (next_line->next != NULL)
 	  next_line->next->prev = curr_line;
-	
+
 	SLFREE (next_line->buf);
 	SLFREE (next_line);
      }
@@ -886,7 +927,7 @@ static int merge_if_soft_linebreak (Slrn_Article_Line_Type *curr_line)/*{{{*/
 	if (*b == '=')
 	  *b = 0;
      }
-   
+
    return 0;
 }
 
@@ -895,11 +936,11 @@ static int merge_if_soft_linebreak (Slrn_Article_Line_Type *curr_line)/*{{{*/
 static int split_qp_lines (Slrn_Article_Type *a)
 {
    Slrn_Article_Line_Type *line;
-   
+
    line = a->lines;
 
    /* skip header lines */
-   while ((line != NULL) 
+   while ((line != NULL)
 	  && (line->flags & HEADER_LINE))
      line=line->next;
 
@@ -914,7 +955,7 @@ static int split_qp_lines (Slrn_Article_Type *a)
 
 	while ((0 != (ch = *p)) && (ch != '\n'))
 	  p++;
-	
+
 	if (ch == 0)
 	  {
 	     line = next;
@@ -931,7 +972,7 @@ static int split_qp_lines (Slrn_Article_Type *a)
 	     slrn_free ((char *) new_line);
 	     return -1;
 	  }
-	
+
 	if (NULL == (buf0 = slrn_realloc (line->buf, p - line->buf, 1)))
 	  {
 	     slrn_free ((char *) new_line);
@@ -964,24 +1005,24 @@ static int decode_mime_quoted_printable (Slrn_Article_Type *a)/*{{{*/
 
    if (a == NULL)
      return -1;
-   
+
    line = a->lines;
 
    /* skip to body */
    while ((line != NULL) && (line->flags & HEADER_LINE))
      line = line->next;
 
-   if (line == NULL) 
+   if (line == NULL)
      return 0;
-   
+
    while (line != NULL)
      {
 	char *b;
 	unsigned int len;
-	
+
 	b = line->buf;
 	len = (unsigned int) (slrn_bskip_whitespace (b) - b);
-	if (len && (b[len - 1] == '=') 
+	if (len && (b[len - 1] == '=')
 	    && (line->next != NULL))
 	  {
 	     (void) merge_if_soft_linebreak (line);
@@ -996,10 +1037,10 @@ static int decode_mime_quoted_printable (Slrn_Article_Type *a)/*{{{*/
 	     a->is_modified = 1;
 	     a->mime.was_modified = 1;
 	  }
-	
+
 	line = line->next;
      }
-   
+
    return split_qp_lines (a);
 }
 
@@ -1031,9 +1072,9 @@ Slrn_Mime_Error_Obj *slrn_add_mime_error(Slrn_Mime_Error_Obj *list, /*{{{*/
 					 char *msg, char *line, int lineno, int critical)
 {
    Slrn_Mime_Error_Obj *err, *last;
-   
+
    err = (Slrn_Mime_Error_Obj *)slrn_safe_malloc (sizeof (Slrn_Mime_Error_Obj));
-   
+
    if (msg != NULL)
      err->msg = slrn_safe_strmalloc (msg);
    else
@@ -1048,7 +1089,7 @@ Slrn_Mime_Error_Obj *slrn_add_mime_error(Slrn_Mime_Error_Obj *list, /*{{{*/
    err->critical=critical;
    err->next = NULL;
    err->prev = NULL;
-   
+
    if (list == NULL)
      return err;
 
@@ -1056,7 +1097,7 @@ Slrn_Mime_Error_Obj *slrn_add_mime_error(Slrn_Mime_Error_Obj *list, /*{{{*/
 
    while (last->next != NULL)
      last = last->next;
-   
+
    last->next = err;
    err->prev = last;
 
@@ -1070,27 +1111,23 @@ Slrn_Mime_Error_Obj *slrn_mime_error (char *msg, char *line, int lineno, int cri
    return slrn_add_mime_error (NULL, msg, line, lineno, critical);
 }
 
-
 Slrn_Mime_Error_Obj *slrn_mime_concat_errors (Slrn_Mime_Error_Obj *a, Slrn_Mime_Error_Obj *b)
 {
    if (a == NULL)
      return b;
-   
+
    if (b != NULL)
      {
 	Slrn_Mime_Error_Obj *next = a;
-	
+
 	while (next->next != NULL)
 	  next = next->next;
-	
+
 	next->next = b;
 	b->prev = next;
      }
    return a;
 }
-
-     
-   
 
 void slrn_free_mime_error(Slrn_Mime_Error_Obj *obj) /*{{{*/
 {
@@ -1118,11 +1155,11 @@ static char *guess_body_charset (Slrn_Article_Type *a)
    /* FIXME: Add a hook here for the user to specify a character set */
 
    line = a->lines;
-     
+
    /* Skip header */
    while ((line != NULL) && (line->flags & HEADER_LINE))
      line = line->next;
-   
+
    while (line != NULL)
      {
 	char *p, ch;
@@ -1152,7 +1189,7 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
      return 0;
 
    a->mime.was_parsed = 1;	       /* or will be */
-   
+
 /* Is there a reason to use the following line? */
 /*   if (NULL == find_header_line (a, "Mime-Version:")) return;*/
 /*   if ((-1 == parse_content_type_line (a))
@@ -1165,7 +1202,7 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
 	a->mime.needs_metamail = 1;
 	return 0;
      }
-   
+
    if ((a->mime.charset == NULL)
        && (NULL == (a->mime.charset = guess_body_charset (a))))
      return -1;
@@ -1183,21 +1220,21 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
       case ENCODED_BINARY:
 	/* Already done. */
 	break;
-	
+
       case ENCODED_BASE64:
 	decode_mime_base64 (a);
 	break;
-	
+
       case ENCODED_QUOTED:
 	if (-1 == decode_mime_quoted_printable (a))
 	  return -1;
 	break;
-	
+
       default:
 	a->mime.needs_metamail = 1;
 	return 0;
      }
-   
+
    if ((a->mime.needs_metamail == 0) &&
 	(slrn_case_strncmp("us-ascii",
 			   a->mime.charset,8) != 0) &&
@@ -1210,7 +1247,6 @@ int slrn_mime_process_article (Slrn_Article_Type *a)/*{{{*/
      }
    return 0;
 }
-
 
 /*}}}*/
 
@@ -1228,11 +1264,11 @@ int slrn_mime_call_metamail (void)/*{{{*/
    Slrn_Article_Line_Type *ptr;
    FILE *fp;
    char *tmp, *mm, *cmd;
-   
+
    if (NULL == Slrn_Current_Article)
      return -1;
    ptr = Slrn_Current_Article->lines;
-     
+
    if ((Slrn_Use_Meta_Mail == 0)
        || Slrn_Batch
        || (slrn_get_yesno (1, _("Process this MIME article with metamail")) <= 0))
@@ -1244,7 +1280,7 @@ int slrn_mime_call_metamail (void)/*{{{*/
 # else
    tmp = "/tmp";
 # endif
-   
+
    fp = slrn_open_tmpfile_in_dir (tmp, tempfile, sizeof (tempfile));
 
    if (fp == NULL)
@@ -1252,8 +1288,8 @@ int slrn_mime_call_metamail (void)/*{{{*/
 	slrn_error (_("Unable to open tmp file for metamail."));
 	return 0;
      }
-   
-   while (ptr) 
+
+   while (ptr)
      {
 	fputs(ptr->buf, fp);
 	putc('\n', fp);
@@ -1262,32 +1298,31 @@ int slrn_mime_call_metamail (void)/*{{{*/
    slrn_fclose(fp);
 
    mm = Slrn_MetaMail_Cmd;
-   
+
    if ((mm == NULL)
        || (*mm == 0)
        || (strlen (mm) > SLRN_MAX_PATH_LEN))
      mm = "metamail";
 
    cmd = slrn_strdup_strcat (mm, " ", tempfile, NULL);
-   
+
    /* Make sure that metamail has a normal environment */
    slrn_set_display_state (0);
-   
+
    slrn_posix_system(cmd, 0);
    slrn_delete_file (tempfile);
    slrn_free (cmd);
-   
+
    printf(_("Press return to continue ..."));
    getchar();
    fflush(stdin); /* get rid of any pending input! */
-   
+
    slrn_set_display_state (init);
    return 1;
 #endif  /* NOT VMS */
 }
 
 /*}}}*/
-
 
 /* -------------------------------------------------------------------------
  * MIME encoding routines.
@@ -1310,7 +1345,6 @@ static void steal_raw_lines (Slrn_Article_Type *a, Slrn_Article_Line_Type *line)
      }
    a->raw_lines=NULL;
 }
-
 
 /* When this function gets called, the header is already encoded and is in
  * a->lines, whereas the body is in a->raw_lines.  Clearly this needs to be
@@ -1383,7 +1417,7 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
 
 	if (status == 1)
 	  break;		       /* converted ok */
-	
+
 	n++;
      }
 
@@ -1399,7 +1433,7 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
 	slrn_free (charset);
 	return MIME_MEM_ERROR("Mime Headers");
      }
-   
+
    slrn_free (charset);
    return NULL;
 }
@@ -1408,7 +1442,6 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
 
 #define MAX_CONTINUED_HEADER_SIZE 77   /* does not include leading space char */
 #define MAX_RFC2047_WORD_SIZE	75
-
 
 static char *skip_ascii_whitespace (char *s, char *smax)
 {
@@ -1434,7 +1467,6 @@ static char *skip_non_ascii_whitespace (char *s, char *smax)
    return s;
 }
 
-
 static Slrn_Mime_Error_Obj *fold_line (char **s_ptr, int warn)/*{{{*/
 {
    char *s0, *s, *smax;
@@ -1444,19 +1476,19 @@ static Slrn_Mime_Error_Obj *fold_line (char **s_ptr, int warn)/*{{{*/
 
    s0 = *s_ptr;
    smax = s0 + strlen (s0);
-   
+
    if (s0 + MAX_CONTINUED_HEADER_SIZE + 1 >= smax)
      return NULL;
 
    /* skip the first word */
    s = skip_non_ascii_whitespace (s0, smax);
    s = skip_ascii_whitespace (s, smax);
-   
+
    /* (folding after the keyword is not allowed) */
    /* I'm not sure about that FS */
    /* Play it safe for now */
    s = skip_non_ascii_whitespace (s, smax);
-   
+
    line_len = s - s0;
    if (line_len >= MAX_CONTINUED_HEADER_SIZE)
      long_words++;
@@ -1498,14 +1530,14 @@ static Slrn_Mime_Error_Obj *fold_line (char **s_ptr, int warn)/*{{{*/
 	  }
 	slrn_free (folded_text);
 	folded_text = tmp;
-	
+
 	s0 = s;
 	line_len += dlen;
 
 	if (line_len >= MAX_CONTINUED_HEADER_SIZE)
 	  long_words++;
      }
-   
+
    slrn_free (*s_ptr);
    *s_ptr = folded_text;
    if (long_words && warn)
@@ -1517,16 +1549,16 @@ static Slrn_Mime_Error_Obj *fold_line (char **s_ptr, int warn)/*{{{*/
 /*}}}*/
 
 static char *
-  rfc1522_encode_word (char *from_charset, char *str, char *strmax, 
+  rfc1522_encode_word (char *from_charset, char *str, char *strmax,
 		       unsigned int max_encoded_size)
 {
    /* For a simple single-byte character set, a character is exactly one byte.
-    * In such a case, encoding exactly one character is simple.  For a 
+    * In such a case, encoding exactly one character is simple.  For a
     * multibyte character set, it is not as simple to determine how many bytes
-    * constitute a single character.  For UTF-8, the SLutf8* functions are 
-    * available for this.  For other charactersets, something like mbrlen 
+    * constitute a single character.  For UTF-8, the SLutf8* functions are
+    * available for this.  For other charactersets, something like mbrlen
     * would have to be used, but that may not be available on all systems.
-    * 
+    *
     * For this reason, UTF-8 will be used for the character set.
     */
    unsigned int len;
@@ -1544,7 +1576,7 @@ static char *
 
    len_charset = strlen (charset);
    len = SLutf8_strlen (ustr, 0);      /* number of characters */
-   
+
    /* The encoding looks like: "=?UTF-8?Q?xx...x?=".  This encoded word has to
     * be less than max_encoded_size.  This means that at most N bytes can be
     * put in the FIRST word where N is given by:
@@ -1559,7 +1591,7 @@ static char *
 	return NULL;
      }
    /* This will leave 12 bytes to represent a character,
-    * which is ok since UTF-8 will use at most 6. 
+    * which is ok since UTF-8 will use at most 6.
     */
    if (max_nbytes >= max_encoded_size)
      max_encoded_size = max_encoded_size;
@@ -1586,7 +1618,7 @@ static char *
 	dnum = u1 - u;
 	if (dnum == 0)
 	  break; /* should not happen */
-	
+
 	if (dnum == 1)
 	  {
 	     dnbytes = 1;
@@ -1604,7 +1636,7 @@ static char *
 	     tmp = slrn_strjoin (encoded_word, buf, " ");
 	     if (tmp == NULL)
 	       goto return_error;
-	     
+
 	     slrn_free (encoded_word);
 	     encoded_word = tmp;
 
@@ -1612,7 +1644,7 @@ static char *
 	     b = b0;
 	     bmax = b0 + max_nbytes;
 	  }
-	
+
 	if (dnbytes == 1)
 	  {
 	     *b++ = ch;
@@ -1646,7 +1678,7 @@ return_error:
  * should not be encoded to more than encode_len bytes.  If encode_len is
  * 0, then MAX_RFC2047_WORD_SIZE will be used.
  */
-static char *rfc1522_encode_string (char *charset, 
+static char *rfc1522_encode_string (char *charset,
 				    char *str, char *s0, char *strmax,
 				    unsigned int encode_len)
 {
@@ -1673,7 +1705,7 @@ static char *rfc1522_encode_string (char *charset,
      {
 	char ch;
 
-	if ((s == strmax) 
+	if ((s == strmax)
 	    || ((ch = *s) == ' ') || (ch == '\t') || (ch == '\n'))
 	  {
 	     char *word, *tmp, *sep = "";
@@ -1695,14 +1727,13 @@ static char *rfc1522_encode_string (char *charset,
 		  s0 = s;
 		  last_word_was_encoded = 0;
 	       }
-	     
+
 	     if (word == NULL)
 	       {
 		  slrn_free (encoded_str);
 		  return NULL;
 	       }
 
-	     
 	     tmp = slrn_strjoin (encoded_str, word, sep);
 	     slrn_free (word);
 	     slrn_free (encoded_str);
@@ -1711,7 +1742,7 @@ static char *rfc1522_encode_string (char *charset,
 
 	     encoded_str = tmp;
 	     encode_len = MAX_RFC2047_WORD_SIZE;
-	     
+
 	     if (s0 == strmax)
 	       {
 		  /* Append the rest of the string */
@@ -1728,7 +1759,7 @@ static char *rfc1522_encode_string (char *charset,
 
 	     continue;
 	  }
-	
+
 	if (ch & 0x80)
 	  encode = 1;
 	s++;
@@ -1755,12 +1786,12 @@ static Slrn_Mime_Error_Obj *min_encode (char **s_ptr, char *from_charset) /*{{{*
    s = str;
    while ((s < strmax) && (*s != ':'))
      s++;
-   
+
    if (s == strmax)
      return slrn_mime_error (_("Header line lacks a colon"), str, 0, MIME_ERROR_CRIT);
-   
+
    s++; /* skip colon */
-   
+
    /* And skip leading whitespace */
    s = skip_ascii_whitespace (s, strmax);
    if (s == strmax)
@@ -1886,17 +1917,17 @@ static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset)
 	     i0++;
 	     continue;
 	  }
-	
+
 	tmp = slrn_substrjoin (new_header, new_header+new_header_len,
 			       addr + last_i0, addr + i0,
 			       NULL);
 	if (tmp == NULL)
 	  goto return_error;
-   
+
 	slrn_free (new_header);
 	new_header = tmp;
 	new_header_len += i0 - last_i0;
-	
+
 	if (i0 == imax)
 	  break;
 
@@ -1908,10 +1939,10 @@ static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset)
 	str = slrn_strnmalloc (addr + i0, i1-i0, 1);
 	if (str == NULL)
 	  goto return_error;
-	
+
 	encoded_str = rfc1522_encode_string (from_charset, str, str, str+(i1-i0), 0);
 	slrn_free (str);
-	
+
 	if (encoded_str == NULL)
 	  goto return_error;
 
@@ -1926,15 +1957,15 @@ static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset)
 	slrn_free (new_header);
 	new_header = tmp;
 	new_header_len += dlen;
-	
+
 	last_i0 = i0 = i1;
      }
-   
+
    slrn_free (encodemap);
    slrn_free (*s_ptr);
    *s_ptr = new_header;
    return NULL;
-   
+
 return_error:
    if (new_header != NULL)
      slrn_free (new_header);
@@ -1959,15 +1990,15 @@ static Slrn_Mime_Error_Obj *fold_xface (char **s_ptr, int warn)
    len = strlen (s0);
    if (len <= MAX_CONTINUED_HEADER_SIZE)
      return NULL;
-   
+
    smax = s0 + len;
-   
+
    len = MAX_CONTINUED_HEADER_SIZE;
 
    if (NULL == (folded_text = slrn_strnmalloc (s0, len, 1)))
      return MIME_MEM_ERROR(*s_ptr);
    s0 += len;
-   
+
    while (s0 < smax)
      {
 	char *tmp;
@@ -1987,7 +2018,7 @@ static Slrn_Mime_Error_Obj *fold_xface (char **s_ptr, int warn)
 
 	s0 = s;
      }
-   
+
    slrn_free (*s_ptr);
    *s_ptr = folded_text;
    return NULL;
@@ -2002,7 +2033,7 @@ typedef struct
 }
 Header_Encode_Info_Type;
 
-Header_Encode_Info_Type Header_Encode_Table [] = 
+Header_Encode_Info_Type Header_Encode_Table [] =
 {
    {"Newsgroups: ", NULL, fold_line, 1},
    {"Followup-To: ", NULL, fold_line, 1},
@@ -2022,7 +2053,6 @@ Header_Encode_Info_Type Header_Encode_Table [] =
    {"", min_encode, fold_line, 1},
 };
 
-
 Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **s_ptr, char *from_charset) /*{{{*/
 {
    Header_Encode_Info_Type *h;
@@ -2041,14 +2071,14 @@ Slrn_Mime_Error_Obj *slrn_mime_header_encode (char **s_ptr, char *from_charset) 
 	Slrn_Mime_Error_Obj *err = (*h->encode)(s_ptr, from_charset);
 	if (err != NULL)
 	  return err;
-     }	     
+     }
 
    if (slrn_string_nonascii (*s_ptr))
      return slrn_mime_error (_("This header contains eight bit characters after encoding"), *s_ptr, 0, MIME_ERROR_CRIT);
 
    if (h->fold != NULL)
      return (*h->fold) (s_ptr, h->warn);
-   
+
    return NULL;
 }
 

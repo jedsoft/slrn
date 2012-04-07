@@ -33,7 +33,7 @@ extern void slrn_redraw (void);
 extern void slrn_update_screen (void);
 extern int Slrn_Full_Screen_Update;
 extern int slrn_get_yesno (int, char *, ...) ATTRIBUTE_PRINTF(2,3);
-extern int slrn_get_yesno_cancel (char *str, ...) ATTRIBUTE_PRINTF(1,2);
+extern int slrn_get_yesno_cancel (int, char *str, ...) ATTRIBUTE_PRINTF(2,3);
 extern void slrn_clear_message (void);
 extern void slrn_clear_error (void);
 extern char *slrn_print_percent (char *, SLscroll_Window_Type *, int);

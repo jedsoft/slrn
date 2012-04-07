@@ -56,6 +56,7 @@
 #include "common.h"
 #include "strutil.h"
 #include "parse2822.h"
+#include "mime.h"
 
 /*}}}*/
 
@@ -223,9 +224,22 @@ static int popup_window (void)
    return retval;
 }
 
-static int get_yesno_cancel (char *prompt)
+static int get_yesno_cancel (void)
 {
-   return slrn_get_yesno_cancel ("%s", prompt);
+   int dflt = 1;
+   char *prompt;
+
+   if (SLang_Num_Function_Args == 2)
+     {
+	if (-1 == SLang_pop_integer (&dflt))
+	  return -1;
+     }
+   if (-1 == SLang_pop_slstring (&prompt))
+     return -1;
+
+   dflt = slrn_get_yesno_cancel (dflt, "%s", prompt);
+   SLang_free_slstring (prompt);
+   return dflt;
 }
 
 static int get_response (char *choices, char *prompt)
@@ -240,6 +254,12 @@ static void tt_send (char *s)
 	SLtt_write_string (s);
 	SLtt_flush_output ();
      }
+}
+
+static void set_display_state (int *onoff)
+{
+   int state = (*onoff  ? (SLRN_TTY_INIT | SLRN_SMG_INIT) : 0);
+   slrn_set_display_state (state);
 }
 
 /*}}}*/
@@ -518,6 +538,7 @@ static void generic_read_mini (int mode, char *prompt, char *dfl, char *init) /*
 {
    char str[SLRL_DISPLAY_BUFFER_SIZE];
    int ret;
+   int point;
 
    strncpy (str, init, sizeof (str));
    str[sizeof(str) - 1] = 0;
@@ -528,7 +549,8 @@ static void generic_read_mini (int mode, char *prompt, char *dfl, char *init) /*
 	ret = slrn_read_input_no_echo (prompt, dfl, str, 0, 0);
 	break;
       case PROMPT_FILENAME:
-	ret = slrn_read_filename (prompt, dfl, str, 0, 0);
+	point = (int) (slrn_basename (str) - str);
+	ret = slrn_read_filename (prompt, dfl, str, 0, point);
 	break;
       case PROMPT_VARIABLE:
 	ret = slrn_read_variable (prompt, dfl, str, 0, 0);
@@ -1503,9 +1525,84 @@ static int unregister_hook (void)
    return do_register_unregister_hook (0);
 }
 
+static void rfc1522_decode_string (void)
+{
+   char *s;
+
+   if (-1 == SLpop_string (&s))
+     return;
+
+   if (-1 == slrn_rfc1522_decode_string (&s, 0))
+     {
+        SLfree (s);
+	return;
+     }
+   (void) SLang_push_malloced_string (s);   /* frees s also */
+}
+
+static void decode_string (char *(*f)(char *))
+{
+   char *str, *strend;
+   SLang_BString_Type *b;
+
+   if (-1 == SLpop_string (&str))
+     return;
+
+   if (NULL == (strend = (*f)(str)))
+     {
+	SLfree (str);
+	return;
+     }
+   *strend = 0;			       /* \0 terminate */
+
+   b = SLbstring_create_malloced ((unsigned char *)str, (unsigned int)(strend - str), 1);
+   if (b == NULL)		       /* str is freed upon error */
+     return;
+
+   (void) SLang_push_bstring (b);
+   SLbstring_free (b);
+}
+
+static void decode_base64 (void)
+{
+   decode_string (&slrn_decode_base64);
+}
+static void decode_qp (void)
+{
+   decode_string (&slrn_decode_qp);
+}
+
+static void charset_convert_string (char *str, char *from, char *to, int *testp)
+{
+   char *new_str, *strmax;
+
+   strmax = str + strlen (str);
+
+   new_str = slrn_convert_string (from, str, strmax, to, *testp);
+   if (new_str == NULL)
+     {
+	(void) SLang_push_null ();
+	return;
+     }
+   (void) SLang_push_malloced_string (new_str);
+}
+
+static void get_charset_intrin (char *name)
+{
+   (void) SLang_push_string (slrn_get_charset (name));   /* NULL ok */
+}
+
+#define S SLANG_STRING_TYPE
+#define I SLANG_INT_TYPE
 static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
 {
    /* MAKE_INTRINSIC_S("parse_rfc2822", parse_rfc2822_intrin, SLANG_VOID_TYPE), */
+   MAKE_INTRINSIC_0("get_charset", get_charset_intrin, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_4("charset_convert_string", charset_convert_string, SLANG_VOID_TYPE, S, S, S, I),
+   MAKE_INTRINSIC_I("set_display_state", set_display_state, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_0("rfc1522_decode_string", rfc1522_decode_string, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_0("decode_base64_string", decode_base64, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_0("decode_qp_string", decode_qp, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("headers_hidden_mode", slrn_is_hidden_headers_mode, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("replace_article", replace_article_cmd, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_S("message_now", message_now, SLANG_VOID_TYPE),
@@ -1549,7 +1646,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_SS("get_response", get_response, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("get_select_box_response", interp_select_box, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("get_variable_value", get_variable_value, SLANG_VOID_TYPE),
-   MAKE_INTRINSIC_S("get_yes_no_cancel", get_yesno_cancel, SLANG_INT_TYPE),
+   MAKE_INTRINSIC_0("get_yes_no_cancel", get_yesno_cancel, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("getkey", getkey, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("goto_num_tagged_header", slrn_goto_num_tagged_header, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("group_down_n", group_down_n, SLANG_INT_TYPE),
@@ -1629,6 +1726,8 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
 };
 
 /*}}}*/
+#undef S
+#undef I
 
 static SLang_Intrin_Var_Type Intrin_Vars [] = /*{{{*/
 {

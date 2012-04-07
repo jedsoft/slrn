@@ -487,6 +487,18 @@ static Charset_Table_Type Charset_Table[] =
    {NULL, NULL}
 };
 
+char *slrn_get_charset (char *name)
+{
+   Charset_Table_Type *c = Charset_Table;
+   while (c->name != NULL)
+     {
+	if (0 == strcmp (c->name, name))
+	  return *c->charsetp;
+	c++;
+     }
+   return NULL;
+}
+
 static void print_charsets (FILE *fp)
 {
    Charset_Table_Type *c;

@@ -1,28 +1,49 @@
 % The routines in this file parse a multipart MIME message.
-% 
-% The current functionality is more or less the same as that achieved
-% by Thomas Wiegner's minimal_multipart patch.
+% Copyright (C) 2012 John E. Davis <jed@jedsoft.org>
 %
-% There is only one public function in this file:
+% This may be distributed under the terms of the GNU General Public
+% License.  See the file COPYING for more information.
 %
-%     mime_decode_multipart()
+% Public functions in this file:
+%
+%     mime_process_multipart()
+%     mime_browse()
+%     mime_set_save_charset (name)
 %
 % If the current article has Content-Type equal to "multipart", the
-% displayed article will be replaced by the text/plain portion of the
-% article.
+% mime_process_multipart function will replace displayed article by the
+% text/plain portion of the article.
 %
-% To use this function, add the following lines to your .slrnrc file:
+% The mime_browse function may be used to save or view other parts of
+% the mime article.
+%
+% To use these functions, add the following lines to your .slrnrc file:
 %
 %    interpret "multimime.sl"
-%    setkey article "mime_decode_multipart" KEYBINDING
+%    setkey article "mime_process_multipart" KEYBINDING
+%    setkey article "mime_browse" KEYBINDING
 %
-% Then when a multipart article shows up, press the keysequence
-% specified by the setkey statement. You can also add this function to
-% a "read_article_hook" to have it automatically invoked.
+% Then when a multipart article shows up, press the mime_browse
+% keysequence specified by the setkey statement. You can also a call
+% to the mime_process_multipart function in a "read_article_hook" to
+% have it automatically invoked.
 %
-% TODO: Add support for saving attachments, images, etc.  This should
-% be straightforward.
+% When saving a mime part to a file, it will be converted the slrn
+% display charset.  The function `mime_set_save_charset` may be used
+% to specify a different one.
 %
+% The view specified by a mailcap file is used for viewing.
+
+autoload ("mailcap_lookup_entry", "mailcap");
+
+private variable Mime_Save_Dir = make_home_filename ("");
+private variable Mime_Save_Charset = get_charset ("display");
+
+define mime_set_save_charset (charset)
+{
+   Mime_Save_Charset = charset;
+}
+
 private define set_header_key (hash, name, value)
 {
    hash[strlow(name)] = struct
@@ -41,6 +62,18 @@ private define get_header_key (hash, name, lowercase)
      }
    catch AnyError;
    return "";
+}
+
+private define merge_headers (a, b)
+{
+   variable c = Assoc_Type[Struct_Type];
+   variable value;
+
+   foreach value (a) using ("values")
+     set_header_key (c, value.name, value.value);
+   foreach value (b) using ("values")
+     set_header_key (c, value.name, value.value);
+   return c;
 }
 
 private define split_article (art)
@@ -106,21 +139,13 @@ private define get_multipart_boundary (header)
 %
 private variable Mime_Node_Type = struct
 {
-   type, disposition,
-   header,
-   list,			       %  non-null if multipart
-   message, charset	       %  non-multipart decoded message
+   mimetype,			       %  type/subtype, from content-type
+   disposition,			       %  content-disposition header
+   content_type,		       %  full content-type header
+   header,			       %  assoc array of header keywords
+   list,			       %  non-null list of nodes if multipart
+   message, charset, encoding	       %  non-multipart decoded message
 };
-
-private define decode_base64 (str)
-{
-   return str;
-}
-
-private define decode_qp (str)
-{
-   return str;
-}
 
 private define parse_mime ();
 private define parse_multipart (node, body)
@@ -175,11 +200,12 @@ private define parse_mime (art)
    (header, body) = split_article (art);
 
    variable node = @Mime_Node_Type;
-   node.type = get_header_key (header, "Content-Type", 1);
+   node.content_type = get_header_key (header, "Content-Type", 1);
    node.disposition = get_header_key (header, "Content-Disposition", 0);
    node.header = header;
+   node.mimetype = strtrim (strchop (node.content_type, ';', 0)[0]);
 
-   if (is_substr (node.type, "multipart/"))
+   if (is_substr (node.mimetype, "multipart/"))
      {
 	parse_multipart (node, body);
 	return node;
@@ -189,11 +215,11 @@ private define parse_mime (art)
 
    variable encoding = get_header_key (header, "Content-Transfer-Encoding", 1);
    if (is_substr (encoding, "base64"))
-     node.message = decode_base64 (node.message);
+     node.encoding = "base64";
    else if (is_substr (encoding, "quoted-printable"))
-     node.message = decode_qp (node.message);
+     node.encoding = "quoted-printable";
 
-   node.charset = parse_subkeyword (node.type, "charset");
+   node.charset = parse_subkeyword (node.content_type, "charset");
 
    return node;
 }
@@ -219,45 +245,282 @@ private define find_first_matching_leaf (leaves, types)
      {
 	foreach leaf (leaves)
 	  {
-	     if (is_substrbytes (leaf.type, type))
+	     if (is_substrbytes (leaf.mimetype, type))
 	       return leaf;
 	  }
      }
    return NULL;
 }
 
-define mime_decode_multipart ()
+% The (cached) msgid/mime objects/article header for current article
+private variable Mime_Object_List = NULL;
+private variable Mime_MessageID = NULL;
+private variable Mime_Article_Headers = NULL;
+
+% Returns NULL if the message is not Mime Encoded, otherwise it
+% returns the value of the Content-Type header.
+private define is_mime_message ()
 {
-   variable h = extract_article_header ("Content-Type");
-   if ((h == NULL) || (0 == is_substrbytes (h, "multipart/")))
+   variable h = extract_article_header ("Mime-Version");
+   if ((h == NULL) || (h == ""))
+     return NULL;
+
+   h = extract_article_header ("Content-Type");
+   if (h == "") h = NULL;
+   return h;
+}
+
+% This function returns the top-level headers in the message
+private define process_mime_message ()
+{
+   variable msgid = extract_article_header ("Message-ID");
+   if (msgid == Mime_MessageID)
      return;
+
+   Mime_MessageID = NULL;
+   Mime_Object_List = NULL;
+
    variable art = raw_article_as_string ();
    variable nodes = parse_mime (art);
 
-   if (nodes.list == NULL)
-     return;
-
-   % Look for the first text/plane part that occurs in the original mime
-   % encoded body.
-   variable header = nodes.header;
-
    variable leaf, leaves = {};
    flatten_node_tree (nodes, leaves);
-   leaf = find_first_matching_leaf (leaves, {"text/plain", "text/"});
-   if (leaf == NULL)
-     return;		       %  nothing to display
 
+   Mime_MessageID = msgid;
+   Mime_Object_List = leaves;
+   Mime_Article_Headers = nodes.header;
+}
+
+private define replace_article_with_mime_obj (obj)
+{
    % Replace some of the headers in the raw article by subpart headers
-   variable value;
-   foreach value (leaf.header) using ("values")
-     set_header_key (header, value.name, value.value);
+   variable header = merge_headers (Mime_Article_Headers, obj.header);
 
-   art = "";
+   variable value, art = "";
    foreach value (header) using ("values")
      art = sprintf ("%s%s: %s\n", art, value.name, value.value);
 
-   art = art + "\n" + leaf.message;
+   art = art + "\n" + obj.message;
 
    replace_article (art, 1);
 }
 
+private define is_attachment (node)
+{
+   return is_substrbytes (strlow (node.disposition), "attachment");
+}
+
+private define is_text (node)
+{
+   return is_substrbytes (strlow (node.mimetype), "text/");
+}
+
+private define get_mime_filename (node)
+{
+   variable file = parse_subkeyword (node.disposition, "filename");
+   if (file != NULL)
+     return file;
+   file = parse_subkeyword (node.content_type, "name");
+   if (file != NULL)
+     return file;
+
+   return "";
+}
+
+private define format_type (type, width)
+{
+   if (0 == strnbytecmp (type, "application", 11))
+     type = "app" + substrbytes (type, 12, -1);
+
+   if (strbytelen (type) <= width)
+     return type;
+   type = type[[0:width-4]];
+   type += "...";
+   return type;
+}
+
+private define convert_mime_object (obj)
+{
+   variable str = obj.message;
+   if (obj.encoding == "base64")
+     str = decode_base64_string (str);
+   else if (obj.encoding == "quoted-printable")
+     str = decode_qp_string (str);
+
+   variable charset = obj.charset;
+   if ((charset != NULL) && (charset != "")
+       && (Mime_Save_Charset != NULL)
+       && (strlow(charset) != strlow(Mime_Save_Charset)))
+     {
+	str = charset_convert_string (str, charset, Mime_Save_Charset, 0);
+     }
+   return str;
+}
+
+private define save_mime_object (obj, fp)
+{
+   if (typeof (fp) == String_Type)
+     {
+	variable file = fp;
+	fp = fopen (file, "w");
+	if (fp == NULL)
+	  throw OpenError, "Could not open $file for writing"$;
+     }
+
+   variable str = convert_mime_object (obj);
+
+   () = fwrite (str, fp);
+   () = fflush (fp);
+}
+
+private define make_safe_filename (file)
+{
+   return strtrans (file, "-+_/.%@{}:A-Za-z0-9", "_");
+}
+
+private define mime_quit_hook ()
+{
+   % Only call the mailcap_remove_tmp_files if it was loaded
+   variable r = __get_reference ("mailcap_remove_tmp_files");
+   if (r != NULL) (@r)();
+}
+() = register_hook ("quit_hook", &mime_quit_hook);
+
+private define view_mime_object (obj)
+{
+   variable type = obj.mimetype;
+   variable mc = mailcap_lookup_entry (obj.content_type);
+   if (mc == NULL)
+     throw NotImplementedError, "No viewer for $type available"$;
+
+   variable str = convert_mime_object (obj);
+
+   variable e;
+   try (e)
+     {
+	set_display_state (0);
+	mc.view (str);
+     }
+   catch OSError:
+     {
+	() = fprintf (stdout, "\n*** ERROR; %S\n\nPress enter to continue.",
+		      e.message);
+	variable line;
+	() = fgets (&line, stdin);
+	throw;
+     }
+   finally
+     {
+	set_display_state (1);
+     }
+}
+
+define mime_browse ()
+{
+   if (NULL == is_mime_message ())
+     return;
+
+   process_mime_message ();
+
+   variable node, descriptions = {};
+   variable filenames = {};
+   foreach node (Mime_Object_List)
+     {
+	variable filename = get_mime_filename (node);
+	filename = path_basename (rfc1522_decode_string (filename));
+	list_append (filenames, filename);
+	variable attachment = "";
+	variable charset = node.charset; if (charset == NULL) charset = "";
+	if (is_attachment (node)) attachment = "[attachment]";
+	list_append (descriptions,
+		     sprintf ("%-16s |%12s| %s%S",
+			      format_type (node.mimetype, 16),
+			      charset,
+			      attachment,
+			      filename,
+			     ));
+     }
+
+   forever
+     {
+	variable n = get_select_box_response ("Browse Mime",
+					      __push_list (descriptions),
+					      length (descriptions));
+
+	node = Mime_Object_List[n];
+	filename = filenames[n];
+
+	n = get_response ("SsVv", "Action: \001Save to file, \001View");
+
+	if ((n == 'S') || (n == 's'))
+	  {
+	     filename = path_concat (Mime_Save_Dir, filename);
+	     forever
+	       {
+		  filename = read_mini_filename ("Save to:", "", filename);
+		  if (NULL != stat_file (filename))
+		    {
+		       n = get_yes_no_cancel ("File exists, Overwrite?", 0);
+		       if (n == 0)
+			 continue;
+		       if (n == -1)
+			 return;
+		    }
+		  save_mime_object (node, filename);
+		  Mime_Save_Dir = path_dirname (filename);
+		  break;
+	       }
+
+	     message_now ("Saved to $filename"$);
+	     continue;
+	  }
+
+	if ((n == 'V') || (n == 'v'))
+	  {
+	     if (is_substrbytes (node.mimetype, "text/plain"))
+	       {
+		  replace_article_with_mime_obj (node);
+		  return;
+	       }
+
+	     view_mime_object (node);
+	  }
+	break;
+     }
+}
+
+define mime_process_multipart ()
+{
+   variable h = is_mime_message ();
+
+   if ((h == NULL) || (0 == is_substrbytes (h, "multipart/")))
+     return;
+
+   process_mime_message ();
+
+   variable node, leaf;
+   % Look for the first text/plain part that occurs in the original mime
+   % encoded body.
+   leaf = find_first_matching_leaf (Mime_Object_List, {"text/plain", "text/"});
+   if (leaf == NULL)
+     return;		       %  nothing to display
+
+   variable num_attchments = 0, num_non_text = 0;
+   foreach node (Mime_Object_List)
+     {
+	if (is_attachment (node))
+	  num_attchments++;
+	else ifnot (is_text (node))
+	  num_non_text++;
+     }
+   replace_article_with_mime_obj (leaf);
+   update ();
+
+   variable msg = "This is a MIME multipart message";
+   if (num_attchments)
+     msg = sprintf ("%s, %d attachments", msg, num_attchments);
+   if (num_non_text)
+     msg = sprintf ("%s, %d non-text parts", msg, num_non_text);
+
+   message (msg);
+}

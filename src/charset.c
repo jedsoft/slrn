@@ -3,7 +3,7 @@
  *
  * Author: Felix Schueller
  * Modified by JED.
- * 
+ *
  */
 
 #include "config.h"
@@ -22,7 +22,6 @@
 #ifdef HAVE_ICONV
 # include <iconv.h>
 #endif
-
 
 #include <slang.h>
 
@@ -122,7 +121,7 @@ static int iconv_convert_string (iconv_t cd, char *str, size_t len, int test, ch
    while (inbytesleft)
      {
 	size_t ret;
-	
+
 	if (need_realloc)
 	  {
 	     char *tmpbuf;
@@ -172,7 +171,7 @@ static int iconv_convert_string (iconv_t cd, char *str, size_t len, int test, ch
 	     break;
 	  }
      }
-   
+
    len = (unsigned int) (bufp - buf);
    bufp = slrn_realloc (buf, len+1, 1);
    if (bufp == NULL)
@@ -187,7 +186,7 @@ static int iconv_convert_string (iconv_t cd, char *str, size_t len, int test, ch
 }
 #endif
 
-/* Guess a character set from the bytes in the string -- it returns a 
+/* Guess a character set from the bytes in the string -- it returns a
  * malloced string.
  */
 char *slrn_guess_charset (char *str, char *strmax)
@@ -204,23 +203,22 @@ char *slrn_guess_charset (char *str, char *strmax)
 	     str++;
 	     continue;
 	  }
-	
+
 	/* First see if it looks like UTF-8 */
 	if (NULL != SLutf8_decode ((SLuchar_Type *)str, (SLuchar_Type *)strmax, &wch, &nconsumed))
 	  {
 	     charset = "UTF-8";
 	     break;
 	  }
-	
+
 	charset = Slrn_Fallback_Input_Charset;
 	if (charset == NULL)
 	  charset = "iso-8859-1";
-	
+
 	break;
      }
    return slrn_strmalloc (charset, 1);
 }
-
 
 char *slrn_convert_string (char *from, char *str, char *strmax, char *to, int test)
 {
@@ -244,10 +242,10 @@ char *slrn_convert_string (char *from, char *str, char *strmax, char *to, int te
      {
 	if (test == 0)
 	  slrn_error (_("Can't convert %s -> %s\n"), from, to);
-	
+
 	if (free_from)
 	  slrn_free (from);
-	  
+
 	return NULL;
      }
 
@@ -273,15 +271,15 @@ char *slrn_convert_string (char *from, char *str, char *strmax, char *to, int te
 	if (0 == strcmp (to, from))
 	  return slrn_strnmalloc (str, strmax-str, 1);
      }
-   
+
    if (test)
      return NULL;
-   
+
    /* Force it to us-ascii */
    s = slrn_strnmalloc (str, strmax-str, 1);
    if (s == NULL)
      return NULL;
-   
+
    str = s;
    while (*s)
      {
@@ -312,10 +310,10 @@ char *slrn_convert_substring(char *str, unsigned int offset, unsigned int len, c
 
    substr = slrn_convert_string (from_charset, str+offset, str+offset+len,
 				 to_charset, test);
-   
+
    if (substr == NULL)
      return NULL;
-   
+
    dlen = strlen (substr);
    new_len = (new_len - len) + dlen;
    new_str = slrn_malloc (new_len + 1, 0, 1);
@@ -357,24 +355,24 @@ int slrn_convert_fprintf(FILE *fp, char *to_charset, char *from_charset, const c
    char *str,*tmp;
 
    va_start (args, format);
-   
+
    if ((to_charset == NULL) || (from_charset == NULL) || (slrn_case_strcmp(to_charset, from_charset) == 0))
      {
 	retval = vfprintf (fp, format, args);
 	va_end (args);
 	return retval;
      }
-   
+
    str = slrn_strdup_vprintf(format, args);
    va_end (args);
-   
+
    if (!slrn_string_nonascii(str))
      {
 	retval = fputs (str, fp);
 	slrn_free(str);
 	return retval;
      }
-   
+
    if (NULL == (tmp = slrn_convert_substring(str, 0, strlen (str), to_charset, from_charset, 0)))
      {
 	slrn_free(str);
@@ -383,7 +381,7 @@ int slrn_convert_fprintf(FILE *fp, char *to_charset, char *from_charset, const c
    retval = fputs (tmp, fp);
    slrn_free(str);
    slrn_free(tmp);
-   
+
    return retval;
 }
 
@@ -402,14 +400,14 @@ int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_char
      }
 
    /* Headers are handled elsewhere */
-   while ((line != NULL) && (line->flags & HEADER_LINE)) 
+   while ((line != NULL) && (line->flags & HEADER_LINE))
      {
 	line=line->next;
      }
-   
+
    while (line != NULL)
      {
-	if (1 == iconv_convert_string(cd, line->buf, strlen (line->buf), 0, &tmp)) 
+	if (1 == iconv_convert_string(cd, line->buf, strlen (line->buf), 0, &tmp))
 	  {
 	     slrn_free((char *) line->buf);
 	     line->buf=tmp;
@@ -469,9 +467,9 @@ int slrn_test_convert_lines (Slrn_Article_Line_Type *rlines, char *to_charset, c
 	       elines = next;
 	     else
 	       eline->next = next;
-	     eline = next;	     
+	     eline = next;
 	     break;
-	     
+
 	   case 0:		       /* failed to convert */
 	     if (Slrn_Debug_Fp != NULL)
 	       {
@@ -515,7 +513,7 @@ int slrn_test_convert_lines (Slrn_Article_Line_Type *rlines, char *to_charset, c
      }
    status = 1;
    /* drop */
-   
+
 free_return:
    iconv_close (cd);
    while (elines != NULL)

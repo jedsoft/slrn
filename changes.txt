@@ -67,6 +67,9 @@ Changes since 0.9.9p1
 31. src/*: Updated copyright year and trimmed extra whitespace.
 32. macros/mime.sl: Added initial support for multipart mime messages.
     See macros/mime.sl for additional information.
+33. macros/mime.sl;src/*.c: More support for processing multipart mime
+    messages, including the ability to save/view the various parts of
+    a message.
 
 {{{ Previous Versions 
 

@@ -3119,7 +3119,7 @@ static void forward_article (void) /*{{{*/
 	return;
      }
 
-   if (-1 == (edit = slrn_get_yesno_cancel (_("Edit the message before sending"))))
+   if (-1 == (edit = slrn_get_yesno_cancel (1,"%s",_("Edit the message before sending"))))
      return;
 
    if (!edit)
@@ -3459,13 +3459,13 @@ static void followup (void) /*{{{*/
 	  }
 	if ((perform_cc == 1) && (Slrn_Auto_CC_To_Poster & 0x01))
 	  {
-	     if (-1 == (perform_cc = slrn_get_yesno_cancel (_("Cc message as requested by poster"))))
+	     if (-1 == (perform_cc = slrn_get_yesno_cancel (1,"%s",_("Cc message as requested by poster"))))
 	       goto free_and_return;
 	  }
 	else if (perform_cc == -1)
 	  {
 	     if (Slrn_Auto_CC_To_Poster < 3) perform_cc = 0;
-	     else if (-1 == (perform_cc = slrn_get_yesno_cancel (_("Cc message to poster"))))
+	     else if (-1 == (perform_cc = slrn_get_yesno_cancel (1,"%s",_("Cc message to poster"))))
 	       goto free_and_return;
 	  }
 
@@ -3477,7 +3477,7 @@ static void followup (void) /*{{{*/
 					cc_address_buf+
 					strlen(cc_address_buf)-8))))
 	       {
-		  perform_cc = slrn_get_yesno_cancel (_("%s appears invalid.  CC anyway"), *cc_address_buf ? cc_address_buf : _("Email address"));
+		  perform_cc = slrn_get_yesno_cancel (1,_("%s appears invalid.  CC anyway"), *cc_address_buf ? cc_address_buf : _("Email address"));
 		  if (perform_cc < 0)
 		     goto free_and_return;
 	       }
@@ -4350,7 +4350,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 
    if (Num_Tag_List.len)
      {
-	save_tagged = slrn_get_yesno_cancel (_("Save tagged articles"));
+	save_tagged = slrn_get_yesno_cancel (1,"%s",_("Save tagged articles"));
 	if (save_tagged < 0) return NULL;
      }
 
@@ -4358,7 +4358,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
        && (Slrn_Current_Header->child != NULL)
        && (Slrn_Current_Header->child->flags & HEADER_HIDDEN))
      {
-	save_thread = slrn_get_yesno_cancel (_("Save this thread"));
+	save_thread = slrn_get_yesno_cancel (1,"%s",_("Save this thread"));
 	if (save_thread == -1) return NULL;
      }
 

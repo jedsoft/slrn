@@ -14,3 +14,4 @@ util.sl
 varset.sl
 xcomment.sl
 mime.sl
+mailcap.sl
