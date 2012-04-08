@@ -158,6 +158,32 @@ private define read_mailcap_files ()
      }
 }
 
+% This implementation assumes that the executable portion of the command
+% has no whitespace.  It returns the expanded name, or NULL.
+private define command_exists (command)
+{
+   command = strtok (command)[0];
+   variable paths;
+   if (path_is_absolute (command))
+     paths = path_dirname (command);
+   else
+     {
+	paths = getenv ("PATH");
+	if (paths == NULL)
+	  return NULL;
+     }
+
+   foreach (strchop (paths, path_get_delimiter(), 0))
+     {
+	variable dir = ();
+	variable dirfile = path_concat (dir, command), st;
+	st = stat_file (dirfile);
+	if ((st != NULL) && stat_is ("reg", st.st_mode))
+	  return dirfile;
+     }
+   return NULL;
+}
+
 % All the test entries in the mailcaps that I have seen test for X.
 private variable Is_X_Tests =
   [
@@ -198,6 +224,9 @@ define mailcap_lookup_entry (content_type)
 	if (edit && (mc._edit == NULL))
 	  continue;
 	if (print && (mc._print == NULL))
+	  continue;
+
+	if (NULL == command_exists (mc._command))
 	  continue;
 
 	variable test = mc._test;

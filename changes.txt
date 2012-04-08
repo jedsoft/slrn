@@ -73,6 +73,8 @@ Changes since 0.9.9p1
 34. src/misc.c:generic_read_input: If point is negative, regard it as
     an offset from the end of the string.  Changes were also made to
     the callers of this function accordingly.
+35. macros/mailcap.sl: If an executable does not exist on the search
+    path, skip the mailcap entry.
 
 {{{ Previous Versions 
 
