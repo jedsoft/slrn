@@ -194,6 +194,11 @@ private define parse_multipart (node, body)
      }
 }
 
+private define extract_mimetype (content_type)
+{
+   return strlow (strtrim (strchop (content_type, ';', 0)[0]));
+}
+
 private define parse_mime (art)
 {
    variable header, body;
@@ -203,7 +208,7 @@ private define parse_mime (art)
    node.content_type = get_header_key (header, "Content-Type", 1);
    node.disposition = get_header_key (header, "Content-Disposition", 0);
    node.header = header;
-   node.mimetype = strlow (strtrim (strchop (node.content_type, ';', 0)[0]));
+   node.mimetype = extract_mimetype (node.content_type);
 
    if (is_substr (node.mimetype, "multipart/"))
      {
@@ -501,9 +506,18 @@ define mime_process_multipart ()
 {
    variable h = is_mime_message ();
 
-   if ((h == NULL) || (0 == is_substrbytes (h, "multipart/")))
+   if (h == NULL)
      return;
 
+   variable mimetype = extract_mimetype (h);
+
+   if (0 == is_substrbytes (mimetype, "multipart/"))
+     {
+	if (mimetype != "text/plain")
+	  vmessage ("This is a MIME message with Content-Type %s", h);
+
+	return;
+     }
    process_mime_message ();
 
    variable node, leaf;
@@ -537,6 +551,5 @@ define mime_process_multipart ()
    if (num_text)
      msg_parts = [msg_parts, sprintf ("%d text (%d html)", num_text, num_html)];
 
-   vmessage ("This is a MIME multipart message [%s]",
-	     strjoin (msg_parts, ", "));
+   vmessage ("MIME %s [%s]", mimetype, strjoin (msg_parts, ", "));
 }

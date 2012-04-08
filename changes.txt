@@ -80,6 +80,8 @@ Changes since 0.9.9p1
     was updated to use this.
 37. macros/mime.sl: Added an option to the browse menu that permits
     the full raw article to be viewed.
+38. macros/mime.sl: Added a more informative message when a mime
+    article is encountered.
 
 {{{ Previous Versions 
 
