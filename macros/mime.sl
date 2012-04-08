@@ -139,7 +139,7 @@ private define get_multipart_boundary (header)
 %
 private variable Mime_Node_Type = struct
 {
-   mimetype,			       %  type/subtype, from content-type
+   mimetype,			       %  lowercase type/subtype, from content-type
    disposition,			       %  content-disposition header
    content_type,		       %  full content-type header
    header,			       %  assoc array of header keywords
@@ -203,7 +203,7 @@ private define parse_mime (art)
    node.content_type = get_header_key (header, "Content-Type", 1);
    node.disposition = get_header_key (header, "Content-Disposition", 0);
    node.header = header;
-   node.mimetype = strtrim (strchop (node.content_type, ';', 0)[0]);
+   node.mimetype = strlow (strtrim (strchop (node.content_type, ';', 0)[0]));
 
    if (is_substr (node.mimetype, "multipart/"))
      {
@@ -302,7 +302,7 @@ private define replace_article_with_mime_obj (obj)
 
    art = art + "\n" + obj.message;
 
-   replace_article (art, 1);
+   replace_cooked_article (art, 1);
 }
 
 private define is_attachment (node)
@@ -312,7 +312,7 @@ private define is_attachment (node)
 
 private define is_text (node)
 {
-   return is_substrbytes (strlow (node.mimetype), "text/");
+   return is_substrbytes (node.mimetype, "text/");
 }
 
 private define get_mime_filename (node)
@@ -441,11 +441,19 @@ define mime_browse ()
 			     ));
      }
 
+   list_append (descriptions, "View full message with all parts");
    forever
      {
 	variable n = get_select_box_response ("Browse Mime",
 					      __push_list (descriptions),
 					      length (descriptions));
+
+	if (n == length (Mime_Object_List))
+	  {
+	     % View full message option
+	     replace_article (raw_article_as_string (), 0);
+	     return;
+	  }
 
 	node = Mime_Object_List[n];
 	filename = filenames[n];
@@ -505,22 +513,30 @@ define mime_process_multipart ()
    if (leaf == NULL)
      return;		       %  nothing to display
 
-   variable num_attchments = 0, num_non_text = 0;
+   variable num_attchments = 0, num_non_text = 0, num_text = 0, num_html = 0;
    foreach node (Mime_Object_List)
      {
 	if (is_attachment (node))
 	  num_attchments++;
-	else ifnot (is_text (node))
+	else if (is_text (node))
+	  {
+	     num_text++;
+	     num_html += (0 != is_substrbytes (node.mimetype, "/html"));
+	  }
+	else
 	  num_non_text++;
      }
    replace_article_with_mime_obj (leaf);
    update ();
 
-   variable msg = "This is a MIME multipart message";
+   variable msg_parts = String_Type[0];
    if (num_attchments)
-     msg = sprintf ("%s, %d attachments", msg, num_attchments);
+     msg_parts = [msg_parts, sprintf ("%d attachments", num_attchments)];
    if (num_non_text)
-     msg = sprintf ("%s, %d non-text parts", msg, num_non_text);
+     msg_parts = [msg_parts, sprintf ("%d non-text", num_non_text)];
+   if (num_text)
+     msg_parts = [msg_parts, sprintf ("%d text (%d html)", num_text, num_html)];
 
-   message (msg);
+   vmessage ("This is a MIME multipart message [%s]",
+	     strjoin (msg_parts, ", "));
 }

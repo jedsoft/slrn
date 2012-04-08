@@ -75,6 +75,11 @@ Changes since 0.9.9p1
     the callers of this function accordingly.
 35. macros/mailcap.sl: If an executable does not exist on the search
     path, skip the mailcap entry.
+36. src/interp.c: Added "replace_cooked_article", which is like
+    to "replace_article", but does not affect the raw lines.  mime.sl
+    was updated to use this.
+37. macros/mime.sl: Added an option to the browse menu that permits
+    the full raw article to be viewed.
 
 {{{ Previous Versions 
 

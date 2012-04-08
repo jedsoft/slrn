@@ -613,15 +613,19 @@ static Slrn_Article_Line_Type *copy_article_line (Slrn_Article_Line_Type *l)
    return retval;
 }
 
-static void free_article_lines (Slrn_Article_Type *a)
+static void free_article_lines (Slrn_Article_Type *a, int cooked)
 {
    if (a == NULL)
      return;
 
+   if (cooked == 0)
+     {
+	slrn_art_free_article_line_list (a->raw_lines);
+	a->raw_lines = NULL;
+     }
+
    slrn_art_free_article_line_list (a->lines);
-   slrn_art_free_article_line_list (a->raw_lines);
    a->lines = NULL;
-   a->raw_lines = NULL;
    a->cline=NULL;
 }
 
@@ -634,7 +638,7 @@ void slrn_art_free_article (Slrn_Article_Type *a)
      Slrn_Current_Article = NULL;
 
    slrn_mime_free(&a->mime);
-   free_article_lines (a);
+   free_article_lines (a, 0);
    slrn_free ((char *) a);
 }
 
@@ -2570,7 +2574,7 @@ static int select_header (Slrn_Header_Type *h, int kill_refs) /*{{{*/
 
 /*}}}*/
 
-int slrn_string_to_article (char *str, int handle_mime)
+int slrn_string_to_article (char *str, int handle_mime, int cooked)
 {
    char *estr;
    Slrn_Article_Line_Type *l, *cline = NULL;
@@ -2582,7 +2586,8 @@ int slrn_string_to_article (char *str, int handle_mime)
    if (NULL == (a = Slrn_Current_Article))
      return -1;
 
-   free_article_lines (a);
+   free_article_lines (a, cooked);
+
    a->is_modified = 1;
    a->needs_sync = 1;
 
@@ -2632,7 +2637,8 @@ int slrn_string_to_article (char *str, int handle_mime)
 #if 0 /* does this make any sense? */
    Header_Showing = Slrn_Current_Header;
 #endif
-   if (NULL == (a->raw_lines = copy_article_line (a->lines)))
+   if ((cooked == 0)
+       && (NULL == (a->raw_lines = copy_article_line (a->lines))))
      {
 	free_article ();
 	return -1;
@@ -4441,7 +4447,7 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 
    if (for_decoding) input_string = _("Temporary file (^G aborts): ");
    else input_string = _("Save to file (^G aborts): ");
-   if (slrn_read_filename (input_string, NULL, file, 1, 1) <= 0)
+   if (slrn_read_filename (input_string, NULL, file, 1, -1) <= 0)
      {
 	slrn_error (_("Aborted."));
 	return NULL;
@@ -4712,7 +4718,7 @@ static void pipe_article (void) /*{{{*/
 #if SLRN_HAS_PIPING
    static char cmd[SLRL_DISPLAY_BUFFER_SIZE];
 
-   if (slrn_read_filename (_("Pipe to command: "), NULL, cmd, 1, 1) <= 0)
+   if (slrn_read_filename (_("Pipe to command: "), NULL, cmd, 1, -1) <= 0)
      {
 	slrn_error (_("Aborted.  Command name is required."));
 	return;

@@ -264,7 +264,7 @@ extern int slrn_edit_score (Slrn_Header_Type *, char *);
 
 int slrn_get_next_pagedn_action (void);
 
-extern int slrn_string_to_article (char *str, int handle_mime);
+extern int slrn_string_to_article (char *str, int handle_mime, int cooked);
 
 extern int Slrn_Color_By_Score;
 extern int Slrn_Highlight_Unread;
