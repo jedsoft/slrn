@@ -70,6 +70,9 @@ Changes since 0.9.9p1
 33. macros/mime.sl;src/*.c: More support for processing multipart mime
     messages, including the ability to save/view the various parts of
     a message.
+34. src/misc.c:generic_read_input: If point is negative, regard it as
+    an offset from the end of the string.  Changes were also made to
+    the callers of this function accordingly.
 
 {{{ Previous Versions 
 

@@ -1097,7 +1097,7 @@ static void launch_url (char *url, int want_edit) /*{{{*/
    int reinit;
 
    if (want_edit
-       && (slrn_read_input (_("Browse (^G aborts): "), NULL, url, 0, 1) <= 0))
+       && (slrn_read_input (_("Browse (^G aborts): "), NULL, url, 0, -1) <= 0))
      {
 	slrn_error (_("Aborted."));
 	return;

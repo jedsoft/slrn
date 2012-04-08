@@ -2120,9 +2120,13 @@ static int generic_read_input (char *prompt, char *dfl, char *str, int trim_flag
 	if (-1 == SLrline_set_line (Slrn_Keymap_RLI, str))
 	  return -1;
 
-	/* if (point == 0) */
-	  SLrline_set_point (Slrn_Keymap_RLI, point);
-
+	if (point < 0)
+	  {
+	     unsigned int slen = strlen (str);
+	     if ((unsigned int)-point > slen) point = 0;
+	     else point = slen + (1 + point);
+	  }
+	SLrline_set_point (Slrn_Keymap_RLI, point);
 	*str = 0;
      }
    if (str == NULL) str = dfl;

@@ -1751,11 +1751,11 @@ void slrn_post_cmd (void) /*{{{*/
    if (strlen (name) >= sizeof (group))
      name = "";
    slrn_strncpy (group, name, sizeof (group));
-   if (slrn_read_input (_("Newsgroup: "), NULL, group, 1, 1) <= 0) return;
+   if (slrn_read_input (_("Newsgroup: "), NULL, group, 1, -1) <= 0) return;
    if (slrn_strbyte (group, ',') != NULL)
      {
 	slrn_strncpy (followupto, name, sizeof (followupto));
-	(void) slrn_read_input (_("Followup-To: "), NULL, followupto, 1, 1);
+	(void) slrn_read_input (_("Followup-To: "), NULL, followupto, 1, -1);
      }
    else
      *followupto = '\0';
