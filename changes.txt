@@ -82,6 +82,8 @@ Changes since 0.9.9p1
     the full raw article to be viewed.
 38. macros/mime.sl: Added a more informative message when a mime
     article is encountered.
+39. src/mime.c: A couple of strncmp calls used the wrong length (Patched
+    by Thomas Wiegner).
 
 {{{ Previous Versions 
 

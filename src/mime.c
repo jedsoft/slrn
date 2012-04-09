@@ -105,13 +105,13 @@ static int parse_content_type_line (Slrn_Article_Type *a)/*{{{*/
 	  }
 	b += 5;
      }
-   else if (0 == slrn_case_strncmp (b, "message/", 5))
+   else if (0 == slrn_case_strncmp (b, "message/", 8))
      {
 	a->mime.content_type = CONTENT_TYPE_MESSAGE;
 	a->mime.content_subtype = CONTENT_SUBTYPE_UNKNOWN;
 	b += 8;
      }
-   else if (0 == slrn_case_strncmp (b, "multipart/", 5))
+   else if (0 == slrn_case_strncmp (b, "multipart/", 10))
      {
 	a->mime.content_type = CONTENT_TYPE_MULTIPART;
 	a->mime.content_subtype = CONTENT_SUBTYPE_UNKNOWN;
