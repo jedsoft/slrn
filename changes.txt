@@ -84,6 +84,9 @@ Changes since 0.9.9p1
     article is encountered.
 39. src/mime.c: A couple of strncmp calls used the wrong length (Patched
     by Thomas Wiegner).
+40. macros/mime.sl: The boundary subkeyword was not being detected in a
+    case-insensitive way.  Also the wrong filename was mentioned in
+    the usage comments. (Christian Ebert)
 
 {{{ Previous Versions 
 

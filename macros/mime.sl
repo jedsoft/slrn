@@ -19,7 +19,7 @@
 %
 % To use these functions, add the following lines to your .slrnrc file:
 %
-%    interpret "multimime.sl"
+%    interpret "mime.sl"
 %    setkey article "mime_process_multipart" KEYBINDING
 %    setkey article "mime_browse" KEYBINDING
 %
@@ -101,9 +101,9 @@ private define split_article (art)
 
 private define parse_subkeyword (key, word)
 {
-   variable val = string_matches (key, word + `\C *= *"\([^"]+\)"`);
+   variable val = string_matches (key, `\C` + word + ` *= *"\([^"]+\)"`);
    if (val == NULL)
-     val = string_matches (key, word + `\C *= *\([^; ]+\)`);
+     val = string_matches (key, `\C` + word + ` *= *\([^; ]+\)`);
    if (val == NULL)
      return val;
 
