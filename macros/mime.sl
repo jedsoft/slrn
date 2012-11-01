@@ -429,6 +429,7 @@ define mime_browse ()
 
    variable node, descriptions = {};
    variable filenames = {};
+   list_append (descriptions, "View full message with all parts");
    foreach node (Mime_Object_List)
      {
 	variable filename = get_mime_filename (node);
@@ -446,19 +447,20 @@ define mime_browse ()
 			     ));
      }
 
-   list_append (descriptions, "View full message with all parts");
    forever
      {
 	variable n = get_select_box_response ("Browse Mime",
 					      __push_list (descriptions),
 					      length (descriptions));
 
-	if (n == length (Mime_Object_List))
+	if (n == 0)
 	  {
 	     % View full message option
 	     replace_article (raw_article_as_string (), 0);
 	     return;
 	  }
+
+	n--;
 
 	node = Mime_Object_List[n];
 	filename = filenames[n];
@@ -527,7 +529,8 @@ define mime_process_multipart ()
    if (leaf == NULL)
      return;		       %  nothing to display
 
-   variable num_attchments = 0, num_non_text = 0, num_text = 0, num_html = 0;
+   variable num_attchments = 0, num_non_text = 0,
+     num_text = 0, num_html = 0, num_plain = 0;
    foreach node (Mime_Object_List)
      {
 	if (is_attachment (node))
@@ -536,6 +539,7 @@ define mime_process_multipart ()
 	  {
 	     num_text++;
 	     num_html += (0 != is_substrbytes (node.mimetype, "/html"));
+	     num_plain += (0 != is_substrbytes (node.mimetype, "/plain"));
 	  }
 	else
 	  num_non_text++;
@@ -549,7 +553,9 @@ define mime_process_multipart ()
    if (num_non_text)
      msg_parts = [msg_parts, sprintf ("%d non-text", num_non_text)];
    if (num_text)
-     msg_parts = [msg_parts, sprintf ("%d text (%d html)", num_text, num_html)];
+     msg_parts = [msg_parts, sprintf ("%d text/plain (%d html, %d other)",
+				      num_plain, num_html,
+				      num_text - (num_plain+num_html))];
 
    vmessage ("MIME %s [%s]", mimetype, strjoin (msg_parts, ", "));
 }

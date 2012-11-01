@@ -87,6 +87,8 @@ Changes since 0.9.9p1
 40. macros/mime.sl: The boundary subkeyword was not being detected in a
     case-insensitive way.  Also the wrong filename was mentioned in
     the usage comments. (Christian Ebert)
+41. macros/mime.sl: Add an option to view all parts of a mime
+    multipart message.
 
 {{{ Previous Versions 
 
