@@ -3,7 +3,7 @@ private variable Script_Version_String = "0.1.1";
 require ("cmdopt");
 require ("glob");
 
-private variable MANDIR = "$root/man/man1";
+private variable MANDIR = "$root/share/man/man1";
 private variable BINDIR = "$root/bin";
 private variable DOCDIR = "$root/share/doc/slrn";
 private variable CONFDIR = "$root/etc";
