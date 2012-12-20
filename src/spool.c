@@ -10,7 +10,7 @@
  * Normally, you only get errors in the debug-file. If you set this,
  * please keep an eye on your disk-space.
  */
-#define DEBUG_SPOOL_TRACE 1 
+#define DEBUG_SPOOL_TRACE 1
 
 #include <stdio.h>
 #ifndef SEEK_SET
@@ -132,7 +132,7 @@ static void debug_output (char *file, int line, char *fmt, ...)
 #else
 	  return;
 #endif
-	
+
         if (fmt == NULL)
           {
              fputs ("(NULL)", Slrn_Debug_Fp);
@@ -143,7 +143,7 @@ static void debug_output (char *file, int line, char *fmt, ...)
 	     vfprintf(Slrn_Debug_Fp, fmt, ap);
 	     va_end (ap);
           }
-	
+
         putc ('\n', Slrn_Debug_Fp);
      }
 }
@@ -181,22 +181,22 @@ static FILE *spool_open_nov_file (void)
 {
    char *p, *q;
    FILE *fp;
-   
+
    /* The spool_dircat function will exit if it fails to malloc. */
    p = slrn_spool_dircat (Slrn_Nov_Root, Spool_Group_Name, 1);
    q = slrn_spool_dircat (p, Slrn_Nov_File, 0);
-   
+
    fp = fopen (q,"rb");
    SLFREE(q);
    SLFREE(p);
-   
+
    return fp;
 }
 
 static int overview_file_seek (long fp, NNTP_Artnum_Type cur, NNTP_Artnum_Type dest)
 {
    int ch;
-   
+
    while (cur < dest)
      {
         if (-1 == (fp = ftell(Spool_fh_local)))
@@ -209,7 +209,7 @@ static int overview_file_seek (long fp, NNTP_Artnum_Type cur, NNTP_Artnum_Type d
 	     spool_fclose_local ();
 	     return -1;
 	  }
-	
+
 	while (((ch = getc (Spool_fh_local)) != '\n') && (ch != EOF))
 	  ; /* do nothing */
      }
@@ -218,7 +218,7 @@ static int overview_file_seek (long fp, NNTP_Artnum_Type cur, NNTP_Artnum_Type d
         debug_output (__FILE__, __LINE__, "fseek returned -1; errno %d (%s).", errno, strerror(errno));
         return ERR_FAULT;
      }
-   
+
    return 0;
 }
 
@@ -237,10 +237,10 @@ static int spool_nntp_xover (NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 
    if (max > Spool_Max_Artnum)
      max = Spool_Max_Artnum;
-   
+
    if (min < Spool_Min_Artnum)
      min = Spool_Min_Artnum;
-   
+
    if (Spool_Server_Obj.sv_has_xover)
      {
 	Spool_fh_local = Spool_fh_nov;
@@ -272,7 +272,7 @@ static int spool_nntp_xover (NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 	     while (((ch = getc(Spool_fh_local)) != '\n')
 		    && (ch != EOF))
 	       ; /* do nothing */
-	     
+
 	     if (ch == EOF)
 	       {
 		  rewind (Spool_fh_local);
@@ -283,11 +283,11 @@ static int spool_nntp_xover (NNTP_Artnum_Type min, NNTP_Artnum_Type max)
 	if (-1 == overview_file_seek (fp, i, min))
 	  return -1;
      }
-   
+
    Spool_XOver_Next = Spool_XOver_Min = min;
    Spool_XOver_Max = max;
    Spool_Doing_XOver = 1;
-   
+
    return OK_XOVER;
 }
 
@@ -298,7 +298,7 @@ static int spool_read_xover (char *the_buf, unsigned int len)
    if (Spool_Doing_XOver == 0)
      return 0;
 
-   if (Spool_XOver_Next > Spool_XOver_Max) 
+   if (Spool_XOver_Next > Spool_XOver_Max)
      {
 	Spool_Doing_XOver = 0;
 	return 0;
@@ -312,18 +312,18 @@ static int spool_read_xover (char *the_buf, unsigned int len)
           {
              debug_output (__FILE__, __LINE__, "ftell returned -1; errno %d (%s).", errno, strerror(errno));
              return -1;
-          }	
-   
+          }
+
 	if (NULL == fgets (the_buf, len, Spool_fh_nov))
 	  {
 	     Spool_Doing_XOver = 0;
 	     return 0;
 	  }
-	
+
 	buflen = strlen (the_buf);
 	if (buflen && (the_buf[buflen - 1] == '\n'))
 	  the_buf [buflen - 1] = 0;
-   
+
 	/* check if we've reached the end of the requested range */
 	Spool_XOver_Next = NNTP_STR_TO_ARTNUM (the_buf);
 	if (Spool_XOver_Next > Spool_XOver_Max)
@@ -332,17 +332,17 @@ static int spool_read_xover (char *the_buf, unsigned int len)
                {
                   debug_output (__FILE__, __LINE__, "fseek returned -1; errno %d (%s).", errno, strerror(errno));
                   return -1;
-               }	     
+               }
 	     Spool_Doing_XOver = 0;
 	     return 0;
 	  }
-	
+
 #if 0
 	/* We now do this check in xover.c and get the article size (in bytes)
 	 * using the same call to stat(). */
 	if (Slrn_Spool_Check_Up_On_Nov == 0)
 	  break;
-	
+
 	/* check that the article file actually exists */
 	/* if not, this nov entry is defunct, so ignore it */
 	if (0 == spool_article_num_exists (Spool_XOver_Next))
@@ -363,19 +363,19 @@ static int spool_find_artnum_from_msgid (char *msgid, NNTP_Artnum_Type *idp)
 {
    char buf [4096];
    char *p;
-   
+
    debug_output (NULL, -1, "spool_find_artnum_from_msgid('%s')", msgid);
 
    if (Slrn_Server_Obj->sv_has_xover == 0)
      {
 	NNTP_Artnum_Type n;
 	unsigned int len = strlen (msgid);
-   
+
 	for (n = Spool_Min_Artnum; n <= Spool_Max_Artnum; n++)
 	  {
 	     if (-1 == spool_one_xhdr_command ("Message-ID", n, buf, sizeof (buf)))
 	       continue;
-	     
+
 	     p = slrn_skip_whitespace (buf);
 	     if (0 == strncmp (p, msgid, len))
 	       {
@@ -383,10 +383,10 @@ static int spool_find_artnum_from_msgid (char *msgid, NNTP_Artnum_Type *idp)
 		  return 0;
 	       }
 	  }
-   
+
 	return -1;
      }
-   
+
    if (OK_XOVER != spool_nntp_xover (1, NNTP_ARTNUM_TYPE_MAX))
      return -1;
 
@@ -414,41 +414,40 @@ static int spool_find_artnum_from_msgid (char *msgid, NNTP_Artnum_Type *idp)
 	     return 0;
 	  }
      }
-   
+
    debug_output (NULL, -1, "spool_find_artnum_from_msgid() found no match");
-   
+
    Spool_Doing_XOver = 0;
    return -1;
 }
 
-
 static FILE *spool_open_article_num (NNTP_Artnum_Type num)
 {
    char buf [SLRN_MAX_PATH_LEN];
-   
+
    slrn_snprintf (buf, sizeof (buf), ("%s/" NNTP_FMT_ARTNUM), Spool_Group, num);
-   
+
    return fopen (buf,"r");
 }
 
 static int spool_article_num_exists (NNTP_Artnum_Type num)
 {
    char buf [SLRN_MAX_PATH_LEN];
-   
+
    slrn_snprintf (buf, sizeof (buf), ("%s/" NNTP_FMT_ARTNUM), Spool_Group, num);
 
    if (1 == slrn_file_exists (buf))
      return 0;
-   
+
    return -1;
 }
 
 static int spool_get_article_size (NNTP_Artnum_Type num)
 {
    char buf [SLRN_MAX_PATH_LEN];
-   
+
    slrn_snprintf (buf, sizeof (buf), ("%s/" NNTP_FMT_ARTNUM), Spool_Group, num);
-   
+
    return slrn_file_size (buf);
 }
 
@@ -474,7 +473,7 @@ static int spool_nntp_head (NNTP_Artnum_Type id, char *msgid, NNTP_Artnum_Type *
 
    if (id == -1)
      {
-	if (msgid == NULL) 
+	if (msgid == NULL)
 	  id = Spool_cur_artnum;
 	else
 	  {
@@ -484,38 +483,38 @@ static int spool_nntp_head (NNTP_Artnum_Type id, char *msgid, NNTP_Artnum_Type *
      }
 
    if (real_id != NULL) *real_id = id;
-   
-   if ((id == -1) 
+
+   if ((id == -1)
        || (NULL == (Spool_fh_local = spool_open_article_num (id))))
      return ERR_NOARTIG; /* No such article in this group */
-   
+
    Spool_cur_artnum = id;
    Spool_fhead = 1; /* set flag to stop after headers */
-   
+
    return OK_HEAD; /* Head follows */
 }
 
 static int spool_nntp_next (NNTP_Artnum_Type *id)
 {
    NNTP_Artnum_Type i;
-   
+
    spool_fclose_local();
 
    /* !HACK! better to find value from overview file or active file in case the group grows while we're in it? */
    for (i = Spool_cur_artnum + 1; i <= Spool_Max_Artnum; i++)
      {
 	if (-1 != spool_article_num_exists (i))
-	  {	
+	  {
 	     Spool_cur_artnum = i;
 	     if (id != NULL) *id = i;
-	     
+
 	     debug_output (NULL, -1, ("NEXT found article " NNTP_FMT_ARTNUM), Spool_cur_artnum);
 
 	     return OK_NOTEXT; /* No text sent -- stat, next, last */
 	  }
      }
 
-   debug_output (NULL, -1, ("No NEXT -- " NNTP_FMT_ARTNUM " > " NNTP_FMT_ARTNUM), 
+   debug_output (NULL, -1, ("No NEXT -- " NNTP_FMT_ARTNUM " > " NNTP_FMT_ARTNUM),
 		 Spool_cur_artnum, Spool_Max_Artnum);
 
    return ERR_NONEXT; /* No next article in this group */
@@ -554,7 +553,7 @@ static int spool_nntp_newgroups (char *line, char *buf, unsigned int len)
     * yr = this_year();
     * Y += ((yr-51)/100*100);
     */
-   
+
    if (Y < 1970
        || M < 1 || M > 12
        || D < 1 || D > 31
@@ -572,12 +571,12 @@ static int spool_nntp_newgroups (char *line, char *buf, unsigned int len)
 	D -= (M * 4 + 27)/10;
 	if ((Y % 4) == 0) D++;
      }
-   
+
    /* add that to number of days since beginning of time */
    Y -= 1970;
    D += Y * 365 + Y / 4;
    if ((Y % 4) == 3) D++;
-   
+
    /* Now convert to secs */
    s += 60L * (m + 60L * (h + 24L * D));
    threshold = (time_t) s;
@@ -594,7 +593,7 @@ static int spool_nntp_newgroups (char *line, char *buf, unsigned int len)
 # ifdef HAVE_TM_GMTOFF
 	struct tm *t;
 	time_t tt;
-	
+
 	t = localtime (&threshold);
 	tt = threshold - t->tm_gmtoff;
 	if (t->tm_isdst) tt += (time_t) 3600;
@@ -756,7 +755,6 @@ static int spool_put_server_cmd (char *line, char *buf, unsigned int len)
 
 /*}}}*/
 
-
 static int spool_read_minmax_from_dp (Slrn_Dir_Type *dp, NNTP_Artnum_Type *min, NNTP_Artnum_Type *max)
 {
    Slrn_Dirent_Type *ep;
@@ -803,7 +801,7 @@ static int spool_read_minmax_file (NNTP_Artnum_Type *min, NNTP_Artnum_Type *max,
    file = slrn_spool_dircat (group_dir, ".minmax", 0);
    if (file == NULL)
      return -1;
-   
+
    fp = fopen (file, "r");
    if (fp == NULL)
      {
@@ -815,10 +813,10 @@ static int spool_read_minmax_file (NNTP_Artnum_Type *min, NNTP_Artnum_Type *max,
    if ((NULL == fgets (buf, sizeof (buf), fp))
        || (2 != sscanf (buf, NNTP_FMT_ARTNUM_2, min, max)))
      status = -1;
-   
+
    fclose (fp);
    SLFREE (file);
-   
+
    return status;
 }
 
@@ -831,7 +829,7 @@ static int spool_read_minmax_from_dir (NNTP_Artnum_Type *min, NNTP_Artnum_Type *
    Slrn_Dir_Type *dp;
 
    if (dir == NULL) dir = ".";
-   
+
    /* I suspect this is very unlikely to fail */
    if ((dp = slrn_open_dir (dir)) == NULL)
      {
@@ -907,7 +905,7 @@ static int spool_read_minmax_from_overview (char *name, NNTP_Artnum_Type *min, N
    int first;
 
    (void) name;
-   
+
    if (Slrn_Prefer_Head == 2)
      Spool_Server_Obj.sv_has_xover = 0;
    else
@@ -948,7 +946,7 @@ static int spool_read_minmax_from_overview (char *name, NNTP_Artnum_Type *min, N
              debug_output (__FILE__, __LINE__, "fseek returned -1; errno %d (%s).", errno, strerror(errno));
              return -1;
           }
-	
+
 	if (first)
 	  {
 	     /* on the first pass, we want to ignore the last byte \n at eof */
@@ -988,19 +986,19 @@ static int spool_select_group (char *name, NNTP_Artnum_Type *min, NNTP_Artnum_Ty
 {
    /* close any open files */
    spool_fclose_local();
-   
+
    if (Spool_fh_nov != NULL)
      {
 	fclose (Spool_fh_nov);
 	Spool_fh_nov = NULL;
      }
-   
+
    slrn_free (Spool_Group);
    slrn_free (Spool_Group_Name);
-   
+
    Spool_Group = slrn_spool_dircat (Slrn_Spool_Root, name, 1);
    Spool_Group_Name = slrn_safe_strmalloc (name);
-   
+
    Spool_fh_nov = spool_open_nov_file ();
 
    if ((-1 == spool_read_minmax_from_overview (name, min, max))
@@ -1097,7 +1095,7 @@ static int spool_read_fhlocal (char *line, unsigned int len)
    len = strlen(line);
 
    bytes_read += len;
-   
+
    if (len && (line [len - 1] == '\n'))
      line [len-1] = '\0';
 
@@ -1107,14 +1105,14 @@ static int spool_read_fhlocal (char *line, unsigned int len)
 static int spool_read_line (char *line, unsigned int len)
 {
    if (Spool_Doing_XPat) return spool_read_xpat (line, len);
-   
+
    if (Spool_Doing_XOver) return spool_read_xover (line, len);
-   
+
    if (NULL != Spool_XHdr_Field)
      {
 	char buf[NNTP_BUFFER_SIZE];
 	int retval = -1;
-	
+
 	/* if (buf == NULL) return -1; */
 	if ((len > 33) &&
 	    (1 == (retval = spool_read_xhdr (buf, sizeof (buf)))))
@@ -1127,9 +1125,9 @@ static int spool_read_line (char *line, unsigned int len)
 	  }
 	return retval;
      }
-   
+
    if (Spool_fFakingActive) return spool_fakeactive_read_line (line, len);
-   
+
    return spool_read_fhlocal (line, len);
 }
 
@@ -1149,43 +1147,43 @@ static int spool_xpat_match (char *str, char *pat)
    /* HACK.  This needs fixed for more general patterns. */
    if (NULL == strstr (str, pat))
      return -1;
-   
+
    return 0;
 }
 
 static int spool_read_xpat (char *buf, unsigned int len)
 {
    char tmpbuf [8192];
-   
+
    Spool_Doing_XPat = 0;
-   
+
    if (Spool_XPat_Struct.xover_field == -1)
      {
 	NNTP_Artnum_Type num;
-	
+
 	for (num = Spool_XPat_Struct.rmin; num <= Spool_XPat_Struct.rmax; num++)
 	  {
 	     if (-1 == spool_one_xhdr_command (Spool_XPat_Struct.header, num,
 					       tmpbuf, sizeof (tmpbuf)))
 	       continue;
-	     
+
 	     if (-1 != spool_xpat_match (tmpbuf, Spool_XPat_Struct.pat))
 	       {
 		  unsigned int blen;
-		  
+
 		  Spool_Doing_XPat = 1;
 		  Spool_XPat_Struct.rmin = num + 1;
-		  
+
 		  slrn_snprintf (buf, len, (NNTP_FMT_ARTNUM " "), num);
 		  blen = strlen (buf);
-		  
+
 		  strncpy (buf + blen, tmpbuf, len - blen);
 		  buf[len - 1] = 0;
 
 		  return 1;
 	       }
 	  }
-	
+
 	Spool_XPat_Struct.rmin = Spool_XPat_Struct.rmax + 1;
      }
    else
@@ -1197,13 +1195,13 @@ static int spool_read_xpat (char *buf, unsigned int len)
 	     int field = Spool_XPat_Struct.xover_field + 1;
 	     NNTP_Artnum_Type num = NNTP_STR_TO_ARTNUM (tmpbuf);
 	     char *b = tmpbuf, *end;
-	     
+
 	     if ((num > Spool_XPat_Struct.rmax) || (num < 0))
 	       {
 		  spool_fclose_local ();
 		  return 0;
 	       }
-	     
+
 	     while (field)
 	       {
 		  b = slrn_strbyte (b, '\t');
@@ -1223,11 +1221,11 @@ static int spool_read_xpat (char *buf, unsigned int len)
 	     end = slrn_strbyte (b, '\t');
 	     if (end != NULL)
 	       *end = '\0';
-	     
+
 	     if (-1 != spool_xpat_match (b, Spool_XPat_Struct.pat))
 	       {
 		  unsigned int blen;
-		  
+
 		  Spool_Doing_XPat = 1;
 		  slrn_snprintf (buf, len, (NNTP_FMT_ARTNUM " "), num);
 		  blen = strlen (buf);
@@ -1239,15 +1237,15 @@ static int spool_read_xpat (char *buf, unsigned int len)
 	  }
 	spool_fclose_local ();
      }
-   
+
    return 0;
 }
 
 static int spool_xpat_cmd (char *hdr, NNTP_Artnum_Type rmin, NNTP_Artnum_Type rmax, char *pat)
 {
-   static char *overview_headers [] = 
+   static char *overview_headers [] =
      {
-	"Subject", "From", "Date", "Message-ID", 
+	"Subject", "From", "Date", "Message-ID",
 	"References", "Bytes", "Lines",
 	NULL
      };
@@ -1255,29 +1253,29 @@ static int spool_xpat_cmd (char *hdr, NNTP_Artnum_Type rmin, NNTP_Artnum_Type rm
    spool_fclose_local ();
    Spool_Doing_XPat = 0;
    memset ((char *) &Spool_XPat_Struct, 0, sizeof (Spool_XPat_Struct));
-   
+
    if (rmin < Spool_Min_Artnum)
      rmin = Spool_Min_Artnum;
    if (rmax > Spool_Max_Artnum)
      rmax = Spool_Max_Artnum;
-   
+
    Spool_XPat_Struct.rmin = rmin;
    Spool_XPat_Struct.rmax = rmax;
-   
+
    /* The memset will guarantee that these are NULL terminated. */
    strncpy (Spool_XPat_Struct.header, hdr, sizeof (Spool_XPat_Struct.header) - 1);
    strncpy (Spool_XPat_Struct.pat, pat, sizeof (Spool_XPat_Struct.pat) - 1);
-   
+
    Spool_XPat_Struct.xover_field = -1;
-   
+
    if (Slrn_Server_Obj->sv_has_xover)
      {
 	int field = 0;
-	
+
 	while (1)
 	  {
 	     char *h = overview_headers [field];
-	     
+
 	     if (h == NULL) break;
 	     if (0 == slrn_case_strcmp ( h,  hdr))
 	       {
@@ -1287,7 +1285,7 @@ static int spool_xpat_cmd (char *hdr, NNTP_Artnum_Type rmin, NNTP_Artnum_Type rm
 	     field++;
 	  }
      }
-   
+
    if (Spool_XPat_Struct.xover_field != -1)
      {
 	Spool_fh_local = spool_open_nov_file ();
@@ -1296,7 +1294,7 @@ static int spool_xpat_cmd (char *hdr, NNTP_Artnum_Type rmin, NNTP_Artnum_Type rm
 	if (-1 == overview_file_seek (0, -1, Spool_XPat_Struct.rmin))
 	  return -1;
      }
-   
+
    Spool_Doing_XPat = 1;
 
    return OK_HEAD;
@@ -1310,20 +1308,19 @@ static int spool_select_article (NNTP_Artnum_Type n, char *msgid)
      {
 	if ((msgid == NULL) || (*msgid == 0))
 	  return -1;
-	
+
 	if (-1 == spool_find_artnum_from_msgid (msgid, &n))
 	  return ERR_NOARTIG;
      }
 
    spool_fclose_local();
-   
+
    if (NULL == (Spool_fh_local = spool_open_article_num (n)))
      return ERR_NOARTIG;
-   
+
    Spool_cur_artnum = n;
    return OK_ARTICLE;
 }
-
 
 /* The hdr string should NOT include the ':' */
 static int spool_one_xhdr_command (char *hdr, NNTP_Artnum_Type num, char *buf,
@@ -1333,12 +1330,12 @@ static int spool_one_xhdr_command (char *hdr, NNTP_Artnum_Type num, char *buf,
    unsigned int colon;
 
    spool_fclose_local ();
-   
+
    if (NULL == (Spool_fh_local = spool_open_article_num (num)))
      return -1;
-   
+
    Spool_fhead = 1;		       /* stop after headers */
-   
+
    colon = strlen (hdr);
 
    while (1 == spool_read_fhlocal (tmpbuf, sizeof (tmpbuf)))
@@ -1360,7 +1357,7 @@ static int spool_one_xhdr_command (char *hdr, NNTP_Artnum_Type num, char *buf,
 	  }
 	return 0;
      }
-   
+
    return -1;
 }
 
@@ -1370,40 +1367,40 @@ static int spool_xhdr_command (char *field, NNTP_Artnum_Type min, NNTP_Artnum_Ty
 		 field, min, max);
 
    spool_fclose_local ();
-   
+
    if (max > Spool_Max_Artnum)
      max = Spool_Max_Artnum;
-   
+
    if (min < Spool_Min_Artnum)
      min = Spool_Min_Artnum;
-   
+
    Spool_XOver_Next = Spool_XOver_Min = min;
    Spool_XOver_Max = max;
    Spool_XHdr_Field = field;
-   
+
    return OK_HEAD;
 }
 
 static int spool_read_xhdr (char *the_buf, unsigned int len)
 {
    int retval = -1;
-   
+
    if (Spool_XHdr_Field == NULL)
      return -1;
 
-   if (Spool_XOver_Next > Spool_XOver_Max) 
+   if (Spool_XOver_Next > Spool_XOver_Max)
      {
 	Spool_XHdr_Field = NULL;
 	return 0;
      }
-   
+
    while ((retval == -1) && (Spool_XOver_Next <= Spool_XOver_Max))
      retval = spool_one_xhdr_command (Spool_XHdr_Field, Spool_XOver_Next++,
 				      the_buf, len);
-   
+
    if (Spool_XOver_Next > Spool_XOver_Max)
      Spool_XHdr_Field = NULL;
-   
+
    return (retval == -1) ? -1 : 1;
 }
 
@@ -1447,12 +1444,12 @@ static SLRegexp_Type *spool_compile_regexp_pattern (char *pat)
 {
    static unsigned char compiled_pattern_buf [512];
    static SLRegexp_Type re;
-   
+
    re.pat = (unsigned char *) pat;
    re.buf = compiled_pattern_buf;
    re.buf_len = sizeof (compiled_pattern_buf);
    re.case_sensitive = 1;
-   
+
    if (0 != SLang_regexp_compile (&re))
      {
 	slrn_error (_("Invalid regular expression or expression too long."));
@@ -1476,7 +1473,7 @@ static int spool_list_active (char *pat)
 	Spool_Output_Regexp = SLregexp_compile (slrn_fix_regexp(pat),0);
 #endif
      }
-	
+
    if (!Spool_fh_local)
      {
 	spool_fake_active(Slrn_Spool_Root);
@@ -1595,7 +1592,7 @@ static int spool_fakeactive_read_line(char *line, int len)
    long l;
 
    (void) len;
-   
+
    emptydir:
 
    if (!Spool_Head)
@@ -1645,7 +1642,7 @@ static int spool_fakeactive_read_line(char *line, int len)
    else
      {
       /* active: alt.guitar 0000055382 0000055345 y */
-	slrn_snprintf (line, len, "%s %ld %ld y\n", Spool_nBuf, 
+	slrn_snprintf (line, len, "%s %ld %ld y\n", Spool_nBuf,
 		       Spool_Head->hi, Spool_Head->lo);
      }
    spool_fake_active_out();
@@ -1660,11 +1657,11 @@ static void spool_reset (void)
 static unsigned int spool_get_bytes (int clear)
 {
    unsigned int temp;
-   
+
    temp = bytes_read;
    if (clear)
      bytes_read = 0;
-   
+
    return temp;
 }
 
@@ -1721,7 +1718,7 @@ static int spool_init_objects (void)
        (*login == 0))
      login = "!unknown";
    Slrn_Requests_File = slrn_strdup_printf ("%s/%s", SLRNPULL_REQUESTS_DIR, login);
-   
+
 #if defined(IBMPC_SYSTEM)
    slrn_os2_convert_path (Slrn_Inn_Root);
    slrn_os2_convert_path (Slrn_Spool_Root);
@@ -1733,7 +1730,7 @@ static int spool_init_objects (void)
    slrn_os2_convert_path (Slrn_Newsgroups_File);
    slrn_os2_convert_path (Slrn_Overviewfmt_File);
    slrn_os2_convert_path (Slrn_Requests_File);
-#endif   
+#endif
    return 0;
 }
 
@@ -1758,13 +1755,12 @@ static int spool_select_server_object (void)
    Slrn_Newsgroups_File = spool_root_dircat (Slrn_Newsgroups_File);
    Slrn_Overviewfmt_File = spool_root_dircat (Slrn_Overviewfmt_File);
    Slrn_Requests_File = spool_root_dircat (Slrn_Requests_File);
-   
+
    slrn_free (Spool_Server_Obj.sv_name);
    Spool_Server_Obj.sv_name = slrn_safe_strmalloc (Slrn_Spool_Root);
-   
+
    return 0;
 }
-
 
 /* Handling of the additional newsrc-style files in true offline mode: */
 Slrn_Range_Type *slrn_spool_get_no_body_ranges (char *group)
@@ -1774,16 +1770,16 @@ Slrn_Range_Type *slrn_spool_get_no_body_ranges (char *group)
    unsigned int vlen;
    Slrn_Range_Type *retval = NULL;
    char *p, *q;
-   
+
    p = slrn_spool_dircat (Slrn_Spool_Root, group, 1);
    q = slrn_spool_dircat (p, Slrn_Headers_File, 0);
    SLFREE (p);
-   
+
    vp = vopen (q, 4096, 0);
    SLFREE (q);
    if (NULL == vp)
      return NULL;
-   
+
    if (NULL != (vline = vgets (vp, &vlen)))
      {
 	if (vline[vlen-1] == '\n')
@@ -1792,9 +1788,9 @@ Slrn_Range_Type *slrn_spool_get_no_body_ranges (char *group)
 	  vline[vlen] = 0;
 	retval = slrn_ranges_from_newsrc_line (vline);
      }
-   
+
    vclose (vp);
-   
+
    return retval;
 }
 
@@ -1807,7 +1803,7 @@ Slrn_Range_Type *slrn_spool_get_requested_ranges (char *group) /*{{{*/
 
    if (NULL == (vp = vopen (Slrn_Requests_File, 4096, 0)))
      return NULL;
-   
+
    while (NULL != (vline = vgets (vp, &vlen)))
      {
 	char *p = vline;
@@ -1824,7 +1820,7 @@ Slrn_Range_Type *slrn_spool_get_requested_ranges (char *group) /*{{{*/
 	  vline[vlen-1] = 0;
 	else
 	  vline[vlen] = 0;
-	
+
 	retval = slrn_ranges_from_newsrc_line (p+1);
 	break;
      }
@@ -1850,7 +1846,7 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 
    /* Try to preserve file permissions and owner/group. */
    stat_worked = (-1 != stat (Slrn_Requests_File, &filestat));
-   
+
    /* Save old file (we'll copy most of it; then, it gets deleted) */
    have_old = (0 == slrn_create_backup (Slrn_Requests_File));
 
@@ -1860,7 +1856,7 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 	slrn_init_hangup_signals (1);
 	return -1;
      }
-   
+
 #ifdef __unix__
 # if !defined(IBMPC_SYSTEM)
    /* Try to preserve file permissions and owner/group */
@@ -1873,7 +1869,7 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
      {
 	if (-1 == chmod (Slrn_Requests_File, filestat.st_mode))
 	  (void) chmod (Slrn_Requests_File, S_IWUSR | S_IRUSR | S_IRGRP);
-	
+
 	(void) chown (Slrn_Requests_File, filestat.st_uid, filestat.st_gid);
      }
    else
@@ -1890,7 +1886,7 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 	    (EOF == fputc ('\n',fp)))
 	  goto write_error;
      }
-   
+
    /* Now, open the old file and append the data of all other groups */
    old_file = slrn_make_backup_filename (Slrn_Requests_File);
    if (NULL != (vp = vopen (old_file, 4096, 0)))
@@ -1899,10 +1895,10 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 	  {
 	     char *p = vline;
 	     char *pmax = p + vlen;
-	     
+
 	     while ((p < pmax) && (*p != ':'))
 	       p++;
-	     
+
 	     if ((p != vline) && (((p-vline != (int) strlen(group)) ||
 				   strncmp(vline, group, (p-vline)))))
 	       {
@@ -1920,7 +1916,7 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
 	  }
 	vclose (vp);
      }
-   
+
    if (-1 == slrn_fclose (fp))
      goto write_error;
 
@@ -1929,13 +1925,13 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
    slrn_init_hangup_signals (1);
    SLfree (old_file);
    return 0;
-   
+
    write_error:
-   
+
    slrn_fclose (fp);
    /* Put back orginal file */
    if (have_old) slrn_restore_backup (Slrn_Requests_File);
-   
+
    slrn_init_hangup_signals (1);
    SLfree (old_file);
    return -1;

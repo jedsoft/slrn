@@ -479,7 +479,6 @@ int _slrn_art_unwrap_article (Slrn_Article_Type *a) /*{{{*/
 
 int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 {
-   unsigned int len;
    unsigned char *buf, ch;
    Slrn_Article_Line_Type *l;
    unsigned int wrap_mode = Slrn_Wrap_Mode;
@@ -525,7 +524,6 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 	       }
 	  }
 
-	len = 0;
 	buf = (unsigned char *) l->buf;
 	ch = *buf;
 	while (ch != 0)
@@ -617,7 +615,6 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 
 		  l = new_l;
 		  buf = (unsigned char *) new_l->buf;
-		  len = 0;
 		  a->is_wrapped = 1;
 	       }
 #if SLANG_VERSION < 20000

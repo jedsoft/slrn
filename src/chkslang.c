@@ -122,7 +122,7 @@ set them.  Also try: make clean; make\n******\n\n"));
 	ret = FAILURE;
      }
 #endif
-#ifdef SIZEOF_LONG_LONG
+#if HAVE_LONG_LONG && defined(SIZEOF_LONG_LONG)
    if (sizeof(long long) != SIZEOF_LONG_LONG)
      {
 	fprintf (stderr, "SIZEOF_LONG_LONG[%lu] is not equal to sizeof(long long)[%lu]\n",

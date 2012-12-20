@@ -535,7 +535,6 @@ static int rfc1522_decode_header_email (char **hdr, unsigned int start_offset)
    unsigned int i0, last_i0, imax;
    char *new_header = NULL;
    unsigned int new_header_len;
-   char *tail;
    int status;
 
    header = *hdr;
@@ -569,7 +568,6 @@ static int rfc1522_decode_header_email (char **hdr, unsigned int start_offset)
      goto return_error;
 
    status = 0;
-   tail = header + new_header_len;
    last_i0 = i0;
    while (1)
      {
@@ -1356,7 +1354,6 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
    int eightbit = 0;
    char *charset;
    unsigned int n, len;
-   unsigned int line_offset;
 
    rline = a->raw_lines;
    while (rline != NULL)
@@ -1389,8 +1386,6 @@ Slrn_Mime_Error_Obj *slrn_mime_encode_article (Slrn_Article_Type *a, char *from_
    len = 1 + strlen (Slrn_Outgoing_Charset);
    if (NULL == (charset = slrn_malloc (len, 0, 1)))
      return MIME_MEM_ERROR("Mime Headers");
-
-   line_offset = 0;
 
    n = 0;
    while (1)
@@ -1561,7 +1556,6 @@ static char *
     *
     * For this reason, UTF-8 will be used for the character set.
     */
-   unsigned int len;
    char *charset = "UTF-8";
    unsigned int max_nbytes;
    unsigned int len_charset;
@@ -1570,12 +1564,10 @@ static char *
    char *encoded_word = NULL;
    char *tmp;
 
-   len = strmax - str;
    if ((NULL == (ustr = (SLuchar_Type *) slrn_convert_string (from_charset, str, strmax, charset, 1))))
      return NULL;
 
    len_charset = strlen (charset);
-   len = SLutf8_strlen (ustr, 0);      /* number of characters */
 
    /* The encoding looks like: "=?UTF-8?Q?xx...x?=".  This encoded word has to
     * be less than max_encoded_size.  This means that at most N bytes can be
@@ -1867,8 +1859,6 @@ static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset)
    unsigned int i0, last_i0, imax;
    char *new_header = NULL;
    unsigned int new_header_len;
-   char *tail;
-   int status;
 
    header = *s_ptr;
    start_offset = 0;
@@ -1903,8 +1893,6 @@ static Slrn_Mime_Error_Obj *from_encode (char **s_ptr, char *from_charset)
    if (new_header == NULL)
      goto return_error;
 
-   status = 0;
-   tail = header + new_header_len;
    last_i0 = i0;
    while (1)
      {

@@ -1,0 +1,24 @@
+# -*-sh-*-
+MAKE = mingw32-make
+SLSH = slsh
+# Note: copy.exe does not exist on windows since it is a cmd.exe built-in
+MFLAGS = COPY="cmd /c copy /y" RM=del
+
+# DESTDIR is used for building a package for use on another machine.
+DESTDIR =
+PREFIX = @PREFIX@
+CONFDIR = C:$(PREFIX)/etc
+#
+all:
+	cd src && $(MAKE) $(MFLAGS)
+	@echo .
+	@echo To install it, run $(MAKE) install.
+	@echo .
+#
+clean:
+	cd src && $(MAKE) $(MFLAGS) clean
+#
+install: all
+	$(SLSH) win32/m32install.sl "--destdir=$(DESTDIR)" "--prefix=$(PREFIX)" install
+#
+.PHONY: all install clean

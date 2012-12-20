@@ -528,6 +528,7 @@ free_return:
    (void) rlines;
    (void) to_charset;
    (void) from_charset;
+   (void) badlinep;
    return 1;
 #endif
 }

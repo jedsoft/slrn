@@ -217,11 +217,17 @@
 #define SIZEOF_LONG_LONG	8
 
 /* If your system has long long integers and you want to use 64 bit article
- * numbers, then be sure to defined HAVE_LONG_LONG.
+ * numbers, then be sure to define HAVE_LONG_LONG.
  */
-#undef HAVE_LONG_LONG
-#undef HAVE_ATOLL
-#undef HAVE_STRTOLL
+#if defined(__MINGW32__)
+# define HAVE_LONG_LONG	1
+# define HAVE_STRTOLL	1
+# define HAVE_ATOLL	1
+#else
+# undef HAVE_LONG_LONG
+# undef HAVE_ATOLL
+# undef HAVE_STRTOLL
+#endif
 
 #if defined(HAVE_LONG_LONG) && (SIZEOF_LONG < SIZEOF_LONG_LONG)
 typedef long long NNTP_Artnum_Type;

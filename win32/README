@@ -1,0 +1,5 @@
+The scripts in this directory are used to build and install slrn using
+the MinGW tool set.  See ../doc/INSTALL.w32 for additional information.
+
+subst.sl is an slsh script that will replace @CONSTRUCTS@ in a file
+with definitions from another file.

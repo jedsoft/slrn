@@ -3,18 +3,63 @@ slrn and want to run it on Windows.  You can find descriptions on the web
 that are both more comprehensive and easier to understand.  Please also
 consult the rest of the documentation that comes with slrn.
 
-Installation (Windows)
-======================
+Compiling slrn on Windows using the MinGW tool-set.
+====================================================
 
-The first thing you need to run slrn on Windows is a working executable.
-You can either download one from the net (just follow the links on
-<URL:http://slrn.sourceforge.net/>) or compile it yourself -- some notes on
-how to do this can be found at the end of this file.  When you have one,
-follow these steps:
+slrn depends upon version 2.2.3 of slang or later.  If you do not have
+this version installed, including the slang interpreter SLSH, then
+download and install it first.   You need to do so because slrn makes
+extensive use of the slang library and the installation of slrn
+requires SLSH.  The slang library is available from
+<http://www.jedsoft.org/slang/>.  Build and install it first.
 
-1.  Copy slrn.exe to a directory in your path.
+Suppose that you have installed the slang library using an install
+prefix of C:\mingw\local.  Then slsh should be located in
+C:\mingw\local\bin.  Make sure the directory containing slsh is in
+your search path:
 
-2.  Set the following environment variables:
+    set PATH=C:\mingw\local\bin;%PATH%
+
+Also, if mingw32-make is not in your path, you will also need to add
+its directory to the search path.  The script win32\setpath.bat may be
+used to facilitate this step.  The script assumes that the MinGW
+toolset was installed under C:\mingw.
+
+Now run the win32\m32config.sl slang script.  This will create the
+Makefiles and configuration-specific header files:
+
+    slsh win32/m32config.sl
+
+(Note that slsh also supports / as the path separator).  This will
+configure the Makefiles to install slrn under the slang install
+prefix.  For other config options, run:
+
+    slsh win32/m32config.sl --help
+
+Now run mingw32-make to build slrn:
+
+    mingw32-make
+
+Assuming that step was successful (if not, email the author), install
+slrn via
+
+    mingw32-make install
+
+At this point, you should have a working slrn installation under
+C:\mingw\local.  See if it runs via:
+
+    C:\mingw\local\bin\slrn --version
+
+
+Running slrn
+============
+
+See <http://andrews-corner.org/slrn-windows.html> for a nice overview
+of setting up slrn.  Please read it.
+
+To use slrn, you will need do the following:
+
+1.  Set the following environment variables:
        set NNTPSERVER=my.news.server
        set HOME=d:\home\sweet\home
        (Note: Forward slashes are also ok)
@@ -28,43 +73,7 @@ follow these steps:
     start it without parameters.
 
 You should now see slrn in action.  If you actually want to work with it,
-you also need an editor (if you don't have your favourite one, MS DOS edit
+you also need an editor (if you don't have your favorite one, MS DOS edit
 will work) and a program like sendsmtp that can deliver email to your mail
 server (for forwards and replies).  If you want to read your news offline,
 you either need a binary of slrnpull or a local server as well.
-
-Compiling slrn for Windows
-==========================
-
-!!!!!!!!  FIXME  !!!!!!!!!!!!!!
-The following information is outdated and needs to be rewritten.
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-The current version of slrn has been reported to compile with recent
-versions of MinGW and Watcom.  The Cygwin environment is now treated like a
-Unix system (see INSTALL.unix) - note that you need slang >= 1.4.5 for this.
-If you needed to patch the sources to get it to work with your favourite
-compiler, please send me the diffs so they can go into the next official
-release.
-
-As I never worked with Watcom myself, the following instructions apply to
-MinGW only.
-
-1. Compiling S-Lang:
-
-Version 2.x of the S-Lang library is required to build slrn.  It's
-available from <http://www.jedsoft.org/slang/>.  Follow the
-instructions in the the INSTALL.pc that comes with it.
-
-2. Compiling slrn:
-
-Unpack slrn into a directory at the same level as "slang" and go to the
-"src" subdirectory.  You can edit slrnconf.h to play with the compile time
-options if you want.  Now you can run
-
-> make -f makefile.g32
-
-If you want to compile slrnpull as well, do
-
-> make -f makefile.g32 slrnpull.exe
-

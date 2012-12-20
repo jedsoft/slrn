@@ -1,3 +1,1 @@
-
-subst.sl is an slsh script that will replace @CONSTRUCTS@ in a file
-with definitions from another file.
+The files here are processed by the top-level scripts in ../../win32.

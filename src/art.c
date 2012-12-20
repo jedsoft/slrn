@@ -4376,12 +4376,16 @@ static char *save_article_to_file (char *defdir, int for_decoding) /*{{{*/
 	char *p;
 #endif
 	char *filename = Slrn_Current_Group_Name;
+#if !defined(VMS) && !defined(IBMPC_SYSTEM)
 	unsigned int defdir_len;
+#endif
 	if (defdir == NULL) defdir = "News";
 
 	slrn_make_home_dirname (defdir, file, sizeof (file));
-	defdir_len = strlen (file);
 
+#if !defined(VMS) && !defined(IBMPC_SYSTEM)
+	defdir_len = strlen (file);
+#endif
 	switch (slrn_file_exists (file))
 	  {
 	   case 0:

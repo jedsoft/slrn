@@ -28,7 +28,7 @@ private define process_line (defs, line)
 	     if (ch == '@')
 	       break;
 	  }
-	then 
+	then
 	  {
 	     istart--;
 	     continue;
@@ -55,12 +55,12 @@ private define process_line (defs, line)
 	new_line = strcat (new_line, val);
 	istart = i;
      }
-   
+
    new_line = strcat (new_line, substrbytes (line, istart+1, -1));
-   
+
    return new_line;
 }
-	
+
 private define exit_version ()
 {
    () = fprintf (stdout, "Version: %S\n", Script_Version_String);
@@ -71,7 +71,7 @@ private define exit_usage ()
 {
    variable fp = stderr;
    () = fprintf (fp, "Usage: %s [options] file.def file.in file.out\n", __argv[0]);
-   variable opts = 
+   variable opts =
      [
       "Options:\n",
       " -v|--version               Print version\n",
@@ -88,12 +88,28 @@ private define exit_usage ()
 private define read_defs_file (file)
 {
    variable vars, vals;
-   () = readascii (file, &vars, &vals; format="%s %s", comment="%");
-   variable defs = Assoc_Type[String_Type];
-   _for (0, length (vars)-1, 1)
+   variable fp = stdin;
+   if (file != "-")
      {
-	variable i = ();
-	defs[vars[i]] = vals[i];
+	fp = fopen (file, "r");
+	if (fp == NULL)
+	  {
+	     () = fprintf (stderr, "Unable to open %s\n", file);
+	     exit (1);
+	  }
+     }
+   variable defs = Assoc_Type[String_Type];
+   variable line;
+   while (-1 != fgets (&line, fp))
+     {
+	line = strtrim (line);
+	if ((line[0] == '#') || (line[0] == '%') || (line[0] == 0))
+	  continue;
+	variable matches = string_matches (line, "\([A-Za-z0-9_]+\)[ \t]*\(.*\)"R, 1);
+	if (length (matches) != 3)
+	  continue;
+
+	defs[matches[1]] = matches[2];
      }
    return defs;
 }
@@ -101,7 +117,6 @@ private define read_defs_file (file)
 define slsh_main ()
 {
    variable c = cmdopt_new ();
-
    c.add("h|help", &exit_usage);
    c.add("v|version", &exit_version);
 
@@ -109,14 +124,20 @@ define slsh_main ()
 
    if (i + 3!= __argc)
      exit_usage ();
-   
+
    variable def_file = __argv[i];
    variable in_file = __argv[i+1];
    variable out_file = __argv[i+2];
 
+   if ((in_file == "-") && (def_file == "-"))
+     {
+	() = fprintf (stderr, "Both file.def and file.in cannot be '-'\n");
+	exit (1);
+     }
+
    variable defs = read_defs_file (def_file);
    variable fpin = stdin, fpout = stdout;
-   
+
    if (in_file != "-")
      {
 	fpin = fopen (in_file, "r");
@@ -135,7 +156,7 @@ define slsh_main ()
 	     exit (1);
 	  }
      }
-   
+
    variable line;
    while (-1 != fgets (&line, fpin))
      {
@@ -147,7 +168,8 @@ define slsh_main ()
 	     exit (1);
 	  }
      }
-   if (-1 == fclose (fpout))
+
+   if ((fpout != stdout) && (-1 == fclose (fpout)))
      {
 	() = fprintf (stderr, "Write to %s failed\n", out_file);
 	exit (1);

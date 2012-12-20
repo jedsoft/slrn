@@ -337,10 +337,7 @@ static int parse_rfc2822_dotatom (char *header, char *parsemap, unsigned int *st
  */
 static int parse_rfc2822_phrase (char *header, char *parsemap, unsigned int *startp, unsigned int stop, char **errmsg) /*{{{*/
 {
-   char *p0, *p, *pmax;
    unsigned int start;
-   p = p0 = header + *startp;
-   pmax = header + stop;
 
    start = *startp;
    while (start < stop)

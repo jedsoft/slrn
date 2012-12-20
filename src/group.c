@@ -744,7 +744,6 @@ static void add_unsubscribed_group (unsigned char *name) /*{{{*/
 {
    Unsubscribed_Slrn_Group_Type *g;
    unsigned char *p;
-   unsigned int len;
 
    g = (Unsubscribed_Slrn_Group_Type *) slrn_safe_malloc (sizeof (Unsubscribed_Slrn_Group_Type));
 
@@ -754,7 +753,6 @@ static void add_unsubscribed_group (unsigned char *name) /*{{{*/
    p = name;
    while (*p > ' ') p++;
    *p = 0;
-   len = p - name;
 
    g->group_name = slrn_safe_strmalloc ((char*)name);
 }
