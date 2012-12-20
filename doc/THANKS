@@ -1,24 +1,36 @@
-I want to thank everybody who helped to develop and improve slrn by sending
-in code, bugreports or leading productive discussions.  The list of
-contributors is far too long to be kept in this file; please see changes.txt
-for people who contributed patches.
+I want to thank everybody who helped to develop and improve slrn by
+sending in code, bugreports or leading productive discussions.  The
+list of contributors is far too long to be kept in this file; please
+see changes.txt for those who contributed patches.
 
-In the original man page, John E. Davis thanked the following people:
+I am particularly grateful to the earliest users and contributers to
+software.  The earliest contributers to slrn include:
 
- * Howard Goldstein <hg@n2wx.ampr.org> for updating this man page.
- * Andrew Greer <Andrew.Greer@vuw.ac.nz> for the VMS port.
- * Jay Maynard <jmaynard@admin5.hsc.uth.tmc.edu> for the OS/2 port.
- * Michael Elkins <elkins@aero.org> for the MIME code.
- * Lloyd Zusman <ljz@ingress.com> performed some cosmetic improvements.
- * J.B. Nicholson-Owens <jbn@mystery-train.cu-online.com> for extensive
-   testing.
- * Mark Olesen <olesen@weber.me.queensu.ca> for suggestions and help with
-   AIX version.
- * Thomas Schultz <tststs@gmx.de> for many patches and code enhancements as
-   well as support on news.software.readers.
- * David Gerard <fun@thingy.apana.org.au> for his detailed description on
-   how to install slrn on Windows http://thingy.apana.org.au/~fun/slrn/.
- * Jan Hlavacek <lahvak@math.ohio-state.edu> for his extensive work on
-   documenting slrn http://www.math.ohio-state.edu/~lahvak/software/slrn/.
- * Sven Guckes <guckes@math.fu-berlin.de> for maintaining the slrn home page
-   http://www.slrn.org.
+  Howard Goldstein
+  Andrew Greer
+  Jay Maynard
+  Michael Elkins
+  Lloyd Zusman
+  J.B. Nicholson-Owens
+  Mark Olesen
+  David Gerard
+  Jan Hlavacek
+  Sven Guckes
+  Felix Schueller
+  Thomas Schultz
+
+In 2001 I no longer found time to continue slrn development.  Thomas
+Schultz agreed to take over the job as the lead slrn developer and
+continued in that role until 2008.  For this reason he deserves
+special recognition.
+
+In 2008 I returned as the lead slrn developer.  I was helped by an
+enthusiastic group of folks who took it upon themselves to bring the
+documentation up to date:
+
+  Peter J Ross
+  Rudy Taraschi
+  Thomas Wiegner
+
+Finally, I would like to thank Andrew Strong for his support of slrn
+under Windows.
