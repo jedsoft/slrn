@@ -97,6 +97,7 @@ Changes since 0.9.9p1
 44. win32/msinstall.sl: Use $prefix/share/man instead of $prefix/man
     for the directory where man pages are installed.
 45. doc/THANKS updated.
+46. updated autoconf/config.guess and autoconf/config.sub
 
 {{{ Previous Versions 
 
