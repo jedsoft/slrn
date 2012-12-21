@@ -99,6 +99,8 @@ Changes since 0.9.9p1
 45. doc/THANKS updated.
 46. updated autoconf/config.guess and autoconf/config.sub
 47. doc/THANKS rearranged.
+48. src/art_misc.c: New config variable: "wrap_width", which sets the
+    width that will trigger wrapping.
 
 {{{ Previous Versions 
 

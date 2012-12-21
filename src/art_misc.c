@@ -61,6 +61,7 @@
 static int Art_Hide_Quote_Level = 1;
 int Slrn_Wrap_Mode = 3;
 int Slrn_Wrap_Method = 2;
+int Slrn_Wrap_Width = -1;
 
 static char *Super_Cite_Regexp = "^[^A-Za-z0-9]*\"\\([-_a-zA-Z/]+\\)\" == .+";
 
@@ -482,6 +483,10 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
    unsigned char *buf, ch;
    Slrn_Article_Line_Type *l;
    unsigned int wrap_mode = Slrn_Wrap_Mode;
+   int wrap_width = Slrn_Wrap_Width;
+
+   if (wrap_width < 5) wrap_width = 5; /* arbitrary */
+   else if (wrap_width > SLtt_Screen_Cols) wrap_width = SLtt_Screen_Cols;
 
    if (a == NULL)
      return -1;
@@ -529,7 +534,7 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
 	while (ch != 0)
 	  {
 	     unsigned int bytes = SLsmg_strbytes (buf, buf+strlen((char *)buf),
-						  (unsigned int) SLtt_Screen_Cols);
+						  (unsigned int) wrap_width);
 	     buf += bytes;
 	     while ((*buf == ' ') || (*buf == '\t'))
 	       buf++;

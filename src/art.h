@@ -47,6 +47,7 @@ extern int Slrn_Auto_CC_To_Poster;
 extern int Slrn_Score_After_XOver;
 extern int Slrn_Use_Tmpdir;
 extern int Slrn_Wrap_Mode;
+extern int Slrn_Wrap_Width;
 extern int Slrn_Wrap_Method;
 extern int Slrn_Use_Header_Numbers;
 extern int Slrn_Reads_Per_Update;
