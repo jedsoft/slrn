@@ -101,6 +101,7 @@ Changes since 0.9.9p1
 47. doc/THANKS rearranged.
 48. src/art_misc.c: New config variable: "wrap_width", which sets the
     width that will trigger wrapping.
+49. doc/: Updated txt docs from slrn doc project's svn repos.
 
 {{{ Previous Versions 
 

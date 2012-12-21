@@ -4,7 +4,7 @@
   Thomas Schultz <tststs@gmx.de>
   Thomas Wiegner <wiegner@gmx.de>
   Peter J Ross <peadar.ruadh@gmail.com>
-  Version 0.9.9p1, October 2008
+  Version pre1.0.0, November 2008
 
   Frequently asked questions about the slrn newsreader.
   ______________________________________________________________________
@@ -18,8 +18,8 @@
      1.4 Are there any mailing lists and/or newsgroups about slrn ?
      1.5 slrn appears quite stable. Why don't you call it version 1.0?
      1.6 How well are slang-2 and Unicode supported right now?
-     1.7 I upgraded from version 0.9.8.1 to 0.9.9. What do I have to
-         change in my slrnrc?
+     1.7 I upgraded from version 0.9.8.1 to 0.9.9 or 1.0.0. What do I
+         have to change in my slrnrc?
 
   2. Configuration
      2.1 Is it possible to set my ``From:'' header line for postings?
@@ -175,15 +175,15 @@
   Both versions were never officially released, although some Linux
   distributions shipped them.
 
-  In version 0.9.9 a lot of bugs in the UTF-8 handling have been fixed.
+  In version 0.9.9 a lot of bugs in the UTF-8 handling were fixed.
 
   A current drawback of slang-2 is that its regexp engine lacks UTF-8
   support.  When you run slrn in UTF-8 mode, you should have your score
   file in UTF-8 as well. You may still encounter surprising results; in
   particular, regexp matching has no error handling for invalid UTF-8.
 
-  1.7.  I upgraded from version 0.9.8.1 to 0.9.9. What do I have to
-  change in my slrnrc?
+  1.7.  I upgraded from version 0.9.8.1 to 0.9.9 or 1.0.0. What do I
+  have to change in my slrnrc?
 
   Since there were fundamental changes in the internal character set
   handling, the configuration of this has also changed. The
@@ -297,10 +297,10 @@
              charset editor "utf-8"
 
   3. To enable utf-8 display for slrn in windows you need at least slang
-     2.1.4pre39. You'll have to change the font in the console to a
-     TrueType font which is capable of displaying utf-8 characters. To
-     active slrn utf-8 mode you'll have to type one of the following
-     commands in the console:
+     2.1.4. You'll have to change the font in the console to a TrueType
+     font which is capable of displaying utf-8 characters. To active
+     slrn utf-8 mode you'll have to type one of the following commands
+     in the console:
 
              chcp 65001
              set LANG=en_US.UTF-8

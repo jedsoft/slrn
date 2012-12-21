@@ -1,7 +1,7 @@
   slrn - First Steps
   Felix Schueller <fschueller@netcologne.de>
   Peter J Ross <peadar.ruadh@gmail.com>
-  Version 0.9.9p1, October 2008
+  Version pre1.0.0, November 2008
 
   This document explains the first things you have to do after having
   installed slrn. It doesn't matter how you installed slrn (from source
@@ -161,5 +161,5 @@
   8.  About this document
 
   This document was written by Felix Schueller and has been updated for
-  slrn version 0.9.9 and reformatted in SGML by Peter J Ross.
+  slrn versions 0.9.9+ and reformatted in SGML by Peter J Ross.
 
