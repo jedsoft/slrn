@@ -6,18 +6,19 @@ see changes.txt for those who contributed patches.
 I am particularly grateful to the earliest users and contributers to
 software.  The earliest contributers to slrn include:
 
+  Michael Elkins
+  Matthias Friedrich
+  David Gerard
   Howard Goldstein
   Andrew Greer
+  Sven Guckes
+  Jan Hlavacek
   Jay Maynard
-  Michael Elkins
-  Lloyd Zusman
   J.B. Nicholson-Owens
   Mark Olesen
-  David Gerard
-  Jan Hlavacek
-  Sven Guckes
   Felix Schueller
   Thomas Schultz
+  Lloyd Zusman
 
 In 2001 I no longer found time to continue slrn development.  Thomas
 Schultz agreed to take over the job as the lead slrn developer and

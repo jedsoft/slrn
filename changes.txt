@@ -98,6 +98,7 @@ Changes since 0.9.9p1
     for the directory where man pages are installed.
 45. doc/THANKS updated.
 46. updated autoconf/config.guess and autoconf/config.sub
+47. doc/THANKS rearranged.
 
 {{{ Previous Versions 
 
