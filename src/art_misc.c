@@ -485,8 +485,8 @@ int _slrn_art_wrap_article (Slrn_Article_Type *a) /*{{{*/
    unsigned int wrap_mode = Slrn_Wrap_Mode;
    int wrap_width = Slrn_Wrap_Width;
 
-   if (wrap_width < 5) wrap_width = 5; /* arbitrary */
-   else if (wrap_width > SLtt_Screen_Cols) wrap_width = SLtt_Screen_Cols;
+   if ((wrap_width < 5) || (wrap_width > SLtt_Screen_Cols))
+     wrap_width = SLtt_Screen_Cols;
 
    if (a == NULL)
      return -1;
