@@ -371,6 +371,10 @@ static void log_error_message (char *fmt, va_list ap)
 
 void slrn_verror (char *fmt, va_list ap)
 {
+   va_list ap1;
+
+   VA_COPY(ap1, ap);
+
    if ((Slrn_TT_Initialized & SLRN_SMG_INIT) == 0)
      {
 	slrn_tty_vmessage (stderr, fmt, ap);
@@ -384,7 +388,9 @@ void slrn_verror (char *fmt, va_list ap)
 	SLang_flush_input ();
      }
 
-   log_error_message (fmt, ap);
+   log_error_message (fmt, ap1);
+   va_end (ap1);
+
    if (SLang_get_error () == 0) SLang_set_error (INTRINSIC_ERROR);
 }
 

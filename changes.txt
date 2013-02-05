@@ -1,4 +1,7 @@
 -*- mode: text; mode: fold -*-
+Changes since 1.0.1
+1. src/misc.c: slrn_verror needed va_copy when writing to the log file.
+
 Changes since 1.0.0
 1. An issue with the wrap_width variable was fixed.
 
