@@ -1908,7 +1908,7 @@ static int postpone_file (char *file) /*{{{*/
 	if (-1 == slrn_dircat (dir, NULL, dirfile, sizeof (dirfile)))
 	  return -1;
 
-	if (-1 == slrn_read_filename (_("Save to: "), NULL, dirfile, 1, 1))
+	if (-1 == slrn_read_filename (_("Save to: "), NULL, dirfile, 1, -1))
 	  return -1;
 
 	status = slrn_file_exists (dirfile);
