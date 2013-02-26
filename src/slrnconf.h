@@ -170,6 +170,8 @@
  * Basic C library functions.
  */
 
+#define VA_COPY va_copy
+
 #if defined(__os2__) || defined(__NT__)
 # define HAVE_PUTENV 1
 #endif

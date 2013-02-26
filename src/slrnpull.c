@@ -1481,7 +1481,7 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
    char *bodies[SLRN_MAX_QUEUED];
    NNTP_Artnum_Type numbers[SLRN_MAX_QUEUED];
    unsigned int i, num;
-   NNTP_Artnum_Type max, bmin, bmax;
+   NNTP_Artnum_Type max;
    Slrn_Range_Type *r;
 
    Num_Articles_Received = 0;
@@ -1545,20 +1545,24 @@ static void get_marked_bodies (NNTP_Type *s, Active_Group_Type *g) /*{{{*/
 	while ((i<num) && (bodies[i]==NULL))
 	  i++;
 	if (i<num)
-	  bmin = bmax = numbers[i];
-	while (i < num)
 	  {
-	     i++;
-	     while ((i < num) && (bodies[i]==NULL))
-	       i++; /* skip bodies that were unavailable */
-	     if ((i==num) || (numbers[i] > bmax+1))
+	     NNTP_Artnum_Type bmin, bmax;
+
+	     bmin = bmax = numbers[i];
+	     while (i < num)
 	       {
-		  g->headers = slrn_ranges_remove (g->headers, bmin, bmax);
-		  if (i!=num)
-		    bmin = bmax = numbers[i];
+		  i++;
+		  while ((i < num) && (bodies[i]==NULL))
+		    i++; /* skip bodies that were unavailable */
+		  if ((i==num) || (numbers[i] > bmax+1))
+		    {
+		       g->headers = slrn_ranges_remove (g->headers, bmin, bmax);
+		       if (i!=num)
+			 bmin = bmax = numbers[i];
+		    }
+		  else
+		    bmax++;
 	       }
-	     else
-	       bmax++;
 	  }
 
 	/* Free bodies */
@@ -1656,7 +1660,7 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
      {
 	NNTP_Artnum_Type gmin, gmax;
 	NNTP_Artnum_Type *numbers;
-	unsigned int num_numbers, i, imin;
+	unsigned int num_numbers, i;
 
 	Num_Articles_Received = 0;
 	Num_Killed = 0;
@@ -1702,8 +1706,6 @@ static int get_group_articles (NNTP_Type *s, Active_Group_Type *g,
 	     log_message (_("%s: Only retrieving last %u articles."), g->name, g->max_to_get);
 	     i = num_numbers - g->max_to_get;
 	  }
-
-	imin = i;
 
 	(void) slrn_open_score (g->name);
 
@@ -2128,7 +2130,7 @@ static void close_log_files (void) /*{{{*/
 
 /*}}}*/
 
-static void usage (char *pgm) /*{{{*/
+static void usage (char *pgm, char *rootdir) /*{{{*/
 {
    log_error (_("%s usage: %s [options]\n\
  Options:\n\
@@ -2150,6 +2152,9 @@ static void usage (char *pgm) /*{{{*/
   --version            Show the version number.\n\
 "),
 	      pgm, pgm);
+   if (rootdir == NULL) rootdir = SlrnPull_Dir;
+   if (rootdir == NULL) rootdir = "unspecified";
+   log_error (_("\nSPOOLDIR set to %s\n"), rootdir);
    close_log_files ();
    exit (SLRN_EXIT_BAD_USAGE);
 }
@@ -2231,7 +2236,7 @@ int main (int argc, char **argv) /*{{{*/
 
 	arg = *argv++; argc--;
 
-	if (!strcmp (arg, "--help")) usage (pgm);
+	if (!strcmp (arg, "--help")) usage (pgm, dir);
 
 	if (!strcmp (arg, "-h") && (argc > 0))
 	  {
@@ -2305,7 +2310,7 @@ int main (int argc, char **argv) /*{{{*/
 	     argc--;
 	  }
 
-	else usage (pgm);
+	else usage (pgm, dir);
      }
 
    if (dir != NULL)

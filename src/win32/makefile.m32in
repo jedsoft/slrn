@@ -7,7 +7,6 @@ DLL_FLAGS = -DSLANG_DLL=1
 CCFLAGS = -O2 -fno-strength-reduce -W -Wall
 LDFLAGS = -Wl,--subsystem,console
 MISCLIBS = -lwsock32 -lwinspool
-SLSH = slsh
 P = /# Path separator for running external progs such as chkslang
 
 #-----------------------------------------------------------------------------
@@ -110,8 +109,6 @@ $(OBJDIR):
 	@mkdir $(OBJDIR)
 config.h: slrnconf.h
 	$(CP) slrnconf.h config.h
-slrnfeat.h: win32/slrnfeat.def slrnfeat.hin
-	$(SLSH) win32/subst.sl win32/slrnfeat.def slrnfeat.hin slrnfeat.h
 #
 slangversion: $(OBJDIR)/chkslang.exe
 	.$(P)$(OBJDIR)$(P)chkslang.exe slrn 20000
@@ -120,7 +117,7 @@ $(OBJDIR)/chkslang.exe: $(OBJDIR)/chkslang.o
 $(OBJDIR)/chkslang.o: chkslang.c config.h jdmacros.h $(COMMON_DEPS)
 	$(CC) -c $(SLANG_INC) chkslang.c -o $(OBJDIR)/chkslang.o
 clean:
-	-$(RM) *~ slrn.exe uudecode.exe *.log config.h
+	-$(RM) *~ slrn.exe uudecode.exe slrnpull.exe *.log config.h
 	-$(RMDIR) $(OBJDIR)
 #
 slrnpull.exe: $(OBJDIR) config.h slangversion $(OBJSpull)
@@ -130,7 +127,7 @@ uudecode.exe: $(OBJDIR)/uudecode.o $(UUDECODE_OBJS)
 	$(CC) $(CFLAGS) -o uudecode.exe $(OBJDIR)/uudecode.o \
  $(UUDECODE_OBJS) -L$(SLIBDIR) -lslang
 
-all:      slrn.exe slrnpull.exe uudecode.exe
+all:      slrn.exe slrnpull.exe
 #---------------------------------------------------------------------------
 $(OBJDIR)/art.o: art.c $(art_O_DEPS) $(COMMON_DEPS)
 	$(CC) -c $(CFLAGS) $(art_C_CFLAGS) -o $(OBJDIR)/art.o art.c

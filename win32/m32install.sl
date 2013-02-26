@@ -10,7 +10,7 @@ private variable CONFDIR = "$root/etc";
 %private variable LOCALEDIR = "$root/share/locale";
 private variable SLRN_SLANG_DIR = "$root/share/slrn/slang";
 
-private variable BIN_FILES = ["src/slrn.exe"];
+private variable BIN_FILES = ["src/slrn.exe", "src/slrnpull.exe"];
 private variable MAN_FILES = ["doc/slrn.1", "doc/slrnpull.1"];
 private variable DOC_FILES
   = ["COPYRIGHT", "COPYING", "README", "changes.txt", "@doc/INSTFILES"];
@@ -82,6 +82,14 @@ private define install_files_array (files, dir)
    foreach (files)
      {
 	variable file = ();
+	variable f = file;
+	if (f[0] == '@')
+	  f = f[[1:]];
+	if (NULL == stat_file (f))
+	  {
+	     () = fprintf (stderr, "*** WARNING: Unable to stat %s -- skipping it\n", f);
+	     continue;
+	  }
 	install_file (file, dir);
      }
 }
@@ -91,7 +99,7 @@ private define install_files (pat, dir)
    install_files_array (glob (pat), dir);
 }
 
-private define install_slrn (root)
+private define install_slrn (root, pullroot)
 {
    variable dir;
 
@@ -109,6 +117,17 @@ private define install_slrn (root)
 
    dir = _$(CONFDIR); () = mkdir_p (dir);
    install_files_array (CONF_FILES, dir);
+
+   () = mkdir_p (pullroot);
+}
+
+private define strip_drive_prefix (path)
+{
+   if ((strlen(path) >= 3)
+       && (path[1] == ':'))
+     path = path[[2:]];
+
+   return path;
 }
 
 private define exit_version ()
@@ -128,6 +147,7 @@ private define exit_usage ()
       " -h|--help                  This message\n",
       " --prefix=/install/prefix   Default is /usr\n",
       " --distdir=/path            Default is blank\n",
+      " --slrnpull=/path           Default is $prefix/var/spool/news/slrnpull\n",
      ];
    foreach (opts)
      {
@@ -142,11 +162,13 @@ define slsh_main ()
    variable c = cmdopt_new ();
    variable destdir = "";
    variable prefix = "/usr";
-
+   variable slrnpull_root = NULL;
    c.add("h|help", &exit_usage);
    c.add("v|version", &exit_version);
    c.add("destdir", &destdir; type="str");
    c.add("prefix", &prefix; type="str");
+   c.add("slrnpull", &slrnpull_root; type="str");
+
    variable i = c.process (__argv, 1);
 
    if ((i + 1 != __argc) || (__argv[i] != "install"))
@@ -154,6 +176,15 @@ define slsh_main ()
 
    () = fprintf (stdout, "Using destdir=%s, prefix=%s\n", destdir, prefix);
 
-   variable root = strcat (destdir, prefix);
-   install_slrn (root);
+
+   if (slrnpull_root == NULL)
+     slrnpull_root = "$prefix/var/spool/news/slrnpull"$;
+
+   if (destdir != "")
+     {
+	prefix = destdir + strip_drive_prefix (prefix);
+	slrnpull_root = destdir + strip_drive_prefix (slrnpull_root);
+     }
+
+   install_slrn (prefix, slrnpull_root);
 }

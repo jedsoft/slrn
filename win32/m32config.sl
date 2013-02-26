@@ -20,7 +20,8 @@ private define exit_usage ()
       " -h|--help                                This message\n",
       " --prefix=/install/prefix                 Default is C:/mingw32/local\n",
       " --with-slang=/slang/install/prefix       slang install location\n",
-      " --distdir=/path                          Default is \"\"\n",
+      " --with-slrnpull=/path/to/slrnpull/root   Where slrnpull files are kept\n",
+      " --destdir=/path                          Default is \"\"\n",
      ];
    foreach (opts)
      {
@@ -33,38 +34,62 @@ private define exit_usage ()
 % I originally coded this to use popen.  But pipes are broken under wine:
 % <http://bugs.winehq.org/show_bug.cgi?id=25063>
 % So, a temp file will be used.
-private define subst_defs (defs, infile, outfile)
+private define subst_defs ()
 {
-   variable tmp = NULL;
+   variable infile, outfile;
+   (infile, outfile) = ();
+
    () = fprintf (stdout, "Creating %s from %s\n", outfile, infile);
-   if (typeof (defs) == Array_Type)
+
+   variable deffile_list = __pop_list (_NARGS-2);
+
+   variable deffile_names = {};
+
+   variable fp = NULL, tmp = NULL;
+
+   foreach (deffile_list)
      {
-	tmp = "win32/_tmpdefs.tmp";
-	variable fp = fopen (tmp, "w");
-	if (fp == NULL)
+	variable defs = ();
+	if (typeof (defs) == Array_Type)
 	  {
-	     () = fprintf (stderr, "Unable to open %s\n", tmp);
-	     exit (1);
-	  }
-
-	foreach (defs)
-	  {
-	     variable def = ();
-	     if (-1 == fprintf (fp, "%s\n", def))
+	     if (fp == NULL)
 	       {
-		  () = fprintf (stderr, "Error writing to %s\n", tmp);
-		  exit (1);
+		  tmp = "win32/_tmpdefs.tmp";
+		  fp = fopen (tmp, "w");
+		  if (fp == NULL)
+		    {
+		       () = fprintf (stderr, "Unable to open %s\n", tmp);
+		       exit (1);
+		    }
 	       }
-	  }
-	if (-1 == fclose (fp))
-	  {
-	     () = fprintf (stderr, "Error closing %s\n", tmp);
-	  }
 
-	defs = tmp;
+	     foreach (defs)
+	       {
+		  variable def = ();
+		  if (-1 == fprintf (fp, "%s\n", def))
+		    {
+		       () = fprintf (stderr, "Error writing to %s\n", tmp);
+		       exit (1);
+		    }
+	       }
+
+	     defs = tmp;
+	     % drop
+	  }
+	list_append (deffile_names, defs);
      }
 
-   variable cmd = "slsh win32/subst.sl $defs $infile $outfile"$;
+   deffile_names = strjoin (list_to_array (deffile_names), " ");
+
+   if ((fp != NULL)
+       && (-1 == fclose (fp)))
+     {
+	() = fprintf (stderr, "Error closing %s\n", tmp);
+	exit (1);
+     }
+
+   variable cmd = "slsh win32/subst.sl ${deffile_names} $infile $outfile"$;
+
    if (0 != system (cmd))
      {
 	() = fprintf (stderr, "%s failed\n", cmd);
@@ -94,14 +119,14 @@ define slsh_main ()
    variable destdir = "";
    variable slang_prefix = guess_slang_install_prefix();
    variable prefix = slang_prefix;
-   variable slrnpull_root = NULL;
+   variable slrnpull_root = "";
 
    c.add("h|help", &exit_usage);
    c.add("v|version", &exit_version);
    c.add("destdir", &destdir; type="str");
    c.add("prefix", &prefix; type="str");
    c.add("with-slang", &slang_prefix; type="str");
-   %c.add("with-slrnpull", &slrnpull_root; type="str", optional="");
+   c.add("with-slrnpull", &slrnpull_root; type="str", optional="");
 
    variable i = c.process (__argv, 1);
 
@@ -116,10 +141,11 @@ define slsh_main ()
 
    variable defs = ["PREFIX $prefix "$, "DESTDIR $destdir"$,
 		    "SLANGINC $slanginc"$, "SLANGLIB $slanglib"$,
+		    "SLRNPULL_ROOT_DIR ${slrnpull_root}"$,
 		   ];
    subst_defs (defs, "win32/makefile.m32in", "Makefile");
    subst_defs (defs, "src/win32/makefile.m32in", "src/Makefile");
-   subst_defs ("src/win32/slrnfeat.def", "src/slrnfeat.hin", "src/slrnfeat.h");
+   subst_defs (defs, "src/win32/slrnfeat.def", "src/slrnfeat.hin", "src/slrnfeat.h");
 
    () = fputs ("\
 \n\

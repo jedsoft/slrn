@@ -8,9 +8,17 @@ MFLAGS = COPY="cmd /c copy /y" RM=del
 DESTDIR =
 PREFIX = @PREFIX@
 CONFDIR = C:$(PREFIX)/etc
+SLRNPULL_ROOT = @SLRNPULL_ROOT_DIR@
 #
-all:
-	cd src && $(MAKE) $(MFLAGS)
+all: slrn slrnpull
+slrn:
+	cd src && $(MAKE) $(MFLAGS) slrn.exe
+	@echo .
+	@echo To install it, run $(MAKE) install.
+	@echo .
+#
+slrnpull:
+	cd src && $(MAKE) $(MFLAGS) slrnpull.exe
 	@echo .
 	@echo To install it, run $(MAKE) install.
 	@echo .
@@ -19,6 +27,6 @@ clean:
 	cd src && $(MAKE) $(MFLAGS) clean
 #
 install: all
-	$(SLSH) win32/m32install.sl "--destdir=$(DESTDIR)" "--prefix=$(PREFIX)" install
+	$(SLSH) win32/m32install.sl "--destdir=$(DESTDIR)" "--prefix=$(PREFIX)" "--slrnpull=$(SLRNPULL_ROOT)" install
 #
-.PHONY: all install clean
+.PHONY: all install clean slrn slrnpull

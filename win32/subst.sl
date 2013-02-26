@@ -85,7 +85,7 @@ private define exit_usage ()
    exit (1);
 }
 
-private define read_defs_file (file)
+private define read_defs_file (file, defs)
 {
    variable vars, vals;
    variable fp = stdin;
@@ -98,7 +98,6 @@ private define read_defs_file (file)
 	     exit (1);
 	  }
      }
-   variable defs = Assoc_Type[String_Type];
    variable line;
    while (-1 != fgets (&line, fp))
      {
@@ -111,7 +110,6 @@ private define read_defs_file (file)
 
 	defs[matches[1]] = matches[2];
      }
-   return defs;
 }
 
 define slsh_main ()
@@ -122,20 +120,20 @@ define slsh_main ()
 
    variable i = c.process (__argv, 1);
 
-   if (i + 3!= __argc)
+   if (i + 3 > __argc)
      exit_usage ();
 
-   variable def_file = __argv[i];
-   variable in_file = __argv[i+1];
-   variable out_file = __argv[i+2];
+   variable defs_files = __argv[[i:__argc-3]];
+   variable in_file = __argv[__argc-2];
+   variable out_file = __argv[__argc-1];
 
-   if ((in_file == "-") && (def_file == "-"))
+   variable defs = Assoc_Type[String_Type];
+   foreach (defs_files)
      {
-	() = fprintf (stderr, "Both file.def and file.in cannot be '-'\n");
-	exit (1);
+	variable def_file = ();
+	read_defs_file (def_file, defs);
      }
 
-   variable defs = read_defs_file (def_file);
    variable fpin = stdin, fpout = stdout;
 
    if (in_file != "-")
