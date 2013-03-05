@@ -7,6 +7,21 @@ full features --- Version 1.x in not supported), you need to build it
 before you can compile slrn.  S-Lang is freely available from
 <http://www.jedsoft.org/slang/>.
 
+*** NOTE ***
+
+   This version of slsh also requires that the S-Lang library be
+   *fully* installed.  This means that the modules as well as the slsh
+   library files must be installed.  Installing S-Lang from source will
+   automatically accomplish this.  However, many linux systems
+   separate these components out into separate packages.  If you will
+   be using your distribution's version of S-Lang, then you will also
+   need to install the other components.  On debian, it is sufficient
+   to install slsh:
+
+       apt-get install slsh
+
+    A similar action may be required for other distributions.
+
 Slrn uses the GNU autoconf package that makes the installation quite
 simple. Assuming that the S-Lang library is installed in a standard
 location, e.g., under /usr/local, executing

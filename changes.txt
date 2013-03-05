@@ -4,6 +4,8 @@ Changes since 1.0.1
 2. src/post.c: Move the cursor to the end of the line when querying
    for a postpone filename.
 3. Added support for building slrnpull on win32.
+4. Made a note in the install files that slang+modules+slsh need to be
+   installed.
 
 Changes since 1.0.0
 1. An issue with the wrap_width variable was fixed.
