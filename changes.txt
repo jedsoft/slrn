@@ -6,6 +6,7 @@ Changes since 1.0.1
 3. Added support for building slrnpull on win32.
 4. Made a note in the install files that slang+modules+slsh need to be
    installed.
+5. macros/mime.sl: mime_process_multipart added to the read_article_hook.
 
 Changes since 1.0.0
 1. An issue with the wrap_width variable was fixed.

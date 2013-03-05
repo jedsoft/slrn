@@ -559,3 +559,4 @@ define mime_process_multipart ()
 
    vmessage ("MIME %s [%s]", mimetype, strjoin (msg_parts, ", "));
 }
+() = register_hook ("read_article_hook", &mime_process_multipart);
