@@ -8,6 +8,8 @@ Changes since 1.0.1
    installed.
 5. macros/mime.sl: mime_process_multipart added to the read_article_hook.
 6. Updated the FSF address (Petr Pisar).
+7. src/interp.c: The MAKE_INTRINSIC specification for the get_charset
+   intrinsic wrapper function was incorrect leading to a SegV.
 
 Changes since 1.0.0
 1. An issue with the wrap_width variable was fixed.

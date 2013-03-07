@@ -1607,7 +1607,7 @@ static void get_charset_intrin (char *name)
 static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
 {
    /* MAKE_INTRINSIC_S("parse_rfc2822", parse_rfc2822_intrin, SLANG_VOID_TYPE), */
-   MAKE_INTRINSIC_0("get_charset", get_charset_intrin, SLANG_VOID_TYPE),
+   MAKE_INTRINSIC_1("get_charset", get_charset_intrin, SLANG_VOID_TYPE, SLANG_STRING_TYPE),
    MAKE_INTRINSIC_4("charset_convert_string", charset_convert_string, SLANG_VOID_TYPE, S, S, S, I),
    MAKE_INTRINSIC_I("set_display_state", set_display_state, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("rfc1522_decode_string", rfc1522_decode_string, SLANG_VOID_TYPE),
