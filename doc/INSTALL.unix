@@ -9,7 +9,7 @@ before you can compile slrn.  S-Lang is freely available from
 
 *** NOTE ***
 
-   This version of slsh also requires that the S-Lang library be
+   This version of slrn also requires that the S-Lang library be
    *fully* installed.  This means that the modules as well as the slsh
    library files must be installed.  Installing S-Lang from source will
    automatically accomplish this.  However, many linux systems
@@ -29,7 +29,7 @@ location, e.g., under /usr/local, executing
     ./configure
     make
     make install
-  
+
 is enough to configure, build and install slrn.  All needed
 information will be determined automatically.  If you have the S-Lang
 library installed in a non-standard directory or if you wish to
@@ -39,7 +39,7 @@ to use the --prefix or --with-slang configure options, e.g.,
     ./configure --prefix=/home/bob --with-slang=/opt
 
 will install the slrn executable in /home/bob/bin/ and use the S-Lang
-library intalled under /opt. 
+library intalled under /opt.
 
 The configure script supports a number of options listed below.  Especially,
 you need to specify --with-slrnpull if you plan to use slrnpull.
@@ -63,7 +63,7 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
     Include support for connections via SSL, using the OpenSSL library.
     You need to set DIR to the place where OpenSSL is installed.
 
---with-gnutls[=DIR] 
+--with-gnutls[=DIR]
     Include support for connections via SSL, using the GNU TLS library and
     its OpenSSL compatibility layer.
     USE WITH CARE: GNU TLS is still under heavy development and slrn's
@@ -76,7 +76,7 @@ you need to specify --with-slrnpull if you plan to use slrnpull.
 --with-canlock[=DIR]
     Tells slrn to make use of the canlock library (needed to use
     "Cancel-Locks" when posting, see <http://cssri.meowing.net/>).
-    USE WITH CARE: libcanlock does not seem to be fully mature yet; also, 
+    USE WITH CARE: libcanlock does not seem to be fully mature yet; also,
     the library does not have an installation routine. When installing it by
     hand, be careful to copy only canlock.h (and none of the other header
     files that come with it) into your system include directory.

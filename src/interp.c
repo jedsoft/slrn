@@ -901,15 +901,26 @@ static char *generic_article_as_string (int use_orig) /*{{{*/
 }
 /*}}}*/
 
-static char *article_as_string (void) /*{{{*/
+static int push_generic_article_as_string (int w)
 {
-   return generic_article_as_string (0);
+   char *s = generic_article_as_string (w);
+   if (s == NULL)
+     {
+	(void) SLang_push_null ();
+	return -1;
+     }
+   return SLang_push_malloced_string (s);   /* frees s */
+}
+
+static void article_as_string (void) /*{{{*/
+{
+   (void) push_generic_article_as_string (0);
 }
 /*}}}*/
 
-static char *raw_article_as_string (void) /*{{{*/
+static void raw_article_as_string (void) /*{{{*/
 {
-   return generic_article_as_string (1);
+   (void) push_generic_article_as_string (1);
 }
 /*}}}*/
 
@@ -1628,7 +1639,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("get_prefix_arg", get_prefix_arg, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("reset_prefix_arg", reset_prefix_arg, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_SI("locate_header_by_msgid", locate_header_by_msgid, SLANG_INT_TYPE),
-   MAKE_INTRINSIC_0("article_as_string", article_as_string, SLANG_STRING_TYPE),
+   MAKE_INTRINSIC_0("article_as_string", article_as_string, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_0("article_cline_as_string", article_cline_as_string, SLANG_STRING_TYPE),
    MAKE_INTRINSIC_0("article_cline_number", article_cline_number, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("article_count_lines", article_count_lines, SLANG_INT_TYPE),
@@ -1681,7 +1692,7 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
    MAKE_INTRINSIC_0("popup_window", popup_window, SLANG_INT_TYPE),
    MAKE_INTRINSIC_0("prev_tagged_header", slrn_prev_tagged_header, SLANG_INT_TYPE),
    MAKE_INTRINSIC_I("quit", quit, SLANG_VOID_TYPE),
-   MAKE_INTRINSIC_0("raw_article_as_string", raw_article_as_string, SLANG_STRING_TYPE),
+   MAKE_INTRINSIC_0("raw_article_as_string", raw_article_as_string, SLANG_VOID_TYPE),
    MAKE_INTRINSIC_S("re_bsearch_article", re_bsearch_article, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("re_bsearch_author", re_author_search_backward, SLANG_INT_TYPE),
    MAKE_INTRINSIC_S("re_bsearch_subject", re_subject_search_backward, SLANG_INT_TYPE),

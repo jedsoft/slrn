@@ -10,6 +10,7 @@ Changes since 1.0.1
 6. Updated the FSF address (Petr Pisar).
 7. src/interp.c: The MAKE_INTRINSIC specification for the get_charset
    intrinsic wrapper function was incorrect leading to a SegV.
+8. src/interp.c: Fixed a memory leak in the article_as_string functions.
 
 Changes since 1.0.0
 1. An issue with the wrap_width variable was fixed.
