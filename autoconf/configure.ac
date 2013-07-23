@@ -237,15 +237,15 @@ AC_ARG_WITH(nss-compat,
 AC_ARG_WITH(gnutls,
     AS_HELP_STRING([--with-gnutls[=path]],
                    [Use GNU TLS library instead of OpenSSL]),
-    [use_gnutls=$withval; jd_use_ssl=$withval],
+    [use_gnutls=$withval; jd_cv_use_ssl=$withval],
     [use_gnutls=no])
-AC_CACHE_CHECK(if you want SSL support,jd_use_ssl,
+AC_CACHE_CHECK(if you want SSL support,jd_cv_use_ssl,
 [
   AC_ARG_WITH(ssl, 
   [  --with-ssl[[=path]]       for SSL support],
-  [jd_use_ssl=$withval], [jd_use_ssl=no])
+  [jd_cv_use_ssl=$withval], [jd_cv_use_ssl=no])
 ])
-case "x$jd_use_ssl" in
+case "x$jd_cv_use_ssl" in
 xno)
    SSLINC=
    SSLLIB=
@@ -266,15 +266,15 @@ x|xyes)
 ;;
 *)
    if test "x$use_nss_compat" != xno; then
-     SSLINC="-I$jd_use_ssl/include/nss_compat_ossl -I$jd_use_ssl/include/nss3 -I$jd_use_ssl/include/nspr4"
-     SSLLIB="-L$jd_use_ssl/lib -lnss_compat_ossl"
+     SSLINC="-I$jd_cv_use_ssl/include/nss_compat_ossl -I$jd_cv_use_ssl/include/nss3 -I$jd_cv_use_ssl/include/nspr4"
+     SSLLIB="-L$jd_cv_use_ssl/lib -lnss_compat_ossl"
    elif test "x$use_gnutls" != xno
    then
-     SSLINC="-I$jd_use_ssl/include"
-     SSLLIB="-L$jd_use_ssl/lib -lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
+     SSLINC="-I$jd_cv_use_ssl/include"
+     SSLLIB="-L$jd_cv_use_ssl/lib -lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
    else
-     SSLINC="-I$jd_use_ssl/include"
-     SSLLIB="-L$jd_use_ssl/lib -lssl -lcrypto"
+     SSLINC="-I$jd_cv_use_ssl/include"
+     SSLLIB="-L$jd_cv_use_ssl/lib -lssl -lcrypto"
    fi
 esac
 AC_SUBST(SSLINC)
