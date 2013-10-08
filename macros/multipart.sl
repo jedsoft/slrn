@@ -40,7 +40,8 @@ define subject_compare_hook ( subject1, subject2)
 
    while (tmp > 0)
    {
-      pos1 = pos1 + 4 + tmp;
+      %pos1 = pos1 + 4 + tmp;
+      pos1 = tmp;
       tmp = string_match(subject1, pattern, pos1 + 5);
    }
 
@@ -48,10 +49,11 @@ define subject_compare_hook ( subject1, subject2)
    tmp = string_match(subject2, pattern, pos2 + 5);
    while (tmp > 0)
    {
-      pos2 = pos2 + 4 + tmp;
+      %pos2 = pos2 + 4 + tmp;
+      pos2 = tmp;
       tmp = string_match(subject2, pattern, pos2 + 5);
    }
-        
+
 % if the part before the matching pattern is the same, they
 % belong to the same thread
    if ( 0 == strcmp(substr(subject1, 1, pos1), substr(subject2, 1, pos2)))
@@ -70,6 +72,6 @@ define subject_compare_hook ( subject1, subject2)
          return 0;
       }
    }
-   
+
    return 1;
 }

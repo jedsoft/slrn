@@ -12,6 +12,10 @@ Changes since 1.0.1
    intrinsic wrapper function was incorrect leading to a SegV.
 8. src/interp.c: Fixed a memory leak in the article_as_string functions.
 9. configure: Parse /etc/ld.so.conf to look for additional lib paths
+10. Merged two patches sent to me by Moritz Muehlenhoff (Debian Maintainer):
+      contrib/cleanscore: Fix perl prototypes (gregor herrmann)
+      macros/multipart.sl: Fixed usage of the string_match return value.
+        (Brian Murray)
 
 Changes since 1.0.0
 1. An issue with the wrap_width variable was fixed.
