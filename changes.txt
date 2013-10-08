@@ -16,6 +16,9 @@ Changes since 1.0.1
       contrib/cleanscore: Fix perl prototypes (gregor herrmann)
       macros/multipart.sl: Fixed usage of the string_match return value.
         (Brian Murray)
+11. src/mime.c: Do not mime-encode the In-Reply-To header.
+
+{{{ Previous Versions
 
 Changes since 1.0.0
 1. An issue with the wrap_width variable was fixed.
@@ -124,8 +127,6 @@ Changes since 0.9.9p1
     width that will trigger wrapping.
 49. doc/: Updated txt docs from slrn doc project's svn repos.
 50. Version 1.0 released [Dec 21, 2012].
-
-{{{ Previous Versions 
 
 Changes since 0.9.9
 1. src/misc.c: The code assumed that slrn_make_from_string returned a

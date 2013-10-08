@@ -2030,6 +2030,8 @@ Header_Encode_Info_Type Header_Encode_Table [] =
     * user can do about it.
     */
    {"References: ", NULL, fold_line, 0},
+   {"In-Reply-To: ", NULL, fold_line, 0},
+
    {"From: ", from_encode, fold_line, 1},
    {"Cc: ", from_encode, fold_line, 1},
    {"To: ", from_encode, fold_line, 1},
