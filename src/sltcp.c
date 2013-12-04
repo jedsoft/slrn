@@ -583,7 +583,7 @@ static SSL *alloc_ssl (void)
 
 #if SLTCP_HAS_GNUTLS_SUPPORT
    gnutls_global_set_log_function(tls_log_func);
-   gnutls_global_set_log_level(4711);
+   gnutls_global_set_log_level(0);
 #endif
    ssl = SSL_new (This_SSL_Ctx);
    if (ssl != NULL)

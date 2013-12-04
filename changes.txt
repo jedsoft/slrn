@@ -17,6 +17,10 @@ Changes since 1.0.1
       macros/multipart.sl: Fixed usage of the string_match return value.
         (Brian Murray)
 11. src/mime.c: Do not mime-encode the In-Reply-To header.
+12. src/sltcp.c: Set the gnutls global log level to 0 as a work-around
+    for a connection issue when a higher value is used.  See
+    <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=728189> for
+    additional information.
 
 {{{ Previous Versions
 
