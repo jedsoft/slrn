@@ -21,6 +21,11 @@ Changes since 1.0.1
     for a connection issue when a higher value is used.  See
     <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=728189> for
     additional information.
+13. src/interp.c: If get_header_flags is called with an optional
+    non-zero integer argument, then it will return the full set of
+    header flags associated with the current header.  Symbolic
+    constants that correspond to these flags were also added to the
+    interpreter interface.
 
 {{{ Previous Versions
 

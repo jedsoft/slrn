@@ -996,27 +996,6 @@ static int article_line_down (int *num) /*{{{*/
 
 /*{{{ Article Mode Header Functions */
 
-/*{{{ Header Flag Variables */
-
-static int Interp_Header_Read = HEADER_READ;
-static int Interp_Header_Tagged = HEADER_TAGGED;
-static int Interp_Header_High_Score = HEADER_HIGH_SCORE;
-static int Interp_Header_Low_Score = HEADER_LOW_SCORE;
-static int Interp_Attr_Blink = SLTT_BLINK_MASK;
-static int Interp_Attr_Bold = SLTT_BOLD_MASK;
-static int Interp_Attr_Rev = SLTT_REV_MASK;
-static int Interp_Attr_Uline = SLTT_ULINE_MASK;
-#ifdef HAVE_SETLOCALE
-# ifdef LC_TIME
-static int Interp_Lc_Time = LC_TIME;
-# endif
-# ifdef LC_CTYPE
-static int Interp_Lc_Ctype = LC_CTYPE;
-# endif
-#endif
-
-/*}}}*/
-
 static void uncollapse_threads (void) /*{{{*/
 {
    if (0 == check_article_mode ())
@@ -1102,10 +1081,19 @@ static int header_next_unread (void)
 
 static int get_header_flags (void) /*{{{*/
 {
+   unsigned int mask = HEADER_HARMLESS_FLAGS_MASK;
+   if (SLang_Num_Function_Args == 1)
+     {
+	int i;
+	if (-1 == SLang_pop_integer (&i))
+	  return -1;
+	if (i) mask = 0xFFFFFFFFU;
+     }
+
    if ((-1 == check_article_mode ())
        || (Slrn_Current_Header == NULL))
      return 0;
-   return (int) (Slrn_Current_Header->flags & HEADER_HARMLESS_FLAGS_MASK);
+   return (int) (Slrn_Current_Header->flags & mask);
 }
 
 /*}}}*/
@@ -1252,9 +1240,6 @@ static int re_author_search_backward (char *pat)
 /*}}}*/
 
 /*{{{ Group Functions */
-
-static int Interp_Group_Unsubscribed = GROUP_UNSUBSCRIBED;
-static int Interp_Group_New_Group_Flag = GROUP_NEW_GROUP_FLAG;
 
 static int check_group_mode (void)
 {
@@ -1751,30 +1736,44 @@ static SLang_Intrin_Fun_Type Slrn_Intrinsics [] = /*{{{*/
 #undef S
 #undef I
 
-static SLang_Intrin_Var_Type Intrin_Vars [] = /*{{{*/
+static SLang_IConstant_Type Module_IConstants [] =
 {
-   MAKE_VARIABLE("ATTR_BLINK", &Interp_Attr_Blink, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("ATTR_BOLD", &Interp_Attr_Bold, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("ATTR_REV", &Interp_Attr_Rev, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("ATTR_ULINE", &Interp_Attr_Uline, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("GROUPS_DIRTY", &Slrn_Groups_Dirty, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("GROUP_NEW_GROUP_FLAG", &Interp_Group_New_Group_Flag, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("GROUP_UNSUBSCRIBED", &Interp_Group_Unsubscribed, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("HEADER_HIGH_SCORE", &Interp_Header_High_Score, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("HEADER_LOW_SCORE", &Interp_Header_Low_Score, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("HEADER_READ", &Interp_Header_Read, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("HEADER_TAGGED", &Interp_Header_Tagged, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("_slrn_version", &Slrn_Version, SLANG_INT_TYPE, 1),
-   MAKE_VARIABLE("_slrn_version_string", &Slrn_Version_String, SLANG_STRING_TYPE, 1),
-#ifdef HAVE_SETLOCALE
-# ifdef LC_CTYPE
-   MAKE_VARIABLE("LC_CTYPE", &Interp_Lc_Ctype, SLANG_INT_TYPE, 1),
-# endif
-# ifdef LC_TIME
-   MAKE_VARIABLE("LC_TIME", &Interp_Lc_Time, SLANG_INT_TYPE, 1),
-# endif
+   MAKE_ICONSTANT("ATTR_BLINK", SLTT_BLINK_MASK),
+   MAKE_ICONSTANT("ATTR_BOLD", SLTT_BOLD_MASK),
+   MAKE_ICONSTANT("ATTR_REV", SLTT_REV_MASK),
+   MAKE_ICONSTANT("ATTR_ULINE", SLTT_ULINE_MASK),
+   MAKE_ICONSTANT("GROUP_NEW_GROUP_FLAG", GROUP_NEW_GROUP_FLAG),
+   MAKE_ICONSTANT("GROUP_UNSUBSCRIBED", GROUP_UNSUBSCRIBED),
+   MAKE_ICONSTANT("HEADER_READ", HEADER_READ),
+   MAKE_ICONSTANT("HEADER_TAGGED", HEADER_TAGGED),
+   MAKE_ICONSTANT("HEADER_HIGH_SCORE", HEADER_HIGH_SCORE),
+   MAKE_ICONSTANT("HEADER_LOW_SCORE", HEADER_LOW_SCORE),
+   MAKE_ICONSTANT("HEADER_REQUEST_BODY", HEADER_REQUEST_BODY),
+   MAKE_ICONSTANT("HEADER_DONT_DELETE_MASK", HEADER_DONT_DELETE_MASK),
+   MAKE_ICONSTANT("HEADER_WITHOUT_BODY", HEADER_WITHOUT_BODY),
+   MAKE_ICONSTANT("HEADER_HIDDEN", HEADER_HIDDEN),
+   MAKE_ICONSTANT("HEADER_NTAGGED", HEADER_NTAGGED),
+   MAKE_ICONSTANT("FAKE_PARENT", FAKE_PARENT),
+   MAKE_ICONSTANT("FAKE_CHILDREN", FAKE_CHILDREN),
+   MAKE_ICONSTANT("FAKE_HEADER_HIGH_SCORE", FAKE_HEADER_HIGH_SCORE),
+   MAKE_ICONSTANT("HEADER_CHMAP_PROCESSED", HEADER_CHMAP_PROCESSED),
+   MAKE_ICONSTANT("HEADER_HAS_PARSE_PROBLEMS", HEADER_HAS_PARSE_PROBLEMS),
+   MAKE_ICONSTANT("HEADER_PROCESSED", HEADER_PROCESSED),
+#ifdef LC_CTYPE
+   MAKE_ICONSTANT("LC_CTYPE", LC_CTYPE),
+#endif
+#ifdef LC_TIME
+   MAKE_ICONSTANT("LC_TIME", LC_TIME),
 #endif
 
+   SLANG_END_ICONST_TABLE
+};
+
+static SLang_Intrin_Var_Type Intrin_Vars [] = /*{{{*/
+{
+   MAKE_VARIABLE("GROUPS_DIRTY", &Slrn_Groups_Dirty, SLANG_INT_TYPE, 1),
+   MAKE_VARIABLE("_slrn_version", &Slrn_Version, SLANG_INT_TYPE, 1),
+   MAKE_VARIABLE("_slrn_version_string", &Slrn_Version_String, SLANG_STRING_TYPE, 1),
    MAKE_VARIABLE(NULL, NULL, 0, 0)
 };
 
@@ -1843,6 +1842,7 @@ int slrn_init_slang (void) /*{{{*/
        /* Now add intrinsics for this application */
        || (-1 == SLadd_intrin_fun_table(Slrn_Intrinsics, NULL))
        || (-1 == SLadd_intrin_var_table(Intrin_Vars, NULL))
+       || (-1 == SLadd_iconstant_table (Module_IConstants, NULL))
        || (-1 == add_intrinsic_variables ()))
      return -1;
 
