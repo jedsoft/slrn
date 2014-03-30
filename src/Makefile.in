@@ -204,7 +204,7 @@ installslang:
 		fi; \
 	done
 installlocales:
-	cd ../po; $(MAKE) DESTDIR=$(DESTDIR) LOCALEDIR=$(LOCALEDIR) install 
+	-cd ../po; $(MAKE) DESTDIR=$(DESTDIR) LOCALEDIR=$(LOCALEDIR) install 
 installbin:
 	$(INSTALL) -m 755 -s $(OBJDIR)/slrn $(DEST_BINDIR)
 	-$(INSTALL) -m 755 -s $(OBJDIR)/slrnpull $(DEST_BINDIR)
