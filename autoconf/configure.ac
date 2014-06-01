@@ -271,7 +271,8 @@ x|xyes)
    elif test "x$use_gnutls" != xno
    then
      SSLINC="-I$jd_cv_use_ssl/include"
-     SSLLIB="-L$jd_cv_use_ssl/lib -lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
+     # SSLLIB="-L$jd_cv_use_ssl/lib -lgnutls-extra -lgnutls -ltasn1 -lgcrypt -lgnutls-openssl"
+     SSLLIB="-L$jd_cv_use_ssl/lib -lgnutls -lgnutls-openssl"
    else
      SSLINC="-I$jd_cv_use_ssl/include"
      SSLLIB="-L$jd_cv_use_ssl/lib -lssl -lcrypto"

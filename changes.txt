@@ -29,6 +29,8 @@ Changes since 1.0.1
 14. po/Makefile.in.in, src/Makefile.in: Ignore install error when GNU
     msgfmt is not installed.
 15. src/Makefile.in: Add support for CPPFLAGS (patch provided by Moritz Muehlenhoff).
+16. autoconf/configure.ac: Updated libs for current gnutls (patch
+    provided by Moritz Muehlenhoff).
 
 {{{ Previous Versions
 
