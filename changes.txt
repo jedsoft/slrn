@@ -28,6 +28,7 @@ Changes since 1.0.1
     interpreter interface.
 14. po/Makefile.in.in, src/Makefile.in: Ignore install error when GNU
     msgfmt is not installed.
+15. src/Makefile.in: Add support for CPPFLAGS (patch provided by Moritz Muehlenhoff).
 
 {{{ Previous Versions
 

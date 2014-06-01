@@ -5,6 +5,7 @@
 CC = @CC@
 CFLAGS = @CFLAGS@ @X_CFLAGS@
 LDFLAGS = @LDFLAGS@
+CPPFLAGS = @CPPFLAGS@
 #-----------------------------------------------------------------------------
 # Required Libraries
 #-----------------------------------------------------------------------------
@@ -89,7 +90,7 @@ EXEC = slrn
 OTHER_EXECS = @SLRNPULL@
 CONFIG_H = config.h
 INCS = $(SLANG_INC) $(CANLOCK_INC) $(ICONV_INC) $(UUDEVIEW_INC) $(SSL_INC) $(MISCINCLUDES)
-ALL_CFLAGS = $(CFLAGS) -Dunix $(INCS) $(DEFINES)
+ALL_CFLAGS = $(CFLAGS) -Dunix $(CPPFLAGS) $(INCS) $(DEFINES)
 EXECLIBS = $(SLANG_LIB) $(UUDEVIEW_LIB) $(CANLOCK_LIB) $(SSL_LIB) $(ICONV_LIB) $(SYSLIBS)
 DOT_O_DEPS = slrnfeat.h config.h
 server_O_DEP = clientlib.c spool.c nntp.c sltcp.c nntplib.c
