@@ -31,6 +31,9 @@ Changes since 1.0.1
 15. src/Makefile.in: Add support for CPPFLAGS (patch provided by Moritz Muehlenhoff).
 16. autoconf/configure.ac: Updated libs for current gnutls (patch
     provided by Moritz Muehlenhoff).
+17. src/group.c: Updated default value of query_read_group_cutoff to
+    1000 to reflect faster networks. (patch provided by Moritz
+    Muehlenhoff).
 
 {{{ Previous Versions
 

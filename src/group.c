@@ -69,7 +69,7 @@
 
 /*{{{ Global Variables */
 
-int Slrn_Query_Group_Cutoff = 100;
+int Slrn_Query_Group_Cutoff = 1000;
 int Slrn_Groups_Dirty;	       /* 1 == need to write newsrc */
 int Slrn_List_Active_File = 0;
 int Slrn_Write_Newsrc_Flags = 0;       /* if 1, do not save unsubscribed
