@@ -34,6 +34,9 @@ Changes since 1.0.1
 17. src/group.c: Updated default value of query_read_group_cutoff to
     1000 to reflect faster networks. (patch provided by Moritz
     Muehlenhoff).
+18. doc/score.txt: Added a note about where to find the documentation
+    for the slang regular expressions (patch provided by Moritz
+    Muehlenhoff).
 
 {{{ Previous Versions
 

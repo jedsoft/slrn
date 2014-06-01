@@ -96,6 +96,9 @@
   by the `~' character to signify that the regular expression should not
   match the object specified by the keyword.
 
+  Documentation on the slang regular expressions format can be found at
+  <http://www.jedsoft.org/slang/doc/html/slang.html>.
+
   A group of keywords defines a test that is given to the header of the
   article.  The `Score' keyword is used to assign a score to the header.
   If it is followed by a single colon, the score is only given if all
