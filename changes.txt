@@ -40,6 +40,7 @@ Changes since 1.0.1
 19. src/slrn.c: Added support for SIGQUIT (addresses debian #673529).
 20. src/ttymsg.c: Strip \001 highlight characters from messages written
     to the terminal when not in fullscreen mode (addresses debian #631021).
+21. src/*.c,*.h: Updated copyright year for upcoming release.
 
 
 
