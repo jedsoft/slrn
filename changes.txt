@@ -38,6 +38,9 @@ Changes since 1.0.1
     for the slang regular expressions (patch provided by Moritz
     Muehlenhoff).
 19. src/slrn.c: Added support for SIGQUIT (addresses debian #673529).
+20. src/ttymsg.c: Strip \001 highlight characters from messages written
+    to the terminal when not in fullscreen mode (addresses debian #631021).
+
 
 
 {{{ Previous Versions

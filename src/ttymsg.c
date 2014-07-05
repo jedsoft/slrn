@@ -1,7 +1,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2014 John E. Davis <jed@jedsoft.org>
 
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "jdmacros.h"
+#include <slang.h>
 
 #include "ttymsg.h"
 #include "common.h"
@@ -30,10 +31,24 @@
 void slrn_tty_vmessage (FILE *fp, char *fmt, va_list ap)
 {
    static FILE *last_fp;
+   char *b, buf[1024];
 
    if ((fp == stdout) || (last_fp == stdout)) fputc ('\n', fp);
-   (void) vfprintf(fp, fmt, ap);
-   if (fp == stderr) fputc ('\n', fp);
+
+   /* Use SLvsnprintf to write to a buffer so that any \001 highlight
+    * indicators can be stripped.
+    */
+   /* (void) vfprintf(fp, fmt, ap); */
+   (void) SLvsnprintf (buf, sizeof(buf), fmt, ap);
+   b = buf;
+   while (*b != 0)
+     {
+	if (*b != '\001')
+	  (void) fputc (*b, fp);
+	b++;
+     }
+
+   if (fp == stderr) (void) fputc ('\n', fp);
    fflush (fp);
 
    last_fp = fp;
