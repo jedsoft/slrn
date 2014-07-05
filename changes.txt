@@ -37,6 +37,8 @@ Changes since 1.0.1
 18. doc/score.txt: Added a note about where to find the documentation
     for the slang regular expressions (patch provided by Moritz
     Muehlenhoff).
+19. src/slrn.c: Added support for SIGQUIT (addresses debian #673529).
+
 
 {{{ Previous Versions
 

@@ -2,7 +2,7 @@
 /*
  This file is part of SLRN.
 
- Copyright (c) 1994, 1999, 2007-2012 John E. Davis <jed@jedsoft.org>
+ Copyright (c) 1994, 1999, 2007-2014 John E. Davis <jed@jedsoft.org>
  Copyright (c) 2001-2006 Thomas Schultz <tststs@gmx.de>
 
  This program is free software; you can redistribute it and/or modify it
@@ -517,7 +517,7 @@ static void check_for_suspension (void)
 
 void slrn_init_hangup_signals (int state) /*{{{*/
 {
-   int argv[2];
+   int argv[3];
    int argc = 0;
 
 #ifdef SIGHUP
@@ -525,6 +525,9 @@ void slrn_init_hangup_signals (int state) /*{{{*/
 #endif
 #ifdef SIGTERM
    argv[argc++] = SIGTERM;
+#endif
+#ifdef SIGQUIT
+   argv[argc++] = SIGQUIT;
 #endif
 
    init_like_signals (argc, argv, SIG_IGN, slrn_hangup, state);
