@@ -1,0 +1,14 @@
+Version 1.0.2 release notes
+===========================
+
+  Version 1.0.2 is primarily a bug-fix release.  See changes.txt for
+  details.
+
+  The intrinsic function get_header_flags was modified to return the
+  full set of flags when called with an optional argument.  Symbolic
+  constants for the corresponding flags were added to the interpreter
+  interface.
+
+  The value for query_read_group_cutoff was increased to 1000.
+
+  Support for building slrnpull on win32 systems was added.
