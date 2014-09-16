@@ -42,6 +42,7 @@ Changes since 1.0.1
     to the terminal when not in fullscreen mode (addresses debian #631021).
 21. src/*.c,*.h: Updated copyright year for upcoming release.
 22. NEWS file added with release notes.
+23. autoconf/: updated configure scripts
 
 {{{ Previous Versions
 
