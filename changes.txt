@@ -44,6 +44,8 @@ Changes since 1.0.1
 22. NEWS file added with release notes.
 23. autoconf/: updated configure scripts
 24. src/Makefile.in: slang 2.2.3 or greater now required.
+25. po/Makefile.in.in: Do not remove .gmo files if msgmerge is not
+    installed.
 
 {{{ Previous Versions
 
