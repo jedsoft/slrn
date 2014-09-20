@@ -1,8 +1,8 @@
 slrn is a Usenet client that supports both the Network News Transfer
 Protocol (NNTP) and a news spool on the local filesystem.  Extensive
 information about slrn may be found on its home page at
-<http://www.slrn.org/>.  Installation instructions may be found in the
-INSTALL file.
+<http://slrn.sourceforge.net/>.  Installation instructions may be
+found in the INSTALL file.
 
 The rest of this file provides an overview of the documentation that
 comes with slrn and includes pointers to additional resources.
@@ -10,6 +10,8 @@ comes with slrn and includes pointers to additional resources.
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 			   Files in this directory
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+NEWS                    Release Notes
 
 COPYING                 The "GNU GENERAL PUBLIC LICENSE"
 

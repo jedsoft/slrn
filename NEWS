@@ -4,6 +4,9 @@ Version 1.0.2 release notes
   Version 1.0.2 is primarily a bug-fix release.  See changes.txt for
   details.
 
+  Note: slang version 2.2.3 or later is required.  Version 2.3.0 is
+  the current version.
+
   The intrinsic function get_header_flags was modified to return the
   full set of flags when called with an optional argument.  Symbolic
   constants for the corresponding flags were added to the interpreter

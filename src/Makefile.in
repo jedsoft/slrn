@@ -127,7 +127,7 @@ $(CONFIG_H) : $(SRCDIR)/sysconf.h
 	touch $(CONFIG_H)
 #
 slangversion: $(OBJDIR)/chkslang
-	$(OBJDIR)/chkslang $(EXEC) 20000
+	$(OBJDIR)/chkslang $(EXEC) 20203
 #
 $(OBJDIR)/chkslang: $(OBJDIR)/chkslang.o
 	$(CC) $(OBJDIR)/chkslang.o $(LDFLAGS) -o $(OBJDIR)/chkslang $(RPATH) $(EXECLIBS)

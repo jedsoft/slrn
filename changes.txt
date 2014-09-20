@@ -43,6 +43,7 @@ Changes since 1.0.1
 21. src/*.c,*.h: Updated copyright year for upcoming release.
 22. NEWS file added with release notes.
 23. autoconf/: updated configure scripts
+24. src/Makefile.in: slang 2.2.3 or greater now required.
 
 {{{ Previous Versions
 
