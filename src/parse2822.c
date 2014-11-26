@@ -369,12 +369,18 @@ static int parse_rfc2822_phrase (char *header, char *parsemap, unsigned int *sta
 
 	if (ch == '"')
 	  {
+	     unsigned int start0;
 	     start++;
+	     start0 = start;
 	     if (-1 == parse_rfc2822_quoted_string (header, parsemap, &start, stop, errmsg))
 	       {
 		  *startp = start;
 		  return -1;
 	       }
+
+	     while (start0 < start)
+	       parsemap[start0++] = 'C';
+
 	     continue;
 	  }
 
