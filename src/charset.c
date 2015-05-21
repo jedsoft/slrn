@@ -385,6 +385,17 @@ int slrn_convert_fprintf(FILE *fp, char *to_charset, char *from_charset, const c
    return retval;
 }
 
+#ifdef HAVE_ICONV
+static void iconv_convert_newline (iconv_t cd)
+{
+   char *nl = "\n";
+   char *tmp;
+
+   if (1 == iconv_convert_string (cd, nl, 1, 1, &tmp))
+     slrn_free (tmp);
+}
+#endif
+
 /* converts a->lines */
 int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_charset)
 {
@@ -412,6 +423,7 @@ int slrn_convert_article(Slrn_Article_Type *a, char *to_charset, char *from_char
 	     slrn_free((char *) line->buf);
 	     line->buf=tmp;
 	     a->mime.was_modified=1;
+	     iconv_convert_newline (cd);
 	  }
 	line=line->next;
      }

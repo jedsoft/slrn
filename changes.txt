@@ -2,6 +2,9 @@
 Changes since 1.0.2
 1. src/parse2822.c: A quoted-string in the display portion of an
    address was not being marked as allowing mime-encoded text.
+2. src/charcode.c: After calling iconv to perform a character set
+   conversion on an article line, call it again with just the newline
+   character.  This resets the state for some conversion types (UTF-7).
 
 Changes since 1.0.1
 1. src/misc.c: slrn_verror needed va_copy when writing to the log file.
