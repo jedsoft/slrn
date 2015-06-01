@@ -573,7 +573,9 @@ static SSL *alloc_ssl (void)
 	     print_error (_("SSL_CTX_new failed.\n"));
 	     return NULL;
 	  }
-	/* SSL_CTX_set_options (c, SSL_OP_NO_TLSv1); */
+
+	/* SSLv3 is vulnerable to POODLE attacks.  Do not use it. */
+	SSL_CTX_set_options (SSL_OP_NO_SSLv2|SSL_OP_NO_SSLv3);
 	This_SSL_Ctx = c;
 	atexit (deinit_ssl);
 
