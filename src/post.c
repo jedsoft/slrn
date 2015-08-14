@@ -924,14 +924,19 @@ static Slrn_Mime_Error_Obj *
 	     if ((!not_quoted) &&(strncmp (line, qs, qlen)))
 	       not_quoted=1;
 
-	     if ((Slrn_Netiquette_Warnings || Slrn_Reject_Long_Lines)
+	     if (Slrn_Reject_Long_Lines
 		 && (longline == 0)
 		 && (slrn_charset_strlen (line, from_charset) > 80))
 	       {
+		  int severity = MIME_ERROR_WARN;
+
+		  if (Slrn_Reject_Long_Lines == 1)
+		    severity = MIME_ERROR_CRIT;
+
 		  longline = 1;
 		  err = slrn_add_mime_error(err,
 					    _("Please wrap lines with more than 80 characters (only first one is shown)"),
-					    line, lineno, MIME_ERROR_NET);
+					    line, lineno, severity);
 	       }
 	  }
 
