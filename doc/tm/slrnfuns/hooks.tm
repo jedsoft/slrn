@@ -81,7 +81,7 @@ comes in handy if you want to use pre-written macro sets.
 \usage{Void group_mode_hook ()}
 \description
    This hook will be called whenever group mode is entered.  This includes
-   the times when one exists article mode back to group mode.
+   the times when one exits article mode back to group mode.
 \done
 
 \function{group_mode_startup_hook}

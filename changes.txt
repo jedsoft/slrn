@@ -11,6 +11,10 @@ Changes since 1.0.2
 5. src/post.c: The reject_long_lines option was not working as
    documented.  Setting it to 0 had no effect when netiquette_warnings
    was set to a non-zero value.
+6. macros/mime.sl: In replace_article_with_mime_obj, also decode
+   quoted-printable/base64.
+
+{{{ Previous Versions
 
 Changes since 1.0.1
 1. src/misc.c: slrn_verror needed va_copy when writing to the log file.
@@ -59,8 +63,6 @@ Changes since 1.0.1
 24. src/Makefile.in: slang 2.2.3 or greater now required.
 25. po/Makefile.in.in: Do not remove .gmo files if msgmerge is not
     installed.
-
-{{{ Previous Versions
 
 Changes since 1.0.0
 1. An issue with the wrap_width variable was fixed.

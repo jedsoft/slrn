@@ -1,11 +1,10 @@
   Slrn Intrinsic Function Reference Manual
   John E. Davis, jed@jedsoft.org
   Thomas Schultz, tststs@gmx.de
-  Apr 3, 2012
+  Nov 20, 2014
   ____________________________________________________________
 
   Table of Contents
-
 
 
   1. Header and Thread Functions
@@ -335,8 +334,6 @@
       See Also
         header_down, get_header_flags, call
 
-
-
   1.12.  has_parent
 
 
@@ -466,7 +463,6 @@
 
       Usage
         Integer next_tagged_header ()
-
 
       Description
         This function moves the current header position to the next *
@@ -728,14 +724,14 @@
         Specifically, it returns a bitmapped value:
 
 
-           0  : if the article window is hidden and not associated with the
-                  current header.
-           1  : if the article window is showing but the current header
-                  does not refer to the article.
-           2  : if the article window is hidden but attached to the current
-                  header.
-           3  : if the article window is showing and contains the current
-                  header article.
+                0  : if the article window is hidden and not associated with the
+                       current header.
+                1  : if the article window is showing but the current header
+                       does not refer to the article.
+                2  : if the article window is hidden but attached to the current
+                       header.
+                3  : if the article window is showing and contains the current
+                       header article.
 
 
 
@@ -787,8 +783,6 @@
 
       See Also
         article_as_string, article_cline_number
-
-
 
   2.4.  article_cline_number
 
@@ -919,7 +913,6 @@
       See Also
         request_body
 
-
   2.12.  get_next_art_pgdn_action
 
 
@@ -983,6 +976,7 @@
 
       Usage
         Integer is_article_window_zoomed ()
+
       Description
         This function returns 1 if the article window is zoomed, or 0
         otherwise.
@@ -1048,7 +1042,6 @@
         returns 1 and the matching line will be left on the stack as a
         string.
 
-
       See Also
         re_search_article_first
 
@@ -1113,7 +1106,6 @@
       Usage
         Integer save_current_article (String filename)
 
-
       Description
         This function saves the currently selected article to a file
         specified by filename. If the article window is hidden, it
@@ -1176,8 +1168,6 @@
 
       See Also
         get_article_window_size
-
-
 
   3.  Group Functions
 
@@ -1242,7 +1232,6 @@
       Description
         This function moves the current group pointer down n groups and
         returns the actual number moved.
-
 
       See Also
         group_up_n, group_search, current_newsgroup
@@ -1372,8 +1361,6 @@
       See Also
         get_group_flags
 
-
-
   3.13.  set_group_order
 
 
@@ -1438,6 +1425,7 @@
 
      will return one of the four characters y, Y, n, or N to the vari-
      able rsp.
+
       See Also
         get_yes_no_cancel, set_color, get_select_box_response
 
@@ -1500,7 +1488,6 @@
       Description
         This function displays the string s to the message area
         immediately.
-
 
       See Also
         message, vmessage, error
@@ -1565,8 +1552,6 @@
 
       See Also
         read_mini
-
-
 
   4.9.  read_mini_no_echo
 
@@ -1633,9 +1618,10 @@
 
       Example
 
-            set_input_chars ("y");
-            if ('y' == get_yes_no_cancel ("Really Quit"))
-              quit (0);
+
+                 set_input_chars ("y");
+                 if ('y' == get_yes_no_cancel ("Really Quit"))
+                   quit (0);
 
 
 
@@ -1695,7 +1681,6 @@
 
       Usage
         definekey (String fun, String key, String km)
-
 
       Description
         This function is used to bind a key sequence specified by key to
@@ -1828,7 +1813,6 @@
         The close_log_file function closes the file previously opened by
         open_log_file.
 
-
       See Also
         open_log_file, log_message
 
@@ -1959,8 +1943,6 @@
       Notes
         Due to a limitation in S-Lang, this function only works on Unix.
 
-
-
   7.5.  get_fg_color
 
 
@@ -2090,11 +2072,10 @@
         the following constants:
 
 
-
-        ATTR_BLINK     blinking text
-        ATTR_BOLD      bold text
-        ATTR_REV       inverse text
-        ATTR_ULINE     underlined text
+             ATTR_BLINK     blinking text
+             ATTR_BOLD      bold text
+             ATTR_REV       inverse text
+             ATTR_ULINE     underlined text
 
 
 
@@ -2222,7 +2203,8 @@
         default if this function is not called. Thus, you can reset the
         default using
 
-        set_utf8_conversion_table (Integer_Type[2,0]);
+
+             set_utf8_conversion_table (Integer_Type[2,0]);
 
 
 
@@ -2284,6 +2266,7 @@
 
              0: Hook does not exist or function is not assigned to it.
              1: Function successfully unregistered.
+
 
 
       See Also
@@ -2416,8 +2399,9 @@
 
       Description
         This hook will be called whenever group mode is entered. This
-        includes the times when one exists article mode back to group
+        includes the times when one exits article mode back to group
         mode.
+
   8.8.  group_mode_startup_hook
 
 
@@ -2483,6 +2467,8 @@
 
       Example
         Here is a simple example:
+
+
              define make_save_filename_hook ()
              {
                if (string_match (extract_article_header ("Subject"), "slrn", 1) != 0)
@@ -2546,7 +2532,6 @@
       Usage
         Void pre_article_mode_hook ()
 
-
       Description
         This hook is similar to article_mode_hook except that it is
         called before any headers for the group have been retrieved.
@@ -2609,17 +2594,16 @@
         `uhog' (it is a slow server):
 
 
-
-        define make_server_specific_settings ()
-        {
-          !if (strcmp (server_name (), "uhog"))
-          {
-             set_integer_variable ("lines_per_update", 20);
-             set_integer_variable ("read_active", 0);
-          }
-        }
-        () = register_hook ("startup_hook",
-                            "make_server_specific_settings");
+             define make_server_specific_settings ()
+             {
+               !if (strcmp (server_name (), "uhog"))
+               {
+                  set_integer_variable ("lines_per_update", 20);
+                  set_integer_variable ("read_active", 0);
+               }
+             }
+             () = register_hook ("startup_hook",
+                                 "make_server_specific_settings");
 
 
 

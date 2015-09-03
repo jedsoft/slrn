@@ -296,16 +296,20 @@ private define process_mime_message ()
    Mime_Article_Headers = nodes.header;
 }
 
+private define convert_mime_object (); %  forward decl
 private define replace_article_with_mime_obj (obj)
 {
    % Replace some of the headers in the raw article by subpart headers
    variable header = merge_headers (Mime_Article_Headers, obj.header);
 
+   obj = @obj;
+   obj.header = header;
+
    variable value, art = "";
    foreach value (header) using ("values")
      art = sprintf ("%s%s: %s\n", art, value.name, value.value);
 
-   art = art + "\n" + obj.message;
+   art = art + "\n" + convert_mime_object (obj);
 
    replace_cooked_article (art, 1);
 }
