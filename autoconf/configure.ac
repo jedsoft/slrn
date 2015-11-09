@@ -11,8 +11,11 @@ AC_PROG_INSTALL
 
 JD_ANSI_CC
 
+m4_include([./include/ax_lib_socket_nsl.m4])
+AX_LIB_SOCKET_NSL
+
 # determine X include and needed libs
-AC_PATH_XTRA
+dnl# AC_PATH_XTRA
 
 #------------------------------------------------------------------------
 # Useful macros
@@ -291,7 +294,7 @@ if test "x$SSLINC$SSLLIB" != x; then
 fi
 
 #---------------------------------------------------------------------------
-# Check head files
+# Check header files
 #---------------------------------------------------------------------------
 
 AC_CHECK_HEADERS( \

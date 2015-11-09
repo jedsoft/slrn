@@ -13,6 +13,10 @@ Changes since 1.0.2
    was set to a non-zero value.
 6. macros/mime.sl: In replace_article_with_mime_obj, also decode
    quoted-printable/base64.
+7. autoconf/include/ax_lib_socket_nsl.m4: New file from the autoconf
+   archive that detects libraries needed for socket support.  The old
+   method used X_EXTRA_LIBS, which breaks if X in not installed.
+   Addresses <20151103075425.GA2101@web.de> on slrn-users list.
 
 {{{ Previous Versions
 
