@@ -226,4 +226,10 @@ typedef long NNTP_Artnum_Type;
 # define NNTP_ARTNUM_TYPE_MAX LONG_MAX
 #endif
 
+/* The following set defines may be necessary to activate long file support */
+#undef _FILE_OFFSET_BITS
+#undef _LARGE_FILES
+#undef _LARGEFILE_SOURCE
+
+
 #endif /* SLRN_CONFIG_H */
