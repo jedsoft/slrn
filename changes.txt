@@ -18,6 +18,7 @@ Changes since 1.0.2
    method used X_EXTRA_LIBS, which breaks if X in not installed.
    Addresses <20151103075425.GA2101@web.de> on slrn-users list.
 8. Added support for large (>2GB) files on 32 bit unix systems.
+9. Updated Danish translation (Morten Bo Johansen)
 
 {{{ Previous Versions
 
