@@ -19,6 +19,8 @@ Changes since 1.0.2
    Addresses <20151103075425.GA2101@web.de> on slrn-users list.
 8. Added support for large (>2GB) files on 32 bit unix systems.
 9. Updated Danish translation (Morten Bo Johansen)
+10. macros/mime.sl: If a mime message has already been base64/QP
+    converted, do not try to convert it again.
 
 {{{ Previous Versions
 

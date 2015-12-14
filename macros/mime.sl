@@ -144,7 +144,8 @@ private variable Mime_Node_Type = struct
    content_type,		       %  full content-type header
    header,			       %  assoc array of header keywords
    list,			       %  non-null list of nodes if multipart
-   message, charset, encoding	       %  non-multipart decoded message
+   message, charset, encoding,	       %  non-multipart decoded message
+   converted = 0,
 };
 
 private define parse_mime ();
@@ -311,7 +312,7 @@ private define replace_article_with_mime_obj (obj)
 
    art = art + "\n" + convert_mime_object (obj);
 
-   replace_cooked_article (art, 1);
+   replace_cooked_article (art, 0);
 }
 
 private define is_attachment (node)
@@ -351,6 +352,10 @@ private define format_type (type, width)
 private define convert_mime_object (obj)
 {
    variable str = obj.message;
+
+   if (obj.converted)
+     return str;
+
    if (obj.encoding == "base64")
      str = decode_base64_string (str);
    else if (obj.encoding == "quoted-printable")
@@ -363,6 +368,7 @@ private define convert_mime_object (obj)
      {
 	str = charset_convert_string (str, charset, Mime_Save_Charset, 0);
      }
+   obj.converted = 1;
    return str;
 }
 
@@ -469,7 +475,10 @@ define mime_browse ()
 	node = Mime_Object_List[n];
 	filename = filenames[n];
 
-	n = get_response ("SsVv", "Action: \001Save to file, \001View");
+	n = get_response ("SsVvCc\007", "Action: \001Save to file, \001View, \001Cancel");
+
+	if ((n == 7) || (n == 'c') || (n == 'C'))
+	  return;
 
 	if ((n == 'S') || (n == 's'))
 	  {

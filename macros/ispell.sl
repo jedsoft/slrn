@@ -7,17 +7,16 @@ define ispell_file (file)
    () = system (sprintf ("%s '%s'", cmd, file));
 }
 
-
 define post_filter_hook (file)
 {
    variable rsp;
    variable cmd;
-   
-   forever 
+
+   forever
      {
 	rsp = get_response ("NnIi",
 			    "Select Filter? \001None, \001Ispell");
-	
+
 	switch (rsp)
 	  {
 	   case 'i' or case 'I':
