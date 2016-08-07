@@ -219,7 +219,7 @@ char *slrn_gen_date_header () /*{{{*/
 		  "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d",
 		  Weekdays[t->tm_wday], t->tm_mday, Months[t->tm_mon],
 		  t->tm_year + 1900, t->tm_hour, t->tm_min, t->tm_sec,
-		  (int) tz / 60, (int) abs (tz) % 60);
+		  (int) tz / 60, (int) labs (tz) % 60);
 }
 /*}}}*/
 

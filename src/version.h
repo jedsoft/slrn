@@ -19,7 +19,7 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#define SLRN_VERSION_STRING "pre1.0.3-11"
+#define SLRN_VERSION_STRING "pre1.0.3-12"
 #define SLRN_VERSION 10030
 
 #ifndef SLRNPULL_CODE
