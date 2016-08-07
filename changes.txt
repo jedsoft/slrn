@@ -21,6 +21,8 @@ Changes since 1.0.2
 9. Updated Danish translation (Morten Bo Johansen)
 10. macros/mime.sl: If a mime message has already been base64/QP
     converted, do not try to convert it again.
+11. src/sltcp.h: Do not use SSL_CTX_set_options if gnutls is being
+    used (Daniel Macks).
 
 {{{ Previous Versions
 
