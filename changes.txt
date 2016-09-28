@@ -24,6 +24,7 @@ Changes since 1.0.2
 11. src/sltcp.h: Do not use SSL_CTX_set_options if gnutls is being
     used (Daniel Macks).
 12. src/post.c: Use labs instead of abs for long integer (Daniel Macks).
+13. Updated copyright year in preparation for upcoming release.
 
 {{{ Previous Versions
 
