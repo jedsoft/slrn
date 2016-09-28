@@ -138,9 +138,9 @@ void slrn_show_version (FILE *fp) /*{{{*/
 	fprintf (fp, _("\t* Note: This program was compiled against version %s.\n"),
 		 SLANG_VERSION_STRING);
      }
-#if defined(__DATE__) && defined(__TIME__)
-   fprintf (fp, _("Compiled on: %s %s\n"), __DATE__, __TIME__);
-#endif
+/* #if defined(__DATE__) && defined(__TIME__) */
+/*    fprintf (fp, _("Compiled on: %s %s\n"), __DATE__, __TIME__); */
+/* #endif */
    fprintf (fp, _("Operating System: %s\n"), os);
 
    (void) fputs ("\n", fp);

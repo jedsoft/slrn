@@ -25,6 +25,8 @@ Changes since 1.0.2
     used (Daniel Macks).
 12. src/post.c: Use labs instead of abs for long integer (Daniel Macks).
 13. Updated copyright year in preparation for upcoming release.
+14. src/version.c: Removed compilation date info for a reproducible
+    build.  Patch provided by Moritz Muehlenhoff.
 
 {{{ Previous Versions
 
