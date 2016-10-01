@@ -2,7 +2,7 @@
 MAKE = mingw32-make
 SLSH = slsh
 # Note: copy.exe does not exist on windows since it is a cmd.exe built-in
-MFLAGS = COPY="cmd /c copy /y" RM=del
+MFLAGS = COPY="cmd /c copy /y" RM="cmd /c del"
 
 # DESTDIR is used for building a package for use on another machine.
 DESTDIR =

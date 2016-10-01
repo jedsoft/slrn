@@ -1839,13 +1839,17 @@ int slrn_spool_set_requested_ranges (char *group, Slrn_Range_Type *r) /*{{{*/
    char *vline;
    unsigned int vlen;
    struct stat filestat;
+#ifdef __unix__
    int stat_worked = 0;
+#endif
    int have_old = 0;
 
    slrn_init_hangup_signals (0);
 
+#ifdef __unix__
    /* Try to preserve file permissions and owner/group. */
    stat_worked = (-1 != stat (Slrn_Requests_File, &filestat));
+#endif
 
    /* Save old file (we'll copy most of it; then, it gets deleted) */
    have_old = (0 == slrn_create_backup (Slrn_Requests_File));

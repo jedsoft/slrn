@@ -27,6 +27,7 @@ Changes since 1.0.2
 13. Updated copyright year in preparation for upcoming release.
 14. src/version.c: Removed compilation date info for a reproducible
     build.  Patch provided by Moritz Muehlenhoff.
+15. Updates for mingw and cygwin 32 and 64 bit systems.
 
 {{{ Previous Versions
 

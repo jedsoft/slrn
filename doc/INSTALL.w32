@@ -20,6 +20,14 @@ your search path:
 
     set PATH=C:\mingw\local\bin;%PATH%
 
+After setting the path, you should be able to run the command
+
+    slsh --version
+
+and see output such as
+
+    slsh version 0.9.4-0; S-Lang version: pre2.3.1-90
+
 Also, if mingw32-make is not in your path, you will also need to add
 its directory to the search path.  The script win32\setpath.bat may be
 used to facilitate this step.  The script assumes that the MinGW

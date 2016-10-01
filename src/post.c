@@ -1188,9 +1188,9 @@ int slrn_save_article_to_mail_file (Slrn_Article_Type *a, char *save_file) /*{{{
 	    && ((unsigned char)a->cline->buf[4] <= ' '))
 	  putc ('>', outfp);
 
-	  (void) fputs (a->cline->buf, outfp);
-	  putc ('\n', outfp);
-	  a->cline=a->cline->next;
+	(void) fputs (a->cline->buf, outfp);
+	putc ('\n', outfp);
+	a->cline=a->cline->next;
      }
    putc ('\n', outfp);	       /* separator */
    return slrn_fclose (outfp);

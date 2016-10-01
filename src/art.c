@@ -266,7 +266,7 @@ static int gettimeofday (struct timeval* z, void* ignored)
    z->tv_usec=((tod[0]/10)%1000000);
    return 0;
 }
-# endif
+# endif				       /* VMS */
 # ifdef __WIN32__
 #  define HAVE_GETTIMEOFDAY
 #  ifndef WIN32_LEAN_AND_MEAN
@@ -281,23 +281,23 @@ static int gettimeofday (struct timeval* timestruct , void* ignored)
    timestruct->tick_count = GetTickCount();
    return 0;
 }
-# endif
+# endif				       /* __WIN32__ */
 #endif
 
 #ifdef HAVE_GETTIMEOFDAY
-#ifdef __WIN32__
+# if defined (__WIN32__) && !defined(__MINGW32__)
 /* Return time differences in microseconds */
 static unsigned long time_diff(struct timeval t1, struct timeval t2)
 {
    return (t1.tick_count - t2.tick_count)*1000;
 }
-#else /* Proper UNIX or VMS */
+# else /* Proper UNIX or VMS */
 /* Return time differences in microseconds */
 static unsigned long time_diff(struct timeval t1, struct timeval t2)
 {
    return (t1.tv_sec - t2.tv_sec)*1000000 + (t1.tv_usec - t2.tv_usec);
 }
-#endif
+# endif
 #endif
 /*}}}*/
 

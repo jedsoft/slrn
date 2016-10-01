@@ -20,7 +20,9 @@
 /* End of features section. See slrnfeat.h for the rest. */
 
 /* Does your compiler support vsnprintf()? */
-/* #define HAVE_VSNPRINTF 1 */
+#if defined(__MINGW32__)
+# define HAVE_VSNPRINTF 1
+#endif
 
 /* SLTCP_HAS_SSL_SUPPORT gets turned on whenever we use SSL
  * SLTCP_HAS_GNUTLS_SUPPORT gets turned on when we use GNU TLS for it. */
@@ -134,6 +136,10 @@
 # define pclose _pclose
 #endif
 
+#if defined(__MINGW32__)
+# define HAVE_SYS_TIME_H 1
+#endif
+
 #if defined(__WIN32__)
 # if !defined(__MINGW32__)
 #  define HAVE_WINSPOOL_H
@@ -145,8 +151,12 @@
 #  define HAVE_UNISTD_H
 # endif
 # if __VMS_VER >= 70000000
-#  define HAVE_GETTIMEOFDAY
+#  define HAVE_GETTIMEOFDAY 1
 # endif
+#endif
+
+#ifdef __MINGW32__
+# define HAVE_GETTIMEOFDAY 1
 #endif
 
 /* Does VMS have these?  Do *all* VMS version have them? */

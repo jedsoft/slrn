@@ -22,8 +22,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "jdmacros.h"
 #include <slang.h>
+
+#include "jdmacros.h"
 
 #include "ttymsg.h"
 #include "common.h"

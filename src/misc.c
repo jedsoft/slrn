@@ -1959,7 +1959,7 @@ static void generic_mini_complete (int cycle) /*{{{*/
 
 	len = strlen (last);
 
-	if ((n < 2) && ((long) Complete_Open == (long) dir_findfirst) &&
+	if ((n < 2) && ((FVOID_STAR) Complete_Open == (FVOID_STAR) dir_findfirst) &&
 	    (flag || !cycle) && (len + 1 < sizeof (last)))
 	  {
 	     if (2 == slrn_file_exists (last))

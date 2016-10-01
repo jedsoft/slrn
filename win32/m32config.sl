@@ -147,6 +147,9 @@ define slsh_main ()
    subst_defs (defs, "src/win32/makefile.m32in", "src/Makefile");
    subst_defs (defs, "src/win32/slrnfeat.def", "src/slrnfeat.hin", "src/slrnfeat.h");
 
+   % Remove config from a previous build
+   () = remove ("src/config.h");
+
    () = fputs ("\
 \n\
   Now run mingw32-make to build slrn.  But first, you should\n\

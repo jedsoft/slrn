@@ -2467,7 +2467,8 @@ static int parse_active_line (unsigned char *name, unsigned int *lenp, /*{{{*/
 
    while (*p == ' ') p++;
    *maxp = atoi ((char*)p);
-   while (*p > ' ') p++;  while (*p == ' ') p++;
+   while (*p > ' ') p++;
+   while (*p == ' ') p++;
    *minp = atoi((char*)p);
    if (*maxp < *minp) *minp = *maxp + 1;
    return 0;
@@ -2749,7 +2750,11 @@ int slrn_write_newsrc (int auto_save) /*{{{*/
    /* In case of hangup and we were writing the file, make sure it is closed.
     * This will not hurt since we are going to do it again anyway.
     */
-   if (fp != NULL) slrn_fclose (fp); fp = NULL;
+   if (fp != NULL)
+     {
+	slrn_fclose (fp);
+	fp = NULL;
+     }
 
 #ifdef VMS
    slrn_snprintf (autosave_file, sizeof (autosave_file), "%s-as",
