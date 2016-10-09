@@ -1586,7 +1586,7 @@ static char *
     * which is ok since UTF-8 will use at most 6.
     */
    if (max_nbytes >= max_encoded_size)
-     max_encoded_size = max_encoded_size;
+     max_nbytes = max_encoded_size;
    max_nbytes = max_encoded_size - max_nbytes;
 
    (void) SLsnprintf (buf, sizeof(buf), "=?%s?Q?", charset);
