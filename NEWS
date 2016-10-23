@@ -1,3 +1,15 @@
+Version 1.0.3 release notes
+===========================
+
+  Version 1.0.3 is primarily a bug-fix release.  See changes.txt for
+  details.
+
+  Support for SSLv3 has been disabled since it is to POODLE attacks.
+
+  On 32 bit systems, support has been added for files larger than 2GB.
+
+  Support added for both 32 and 64 bit mingw and cygwin compilers.
+
 Version 1.0.2 release notes
 ===========================
 
