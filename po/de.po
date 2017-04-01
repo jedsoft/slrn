@@ -9,6 +9,7 @@ msgstr ""
 "PO-Revision-Date: 2004-10-06 17:45+0200\n"
 "Last-Translator: Jens Wahnes <jewa@gmx.net>\n"
 "Language-Team: German - Jens Wahnes <jewa@gmx.net>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -962,8 +963,8 @@ msgstr "vVeEgGaA"
 #: src/group.c:1786
 msgid "Select scoring mode: Full, Simple, None, Cancel"
 msgstr ""
-"Bewertung durchführen: Vollständig, nur Einfache Bewertung, Gar keine,"
-" Abbruch"
+"Bewertung durchführen: Vollständig, nur Einfache Bewertung, Gar keine, "
+"Abbruch"
 
 #: src/group.c:1794
 msgid "Full Header Scoring enabled."
@@ -2357,9 +2358,9 @@ msgstr "Es konnte keine temporäre Datei für Metamail angelegt werden."
 msgid "Press return to continue ..."
 msgstr "Drücken Sie RETURN zum Fortsetzen ..."
 
-#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832
-#: src/post.c:1380 src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238
-#: src/strutil.c:247 src/util.c:363 src/util.c:382
+#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832 src/post.c:1380
+#: src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238 src/strutil.c:247
+#: src/util.c:363 src/util.c:382
 msgid "Out of memory."
 msgstr "Nicht genug Speicher."
 

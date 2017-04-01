@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2003-08-01 11:53+0200\n"
 "Last-Translator: Emmanuele Bassi <emmanuele.bassi@iol.it>\n"
 "Language-Team: Italian <it@li.org>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1122,8 +1123,8 @@ msgstr "Impossibile scrivere %s! Il disco è pieno?"
 msgid ""
 "SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
 msgstr ""
-"SPC:Selez.  p:Invia  c:Letto  l:Lista  q:Esci  ^R:Ridisegna  (u)s:(Un)"
-"Subscribe"
+"SPC:Selez.  p:Invia  c:Letto  l:Lista  q:Esci  ^R:Ridisegna  (u)s:"
+"(Un)Subscribe"
 
 #: src/group.c:3091
 msgid "-%D-News Groups: %s %-20g -- %L (%P)"
@@ -2316,9 +2317,9 @@ msgstr "Impossibile aprire un file tmp per metamail."
 msgid "Press return to continue ..."
 msgstr "Premi invio per continuare ..."
 
-#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832
-#: src/post.c:1380 src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238
-#: src/strutil.c:247 src/util.c:363 src/util.c:382
+#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832 src/post.c:1380
+#: src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238 src/strutil.c:247
+#: src/util.c:363 src/util.c:382
 msgid "Out of memory."
 msgstr "Memoria esaurita."
 

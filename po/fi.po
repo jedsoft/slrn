@@ -14,6 +14,7 @@ msgstr ""
 "PO-Revision-Date: 2003-08-08 20:48+0300\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1120,8 +1121,8 @@ msgstr "Kirjoitus tiedostoon %s epäonnistui! Levy täynnä?"
 msgid ""
 "SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
 msgstr ""
-"Väli:Valitse p:Lähetä c:Merk.luet l:Listaa q:Lopeta ^R:Piirrä (u)s:(lop.)"
-"Tilaus"
+"Väli:Valitse p:Lähetä c:Merk.luet l:Listaa q:Lopeta ^R:Piirrä (u)s:"
+"(lop.)Tilaus"
 
 #: src/group.c:3091
 msgid "-%D-News Groups: %s %-20g -- %L (%P)"
@@ -2296,9 +2297,9 @@ msgstr "Väliaikaistiedostoa ei voida avata metamailia varten."
 msgid "Press return to continue ..."
 msgstr "Paina return jatkaaksesi..."
 
-#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832
-#: src/post.c:1380 src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238
-#: src/strutil.c:247 src/util.c:363 src/util.c:382
+#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832 src/post.c:1380
+#: src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238 src/strutil.c:247
+#: src/util.c:363 src/util.c:382
 msgid "Out of memory."
 msgstr "Muisti lopussa."
 

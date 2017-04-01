@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2003-08-26 23:01+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Korean - Im Eunjea <eunjea@kldp.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=EUC-KR\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -188,8 +189,8 @@ msgstr "fFaAtTcC"
 #, fuzzy
 msgid "Crosspost using: (F)ollowup-To, (A)ll groups, (T)his group, (C)ancel ?"
 msgstr ""
-"교차 투고. F(Followup-To 설정), a(모든 그룹에 투고) / t(이 그룹에만 투고), C"
-"(취소)?"
+"교차 투고. F(Followup-To 설정), a(모든 그룹에 투고) / t(이 그룹에만 투고), "
+"C(취소)?"
 
 #: src/art.c:3444
 msgid "Cc message as requested by poster"
@@ -2266,9 +2267,9 @@ msgstr "metamail을 위한 임시 파일을 열지 못함."
 msgid "Press return to continue ..."
 msgstr "계속하려면 엔터키 ..."
 
-#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832
-#: src/post.c:1380 src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238
-#: src/strutil.c:247 src/util.c:363 src/util.c:382
+#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832 src/post.c:1380
+#: src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238 src/strutil.c:247
+#: src/util.c:363 src/util.c:382
 msgid "Out of memory."
 msgstr "메모리 부족."
 

@@ -19,8 +19,8 @@
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#define SLRN_VERSION_STRING "1.0.3"
-#define SLRN_VERSION 10030
+#define SLRN_VERSION_STRING "pre1.0.4-1"
+#define SLRN_VERSION 10040
 
 #ifndef SLRNPULL_CODE
 extern char *Slrn_Version_String;

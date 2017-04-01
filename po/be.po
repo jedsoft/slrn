@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2003-01-27 23:55+0300\n"
 "Last-Translator: Hleb Valoska <el_globus@tut.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
+"Language: be\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CP1251\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2302,9 +2303,9 @@ msgstr "Немагчыма адкрыць часовы файл для metamail."
 msgid "Press return to continue ..."
 msgstr "Націсьні УВОД для звароту..."
 
-#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832
-#: src/post.c:1380 src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238
-#: src/strutil.c:247 src/util.c:363 src/util.c:382
+#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832 src/post.c:1380
+#: src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238 src/strutil.c:247
+#: src/util.c:363 src/util.c:382
 msgid "Out of memory."
 msgstr "Не стае памяці."
 

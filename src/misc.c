@@ -1378,6 +1378,9 @@ FILE *slrn_popen (char *cmd, char *mode) /*{{{*/
 
 /*}}}*/
 
+#if defined(__GNUC__)
+# pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif
 /* returns a malloced string */
 static char *create_edit_command (char *edit, char *file, unsigned int line) /*{{{*/
 {
@@ -1447,6 +1450,9 @@ static char *create_edit_command (char *edit, char *file, unsigned int line) /*{
    /* We should never get here */
    return NULL;
 }
+#if defined(__GNUC__)
+# pragma GCC diagnostic warning "-Wformat-nonliteral"
+#endif
 
 /*}}}*/
 
@@ -2579,11 +2585,10 @@ int slrn_is_fqdn (char *h) /*{{{*/
 /* Try to get a fully qualified domain name. */
 static char *get_hostname (void)
 {
+   struct hostent *host_entry;
 #ifdef HAVE_GETADDRINFO
    struct addrinfo hint, *res;
-   int r;
-#else
-   struct hostent *host_entry;
+   int status;
 #endif
    char buf[MAX_HOST_NAME_LEN + 1];
 
@@ -2599,20 +2604,27 @@ static char *get_hostname (void)
    memset(&hint, 0, sizeof (hint));
    hint.ai_flags = AI_CANONNAME;
 
-   r = getaddrinfo(buf, NULL, &hint, &res);
-   if (r == EAI_AGAIN)
+   status = getaddrinfo(buf, NULL, &hint, &res);
+   if (status == EAI_AGAIN)
      {
 	slrn_sleep (2);
-	r = getaddrinfo(buf, NULL, &hint, &res);
+	status = getaddrinfo(buf, NULL, &hint, &res);
      }
 
-   if ((r == 0) && res && res->ai_canonname)
+   if (status == 0)
      {
-	char *ret = slrn_safe_strmalloc (res->ai_canonname);
+        if ((res->ai_canonname != NULL)
+            && slrn_is_fqdn (res->ai_canonname))
+          {
+             char *ret = slrn_safe_strmalloc (res->ai_canonname);
+             freeaddrinfo(res);
+             return ret;
+          }
 	freeaddrinfo(res);
-	return ret;
      }
-#else
+   /* drop */
+#endif
+
    host_entry = gethostbyname (buf);
 
 # if defined(TRY_AGAIN) && !defined(MULTINET)
@@ -2642,8 +2654,6 @@ static char *get_hostname (void)
 
 	return slrn_safe_strmalloc ((char *)host_entry->h_name);
      }
-#endif
-
    return slrn_safe_strmalloc (buf);
 }
 

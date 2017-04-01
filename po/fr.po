@@ -11,6 +11,7 @@ msgstr ""
 "Last-Translator: Nicolas Le Scouarnec <nlsn@free.fr> - Olivier Tharan "
 "<olive@oban.frmug.org> - Thierry Thomas <thierry@pompo.net>\n"
 "Language-Team: French - <slrnfr@ml.free.fr>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2378,9 +2379,9 @@ msgstr "Impossible d'ouvrir le fichier temporaire pour metamail."
 msgid "Press return to continue ..."
 msgstr "Appuyez sur entrée pour continuer..."
 
-#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832
-#: src/post.c:1380 src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238
-#: src/strutil.c:247 src/util.c:363 src/util.c:382
+#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832 src/post.c:1380
+#: src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238 src/strutil.c:247
+#: src/util.c:363 src/util.c:382
 msgid "Out of memory."
 msgstr "Plus de mémoire."
 

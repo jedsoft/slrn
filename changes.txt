@@ -1,4 +1,10 @@
 -*- mode: text; mode: fold -*-
+Changes since 1.0.3
+1. src/misc.c: If getaddrinfo fails to produce a FQDN, then fallback
+   to gethostbyname.
+
+{{{ Previous Versions
+
 Changes since 1.0.2
 1. src/parse2822.c: A quoted-string in the display portion of an
    address was not being marked as allowing mime-encoded text.
@@ -30,8 +36,6 @@ Changes since 1.0.2
 15. Updates for mingw and cygwin 32 and 64 bit systems.
 16. src/mime.c: rfc1522_encode_word: max_nbytes was not being properly
     limit checked.
-
-{{{ Previous Versions
 
 Changes since 1.0.1
 1. src/misc.c: slrn_verror needed va_copy when writing to the log file.

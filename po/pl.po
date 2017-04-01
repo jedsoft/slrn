@@ -21,6 +21,7 @@ msgstr ""
 "PO-Revision-Date: 2003-10-16 12:03+0100\n"
 "Last-Translator: Tomasz Sienicki <tsca@edb.dk>\n"
 "Language-Team: Polish <pl@li.org>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -199,8 +200,8 @@ msgstr "fFwWtTrR"
 #, fuzzy
 msgid "Crosspost using: (F)ollowup-To, (A)ll groups, (T)his group, (C)ancel ?"
 msgstr ""
-"Crosspost. Ustaw \"Followup-To\", wy¶lij na Wszystkie / Tylko tê grupê,"
-" Rezygnuj?"
+"Crosspost. Ustaw \"Followup-To\", wy¶lij na Wszystkie / Tylko tê grupê, "
+"Rezygnuj?"
 
 #: src/art.c:3444
 msgid "Cc message as requested by poster"
@@ -2305,9 +2306,9 @@ msgstr "Nie mo¿na otworzyæ pliku tymczasowego dla metamail."
 msgid "Press return to continue ..."
 msgstr "Naci¶nij ENTER aby kontynuowaæ..."
 
-#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832
-#: src/post.c:1380 src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238
-#: src/strutil.c:247 src/util.c:363 src/util.c:382
+#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832 src/post.c:1380
+#: src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238 src/strutil.c:247
+#: src/util.c:363 src/util.c:382
 msgid "Out of memory."
 msgstr "Brak pamiêci."
 

@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2002-03-11 20:49+0000\n"
 "Last-Translator: Walter Oscar Echarri <wecharri@yahoo.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -188,8 +189,8 @@ msgstr ""
 #, fuzzy
 msgid "Crosspost using: (F)ollowup-To, (A)ll groups, (T)his group, (C)ancel ?"
 msgstr ""
-"Correo múltiple. Responder a este grupo, Publicar sólo en este grupo,"
-" Ignorar, Cancelar?"
+"Correo múltiple. Responder a este grupo, Publicar sólo en este grupo, "
+"Ignorar, Cancelar?"
 
 #: src/art.c:3444
 msgid "Cc message as requested by poster"
@@ -1129,8 +1130,8 @@ msgstr "¡No se pudo escribir %s! ¿Disco lleno?"
 msgid ""
 "SPC:Select  p:Post  c:CatchUp  l:List  q:Quit  ^R:Redraw  (u)s:(Un)Subscribe"
 msgstr ""
-"SPC:Elegir p:Publicar c:Actualizarse l:Listar q:Salir ^R:Redibujar (u)s:(Des)"
-"Suscribirse"
+"SPC:Elegir p:Publicar c:Actualizarse l:Listar q:Salir ^R:Redibujar (u)s:"
+"(Des)Suscribirse"
 
 #: src/group.c:3091
 msgid "-%D-News Groups: %s %-20g -- %L (%P)"
@@ -2348,9 +2349,9 @@ msgstr "No es posible abrir archivo temporal para metamail."
 msgid "Press return to continue ..."
 msgstr "Presione ENTER para continuar ..."
 
-#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832
-#: src/post.c:1380 src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238
-#: src/strutil.c:247 src/util.c:363 src/util.c:382
+#: src/mime.c:1090 src/post.c:681 src/post.c:820 src/post.c:832 src/post.c:1380
+#: src/slrnpull.c:785 src/slrnpull.c:826 src/strutil.c:238 src/strutil.c:247
+#: src/util.c:363 src/util.c:382
 msgid "Out of memory."
 msgstr "Sin memoria."
 
@@ -3415,8 +3416,8 @@ msgstr ""
 "                  Obs.: esto puede insumir GRAN cantidad de "
 "tiempo                 ¡El archivo resultante puede usar cientos de "
 "kilobytes!\n"
-"-i init-file     Nombre del archivo de inicialización a usar(por defecto: %"
-"s)\n"
+"-i init-file     Nombre del archivo de inicialización a usar(por defecto: "
+"%s)\n"
 "-k               No procesar el archivo de puntajes\n"
 "-k0              Procesar el archivo de puntajes pero sin los puntajes "
 "expensives.\n"
