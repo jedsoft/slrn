@@ -689,6 +689,26 @@ SLRNPULL
 SLRN_HAS_PULL_SUPPORT
 LOCALEDIR
 SLRN_LIB_DIR
+M_LIB
+SLANG_DLL_CFLAGS
+ELFLIB_BUILD_NAME
+INSTALL_ELFLIB_TARGET
+INSTALL_MODULE
+DLL_IMPLIB_NAME
+SLANG_LIB_FOR_MODULES
+ELFLIB_MAJOR_MINOR_MICRO
+ELFLIB_MAJOR_MINOR
+ELFLIB_MAJOR
+ELFLIB
+CC_SHARED
+CC_SHARED_FLAGS
+DYNAMIC_LINK_FLAGS
+ELF_DEP_LIBS
+ELF_LINK_CMD
+ELF_LINK
+ELF_CFLAGS
+ELF_CC
+DYNAMIC_LINK_LIB
 EGREP
 GREP
 CPP
@@ -1832,6 +1852,73 @@ fi
 
 } # ac_fn_c_try_link
 
+# ac_fn_c_check_func LINENO FUNC VAR
+# ----------------------------------
+# Tests whether FUNC exists, setting the cache variable VAR accordingly
+ac_fn_c_check_func ()
+{
+  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $2" >&5
+$as_echo_n "checking for $2... " >&6; }
+if eval \${$3+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+/* Define $2 to an innocuous variant, in case <limits.h> declares $2.
+   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
+#define $2 innocuous_$2
+
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char $2 (); below.
+    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+    <limits.h> exists even on freestanding compilers.  */
+
+#ifdef __STDC__
+# include <limits.h>
+#else
+# include <assert.h>
+#endif
+
+#undef $2
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char $2 ();
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined __stub_$2 || defined __stub___$2
+choke me
+#endif
+
+int
+main ()
+{
+return $2 ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  eval "$3=yes"
+else
+  eval "$3=no"
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+fi
+eval ac_res=\$$3
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
+
+} # ac_fn_c_check_func
+
 # ac_fn_c_check_type LINENO TYPE VAR INCLUDES
 # -------------------------------------------
 # Tests whether TYPE exists after having included INCLUDES, setting cache
@@ -2068,73 +2155,6 @@ rm -f conftest.val
   as_fn_set_status $ac_retval
 
 } # ac_fn_c_compute_int
-
-# ac_fn_c_check_func LINENO FUNC VAR
-# ----------------------------------
-# Tests whether FUNC exists, setting the cache variable VAR accordingly
-ac_fn_c_check_func ()
-{
-  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $2" >&5
-$as_echo_n "checking for $2... " >&6; }
-if eval \${$3+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-/* Define $2 to an innocuous variant, in case <limits.h> declares $2.
-   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
-#define $2 innocuous_$2
-
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char $2 (); below.
-    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-    <limits.h> exists even on freestanding compilers.  */
-
-#ifdef __STDC__
-# include <limits.h>
-#else
-# include <assert.h>
-#endif
-
-#undef $2
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char $2 ();
-/* The GNU C library defines this for functions which it implements
-    to always fail with ENOSYS.  Some functions are actually named
-    something starting with __ and the normal name is an alias.  */
-#if defined __stub_$2 || defined __stub___$2
-choke me
-#endif
-
-int
-main ()
-{
-return $2 ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  eval "$3=yes"
-else
-  eval "$3=no"
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-fi
-eval ac_res=\$$3
-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-$as_echo "$ac_res" >&6; }
-  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
-
-} # ac_fn_c_check_func
 cat >config.log <<_ACEOF
 This file contains any messages produced by compilers while
 running configure, to aid debugging if configure makes a mistake.
@@ -4128,6 +4148,260 @@ $as_echo "$CC is not a good enough compiler" >&6; }
 
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+DYNAMIC_LINK_LIB=""
+
+
+ac_fn_c_check_header_mongrel "$LINENO" "dlfcn.h" "ac_cv_header_dlfcn_h" "$ac_includes_default"
+if test "x$ac_cv_header_dlfcn_h" = xyes; then :
+
+
+$as_echo "#define HAVE_DLFCN_H 1" >>confdefs.h
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for dlopen in -ldl" >&5
+$as_echo_n "checking for dlopen in -ldl... " >&6; }
+if ${ac_cv_lib_dl_dlopen+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-ldl  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char dlopen ();
+int
+main ()
+{
+return dlopen ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_dl_dlopen=yes
+else
+  ac_cv_lib_dl_dlopen=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_dl_dlopen" >&5
+$as_echo "$ac_cv_lib_dl_dlopen" >&6; }
+if test "x$ac_cv_lib_dl_dlopen" = xyes; then :
+
+    DYNAMIC_LINK_LIB="-ldl"
+
+$as_echo "#define HAVE_DLOPEN 1" >>confdefs.h
+
+
+else
+
+    ac_fn_c_check_func "$LINENO" "dlopen" "ac_cv_func_dlopen"
+if test "x$ac_cv_func_dlopen" = xyes; then :
+  $as_echo "#define HAVE_DLOPEN Define if you have dlopen" >>confdefs.h
+
+fi
+
+    if test "$ac_cv_func_dlopen" != yes
+    then
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: cannot perform dynamic linking" >&5
+$as_echo "$as_me: WARNING: cannot perform dynamic linking" >&2;}
+    fi
+
+fi
+
+fi
+
+
+
+
+if test "$GCC" = yes
+then
+  if test X"$CFLAGS" = X
+  then
+     CFLAGS="-O2"
+  fi
+fi
+
+ELFLIB="lib\$(THIS_LIB).so"
+ELFLIB_MAJOR="\$(ELFLIB).\$(ELF_MAJOR_VERSION)"
+ELFLIB_MAJOR_MINOR="\$(ELFLIB_MAJOR).\$(ELF_MINOR_VERSION)"
+ELFLIB_MAJOR_MINOR_MICRO="\$(ELFLIB_MAJOR_MINOR).\$(ELF_MICRO_VERSION)"
+
+INSTALL_ELFLIB_TARGET="install-elf-and-links"
+ELFLIB_BUILD_NAME="\$(ELFLIB_MAJOR_MINOR_MICRO)"
+INSTALL_MODULE="\$(INSTALL_DATA)"
+SLANG_DLL_CFLAGS=""
+M_LIB="-lm"
+
+case "$host_os" in
+  *linux*|*gnu*|k*bsd*-gnu )
+    DYNAMIC_LINK_FLAGS="-Wl,-export-dynamic"
+    ELF_CC="\$(CC)"
+    ELF_CFLAGS="\$(CFLAGS) -fPIC"
+    ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-O1 -Wl,--version-script,\$(VERSION_SCRIPT) -Wl,-soname,\$(ELFLIB_MAJOR)"
+    ELF_DEP_LIBS="\$(DL_LIB) -lm -lc"
+    CC_SHARED_FLAGS="-shared -fPIC"
+    CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+    ;;
+  *solaris* )
+    if test "$GCC" = yes
+    then
+      DYNAMIC_LINK_FLAGS=""
+      ELF_CC="\$(CC)"
+      ELF_CFLAGS="\$(CFLAGS) -fPIC"
+      ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-ztext -Wl,-h,\$(ELFLIB_MAJOR)"
+      ELF_DEP_LIBS="\$(DL_LIB) -lm -lc"
+      CC_SHARED_FLAGS="-G -fPIC"
+      CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+    else
+      DYNAMIC_LINK_FLAGS=""
+      ELF_CC="\$(CC)"
+      ELF_CFLAGS="\$(CFLAGS) -K PIC"
+      ELF_LINK="\$(CC) \$(LDFLAGS) -G -h\$(ELFLIB_MAJOR)"
+      ELF_DEP_LIBS="\$(DL_LIB) -lm -lc"
+      CC_SHARED_FLAGS="-G -K PIC"
+      CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+    fi
+    ;;
+   # osr5 or unixware7 with current or late autoconf
+  *sco3.2v5* | *unixware-5* | *sco-sysv5uw7*)
+     if test "$GCC" = yes
+     then
+       DYNAMIC_LINK_FLAGS=""
+       ELF_CC="\$(CC)"
+       ELF_CFLAGS="\$(CFLAGS) -fPIC"
+       ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-h,\$(ELFLIB_MAJOR)"
+       ELF_DEP_LIBS=
+       CC_SHARED_FLAGS="-G -fPIC"
+       CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+     else
+       DYNAMIC_LINK_FLAGS=""
+       ELF_CC="\$(CC)"
+       ELF_CFLAGS="\$(CFLAGS) -K pic"
+       # ELF_LINK="ld -G -z text -h#"
+       ELF_LINK="\$(CC) \$(LDFLAGS) -G -z text -h\$(ELFLIB_MAJOR)"
+       ELF_DEP_LIBS=
+       CC_SHARED_FLAGS="-G -K pic"
+       CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+     fi
+     ;;
+  *irix6.5* )
+     echo "Note: ELF compiler for host_os=$host_os may not be correct"
+     echo "double-check: 'mode_t', 'pid_t' may be wrong!"
+     if test "$GCC" = yes
+     then
+       # not tested
+       DYNAMIC_LINK_FLAGS=""
+       ELF_CC="\$(CC)"
+       ELF_CFLAGS="\$(CFLAGS) -fPIC"
+       ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-h,\$(ELFLIB_MAJOR)"
+       ELF_DEP_LIBS=
+       CC_SHARED_FLAGS="-shared -fPIC"
+       CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+     else
+       DYNAMIC_LINK_FLAGS=""
+       ELF_CC="\$(CC)"
+       ELF_CFLAGS="\$(CFLAGS)"     # default anyhow
+       ELF_LINK="\$(CC) \$(LDFLAGS) -shared -o \$(ELFLIB_MAJOR)"
+       ELF_DEP_LIBS=
+       CC_SHARED_FLAGS="-shared"
+       CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+     fi
+     ;;
+  *darwin* )
+     DYNAMIC_LINK_FLAGS=""
+     ELF_CC="\$(CC)"
+     ELF_CFLAGS="\$(CFLAGS) -fno-common"
+     ELF_LINK="\$(CC) \$(LDFLAGS) -dynamiclib -install_name \$(install_lib_dir)/\$(ELFLIB_MAJOR) -compatibility_version \$(ELF_MAJOR_VERSION) -current_version \$(ELF_MAJOR_VERSION).\$(ELF_MINOR_VERSION)"
+     ELF_DEP_LIBS="\$(LDFLAGS) \$(DL_LIB)"
+     CC_SHARED_FLAGS="-bundle -flat_namespace -undefined suppress -fno-common"
+     CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+     ELFLIB="lib\$(THIS_LIB).dylib"
+     ELFLIB_MAJOR="lib\$(THIS_LIB).\$(ELF_MAJOR_VERSION).dylib"
+     ELFLIB_MAJOR_MINOR="lib\$(THIS_LIB).\$(ELF_MAJOR_VERSION).\$(ELF_MINOR_VERSION).dylib"
+     ELFLIB_MAJOR_MINOR_MICRO="lib\$(THIS_LIB).\$(ELF_MAJOR_VERSION).\$(ELF_MINOR_VERSION).\$(ELF_MICRO_VERSION).dylib"
+     ;;
+  *freebsd* )
+    ELF_CC="\$(CC)"
+    ELF_CFLAGS="\$(CFLAGS) -fPIC"
+    #if test "X$PORTOBJFORMAT" = "Xelf" ; then
+    #  ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-soname,\$(ELFLIB_MAJOR)"
+    #else
+    #  ELF_LINK="ld -Bshareable -x"
+    #fi
+    ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-soname,\$(ELFLIB_MAJOR)"
+    ELF_DEP_LIBS="\$(DL_LIB) -lm"
+    CC_SHARED_FLAGS="-shared -fPIC"
+    CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+    ;;
+  *cygwin* )
+    DYNAMIC_LINK_FLAGS=""
+    ELF_CC="\$(CC)"
+    SLANG_DLL_CFLAGS="-DSLANG_DLL=1"
+    ELF_CFLAGS="\$(CFLAGS) -DBUILD_DLL=1"
+    DLL_IMPLIB_NAME="lib\$(THIS_LIB)\$(ELFLIB_MAJOR_VERSION).dll.a"
+    #ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-O1 -Wl,--version-script,\$(VERSION_SCRIPT) -Wl,-soname,\$(ELFLIB_MAJOR) -Wl,--out-implib=\$(DLL_IMPLIB_NAME) -Wl,-export-all-symbols -Wl,-enable-auto-import"
+    ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-O1 -Wl,--version-script,\$(VERSION_SCRIPT) -Wl,-soname,\$(ELFLIB_MAJOR) -Wl,--out-implib=\$(DLL_IMPLIB_NAME)"
+    ELF_DEP_LIBS="\$(DL_LIB) -lm"
+    CC_SHARED_FLAGS="-shared -DSLANG_DLL=1"
+    CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+        SLANG_LIB_FOR_MODULES="-L\$(ELFDIR) -lslang"
+    INSTALL_MODULE="\$(INSTALL)"
+    INSTALL_ELFLIB_TARGET="install-elf-cygwin"
+    ELFLIB="lib\$(THIS_LIB).dll"
+    ELFLIB_MAJOR="cyg\$(THIS_LIB)-\$(ELF_MAJOR_VERSION).dll"
+    ELFLIB_MAJOR_MINOR="cyg\$(THIS_LIB)-\$(ELF_MAJOR_VERSION)_\$(ELF_MINOR_VERSION).dll"
+    ELFLIB_MAJOR_MINOR_MICRO="cyg\$(THIS_LIB)-\$(ELF_MAJOR_VERSION)_\$(ELF_MINOR_VERSION)_\$(ELF_MICRO_VERSION).dll"
+    ELFLIB_BUILD_NAME="\$(ELFLIB_MAJOR)"
+    ;;
+  *haiku* )
+    M_LIB=""
+    DYNAMIC_LINK_FLAGS="-Wl,-export-dynamic"
+    ELF_CC="\$(CC)"
+    ELF_CFLAGS="\$(CFLAGS) -fPIC"
+    ELF_LINK="\$(CC) \$(LDFLAGS) -shared -Wl,-O1 -Wl,--version-script,\$(VERSION_SCRIPT) -Wl,-soname,\$(ELFLIB_MAJOR)"
+    ELF_DEP_LIBS="\$(DL_LIB)"
+    CC_SHARED_FLAGS="-shared -fPIC"
+    CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+    ;;
+  * )
+    echo "Note: ELF compiler for host_os=$host_os may be wrong"
+    ELF_CC="\$(CC)"
+    ELF_CFLAGS="\$(CFLAGS) -fPIC"
+    ELF_LINK="\$(CC) \$(LDFLAGS) -shared"
+    ELF_DEP_LIBS="\$(DL_LIB) -lm -lc"
+    CC_SHARED_FLAGS="-shared -fPIC"
+    CC_SHARED="\$(CC) $CC_SHARED_FLAGS \$(CFLAGS)"
+esac
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # ===========================================================================
 #     http://www.gnu.org/software/autoconf-archive/ax_lib_socket_nsl.html
@@ -7380,7 +7654,7 @@ x|xyes)
    elif test "x$use_gnutls" != xno
    then
      SSLINC=
-     SSLLIB="-lgnutls-openssl"
+     SSLLIB="-lgnutls-openssl -lgnutls"
    else
      SSLINC="-I/usr/local/ssl/include"
      SSLLIB="-L/usr/local/ssl/lib -lssl -lcrypto"
@@ -7914,7 +8188,7 @@ else
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -7960,7 +8234,7 @@ else
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -7984,7 +8258,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -8029,7 +8303,7 @@ else
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -8053,7 +8327,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -8892,13 +9166,13 @@ fi
  for program_module in $Program_Modules; do
 
 PROGRAM_OBJECT_RULES="$PROGRAM_OBJECT_RULES
-\$(OBJDIR)/$program_module.o : \$(SRCDIR)/$program_module.c \$(DOT_O_DEPS) \$("$program_module"_O_DEP)
+\$(OBJDIR)/$program_module.o : \$(SRCDIR)/$program_module.c \$(DOT_O_DEPS) \$(OBJ_O_DEPS) \$("$program_module"_O_DEP)
 	cd \$(OBJDIR) && \$(COMPILE_CMD) \$("$program_module"_C_FLAGS) \$(SRCDIR)/$program_module.c
 "
 
 
 PROGRAM_ELF_ORULES="$PROGRAM_ELF_ORULES
-\$(ELFDIR)/$program_module.o : \$(SRCDIR)/$program_module.c \$(DOT_O_DEPS) \$("$program_module"_O_DEP)
+\$(ELFDIR)/$program_module.o : \$(SRCDIR)/$program_module.c \$(DOT_O_DEPS) \$(ELF_O_DEPS) \$("$program_module"_O_DEP)
 	cd \$(ELFDIR) && \$(ELFCOMPILE_CMD) \$("$program_module"_C_FLAGS) \$(SRCDIR)/$program_module.c
 "
 
@@ -13169,20 +13443,20 @@ fi
 
 
 PROGRAM_OBJECT_RULES="$PROGRAM_OBJECT_RULES
-\$(OBJDIR)/chkslang.o : \$(SRCDIR)/chkslang.c \$(DOT_O_DEPS) \$("chkslang"_O_DEP)
+\$(OBJDIR)/chkslang.o : \$(SRCDIR)/chkslang.c \$(DOT_O_DEPS) \$(OBJ_O_DEPS) \$("chkslang"_O_DEP)
 	cd \$(OBJDIR) && \$(COMPILE_CMD) \$("chkslang"_C_FLAGS) \$(SRCDIR)/chkslang.c
 "
 
 
 
 PROGRAM_OBJECT_RULES="$PROGRAM_OBJECT_RULES
-\$(OBJDIR)/sltcp.o : \$(SRCDIR)/sltcp.c \$(DOT_O_DEPS) \$("sltcp"_O_DEP)
+\$(OBJDIR)/sltcp.o : \$(SRCDIR)/sltcp.c \$(DOT_O_DEPS) \$(OBJ_O_DEPS) \$("sltcp"_O_DEP)
 	cd \$(OBJDIR) && \$(COMPILE_CMD) \$("sltcp"_C_FLAGS) \$(SRCDIR)/sltcp.c
 "
 
 
 PROGRAM_OBJECT_RULES="$PROGRAM_OBJECT_RULES
-\$(OBJDIR)/nntplib.o : \$(SRCDIR)/nntplib.c \$(DOT_O_DEPS) \$("nntplib"_O_DEP)
+\$(OBJDIR)/nntplib.o : \$(SRCDIR)/nntplib.c \$(DOT_O_DEPS) \$(OBJ_O_DEPS) \$("nntplib"_O_DEP)
 	cd \$(OBJDIR) && \$(COMPILE_CMD) \$("nntplib"_C_FLAGS) \$(SRCDIR)/nntplib.c
 "
 

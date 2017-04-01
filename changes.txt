@@ -2,6 +2,7 @@
 Changes since 1.0.3
 1. src/misc.c: If getaddrinfo fails to produce a FQDN, then fallback
    to gethostbyname.
+2. autoconf/configure.ac: -lgnutls-openssl also needs -lgnutls
 
 {{{ Previous Versions
 

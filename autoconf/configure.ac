@@ -10,6 +10,7 @@ AC_PROG_MAKE_SET
 AC_PROG_INSTALL
 
 JD_ANSI_CC
+JD_ELF_COMPILER
 
 m4_include([./include/ax_lib_socket_nsl.m4])
 AX_LIB_SOCKET_NSL
@@ -261,7 +262,7 @@ x|xyes)
    elif test "x$use_gnutls" != xno
    then
      SSLINC=
-     SSLLIB="-lgnutls-openssl"
+     SSLLIB="-lgnutls-openssl -lgnutls"
    else
      SSLINC="-I/usr/local/ssl/include"
      SSLLIB="-L/usr/local/ssl/lib -lssl -lcrypto"
