@@ -536,46 +536,60 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 
 	if (ch != '%')
 	  {
-	     if ((NULL == (s = slrn_strbyte (fmt, '%'))) && (elsepart == NULL))
+	     s = slrn_strbyte (fmt, '%');
+	     if (elsepart == NULL)
 	       {
-		  SLsmg_write_string (fmt);
-		  break;
-	       }
-	     else
-	       {
-		  char *end;
-		  if ((elsepart != NULL) && (s > elsepart)) end = elsepart;
-		  else end = s;
-		  SLsmg_write_nchars (fmt, end - fmt);
-		  fmt = end;
+		  if (s == NULL)
+		    {
+		       SLsmg_write_string (fmt);
+		       break;
+		    }
+		  SLsmg_write_nchars (fmt, s - fmt);
+		  fmt = s;
 		  continue;
 	       }
+
+	     if (s == NULL) s = elsepart;
+	     SLsmg_write_nchars (fmt, s - fmt);
+	     fmt = s;
+	     continue;
 	  }
 
-	fmt++;
+	fmt++;			       /* skip % */
 	ch = *fmt++;
 
 	if (ch == '?')
 	  {
+	     /* Looking for one of the forms:
+	      *  %?<descriptor>?<opt-str>?
+	      *  %?<descriptor>?<str-if-true>&<str-if-false>?
+	      */
 	     int column;
 	     char *res;
+	     char dscr;
 
-	     if (((ch = *fmt++) == '\0') || (*fmt++ != '?') ||
-		 (NULL == (cond_end = slrn_strbyte (fmt, '?'))))
-	       break; /* syntax error; stop here */
-	     if ((NULL == (elsepart = slrn_strbyte (fmt, '&'))) ||
-		 (elsepart > cond_end))
+	     dscr = *fmt++;	       /* skip descriptor */
+	     if ((dscr == 0)
+		 || (*fmt++ != '?')
+		 || (NULL == (cond_end = slrn_strbyte (fmt, '?'))))
+	       break;  /* Syntax-error */
+
+	     elsepart = slrn_strbyte (fmt, '&');
+	     if ((elsepart == NULL) || (elsepart > cond_end))
 	       elsepart = cond_end;
 
 	     column = SLsmg_get_column (); /* callback could print something */
-	     res = (cb)(ch, param, &len, &color);
+	     res = (cb)(dscr, param, &len, &color);
 	     SLsmg_gotorc (row, column);
 
-	     if ((res == NULL) || (*res == '\0') ||
-		 ((*res == '0' || isspace(*res)) && *(res+1) == '\0'))
+	     if ((res == NULL) || (*res == '\0')
+		 || (((*res == '0') || isspace(*res)) && *(res+1) == '\0'))
 	       {
-		  fmt = elsepart + 1;
-		  if (elsepart == cond_end) cond_end = NULL;
+		  /* Condition is false, so skip the <opt-str>,
+		   * or skip to <str-if-false> (elsepart)
+		   */
+		  fmt = elsepart + 1;  /* skip beyond '?' */
+		  if (elsepart == cond_end) cond_end = NULL;   /* skip-opt-str */
 		  elsepart = cond_end;
 	       }
 	     continue;
