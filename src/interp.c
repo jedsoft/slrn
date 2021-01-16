@@ -853,7 +853,11 @@ static char *generic_article_as_string (int use_orig) /*{{{*/
    char *s, *s1;
 
    if (Slrn_Current_Article == NULL)
-     return "";
+     {
+	s = SLmalloc (1);
+	if (s != NULL) s[0] = 0;
+	return s;
+     }
 
    l = use_orig ? Slrn_Current_Article->raw_lines : Slrn_Current_Article->lines;
 

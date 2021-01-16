@@ -5,6 +5,9 @@ Changes since 1.0.3
 2. autoconf/configure.ac: -lgnutls-openssl also needs -lgnutls
 3. src/misc.c: Corrected a bug affecting conditional expressions
    embedded in custom header strings
+4. src/interp.c: The generic_article_as_string was not always
+   returning a malloced string as required, causing an invalid free by
+   the caller.
 
 {{{ Previous Versions
 
