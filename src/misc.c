@@ -549,9 +549,9 @@ void slrn_custom_printf (char *fmt, PRINTF_CB cb, void *param, /*{{{*/
 		  continue;
 	       }
 
-	     if (s == NULL) s = elsepart;
-	     SLsmg_write_nchars (fmt, s - fmt);
-	     fmt = s;
+	     SLsmg_write_nchars (fmt, elsepart - fmt);
+	     fmt = cond_end+1;	       /* cond_end is "?...", skip '?' */
+	     elsepart = cond_end = NULL;
 	     continue;
 	  }
 

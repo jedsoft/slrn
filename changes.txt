@@ -8,6 +8,8 @@ Changes since 1.0.3
 4. src/interp.c: The generic_article_as_string was not always
    returning a malloced string as required, causing an invalid free by
    the caller.
+5. src/misc.c: Corrected another bug int processing conditional
+   expressions in custom format string.
 
 {{{ Previous Versions
 
