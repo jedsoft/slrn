@@ -115,14 +115,14 @@
 
   If you wish to obtain a more current version of slrn for Linux or
   another supported OS, details can be found at
-  <http://slrn.sourceforge.net/download.html>
+  <https://slrn.info/download.html>
 
-  Additional resources are available at <http://slrn.sourceforge.net/>.
+  Additional resources are available at <https://slrn.info/>.
 
   Note: Upgrading is especially recommended if you are currently using a
   0.9.8.1pl1 or pl2 version, in which significant bugs exist.
 
-  1.3.  Where is slrn 's documentation?
+  1.3.  Where is slrn's documentation?
 
   The source distribution contains a lot of documentation; on Unix-like
   systems, it is likely to be installed somewhere in /usr/share/doc or
@@ -134,7 +134,7 @@
   It should get you started.
 
   If you cannot find this documentation on your system, you can find it
-  online via <http://slrn.sourceforge.net/documentation.html>.
+  online via <https://slrn.info/documentation.html>.
 
   1.4.  Are there any mailing lists and/or newsgroups about slrn ?
 
@@ -834,7 +834,7 @@
   If you want to watch or kill subthreads via a single keystroke, you
   may like the ``one-key scoring macro'' that is available from the
   macro section of the slrn website:
-  <http://slrn.sourceforge.net/macros.html>.
+  <https://slrn.info/macros.html>.
 
   4.8.  Do I need to remove expired entries from my scorefile manually?
 
@@ -850,7 +850,7 @@
   don't need to worry about expired entries at all. cleanscore is
   included in the contrib directory of slrn's source distribution and
   can also be downloaded from the slrn website:
-  <http://slrn.sourceforge.net/downloads/>.
+  <http://slrn.info/download.html>.
 
   4.9.  How do I score on a specific ``Subject'' line, e.g., ``test''
   messages?
@@ -1236,7 +1236,7 @@
   7.  About this document
 
   The latest version of this FAQ is available from the slrn
-  documentation page : <http://slrn.sourceforge.net/documentation.html>.
+  documentation page : <https://slrn.info/documentation.html>.
   Suggestions for improvements are always welcome.
 
   7.1.  History

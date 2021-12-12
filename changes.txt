@@ -10,6 +10,7 @@ Changes since 1.0.3
    the caller.
 5. src/misc.c: Corrected another bug int processing conditional
    expressions in custom format string.
+6. Updated the README and other files to refer to <https://slrn.info/>.
 
 {{{ Previous Versions
 

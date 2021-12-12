@@ -1198,8 +1198,7 @@ Could not read specified config file %s\n"), init_file);
 	slrn_message (_("\n! Your configuration file contains obsolete commands or function names that\n"
 		      "! will not be supported by future versions of this program.\n"
 		      "! If you have Perl installed, you can use the script slrnrc-conv to change\n"
-		      "! your configuration accordingly.  It can be found in the source distribution\n"
-		      "! or retrieved from <URL:http://slrn.sourceforge.net/data/>.\n"));
+		      "! your configuration accordingly.  It can be found in the source distribution\n"));
 	Slrn_Saw_Warning = 1;
      }
 

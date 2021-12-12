@@ -44,7 +44,7 @@ static char *Global_Help [] =
    "",
    "",
    N_(" More information about slrn can be found on its home page:"),
-   N_("   http://slrn.sourceforge.net/"),
+   N_("   https://slrn.info/"),
    N_(" Questions not covered by the documentation can be posted to"),
    N_("   news.software.readers"),
    "",

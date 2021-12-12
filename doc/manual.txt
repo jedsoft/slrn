@@ -348,7 +348,7 @@
   1.1.  Downloading slrn
 
   Directions for downloading the latest version of slrn are available
-  from the slrn web site at <http://slrn.sourceforge.net/download.html>.
+  from the slrn web site at <https://slrn.info/download.html>.
 
   If you are running Linux, slrn is probably included in your
   distribution.  However, please note that some distributors modify the
@@ -358,7 +358,7 @@
   1.2.  Getting help
 
   First of all, please read the documentation found in this file and in
-  the slrn FAQs at <http://slrn.sourceforge.net/docs/slrn-FAQ.html>.
+  the slrn FAQs at <https://slrn.info/docs/slrn-FAQ.html>.
 
   Questions not covered by the docs are on-topic in
   news.software.readers. If you speak German, you also might want to
@@ -385,7 +385,7 @@
   The manual is written in SGML using the ``linuxdoc'' DTD and has been
   ``rendered'' using the linuxdoc-tools package. The manual and other
   official documentation have their own web page at
-  <http://slrn.sourceforge.net/documentation.html> where you can find
+  <https://slrn.info/documentation.html> where you can find
   these files in several different formats, as well as instructions on
   how to get the latest development version (which might be useful if
   you need documentation for a developer version of slrn).
