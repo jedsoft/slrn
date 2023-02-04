@@ -400,6 +400,7 @@ AC_MSG_CHECKING(for an implementation of va_copy())
 AC_CACHE_VAL(slrn_cv_va_copy,[
 	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 	#include <stdarg.h>
+	#include <stdlib.h>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
@@ -420,6 +421,7 @@ AC_MSG_CHECKING(for an implementation of __va_copy())
 AC_CACHE_VAL(slrn_cv___va_copy,[
 	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 	#include <stdarg.h>
+	#include <stdlib.h>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
@@ -440,6 +442,7 @@ AC_MSG_CHECKING(whether va_lists can be copied by value)
 AC_CACHE_VAL(slrn_cv_va_val_copy,[
 	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 	#include <stdarg.h>
+	#include <stdlib.h>
 	void f (int i, ...) {
 	va_list args1, args2;
 	va_start (args1, i);
